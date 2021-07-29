@@ -1,4 +1,4 @@
-# editor-components
+# editor-sdk
 
 This repository includes the editor-sdk, the SDK is used to plugin to the Chili Publisher API and will handle the communication between workspace (React) and editor (Flutter).
 
