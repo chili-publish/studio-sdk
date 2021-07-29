@@ -1,0 +1,76 @@
+{
+    "name": "@chili-publish/editor-sdk",
+    "version": "0.0.1",
+    "description": "The sdk for the chili editor",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/chili-publish/editor-sdk.git"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.14.8",
+        "@babel/core": "^7.14.8",
+        "@babel/plugin-transform-runtime": "^7.14.5",
+        "@babel/preset-env": "^7.14.8",
+        "@babel/preset-react": "^7.14.5",
+        "@babel/preset-typescript": "^7.14.5",
+        "@babel/runtime": "^7.14.8",
+        "@types/react": "^17.0.15",
+        "@types/react-dom": "^17.0.9",
+        "@typescript-eslint/eslint-plugin": "^4.28.4",
+        "@typescript-eslint/parser": "^4.28.4",
+        "awesome-typescript-loader": "^5.2.1",
+        "babel-loader": "^8.2.2",
+        "babel-preset-env": "^1.7.0",
+        "clean-webpack-plugin": "^4.0.0-alpha.0",
+        "eslint": "^7.31.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-react": "^7.24.0",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "husky": "^7.0.1",
+        "prettier": "^2.3.2",
+        "pretty-quick": "^3.1.1",
+        "shx": "^0.3.3",
+        "typescript": "^4.3.5",
+        "uglifyjs-webpack-plugin": "^2.2.0",
+        "webpack": "^5.46.0",
+        "webpack-cli": "^4.7.2",
+        "webpack-dev-server": "^3.11.2"
+    },
+    "scripts": {
+        "clean": "shx rm -rf _bundles lib lib-esm",
+        "build": "yarn clean && tsc && tsc -m es6 --outDir lib-esm && webpack",
+        "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
+        "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+        "format-staged": "pretty-quick --staged"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run format-staged"
+        }
+    },
+    "main": "./_bundles/main.js",
+    "module": "./_bundles/main.js",
+    "browser": "./_bundles/main.js",
+    "files": [
+        "lib/",
+        "_bundles/"
+    ],
+    "typings": "lib/",
+    "bugs": {
+        "url": "https://github.com/chili-publish/editor-sdk/issues"
+    },
+    "homepage": "https://github.com/chili-publish/editor-sdk#readme",
+    "author": "",
+    "directories": {
+        "lib": "lib"
+    }
+}
