@@ -10,6 +10,7 @@ module.exports = {
     env: {
         browser: true,
         node: true,
+        jest: true,
     },
     settings: {
         react: {
@@ -55,6 +56,9 @@ module.exports = {
         'react/jsx-indent-props': ['error', 4],
         'import/extensions': 0,
         'linebreak-style': 0,
+        'react/require-default-props': 0,
+        'object-curly-newline': 0,
+        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     },
-    ignorePatterns: ['**/dist/*.js', '**/lib/**/*.ts', '_bundles/*.js'],
+    ignorePatterns: ['**/dist/*.js', '**/lib/**/*.ts', '_bundles/*.js', '**/.storybook/**', '**/src/stories/**'],
 };
