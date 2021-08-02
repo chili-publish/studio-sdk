@@ -7,16 +7,17 @@ module.exports = {
         path: path.resolve(__dirname, '_bundles'),
         filename: '[name].js',
         libraryTarget: 'umd',
-        library: 'editor-sdk',
+        library: 'editor-components',
         umdNamedDefine: true,
+        globalObject: 'this',
     },
     mode: 'development',
     module: {
         rules: [
             {
                 test: /\.[jt]sx?$/,
-                use: ['awesome-typescript-loader'],
-                exclude: /node_modules/,
+                use: ['ts-loader'],
+                exclude: [/node_modules/, '/src/stories'],
             },
         ],
     },
