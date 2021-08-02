@@ -1,0 +1,49 @@
+name: Publish package
+on:
+    push:
+        branches:
+            - develop
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [14.17]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Check cache
+              id: cache
+              uses: actions/cache@v1
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+            - name: Use Node ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@chili-publish'
+            - name: install dependencies
+              run: yarn install
+            - name: run linting
+              run: yarn ci-lint
+            - name: run tests
+              run: yarn test
+            - name: build code
+              run: yarn build
+            - name: bump version
+              uses: phips28/gh-action-bump-version@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_AND_USER_TOKEN }}
+              with:
+                  minor-wording: 'feature,Feature,FEATURE'
+                  major-wording: 'breaking,Breaking,BREAKING'
+                  patch-wording: 'fix,Fix,FIX'
+                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            - name: publish build
+              run: yarn publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
