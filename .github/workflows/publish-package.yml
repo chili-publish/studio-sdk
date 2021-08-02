@@ -37,7 +37,7 @@ jobs:
               uses: phips28/gh-action-bump-version@master
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_AND_USER_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
               with:
                   minor-wording: 'feature,Feature,FEATURE'
                   major-wording: 'breaking,Breaking,BREAKING'
