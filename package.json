@@ -61,7 +61,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run format-staged"
+            "pre-commit": "format-staged"
         }
     },
     "main": "./_bundles/main.js",
