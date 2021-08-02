@@ -11,6 +11,8 @@ jobs:
                 node-version: [14.17]
         steps:
             - uses: actions/checkout@v2
+              with:
+                token: ${{ secrets.PACKAGE_SECRET }}
             - name: Check cache
               id: cache
               uses: actions/cache@v1
