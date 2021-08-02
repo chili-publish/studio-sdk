@@ -39,9 +39,9 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
               with:
-                  minor-wording: 'feature,Feature,FEATURE'
-                  major-wording: 'breaking,Breaking,BREAKING'
-                  patch-wording: 'fix,Fix,FIX'
+                  minor-wording: 'Feature,FEATURE'
+                  major-wording: 'Breaking,BREAKING'
+                  patch-wording: 'Fix,FIX'
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
             - name: publish build
               run: yarn publish
