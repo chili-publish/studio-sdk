@@ -1,9 +1,15 @@
 import { FC } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
+import EditorWrapper from './EditorWrapper';
 
 interface PropsType {
     editorLink: string;
 }
 
-const Editor: FC<PropsType> = ({ editorLink }) => <iframe title="editor 2" frameBorder={0} src={editorLink} />;
-
+const Editor: FC<PropsType> = ({ editorLink }) => (
+    <Provider store={store}>
+        <EditorWrapper editorLink={editorLink} />
+    </Provider>
+);
 export default Editor;
