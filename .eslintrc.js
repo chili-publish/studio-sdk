@@ -59,6 +59,7 @@ module.exports = {
         'react/require-default-props': 0,
         'object-curly-newline': 0,
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+        'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }],
     },
     ignorePatterns: ['**/dist/*.js', '**/lib/**/*.ts', '_bundles/*.js', '**/.storybook/**', '**/src/stories/**'],
 };
