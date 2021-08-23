@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from './index';
 
 interface Layout {
     id: number;
@@ -7,11 +8,13 @@ interface Layout {
 export interface DocumentState {
     layouts: Layout[];
     pages: [];
+    child: string;
 }
 
 const initialState: DocumentState = {
     layouts: [],
     pages: [],
+    child: 'here is the childjjgjgjgg chhchch',
 };
 export const documentSlice = createSlice({
     name: 'documents',
@@ -23,6 +26,10 @@ export const documentSlice = createSlice({
     },
 });
 
+// Actions
 export const { setLayouts } = documentSlice.actions;
+
+// Selectors
+export const selectLayouts = (state: RootState) => state.document.child;
 
 export default documentSlice.reducer;
