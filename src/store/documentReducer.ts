@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './index';
+import type { RootState } from './index';
 
 type Layout = {
     id: number;
