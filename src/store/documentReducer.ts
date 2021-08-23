@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './index';
 
-interface Layout {
+type Layout = {
     id: number;
     name: string;
-}
-export interface DocumentState {
+};
+type DocumentState = {
     layouts: Layout[];
     pages: [];
     child: string;
-}
+};
 
 const initialState: DocumentState = {
     layouts: [],
