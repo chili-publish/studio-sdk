@@ -1,11 +1,20 @@
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import EditorWrapper from '../../components/editor/EditorWrapper';
 import { store } from '../../store';
 import { setLayouts } from '../../store/documentReducer';
 
 describe('Editor', () => {
+    let container: HTMLElement;
+
+    beforeEach(() => {
+        container = render(
+            <Provider store={store}>
+                <EditorWrapper editorLink="testlink" />
+            </Provider>,
+        ).container;
+    });
     it('initializes the Editor', () => {
-        const { container } = render(<EditorWrapper editorLink="testlink" />);
         const iframe = container.getElementsByTagName('iframe')[0];
 
         expect(iframe).toBeInTheDocument();
@@ -13,7 +22,6 @@ describe('Editor', () => {
     });
 
     it('renders the Editor without border', () => {
-        const { container } = render(<EditorWrapper editorLink="testlink" />);
         const iframe = container.getElementsByTagName('iframe')[0];
 
         expect(iframe).toBeInTheDocument();
