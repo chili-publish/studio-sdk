@@ -4,4 +4,4 @@ export { default as Editor } from './components/editor/Editor';
 export { Provider } from 'react-redux';
 export { store } from './store';
 export { default as CHILIProvider } from './components/chiliProvider';
-export { default as connect, testAdd } from './interactions/connector';
+export { default as Connect } from './interactions/connector';

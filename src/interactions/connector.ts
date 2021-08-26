@@ -1,7 +1,8 @@
 import { connectToChild, Connection } from 'penpal';
 
 let connection: Connection;
-const connect = (editorLink: string) => {
+
+function Connect(editorLink: string) {
     const iframe = document.createElement('iframe');
     iframe.src = editorLink;
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -13,18 +14,20 @@ const connect = (editorLink: string) => {
             iframeElement?.appendChild(iframe);
         });
     }
+    // Aftre the connection is established we will use the variable connection to access the child's methods
+    // f.e
+    /* connection.promise.then((child) => {
+        child.multiply(345, 12345).then((res: number) => {
+            console.log(res);
+        });
+    }); */
+
     connection = connectToChild({
         // The iframe to which a connection should be made
         iframe,
+        // All the methods that we want to expose to the child should be inside the methods object
+        // f.e. stateChange(documentJson)
+        methods: {},
     });
-};
-
-export default connect;
-
-export const testAdd = () => {
-    connection.promise.then((child: any) => {
-        child.multiply(345, 12345).then((res: number) => {
-            console.log('%c⧭', 'color: #e57373', res);
-        });
-    });
-};
+}
+export default Connect;
