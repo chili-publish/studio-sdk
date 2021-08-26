@@ -2,7 +2,7 @@ import { connectToChild, Connection } from 'penpal';
 
 let connection: Connection;
 
-function Connect(editorLink: string) {
+const Connect = (editorLink: string) => {
     const iframe = document.createElement('iframe');
     iframe.src = editorLink;
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -30,5 +30,5 @@ function Connect(editorLink: string) {
         // f.e. stateChange(documentJson)
         methods: {},
     });
-}
+};
 export default Connect;
