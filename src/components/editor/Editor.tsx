@@ -1,9 +1,4 @@
 import { FC } from 'react';
-import EditorWrapper from './EditorWrapper';
 
-interface PropsType {
-    editorLink: string;
-}
-
-const Editor: FC<PropsType> = ({ editorLink }) => <EditorWrapper editorLink={editorLink} />;
+const Editor: FC = () => <div id="iframe" data-testid="iframe" style={{ height: '100%' }} />;
 export default Editor;
