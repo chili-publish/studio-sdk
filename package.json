@@ -8,9 +8,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@reduxjs/toolkit": "^1.6.1",
-        "penpal": "^6.1.0",
-        "react-redux": "^7.2.4"
+        "penpal": "^6.1.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.14.8",
