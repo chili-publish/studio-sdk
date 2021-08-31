@@ -1,7 +1,6 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = {
+module.exports = (env) => ({
     entry: path.resolve(__dirname, 'src', 'index.ts'),
     output: {
         path: path.resolve(__dirname, '_bundles'),
@@ -11,26 +10,18 @@ module.exports = {
         umdNamedDefine: true,
         globalObject: 'this',
     },
-    mode: 'development',
+    mode: env.env || 'development',
     module: {
         rules: [
             {
                 test: /\.[jt]sx?$/,
                 use: ['ts-loader'],
-                exclude: [/node_modules/, '/src/stories'],
+                exclude: [/node_modules/],
             },
         ],
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    },
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                sourceMap: true,
-                include: /\.min\.js$/,
-            }),
-        ],
     },
     externals: {
         // Don't bundle react or react-dom
@@ -48,4 +39,4 @@ module.exports = {
         },
     },
     devtool: 'source-map',
-};
+});
