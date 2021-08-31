@@ -1,7 +1,7 @@
 import { Connection } from 'penpal';
 import { ConfigType } from '../types/CommonTypes';
 import Connect from './interactions/connector';
-/* eslint-disable import/prefer-default-export */
+
 export { default as Editor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
 

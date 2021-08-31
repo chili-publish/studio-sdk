@@ -15,7 +15,6 @@ const Connect = (editorLink: string, params: ConfigParameterTypes, setConnection
             iframeElement?.appendChild(iframe);
         });
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setConnection(
         connectToChild({
             // The iframe to which a connection should be made
