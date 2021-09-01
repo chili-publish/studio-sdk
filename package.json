@@ -72,7 +72,7 @@
         "lib/",
         "_bundles/"
     ],
-    "typings": "lib/",
+    "typings": "lib/src/",
     "bugs": {
         "url": "https://github.com/chili-publish/editor-sdk/issues"
     },

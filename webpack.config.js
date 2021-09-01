@@ -6,7 +6,7 @@ module.exports = (env) => ({
         path: path.resolve(__dirname, '_bundles'),
         filename: '[name].js',
         libraryTarget: 'umd',
-        library: 'editor-components',
+        library: 'editor-sdk',
         umdNamedDefine: true,
         globalObject: 'this',
     },
