@@ -31,6 +31,11 @@ export class SDK {
         await res.removeLayout(layoutId);
     };
 
+    addLayout = async (parentId: number) => {
+        const res = await this.children;
+        await res.addLayout(parentId);
+    };
+
     stateChanged = (document: Document) => {
         const callBack = this.config.stateChanged;
         callBack(document);
