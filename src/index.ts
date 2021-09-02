@@ -34,6 +34,11 @@ export class SDK {
     addLayout = async (parentId: number) => {
         const res = await this.children;
         await res.addLayout(parentId);
+    }
+  
+    renameLayout = async (layoutId: number, layoutName: string) => {
+        const res = await this.children;
+        await res.renameLayout(layoutId, layoutName);
     };
 
     stateChanged = (document: Document) => {
