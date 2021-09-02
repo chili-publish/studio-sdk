@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import { Connection } from 'penpal';
-import { ConfigType } from '../types/CommonTypes';
+import { ConfigType, Child } from '../types/CommonTypes';
 import Connect from './interactions/connector';
 
 export { default as Editor } from './components/editor/Editor';
@@ -20,6 +21,11 @@ export class SDK {
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
+    };
+
+    removeLayout = async (layoutId: number) => {
+        const res = (await connection.promise) as unknown as Child;
+        await res.removeLayout(layoutId);
     };
 
     stateChanged = (document: Document) => {
