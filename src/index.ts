@@ -13,10 +13,13 @@ export class SDK {
 
     connection: Connection;
 
+    children: Child;
+
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
         Connect(config.editorLink, { stateChanged: this.stateChanged }, this.setConnection);
+        this.children = connection.promise.then((child) => child) as unknown as Child;
     }
 
     setConnection = (newConnection: Connection) => {
@@ -24,7 +27,7 @@ export class SDK {
     };
 
     removeLayout = async (layoutId: number) => {
-        const res = (await connection.promise) as unknown as Child;
+        const res = await this.children;
         await res.removeLayout(layoutId);
     };
 
