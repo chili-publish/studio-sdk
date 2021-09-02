@@ -8,5 +8,5 @@ export type ConfigType = {
 export interface Child extends CallSender {
     addLayout: (parentId: number) => void;
     removeLayout: (id: number) => void;
-    renameLayout: (id: number, name: string) => void;
+    renameLayout: (id: number, layoutName: string) => void;
 }
