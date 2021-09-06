@@ -5,9 +5,13 @@ export type ConfigType = {
     editorLink: string;
 };
 
+type EditorResponse = {
+    success: boolean;
+    status: number;
+};
 export interface Child extends CallSender {
-    addLayout: (parentId: number) => void;
-    removeLayout: (id: number) => void;
-    renameLayout: (id: number, layoutName: string) => void;
-    selectLayout: (id: number) => Promise<{ success: boolean; status: number }>;
+    addLayout: (parentId: number) => Promise<EditorResponse>;
+    removeLayout: (id: number) => Promise<EditorResponse>;
+    renameLayout: (id: number, layoutName: string) => Promise<EditorResponse>;
+    selectLayout: (id: number) => Promise<EditorResponse>;
 }
