@@ -1,12 +1,17 @@
 import { CallSender } from 'penpal';
 
 export type ConfigType = {
-    stateChanged: (state: Document) => void;
+    stateChanged: (state: string) => void;
     editorLink: string;
 };
 
+type EditorResponse = {
+    success: boolean;
+    status: number;
+};
 export interface Child extends CallSender {
-    addLayout: (parentId: number) => void;
-    removeLayout: (id: number) => void;
-    renameLayout: (id: number, layoutName: string) => void;
+    addLayout: (parentId: number) => Promise<EditorResponse>;
+    removeLayout: (id: number) => Promise<EditorResponse>;
+    renameLayout: (id: number, layoutName: string) => Promise<EditorResponse>;
+    selectLayout: (id: number) => Promise<EditorResponse>;
 }

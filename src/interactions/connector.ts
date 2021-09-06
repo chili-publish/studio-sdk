@@ -1,7 +1,7 @@
 import { connectToChild, Connection } from 'penpal';
 
 interface ConfigParameterTypes {
-    stateChanged: (state: Document) => void;
+    stateChanged: (state: string) => void;
 }
 const Connect = (editorLink: string, params: ConfigParameterTypes, setConnection: (connection: Connection) => void) => {
     const iframe = document.createElement('iframe');
