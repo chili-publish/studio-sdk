@@ -28,20 +28,25 @@ export class SDK {
 
     removeLayout = async (layoutId: number) => {
         const res = await this.children;
-        await res.removeLayout(layoutId);
+        return res.removeLayout(layoutId);
     };
 
     addLayout = async (parentId: number) => {
         const res = await this.children;
-        await res.addLayout(parentId);
+        return res.addLayout(parentId);
     };
 
     renameLayout = async (layoutId: number, layoutName: string) => {
         const res = await this.children;
-        await res.renameLayout(layoutId, layoutName);
+        return res.renameLayout(layoutId, layoutName);
     };
 
-    stateChanged = (document: Document) => {
+    selectLayout = async (layoutId: number) => {
+        const res = await this.children;
+        return res.selectLayout(layoutId);
+    };
+
+    stateChanged = (document: string) => {
         const callBack = this.config.stateChanged;
         callBack(document);
     };
