@@ -46,6 +46,11 @@ export class SDK {
         return res.selectLayout(layoutId);
     };
 
+    duplicateLayout = async (layoutId: number) => {
+        const res = await this.children;
+        return res.duplicateLayout(layoutId);
+    };
+
     stateChanged = (document: string) => {
         const callBack = this.config.stateChanged;
         callBack(document);
