@@ -4,20 +4,9 @@ function SetupFrame(iframe: HTMLIFrameElement, editorLink: string) {
     const html = `<html>
     <head>
       <base href="/" />
-      <meta charset="UTF-8"/>
-      <meta content="IE=Edge" http-equiv="X-UA-Compatible"/>
-      <meta name="description" content="CHILI publish Editor"/>
-    
+      <meta charset="UTF-8"/>    
       <!--  use this property to override the location of assets like 'default fonts' and demo document -->
       <meta name="assetBase" content="https://storageeditor2.blob.core.windows.net/editor/refs/heads/master/web/">
-
-      <!-- iOS meta tags & icons -->
-      <meta name="apple-mobile-web-app-capable" content="yes"/>
-      <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-      <meta name="apple-mobile-web-app-title" content="editor_web"/>
-      <link rel="apple-touch-icon" href="${editorLink}icons/Icon-192.png"/>
-    
-      <title>CHILI publish Editor</title>
     </head>
     <body> 
     <script src="${editorLink}init.js"></script>
@@ -28,7 +17,7 @@ function SetupFrame(iframe: HTMLIFrameElement, editorLink: string) {
     `;
 
     // eslint-disable-next-line no-param-reassign
-    iframe.srcdoc = html;
+    iframe.srcdoc = ' ';
 
     let iframeDoc: Document = iframe.ownerDocument;
     if (iframe.contentWindow) {
