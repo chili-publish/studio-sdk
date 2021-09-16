@@ -1,6 +1,20 @@
 import { connectToChild, Connection } from 'penpal';
 
-function SetupFrame(iframe: HTMLIFrameElement, editorLink: string) {
+const validateEditorLink = (editorLink: string) => {
+    const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
+    let link = '';
+    if (linkValidator.test(editorLink)) {
+        link = editorLink;
+    } else if (editorLink.indexOf('/index.html') > -1) {
+        link = editorLink.replace('/index.html', '/');
+    } else if (editorLink.charAt(-1) !== '/') {
+        link = `${editorLink}/`;
+    }
+    return link;
+};
+
+const SetupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
+    const link = validateEditorLink(editorLink);
     const html = `<html>
     <head>
       <base href="/" />
@@ -9,9 +23,9 @@ function SetupFrame(iframe: HTMLIFrameElement, editorLink: string) {
       <meta name="assetBase" content="https://storageeditor2.blob.core.windows.net/editor/refs/heads/master/web/">
     </head>
     <body> 
-    <script src="${editorLink}init.js"></script>
+    <script src="${link}init.js"></script>
     <script async src="https://unpkg.com/penpal@6.1.0/dist/penpal.min.js"></script>
-    <script async src="${editorLink}main.dart.js"></script>     
+    <script async src="${link}main.dart.js"></script>     
     </body>
     </html>
     `;
@@ -26,8 +40,7 @@ function SetupFrame(iframe: HTMLIFrameElement, editorLink: string) {
     iframeDoc.open();
     iframeDoc.write(html);
     iframeDoc.close();
-}
-
+};
 interface ConfigParameterTypes {
     stateChanged: (state: string) => void;
 }
