@@ -1,6 +1,6 @@
 import { connectToChild, Connection } from 'penpal';
 
-const validateEditorLink = (editorLink: string) => {
+export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
     let link = '';
     if (linkValidator.test(editorLink)) {
