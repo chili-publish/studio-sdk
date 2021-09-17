@@ -1,6 +1,6 @@
 import { connectToChild, Connection } from 'penpal';
 
-export const validateEditorLink = (editorLink: string) => {
+const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
     let link = '';
     if (linkValidator.test(editorLink)) {
@@ -13,7 +13,7 @@ export const validateEditorLink = (editorLink: string) => {
     return link;
 };
 
-const SetupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
+const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     const link = validateEditorLink(editorLink);
     const html = `<html>
     <head>
@@ -49,12 +49,12 @@ const Connect = (editorLink: string, params: ConfigParameterTypes, setConnection
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         const iframeContainer = document.querySelector('#iframe');
         iframeContainer?.appendChild(iframe);
-        SetupFrame(iframe, editorLink);
+        setupFrame(iframe, editorLink);
     } else {
         document.addEventListener('DOMContentLoaded', () => {
             const iframeContainer = document.querySelector('#iframe');
             iframeContainer?.appendChild(iframe);
-            SetupFrame(iframe, editorLink);
+            setupFrame(iframe, editorLink);
         });
     }
     setConnection(
