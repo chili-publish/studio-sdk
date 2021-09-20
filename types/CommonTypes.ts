@@ -15,4 +15,5 @@ export interface Child extends CallSender {
     renameLayout: (id: number, layoutName: string) => Promise<EditorResponse>;
     selectLayout: (id: number) => Promise<EditorResponse>;
     duplicateLayout: (id: number) => Promise<EditorResponse>;
+    resetLayout: (id: number) => Promise<EditorResponse>;
 }
