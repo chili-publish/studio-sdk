@@ -60,6 +60,36 @@ export class SDK {
         const callBack = this.config.stateChanged;
         callBack(document);
     };
+
+    resetFrameSize = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameSize(frameId);
+    };
+
+    resetFrameX = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameX(frameId);
+    };
+
+    resetFrameY = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameY(frameId);
+    };
+
+    resetFrameRotation = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameRotation(frameId);
+    };
+
+    resetFrameWidth = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameWidth(frameId);
+    };
+
+    resetFrameHeight = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameHeight(frameId);
+    };
 }
 
 export default SDK;
