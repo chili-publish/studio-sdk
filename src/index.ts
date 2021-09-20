@@ -51,6 +51,11 @@ export class SDK {
         return res.duplicateLayout(layoutId);
     };
 
+    resetLayout = async (layoutId: number) => {
+        const res = await this.children;
+        return res.resetLayout(layoutId);
+    };
+
     stateChanged = (document: string) => {
         const callBack = this.config.stateChanged;
         callBack(document);
