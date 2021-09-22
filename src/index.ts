@@ -19,7 +19,11 @@ export class SDK {
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
-        Connect(config.editorLink, { stateChanged: this.stateChanged }, this.setConnection);
+        Connect(
+            config.editorLink,
+            { stateChanged: this.stateChanged, selectedFrameLayout: this.selectedFrameLayout },
+            this.setConnection,
+        );
         this.children = connection.promise.then((child) => child) as unknown as Child;
     }
 
@@ -90,6 +94,11 @@ export class SDK {
     resetFrameHeight = async (frameId: string) => {
         const res = await this.children;
         return res.resetFrameHeight(parseInt(frameId));
+    };
+
+    selectedFrameLayout = (document: string) => {
+        const callBack = this.config.selectedFrameLayout;
+        callBack(document);
     };
 }
 
