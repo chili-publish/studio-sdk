@@ -1,6 +1,5 @@
 // This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
 /* eslint-disable radix */
-/* eslint-disable no-console */
 import { Connection } from 'penpal';
 import { ConfigType, Child } from '../types/CommonTypes';
 import Connect from './interactions/connector';
@@ -35,7 +34,6 @@ export class SDK {
 
     addLayout = async (parentId: string) => {
         const res = await this.children;
-        console.log(parentId);
         return res.addLayout(parseInt(parentId));
     };
 
