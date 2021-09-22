@@ -6,7 +6,11 @@ describe('Editor Link Validator', () => {
     it('returns the valid link without modification', async () => {
         render(<Editor />);
 
-        Connect('https://chili-editor-dev.azurewebsites.net/', { stateChanged: () => null }, () => null);
+        Connect(
+            'https://chili-editor-dev.azurewebsites.net/',
+            { stateChanged: () => null, selectedFrameLayout: () => null },
+            () => null,
+        );
 
         const iframe = document.getElementsByTagName('iframe')[0];
         const iframeBody = iframe.contentWindow?.document.getElementsByTagName('body')[0];
@@ -21,7 +25,11 @@ describe('Editor Link Validator', () => {
     it('removes index.html if found at the end of the link', () => {
         render(<Editor />);
 
-        Connect('https://chili-editor-dev.azurewebsites.net/index.html', { stateChanged: () => null }, () => null);
+        Connect(
+            'https://chili-editor-dev.azurewebsites.net/index.html',
+            { stateChanged: () => null, selectedFrameLayout: () => null },
+            () => null,
+        );
 
         const iframe = document.getElementsByTagName('iframe')[0];
         const iframeBody = iframe.contentWindow?.document.getElementsByTagName('body')[0];
@@ -35,7 +43,11 @@ describe('Editor Link Validator', () => {
     it('Adds / at the end if not found', () => {
         render(<Editor />);
 
-        Connect('https://chili-editor-dev.azurewebsites.net', { stateChanged: () => null }, () => null);
+        Connect(
+            'https://chili-editor-dev.azurewebsites.net',
+            { stateChanged: () => null, selectedFrameLayout: () => null },
+            () => null,
+        );
 
         const iframe = document.getElementsByTagName('iframe')[0];
         const iframeBody = iframe.contentWindow?.document.getElementsByTagName('body')[0];
