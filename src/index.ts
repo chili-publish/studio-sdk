@@ -21,7 +21,11 @@ export class SDK {
         this.connection = connection;
         Connect(
             config.editorLink,
-            { stateChanged: this.stateChanged, selectedFrameLayout: this.selectedFrameLayout },
+            {
+                stateChanged: this.stateChanged,
+                selectedFrameLayout: this.selectedFrameLayout,
+                selectedFrameContent: this.selectedFrameContent,
+            },
             this.setConnection,
         );
         this.children = connection.promise.then((child) => child) as unknown as Child;
@@ -98,6 +102,11 @@ export class SDK {
 
     selectedFrameLayout = (document: string) => {
         const callBack = this.config.selectedFrameLayout;
+        callBack(document);
+    };
+
+    selectedFrameContent = (document: string) => {
+        const callBack = this.config.selectedFrameContent;
         callBack(document);
     };
 }

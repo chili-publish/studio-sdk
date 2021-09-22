@@ -8,7 +8,7 @@ describe('Editor Link Validator', () => {
 
         Connect(
             'https://chili-editor-dev.azurewebsites.net/',
-            { stateChanged: () => null, selectedFrameLayout: () => null },
+            { stateChanged: () => null, selectedFrameLayout: () => null, selectedFrameContent: () => null },
             () => null,
         );
 
@@ -27,7 +27,7 @@ describe('Editor Link Validator', () => {
 
         Connect(
             'https://chili-editor-dev.azurewebsites.net/index.html',
-            { stateChanged: () => null, selectedFrameLayout: () => null },
+            { stateChanged: () => null, selectedFrameLayout: () => null, selectedFrameContent: () => null },
             () => null,
         );
 
@@ -45,7 +45,7 @@ describe('Editor Link Validator', () => {
 
         Connect(
             'https://chili-editor-dev.azurewebsites.net',
-            { stateChanged: () => null, selectedFrameLayout: () => null },
+            { stateChanged: () => null, selectedFrameLayout: () => null, selectedFrameContent: () => null },
             () => null,
         );
 
