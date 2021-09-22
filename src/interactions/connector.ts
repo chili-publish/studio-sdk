@@ -44,6 +44,7 @@ const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
 interface ConfigParameterTypes {
     stateChanged: (state: string) => void;
     selectedFrameLayout: (state: string) => void;
+    selectedFrameContent: (state: string) => void;
 }
 const Connect = (editorLink: string, params: ConfigParameterTypes, setConnection: (connection: Connection) => void) => {
     const iframe = document.createElement('iframe');
@@ -67,6 +68,7 @@ const Connect = (editorLink: string, params: ConfigParameterTypes, setConnection
             methods: {
                 stateChanged: params.stateChanged,
                 selectedFrameLayout: params.selectedFrameLayout,
+                selectedFrameContent: params.selectedFrameContent,
             },
         }),
     );

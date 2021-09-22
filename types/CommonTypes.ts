@@ -3,7 +3,7 @@ import { CallSender } from 'penpal';
 export type ConfigType = {
     stateChanged: (state: string) => void;
     selectedFrameLayout: (state: string) => void;
-
+    selectedFrameContent: (state: string) => void;
     editorLink: string;
 };
 
