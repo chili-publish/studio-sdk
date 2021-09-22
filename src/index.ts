@@ -1,3 +1,5 @@
+// This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
+/* eslint-disable radix */
 import { Connection } from 'penpal';
 import { ConfigType, Child } from '../types/CommonTypes';
 import Connect from './interactions/connector';
@@ -25,34 +27,34 @@ export class SDK {
         connection = newConnection;
     };
 
-    removeLayout = async (layoutId: number) => {
+    removeLayout = async (layoutId: string) => {
         const res = await this.children;
-        return res.removeLayout(layoutId);
+        return res.removeLayout(parseInt(layoutId));
     };
 
-    addLayout = async (parentId: number) => {
+    addLayout = async (parentId: string) => {
         const res = await this.children;
-        return res.addLayout(parentId);
+        return res.addLayout(parseInt(parentId));
     };
 
-    renameLayout = async (layoutId: number, layoutName: string) => {
+    renameLayout = async (layoutId: string, layoutName: string) => {
         const res = await this.children;
-        return res.renameLayout(layoutId, layoutName);
+        return res.renameLayout(parseInt(layoutId), layoutName);
     };
 
-    selectLayout = async (layoutId: number) => {
+    selectLayout = async (layoutId: string) => {
         const res = await this.children;
-        return res.selectLayout(layoutId);
+        return res.selectLayout(parseInt(layoutId));
     };
 
-    duplicateLayout = async (layoutId: number) => {
+    duplicateLayout = async (layoutId: string) => {
         const res = await this.children;
-        return res.duplicateLayout(layoutId);
+        return res.duplicateLayout(parseInt(layoutId));
     };
 
-    resetLayout = async (layoutId: number) => {
+    resetLayout = async (layoutId: string) => {
         const res = await this.children;
-        return res.resetLayout(layoutId);
+        return res.resetLayout(parseInt(layoutId));
     };
 
     stateChanged = (document: string) => {
@@ -60,34 +62,34 @@ export class SDK {
         callBack(document);
     };
 
-    resetFrameSize = async (frameId: number) => {
+    resetFrameSize = async (frameId: string) => {
         const res = await this.children;
-        return res.resetFrameSize(frameId);
+        return res.resetFrameSize(parseInt(frameId));
     };
 
-    resetFrameX = async (frameId: number) => {
+    resetFrameX = async (frameId: string) => {
         const res = await this.children;
-        return res.resetFrameX(frameId);
+        return res.resetFrameX(parseInt(frameId));
     };
 
-    resetFrameY = async (frameId: number) => {
+    resetFrameY = async (frameId: string) => {
         const res = await this.children;
-        return res.resetFrameY(frameId);
+        return res.resetFrameY(parseInt(frameId));
     };
 
-    resetFrameRotation = async (frameId: number) => {
+    resetFrameRotation = async (frameId: string) => {
         const res = await this.children;
-        return res.resetFrameRotation(frameId);
+        return res.resetFrameRotation(parseInt(frameId));
     };
 
-    resetFrameWidth = async (frameId: number) => {
+    resetFrameWidth = async (frameId: string) => {
         const res = await this.children;
-        return res.resetFrameWidth(frameId);
+        return res.resetFrameWidth(parseInt(frameId));
     };
 
-    resetFrameHeight = async (frameId: number) => {
+    resetFrameHeight = async (frameId: string) => {
         const res = await this.children;
-        return res.resetFrameHeight(frameId);
+        return res.resetFrameHeight(parseInt(frameId));
     };
 }
 
