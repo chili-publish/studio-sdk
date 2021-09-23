@@ -18,4 +18,5 @@ export interface Child extends CallSender {
     selectLayout: (id: number) => Promise<EditorResponse>;
     duplicateLayout: (id: number) => Promise<EditorResponse>;
     resetLayout: (id: number) => Promise<EditorResponse>;
+    selectFrames: (ids: number[]) => Promise<EditorResponse>;
 }

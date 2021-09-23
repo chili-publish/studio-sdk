@@ -112,12 +112,12 @@ export class SDK {
 
     selectFrame = async (frameId: string) => {
         const res = await this.children;
-        return res.selectFames([parseInt(frameId)]);
+        return res.selectFrames([parseInt(frameId)]);
     };
 
-    selectMultipleFrame = async (frameIds: string[]) => {
+    selectMultipleFrames = async (frameIds: string[]) => {
         const res = await this.children;
-        return res.selectFames(frameIds.map((frameId) => parseInt(frameId)));
+        return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
     };
 
     setFrameHeight = async (frameId: string, value: string) => {
@@ -143,6 +143,11 @@ export class SDK {
     setFrameY = async (frameId: string, value: string) => {
         const res = await this.children;
         return res.setFrameY(parseInt(frameId), parseFloat(value));
+    };
+
+    setFrameVisibility = async (frameId: string, value: boolean) => {
+        const res = await this.children;
+        return res.setFrameVisibility(parseInt(frameId), value);
     };
 }
 
