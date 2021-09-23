@@ -109,6 +109,16 @@ export class SDK {
         const callBack = this.config.selectedFrameContent;
         callBack(document);
     };
+
+    selectFrame = async (frameId: string) => {
+        const res = await this.children;
+        return res.selectFames([parseInt(frameId)]);
+    };
+
+    selectMultipleFrame = async (frameIds: string[]) => {
+        const res = await this.children;
+        return res.selectFames(frameIds.map((frameId) => parseInt(frameId)));
+    };
 }
 
 export default SDK;
