@@ -110,6 +110,16 @@ export class SDK {
         callBack(document);
     };
 
+    selectFrame = async (frameId: string) => {
+        const res = await this.children;
+        return res.selectFrames([parseInt(frameId)]);
+    };
+
+    selectMultipleFrames = async (frameIds: string[]) => {
+        const res = await this.children;
+        return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
+    };
+
     setFrameHeight = async (frameId: string, value: string) => {
         const res = await this.children;
         return res.setFrameHeight(parseInt(frameId), parseFloat(value));
@@ -133,6 +143,11 @@ export class SDK {
     setFrameY = async (frameId: string, value: string) => {
         const res = await this.children;
         return res.setFrameY(parseInt(frameId), parseFloat(value));
+    };
+
+    setFrameVisibility = async (frameId: string, value: boolean) => {
+        const res = await this.children;
+        return res.setFrameVisibility(parseInt(frameId), value);
     };
 }
 
