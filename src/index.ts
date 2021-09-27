@@ -1,7 +1,8 @@
 // This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
 /* eslint-disable radix */
 import { Connection } from 'penpal';
-import { ConfigType, Child } from '../types/CommonTypes';
+import { evaluate } from 'mathjs';
+import { ConfigType, Child, SelectedFrameLayoutType } from '../types/CommonTypes';
 import Connect from './interactions/connector';
 
 export { default as Editor } from './components/editor/Editor';
@@ -148,6 +149,94 @@ export class SDK {
     setFrameVisibility = async (frameId: string, value: boolean) => {
         const res = await this.children;
         return res.setFrameVisibility(parseInt(frameId), value);
+    };
+
+    /* eslint-disable prettier/prettier */
+    getCalculatedValue = async (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
+        const str = value.replace(/[^0-9,\-,+,/,*,(,)]/gi, '');
+        if (str === null || str.length === 0) return null;
+        let calc: number | null;
+        try {
+            calc = evaluate(str);
+        } catch (error) {
+            calc = null;
+        }
+
+        switch (name) {
+        case 'frameX': {
+            if (calc === null || calc === Infinity) {
+                calc = null;
+            } else if (selectedFrame) {
+                if (selectedFrame.x.value === calc) {
+                    calc = null;
+                } else {
+                    this.setFrameX(selectedFrame?.frameId.toString(), calc.toString());
+                }
+            }
+
+            break;
+        }
+
+        case 'frameY': {
+            if (calc === null || calc === Infinity) {
+                calc = null;
+            } else if (selectedFrame) {
+                if (selectedFrame.y.value === calc) {
+                    calc = null;
+                } else {
+                    this.setFrameY(selectedFrame?.frameId.toString(), calc.toString());
+                }
+            }
+
+            break;
+        }
+
+        case 'width': {
+            if (calc === null || calc === Infinity) {
+                calc = null;
+            } else if (selectedFrame) {
+                if (selectedFrame.width.value === calc) {
+                    calc = null;
+                } else {
+                    this.setFrameWidth(selectedFrame?.frameId.toString(), calc.toString());
+                }
+            }
+
+            break;
+        }
+
+        case 'height': {
+            if (calc === null || calc === Infinity) {
+                calc = null;
+            } else if (selectedFrame) {
+                if (selectedFrame.height.value === calc) {
+                    calc = null;
+                } else {
+                    this.setFrameHeight(selectedFrame?.frameId.toString(), calc.toString());
+                }
+            }
+
+            break;
+        }
+
+        case 'frameRotation': {
+            if (calc === null || calc === Infinity) {
+                calc = null;
+            } else if (selectedFrame) {
+                if (selectedFrame.rotationDegrees.value === calc) {
+                    calc = null;
+                } else {
+                    this.setFrameRotation(selectedFrame?.frameId.toString(), calc.toString());
+                }
+            }
+
+            break;
+        }
+
+        default:
+            break;
+        }
+        return calc;
     };
 }
 
