@@ -20,3 +20,15 @@ export interface Child extends CallSender {
     resetLayout: (id: number) => Promise<EditorResponse>;
     selectFrames: (ids: number[]) => Promise<EditorResponse>;
 }
+export type SelectedFrameLayoutType = {
+    frameId: number;
+    layoutId: number;
+    x: { value: number; isOverride: boolean };
+    y: { value: number; isOverride: boolean };
+    width: { value: number; isOverride: boolean };
+    height: { value: number; isOverride: boolean };
+    rotationDegrees: { value: 0; isOverride: boolean };
+    scaleX: { value: number; isOverride: boolean };
+    scaleY: { value: number; isOverride: boolean };
+    included: { value: boolean; isOverride: boolean };
+} | null;
