@@ -1,5 +1,4 @@
 // This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
-/* eslint-disable radix */
 import { evaluate } from 'mathjs';
 
 import { SelectedFrameLayoutType, Child } from '../../types/CommonTypes';
@@ -66,7 +65,7 @@ class FrameProperties {
         return res.setFrameVisibility(parseInt(frameId), value);
     };
 
-    calculateInputValue = (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
+    getFramePropertyCalculatedValue = (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
         const str = value.replace(/[^0-9,\-,+,/,*,(,)]/gi, '');
         if (str === null || str.length === 0) return null;
         let calc: number | null;

@@ -1,9 +1,8 @@
 // This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
-/* eslint-disable radix */
 import { Connection } from 'penpal';
 import { ConfigType, Child, SelectedFrameLayoutType } from '../types/CommonTypes';
 import Connect from './interactions/connector';
-import FrameProperties from './utils/frameProperties';
+import FrameProperties from './classes/frameProperties';
 
 export { default as Editor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
@@ -100,8 +99,8 @@ export class SDK {
     };
 
     /* eslint-disable prettier/prettier */
-    getCalculatedValue = async (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
-        const calculatedValue = await this.frameProperties.calculateInputValue(name, value, selectedFrame);
+    getFramePropertyCalculatedValue = async (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
+        const calculatedValue = await this.frameProperties.getFramePropertyCalculatedValue(name, value, selectedFrame);
         return calculatedValue;
     };
 }
