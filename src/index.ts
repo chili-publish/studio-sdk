@@ -1,4 +1,3 @@
-// This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
 import { Connection } from 'penpal';
 import { ConfigType, Child, SelectedFrameLayoutType } from '../types/CommonTypes';
 import Connect from './interactions/connector';
@@ -98,7 +97,6 @@ export class SDK {
         return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
     };
 
-    /* eslint-disable prettier/prettier */
     getFramePropertyCalculatedValue = async (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
         const calculatedValue = await this.frameProperties.getFramePropertyCalculatedValue(name, value, selectedFrame);
         return calculatedValue;

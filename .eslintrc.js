@@ -46,12 +46,7 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         indent: ['error', 4],
         'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-        'prettier/prettier': [
-            'error',
-            {
-                endOfLine: 'auto',
-            },
-        ],
+        'prettier/prettier': 0,
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],
         'import/extensions': 0,

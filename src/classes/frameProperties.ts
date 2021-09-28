@@ -1,4 +1,3 @@
-// This ESLint disable is needed to parse the integers correctly. TODO: Once calls accept strings instead of numbers, remove parsing
 import { evaluate } from 'mathjs';
 
 import { SelectedFrameLayoutType, Child } from '../../types/CommonTypes';
@@ -74,7 +73,6 @@ class FrameProperties {
         } catch (error) {
             calc = null;
         }
-        /* eslint-disable prettier/prettier */
         switch (name) {
         case 'frameX': {
             if (calc === null || calc === Infinity) {
