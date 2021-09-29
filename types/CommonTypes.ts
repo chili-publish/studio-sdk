@@ -27,7 +27,7 @@ export type SelectedFrameLayoutType = {
     y: { value: number; isOverride: boolean };
     width: { value: number; isOverride: boolean };
     height: { value: number; isOverride: boolean };
-    rotationDegrees: { value: 0; isOverride: boolean };
+    rotationDegrees: { value: number; isOverride: boolean };
     scaleX: { value: number; isOverride: boolean };
     scaleY: { value: number; isOverride: boolean };
     included: { value: boolean; isOverride: boolean };
