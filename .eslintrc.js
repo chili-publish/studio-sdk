@@ -56,6 +56,7 @@ module.exports = {
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
         'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }],
         'max-len': 0,
+        'no-shadow': 0,
         radix: 0,
     },
     ignorePatterns: ['**/dist/*.js', '**/lib/**/*.ts', '_bundles/*.js', '**/.storybook/**', '**/src/stories/**'],

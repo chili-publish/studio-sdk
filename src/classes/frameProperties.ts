@@ -1,7 +1,7 @@
 import { evaluate } from 'mathjs';
 
 import { SelectedFrameLayoutType, Child } from '../../types/CommonTypes';
-
+import { FrameProperyNames } from '../utils/enums';
 class FrameProperties {
     children: Child;
 
@@ -74,7 +74,7 @@ class FrameProperties {
             calc = null;
         }
         switch (name) {
-        case 'frameX': {
+        case FrameProperyNames.FRAME_X: {
             if (calc === null || calc === Infinity) {
                 calc = null;
             } else if (selectedFrame) {
@@ -88,7 +88,7 @@ class FrameProperties {
             break;
         }
 
-        case 'frameY': {
+        case FrameProperyNames.FRAME_Y: {
             if (calc === null || calc === Infinity) {
                 calc = null;
             } else if (selectedFrame) {
@@ -102,7 +102,7 @@ class FrameProperties {
             break;
         }
 
-        case 'width': {
+        case FrameProperyNames.WIDTH: {
             if (calc === null || calc === Infinity) {
                 calc = null;
             } else if (selectedFrame) {
@@ -116,7 +116,7 @@ class FrameProperties {
             break;
         }
 
-        case 'height': {
+        case FrameProperyNames.HEIGHT: {
             if (calc === null || calc === Infinity) {
                 calc = null;
             } else if (selectedFrame) {
@@ -130,7 +130,7 @@ class FrameProperties {
             break;
         }
 
-        case 'frameRotation': {
+        case FrameProperyNames.FRAME_ROTATION: {
             if (calc === null || calc === Infinity) {
                 calc = null;
             } else if (selectedFrame) {

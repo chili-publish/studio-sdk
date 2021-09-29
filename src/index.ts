@@ -5,6 +5,7 @@ import FrameProperties from './classes/frameProperties';
 
 export { default as Editor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
+export { FrameProperyNames } from './utils/enums';
 
 let connection: Connection;
 
