@@ -2,6 +2,7 @@ import { Connection } from 'penpal';
 import { ConfigType, Child, SelectedFrameLayoutType } from '../types/CommonTypes';
 import Connect from './interactions/connector';
 import FrameProperties from './classes/frameProperties';
+import { FrameProperyNames } from './utils/enums';
 
 export { default as Editor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
@@ -98,7 +99,11 @@ export class SDK {
         return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
     };
 
-    getFramePropertyCalculatedValue = async (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
+    getFramePropertyCalculatedValue = async (
+        name: FrameProperyNames,
+        value: string,
+        selectedFrame: SelectedFrameLayoutType,
+    ) => {
         const calculatedValue = await this.frameProperties.getFramePropertyCalculatedValue(name, value, selectedFrame);
         return calculatedValue;
     };
