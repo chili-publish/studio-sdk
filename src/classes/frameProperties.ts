@@ -2,6 +2,7 @@ import { evaluate } from 'mathjs';
 
 import { SelectedFrameLayoutType, Child } from '../../types/CommonTypes';
 import { FrameProperyNames } from '../utils/enums';
+
 class FrameProperties {
     children: Child;
 
@@ -64,7 +65,11 @@ class FrameProperties {
         return res.setFrameVisibility(parseInt(frameId), value);
     };
 
-    getFramePropertyCalculatedValue = (name: string, value: string, selectedFrame: SelectedFrameLayoutType) => {
+    getFramePropertyCalculatedValue = (
+        name: FrameProperyNames,
+        value: string,
+        selectedFrame: SelectedFrameLayoutType,
+    ) => {
         const str = value.replace(/[^0-9,\-,+,/,*,(,)]/gi, '');
         if (str === null || str.length === 0) return null;
         let calc: number | null;

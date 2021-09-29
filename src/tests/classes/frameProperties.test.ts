@@ -1,5 +1,6 @@
 import FrameProperties from '../../classes/frameProperties';
 import mockChild, { mockSelectFrame } from '../__mocs__/FrameProperties';
+import { FrameProperyNames } from '../../utils/enums';
 
 let mockedFrameProperties: FrameProperties;
 
@@ -63,20 +64,28 @@ describe('FrameProperties', () => {
 
 describe('User inputs for Frame Properties', () => {
     it('Should calculate user Inputs and returns the calculated value', () => {
-        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue('frameX', '22', mockSelectFrame);
-        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue('frameY', '343', mockSelectFrame);
+        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_X,
+            '22',
+            mockSelectFrame,
+        );
+        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_Y,
+            '343',
+            mockSelectFrame,
+        );
         const responseWidth = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameWidth',
+            FrameProperyNames.WIDTH,
             '11',
             mockSelectFrame,
         );
         const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameHeight',
+            FrameProperyNames.HEIGHT,
             '5',
             mockSelectFrame,
         );
         const responseRotation = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameRotation',
+            FrameProperyNames.FRAME_ROTATION,
             '785',
             mockSelectFrame,
         );
@@ -89,23 +98,35 @@ describe('User inputs for Frame Properties', () => {
     });
 
     it('Returns null when user input doesnt contain any number', () => {
-        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue('frameX', 'dfsfds', mockSelectFrame);
+        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_X,
+            'dfsfds',
+            mockSelectFrame,
+        );
         expect(responseX).toEqual(null);
     });
 
     it('Clears the input and only returns numbers from the input', () => {
-        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue('frameY', 'dfs3242', mockSelectFrame);
+        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_Y,
+            'dfs3242',
+            mockSelectFrame,
+        );
         expect(responseY).toEqual(3242);
     });
 
     it('return null when the user input same with latest frame property value', () => {
-        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue('frameY', '20', mockSelectFrame);
+        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_Y,
+            '20',
+            mockSelectFrame,
+        );
         expect(responseY).toEqual(null);
     });
 
     it('return null when the user input an infinite value', () => {
         const responseRotation = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameRotation',
+            FrameProperyNames.FRAME_ROTATION,
             '20/0',
             mockSelectFrame,
         );
@@ -116,7 +137,7 @@ describe('User inputs for Frame Properties', () => {
 describe('Math calculations', () => {
     it('Makes Addition successfully', () => {
         const responseRotation = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameRotation',
+            FrameProperyNames.FRAME_ROTATION,
             '20+5',
             mockSelectFrame,
         );
@@ -125,7 +146,7 @@ describe('Math calculations', () => {
 
     it('Makes the Subtraction successfully ', () => {
         const responseWidth = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameWidth',
+            FrameProperyNames.WIDTH,
             '20-5',
             mockSelectFrame,
         );
@@ -134,31 +155,39 @@ describe('Math calculations', () => {
 
     it('Makes the Multiplication successfully ', () => {
         const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameHeight',
+            FrameProperyNames.HEIGHT,
             '20*5',
             mockSelectFrame,
         );
         expect(responseHeight).toEqual(100);
     });
     it('Makes the Division successfully ', () => {
-        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue('frameX', '20/5', mockSelectFrame);
+        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_X,
+            '20/5',
+            mockSelectFrame,
+        );
         expect(responseX).toEqual(4);
     });
 
     it('Makes math operations with order ', () => {
-        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue('frameY', '(20-5)*2', mockSelectFrame);
+        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_Y,
+            '(20-5)*2',
+            mockSelectFrame,
+        );
         const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameHeight',
+            FrameProperyNames.HEIGHT,
             '20-5*5',
             mockSelectFrame,
         );
         const responseWidth = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameHeight',
+            FrameProperyNames.HEIGHT,
             '-20-40',
             mockSelectFrame,
         );
         const responseX = mockedFrameProperties.getFramePropertyCalculatedValue(
-            'frameHeight',
+            FrameProperyNames.HEIGHT,
             '20--40',
             mockSelectFrame,
         );
