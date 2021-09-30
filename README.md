@@ -1,5 +1,10 @@
 # editor-sdk
 
+![Statements](https://img.shields.io/badge/statements-44.55%25-red.svg) ![Branches](https://img.shields.io/badge/branches-18.54%25-red.svg) ![Functions](https://img.shields.io/badge/functions-19.86%25-red.svg) ![Lines](https://img.shields.io/badge/lines-42.51%25-red.svg)
+
+[![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
+
+
 This repository includes the editor-sdk, the SDK is used to plugin to the Chili Publisher API and will handle the communication between workspace (React) and editor (Flutter).
 
 ## Versioning
