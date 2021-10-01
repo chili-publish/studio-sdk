@@ -25,6 +25,11 @@ jobs:
             - name: run linting
               run: yarn ci-lint
             - name: run tests
-              run: yarn test
+              run: yarn cover
+            - name: Publish Unit Test Results
+              uses: EnricoMi/publish-unit-test-result-action@v1
+              if: always()
+              with:
+                  files: coverage/**/*.xml
             - name: build code
               run: yarn build

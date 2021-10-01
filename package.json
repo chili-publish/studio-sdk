@@ -37,7 +37,9 @@
         "eslint-plugin-react": "^7.24.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "husky": "^7.0.1",
+        "istanbul-badges-readme": "^1.4.0",
         "jest": "^27.0.6",
+        "jest-junit": "^12.3.0",
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1",
         "react": "^17.0.2",
@@ -59,7 +61,9 @@
         "test": "jest",
         "ci-lint": "eslint \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-        "format-staged": "pretty-quick --staged"
+        "format-staged": "pretty-quick --staged",
+        "cover": "jest --coverage",
+        "make-badges": "istanbul-badges-readme"
     },
     "husky": {
         "hooks": {

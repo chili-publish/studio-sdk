@@ -32,7 +32,16 @@ jobs:
             - name: run linting
               run: yarn ci-lint
             - name: run tests
-              run: yarn test
+              run: yarn cover
+            - name: run readmeUpdater
+              run: yarn make-badges
+            - name: commit changes
+              uses: stefanzweifel/git-auto-commit-action@v4
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+              with:
+                  commit_message: Apply readme changes
             - name: build code
               run: yarn build
             - name: bump version
