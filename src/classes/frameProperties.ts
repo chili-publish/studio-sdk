@@ -1,4 +1,4 @@
-import { evaluate } from 'mathjs';
+import { evaluate, round } from 'mathjs';
 
 import { SelectedFrameLayoutType, Child } from '../../types/CommonTypes';
 import { FrameProperyNames } from '../utils/enums';
@@ -70,87 +70,87 @@ class FrameProperties {
         value: string,
         selectedFrame: SelectedFrameLayoutType,
     ) => {
-        const str = value.replace(/[^0-9,\-,+,/,*,(,)]/gi, '');
+        const str = value.replace(/[^0-9,\-,+,/,*,(,),/,/,/./]/gi, '').replaceAll(',', '.');
         if (str === null || str.length === 0) return null;
         let calc: number | null;
         try {
-            calc = evaluate(str);
+            calc = round(evaluate(str), 2);
         } catch (error) {
             calc = null;
         }
         switch (name) {
-        case FrameProperyNames.FRAME_X: {
-            if (calc === null || calc === Infinity) {
-                calc = null;
-            } else if (selectedFrame) {
-                if (selectedFrame.x.value === calc) {
+            case FrameProperyNames.FRAME_X: {
+                if (calc === null || calc === Infinity) {
                     calc = null;
-                } else {
-                    this.setFrameX(selectedFrame?.frameId.toString(), calc.toString());
+                } else if (selectedFrame) {
+                    if (selectedFrame.x.value === calc) {
+                        calc = null;
+                    } else {
+                        this.setFrameX(selectedFrame?.frameId.toString(), calc.toString());
+                    }
                 }
+
+                break;
             }
 
-            break;
-        }
-
-        case FrameProperyNames.FRAME_Y: {
-            if (calc === null || calc === Infinity) {
-                calc = null;
-            } else if (selectedFrame) {
-                if (selectedFrame.y.value === calc) {
+            case FrameProperyNames.FRAME_Y: {
+                if (calc === null || calc === Infinity) {
                     calc = null;
-                } else {
-                    this.setFrameY(selectedFrame?.frameId.toString(), calc.toString());
+                } else if (selectedFrame) {
+                    if (selectedFrame.y.value === calc) {
+                        calc = null;
+                    } else {
+                        this.setFrameY(selectedFrame?.frameId.toString(), calc.toString());
+                    }
                 }
+
+                break;
             }
 
-            break;
-        }
-
-        case FrameProperyNames.WIDTH: {
-            if (calc === null || calc === Infinity) {
-                calc = null;
-            } else if (selectedFrame) {
-                if (selectedFrame.width.value === calc) {
+            case FrameProperyNames.WIDTH: {
+                if (calc === null || calc === Infinity) {
                     calc = null;
-                } else {
-                    this.setFrameWidth(selectedFrame?.frameId.toString(), calc.toString());
+                } else if (selectedFrame) {
+                    if (selectedFrame.width.value === calc) {
+                        calc = null;
+                    } else {
+                        this.setFrameWidth(selectedFrame?.frameId.toString(), calc.toString());
+                    }
                 }
+
+                break;
             }
 
-            break;
-        }
-
-        case FrameProperyNames.HEIGHT: {
-            if (calc === null || calc === Infinity) {
-                calc = null;
-            } else if (selectedFrame) {
-                if (selectedFrame.height.value === calc) {
+            case FrameProperyNames.HEIGHT: {
+                if (calc === null || calc === Infinity) {
                     calc = null;
-                } else {
-                    this.setFrameHeight(selectedFrame?.frameId.toString(), calc.toString());
+                } else if (selectedFrame) {
+                    if (selectedFrame.height.value === calc) {
+                        calc = null;
+                    } else {
+                        this.setFrameHeight(selectedFrame?.frameId.toString(), calc.toString());
+                    }
                 }
+
+                break;
             }
 
-            break;
-        }
-
-        case FrameProperyNames.FRAME_ROTATION: {
-            if (calc === null || calc === Infinity) {
-                calc = null;
-            } else if (selectedFrame) {
-                if (selectedFrame.rotationDegrees.value === calc) {
+            case FrameProperyNames.FRAME_ROTATION: {
+                if (calc === null || calc === Infinity) {
                     calc = null;
-                } else {
-                    this.setFrameRotation(selectedFrame?.frameId.toString(), calc.toString());
+                } else if (selectedFrame) {
+                    if (selectedFrame.rotationDegrees.value === calc) {
+                        calc = null;
+                    } else {
+                        this.setFrameRotation(selectedFrame?.frameId.toString(), calc.toString());
+                    }
                 }
+
+                break;
             }
 
-            break;
-        }
-
-        default:
-            break;
+            default:
+                break;
         }
         return calc;
     };
