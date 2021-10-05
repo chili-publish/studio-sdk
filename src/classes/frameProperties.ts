@@ -70,7 +70,7 @@ class FrameProperties {
         value: string,
         selectedFrame: SelectedFrameLayoutType,
     ) => {
-        const str = value.replace(/[^0-9,\-,+,/,*,(,),/,/,/./]/gi, '').replaceAll(',', '.');
+        const str = value.replace(/[^0-9,\-,+,/,*,(,),/,/,/./]/gi, '').replace(/,/gi, '.');
         if (str === null || str.length === 0) return null;
         let calc: number | null;
         try {
