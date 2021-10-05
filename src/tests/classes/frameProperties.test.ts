@@ -197,4 +197,62 @@ describe('Math calculations', () => {
         expect(responseWidth).toEqual(-60);
         expect(responseX).toEqual(60);
     });
+
+    it('correctly rounds to 2 decimals', () => {
+        let response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '20.55',
+            mockSelectFrame,
+        );
+        expect(response).toEqual(20.55);
+
+        response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '20.333',
+            mockSelectFrame,
+        );
+
+        expect(response).toEqual(20.33);
+
+        response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '20.3',
+            mockSelectFrame,
+        );
+
+        expect(response).toEqual(20.3);
+
+        response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '20.555',
+            mockSelectFrame,
+        );
+
+        expect(response).toEqual(20.56);
+    });
+
+    it('can handle commas as well as points as a decimal sepperator', () => {
+        let response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '20,55',
+            mockSelectFrame,
+        );
+        expect(response).toEqual(20.55);
+
+        response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '20,55 + 1,44',
+            mockSelectFrame,
+        );
+
+        expect(response).toEqual(21.99);
+
+        response = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '19,55 + 1,45',
+            mockSelectFrame,
+        );
+
+        expect(response).toEqual(21);
+    });
 });
