@@ -33,3 +33,17 @@ jobs:
                   files: coverage/**/*.xml
             - name: build code
               run: yarn build
+            - name: copy file branch
+              run: |
+                  path=upload/$CI_REF_NAME && mkdir -p ${path%"/merge"} && mv coverage/index.html coverage/coverage.html &&
+                  cp -R coverage/coverage.html coverage/base.css coverage/prettify.css ${path%"/merge"}&& cp -R dist/* ${path%"/merge"}
+            - name: publish to Azure
+              uses: lauchacarro/Azure-Storage-Action@v1.1
+              with:
+                  # Connection String of the Azure Storage Container
+                  connection-string: ${{ secrets.AZURE_CDN_SECRET }}
+                  # Folder what contains the files for upload to Storage Container
+                  folder: upload
+                  # Name of Blob Container Storage
+                  blob-container-name: workspace
+                  public-access-policy: BlobContainer
