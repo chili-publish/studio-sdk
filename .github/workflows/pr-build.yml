@@ -36,7 +36,7 @@ jobs:
             - name: copy file branch
               run: |
                   path=upload/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R coverage/index.html coverage/coverage.html &&
-                  cp -R coverage/coverage.html coverage/base.css coverage/prettify.css ${path%"/merge"}&& cp -R dist/* ${path%"/merge"}
+                  cp -R coverage/coverage.html coverage/base.css coverage/prettify.css ${path%"/merge"}
             - name: publish to Azure
               uses: lauchacarro/Azure-Storage-Action@v1.1
               with:
