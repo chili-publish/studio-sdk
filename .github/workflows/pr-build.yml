@@ -1,4 +1,4 @@
-name: Build PR
+name: Build and deploy PR
 on: [pull_request]
 jobs:
     build:
@@ -7,6 +7,7 @@ jobs:
             matrix:
                 node-version: [14.17]
         steps:
+            - uses: FranzDiebold/github-env-vars-action@v2
             - uses: actions/checkout@v1
             - name: Check cache
               id: cache
@@ -20,8 +21,12 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@chili-publish'
             - name: install dependencies
               run: yarn install
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
             - name: run linting
               run: yarn ci-lint
             - name: run tests
