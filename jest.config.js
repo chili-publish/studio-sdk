@@ -12,7 +12,7 @@ module.exports = {
             '<rootDir>/__mocks__/fileMock.js',
         '\\.(css|less)$': 'identity-obj-proxy',
     },
-    coverageReporters: ['json-summary', 'text-summary', 'html'],
+    coverageReporters: ['json-summary', 'text-summary', 'lcov'],
     reporters: [
         'default',
         ['jest-junit', { suiteName: 'jest tests', outputDirectory: 'coverage', outputName: 'junit.xml' }],

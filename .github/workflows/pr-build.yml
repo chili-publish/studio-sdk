@@ -40,8 +40,8 @@ jobs:
               run: yarn build
             - name: copy file branch
               run: |
-                  path=upload/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R coverage/index.html coverage/coverage.html &&
-                  cp -R coverage/coverage.html coverage/base.css coverage/prettify.css ${path%"/merge"}
+                  path=upload/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R coverage/lcov-report/index.html coverage/lcov-report/coverage.html &&
+                  cp -R coverage/lcov-report/coverage.html coverage/lcov-report/base.css coverage/lcov-report/prettify.css ${path%"/merge"}
             - name: publish to Azure
               uses: lauchacarro/Azure-Storage-Action@v1.1
               with:
