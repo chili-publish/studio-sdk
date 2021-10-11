@@ -1,4 +1,4 @@
-name: Build PR
+name: Build and deploy PR
 on: [pull_request]
 jobs:
     build:
@@ -7,6 +7,7 @@ jobs:
             matrix:
                 node-version: [14.17]
         steps:
+            - uses: FranzDiebold/github-env-vars-action@v2
             - uses: actions/checkout@v1
             - name: Check cache
               id: cache
@@ -20,8 +21,12 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@chili-publish'
             - name: install dependencies
               run: yarn install
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
             - name: run linting
               run: yarn ci-lint
             - name: run tests
@@ -33,3 +38,17 @@ jobs:
                   files: coverage/**/*.xml
             - name: build code
               run: yarn build
+            - name: copy file branch
+              run: |
+                  path=upload/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R coverage/lcov-report/index.html coverage/lcov-report/coverage.html &&
+                  cp -R coverage/lcov-report/coverage.html coverage/lcov-report/base.css coverage/lcov-report/prettify.css ${path%"/merge"}
+            - name: publish to Azure
+              uses: lauchacarro/Azure-Storage-Action@v1.1
+              with:
+                  # Connection String of the Azure Storage Container
+                  connection-string: ${{ secrets.AZURE_CDN_SECRET }}
+                  # Folder what contains the files for upload to Storage Container
+                  folder: upload
+                  # Name of Blob Container Storage
+                  blob-container-name: sdk
+                  public-access-policy: BlobContainer
