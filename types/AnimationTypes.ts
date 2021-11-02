@@ -33,7 +33,7 @@ export enum TweenTypes {
     back = 'Back',
 }
 
-export type EaseTweenCombinationType = `${EaseTypes}${TweenTypes}`;
+export type EaseTweenCombinationType = `${EaseTypes}${TweenTypes}` | 'noEase';
 
 export type BasicAnimationsIntroOutroStylesType = {
     slide?: {
