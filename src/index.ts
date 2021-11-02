@@ -7,6 +7,9 @@ import { FrameProperyNames } from './utils/enums';
 export { default as Editor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
 export { FrameProperyNames } from './utils/enums';
+export { SlideDirections, ShakeDirections, EaseTypes, TweenTypes } from '../types/AnimationTypes';
+
+export type { FrameAnimationType, EaseTweenCombinationType } from '../types/AnimationTypes';
 
 let connection: Connection;
 
