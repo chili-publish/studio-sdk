@@ -37,8 +37,7 @@ export type EaseTweenCombinationType = `${EaseTypes}${TweenTypes}` | 'noEase';
 
 export type BasicAnimationsIntroOutroStylesType = {
     slide?: {
-        slideFrom?: SlideDirections;
-        slideTo?: SlideDirections;
+        slideDirection: SlideDirections;
         offsetPercent: number;
     };
     rotation?: {
@@ -73,7 +72,7 @@ export type BasicAnimationsMiddleType = {
         headShake?: boolean;
         swing?: boolean;
         tada?: boolean;
-        heartBeat?: boolean;
+        heartbeat?: boolean;
     };
 };
 
