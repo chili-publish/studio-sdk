@@ -3,6 +3,7 @@ import { ConfigType, Child, SelectedFrameLayoutType } from '../types/CommonTypes
 import Connect from './interactions/connector';
 import FrameProperties from './classes/frameProperties';
 import { FrameProperyNames } from './utils/enums';
+import { FrameAnimationType } from '../types/AnimationTypes';
 
 export { default as Editor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
@@ -109,6 +110,26 @@ export class SDK {
     ) => {
         const calculatedValue = await this.frameProperties.getFramePropertyCalculatedValue(name, value, selectedFrame);
         return calculatedValue;
+    };
+
+    onAnimationChanged = (animation: FrameAnimationType) => {
+        const callBack = this.config.getFrameAnimation;
+        callBack(animation);
+    };
+
+    setFrameAnimation = async (animation: FrameAnimationType) => {
+        const res = await this.children;
+        return res.setFrameAnimation(animation);
+    };
+
+    playAnimation = async (frameId: string) => {
+        const res = await this.children;
+        return res.playAnimation(parseInt(frameId));
+    };
+
+    pauseAnimation = async (frameId: string) => {
+        const res = await this.children;
+        return res.pauseAnimation(parseInt(frameId));
     };
 }
 
