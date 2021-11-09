@@ -122,14 +122,9 @@ export class SDK {
         return res.setFrameAnimation(animation);
     };
 
-    playAnimation = async (frameId: string) => {
+    togglePlaybackAnimation = async () => {
         const res = await this.children;
-        return res.playAnimation(parseInt(frameId));
-    };
-
-    pauseAnimation = async (frameId: string) => {
-        const res = await this.children;
-        return res.pauseAnimation(parseInt(frameId));
+        return res.togglePlaybackAnimation();
     };
 }
 
