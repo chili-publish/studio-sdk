@@ -1,10 +1,12 @@
 import { CallSender } from 'penpal';
+import { FrameAnimationType } from './AnimationTypes';
 
 export type ConfigType = {
     stateChanged: (state: string) => void;
     selectedFrameLayout: (state: string) => void;
     selectedFrameContent: (state: string) => void;
     editorLink: string;
+    getFrameAnimation:(state:FrameAnimationType)=>void;
 };
 
 type EditorResponse = {
