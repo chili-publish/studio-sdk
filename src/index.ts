@@ -10,6 +10,8 @@ export { default as Connect } from './interactions/connector';
 export { FrameProperyNames } from './utils/enums';
 export { SlideDirections, ShakeDirections, EaseTypes, TweenTypes, BasicAnimationsMiddleStyles } from '../types/AnimationTypes';
 
+export type { BasicAnimationsType } from '../types/AnimationTypes';
+
 export type { FrameAnimationType, EaseTweenCombinationType } from '../types/AnimationTypes';
 
 let connection: Connection;
