@@ -39,7 +39,7 @@ export enum BasicAnimationsMiddleStyles {
     pulse = 'pulse',
     rubberBand = 'rubberBand',
     shake = 'shake',
-    headShake = 'headShake',
+    headShake = 'headshake',
     swing = 'swing',
     tada = 'tada',
     heartbeat = 'heartbeat',
