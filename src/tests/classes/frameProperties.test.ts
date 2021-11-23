@@ -59,6 +59,26 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setFrameVisibility('2', false);
 
         expect(mockedFrameProperties.setFrameVisibility).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.resetFrameX('2');
+
+        expect(mockedFrameProperties.resetFrameX).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.resetFrameY('2');
+
+        expect(mockedFrameProperties.resetFrameY).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.resetFrameRotation('2');
+
+        expect(mockedFrameProperties.resetFrameRotation).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.resetFrameHeight('2');
+
+        expect(mockedFrameProperties.resetFrameHeight).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.resetFrameWidth('2');
+
+        expect(mockedFrameProperties.resetFrameWidth).toHaveBeenCalledTimes(1);
     });
 });
 
