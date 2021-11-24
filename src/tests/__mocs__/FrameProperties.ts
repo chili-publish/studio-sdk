@@ -16,6 +16,9 @@ export const mockResetFrameY = jest.fn().mockResolvedValue({ success: true, stat
 export const mockResetFrameWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameRotation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetFrameAniation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockTogglePlaybackAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetFrameSize = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const mockChild = {
     addLayout: mockAddLayout,
@@ -36,6 +39,9 @@ const mockChild = {
     resetFrameWidth: mockResetFrameWidth,
     resetFrameHeight: mockResetFrameHeight,
     resetFrameRotation: mockResetFrameRotation,
+    setFrameAnimation: mockSetFrameAniation,
+    togglePlaybackAnimation: mockTogglePlaybackAnimation,
+    resetFrameSize: mockResetFrameSize,
 };
 
 export default mockChild;
