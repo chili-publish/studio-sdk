@@ -81,7 +81,7 @@ export type BasicAnimationsMiddleType = {
         shake?: {
             shakeDirection: ShakeDirections;
         };
-        headShake?: boolean;
+        headshake?: boolean;
         swing?: boolean;
         tada?: boolean;
         heartbeat?: boolean;
