@@ -33,7 +33,7 @@ export enum TweenTypes {
     back = 'Back',
 }
 
-export enum BasicAnimationsMiddleStyles {
+export enum BasicAnimationsEmphasisStyles {
     bounce = 'bounce',
     flash = 'flash',
     pulse = 'pulse',
@@ -69,7 +69,7 @@ export type BasicAnimationsIntroType = {
     styles: BasicAnimationsIntroOutroStylesType;
 };
 
-export type BasicAnimationsMiddleType = {
+export type BasicAnimationsEmphasisType = {
     from: number;
     to: number;
     ease: EaseTweenCombinationType;
@@ -97,7 +97,7 @@ export type BasicAnimationsOutroType = {
 
 export type BasicAnimationsType = {
     intro?: BasicAnimationsIntroType;
-    middle?: BasicAnimationsMiddleType;
+    emphasis?: BasicAnimationsEmphasisType;
     outro?: BasicAnimationsOutroType;
 };
 
