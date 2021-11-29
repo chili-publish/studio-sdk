@@ -13,7 +13,7 @@ export {
     ShakeDirections,
     EaseTypes,
     TweenTypes,
-    BasicAnimationsMiddleStyles,
+    BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 
 export type { BasicAnimationsType } from '../types/AnimationTypes';
