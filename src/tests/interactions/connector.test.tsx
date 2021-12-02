@@ -1,13 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import { render } from '@testing-library/react';
-import Editor from '../../components/editor/Editor';
 import Connect from '../../interactions/connector';
 
+// TODO: fix testing
 describe.skip('Editor Link Validator', () => {
     it('returns the valid link without modification', async () => {
-        render(<Editor />);
-
         Connect(
             'https://chili-editor-dev.azurewebsites.net/',
             { stateChanged: () => null, selectedFrameLayout: () => null, selectedFrameContent: () => null },
@@ -25,8 +20,6 @@ describe.skip('Editor Link Validator', () => {
     });
 
     it('removes index.html if found at the end of the link', () => {
-        render(<Editor />);
-
         Connect(
             'https://chili-editor-dev.azurewebsites.net/index.html',
             { stateChanged: () => null, selectedFrameLayout: () => null, selectedFrameContent: () => null },
@@ -43,8 +36,6 @@ describe.skip('Editor Link Validator', () => {
         );
     });
     it('Adds / at the end if not found', () => {
-        render(<Editor />);
-
         Connect(
             'https://chili-editor-dev.azurewebsites.net',
             { stateChanged: () => null, selectedFrameLayout: () => null, selectedFrameContent: () => null },
