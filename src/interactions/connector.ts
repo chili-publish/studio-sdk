@@ -46,8 +46,13 @@ interface ConfigParameterTypes {
     selectedFrameLayout: (state: string) => void;
     selectedFrameContent: (state: string) => void;
 }
-const Connect = (editorLink: string, params: ConfigParameterTypes, setConnection: (connection: Connection) => void) => {
-    const editorSelectorId = '#chili-editor';
+const Connect = (
+    editorLink: string,
+    params: ConfigParameterTypes,
+    setConnection: (connection: Connection) => void,
+    editorId = 'chili-editor',
+) => {
+    const editorSelectorId = `#${editorId}`;
     const iframe = document.createElement('iframe');
     iframe.setAttribute('srcdoc', ' ');
     iframe.setAttribute('title', 'Chili-Editor');

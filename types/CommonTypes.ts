@@ -6,6 +6,7 @@ export type ConfigType = {
     selectedFrameLayout: (state: string) => void;
     selectedFrameContent: (state: string) => void;
     editorLink: string;
+    editorId?: string;
     getFrameAnimation: (state: FrameAnimationType) => void;
 };
 

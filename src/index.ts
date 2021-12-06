@@ -44,6 +44,7 @@ export class SDK {
                 selectedFrameContent: this.selectedFrameContent,
             },
             this.setConnection,
+            this.config.editorId,
         );
         this.children = connection.promise.then((child) => child) as unknown as Child;
         this.frameProperties = new FrameProperties(this.children);
