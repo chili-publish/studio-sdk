@@ -8,7 +8,7 @@ module.exports = (env) => ({
         path: path.resolve(__dirname, '_bundles'),
         filename: '[name].js',
         libraryTarget: 'umd',
-        library: 'editor-sdk',
+        library: 'ChiliEditorSDK',
         umdNamedDefine: true,
         globalObject: 'this',
     },

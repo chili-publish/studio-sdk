@@ -1,4 +1,9 @@
-import { FC } from 'react';
-
-const Editor: FC = () => <div id="iframe" data-testid="iframe" style={{ height: '100%' }} />;
-export default Editor;
+let div: HTMLDivElement;
+const loadEditor = () => {
+    if (!div) {
+        div = window.document.createElement('div');
+        div.setAttribute('id', 'iframe');
+        div.setAttribute('style', 'height: 100%');
+    }
+};
+export default loadEditor;

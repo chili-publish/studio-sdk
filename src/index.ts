@@ -5,7 +5,7 @@ import FrameProperties from './classes/frameProperties';
 import { FrameProperyNames } from './utils/enums';
 import { FrameAnimationType } from '../types/AnimationTypes';
 
-export { default as Editor } from './components/editor/Editor';
+export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
 export { FrameProperyNames } from './utils/enums';
 export {
@@ -24,28 +24,31 @@ let connection: Connection;
 
 export class SDK {
     config: ConfigType;
-
     connection: Connection;
-
     children: Child;
-
     frameProperties: FrameProperties;
 
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
+        this.children = connection?.promise.then((child) => child) as unknown as Child;
+        this.frameProperties = new FrameProperties(this.children);
+    }
+
+    loadEditor = () => {
         Connect(
-            config.editorLink,
+            this.config.editorLink,
             {
                 stateChanged: this.stateChanged,
                 selectedFrameLayout: this.selectedFrameLayout,
                 selectedFrameContent: this.selectedFrameContent,
             },
             this.setConnection,
+            this.config.editorId,
         );
         this.children = connection.promise.then((child) => child) as unknown as Child;
         this.frameProperties = new FrameProperties(this.children);
-    }
+    };
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
@@ -116,7 +119,7 @@ export class SDK {
         value: string,
         selectedFrame: SelectedFrameLayoutType,
     ) => {
-        const calculatedValue = await this.frameProperties.getFramePropertyCalculatedValue(name, value, selectedFrame);
+        const calculatedValue = await this.frameProperties?.getFramePropertyCalculatedValue(name, value, selectedFrame);
         return calculatedValue;
     };
 
