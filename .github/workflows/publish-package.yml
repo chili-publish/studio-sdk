@@ -51,3 +51,16 @@ jobs:
               run: yarn publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+            - name: copy file branch
+              run: |
+                  path=upload/builds/{{version}} && mkdir -p ${path%"/merge"} && cp -R _bundles/* ${path%"/merge"}
+            - name: publish to Azure
+              uses: lauchacarro/Azure-Storage-Action@v1.1
+              with:
+                  # Connection String of the Azure Storage Container
+                  connection-string: ${{ secrets.AZURE_CDN_SECRET }}
+                  # Folder what contains the files for upload to Storage Container
+                  folder: upload
+                  # Name of Blob Container Storage
+                  blob-container-name: sdk
+                  public-access-policy: BlobContainer
