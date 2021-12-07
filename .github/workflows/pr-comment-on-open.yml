@@ -15,4 +15,4 @@ jobs:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
                       const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-                      github.issues.createComment({ issue_number, owner, repo, body: 'Coverage report can be checked at https://chili-dev.azureedge.net/sdk/' + issue_number + '/coverage.html' });          
+                      github.issues.createComment({ issue_number, owner, repo, body: 'Coverage report can be checked at https://chili-dev.azureedge.net/sdk/coverage/' + issue_number + '/coverage.html' });
