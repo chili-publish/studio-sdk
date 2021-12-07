@@ -50,5 +50,5 @@ jobs:
                   # Folder what contains the files for upload to Storage Container
                   folder: upload
                   # Name of Blob Container Storage
-                  blob-container-name: sdk
+                  blob-container-name: sdk/coverage
                   public-access-policy: BlobContainer
