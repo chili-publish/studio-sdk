@@ -53,7 +53,7 @@ jobs:
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
             - name: copy file branch
               run: |
-                  path=upload/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R _bundles/* ${path%"/merge"}
+                  path=upload/{{version}} && mkdir -p ${path%"/merge"} && cp -R _bundles/* ${path%"/merge"}
             - name: publish to Azure
               uses: lauchacarro/Azure-Storage-Action@v1.1
               with:
