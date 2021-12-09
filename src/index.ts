@@ -46,6 +46,8 @@ export class SDK {
             this.config.editorLink,
             {
                 stateChanged: this.stateChanged,
+                selectedFrameContent: this.frame.selectedFrameContent,
+                selectedFrameLayout: this.frame.selectedFrameLayout,
             },
             this.setConnection,
             this.config.editorId,
