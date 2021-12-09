@@ -1,19 +1,13 @@
-import { SDK } from '../../index';
-import mockConfig from '../__mocs__/config';
-import { mockFrmeAnimation } from '../__mocs__/animations';
-import { FrameAnimationType } from '../../../types/AnimationTypes';
-import mockChild, { mockSelectFrame } from '../__mocs__/FrameProperties';
-import { FrameProperyNames } from '../../utils/enums';
-import FrameProperties from '../../classes/frameProperties';
+import { SDK } from '../index';
+import mockConfig from './__mocks__/config';
+import mockChild, { mockSelectFrame } from './__mocks__/FrameProperties';
+import { FrameProperyNames } from '../utils/enums';
+import FrameProperties from '../classes/frameProperties';
 
 let mockedSDK: SDK;
-let mockedAnimation: FrameAnimationType;
 
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
-    jest.spyOn(mockedSDK, 'onAnimationChanged');
-    jest.spyOn(mockedSDK, 'togglePlaybackAnimation');
-    jest.spyOn(mockedSDK, 'setFrameAnimation');
     jest.spyOn(mockedSDK, 'removeLayout');
     jest.spyOn(mockedSDK, 'addLayout');
     jest.spyOn(mockedSDK, 'renameLayout');
@@ -28,7 +22,6 @@ beforeEach(() => {
     jest.spyOn(mockedSDK, 'selectMultipleFrames');
     jest.spyOn(mockedSDK, 'getFramePropertyCalculatedValue');
     jest.spyOn(mockedSDK.frameProperties, 'getFramePropertyCalculatedValue');
-    mockedAnimation = mockFrmeAnimation;
     mockedSDK.children = mockChild;
     mockedSDK.frameProperties = new FrameProperties(mockChild);
     mockedSDK.frameProperties.getFramePropertyCalculatedValue = jest.fn().mockResolvedValue(true);
@@ -38,24 +31,9 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('SDK methods', () => {
-    it('Should call  all of the animation functions of child successfully', async () => {
-        mockedSDK.onAnimationChanged(mockedAnimation);
-
-        expect(mockedSDK.config.getFrameAnimation).toHaveBeenCalledTimes(1);
-
-        await mockedSDK.setFrameAnimation(mockedAnimation);
-
-        expect(mockedSDK.setFrameAnimation).toHaveBeenCalledTimes(1);
-
-        await mockedSDK.togglePlaybackAnimation();
-        expect(mockedSDK.config.stateChanged).toHaveBeenCalledTimes(1);
-
-        expect(mockedSDK.children.togglePlaybackAnimation).toHaveBeenCalledTimes(1);
-    });
-
     it('Should call  all of the frame properties methods of child successfully', async () => {
         mockedSDK.stateChanged('sdsd');
-        expect(mockedSDK.config.stateChanged).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.config.stateChanged).toHaveBeenCalledTimes(1);
 
         await mockedSDK.removeLayout('1');
 
@@ -87,11 +65,11 @@ describe('SDK methods', () => {
 
         await mockedSDK.selectedFrameLayout('1dssfdfsdfdsfds');
 
-        expect(mockedSDK.config.selectedFrameLayout).toHaveBeenCalledTimes(3);
+        expect(mockedSDK.config.selectedFrameLayout).toHaveBeenCalledTimes(2);
 
         await mockedSDK.selectedFrameContent('1');
 
-        expect(mockedSDK.config.selectedFrameContent).toHaveBeenCalledTimes(4);
+        expect(mockedSDK.config.selectedFrameContent).toHaveBeenCalledTimes(3);
 
         await mockedSDK.selectFrame('1');
 

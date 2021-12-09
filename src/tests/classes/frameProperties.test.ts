@@ -1,5 +1,5 @@
 import FrameProperties from '../../classes/frameProperties';
-import mockChild, { mockSelectFrame } from '../__mocs__/FrameProperties';
+import mockChild, { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { FrameProperyNames } from '../../utils/enums';
 
 let mockedFrameProperties: FrameProperties;

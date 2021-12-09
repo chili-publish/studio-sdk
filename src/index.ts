@@ -3,7 +3,7 @@ import { ConfigType, Child, SelectedFrameLayoutType } from '../types/CommonTypes
 import Connect from './interactions/connector';
 import FrameProperties from './classes/frameProperties';
 import { FrameProperyNames } from './utils/enums';
-import { FrameAnimationType } from '../types/AnimationTypes';
+import AnimationController from './classes/AnimationController';
 
 export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
@@ -27,12 +27,14 @@ export class SDK {
     connection: Connection;
     children: Child;
     frameProperties: FrameProperties;
+    animation: AnimationController;
 
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
         this.children = connection?.promise.then((child) => child) as unknown as Child;
         this.frameProperties = new FrameProperties(this.children);
+        this.animation = new AnimationController(this.children, this.config);
     }
 
     loadEditor = () => {
@@ -48,6 +50,7 @@ export class SDK {
         );
         this.children = connection.promise.then((child) => child) as unknown as Child;
         this.frameProperties = new FrameProperties(this.children);
+        this.animation = new AnimationController(this.children, this.config);
     };
 
     setConnection = (newConnection: Connection) => {
@@ -121,21 +124,6 @@ export class SDK {
     ) => {
         const calculatedValue = await this.frameProperties?.getFramePropertyCalculatedValue(name, value, selectedFrame);
         return calculatedValue;
-    };
-
-    onAnimationChanged = (animation: FrameAnimationType) => {
-        const callBack = this.config.getFrameAnimation;
-        callBack(animation);
-    };
-
-    setFrameAnimation = async (animation: FrameAnimationType) => {
-        const res = await this.children;
-        return res.setFrameAnimation(animation);
-    };
-
-    togglePlaybackAnimation = async () => {
-        const res = await this.children;
-        return res.togglePlaybackAnimation();
     };
 }
 
