@@ -1,14 +1,41 @@
 import { evaluate, round } from 'mathjs';
 
-import { SelectedFrameLayoutType, Child } from '../../types/CommonTypes';
+import { SelectedFrameLayoutType, Child, ConfigType } from '../../types/CommonTypes';
 import { FrameProperyNames } from '../utils/enums';
 
-class FrameProperties {
+class FrameController {
     children: Child;
+    config: ConfigType;
 
-    constructor(children: Child) {
+    constructor(children: Child, config: ConfigType) {
         this.children = children;
+        this.config = config;
     }
+
+    resetFrameSize = async (frameId: string) => {
+        const res = await this.children;
+        return res.resetFrameSize(parseInt(frameId));
+    };
+
+    selectedFrameLayout = (document: string) => {
+        const callBack = this.config.selectedFrameLayout;
+        callBack(document);
+    };
+
+    selectedFrameContent = (document: string) => {
+        const callBack = this.config.selectedFrameContent;
+        callBack(document);
+    };
+
+    selectFrame = async (frameId: string) => {
+        const res = await this.children;
+        return res.selectFrames([parseInt(frameId)]);
+    };
+
+    selectMultipleFrames = async (frameIds: string[]) => {
+        const res = await this.children;
+        return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
+    };
 
     setFrameHeight = async (frameId: string, value: string) => {
         const res = await this.children;
@@ -155,4 +182,4 @@ class FrameProperties {
         return calc;
     };
 }
-export default FrameProperties;
+export default FrameController;

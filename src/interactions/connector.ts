@@ -43,9 +43,10 @@ const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
 };
 interface ConfigParameterTypes {
     stateChanged: (state: string) => void;
-    selectedFrameLayout: (state: string) => void;
     selectedFrameContent: (state: string) => void;
+    selectedFrameLayout: (state: string) => void;
 }
+
 const Connect = (
     editorLink: string,
     params: ConfigParameterTypes,
@@ -82,8 +83,8 @@ const Connect = (
             // f.e. stateChange(documentJson)
             methods: {
                 stateChanged: params.stateChanged,
-                selectedFrameLayout: params.selectedFrameLayout,
                 selectedFrameContent: params.selectedFrameContent,
+                selectedFrameLayout: params.selectedFrameLayout,
             },
         }),
     );

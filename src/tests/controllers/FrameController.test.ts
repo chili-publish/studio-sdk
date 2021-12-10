@@ -1,11 +1,12 @@
-import FrameProperties from '../../classes/frameProperties';
-import mockChild, { mockSelectFrame } from '../__mocs__/FrameProperties';
+import FrameProperties from '../../controllers/FrameController';
+import mockChild, { mockSelectFrame } from '../__mocks__/FrameProperties';
+import mockConfig from '../__mocks__/config';
 import { FrameProperyNames } from '../../utils/enums';
 
 let mockedFrameProperties: FrameProperties;
 
 beforeEach(() => {
-    mockedFrameProperties = new FrameProperties(mockChild);
+    mockedFrameProperties = new FrameProperties(mockChild, mockConfig);
     jest.spyOn(mockedFrameProperties, 'setFrameHeight');
     jest.spyOn(mockedFrameProperties, 'setFrameWidth');
 
@@ -25,6 +26,12 @@ beforeEach(() => {
 
     jest.spyOn(mockedFrameProperties, 'resetFrameWidth');
     jest.spyOn(mockedFrameProperties, 'resetFrameRotation');
+
+    jest.spyOn(mockedFrameProperties, 'resetFrameSize');
+    jest.spyOn(mockedFrameProperties, 'selectedFrameLayout');
+    jest.spyOn(mockedFrameProperties, 'selectedFrameContent');
+    jest.spyOn(mockedFrameProperties, 'selectFrame');
+    jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
 });
 
 afterAll(() => {
@@ -33,52 +40,56 @@ afterAll(() => {
 describe('FrameProperties', () => {
     it('Should call  all of the Frame Functions of Child successfully', () => {
         mockedFrameProperties.setFrameHeight('2', '300');
-
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameRotation('2', '400');
-
         expect(mockedFrameProperties.setFrameRotation).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameY('2', '100');
-
         expect(mockedFrameProperties.setFrameY).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameX('2', '400');
-
         expect(mockedFrameProperties.setFrameX).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameWidth('2', '332');
-
         expect(mockedFrameProperties.setFrameWidth).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameHeight('2', '32');
-
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(2);
 
         mockedFrameProperties.setFrameVisibility('2', false);
-
         expect(mockedFrameProperties.setFrameVisibility).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.resetFrameX('2');
-
         expect(mockedFrameProperties.resetFrameX).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.resetFrameY('2');
-
         expect(mockedFrameProperties.resetFrameY).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.resetFrameRotation('2');
-
         expect(mockedFrameProperties.resetFrameRotation).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.resetFrameHeight('2');
-
         expect(mockedFrameProperties.resetFrameHeight).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.resetFrameWidth('2');
-
         expect(mockedFrameProperties.resetFrameWidth).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.resetFrameSize('2');
+        expect(mockedFrameProperties.resetFrameSize).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.selectedFrameLayout('2');
+        expect(mockedFrameProperties.selectedFrameLayout).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.selectedFrameContent('2');
+        expect(mockedFrameProperties.selectedFrameContent).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.selectFrame('2');
+        expect(mockedFrameProperties.selectFrame).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.selectMultipleFrames(['2', '5']);
+        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith(['2', '5']);
     });
 });
 
@@ -109,7 +120,6 @@ describe('User inputs for Frame Properties', () => {
             '785',
             mockSelectFrame,
         );
-
         expect(responseX).toEqual(22);
         expect(responseY).toEqual(343);
         expect(responseWidth).toEqual(11);
@@ -211,7 +221,6 @@ describe('Math calculations', () => {
             '20--40',
             mockSelectFrame,
         );
-
         expect(responseY).toEqual(30);
         expect(responseHeight).toEqual(-5);
         expect(responseWidth).toEqual(-60);
@@ -231,7 +240,6 @@ describe('Math calculations', () => {
             '20.333',
             mockSelectFrame,
         );
-
         expect(response).toEqual(20.33);
 
         response = mockedFrameProperties.getFramePropertyCalculatedValue(
@@ -239,7 +247,6 @@ describe('Math calculations', () => {
             '20.3',
             mockSelectFrame,
         );
-
         expect(response).toEqual(20.3);
 
         response = mockedFrameProperties.getFramePropertyCalculatedValue(
@@ -247,7 +254,6 @@ describe('Math calculations', () => {
             '20.555',
             mockSelectFrame,
         );
-
         expect(response).toEqual(20.56);
     });
 
@@ -264,7 +270,6 @@ describe('Math calculations', () => {
             '20,55 + 1,44',
             mockSelectFrame,
         );
-
         expect(response).toEqual(21.99);
 
         response = mockedFrameProperties.getFramePropertyCalculatedValue(
@@ -272,7 +277,6 @@ describe('Math calculations', () => {
             '19,55 + 1,45',
             mockSelectFrame,
         );
-
         expect(response).toEqual(21);
     });
 });
