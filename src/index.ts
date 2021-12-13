@@ -7,7 +7,7 @@ import LayoutController from './controllers/LayoutController';
 
 export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
-export { FrameProperyNames } from './utils/enums';
+export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
 export {
     SlideDirections,
     ShakeDirections,
@@ -36,7 +36,7 @@ export class SDK {
         this.connection = connection;
         this.children = connection?.promise.then((child) => child) as unknown as Child;
 
-        this.layout = new LayoutController(this.children);
+        this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
     }
@@ -54,7 +54,7 @@ export class SDK {
         );
         this.children = connection.promise.then((child) => child) as unknown as Child;
 
-        this.layout = new LayoutController(this.children);
+        this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
     };

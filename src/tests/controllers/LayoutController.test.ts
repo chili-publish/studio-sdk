@@ -1,7 +1,8 @@
 import LayoutController from '../../controllers/LayoutController';
 import { SDK } from '../../index';
+import { LayoutProperyNames } from '../../utils/enums';
 import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/FrameProperties';
+import mockChild, { mockSelectPage } from '../__mocks__/FrameProperties';
 
 let mockedSDK: SDK;
 
@@ -13,8 +14,16 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.layout, 'selectLayout');
     jest.spyOn(mockedSDK.layout, 'duplicateLayout');
     jest.spyOn(mockedSDK.layout, 'resetLayout');
+
+    jest.spyOn(mockedSDK.layout, 'setLayoutHeight');
+    jest.spyOn(mockedSDK.layout, 'setLayoutWidth');
+    jest.spyOn(mockedSDK.layout, 'resetLayoutHeight');
+    jest.spyOn(mockedSDK.layout, 'resetLayoutWidth');
+    jest.spyOn(mockedSDK.layout, 'getLayoutPropertiesCalculatedValue');
+    jest.spyOn(mockedSDK.layout, 'onPageSelectionChanged');
+
     mockedSDK.children = mockChild;
-    mockedSDK.layout = new LayoutController(mockChild);
+    mockedSDK.layout = new LayoutController(mockChild, mockConfig);
 });
 
 afterEach(() => {
@@ -40,5 +49,29 @@ describe('Layout methods', () => {
 
         await mockedSDK.layout.resetLayout('1');
         expect(mockedSDK.children.resetLayout).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.setLayoutHeight('2', '32');
+        expect(mockedSDK.children.setLayoutHeight).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.setLayoutWidth('3', '34');
+        expect(mockedSDK.children.setLayoutWidth).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe('User inputs for Layout Properties', () => {
+    it('Should calculate user Inputs and returns the calculated value', () => {
+        const responseHeight = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
+            LayoutProperyNames.LAYOUT_HEIGHT,
+            '11',
+            mockSelectPage,
+        );
+        const responseWidth = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
+            LayoutProperyNames.LAYOUT_WIDTH,
+            '5',
+            mockSelectPage,
+        );
+
+        expect(responseHeight).toEqual(11);
+        expect(responseWidth).toEqual(5);
     });
 });

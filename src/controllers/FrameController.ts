@@ -1,7 +1,6 @@
-import { evaluate, round } from 'mathjs';
-
 import { SelectedFrameLayoutType, Child, ConfigType } from '../../types/CommonTypes';
 import { FrameProperyNames } from '../utils/enums';
+import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 class FrameController {
     children: Child;
@@ -97,14 +96,7 @@ class FrameController {
         value: string,
         selectedFrame: SelectedFrameLayoutType,
     ) => {
-        const str = value.replace(/[^0-9,\-,+,/,*,(,),/,/,/./]/gi, '').replace(/,/gi, '.');
-        if (str === null || str.length === 0) return null;
-        let calc: number | null;
-        try {
-            calc = round(evaluate(str), 2);
-        } catch (error) {
-            calc = null;
-        }
+        let calc = getCalculatedValue(value);
         switch (name) {
             case FrameProperyNames.FRAME_X: {
                 if (calc === null || calc === Infinity) {
