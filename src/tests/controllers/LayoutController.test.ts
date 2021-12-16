@@ -21,6 +21,7 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.layout, 'resetLayoutWidth');
     jest.spyOn(mockedSDK.layout, 'getLayoutPropertiesCalculatedValue');
     jest.spyOn(mockedSDK.layout, 'onPageSelectionChanged');
+    jest.spyOn(mockedSDK.layout, 'selectedLayoutProperties');
 
     mockedSDK.children = mockChild;
     mockedSDK.layout = new LayoutController(mockChild, mockConfig);
@@ -32,6 +33,12 @@ afterEach(() => {
 
 describe('Layout methods', () => {
     it('handles all layout methods', async () => {
+        await mockedSDK.layout.selectedLayoutProperties('1');
+        expect(mockedSDK.layout.config.selectedLayoutProperties).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.onPageSelectionChanged();
+        expect(mockedSDK.layout.config.onPageSelectionChanged).toHaveBeenCalledTimes(2);
+
         await mockedSDK.layout.removeLayout('1');
         expect(mockedSDK.layout.children.removeLayout).toHaveBeenCalledTimes(1);
 

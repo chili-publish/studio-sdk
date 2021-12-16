@@ -8,7 +8,8 @@ export type ConfigType = {
     editorLink: string;
     editorId?: string;
     getFrameAnimation: (state: FrameAnimationType) => void;
-    onPageSelectionChanged: (selectedPage: string) => void;
+    onPageSelectionChanged: () => void;
+    selectedLayoutProperties: (state: string) => void;
 };
 
 type EditorResponse = {
@@ -39,7 +40,7 @@ export type SelectedFrameLayoutType = {
     included: { value: boolean; isOverride: boolean };
 } | null;
 
-export type SelectedLayoutType = {
+export type selectedLayoutPropertiesType = {
     layoutId: number;
 
     width: { value: number; isOverride: boolean };

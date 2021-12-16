@@ -48,6 +48,8 @@ export class SDK {
                 stateChanged: this.stateChanged,
                 selectedFrameContent: this.frame.selectedFrameContent,
                 selectedFrameLayout: this.frame.selectedFrameLayout,
+                selectedLayoutProperties: this.layout.selectedLayoutProperties,
+                openLayoutPropertiesPanel: this.layout.onPageSelectionChanged,
             },
             this.setConnection,
             this.config.editorId,

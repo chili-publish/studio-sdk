@@ -1,4 +1,4 @@
-import { Child, ConfigType, SelectedLayoutType } from '../../types/CommonTypes';
+import { Child, ConfigType, selectedLayoutPropertiesType } from '../../types/CommonTypes';
 import { LayoutProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
@@ -10,6 +10,11 @@ class LayoutController {
         this.children = children;
         this.config = config;
     }
+
+    selectedLayoutProperties = (document: string) => {
+        const callBack = this.config.selectedLayoutProperties;
+        callBack(document);
+    };
 
     removeLayout = async (layoutId: string) => {
         const res = await this.children;
@@ -64,7 +69,7 @@ class LayoutController {
     getLayoutPropertiesCalculatedValue = (
         name: LayoutProperyNames,
         value: string,
-        selectedLayout: SelectedLayoutType,
+        selectedLayout: selectedLayoutPropertiesType,
     ) => {
         let calc = getCalculatedValue(value);
 
@@ -102,9 +107,9 @@ class LayoutController {
         return calc;
     };
 
-    onPageSelectionChanged = (selectedPage: string) => {
+    onPageSelectionChanged = () => {
         const callBack = this.config.onPageSelectionChanged;
-        callBack(selectedPage);
+        callBack();
     };
 }
 
