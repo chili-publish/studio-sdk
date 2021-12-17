@@ -6,5 +6,7 @@ const mockConfig = {
     selectedFrameContent: defaultMockReturn,
     editorLink: 'https://chili-editor-dev.azurewebsites.net/',
     getFrameAnimation: defaultMockReturn,
+    onPageSelectionChanged: defaultMockReturn,
+    selectedLayoutProperties: defaultMockReturn,
 };
 export default mockConfig;

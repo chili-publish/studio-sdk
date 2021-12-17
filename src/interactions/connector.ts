@@ -45,6 +45,8 @@ interface ConfigParameterTypes {
     stateChanged: (state: string) => void;
     selectedFrameContent: (state: string) => void;
     selectedFrameLayout: (state: string) => void;
+    selectedLayoutProperties: (state: string) => void;
+    openLayoutPropertiesPanel: () => void;
 }
 
 const Connect = (
@@ -85,6 +87,8 @@ const Connect = (
                 stateChanged: params.stateChanged,
                 selectedFrameContent: params.selectedFrameContent,
                 selectedFrameLayout: params.selectedFrameLayout,
+                selectedLayoutProperties: params.selectedLayoutProperties,
+                openLayoutPropertiesPanel: params.openLayoutPropertiesPanel,
             },
         }),
     );

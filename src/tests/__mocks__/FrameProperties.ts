@@ -19,6 +19,10 @@ export const mockResetFrameRotation = jest.fn().mockResolvedValue({ success: tru
 export const mockSetFrameAniation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockTogglePlaybackAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameSize = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mocksetLayoutHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mocksetLayoutWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetLayoutHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const mockChild = {
     addLayout: mockAddLayout,
@@ -42,6 +46,10 @@ const mockChild = {
     setFrameAnimation: mockSetFrameAniation,
     togglePlaybackAnimation: mockTogglePlaybackAnimation,
     resetFrameSize: mockResetFrameSize,
+    setLayoutHeight: mocksetLayoutHeight,
+    setLayoutWidth: mocksetLayoutWidth,
+    resetLayoutHeight: mockResetLayoutHeight,
+    resetLayoutWidth: mockResetLayoutWidth,
 };
 
 export default mockChild;
@@ -57,4 +65,11 @@ export const mockSelectFrame = {
     scaleX: { value: 322, isOverride: false },
     scaleY: { value: 873, isOverride: false },
     included: { value: false, isOverride: false },
+};
+
+export const mockSelectPage = {
+    frameId: 300,
+    layoutId: 1,
+    width: { value: 100, isOverride: false },
+    height: { value: 20, isOverride: true },
 };
