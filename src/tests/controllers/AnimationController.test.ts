@@ -23,7 +23,6 @@ beforeEach(() => {
     mockedSDK.animation.setFrameAnimation = defaultMockReturn;
     mockedSDK.animation.playAnimation = defaultMockReturn;
     mockedSDK.animation.pauseAnimation = defaultMockReturn;
-    mockedSDK.config.getFrameAnimation = defaultMockReturn;
 });
 
 afterEach(() => {
@@ -31,8 +30,8 @@ afterEach(() => {
 });
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
-        mockedSDK.animation.onAnimationChanged(mockedAnimation);
-        expect(mockedSDK.config.getFrameAnimation).toHaveBeenCalledTimes(1);
+        mockedSDK.animation.onAnimationChanged(mockedAnimation.toString());
+        expect(mockedSDK.config.frameAnimationsChanged).toHaveBeenCalledTimes(1);
 
         await mockedSDK.animation.setFrameAnimation(mockedAnimation);
         expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(2);

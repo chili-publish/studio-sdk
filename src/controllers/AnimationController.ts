@@ -10,9 +10,14 @@ class AnimationController {
         this.config = config;
     }
 
-    onAnimationChanged = (animation: FrameAnimationType) => {
-        const callBack = this.config.getFrameAnimation;
+    onAnimationChanged = (animation: string) => {
+        const callBack = this.config.frameAnimationsChanged;
         callBack(animation);
+    };
+
+    onAnimationPlaybackChanged = (animationPlaybackState: string) => {
+        const callBack = this.config.scrubberPositionChanged;
+        callBack(animationPlaybackState);
     };
 
     setFrameAnimation = async (animation: FrameAnimationType) => {
@@ -34,6 +39,11 @@ class AnimationController {
     setScrubberPosition = async (timeInMS: number) => {
         const res = await this.children;
         return res.setScrubberPosition(timeInMS);
+    };
+
+    setAnimationDuration = async (timeInMS: number) => {
+        const res = await this.children;
+        return res.setAnimationDuration(timeInMS);
     };
 }
 

@@ -7,9 +7,10 @@ export type ConfigType = {
     selectedFrameContent: (state: string) => void;
     editorLink: string;
     editorId?: string;
-    getFrameAnimation: (state: FrameAnimationType) => void;
     onPageSelectionChanged: () => void;
     selectedLayoutProperties: (state: string) => void;
+    scrubberPositionChanged: (state: string) => void;
+    frameAnimationsChanged: (animationState: string) => void;
 };
 
 type EditorResponse = {
