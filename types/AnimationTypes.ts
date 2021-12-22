@@ -110,6 +110,6 @@ export type FrameAnimationType = {
 };
 
 export type AnimationPlaybackType = {
-    currentAnimationTimeMS: number;
+    currentAnimationTimeMs: number;
     animationIsPlaying: boolean;
 } | null;

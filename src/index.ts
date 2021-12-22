@@ -4,6 +4,7 @@ import Connect from './interactions/connector';
 import FrameController from './controllers/FrameController';
 import AnimationController from './controllers/AnimationController';
 import LayoutController from './controllers/LayoutController';
+import UtilsController from './controllers/UtilsController';
 
 export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
@@ -30,6 +31,7 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     animation: AnimationController;
+    utils: UtilsController;
 
     constructor(config: ConfigType) {
         this.config = config;
@@ -42,6 +44,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.utils = new UtilsController();
     }
 
     loadEditor = () => {
@@ -67,6 +70,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.utils = new UtilsController();
     };
 
     setConnection = (newConnection: Connection) => {
@@ -77,6 +81,8 @@ export class SDK {
         const callBack = this.config.stateChanged;
         callBack(document);
     };
+
+
 }
 
 export default SDK;

@@ -26,7 +26,7 @@ export interface Child extends CallSender {
     resetLayout: (id: number) => Promise<EditorResponse>;
     selectFrames: (ids: number[]) => Promise<EditorResponse>;
     togglePlaybackAnimation: () => Promise<EditorResponse>;
-    setFrameAnimation: (animation: FrameAnimationType) => Promise<EditorResponse>;
+    setFrameAnimation: (animation: string) => Promise<EditorResponse>;
 }
 export type SelectedFrameLayoutType = {
     frameId: number;

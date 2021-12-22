@@ -33,7 +33,7 @@ describe('Animation methods', () => {
         mockedSDK.animation.onAnimationChanged(mockedAnimation.toString());
         expect(mockedSDK.config.frameAnimationsChanged).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.setFrameAnimation(mockedAnimation);
+        await mockedSDK.animation.setFrameAnimation(JSON.stringify(mockedAnimation));
         expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(2);
 
         await mockedSDK.animation.playAnimation();

@@ -1,4 +1,3 @@
-import { FrameAnimationType } from '../../types/AnimationTypes';
 import { Child, ConfigType } from '../../types/CommonTypes';
 
 class AnimationController {
@@ -20,8 +19,9 @@ class AnimationController {
         callBack(animationPlaybackState);
     };
 
-    setFrameAnimation = async (animation: FrameAnimationType) => {
-        const res = await this.children;
+    setFrameAnimation = async (animation: string) => {
+        console.log('start')
+        const res =  await this.children;
         return res.setFrameAnimation(animation);
     };
 
