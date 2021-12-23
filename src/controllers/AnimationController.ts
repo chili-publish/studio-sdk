@@ -20,14 +20,12 @@ class AnimationController {
     };
 
     setFrameAnimation = async (animation: string) => {
-        console.log('start')
-        const res =  await this.children;
+        const res = await this.children;
         return res.setFrameAnimation(animation);
     };
 
     playAnimation = async () => {
         const res = await this.children;
-        console.log(res);
         return res.playAnimation();
     };
 
