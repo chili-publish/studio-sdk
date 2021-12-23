@@ -35,7 +35,6 @@ export class SDK {
         this.config = config;
         this.connection = connection;
         this.children = connection?.promise.then((child) => {
-            console.warn(child);
             return child;
         }) as unknown as Child;
 
@@ -60,7 +59,6 @@ export class SDK {
             this.config.editorId,
         );
         this.children = connection?.promise.then((child) => {
-            console.warn(child);
             return child;
         }) as unknown as Child;
 
