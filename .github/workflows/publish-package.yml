@@ -51,8 +51,10 @@ jobs:
               run: yarn publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
-            - name: copy file branch
+            - name: get new npm version
+              id: package-version
               uses: martinbeentjes/npm-get-version-action@master
+            - name: copy file branch
               run: |
                   path=upload/builds/latest && versionpath=upload/builds/${{ steps.package-version.outputs.current-version}} 
                   && mkdir -p ${path%"/merge"} && cp -R _bundles/* ${path%"/merge"}&& mkdir -p ${versionpath%"/merge"} && cp -R _bundles/* ${versionpath%"/merge"}
