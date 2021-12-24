@@ -47,6 +47,8 @@ interface ConfigParameterTypes {
     selectedFrameLayout: (state: string) => void;
     selectedLayoutProperties: (state: string) => void;
     openLayoutPropertiesPanel: () => void;
+    scrubberPositionChanged: (state: string) => void;
+    frameAnimationsChanged: (state: string) => void;
 }
 
 const Connect = (
@@ -89,6 +91,8 @@ const Connect = (
                 selectedFrameLayout: params.selectedFrameLayout,
                 selectedLayoutProperties: params.selectedLayoutProperties,
                 openLayoutPropertiesPanel: params.openLayoutPropertiesPanel,
+                scrubberPositionChanged: params.scrubberPositionChanged,
+                frameAnimationsChanged: params.frameAnimationsChanged,
             },
         }),
     );

@@ -1,4 +1,3 @@
-import { FrameAnimationType } from '../../types/AnimationTypes';
 import { Child, ConfigType } from '../../types/CommonTypes';
 
 class AnimationController {
@@ -10,19 +9,23 @@ class AnimationController {
         this.config = config;
     }
 
-    onAnimationChanged = (animation: FrameAnimationType) => {
-        const callBack = this.config.getFrameAnimation;
+    onAnimationChanged = (animation: string) => {
+        const callBack = this.config.frameAnimationsChanged;
         callBack(animation);
     };
 
-    setFrameAnimation = async (animation: FrameAnimationType) => {
+    onAnimationPlaybackChanged = (animationPlaybackState: string) => {
+        const callBack = this.config.scrubberPositionChanged;
+        callBack(animationPlaybackState);
+    };
+
+    setFrameAnimation = async (animation: string) => {
         const res = await this.children;
         return res.setFrameAnimation(animation);
     };
 
     playAnimation = async () => {
         const res = await this.children;
-        console.log(res);
         return res.playAnimation();
     };
 
@@ -34,6 +37,11 @@ class AnimationController {
     setScrubberPosition = async (timeInMS: number) => {
         const res = await this.children;
         return res.setScrubberPosition(timeInMS);
+    };
+
+    setAnimationDuration = async (timeInMS: number) => {
+        const res = await this.children;
+        return res.setAnimationDuration(timeInMS);
     };
 }
 

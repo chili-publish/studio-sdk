@@ -11,6 +11,8 @@ describe.skip('Editor Link Validator', () => {
                 selectedFrameContent: () => null,
                 selectedLayoutProperties: () => null,
                 openLayoutPropertiesPanel: () => null,
+                scrubberPositionChanged: () => null,
+                frameAnimationsChanged: () => null,
             },
             () => null,
         );
@@ -34,6 +36,8 @@ describe.skip('Editor Link Validator', () => {
                 selectedFrameContent: () => null,
                 selectedLayoutProperties: () => null,
                 openLayoutPropertiesPanel: () => null,
+                scrubberPositionChanged: () => null,
+                frameAnimationsChanged: () => null,
             },
             () => null,
         );
@@ -56,6 +60,8 @@ describe.skip('Editor Link Validator', () => {
                 selectedFrameContent: () => null,
                 selectedLayoutProperties: () => null,
                 openLayoutPropertiesPanel: () => null,
+                scrubberPositionChanged: () => null,
+                frameAnimationsChanged: () => null,
             },
             () => null,
         );

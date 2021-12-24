@@ -7,9 +7,10 @@ export type ConfigType = {
     selectedFrameContent: (state: string) => void;
     editorLink: string;
     editorId?: string;
-    getFrameAnimation: (state: FrameAnimationType) => void;
     onPageSelectionChanged: () => void;
     selectedLayoutProperties: (state: string) => void;
+    scrubberPositionChanged: (state: string) => void;
+    frameAnimationsChanged: (animationState: string) => void;
 };
 
 type EditorResponse = {
@@ -25,7 +26,7 @@ export interface Child extends CallSender {
     resetLayout: (id: number) => Promise<EditorResponse>;
     selectFrames: (ids: number[]) => Promise<EditorResponse>;
     togglePlaybackAnimation: () => Promise<EditorResponse>;
-    setFrameAnimation: (animation: FrameAnimationType) => Promise<EditorResponse>;
+    setFrameAnimation: (animation: string) => Promise<EditorResponse>;
 }
 export type SelectedFrameLayoutType = {
     frameId: number;

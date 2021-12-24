@@ -23,7 +23,9 @@ beforeEach(() => {
     mockedSDK.animation.setFrameAnimation = defaultMockReturn;
     mockedSDK.animation.playAnimation = defaultMockReturn;
     mockedSDK.animation.pauseAnimation = defaultMockReturn;
-    mockedSDK.config.getFrameAnimation = defaultMockReturn;
+    mockedSDK.animation.setScrubberPosition = defaultMockReturn;
+    mockedSDK.animation.setAnimationDuration = defaultMockReturn;
+    mockedSDK.animation.onAnimationPlaybackChanged = defaultMockReturn;
 });
 
 afterEach(() => {
@@ -31,10 +33,10 @@ afterEach(() => {
 });
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
-        mockedSDK.animation.onAnimationChanged(mockedAnimation);
-        expect(mockedSDK.config.getFrameAnimation).toHaveBeenCalledTimes(1);
+        mockedSDK.animation.onAnimationChanged(mockedAnimation.toString());
+        expect(mockedSDK.config.frameAnimationsChanged).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.setFrameAnimation(mockedAnimation);
+        await mockedSDK.animation.setFrameAnimation(JSON.stringify(mockedAnimation));
         expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(2);
 
         await mockedSDK.animation.playAnimation();
@@ -42,5 +44,17 @@ describe('Animation methods', () => {
 
         await mockedSDK.animation.pauseAnimation();
         expect(mockedSDK.animation.pauseAnimation).toHaveBeenCalledTimes(4);
+
+        await mockedSDK.animation.setScrubberPosition(5000);
+        expect(mockedSDK.animation.setScrubberPosition).toHaveBeenCalledTimes(5);
+        expect(mockedSDK.animation.setScrubberPosition).toHaveBeenLastCalledWith(5000);
+
+        await mockedSDK.animation.setAnimationDuration(8000);
+        expect(mockedSDK.animation.setAnimationDuration).toHaveBeenCalledTimes(6);
+        expect(mockedSDK.animation.setAnimationDuration).toHaveBeenLastCalledWith(8000);
+
+        mockedSDK.animation.onAnimationPlaybackChanged('test');
+        expect(mockedSDK.config.scrubberPositionChanged).toHaveBeenCalledTimes(7);
+        expect(mockedSDK.config.scrubberPositionChanged).toHaveBeenCalledWith('test');
     });
 });

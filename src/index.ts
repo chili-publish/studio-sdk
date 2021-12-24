@@ -18,7 +18,7 @@ export {
 
 export type { BasicAnimationsType } from '../types/AnimationTypes';
 
-export type { FrameAnimationType, EaseTweenCombinationType } from '../types/AnimationTypes';
+export type { FrameAnimationType, EaseTweenCombinationType, AnimationPlaybackType } from '../types/AnimationTypes';
 
 let connection: Connection;
 
@@ -34,7 +34,9 @@ export class SDK {
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
-        this.children = connection?.promise.then((child) => child) as unknown as Child;
+        this.children = connection?.promise.then((child) => {
+            return child;
+        }) as unknown as Child;
 
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
@@ -50,11 +52,15 @@ export class SDK {
                 selectedFrameLayout: this.frame.selectedFrameLayout,
                 selectedLayoutProperties: this.layout.selectedLayoutProperties,
                 openLayoutPropertiesPanel: this.layout.onPageSelectionChanged,
+                scrubberPositionChanged: this.animation.onAnimationPlaybackChanged,
+                frameAnimationsChanged: this.animation.onAnimationChanged,
             },
             this.setConnection,
             this.config.editorId,
         );
-        this.children = connection.promise.then((child) => child) as unknown as Child;
+        this.children = connection?.promise.then((child) => {
+            return child;
+        }) as unknown as Child;
 
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);

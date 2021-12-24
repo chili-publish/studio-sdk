@@ -108,3 +108,8 @@ export type FrameAnimationType = {
     basicAnimations: BasicAnimationsType;
     advancedAnimations?: unknown; // TBI
 };
+
+export type AnimationPlaybackType = {
+    currentAnimationTimeMs: number;
+    animationIsPlaying: boolean;
+} | null;
