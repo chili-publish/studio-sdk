@@ -1,10 +1,3 @@
-/*
-    TODO:
-    - map calculations
-    - calculate
-    - round
-*/
-
 enum operators {
     add = '+',
     sub = '-',
