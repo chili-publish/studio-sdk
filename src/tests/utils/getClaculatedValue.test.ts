@@ -41,4 +41,15 @@ describe('getCalculatedValue', () => {
         value = getCalculatedValue('1 * 0,999', 4);
         expect(value).toBe(0.999);
     });
+
+    it('can display negatives when calculated', () => {
+        const value = getCalculatedValue('10 - 12px');
+        console.log(value);
+        expect(value).toBe(-2);
+    });
+    // TODO: implement negative values
+    it.skip('accepts negative numbers', () => {
+        const value = getCalculatedValue('12 + -10');
+        expect(value).toBe(2);
+    });
 });

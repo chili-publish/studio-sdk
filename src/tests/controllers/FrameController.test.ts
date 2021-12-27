@@ -221,7 +221,7 @@ describe('Math calculations', () => {
             '20--40',
             mockSelectFrame,
         );
-        expect(responseY).toEqual(30);
+        expect(responseY).toEqual(10); // brackets are not supported
         expect(responseHeight).toEqual(-5);
         expect(responseWidth).toEqual(-60);
         expect(responseX).toEqual(60);
