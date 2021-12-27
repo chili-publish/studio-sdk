@@ -24,6 +24,17 @@ describe('getCalculatedValue', () => {
         expect(value).toBe(5);
     });
 
+    it('calculates the correct value from a string with a modulo operation', () => {
+        let value = getCalculatedValue('10 % 2');
+        expect(value).toBe(0);
+
+        value = getCalculatedValue('5 % 2');
+        expect(value).toBe(1);
+
+        value = getCalculatedValue('3.2 % 0.5');
+        expect(value).toBe(0.2);
+    });
+
     it('calculates multiple operators, in correct order of operations', () => {
         const value = getCalculatedValue('10 / 2 + 5 - 3 * 3');
         expect(value).toBe(1);
@@ -44,7 +55,6 @@ describe('getCalculatedValue', () => {
 
     it('can display negatives when calculated', () => {
         const value = getCalculatedValue('10 - 12px');
-        console.log(value);
         expect(value).toBe(-2);
     });
     // TODO: implement negative values

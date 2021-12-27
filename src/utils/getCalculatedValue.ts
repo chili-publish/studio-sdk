@@ -1,13 +1,14 @@
 enum operators {
     add = '+',
-    sub = '-',
-    div = '/',
-    mlt = '*',
+    substract = '-',
+    divide = '/',
+    multiply = '*',
+    modulo = '%',
 }
 
 const orderOfOperations = [
-    [[operators.mlt], [operators.div]],
-    [[operators.add], [operators.sub]],
+    [[operators.multiply], [operators.divide], [operators.modulo]],
+    [[operators.add], [operators.substract]],
 ];
 
 const calculate = (a: string, op: operators, b: string) => {
@@ -17,13 +18,15 @@ const calculate = (a: string, op: operators, b: string) => {
     switch (op) {
         case operators.add:
             return left + right;
-        case operators.sub:
+        case operators.substract:
             return left - right;
-        case operators.div:
+        case operators.divide:
             if (right === 0) throw new Error(`Division by zero doesn't make you a hero`);
             return left / right;
-        case operators.mlt:
+        case operators.multiply:
             return left * right;
+        case operators.modulo:
+            return left % right;
         default:
             null;
     }
@@ -48,7 +51,7 @@ const generateOutput = (initialInput: string) => {
     return output;
 };
 
-const cleanupInput = (input: string) => input.replace(/[^0-9,\-,+,/,*,/,/,/./]/gi, '').replace(/,/gi, '.');
+const cleanupInput = (input: string) => input.replace(/[^0-9,\-,+,/,*,/,/,/.,%/]/gi, '').replace(/,/gi, '.');
 
 const isCalculation = (input: string) => {
     const hasOperator = !!Object.values(operators).find((operator) => {
