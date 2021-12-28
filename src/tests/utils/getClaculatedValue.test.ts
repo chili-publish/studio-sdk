@@ -57,8 +57,8 @@ describe('getCalculatedValue', () => {
         const value = getCalculatedValue('10 - 12px');
         expect(value).toBe(-2);
     });
-    // TODO: implement negative values
-    it.skip('accepts negative numbers', () => {
+
+    it('accepts negative numbers', () => {
         const value = getCalculatedValue('12 + -10');
         expect(value).toBe(2);
     });

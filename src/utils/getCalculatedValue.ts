@@ -6,14 +6,17 @@ enum operators {
     modulo = '%',
 }
 
-const orderOfOperations = [
-    [[operators.multiply], [operators.divide], [operators.modulo]],
-    [[operators.add], [operators.substract]],
+const flatOrderOfOperations = [
+    operators.multiply,
+    operators.divide,
+    operators.modulo,
+    operators.add,
+    operators.substract,
 ];
 
-const calculate = (a: string, op: operators, b: string) => {
+const calculate = (a: string, op: operators, b: string, isNegative = false) => {
     const left = parseFloat(a);
-    const right = parseFloat(b);
+    const right = isNegative ? -parseFloat(b) : parseFloat(b);
 
     switch (op) {
         case operators.add:
@@ -32,25 +35,6 @@ const calculate = (a: string, op: operators, b: string) => {
     }
 };
 
-const generateOutput = (initialInput: string) => {
-    let input = initialInput;
-    let output = 0;
-    for (let i = 0, n = orderOfOperations.length; i < n; i++) {
-        // Regular Expression to look for operators between floating numbers or integers
-        const regex = new RegExp('(\\d+\\.?\\d*)([\\' + orderOfOperations[i].join('\\') + '])(\\d+\\.?\\d*)');
-        regex.lastIndex = 0; // take precautions and reset re starting pos
-
-        // Loop while there is still calculation for level of precedence
-        while (regex.test(input)) {
-            output = calculate(RegExp.$1, RegExp.$2 as operators, RegExp.$3) || 0;
-            if (isNaN(output) || !isFinite(output)) return output; // exit early if not a number
-            input = input.replace(regex, output.toString());
-        }
-    }
-
-    return output;
-};
-
 const cleanupInput = (input: string) => input.replace(/[^0-9,\-,+,/,*,/,/,/.,%/]/gi, '').replace(/,/gi, '.');
 
 const isCalculation = (input: string) => {
@@ -66,12 +50,92 @@ export const round = (val: number, precision = 2) => {
     return Math.round(val * hunderd) / hunderd;
 };
 
+const sepperateOperations = (value: string) => {
+    const valueArr = value.split('');
+    const sepperatedArr: string[] = [];
+    let cache = '';
+    valueArr.forEach((val) => {
+        const currentCacheIsNaN = isNaN(parseInt(cache));
+        // if cache is empty, write val to cache
+        if (cache === '') {
+            cache = val;
+            return;
+        }
+        // if val is not a digit
+        if (isNaN(parseInt(val))) {
+            // if cache is not a digit, write val to cache
+            if (currentCacheIsNaN) {
+                cache += val;
+            } else {
+                // if val is a decimal sepperator, add it to cache because cache are digits
+                if (val === '.') {
+                    cache += val;
+                } else {
+                    // if val is not a digit, and cache is a digit, write cache to array
+                    sepperatedArr.push(cache);
+                    cache = val;
+                }
+            }
+            // if val is a digit
+        } else {
+            if (!currentCacheIsNaN) {
+                cache += val;
+            } else {
+                // if val is a digit, and cache is not a digit, write cache to array
+                sepperatedArr.push(cache);
+                cache = val;
+            }
+        }
+    });
+    sepperatedArr.push(cache);
+    return sepperatedArr;
+};
+
+const calculateByOrder = (arr: string[]) => {
+    let tmpArr = [...arr];
+    flatOrderOfOperations.forEach((operator) => {
+        const occurenceIndexes: number[] = [];
+        const newArr = [];
+        tmpArr.forEach((el, idx) => {
+            // if operator is inside the array
+            if (el.includes(operator.toString())) occurenceIndexes.push(idx);
+        });
+        if (occurenceIndexes.length) {
+            const tmpCalculations: number[] = [];
+            occurenceIndexes.forEach((idx) => {
+                const left = tmpArr[idx - 1];
+                const right = tmpArr[idx + 1];
+
+                const isNegative = tmpArr[idx].length > 1;
+
+                const calculation = calculate(left, operator.substring(0, 1) as operators, right, isNegative);
+                if (typeof calculation !== 'undefined') tmpCalculations.push(calculation);
+            });
+            for (let i = 0; i < tmpArr.length; i++) {
+                const isCalculated = occurenceIndexes.includes(i + 1);
+                if (isCalculated) {
+                    newArr.push(tmpCalculations[0].toString());
+                    tmpCalculations.splice(0, 1);
+                    i = i + 2;
+                } else {
+                    newArr.push(tmpArr[i]);
+                }
+            }
+        }
+        if (newArr.length > 0) tmpArr = newArr;
+    });
+    if (tmpArr.length === 1) return parseFloat(tmpArr[0]);
+};
+
 export const getCalculatedValue = (value: string, roundPrecision = 2) => {
     const input = cleanupInput(value);
+
     if (input.length === 0 || input === null) return null;
     try {
         if (isCalculation(input)) {
-            return round(generateOutput(input), roundPrecision);
+            const calculationArray = sepperateOperations(input);
+            const calculation = calculateByOrder(calculationArray);
+            if (typeof calculation !== 'undefined') return round(calculation, roundPrecision);
         }
         return round(parseFloat(input), roundPrecision);
     } catch (error) {
