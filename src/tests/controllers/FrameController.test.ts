@@ -160,7 +160,7 @@ describe('User inputs for Frame Properties', () => {
             '20/0',
             mockSelectFrame,
         );
-        expect(responseRotation).toEqual(null);
+        expect(responseRotation).toBeNull();
     });
 });
 

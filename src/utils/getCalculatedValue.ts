@@ -6,9 +6,12 @@ enum operators {
     modulo = '%',
 }
 
-const orderOfOperations = [
-    [[operators.multiply], [operators.divide], [operators.modulo]],
-    [[operators.add], [operators.substract]],
+const flatOrderOfOperations = [
+    operators.multiply,
+    operators.divide,
+    operators.modulo,
+    operators.add,
+    operators.substract,
 ];
 
 const calculate = (a: string, op: operators, b: string) => {
@@ -32,25 +35,6 @@ const calculate = (a: string, op: operators, b: string) => {
     }
 };
 
-const generateOutput = (initialInput: string) => {
-    let input = initialInput;
-    let output = 0;
-    for (let i = 0, n = orderOfOperations.length; i < n; i++) {
-        // Regular Expression to look for operators between floating numbers or integers
-        const regex = new RegExp('(\\d+\\.?\\d*)([\\' + orderOfOperations[i].join('\\') + '])(\\d+\\.?\\d*)');
-        regex.lastIndex = 0; // take precautions and reset re starting pos
-
-        // Loop while there is still calculation for level of precedence
-        while (regex.test(input)) {
-            output = calculate(RegExp.$1, RegExp.$2 as operators, RegExp.$3) || 0;
-            if (isNaN(output) || !isFinite(output)) return output; // exit early if not a number
-            input = input.replace(regex, output.toString());
-        }
-    }
-
-    return output;
-};
-
 const cleanupInput = (input: string) => input.replace(/[^0-9,\-,+,/,*,/,/,/.,%/]/gi, '').replace(/,/gi, '.');
 
 const isCalculation = (input: string) => {
@@ -66,16 +50,132 @@ export const round = (val: number, precision = 2) => {
     return Math.round(val * hunderd) / hunderd;
 };
 
+const sepperateOperations = (value: string) => {
+    const valueArr = value.split('');
+    const sepperatedArr: string[] = [];
+    let cache = '';
+    valueArr.forEach((val) => {
+        const currentCacheIsNaN = isNaN(parseInt(cache));
+        // if cache is empty, write val to cache
+        if (cache === '') {
+            cache = val;
+            return;
+        }
+        // if val is not a digit
+        if (isNaN(parseInt(val))) {
+            // if cache is not a digit, write val to cache
+            if (currentCacheIsNaN) {
+                cache += val;
+            } else {
+                // if val is a decimal sepperator, add it to cache because cache are digits
+                if (val === '.') {
+                    cache += val;
+                } else {
+                    // if val is not a digit, and cache is a digit, write cache to array
+                    sepperatedArr.push(cache);
+                    cache = val;
+                }
+            }
+            // if val is a digit
+        } else {
+            if (!currentCacheIsNaN) {
+                cache += val;
+            } else {
+                // if val is a digit, and cache is not a digit, write cache to array
+                sepperatedArr.push(cache);
+                cache = val;
+            }
+        }
+    });
+    sepperatedArr.push(cache);
+    return sepperatedArr;
+};
+
+const calculateByOrder = (arr: string[]) => {
+    let tmpArr: string[] = [...arr];
+
+    // check if first element is a negative
+    if (tmpArr[0] === operators.substract) {
+        tmpArr[1] = `-${tmpArr[1]}`;
+        tmpArr = tmpArr.slice(1);
+    }
+
+    flatOrderOfOperations.forEach((operator) => {
+        if (tmpArr.length === 1) return;
+        const occurenceIndexes: number[] = [];
+        const newArr = [];
+        tmpArr.forEach((el, idx) => {
+            // if operator is inside the array
+            if (el.includes(operator.toString())) occurenceIndexes.push(idx);
+        });
+
+        if (occurenceIndexes.length) {
+            const tmpCalculations: number[] = [];
+            // check all occurences of the operator
+            occurenceIndexes.forEach((occIdx, idx) => {
+                // check if the occurence is dependent on the previous occurence and calculation
+                const dependsOnPreviousCalculation =
+                    idx !== 0 && occIdx - occurenceIndexes[idx - 1] === 2 && tmpCalculations.length > 0;
+
+                const rightIsNegative =
+                    tmpArr[occIdx].length > 1 && tmpArr[occIdx].substring(1) === operators.substract;
+                let leftIsNegative = false;
+
+                // check if left is negative by checking if the operator contains a substraction on the second position
+                if (tmpArr[occIdx - 2] && tmpArr[occIdx - 2].substring(1) === operators.substract) {
+                    leftIsNegative = true;
+                    tmpArr[occIdx - 2] = tmpArr[occIdx - 2].substring(0, 1);
+                }
+
+                // leftvalue is or the previous already calculated value, or the next in the original array
+                const leftValue = dependsOnPreviousCalculation
+                    ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                      tmpCalculations.pop()!.toString()
+                    : tmpArr[occIdx - 1].toString();
+
+                // check negativestates and append them if necessary
+                const left = leftIsNegative && !dependsOnPreviousCalculation ? `-${leftValue}` : leftValue;
+                const right = rightIsNegative ? `-${tmpArr[occIdx + 1]}` : tmpArr[occIdx + 1];
+
+                // do the calculation
+                const calculation = calculate(left, operator.substring(0, 1) as operators, right);
+                if (typeof calculation !== 'undefined') tmpCalculations.push(calculation);
+            });
+
+            for (let i = 0; i < tmpArr.length; i++) {
+                // check if operation is already calculated
+                const isCalculated = occurenceIndexes.includes(i + 1);
+                if (isCalculated) {
+                    // if so, add the calculated value to the new array and remove it from the calculated array
+                    newArr.push(tmpCalculations[0].toString());
+                    tmpCalculations.splice(0, 1);
+                    // skip the operator and rightvalue because they are already covered
+                    i = i + 2;
+                } else {
+                    // if not yet calculated, push original value to new array
+                    newArr.push(tmpArr[i]);
+                }
+            }
+        }
+        if (newArr.length > 0) tmpArr = newArr;
+    });
+    // The end result is a 1 item array with the calculated value
+    return parseFloat(tmpArr[0]);
+};
+
 export const getCalculatedValue = (value: string, roundPrecision = 2) => {
     const input = cleanupInput(value);
+
     if (input.length === 0 || input === null) return null;
     try {
         if (isCalculation(input)) {
-            return round(generateOutput(input), roundPrecision);
+            const calculationArray = sepperateOperations(input);
+            const calculation = calculateByOrder(calculationArray);
+            if (typeof calculation !== 'undefined') return round(calculation, roundPrecision);
         }
         return round(parseFloat(input), roundPrecision);
     } catch (error) {
-        console.error('The calculation has failed');
+        console.error(`Calculation ${value} has failed`);
         return null;
     }
 };

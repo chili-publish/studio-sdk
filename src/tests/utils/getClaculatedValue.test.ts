@@ -53,13 +53,39 @@ describe('getCalculatedValue', () => {
         expect(value).toBe(0.999);
     });
 
+    it('filters out unrelated characters', () => {
+        const value = getCalculatedValue('10px');
+        expect(value).toBe(10);
+    });
+
     it('can display negatives when calculated', () => {
         const value = getCalculatedValue('10 - 12px');
         expect(value).toBe(-2);
     });
-    // TODO: implement negative values
-    it.skip('accepts negative numbers', () => {
+
+    it('accepts negative numbers on the right side of the operator', () => {
         const value = getCalculatedValue('12 + -10');
         expect(value).toBe(2);
+    });
+
+    it('accepts negative numbers at the start', () => {
+        const value = getCalculatedValue('-12 + 10');
+        expect(value).toBe(-2);
+    });
+
+    it('accepts negative numbers on the left side of the operator', () => {
+        let value = getCalculatedValue('10 + -10 * 5');
+        expect(value).toBe(-40);
+
+        value = getCalculatedValue('10 - -10 * 5');
+        expect(value).toBe(60);
+
+        value = getCalculatedValue('10 - -10 * 5 * 2');
+        expect(value).toBe(110);
+    });
+
+    it('can handle a mix of everything', () => {
+        const value = getCalculatedValue('-10 + -10 * 5 / -10');
+        expect(value).toBe(-5);
     });
 });
