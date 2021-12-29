@@ -14,9 +14,9 @@ const flatOrderOfOperations = [
     operators.substract,
 ];
 
-const calculate = (a: string, op: operators, b: string, isNegative = false) => {
+const calculate = (a: string, op: operators, b: string) => {
     const left = parseFloat(a);
-    const right = isNegative ? -parseFloat(b) : parseFloat(b);
+    const right = parseFloat(b);
 
     switch (op) {
         case operators.add:
@@ -92,39 +92,75 @@ const sepperateOperations = (value: string) => {
 };
 
 const calculateByOrder = (arr: string[]) => {
-    let tmpArr = [...arr];
+    let tmpArr: string[] = [...arr];
+
+    // check if first element is a negative
+    if (tmpArr[0] === operators.substract) {
+        tmpArr[1] = `-${tmpArr[1]}`;
+        tmpArr = tmpArr.slice(1);
+    }
+
     flatOrderOfOperations.forEach((operator) => {
+        if (tmpArr.length === 1) return;
         const occurenceIndexes: number[] = [];
         const newArr = [];
         tmpArr.forEach((el, idx) => {
             // if operator is inside the array
             if (el.includes(operator.toString())) occurenceIndexes.push(idx);
         });
+
         if (occurenceIndexes.length) {
             const tmpCalculations: number[] = [];
-            occurenceIndexes.forEach((idx) => {
-                const left = tmpArr[idx - 1];
-                const right = tmpArr[idx + 1];
+            // check all occurences of the operator
+            occurenceIndexes.forEach((occIdx, idx) => {
+                // check if the occurence is dependent on the previous occurence and calculation
+                const dependsOnPreviousCalculation =
+                    idx !== 0 && occIdx - occurenceIndexes[idx - 1] === 2 && tmpCalculations.length > 0;
 
-                const isNegative = tmpArr[idx].length > 1;
+                const rightIsNegative =
+                    tmpArr[occIdx].length > 1 && tmpArr[occIdx].substring(1) === operators.substract;
+                let leftIsNegative = false;
 
-                const calculation = calculate(left, operator.substring(0, 1) as operators, right, isNegative);
+                // check if left is negative by checking if the operator contains a substraction on the second position
+                if (tmpArr[occIdx - 2] && tmpArr[occIdx - 2].substring(1) === operators.substract) {
+                    leftIsNegative = true;
+                    tmpArr[occIdx - 2] = tmpArr[occIdx - 2].substring(0, 1);
+                }
+
+                // leftvalue is or the previous already calculated value, or the next in the original array
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const leftValue = dependsOnPreviousCalculation
+                    ? tmpCalculations.pop()!.toString()
+                    : tmpArr[occIdx - 1].toString();
+
+                // check negativestates and append them if necessary
+                const left = leftIsNegative && !dependsOnPreviousCalculation ? `-${leftValue}` : leftValue;
+                const right = rightIsNegative ? `-${tmpArr[occIdx + 1]}` : tmpArr[occIdx + 1];
+
+                // do the calculation
+                const calculation = calculate(left, operator.substring(0, 1) as operators, right);
                 if (typeof calculation !== 'undefined') tmpCalculations.push(calculation);
             });
+
             for (let i = 0; i < tmpArr.length; i++) {
+                // check if operation is already calculated
                 const isCalculated = occurenceIndexes.includes(i + 1);
                 if (isCalculated) {
+                    // if so, add the calculated value to the new array and remove it from the calculated array
                     newArr.push(tmpCalculations[0].toString());
                     tmpCalculations.splice(0, 1);
+                    // skip the operator and rightvalue because they are already covered
                     i = i + 2;
                 } else {
+                    // if not yet calculated, push original value to new array
                     newArr.push(tmpArr[i]);
                 }
             }
         }
         if (newArr.length > 0) tmpArr = newArr;
     });
-    if (tmpArr.length === 1) return parseFloat(tmpArr[0]);
+    // The end result is a 1 item array with the calculated value
+    return parseFloat(tmpArr[0]);
 };
 
 export const getCalculatedValue = (value: string, roundPrecision = 2) => {
@@ -139,7 +175,7 @@ export const getCalculatedValue = (value: string, roundPrecision = 2) => {
         }
         return round(parseFloat(input), roundPrecision);
     } catch (error) {
-        console.error('The calculation has failed');
+        console.error(`Calculation ${value} has failed`);
         return null;
     }
 };
