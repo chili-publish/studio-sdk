@@ -128,9 +128,9 @@ const calculateByOrder = (arr: string[]) => {
                 }
 
                 // leftvalue is or the previous already calculated value, or the next in the original array
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 const leftValue = dependsOnPreviousCalculation
-                    ? tmpCalculations.pop()!.toString()
+                    ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                      tmpCalculations.pop()!.toString()
                     : tmpArr[occIdx - 1].toString();
 
                 // check negativestates and append them if necessary
