@@ -8,6 +8,7 @@
     },
     "license": "MIT",
     "dependencies": {
+        "mathjs": "^10.0.2",
         "penpal": "6.1.0"
     },
     "devDependencies": {
