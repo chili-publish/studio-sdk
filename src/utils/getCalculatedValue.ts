@@ -105,8 +105,8 @@ const calculateByOrder = (arr: string[]) => {
         const occurenceIndexes: number[] = [];
         const newArr = [];
         tmpArr.forEach((el, idx) => {
-            // if operator is inside the array
-            if (el.includes(operator.toString())) occurenceIndexes.push(idx);
+            // if operator is inside the array, but only check for operators
+            if (isNaN(parseInt(el)) && el.includes(operator.toString())) occurenceIndexes.push(idx);
         });
 
         if (occurenceIndexes.length) {

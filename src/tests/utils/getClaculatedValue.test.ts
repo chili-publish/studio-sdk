@@ -88,4 +88,9 @@ describe('getCalculatedValue', () => {
         const value = getCalculatedValue('-10 + -10 * 5 / -10');
         expect(value).toBe(-5);
     });
+
+    it('can handle negative and substraction', () => {
+        const value = getCalculatedValue('-10-3');
+        expect(value).toBe(-13);
+    });
 });
