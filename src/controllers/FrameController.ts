@@ -16,13 +16,13 @@ class FrameController {
         return res.resetFrameSize(parseInt(frameId));
     };
 
-    selectedFrameLayout = (document: string) => {
-        const callBack = this.config.selectedFrameLayout;
+    onSelectedFrameLayoutChanged = (document: string) => {
+        const callBack = this.config.onSelectedFrameLayoutChanged;
         callBack(document);
     };
 
-    selectedFrameContent = (document: string) => {
-        const callBack = this.config.selectedFrameContent;
+    onSelectedFrameContentChanged = (document: string) => {
+        const callBack = this.config.onSelectedFrameContentChanged;
         callBack(document);
     };
 

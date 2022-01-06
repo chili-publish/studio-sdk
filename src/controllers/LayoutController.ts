@@ -11,8 +11,8 @@ class LayoutController {
         this.config = config;
     }
 
-    selectedLayoutProperties = (document: string) => {
-        const callBack = this.config.selectedLayoutProperties;
+    onSelectedLayoutPropertiesChanged = (document: string) => {
+        const callBack = this.config.onSelectedLayoutPropertiesChanged;
         callBack(document);
     };
 
@@ -26,7 +26,7 @@ class LayoutController {
         return res.addLayout(parseInt(parentId));
     };
 
-    renameLayout = async (layoutId: string, layoutName: string) => {
+    setLayoutName = async (layoutId: string, layoutName: string) => {
         const res = await this.children;
         return res.renameLayout(parseInt(layoutId), layoutName);
     };

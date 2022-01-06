@@ -34,7 +34,7 @@ afterEach(() => {
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
         mockedSDK.animation.onAnimationChanged(mockedAnimation.toString());
-        expect(mockedSDK.config.frameAnimationsChanged).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.config.onFrameAnimationsChanged).toHaveBeenCalledTimes(1);
 
         await mockedSDK.animation.setFrameAnimation(JSON.stringify(mockedAnimation));
         expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(2);
@@ -54,7 +54,7 @@ describe('Animation methods', () => {
         expect(mockedSDK.animation.setAnimationDuration).toHaveBeenLastCalledWith(8000);
 
         mockedSDK.animation.onAnimationPlaybackChanged('test');
-        expect(mockedSDK.config.scrubberPositionChanged).toHaveBeenCalledTimes(7);
-        expect(mockedSDK.config.scrubberPositionChanged).toHaveBeenCalledWith('test');
+        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledTimes(7);
+        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledWith('test');
     });
 });

@@ -42,13 +42,13 @@ const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     iframeDoc.close();
 };
 interface ConfigParameterTypes {
-    stateChanged: (state: string) => void;
-    selectedFrameContent: (state: string) => void;
-    selectedFrameLayout: (state: string) => void;
-    selectedLayoutProperties: (state: string) => void;
-    openLayoutPropertiesPanel: () => void;
-    scrubberPositionChanged: (state: string) => void;
-    frameAnimationsChanged: (state: string) => void;
+    onStateChanged: (state: string) => void;
+    onSelectedFrameContentChanged: (state: string) => void;
+    onSelectedFrameLayoutChanged: (state: string) => void;
+    onSelectedLayoutPropertiesChanged: (state: string) => void;
+    onOpenLayoutPropertiesPanelChange: () => void;
+    onScrubberPositionChanged: (state: string) => void;
+    onFrameAnimationsChanged: (state: string) => void;
 }
 
 const Connect = (
@@ -86,13 +86,13 @@ const Connect = (
             // All the methods that we want to expose to the child should be inside the methods object
             // f.e. stateChange(documentJson)
             methods: {
-                stateChanged: params.stateChanged,
-                selectedFrameContent: params.selectedFrameContent,
-                selectedFrameLayout: params.selectedFrameLayout,
-                selectedLayoutProperties: params.selectedLayoutProperties,
-                openLayoutPropertiesPanel: params.openLayoutPropertiesPanel,
-                scrubberPositionChanged: params.scrubberPositionChanged,
-                frameAnimationsChanged: params.frameAnimationsChanged,
+                stateChanged: params.onStateChanged,
+                selectedFrameContent: params.onSelectedFrameContentChanged,
+                selectedFrameLayout: params.onSelectedFrameLayoutChanged,
+                selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
+                openLayoutPropertiesPanel: params.onOpenLayoutPropertiesPanelChange,
+                scrubberPositionChanged: params.onScrubberPositionChanged,
+                frameAnimationsChanged: params.onFrameAnimationsChanged,
             },
         }),
     );

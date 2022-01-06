@@ -10,12 +10,12 @@ class AnimationController {
     }
 
     onAnimationChanged = (animation: string) => {
-        const callBack = this.config.frameAnimationsChanged;
+        const callBack = this.config.onFrameAnimationsChanged;
         callBack(animation);
     };
 
     onAnimationPlaybackChanged = (animationPlaybackState: string) => {
-        const callBack = this.config.scrubberPositionChanged;
+        const callBack = this.config.onScrubberPositionChanged;
         callBack(animationPlaybackState);
     };
 

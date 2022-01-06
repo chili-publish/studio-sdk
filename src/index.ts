@@ -50,13 +50,13 @@ export class SDK {
         Connect(
             this.config.editorLink,
             {
-                stateChanged: this.stateChanged,
-                selectedFrameContent: this.frame.selectedFrameContent,
-                selectedFrameLayout: this.frame.selectedFrameLayout,
-                selectedLayoutProperties: this.layout.selectedLayoutProperties,
-                openLayoutPropertiesPanel: this.layout.onPageSelectionChanged,
-                scrubberPositionChanged: this.animation.onAnimationPlaybackChanged,
-                frameAnimationsChanged: this.animation.onAnimationChanged,
+                onStateChanged: this.onStateChanged,
+                onSelectedFrameContentChanged: this.frame.onSelectedFrameContentChanged,
+                onSelectedFrameLayoutChanged: this.frame.onSelectedFrameLayoutChanged,
+                onSelectedLayoutPropertiesChanged: this.layout.onSelectedLayoutPropertiesChanged,
+                onOpenLayoutPropertiesPanelChange: this.layout.onPageSelectionChanged,
+                onScrubberPositionChanged: this.animation.onAnimationPlaybackChanged,
+                onFrameAnimationsChanged: this.animation.onAnimationChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -75,8 +75,8 @@ export class SDK {
         connection = newConnection;
     };
 
-    stateChanged = (document: string) => {
-        const callBack = this.config.stateChanged;
+    onStateChanged = (document: string) => {
+        const callBack = this.config.onStateChanged;
         callBack(document);
     };
 }
