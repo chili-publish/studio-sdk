@@ -11,11 +11,6 @@ class LayoutController {
         this.config = config;
     }
 
-    onSelectedLayoutPropertiesChanged = (document: string) => {
-        const callBack = this.config.onSelectedLayoutPropertiesChanged;
-        callBack(document);
-    };
-
     removeLayout = async (layoutId: string) => {
         const res = await this.children;
         return res.removeLayout(parseInt(layoutId));
@@ -105,11 +100,6 @@ class LayoutController {
                 break;
         }
         return calc;
-    };
-
-    onPageSelectionChanged = () => {
-        const callBack = this.config.onPageSelectionChanged;
-        callBack();
     };
 }
 

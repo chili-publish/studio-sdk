@@ -9,16 +9,6 @@ class AnimationController {
         this.config = config;
     }
 
-    onAnimationChanged = (animation: string) => {
-        const callBack = this.config.onFrameAnimationsChanged;
-        callBack(animation);
-    };
-
-    onAnimationPlaybackChanged = (animationPlaybackState: string) => {
-        const callBack = this.config.onScrubberPositionChanged;
-        callBack(animationPlaybackState);
-    };
-
     setFrameAnimation = async (animation: string) => {
         const res = await this.children;
         return res.setFrameAnimation(animation);
