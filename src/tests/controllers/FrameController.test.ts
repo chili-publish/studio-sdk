@@ -28,8 +28,6 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetFrameRotation');
 
     jest.spyOn(mockedFrameProperties, 'resetFrameSize');
-    jest.spyOn(mockedFrameProperties, 'onSelectedFrameLayoutChanged');
-    jest.spyOn(mockedFrameProperties, 'onSelectedFrameContentChanged');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
 });
@@ -77,12 +75,6 @@ describe('FrameProperties', () => {
 
         mockedFrameProperties.resetFrameSize('2');
         expect(mockedFrameProperties.resetFrameSize).toHaveBeenCalledTimes(1);
-
-        mockedFrameProperties.onSelectedFrameLayoutChanged('2');
-        expect(mockedFrameProperties.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
-
-        mockedFrameProperties.onSelectedFrameContentChanged('2');
-        expect(mockedFrameProperties.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.selectFrame('2');
         expect(mockedFrameProperties.selectFrame).toHaveBeenCalledTimes(1);

@@ -11,7 +11,6 @@ let mockedAnimation: FrameAnimationType;
 
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
-    jest.spyOn(mockedSDK.animation, 'onAnimationChanged');
     jest.spyOn(mockedSDK.animation, 'playAnimation');
     jest.spyOn(mockedSDK.animation, 'pauseAnimation');
     jest.spyOn(mockedSDK.animation, 'setFrameAnimation');
@@ -25,7 +24,6 @@ beforeEach(() => {
     mockedSDK.animation.pauseAnimation = defaultMockReturn;
     mockedSDK.animation.setScrubberPosition = defaultMockReturn;
     mockedSDK.animation.setAnimationDuration = defaultMockReturn;
-    mockedSDK.animation.onAnimationPlaybackChanged = defaultMockReturn;
 });
 
 afterEach(() => {
@@ -33,28 +31,21 @@ afterEach(() => {
 });
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
-        mockedSDK.animation.onAnimationChanged(mockedAnimation.toString());
-        expect(mockedSDK.config.onFrameAnimationsChanged).toHaveBeenCalledTimes(1);
-
         await mockedSDK.animation.setFrameAnimation(JSON.stringify(mockedAnimation));
-        expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(1);
 
         await mockedSDK.animation.playAnimation();
-        expect(mockedSDK.animation.playAnimation).toHaveBeenCalledTimes(3);
+        expect(mockedSDK.animation.playAnimation).toHaveBeenCalledTimes(2);
 
         await mockedSDK.animation.pauseAnimation();
-        expect(mockedSDK.animation.pauseAnimation).toHaveBeenCalledTimes(4);
+        expect(mockedSDK.animation.pauseAnimation).toHaveBeenCalledTimes(3);
 
         await mockedSDK.animation.setScrubberPosition(5000);
-        expect(mockedSDK.animation.setScrubberPosition).toHaveBeenCalledTimes(5);
+        expect(mockedSDK.animation.setScrubberPosition).toHaveBeenCalledTimes(4);
         expect(mockedSDK.animation.setScrubberPosition).toHaveBeenLastCalledWith(5000);
 
         await mockedSDK.animation.setAnimationDuration(8000);
-        expect(mockedSDK.animation.setAnimationDuration).toHaveBeenCalledTimes(6);
+        expect(mockedSDK.animation.setAnimationDuration).toHaveBeenCalledTimes(5);
         expect(mockedSDK.animation.setAnimationDuration).toHaveBeenLastCalledWith(8000);
-
-        mockedSDK.animation.onAnimationPlaybackChanged('test');
-        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledTimes(7);
-        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledWith('test');
     });
 });
