@@ -47,7 +47,7 @@ class LayoutController {
         if (calc === null) {
             return null;
         }
-        return res.setLayoutHeight(selectedLayout?.layoutId, parseFloat(value));
+        return res.setLayoutHeight(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
     setLayoutWidth = async (value: string, selectedLayout: selectedLayoutPropertiesType) => {
@@ -56,7 +56,7 @@ class LayoutController {
         if (calc === null) {
             return null;
         }
-        return res.setLayoutWidth(selectedLayout?.layoutId, parseFloat(value));
+        return res.setLayoutWidth(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
     resetLayoutHeight = async (layoutId: string) => {
