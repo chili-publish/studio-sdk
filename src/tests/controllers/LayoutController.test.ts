@@ -49,10 +49,10 @@ describe('Layout methods', () => {
         await mockedSDK.layout.resetLayout('1');
         expect(mockedSDK.children.resetLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutHeight('2', '32');
+        await mockedSDK.layout.setLayoutHeight('32', mockSelectPage);
         expect(mockedSDK.children.setLayoutHeight).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutWidth('3', '34');
+        await mockedSDK.layout.setLayoutWidth('34', mockSelectPage);
         expect(mockedSDK.children.setLayoutWidth).toHaveBeenCalledTimes(1);
     });
 });

@@ -1,0 +1,61 @@
+ {
+    "subscriptions": {
+        "onStateChanged":"(document:string)=>void",
+        "onSelectedFrameContentChanged":"(document:string)=>void",
+        "onSelectedFramePropertiesChanged":"(document:string)=>void",
+        "onSelectedLayoutPropertiesChanged":"(document:string)=>void",
+        "onOpenLayoutPropertiesPanelChange":"()=>void",
+        "onScrubberPositionChanged":"(animationPlaybackState:string)=>void",
+        "onFrameAnimationsChanged":"(animation:string)=>void",
+
+
+    },
+    "layout": {
+        "removeLayout" : "(layoutId: string) => void",
+        "addLayout" : "(parentId: string) => void",
+        "setLayoutName" :" (layoutId: string, layoutName: string) => void",
+        "selectLayout" : "(layoutId: string) => void",
+        "duplicateLayout" : "(layoutId: string) => void",
+        "resetLayout" : "(layoutId: string) => void",
+        "setLayoutHeight" : "(layoutId: string, value: string) => void",
+        "setLayoutWidth" : "(layoutId: string, value: string) => void",
+        "resetLayoutHeight" : "(layoutId: string) => void", 
+        "resetLayoutWidth": "(layoutId: string) => void", 
+        "getLayoutPropertiesCalculatedValue":"( name: string,value: string,selectedLayout: string)=>void",
+        "onPageSelectionChanged":"()=>void"
+
+    },
+    "frame": {
+        "resetFrameSize" : "(frameId: string) =>void",
+        "selectedFrameLayout" :"(document: string) =>void",
+        "selectedFrameContent" :"(document: string) =>void",
+        "selectFrame" : "(frameId: string) =>void",
+        "selectMultipleFrames" :" (frameIds: string[]) =>void",
+        "setFrameHeight" : "(frameId: string, value: string) =>void",
+        "setFrameRotation" : "(frameId: string, value: string) =>void",
+        "setFrameWidth" : "(frameId: string, value: string) =>void",
+        "setFrameX" : "(frameId: string, value: string) =>void",
+        "setFrameY" : "(frameId: string, value: string) =>void",
+        "resetFrameX" : "(frameId: string) =>void",
+        "resetFrameY" : "(frameId: string) =>void",
+        "resetFrameRotation" : "(frameId: string) =>void",
+        "resetFrameWidth" : "(frameId: string) =>void",
+        "resetFrameHeight" : "(frameId: string) =>void",
+        "setFrameVisibility" :" (frameId: string, value: boolean) =>void",
+        "getFramePropertyCalculatedValue":"( name: string,value: string,selectedFrame:string)=>void",
+
+    },
+    "animation": {
+        "onAnimationChanged" : "(animation: string) => void",
+        "onAnimationPlaybackChanged" :"(animationPlaybackState: string) => void",
+        "setFrameAnimation" : "(animation: string) => void",
+        "playAnimation" : "() =>void",
+        "pauseAnimation" : "() => void",
+       " setScrubberPosition ": "(timeInMS: number) => void",  
+        "setAnimationDuration ": "(timeInMS: number) => void",
+    },
+    "utils": {
+        "calculateFromString":"(input:string)=>void",
+        "round":"(num:number)=>void",
+    },
+};
