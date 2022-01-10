@@ -1,4 +1,4 @@
-import { FrameProperyNames } from '..';
+import { FrameProperyNames } from '../index';
 import { SelectedFrameLayoutType, Child, ConfigType } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 

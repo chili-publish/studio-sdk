@@ -19,6 +19,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onSelectedFrameContentChanged');
     jest.spyOn(mockedSDK.subscriber, 'onPageSelectionChanged');
     jest.spyOn(mockedSDK.subscriber, 'onSelectedLayoutPropertiesChanged');
+    jest.spyOn(mockedSDK.subscriber, 'onStateChanged');
     mockedSDK.subscriber.onAnimationPlaybackChanged = defaultMockReturn;
 });
 
@@ -44,5 +45,8 @@ describe('Subscriber methods', () => {
 
         await mockedSDK.subscriber.onPageSelectionChanged();
         expect(mockedSDK.layout.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
+
+        mockedSDK.subscriber.onStateChanged('sdsd');
+        expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
     });
 });

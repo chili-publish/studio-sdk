@@ -53,7 +53,7 @@ export class SDK {
         Connect(
             this.config.editorLink,
             {
-                onStateChanged: this.onStateChanged,
+                onStateChanged: this.subscriber.onStateChanged,
                 onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
                 onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
@@ -76,11 +76,6 @@ export class SDK {
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
-    };
-
-    onStateChanged = (document: string) => {
-        const callBack = this.config.onStateChanged;
-        callBack(document);
     };
 }
 

@@ -30,6 +30,10 @@ class SubscriberController {
         const callBack = this.config.onSelectedFrameContentChanged;
         callBack(document);
     };
+    onStateChanged = (document: string) => {
+        const callBack = this.config.onStateChanged;
+        callBack(document);
+    };
 
     onPageSelectionChanged = () => {
         const callBack = this.config.onPageSelectionChanged;

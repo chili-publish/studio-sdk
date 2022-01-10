@@ -1,18 +1,19 @@
 # EDITOR-SDK GUIDELINES
 
-This README includes guides about SDK.
+This README includes guides about SDK development.
 
 ## General Structure
 
 SDK consist of controllers which are individual Javascript classes and methods of these classes.
-Currently there are 4 different controller:
+Currently there are 5 different controllers:
 
 -   AnimationController
 -   FrameController
 -   LayoutsController
 -   UtilsController
+-   SubscriberController
 
-These controllers have their own methods within them.Also there is methods of children(Flutter-Editor).These methods required by flutter and without these methods you can't initialize SDK.
+These controllers have their own methods within them.SubscriberController's methods are methods of children(Flutter-Editor).These methods required by flutter and without these methods you can't initialize SDK.
 
 -   onStateChanged
 -   onSelectedFrameContentChanged
