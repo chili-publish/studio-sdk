@@ -28,8 +28,6 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetFrameRotation');
 
     jest.spyOn(mockedFrameProperties, 'resetFrameSize');
-    jest.spyOn(mockedFrameProperties, 'selectedFrameLayout');
-    jest.spyOn(mockedFrameProperties, 'selectedFrameContent');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
 });
@@ -39,22 +37,22 @@ afterAll(() => {
 });
 describe('FrameProperties', () => {
     it('Should call  all of the Frame Functions of Child successfully', () => {
-        mockedFrameProperties.setFrameHeight('2', '300');
+        mockedFrameProperties.setFrameHeight('300', mockSelectFrame);
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.setFrameRotation('2', '400');
+        mockedFrameProperties.setFrameRotation('400', mockSelectFrame);
         expect(mockedFrameProperties.setFrameRotation).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.setFrameY('2', '100');
+        mockedFrameProperties.setFrameY('100', mockSelectFrame);
         expect(mockedFrameProperties.setFrameY).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.setFrameX('2', '400');
+        mockedFrameProperties.setFrameX('400', mockSelectFrame);
         expect(mockedFrameProperties.setFrameX).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.setFrameWidth('2', '332');
+        mockedFrameProperties.setFrameWidth('332', mockSelectFrame);
         expect(mockedFrameProperties.setFrameWidth).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.setFrameHeight('2', '32');
+        mockedFrameProperties.setFrameHeight('32', mockSelectFrame);
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(2);
 
         mockedFrameProperties.setFrameVisibility('2', false);
@@ -78,18 +76,12 @@ describe('FrameProperties', () => {
         mockedFrameProperties.resetFrameSize('2');
         expect(mockedFrameProperties.resetFrameSize).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.selectedFrameLayout('2');
-        expect(mockedFrameProperties.selectedFrameLayout).toHaveBeenCalledTimes(1);
-
-        mockedFrameProperties.selectedFrameContent('2');
-        expect(mockedFrameProperties.selectedFrameContent).toHaveBeenCalledTimes(1);
-
         mockedFrameProperties.selectFrame('2');
         expect(mockedFrameProperties.selectFrame).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.selectMultipleFrames(['2', '5']);
+        mockedFrameProperties.selectMultipleFrames(['5']);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith(['2', '5']);
+        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith(['5']);
     });
 });
 

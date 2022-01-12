@@ -5,6 +5,7 @@ import FrameController from './controllers/FrameController';
 import AnimationController from './controllers/AnimationController';
 import LayoutController from './controllers/LayoutController';
 import UtilsController from './controllers/UtilsController';
+import SubscriberController from './controllers/SubscriberController';
 
 export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
@@ -32,6 +33,7 @@ export class SDK {
     frame: FrameController;
     animation: AnimationController;
     utils: UtilsController;
+    subscriber: SubscriberController;
 
     constructor(config: ConfigType) {
         this.config = config;
@@ -44,19 +46,20 @@ export class SDK {
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
         this.utils = new UtilsController();
+        this.subscriber = new SubscriberController(this.config);
     }
 
     loadEditor = () => {
         Connect(
             this.config.editorLink,
             {
-                stateChanged: this.stateChanged,
-                selectedFrameContent: this.frame.selectedFrameContent,
-                selectedFrameLayout: this.frame.selectedFrameLayout,
-                selectedLayoutProperties: this.layout.selectedLayoutProperties,
-                openLayoutPropertiesPanel: this.layout.onPageSelectionChanged,
-                scrubberPositionChanged: this.animation.onAnimationPlaybackChanged,
-                frameAnimationsChanged: this.animation.onAnimationChanged,
+                onStateChanged: this.subscriber.onStateChanged,
+                onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
+                onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
+                onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
+                onOpenLayoutPropertiesPanelChange: this.subscriber.onPageSelectionChanged,
+                onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
+                onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -73,11 +76,6 @@ export class SDK {
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
-    };
-
-    stateChanged = (document: string) => {
-        const callBack = this.config.stateChanged;
-        callBack(document);
     };
 }
 

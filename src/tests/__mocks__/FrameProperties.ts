@@ -1,6 +1,6 @@
 export const mockAddLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockRenameLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetLayoutName = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSelectLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDuplicateLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -27,7 +27,7 @@ export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true,
 const mockChild = {
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
-    renameLayout: mockRenameLayout,
+    renameLayout: mockSetLayoutName,
     selectLayout: mockSelectLayout,
     duplicateLayout: mockDuplicateLayout,
     resetLayout: mockResetLayout,
