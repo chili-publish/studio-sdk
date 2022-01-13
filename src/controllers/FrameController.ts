@@ -1,5 +1,5 @@
+import { FrameProperyNames } from '../index';
 import { SelectedFrameLayoutType, Child, ConfigType } from '../../types/CommonTypes';
-import { FrameProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 class FrameController {
@@ -16,16 +16,6 @@ class FrameController {
         return res.resetFrameSize(parseInt(frameId));
     };
 
-    selectedFrameLayout = (document: string) => {
-        const callBack = this.config.selectedFrameLayout;
-        callBack(document);
-    };
-
-    selectedFrameContent = (document: string) => {
-        const callBack = this.config.selectedFrameContent;
-        callBack(document);
-    };
-
     selectFrame = async (frameId: string) => {
         const res = await this.children;
         return res.selectFrames([parseInt(frameId)]);
@@ -36,29 +26,49 @@ class FrameController {
         return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
     };
 
-    setFrameHeight = async (frameId: string, value: string) => {
+    setFrameHeight = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
         const res = await this.children;
-        return res.setFrameHeight(parseInt(frameId), parseFloat(value));
+        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.HEIGHT, value, selectedFrame);
+        if (calc === null) {
+            return null;
+        }
+        return res.setFrameHeight(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameRotation = async (frameId: string, value: string) => {
+    setFrameRotation = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
         const res = await this.children;
-        return res.setFrameRotation(parseInt(frameId), parseFloat(value));
+        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_ROTATION, value, selectedFrame);
+        if (calc === null) {
+            return null;
+        }
+        return res.setFrameRotation(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameWidth = async (frameId: string, value: string) => {
+    setFrameWidth = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
         const res = await this.children;
-        return res.setFrameWidth(parseInt(frameId), parseFloat(value));
+        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.WIDTH, value, selectedFrame);
+        if (calc === null) {
+            return null;
+        }
+        return res.setFrameWidth(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameX = async (frameId: string, value: string) => {
+    setFrameX = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
         const res = await this.children;
-        return res.setFrameX(parseInt(frameId), parseFloat(value));
+        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_X, value, selectedFrame);
+        if (calc === null) {
+            return null;
+        }
+        return res.setFrameX(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameY = async (frameId: string, value: string) => {
+    setFrameY = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
         const res = await this.children;
-        return res.setFrameY(parseInt(frameId), parseFloat(value));
+        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_Y, value, selectedFrame);
+        if (calc === null) {
+            return null;
+        }
+        return res.setFrameY(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
     resetFrameX = async (frameId: string) => {
@@ -90,7 +100,6 @@ class FrameController {
         const res = await this.children;
         return res.setFrameVisibility(parseInt(frameId), value);
     };
-
     getFramePropertyCalculatedValue = (
         name: FrameProperyNames,
         value: string,
@@ -104,8 +113,6 @@ class FrameController {
                 } else if (selectedFrame) {
                     if (selectedFrame.x.value === calc) {
                         calc = null;
-                    } else {
-                        this.setFrameX(selectedFrame?.frameId.toString(), calc.toString());
                     }
                 }
 
@@ -118,8 +125,6 @@ class FrameController {
                 } else if (selectedFrame) {
                     if (selectedFrame.y.value === calc) {
                         calc = null;
-                    } else {
-                        this.setFrameY(selectedFrame?.frameId.toString(), calc.toString());
                     }
                 }
 
@@ -132,8 +137,6 @@ class FrameController {
                 } else if (selectedFrame) {
                     if (selectedFrame.width.value === calc) {
                         calc = null;
-                    } else {
-                        this.setFrameWidth(selectedFrame?.frameId.toString(), calc.toString());
                     }
                 }
 
@@ -146,8 +149,6 @@ class FrameController {
                 } else if (selectedFrame) {
                     if (selectedFrame.height.value === calc) {
                         calc = null;
-                    } else {
-                        this.setFrameHeight(selectedFrame?.frameId.toString(), calc.toString());
                     }
                 }
 
@@ -160,8 +161,6 @@ class FrameController {
                 } else if (selectedFrame) {
                     if (selectedFrame.rotationDegrees.value === calc) {
                         calc = null;
-                    } else {
-                        this.setFrameRotation(selectedFrame?.frameId.toString(), calc.toString());
                     }
                 }
 

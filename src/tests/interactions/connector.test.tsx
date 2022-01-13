@@ -6,13 +6,13 @@ describe.skip('Editor Link Validator', () => {
         Connect(
             'https://chili-editor-dev.azurewebsites.net/',
             {
-                stateChanged: () => null,
-                selectedFrameLayout: () => null,
-                selectedFrameContent: () => null,
-                selectedLayoutProperties: () => null,
-                openLayoutPropertiesPanel: () => null,
-                scrubberPositionChanged: () => null,
-                frameAnimationsChanged: () => null,
+                onStateChanged: () => null,
+                onSelectedFrameLayoutChanged: () => null,
+                onSelectedFrameContentChanged: () => null,
+                onSelectedLayoutPropertiesChanged: () => null,
+                onOpenLayoutPropertiesPanelChange: () => null,
+                onScrubberPositionChanged: () => null,
+                onFrameAnimationsChanged: () => null,
             },
             () => null,
         );
@@ -31,13 +31,13 @@ describe.skip('Editor Link Validator', () => {
         Connect(
             'https://chili-editor-dev.azurewebsites.net/index.html',
             {
-                stateChanged: () => null,
-                selectedFrameLayout: () => null,
-                selectedFrameContent: () => null,
-                selectedLayoutProperties: () => null,
-                openLayoutPropertiesPanel: () => null,
-                scrubberPositionChanged: () => null,
-                frameAnimationsChanged: () => null,
+                onStateChanged: () => null,
+                onSelectedFrameLayoutChanged: () => null,
+                onSelectedFrameContentChanged: () => null,
+                onSelectedLayoutPropertiesChanged: () => null,
+                onOpenLayoutPropertiesPanelChange: () => null,
+                onScrubberPositionChanged: () => null,
+                onFrameAnimationsChanged: () => null,
             },
             () => null,
         );
@@ -55,13 +55,13 @@ describe.skip('Editor Link Validator', () => {
         Connect(
             'https://chili-editor-dev.azurewebsites.net',
             {
-                stateChanged: () => null,
-                selectedFrameLayout: () => null,
-                selectedFrameContent: () => null,
-                selectedLayoutProperties: () => null,
-                openLayoutPropertiesPanel: () => null,
-                scrubberPositionChanged: () => null,
-                frameAnimationsChanged: () => null,
+                onStateChanged: () => null,
+                onSelectedFrameLayoutChanged: () => null,
+                onSelectedFrameContentChanged: () => null,
+                onSelectedLayoutPropertiesChanged: () => null,
+                onOpenLayoutPropertiesPanelChange: () => null,
+                onScrubberPositionChanged: () => null,
+                onFrameAnimationsChanged: () => null,
             },
             () => null,
         );

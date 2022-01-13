@@ -1,16 +1,15 @@
 import { CallSender } from 'penpal';
-import { FrameAnimationType } from './AnimationTypes';
 
 export type ConfigType = {
-    stateChanged: (state: string) => void;
-    selectedFrameLayout: (state: string) => void;
-    selectedFrameContent: (state: string) => void;
+    onStateChanged: (state: string) => void;
+    onSelectedFrameLayoutChanged: (state: string) => void;
+    onSelectedFrameContentChanged: (state: string) => void;
     editorLink: string;
     editorId?: string;
     onPageSelectionChanged: () => void;
-    selectedLayoutProperties: (state: string) => void;
-    scrubberPositionChanged: (state: string) => void;
-    frameAnimationsChanged: (animationState: string) => void;
+    onSelectedLayoutPropertiesChanged: (state: string) => void;
+    onScrubberPositionChanged: (state: string) => void;
+    onFrameAnimationsChanged: (animationState: string) => void;
 };
 
 type EditorResponse = {

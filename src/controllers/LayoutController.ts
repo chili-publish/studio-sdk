@@ -11,11 +11,6 @@ class LayoutController {
         this.config = config;
     }
 
-    selectedLayoutProperties = (document: string) => {
-        const callBack = this.config.selectedLayoutProperties;
-        callBack(document);
-    };
-
     removeLayout = async (layoutId: string) => {
         const res = await this.children;
         return res.removeLayout(parseInt(layoutId));
@@ -26,7 +21,7 @@ class LayoutController {
         return res.addLayout(parseInt(parentId));
     };
 
-    renameLayout = async (layoutId: string, layoutName: string) => {
+    setLayoutName = async (layoutId: string, layoutName: string) => {
         const res = await this.children;
         return res.renameLayout(parseInt(layoutId), layoutName);
     };
@@ -46,14 +41,22 @@ class LayoutController {
         return res.resetLayout(parseInt(layoutId));
     };
 
-    setLayoutHeight = async (layoutId: string, value: string) => {
+    setLayoutHeight = async (value: string, selectedLayout: selectedLayoutPropertiesType) => {
         const res = await this.children;
-        return res.setLayoutHeight(parseInt(layoutId), parseFloat(value));
+        const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_HEIGHT, value, selectedLayout);
+        if (calc === null) {
+            return null;
+        }
+        return res.setLayoutHeight(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
-    setLayoutWidth = async (layoutId: string, value: string) => {
+    setLayoutWidth = async (value: string, selectedLayout: selectedLayoutPropertiesType) => {
         const res = await this.children;
-        return res.setLayoutWidth(parseInt(layoutId), parseFloat(value));
+        const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_WIDTH, value, selectedLayout);
+        if (calc === null) {
+            return null;
+        }
+        return res.setLayoutWidth(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
     resetLayoutHeight = async (layoutId: string) => {
@@ -80,8 +83,6 @@ class LayoutController {
                 } else if (selectedLayout) {
                     if (selectedLayout.width.value === calc) {
                         calc = null;
-                    } else {
-                        this.setLayoutHeight(selectedLayout?.layoutId.toString(), calc.toString());
                     }
                 }
 
@@ -94,8 +95,6 @@ class LayoutController {
                 } else if (selectedLayout) {
                     if (selectedLayout.height.value === calc) {
                         calc = null;
-                    } else {
-                        this.setLayoutWidth(selectedLayout?.layoutId.toString(), calc.toString());
                     }
                 }
 
@@ -105,11 +104,6 @@ class LayoutController {
                 break;
         }
         return calc;
-    };
-
-    onPageSelectionChanged = () => {
-        const callBack = this.config.onPageSelectionChanged;
-        callBack();
     };
 }
 
