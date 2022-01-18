@@ -33,6 +33,10 @@ class AnimationController {
         const res = await this.children;
         return res.setAnimationDuration(timeInMS);
     };
+    resetFrameAnimation = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrameAnimation(frameId);
+    };
 }
 
 export default AnimationController;

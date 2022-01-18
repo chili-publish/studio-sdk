@@ -20,7 +20,7 @@ export {
 
 export type { BasicAnimationsType } from '../types/AnimationTypes';
 
-export type { FrameAnimationType, EaseTweenCombinationType, AnimationPlaybackType } from '../types/AnimationTypes';
+export type { FrameAnimationType, FrameAnimationPropertiesType, EaseTweenCombinationType, AnimationPlaybackType } from '../types/AnimationTypes';
 
 let connection: Connection;
 

@@ -101,13 +101,18 @@ export type BasicAnimationsType = {
     outro?: BasicAnimationsOutroType;
 };
 
-export type FrameAnimationType = {
+export type FrameAnimationPropertiesType = {
     frameId: number;
     from: number;
     to: number;
     basicAnimations: BasicAnimationsType;
     advancedAnimations?: unknown; // TBI
 };
+export type FrameAnimationType = {
+    animation: FrameAnimationPropertiesType;
+    isOverride: boolean;
+};
+
 
 export type AnimationPlaybackType = {
     currentAnimationTimeMs: number;
