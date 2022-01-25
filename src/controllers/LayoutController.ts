@@ -81,7 +81,7 @@ class LayoutController {
                 if (calc === null || calc === Infinity) {
                     calc = null;
                 } else if (selectedLayout) {
-                    if (selectedLayout.width.value === calc) {
+                    if (selectedLayout.height.value === calc) {
                         calc = null;
                     }
                 }
@@ -93,7 +93,7 @@ class LayoutController {
                 if (calc === null || calc === Infinity) {
                     calc = null;
                 } else if (selectedLayout) {
-                    if (selectedLayout.height.value === calc) {
+                    if (selectedLayout.width.value === calc) {
                         calc = null;
                     }
                 }
