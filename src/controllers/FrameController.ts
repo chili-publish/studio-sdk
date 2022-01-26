@@ -32,6 +32,8 @@ class FrameController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.height.value) return null;
+
         return res.setFrameHeight(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
@@ -41,6 +43,8 @@ class FrameController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.rotationDegrees.value) return null;
+
         return res.setFrameRotation(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
@@ -50,6 +54,8 @@ class FrameController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.width.value) return null;
+
         return res.setFrameWidth(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
@@ -59,6 +65,8 @@ class FrameController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.x.value) return null;
+
         return res.setFrameX(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
@@ -68,6 +76,8 @@ class FrameController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.y.value) return null;
+
         return res.setFrameY(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 

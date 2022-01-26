@@ -47,6 +47,8 @@ class LayoutController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedLayout?.height.value) return null;
+
         return res.setLayoutHeight(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
@@ -56,6 +58,8 @@ class LayoutController {
         if (calc === null) {
             return null;
         }
+        if (calc === selectedLayout?.width.value) return null;
+
         return res.setLayoutWidth(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
