@@ -1,5 +1,4 @@
 import { Connection } from 'penpal';
-import { ConfigType, Child } from '../types/CommonTypes';
 import Connect from './interactions/connector';
 import FrameController from './controllers/FrameController';
 import AnimationController from './controllers/AnimationController';
@@ -9,7 +8,9 @@ import SubscriberController from './controllers/SubscriberController';
 
 export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';
+
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
+
 export {
     SlideDirections,
     ShakeDirections,
@@ -18,9 +19,17 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 
-export type { BasicAnimationsType } from '../types/AnimationTypes';
+export type { LayoutPropertiesType, FrameProperties, LayoutType } from '../types/LayoutTypes';
+export type { FrameLayoutType, FrameType } from '../types/FrameTypes';
 
-export type { FrameAnimationType, FrameAnimationPropertiesType, EaseTweenCombinationType, AnimationPlaybackType } from '../types/AnimationTypes';
+export type {
+    FrameAnimationType,
+    FrameAnimationPropertiesType,
+    EaseTweenCombinationType,
+    AnimationPlaybackType,
+    BasicAnimationsType,
+} from '../types/AnimationTypes';
+import type { ConfigType, Child } from '../types/CommonTypes';
 
 let connection: Connection;
 
