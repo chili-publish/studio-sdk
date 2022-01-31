@@ -28,7 +28,7 @@ afterEach(() => {
 });
 describe('Subscriber methods', () => {
     it('Should call  all of the subscriber functions successfully', async () => {
-        mockedSDK.subscriber.onAnimationChanged(mockedAnimation.toString());
+        mockedSDK.subscriber.onAnimationChanged(JSON.stringify(mockedAnimation));
 
         mockedSDK.subscriber.onAnimationPlaybackChanged('test');
         expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledTimes(2);
