@@ -32,7 +32,7 @@ class SubscriberController {
     };
     onStateChanged = (document: string) => {
         const callBack = this.config.onStateChanged;
-        callBack(document);
+        callBack(JSON.parse(document));
     };
 
     onPageSelectionChanged = () => {

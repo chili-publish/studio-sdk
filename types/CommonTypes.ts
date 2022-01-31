@@ -5,7 +5,7 @@ import {FrameLayoutType} from './FrameTypes'
 import type { FrameType } from './FrameTypes';
 
 export type ConfigType = {
-    onStateChanged: (state: string) => void;
+    onStateChanged: (state: InitialStateType) => void;
     onSelectedFrameLayoutChanged: (state: FrameLayoutType) => void;
     onSelectedFrameContentChanged: (state: FrameType) => void;
     editorLink: string;
