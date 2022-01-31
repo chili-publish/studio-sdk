@@ -39,3 +39,7 @@ then
 ### Run linter
 
 `yarn lint`
+
+## License Check
+If a new package will be installed,please check the package license information.If it has a valid license, go to `https://chilipublishintranet.atlassian.net/wiki/spaces/QIR/pages/3966042120/License+Information+of+Editor-SDK+package`
+And add this new packages license information to the documentation.
