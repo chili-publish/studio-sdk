@@ -40,13 +40,19 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onSelectedFrameContentChanged('2');
         expect(mockedSubscribers.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.subscriber.onSelectedLayoutPropertiesChanged('5');
+        mockedSDK.subscriber.onSelectedLayoutPropertiesChanged('5');
         expect(mockedSDK.layout.config.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(5);
 
-        await mockedSDK.subscriber.onPageSelectionChanged();
+        mockedSDK.subscriber.onPageSelectionChanged();
         expect(mockedSDK.layout.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
 
-        mockedSDK.subscriber.onStateChanged('sdsd');
+        const initialStateMock = {
+            layouts: [],
+            selectedLayoutId: 1,
+            pages: [],
+        };
+
+        mockedSDK.subscriber.onStateChanged(JSON.stringify(initialStateMock));
         expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
     });
 });
