@@ -19,6 +19,7 @@ export type ConfigType = {
 type EditorResponse = {
     success: boolean;
     status: number;
+    data?: unknown;
 };
 export interface Child extends CallSender {
     addLayout: (parentId: number) => Promise<EditorResponse>;
