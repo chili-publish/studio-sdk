@@ -9,30 +9,30 @@ class SubscriberController {
 
     onAnimationChanged = (animation: string) => {
         const callBack = this.config.onFrameAnimationsChanged;
-        callBack(animation);
+        callBack(JSON.parse(animation));
     };
 
     onAnimationPlaybackChanged = (animationPlaybackState: string) => {
         const callBack = this.config.onScrubberPositionChanged;
-        callBack(animationPlaybackState);
+        callBack(JSON.parse(animationPlaybackState));
     };
 
     onSelectedLayoutPropertiesChanged = (document: string) => {
         const callBack = this.config.onSelectedLayoutPropertiesChanged;
-        callBack(document);
+        callBack(JSON.parse(document));
     };
     onSelectedFrameLayoutChanged = (document: string) => {
         const callBack = this.config.onSelectedFrameLayoutChanged;
-        callBack(document);
+        callBack(JSON.parse(document));
     };
 
     onSelectedFrameContentChanged = (document: string) => {
         const callBack = this.config.onSelectedFrameContentChanged;
-        callBack(document);
+        callBack(JSON.parse(document));
     };
     onStateChanged = (document: string) => {
         const callBack = this.config.onStateChanged;
-        callBack(document);
+        callBack(JSON.parse(document));
     };
 
     onPageSelectionChanged = () => {

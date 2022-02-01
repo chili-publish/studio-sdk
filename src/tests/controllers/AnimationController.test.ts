@@ -31,7 +31,7 @@ afterEach(() => {
 });
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
-        await mockedSDK.animation.setFrameAnimation(JSON.stringify(mockedAnimation));
+        await mockedSDK.animation.setFrameAnimation(mockedAnimation.animation);
         expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(1);
 
         await mockedSDK.animation.playAnimation();

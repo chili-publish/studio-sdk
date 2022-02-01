@@ -55,33 +55,33 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setFrameHeight('32', mockSelectFrame);
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(2);
 
-        mockedFrameProperties.setFrameVisibility('2', false);
+        mockedFrameProperties.setFrameVisibility(2, false);
         expect(mockedFrameProperties.setFrameVisibility).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameX('2');
+        mockedFrameProperties.resetFrameX(2);
         expect(mockedFrameProperties.resetFrameX).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameY('2');
+        mockedFrameProperties.resetFrameY(2);
         expect(mockedFrameProperties.resetFrameY).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameRotation('2');
+        mockedFrameProperties.resetFrameRotation(2);
         expect(mockedFrameProperties.resetFrameRotation).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameHeight('2');
+        mockedFrameProperties.resetFrameHeight(2);
         expect(mockedFrameProperties.resetFrameHeight).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameWidth('2');
+        mockedFrameProperties.resetFrameWidth(2);
         expect(mockedFrameProperties.resetFrameWidth).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameSize('2');
+        mockedFrameProperties.resetFrameSize(2);
         expect(mockedFrameProperties.resetFrameSize).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.selectFrame('2');
+        mockedFrameProperties.selectFrame(2);
         expect(mockedFrameProperties.selectFrame).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.selectMultipleFrames(['5']);
+        mockedFrameProperties.selectMultipleFrames([5]);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith(['5']);
+        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith([5]);
     });
 });
 

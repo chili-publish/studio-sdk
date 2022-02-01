@@ -1,4 +1,5 @@
-import { Child, ConfigType, selectedLayoutPropertiesType } from '../../types/CommonTypes';
+import type { Child, ConfigType } from '../../types/CommonTypes';
+import type { LayoutPropertiesType } from '../../types/LayoutTypes';
 import { LayoutProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
@@ -11,37 +12,37 @@ class LayoutController {
         this.config = config;
     }
 
-    removeLayout = async (layoutId: string) => {
+    removeLayout = async (layoutId: number) => {
         const res = await this.children;
-        return res.removeLayout(parseInt(layoutId));
+        return res.removeLayout(layoutId);
     };
 
-    addLayout = async (parentId: string) => {
+    addLayout = async (parentId: number) => {
         const res = await this.children;
-        return res.addLayout(parseInt(parentId));
+        return res.addLayout(parentId);
     };
 
-    setLayoutName = async (layoutId: string, layoutName: string) => {
+    setLayoutName = async (layoutId: number, layoutName: string) => {
         const res = await this.children;
-        return res.renameLayout(parseInt(layoutId), layoutName);
+        return res.renameLayout(layoutId, layoutName);
     };
 
-    selectLayout = async (layoutId: string) => {
+    selectLayout = async (layoutId: number) => {
         const res = await this.children;
-        return res.selectLayout(parseInt(layoutId));
+        return res.selectLayout(layoutId);
     };
 
-    duplicateLayout = async (layoutId: string) => {
+    duplicateLayout = async (layoutId: number) => {
         const res = await this.children;
-        return res.duplicateLayout(parseInt(layoutId));
+        return res.duplicateLayout(layoutId);
     };
 
-    resetLayout = async (layoutId: string) => {
+    resetLayout = async (layoutId: number) => {
         const res = await this.children;
-        return res.resetLayout(parseInt(layoutId));
+        return res.resetLayout(layoutId);
     };
 
-    setLayoutHeight = async (value: string, selectedLayout: selectedLayoutPropertiesType) => {
+    setLayoutHeight = async (value: string, selectedLayout: LayoutPropertiesType) => {
         const res = await this.children;
         const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_HEIGHT, value, selectedLayout);
         if (calc === null) {
@@ -52,7 +53,7 @@ class LayoutController {
         return res.setLayoutHeight(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
-    setLayoutWidth = async (value: string, selectedLayout: selectedLayoutPropertiesType) => {
+    setLayoutWidth = async (value: string, selectedLayout: LayoutPropertiesType) => {
         const res = await this.children;
         const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_WIDTH, value, selectedLayout);
         if (calc === null) {
@@ -63,20 +64,20 @@ class LayoutController {
         return res.setLayoutWidth(selectedLayout?.layoutId, parseFloat(calc.toString()));
     };
 
-    resetLayoutHeight = async (layoutId: string) => {
+    resetLayoutHeight = async (layoutId: number) => {
         const res = await this.children;
-        return res.resetLayoutHeight(parseInt(layoutId));
+        return res.resetLayoutHeight(layoutId);
     };
 
-    resetLayoutWidth = async (layoutId: string) => {
+    resetLayoutWidth = async (layoutId: number) => {
         const res = await this.children;
-        return res.resetLayoutWidth(parseInt(layoutId));
+        return res.resetLayoutWidth(layoutId);
     };
 
     getLayoutPropertiesCalculatedValue = (
         name: LayoutProperyNames,
         value: string,
-        selectedLayout: selectedLayoutPropertiesType,
+        selectedLayout: LayoutPropertiesType,
     ) => {
         let calc = getCalculatedValue(value);
 

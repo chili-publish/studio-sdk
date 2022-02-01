@@ -1,3 +1,4 @@
+import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
 import { Child, ConfigType } from '../../types/CommonTypes';
 
 class AnimationController {
@@ -9,9 +10,9 @@ class AnimationController {
         this.config = config;
     }
 
-    setFrameAnimation = async (animation: string) => {
+    setFrameAnimation = async (animation: FrameAnimationPropertiesType) => {
         const res = await this.children;
-        return res.setFrameAnimation(animation);
+        return res.setFrameAnimation(JSON.stringify(animation));
     };
 
     playAnimation = async () => {

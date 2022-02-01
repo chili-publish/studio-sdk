@@ -31,22 +31,22 @@ afterEach(() => {
 
 describe('Layout methods', () => {
     it('handles all layout methods', async () => {
-        await mockedSDK.layout.removeLayout('1');
+        await mockedSDK.layout.removeLayout(1);
         expect(mockedSDK.layout.children.removeLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.addLayout('1');
+        await mockedSDK.layout.addLayout(1);
         expect(mockedSDK.layout.children.addLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutName('1', 'TEST');
+        await mockedSDK.layout.setLayoutName(1, 'TEST');
         expect(mockedSDK.layout.children.renameLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.selectLayout('1');
+        await mockedSDK.layout.selectLayout(1);
         expect(mockedSDK.layout.children.selectLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.duplicateLayout('1');
+        await mockedSDK.layout.duplicateLayout(1);
         expect(mockedSDK.layout.children.duplicateLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.resetLayout('1');
+        await mockedSDK.layout.resetLayout(1);
         expect(mockedSDK.children.resetLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.setLayoutHeight('32', mockSelectPage);
