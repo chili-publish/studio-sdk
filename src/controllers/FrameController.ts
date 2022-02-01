@@ -24,7 +24,7 @@ class FrameController {
 
     selectMultipleFrames = async (frameIds: number[]) => {
         const res = await this.children;
-        return res.selectFrames(frameIds.map((frameId) => frameId));
+        return res.selectFrames(frameIds);
     };
 
     setFrameHeight = async (value: string, selectedFrame:  FrameLayoutType) => {
