@@ -1,4 +1,4 @@
-import LayoutController from '../../controllers/LayoutController';
+import { LayoutController } from '../../controllers/LayoutController';
 import { SDK } from '../../index';
 import { LayoutProperyNames } from '../../utils/enums';
 import mockConfig from '../__mocks__/config';

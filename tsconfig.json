@@ -19,5 +19,16 @@
         "sourceMap": true
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "build"] // *** The files to not type check ***
+    "exclude": ["node_modules", "build"], // *** The files to not type check ***
+    "typedocOptions": {
+        "entryPoints": [
+            "src/index.ts",
+            "src/controllers/AnimationController.ts",
+            "src/controllers/FrameController.ts",
+            "src/controllers/LayoutController.ts",
+            "src/controllers/SubscriberController.ts",
+            "src/controllers/UtilsController.ts"
+        ],
+        "out": "docs"
+    }
 }

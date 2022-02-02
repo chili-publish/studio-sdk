@@ -1,10 +1,10 @@
 import { Connection } from 'penpal';
 import Connect from './interactions/connector';
-import FrameController from './controllers/FrameController';
-import AnimationController from './controllers/AnimationController';
-import LayoutController from './controllers/LayoutController';
-import UtilsController from './controllers/UtilsController';
-import SubscriberController from './controllers/SubscriberController';
+import { FrameController } from './controllers/FrameController';
+import { AnimationController } from './controllers/AnimationController';
+import { LayoutController } from './controllers/LayoutController';
+import { UtilsController } from './controllers/UtilsController';
+import { SubscriberController } from './controllers/SubscriberController';
 
 export { default as loadEditor } from './components/editor/Editor';
 export { default as Connect } from './interactions/connector';

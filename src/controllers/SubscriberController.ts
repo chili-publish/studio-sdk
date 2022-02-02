@@ -1,6 +1,6 @@
 import { ConfigType } from '../../types/CommonTypes';
 
-class SubscriberController {
+export class SubscriberController {
     config: ConfigType;
 
     constructor(config: ConfigType) {
@@ -40,5 +40,3 @@ class SubscriberController {
         callBack();
     };
 }
-
-export default SubscriberController;

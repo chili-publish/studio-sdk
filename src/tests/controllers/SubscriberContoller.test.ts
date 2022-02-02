@@ -1,5 +1,5 @@
 import { SDK } from '../../index';
-import Subscribers from '../../controllers/SubscriberController';
+import { SubscriberController } from '../../controllers/SubscriberController';
 import mockConfig, { defaultMockReturn } from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -7,11 +7,11 @@ import { FrameAnimationType } from '../../../types/AnimationTypes';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
-let mockedSubscribers: Subscribers;
+let mockedSubscribers: SubscriberController;
 
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
-    mockedSubscribers = new Subscribers(mockConfig);
+    mockedSubscribers = new SubscriberController(mockConfig);
     mockedAnimation = mockFrameAnimation;
 
     jest.spyOn(mockedSDK.subscriber, 'onAnimationChanged');
