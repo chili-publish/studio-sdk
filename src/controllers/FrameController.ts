@@ -1,6 +1,6 @@
 import { FrameProperyNames } from '../index';
 import type { Child, ConfigType } from '../../types/CommonTypes';
-import type { FrameLayoutType} from '../../types/FrameTypes'
+import type { FrameLayoutType } from '../../types/FrameTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 class FrameController {
@@ -27,7 +27,7 @@ class FrameController {
         return res.selectFrames(frameIds);
     };
 
-    setFrameHeight = async (value: string, selectedFrame:  FrameLayoutType) => {
+    setFrameHeight = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.HEIGHT, value, selectedFrame);
         if (calc === null) {
@@ -38,7 +38,7 @@ class FrameController {
         return res.setFrameHeight(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameRotation = async (value: string, selectedFrame:  FrameLayoutType) => {
+    setFrameRotation = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_ROTATION, value, selectedFrame);
         if (calc === null) {
@@ -49,7 +49,7 @@ class FrameController {
         return res.setFrameRotation(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameWidth = async (value: string, selectedFrame:  FrameLayoutType) => {
+    setFrameWidth = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.WIDTH, value, selectedFrame);
         if (calc === null) {
@@ -60,7 +60,7 @@ class FrameController {
         return res.setFrameWidth(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameX = async (value: string, selectedFrame:  FrameLayoutType) => {
+    setFrameX = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_X, value, selectedFrame);
         if (calc === null) {
@@ -71,7 +71,7 @@ class FrameController {
         return res.setFrameX(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameY = async (value: string, selectedFrame:  FrameLayoutType) => {
+    setFrameY = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_Y, value, selectedFrame);
         if (calc === null) {
@@ -111,11 +111,7 @@ class FrameController {
         const res = await this.children;
         return res.setFrameVisibility(frameId, value);
     };
-    getFramePropertyCalculatedValue = (
-        name: FrameProperyNames,
-        value: string,
-        selectedFrame:  FrameLayoutType,
-    ) => {
+    getFramePropertyCalculatedValue = (name: FrameProperyNames, value: string, selectedFrame: FrameLayoutType) => {
         let calc = getCalculatedValue(value);
         switch (name) {
             case FrameProperyNames.FRAME_X: {

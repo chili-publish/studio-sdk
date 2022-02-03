@@ -31,6 +31,7 @@ export interface Child extends CallSender {
     selectFrames: (ids: number[]) => Promise<EditorResponse>;
     togglePlaybackAnimation: () => Promise<EditorResponse>;
     setFrameAnimation: (animation: string) => Promise<EditorResponse>;
+    getCurrentDocumentState:() => Promise<EditorResponse>
 }
 
 export type PageType = {
