@@ -28,6 +28,7 @@
             "src/controllers/LayoutController.ts",
             "src/controllers/UtilsController.ts"
         ],
-        "out": "docs"
+        "out": "docs",
+        "excludePrivate": true,
     }
 }
