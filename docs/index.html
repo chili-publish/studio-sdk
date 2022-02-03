@@ -1,0 +1,49 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@chili-publish/editor-sdk</title><meta name="description" content="Documentation for @chili-publish/editor-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@chili-publish/editor-sdk</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> @chili-publish/editor-sdk</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#editor-sdk-guidelines" id="editor-sdk-guidelines" style="color: inherit; text-decoration: none;">
+  <h1>EDITOR-SDK GUIDELINES</h1>
+</a>
+<p>This README includes guides about SDK development.</p>
+
+<a href="#general-structure" id="general-structure" style="color: inherit; text-decoration: none;">
+  <h2>General Structure</h2>
+</a>
+<p>SDK consist of controllers which are individual Javascript classes and methods of these classes.
+Currently there are 5 different controllers:</p>
+<ul>
+<li>AnimationController</li>
+<li>FrameController</li>
+<li>LayoutsController</li>
+<li>UtilsController</li>
+<li>SubscriberController</li>
+</ul>
+<p>These controllers have their own methods within them.SubscriberController&#39;s methods are methods of children(Flutter-Editor).These methods required by flutter and without these methods you can&#39;t initialize SDK.</p>
+<ul>
+<li>onStateChanged</li>
+<li>onSelectedFrameContentChanged</li>
+<li>onSelectedFrameLayoutChanged,</li>
+<li>onSelectedLayoutPropertiesChanged,</li>
+<li>onOpenLayoutPropertiesPanelChange,</li>
+<li>onScrubberPositionChanged,</li>
+<li>onFrameAnimationsChanged</li>
+</ul>
+
+<a href="#naming-a-new-method" id="naming-a-new-method" style="color: inherit; text-decoration: none;">
+  <h2>Naming a new method</h2>
+</a>
+<p>A method can be a getter,setter,listener or custom type.
+If a method is for getting some properties from another source,if its a getter method, the name of the method must be start with &quot;get&quot;.For example name of a method for getting latest state from flutter must be written like this:
+<code>getLatestState</code>
+If its a set method we must use &quot;set&quot; at the beginning of the method.For example name of a method for setting a frame&#39;s height property must be written like this:
+<code>setFrameHeight</code>
+If its a listener method,It must start with &quot;on&quot; and end with &quot;changed&quot;.
+For example for listening state changes at flutter level we should name our method like this:
+<code>onStateChanged</code>
+If a method requires different names from these names,It must be descriptive.For example method for playing an animation can be named :
+<code>playAnimation</code></p>
+
+<a href="#adding-a-new-controller" id="adding-a-new-controller" style="color: inherit; text-decoration: none;">
+  <h3>Adding a new controller</h3>
+</a>
+<p>When a new contoller required,a new contoller must be added to src/contollers folder.Name of the file must be descriptive.The new contoller must be initialized at index.ts file so that this controller and its methods will be available from the SDK.
+After new controller created and initialized at index.ts file,test cases of this new contoller and its methods must be added too.</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/controllers_AnimationController.html">controllers/<wbr/>Animation<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_FrameController.html">controllers/<wbr/>Frame<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_LayoutController.html">controllers/<wbr/>Layout<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_SubscriberController.html">controllers/<wbr/>Subscriber<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_UtilsController.html">controllers/<wbr/>Utils<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/index.html">index</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
