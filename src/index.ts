@@ -6,9 +6,6 @@ import { LayoutController } from './controllers/LayoutController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
 
-export { default as loadEditor } from './components/editor/Editor';
-export { default as Connect } from './interactions/connector';
-
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
 
 export {
@@ -36,6 +33,10 @@ let connection: Connection;
 export class SDK {
     config: ConfigType;
     connection: Connection;
+
+    /**
+     * @ignore
+     */
     children: Child;
 
     layout: LayoutController;
@@ -44,6 +45,10 @@ export class SDK {
     utils: UtilsController;
     subscriber: SubscriberController;
 
+    /**
+     * The SDK should be configured clientside and it exposes all controllers to work with in other applications
+     * @param config The configuration object where the SDK and editor can get configured
+     */
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
@@ -58,6 +63,10 @@ export class SDK {
         this.subscriber = new SubscriberController(this.config);
     }
 
+    /**
+     * This method will initiate the editor, running this will result in the editor restarting
+     * It will generate an iframe in the document
+     */
     loadEditor = () => {
         Connect(
             this.config.editorLink,
