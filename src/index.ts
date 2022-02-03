@@ -28,6 +28,7 @@ export type {
 } from '../types/AnimationTypes';
 import type { ConfigType, Child } from '../types/CommonTypes';
 
+export type { ConfigType } from '../types/CommonTypes';
 let connection: Connection;
 
 export class SDK {
