@@ -26,7 +26,6 @@
             "src/controllers/AnimationController.ts",
             "src/controllers/FrameController.ts",
             "src/controllers/LayoutController.ts",
-            "src/controllers/SubscriberController.ts",
             "src/controllers/UtilsController.ts"
         ],
         "out": "docs"

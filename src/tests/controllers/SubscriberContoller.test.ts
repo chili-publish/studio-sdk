@@ -14,13 +14,13 @@ beforeEach(() => {
     mockedSubscribers = new SubscriberController(mockConfig);
     mockedAnimation = mockFrameAnimation;
 
-    jest.spyOn(mockedSDK.subscriber, 'onAnimationChanged');
+    jest.spyOn(mockedSubscribers, 'onAnimationChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedFrameLayoutChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedFrameContentChanged');
-    jest.spyOn(mockedSDK.subscriber, 'onPageSelectionChanged');
-    jest.spyOn(mockedSDK.subscriber, 'onSelectedLayoutPropertiesChanged');
-    jest.spyOn(mockedSDK.subscriber, 'onStateChanged');
-    mockedSDK.subscriber.onAnimationPlaybackChanged = defaultMockReturn;
+    jest.spyOn(mockedSubscribers, 'onPageSelectionChanged');
+    jest.spyOn(mockedSubscribers, 'onSelectedLayoutPropertiesChanged');
+    jest.spyOn(mockedSubscribers, 'onStateChanged');
+    mockedSubscribers.onAnimationPlaybackChanged = defaultMockReturn;
 });
 
 afterEach(() => {
@@ -28,9 +28,9 @@ afterEach(() => {
 });
 describe('Subscriber methods', () => {
     it('Should call  all of the subscriber functions successfully', async () => {
-        mockedSDK.subscriber.onAnimationChanged(JSON.stringify(mockedAnimation));
+        mockedSubscribers.onAnimationChanged(JSON.stringify(mockedAnimation));
 
-        mockedSDK.subscriber.onAnimationPlaybackChanged('test');
+        mockedSubscribers.onAnimationPlaybackChanged('test');
         expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledTimes(2);
         expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledWith('test');
 
@@ -40,10 +40,10 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onSelectedFrameContentChanged('2');
         expect(mockedSubscribers.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
 
-        mockedSDK.subscriber.onSelectedLayoutPropertiesChanged('5');
+        mockedSubscribers.onSelectedLayoutPropertiesChanged('5');
         expect(mockedSDK.layout.config.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(5);
 
-        mockedSDK.subscriber.onPageSelectionChanged();
+        mockedSubscribers.onPageSelectionChanged();
         expect(mockedSDK.layout.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
 
         const initialStateMock = {
@@ -52,7 +52,7 @@ describe('Subscriber methods', () => {
             pages: [],
         };
 
-        mockedSDK.subscriber.onStateChanged(JSON.stringify(initialStateMock));
+        mockedSubscribers.onStateChanged(JSON.stringify(initialStateMock));
         expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
     });
 });

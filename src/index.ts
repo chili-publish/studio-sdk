@@ -5,6 +5,7 @@ import { AnimationController } from './controllers/AnimationController';
 import { LayoutController } from './controllers/LayoutController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
+import type { ConfigType, Child } from '../types/CommonTypes';
 
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
 
@@ -26,9 +27,10 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from '../types/AnimationTypes';
-import type { ConfigType, Child } from '../types/CommonTypes';
+export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
 
-export type { ConfigType } from '../types/CommonTypes';
+
+
 let connection: Connection;
 
 export class SDK {
@@ -44,7 +46,7 @@ export class SDK {
     frame: FrameController;
     animation: AnimationController;
     utils: UtilsController;
-    subscriber: SubscriberController;
+    private subscriber: SubscriberController;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
