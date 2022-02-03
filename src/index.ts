@@ -30,6 +30,7 @@ export type {
     BasicAnimationsType,
 } from '../types/AnimationTypes';
 import type { ConfigType, Child } from '../types/CommonTypes';
+import DocumentController from './controllers/DocumentController';
 
 let connection: Connection;
 
@@ -41,6 +42,7 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     animation: AnimationController;
+    document: DocumentController;
     utils: UtilsController;
     subscriber: SubscriberController;
 
@@ -54,6 +56,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.document = new DocumentController(this.children, this.config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
     }
@@ -80,6 +83,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.document = new DocumentController(this.children, this.config);
         this.utils = new UtilsController();
     };
 
