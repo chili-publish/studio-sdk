@@ -7,5 +7,5 @@ export const mockFrameAnimation: FrameAnimationType = {
         to: 3,
         basicAnimations: {},
     },
-    isOverride: true
+    isOverride: true,
 };

@@ -5,6 +5,8 @@ import { AnimationController } from './controllers/AnimationController';
 import { LayoutController } from './controllers/LayoutController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
+import { DocumentController } from './controllers/DocumentController';
+
 import type { ConfigType, Child } from '../types/CommonTypes';
 
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
@@ -30,7 +32,6 @@ export type {
 export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
 
 
-
 let connection: Connection;
 
 export class SDK {
@@ -45,6 +46,7 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     animation: AnimationController;
+    document: DocumentController;
     utils: UtilsController;
     private subscriber: SubscriberController;
 
@@ -62,6 +64,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.document = new DocumentController(this.children, this.config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
     }
@@ -92,6 +95,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.document = new DocumentController(this.children, this.config);
         this.utils = new UtilsController();
     };
 
