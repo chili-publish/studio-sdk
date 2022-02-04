@@ -1,49 +1,87 @@
 <!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@chili-publish/editor-sdk</title><meta name="description" content="Documentation for @chili-publish/editor-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@chili-publish/editor-sdk</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> @chili-publish/editor-sdk</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
-<a href="#editor-sdk-guidelines" id="editor-sdk-guidelines" style="color: inherit; text-decoration: none;">
-  <h1>EDITOR-SDK GUIDELINES</h1>
+<a href="#editor-sdk-getting-started" id="editor-sdk-getting-started" style="color: inherit; text-decoration: none;">
+  <h1>EDITOR-SDK GETTING STARTED</h1>
 </a>
-<p>This README includes guides about SDK development.</p>
+<p>In this overview, we provide you with a small guide which should get you started on working / integrating with the SDK.
+After the getting started is working, you can look further at the documentation to search for methods and listers that you need.
+If you have any questions, do not hesitate to reach out to any of the chili team-members.</p>
+<p>Happy coding and enjoy the <strong>spicy</strong> ride.</p>
 
 <a href="#general-structure" id="general-structure" style="color: inherit; text-decoration: none;">
   <h2>General Structure</h2>
 </a>
-<p>SDK consist of controllers which are individual Javascript classes and methods of these classes.
+<p>To get familiar with the 
+SDK consist of controllers which are individual Javascript classes and methods of these classes.
 Currently there are 5 different controllers:</p>
 <ul>
 <li>AnimationController</li>
 <li>FrameController</li>
 <li>LayoutsController</li>
 <li>UtilsController</li>
-<li>SubscriberController</li>
+<li>DocumentController</li>
 </ul>
-<p>These controllers have their own methods within them.SubscriberController&#39;s methods are methods of children(Flutter-Editor).These methods required by flutter and without these methods you can&#39;t initialize SDK.</p>
-<ul>
-<li>onStateChanged</li>
-<li>onSelectedFrameContentChanged</li>
-<li>onSelectedFrameLayoutChanged,</li>
-<li>onSelectedLayoutPropertiesChanged,</li>
-<li>onOpenLayoutPropertiesPanelChange,</li>
-<li>onScrubberPositionChanged,</li>
-<li>onFrameAnimationsChanged</li>
-</ul>
+<p>These controllers are exposing the methods for each part of the document in a structured way, you can get a more detailed overview of all methods in the modules itself.</p>
 
-<a href="#naming-a-new-method" id="naming-a-new-method" style="color: inherit; text-decoration: none;">
-  <h2>Naming a new method</h2>
+<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+  <h2>Getting started</h2>
 </a>
-<p>A method can be a getter,setter,listener or custom type.
-If a method is for getting some properties from another source,if its a getter method, the name of the method must be start with &quot;get&quot;.For example name of a method for getting latest state from flutter must be written like this:
-<code>getLatestState</code>
-If its a set method we must use &quot;set&quot; at the beginning of the method.For example name of a method for setting a frame&#39;s height property must be written like this:
-<code>setFrameHeight</code>
-If its a listener method,It must start with &quot;on&quot; and end with &quot;changed&quot;.
-For example for listening state changes at flutter level we should name our method like this:
-<code>onStateChanged</code>
-If a method requires different names from these names,It must be descriptive.For example method for playing an animation can be named :
-<code>playAnimation</code></p>
+<p>This will get you started on integrating the sdk in your own application.
+We don&#39;t want to opinionate the stack you use, so for the examples we start from a vanilla stack using only html and JavaScript, but the use of TypeScript is strongly encouraged and fully supported. The types are also bundled together with the code.</p>
+<p>If you want an example on integration with React, we can help you out as well, just reach out.</p>
 
-<a href="#adding-a-new-controller" id="adding-a-new-controller" style="color: inherit; text-decoration: none;">
-  <h3>Adding a new controller</h3>
+<a href="#initilise-the-sdk" id="initilise-the-sdk" style="color: inherit; text-decoration: none;">
+  <h3>Initilise the SDK</h3>
 </a>
-<p>When a new contoller required,a new contoller must be added to src/contollers folder.Name of the file must be descriptive.The new contoller must be initialized at index.ts file so that this controller and its methods will be available from the SDK.
-After new controller created and initialized at index.ts file,test cases of this new contoller and its methods must be added too.</p>
+<p>Once you have recieved access to the SDK, you will recieve a link the SDK javascript file that you need to include inside your html.</p>
+<p>We recommend including the script in a script tag, right before the closing tag of the body (<code>&lt;/body&gt;</code>) but keep in mind that your integration script should come below the SDK inclusion.</p>
+<p>Example in <code>index.html</code>:</p>
+<pre><code class="language-html"><span class="hl-0">&lt;</span><span class="hl-1">html</span><span class="hl-0">&gt;</span><br/><span class="hl-2">    </span><span class="hl-0">&lt;</span><span class="hl-1">head</span><span class="hl-0">&gt;</span><br/><span class="hl-2">        {# all of your head metadata and stylesheets should come here #}</span><br/><span class="hl-2">    </span><span class="hl-0">&lt;/</span><span class="hl-1">head</span><span class="hl-0">&gt;</span><span class="hl-2">  </span><br/><span class="hl-2">    </span><span class="hl-0">&lt;</span><span class="hl-1">body</span><span class="hl-0">&gt;</span><br/><span class="hl-2">        </span><span class="hl-0">&lt;</span><span class="hl-1">h1</span><span class="hl-0">&gt;</span><span class="hl-2">My first integration</span><span class="hl-0">&lt;/</span><span class="hl-1">h1</span><span class="hl-0">&gt;</span><br/><span class="hl-2">        {# all of your custom html #}</span><br/><span class="hl-2">        </span><span class="hl-0">&lt;</span><span class="hl-1">script</span><span class="hl-3"> </span><span class="hl-4">src</span><span class="hl-3">=</span><span class="hl-5">&quot;https://path/to/sdk/latest/main.js&quot;</span><span class="hl-0">&gt;&lt;/</span><span class="hl-1">script</span><span class="hl-0">&gt;</span><br/><span class="hl-2">        </span><span class="hl-0">&lt;</span><span class="hl-1">script</span><span class="hl-3"> </span><span class="hl-4">src</span><span class="hl-3">=</span><span class="hl-5">&quot;integration.js&quot;</span><span class="hl-0">&gt;&lt;/</span><span class="hl-1">script</span><span class="hl-0">&gt;</span><br/><span class="hl-2">    </span><span class="hl-0">&lt;/</span><span class="hl-1">body</span><span class="hl-0">&gt;</span><br/><span class="hl-0">&lt;/</span><span class="hl-1">html</span><span class="hl-0">&gt;</span><span class="hl-2">  </span>
+</code></pre>
+<p>In the integration script we then need to initialise the SDK with certain parameters and values.</p>
+<p>Example in <code>integration.js</code>:</p>
+<pre><code class="language-javascript"><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">sdk</span><span class="hl-2"> = </span><span class="hl-6">new</span><span class="hl-2"> </span><span class="hl-8">EditorSDK</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-9">editorLink:</span><span class="hl-2"> </span><span class="hl-10">&quot;https://link/to/the/editor&quot;</span><span class="hl-2">, </span><span class="hl-11">// Will be provided</span><br/><span class="hl-2">    </span><span class="hl-9">editorId:</span><span class="hl-2"> </span><span class="hl-10">&#39;chili-editor-example&#39;</span><span class="hl-2"> </span><span class="hl-11">// if not provided, default will be &#39;chili-editor&#39;</span><br/><span class="hl-2">});</span>
+</code></pre>
+<p>The SDK is now initialised and ready to be used.
+If you want to make the SDK available in the console you can bind the sdk property to the window, this can be handy, but this isn&#39;t necessary.</p>
+<p>Example in <code>integration.js</code>:</p>
+<pre><code class="language-javascript"><span class="hl-9">window</span><span class="hl-2">.</span><span class="hl-7">SDK</span><span class="hl-2"> = </span><span class="hl-9">sdk</span><span class="hl-2">;</span><br/><br/><span class="hl-11">// or it can be done in one go:</span><br/><span class="hl-9">window</span><span class="hl-2">.</span><span class="hl-7">SDK</span><span class="hl-2"> = </span><span class="hl-6">new</span><span class="hl-2"> </span><span class="hl-8">EditorSDK</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-11">// ... see example above</span><br/><span class="hl-2">});</span>
+</code></pre>
+<br/>
+
+
+<a href="#get-an-instance-of-the-editor-on-your-page" id="get-an-instance-of-the-editor-on-your-page" style="color: inherit; text-decoration: none;">
+  <h3>Get an instance of the editor on your page</h3>
+</a>
+<br/>
+
+<p>As you will see, there is no editor yet in your application, therefore you&#39;ll need to give the SDK the command to load the editor dynamoically in your html. The <code>editorId</code> you provided or the default one, will be used as a target of where the editor will be injected, so you need to create an (preferably) empty <code>&lt;div&gt;</code> with the same id as used for editorId or the default id.</p>
+<p>Example in <code>index.html</code>:</p>
+<pre><code class="language-html"><span class="hl-2">{# all of the html above #}</span><br/><span class="hl-0">&lt;</span><span class="hl-1">h1</span><span class="hl-0">&gt;</span><span class="hl-2">My first integration</span><span class="hl-0">&lt;/</span><span class="hl-1">h1</span><span class="hl-0">&gt;</span><br/><br/><span class="hl-0">&lt;</span><span class="hl-1">div</span><span class="hl-2"> </span><span class="hl-4">id</span><span class="hl-2">=</span><span class="hl-5">&quot;chili-editor-example&quot;</span><span class="hl-2"> </span><span class="hl-0">&gt;&lt;/</span><span class="hl-1">div</span><span class="hl-0">&gt;</span><br/><br/><span class="hl-2">{# all of your custom html #}</span><br/><br/><span class="hl-0">&lt;</span><span class="hl-1">script</span><span class="hl-3"> </span><span class="hl-4">src</span><span class="hl-3">=</span><span class="hl-5">&quot;https://path/to/sdk/latest/main.js&quot;</span><span class="hl-0">&gt;&lt;/</span><span class="hl-1">script</span><span class="hl-0">&gt;</span><br/><span class="hl-2">{# all of the html below #}</span>
+</code></pre>
+<p>The SDK should also be aware that there is now room in the html for injecting the editor, so you should call the <code>loadEditor</code> method in your integration script.</p>
+<p>Example in <code>integration.js</code>:</p>
+<pre><code class="language-javascript"><span class="hl-11">// at the bottom</span><br/><span class="hl-9">window</span><span class="hl-2">.</span><span class="hl-7">SDK</span><span class="hl-2">.</span><span class="hl-8">loadEditor</span><span class="hl-2">();</span>
+</code></pre>
+<p>If you now refresh your page in the browser you will see And like magic an instance of the editor gets loaded on your very own page.</p>
+<br/>
+
+
+<a href="#retrieving-data-from-the-editor" id="retrieving-data-from-the-editor" style="color: inherit; text-decoration: none;">
+  <h3>Retrieving data from the editor</h3>
+</a>
+<p>TBI</p>
+<br/>
+
+
+<a href="#sending-data-to-the-editor" id="sending-data-to-the-editor" style="color: inherit; text-decoration: none;">
+  <h3>Sending data to the editor</h3>
+</a>
+<p>TBI</p>
+<br/>
+
+
+<a href="#recap" id="recap" style="color: inherit; text-decoration: none;">
+  <h3>Recap</h3>
+</a>
+<p>TBI</p>
 </div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/controllers_AnimationController.html">controllers/<wbr/>Animation<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_FrameController.html">controllers/<wbr/>Frame<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_LayoutController.html">controllers/<wbr/>Layout<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/controllers_UtilsController.html">controllers/<wbr/>Utils<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="modules/index.html">index</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
