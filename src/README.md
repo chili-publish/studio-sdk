@@ -20,13 +20,17 @@ Currently there are 5 different controllers:
 
 These controllers are exposing the methods for each part of the document in a structured way, you can get a more detailed overview of all methods in the modules itself.
 
+<br/>
+
 ## Getting started
 This will get you started on integrating the sdk in your own application.
 We don't want to opinionate the stack you use, so for the examples we start from a vanilla stack using only html and JavaScript, but the use of TypeScript is strongly encouraged and fully supported. The types are also bundled together with the code.
 
 If you want an example on integration with React, we can help you out as well, just reach out.
 
-### Initilise the SDK
+<br/>
+
+### Initialise the SDK
 Once you have recieved access to the SDK, you will recieve a link the SDK javascript file that you need to include inside your html.
 
 We recommend including the script in a script tag, right before the closing tag of the body (`</body>`) but keep in mind that your integration script should come below the SDK inclusion.
@@ -72,7 +76,6 @@ window.SDK = new EditorSDK({
 <br/>
 
 ### Get an instance of the editor on your page
-<br/>
 
 As you will see, there is no editor yet in your application, therefore you'll need to give the SDK the command to load the editor dynamoically in your html. The `editorId` you provided or the default one, will be used as a target of where the editor will be injected, so you need to create an (preferably) empty `<div>` with the same id as used for editorId or the default id.
 
