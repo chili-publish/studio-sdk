@@ -26,7 +26,8 @@
             "src/controllers/AnimationController.ts",
             "src/controllers/FrameController.ts",
             "src/controllers/LayoutController.ts",
-            "src/controllers/UtilsController.ts"
+            "src/controllers/UtilsController.ts",
+            "src/controllers/DocumentController.ts"
         ],
         "out": "docs",
         "excludePrivate": true,
