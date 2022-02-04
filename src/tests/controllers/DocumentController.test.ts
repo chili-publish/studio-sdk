@@ -1,13 +1,13 @@
 import mockConfig from '../__mocks__/config';
 import mockChild from '../__mocks__/FrameProperties';
 import { SDK } from '../../index';
-import DocumentController from '../../controllers/DocumentController';
+import { DocumentController } from '../../controllers/DocumentController';
 
 let mockedSDK: SDK;
 
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
-    jest.spyOn(mockedSDK.document, 'saveDocument');
+    jest.spyOn(mockedSDK.document, 'getCurrentDocumentState');
 
     mockedSDK.children = mockChild;
     mockedSDK.document = new DocumentController(mockChild, mockConfig);
@@ -19,7 +19,7 @@ afterEach(() => {
 
 describe('Document controller', () => {
     it('retrieve current document state', async () => {
-        await mockedSDK.document.saveDocument();
+        await mockedSDK.document.getCurrentDocumentState();
         expect(mockedSDK.document.children.getCurrentDocumentState).toHaveBeenCalledTimes(1);
     });
 });
