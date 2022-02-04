@@ -8,8 +8,7 @@ Happy coding and enjoy the **spicy** ride.
 
 ## General Structure
 
-To get familiar with the 
-SDK consist of controllers which are individual Javascript classes and methods of these classes.
+The SDK consist of controllers which are individual Javascript classes and methods of these classes.
 Currently there are 5 different controllers:
 
 -   AnimationController
