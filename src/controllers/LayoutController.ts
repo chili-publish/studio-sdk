@@ -47,8 +47,8 @@ export class LayoutController {
 
     /**
      * This method will update the name of a specific layout
-     * @param layoutId he ID of a specific layout
-     * @param layoutName The new name that the layout should recieve
+     * @param layoutId The ID of a specific layout
+     * @param layoutName The new name that the layout should receive
      * @returns
      */
     setLayoutName = async (layoutId: number, layoutName: string) => {

@@ -91,7 +91,7 @@ export class FrameController {
 
     /**
      * This method will set the width of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
      * @param selectedFrame The frame that is selected with all it's properties
      * @returns
      */
@@ -108,7 +108,7 @@ export class FrameController {
 
     /**
      * This method will set the x value of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
      * @param selectedFrame The frame that is selected with all it's properties
      * @returns
      */
@@ -125,7 +125,7 @@ export class FrameController {
 
     /**
      * This method will set the y value of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
      * @param selectedFrame The frame that is selected with all it's properties
      * @returns
      */

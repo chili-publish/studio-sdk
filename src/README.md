@@ -30,7 +30,7 @@ If you want an example on integration with React, we can help you out as well, j
 <br/>
 
 ### Initialise the SDK
-Once you have recieved access to the SDK, you will recieve a link the SDK javascript file that you need to include inside your html.
+Once you have received access to the SDK, you will receive a link the SDK javascript file that you need to include inside your html.
 
 We recommend including the script in a script tag, right before the closing tag of the body (`</body>`) but keep in mind that your integration script should come below the SDK inclusion.
 
@@ -76,7 +76,7 @@ window.SDK = new EditorSDK({
 
 ### Get an instance of the editor on your page
 
-As you will see, there is no editor yet in your application, therefore you'll need to give the SDK the command to load the editor dynamoically in your html. The `editorId` you provided or the default one, will be used as a target of where the editor will be injected, so you need to create an (preferably) empty `<div>` with the same id as used for editorId or the default id.
+As you will see, there is no editor yet in your application, therefore you'll need to give the SDK the command to load the editor dynamically in your html. The `editorId` you provided or the default one, will be used as a target of where the editor will be injected, so you need to create an (preferably) empty `<div>` with the same id as used for editorId or the default id.
 
 Example in `index.html`:
 ```html
