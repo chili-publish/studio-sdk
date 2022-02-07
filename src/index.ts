@@ -1,13 +1,13 @@
 import { Connection } from 'penpal';
 import Connect from './interactions/connector';
-import FrameController from './controllers/FrameController';
-import AnimationController from './controllers/AnimationController';
-import LayoutController from './controllers/LayoutController';
-import UtilsController from './controllers/UtilsController';
-import SubscriberController from './controllers/SubscriberController';
+import { FrameController } from './controllers/FrameController';
+import { AnimationController } from './controllers/AnimationController';
+import { LayoutController } from './controllers/LayoutController';
+import { UtilsController } from './controllers/UtilsController';
+import { SubscriberController } from './controllers/SubscriberController';
+import { DocumentController } from './controllers/DocumentController';
 
-export { default as loadEditor } from './components/editor/Editor';
-export { default as Connect } from './interactions/connector';
+import type { ConfigType, Child } from '../types/CommonTypes';
 
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
 
@@ -29,14 +29,18 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from '../types/AnimationTypes';
-import type { ConfigType, Child } from '../types/CommonTypes';
-import DocumentController from './controllers/DocumentController';
+export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
+
 
 let connection: Connection;
 
 export class SDK {
     config: ConfigType;
     connection: Connection;
+
+    /**
+     * @ignore
+     */
     children: Child;
 
     layout: LayoutController;
@@ -44,8 +48,12 @@ export class SDK {
     animation: AnimationController;
     document: DocumentController;
     utils: UtilsController;
-    subscriber: SubscriberController;
+    private subscriber: SubscriberController;
 
+    /**
+     * The SDK should be configured clientside and it exposes all controllers to work with in other applications
+     * @param config The configuration object where the SDK and editor can get configured
+     */
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
@@ -61,6 +69,10 @@ export class SDK {
         this.subscriber = new SubscriberController(this.config);
     }
 
+    /**
+     * This method will initiate the editor, running this will result in the editor restarting
+     * It will generate an iframe in the document
+     */
     loadEditor = () => {
         Connect(
             this.config.editorLink,

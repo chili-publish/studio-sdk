@@ -1,7 +1,7 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
 import { LayoutType, LayoutPropertiesType } from './LayoutTypes';
-import {FrameLayoutType} from './FrameTypes'
+import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 
 export type ConfigType = {
@@ -16,22 +16,13 @@ export type ConfigType = {
     onFrameAnimationsChanged: (animationState: FrameAnimationType[]) => void;
 };
 
-type EditorResponse = {
+export type EditorResponse = {
     success: boolean;
     status: number;
     data?: unknown;
 };
 export interface Child extends CallSender {
-    addLayout: (parentId: number) => Promise<EditorResponse>;
-    removeLayout: (id: number) => Promise<EditorResponse>;
-    renameLayout: (id: number, layoutName: string) => Promise<EditorResponse>;
-    selectLayout: (id: number) => Promise<EditorResponse>;
-    duplicateLayout: (id: number) => Promise<EditorResponse>;
-    resetLayout: (id: number) => Promise<EditorResponse>;
-    selectFrames: (ids: number[]) => Promise<EditorResponse>;
-    togglePlaybackAnimation: () => Promise<EditorResponse>;
-    setFrameAnimation: (animation: string) => Promise<EditorResponse>;
-    getCurrentDocumentState:() => Promise<EditorResponse>
+    [index: string]: (...args: unknown[]) => Promise<EditorResponse>;
 }
 
 export type PageType = {

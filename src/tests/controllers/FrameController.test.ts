@@ -1,12 +1,12 @@
-import FrameProperties from '../../controllers/FrameController';
+import {FrameController} from '../../controllers/FrameController';
 import mockChild, { mockSelectFrame } from '../__mocks__/FrameProperties';
 import mockConfig from '../__mocks__/config';
 import { FrameProperyNames } from '../../utils/enums';
 
-let mockedFrameProperties: FrameProperties;
+let mockedFrameProperties: FrameController;
 
 beforeEach(() => {
-    mockedFrameProperties = new FrameProperties(mockChild, mockConfig);
+    mockedFrameProperties = new FrameController(mockChild, mockConfig);
     jest.spyOn(mockedFrameProperties, 'setFrameHeight');
     jest.spyOn(mockedFrameProperties, 'setFrameWidth');
 
