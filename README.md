@@ -7,6 +7,9 @@
 
 This repository includes the editor-sdk, the SDK is used to plugin to the Chili Publisher API and will handle the communication between workspace (React) and editor (Flutter).
 
+## Documentation
+The technical documentation on the SDK can be found on [this page](https://chili-publish.github.io/editor-sdk/).
+
 ## Versioning
 
 Versioning is handled automatically, but you can have a say in what version needs to be updated by including following words in the title of your PR:
