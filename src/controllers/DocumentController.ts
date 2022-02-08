@@ -23,11 +23,11 @@ export class DocumentController {
     }
 
     /**
-     * This method retrieves the current documentstate from the editor
+     * This method retrieves the current document state from the editor
      * @returns The JSON document in the form of a string
      */
-     getCurrentDocumentState= async () => {
+    getCurrentDocumentState = async () => {
         const res = await this.children;
-        return String(res.getCurrentDocumentState());
+        return res.getCurrentDocumentState();
     };
 }

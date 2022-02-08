@@ -11,7 +11,7 @@ export class UtilsController {
      * @param precision the precision that the calculation should round to (f.e. if the return value is 5.012 and precision is 2, the endresult should be 5.01) 2 is also the default
      * @returns The calculated value or null in case that it can't be calculated
      */
-    calculateFromString =  (val: string, precision?: number) => getCalculatedValue(val, precision);
+    calculateFromString = (val: string, precision?: number) => getCalculatedValue(val, precision);
 
     /**
      * This method can round a value to a certain precision, default is 2

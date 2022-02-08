@@ -1,4 +1,4 @@
-import {FrameController} from '../../controllers/FrameController';
+import { FrameController } from '../../controllers/FrameController';
 import mockChild, { mockSelectFrame } from '../__mocks__/FrameProperties';
 import mockConfig from '../__mocks__/config';
 import { FrameProperyNames } from '../../utils/enums';
