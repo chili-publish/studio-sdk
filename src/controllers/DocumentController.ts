@@ -52,33 +52,44 @@ export class DocumentController {
                 },
                 body: currentDocument,
             })
-                .then((data) => data.json() as unknown as RenderResponse)
-                .catch((err) => (error = err));
-            PREPARE_DOWNLOAD_URL = renderURLs.BASE_URL + response.resultUrl;
-            DOWNLOAD_URL = renderURLs.BASE_URL + response.downloadUrl;
-            let isFileDownloadable: true | DocumentError | null = error;
+                .then((data) => data.json())
+                .catch((err) => {
+                    if (err.code) {
+                        error = { code: err.code, error: err.message || err };
+                    }
+                });
+
+            if ((response?.status && response.status !== 200) || response.error) {
+                error = response?.error;
+            }
+            PREPARE_DOWNLOAD_URL = response?.resultUrl ? renderURLs.BASE_URL + response?.resultUrl : null;
+
+            DOWNLOAD_URL = response?.downloadUrl ? renderURLs.BASE_URL + response?.downloadUrl : null;
+
+            let isFileDownloadable: true | DocumentError | null | unknown = error;
+
             if (!error) {
                 try {
-                    const responseFromLongPoll = await longPollForDownload(PREPARE_DOWNLOAD_URL);
-
-                    isFileDownloadable = responseFromLongPoll as unknown as true;
+                    isFileDownloadable = await longPollForDownload(PREPARE_DOWNLOAD_URL as string);
                 } catch (err) {
                     error = err as unknown as DocumentError;
                 }
             }
-            if (isFileDownloadable !== true) error = isFileDownloadable;
+
+            if (isFileDownloadable !== true) error = isFileDownloadable as DocumentError;
         } catch (err) {
             error = err as DocumentError;
         }
-
         return error
             ? {
                   success: false,
                   data: null,
                   error,
+                  status: error.code ?? 400,
               }
             : {
                   success: true,
+                  status: 200,
                   data: DOWNLOAD_URL,
                   error: null,
               };

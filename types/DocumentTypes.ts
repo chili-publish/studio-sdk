@@ -1,7 +1,9 @@
-export type DocumentError = string | Record<string, undefined>;
+export type DocumentError = { error: Record<string, unknown>; code: number };
 
-export type RenderResponse = {
+export interface RenderResponse {
     id: string;
     downloadUrl: string;
     resultUrl: string;
-};
+    error?: string;
+    status?: number;
+}

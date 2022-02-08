@@ -80,9 +80,9 @@ describe('Document controller', () => {
 
         it(' returns error when first api call fails', async () => {
             mockFetch.mockRejectedValueOnce({
-                error: {
-                    Error: 'Not found',
-                },
+                status: 400,
+                code: 400,
+                Error: 'Not found',
             });
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
