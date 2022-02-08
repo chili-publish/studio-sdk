@@ -38,6 +38,7 @@ export class DocumentController {
     getDownloadLink = async (format: string) => {
         let error: DocumentError | null = null;
         let currentDocument: string | null = null;
+        let PREPARE_DOWNLOAD_URL: string | null = null;
         let DOWNLOAD_URL: string | null = null;
 
         const documentResponse = await this.getCurrentDocumentState();
@@ -53,12 +54,14 @@ export class DocumentController {
             })
                 .then((data) => data.json() as unknown as RenderResponse)
                 .catch((err) => (error = err));
-            DOWNLOAD_URL = renderURLs.BASE_URL + response.resultUrl;
+            PREPARE_DOWNLOAD_URL = renderURLs.BASE_URL + response.resultUrl;
+            DOWNLOAD_URL = renderURLs.BASE_URL + response.downloadUrl;
             let isFileDownloadable: true | DocumentError | null = error;
             if (!error) {
                 try {
-                    const resa = await longPollForDownload(DOWNLOAD_URL);
-                    isFileDownloadable = resa as unknown as true;
+                    const responseFromLongPoll = await longPollForDownload(PREPARE_DOWNLOAD_URL);
+
+                    isFileDownloadable = responseFromLongPoll as unknown as true;
                 } catch (err) {
                     error = err as unknown as DocumentError;
                 }

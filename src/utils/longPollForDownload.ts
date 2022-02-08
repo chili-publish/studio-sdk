@@ -1,20 +1,15 @@
-export const longPollForDownload = async (url: string) => {
-    let result;
+export const longPollForDownload = async (url: string): Promise<true | unknown> => {
     try {
         const response = await fetch(url)
             .then((data) => data)
-            .catch((err) => {
-                result = err;
-                return err;
-            });
-        if (response.status === 202) {
-            setTimeout(() => {
-                longPollForDownload(url);
-            }, 5000);
+            .catch((err) => err);
+        if (response?.status === 202) {
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+            return await longPollForDownload(url);
+        } else {
+            return true;
         }
-        result = true;
     } catch (err) {
-        result = err;
+        return err;
     }
-    return result;
 };

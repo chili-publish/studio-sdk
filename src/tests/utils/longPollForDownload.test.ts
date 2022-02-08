@@ -3,8 +3,6 @@ import { longPollForDownload } from '../../utils/longPollForDownload';
 const mockFetch = jest.fn();
 beforeEach(() => {
     global.fetch = mockFetch;
-    jest.useFakeTimers();
-    jest.spyOn(global, 'setTimeout');
 });
 
 afterEach(() => {
@@ -14,13 +12,12 @@ afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('longPollForDownload', () => {
-    beforeEach(() => {
-        jest.useFakeTimers();
-    });
+    
     it('calls fetch with given url', () => {
         longPollForDownload('url');
         expect(mockFetch).toHaveBeenLastCalledWith('url');
     });
+    jest.setTimeout(15000)
     it('calls fetch till response status code is more than 200', async () => {
         mockFetch
             .mockReturnValueOnce(
@@ -30,7 +27,13 @@ describe('longPollForDownload', () => {
                     }),
                 ),
             )
-
+            .mockReturnValueOnce(
+                new Promise((resolve) =>
+                    resolve({
+                        status: 202,
+                    }),
+                ),
+            )
             .mockReturnValueOnce(
                 new Promise((resolve) =>
                     resolve({
@@ -41,8 +44,6 @@ describe('longPollForDownload', () => {
 
         await longPollForDownload('url');
 
-        jest.runAllTimers();
-
-        expect(mockFetch).toHaveBeenCalledTimes(3);
+        expect(mockFetch).toHaveBeenCalledTimes(4);
     });
 });

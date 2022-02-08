@@ -43,8 +43,8 @@ describe('Document controller', () => {
                 new Promise((resolve) =>
                     resolve({
                         json: () => ({
-                            $id: '1',
                             id: '1',
+                            downloadUrl: '/url/1',
                             resultUrl: '/url/1',
                         }),
                     }),
@@ -64,7 +64,7 @@ describe('Document controller', () => {
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4');
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
-                body: '"document"',
+                body: 'document',
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
             });
@@ -94,7 +94,7 @@ describe('Document controller', () => {
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4');
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
-                body: '"document"',
+                body: 'document',
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
             });
@@ -117,8 +117,8 @@ describe('Document controller', () => {
                 new Promise((resolve) =>
                     resolve({
                         json: () => ({
-                            $id: '1',
                             id: '1',
+                            downloadUrl: '/url/1',
                             resultUrl: '/url/1',
                         }),
                     }),
