@@ -27,7 +27,7 @@ export class DocumentController {
     }
 
     /**
-     * This method retrieves the current documentstate from the editor
+     * This method retrieves the current document state from the editor
      * @returns The JSON document in the form of a string
      */
     getCurrentDocumentState = async () => {
@@ -49,7 +49,7 @@ export class DocumentController {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body:currentDocument,
+                body: currentDocument,
             })
                 .then((data) => data.json() as unknown as RenderResponse)
                 .catch((err) => (error = err));
