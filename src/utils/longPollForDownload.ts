@@ -1,17 +1,20 @@
-export const longPollForDownload = async (url:string) =>        
-    fetch(url)
-        .then((res) => {
-            console.log('hehehehhhe')
-            if (res.status === 202) {
-                return setTimeout(() => {
-                    longPollForDownload(url);
-                }, 1000);
-            }
-            console.log(res, 'HERE A REAL RESPONSEE...');
-            return true;
-        })
-        .catch((err) => {
-           console.log(`Error while downloading the file:${err}`);
-           return err;
-            
-        });
+export const longPollForDownload = async (url: string) => {
+    let result;
+    try {
+        const response = await fetch(url)
+            .then((data) => data)
+            .catch((err) => {
+                result = err;
+                return err;
+            });
+        if (response.status === 202) {
+            setTimeout(() => {
+                longPollForDownload(url);
+            }, 500);
+        }
+        result = true;
+    } catch (err) {
+        result = err;
+    }
+    return result;
+};

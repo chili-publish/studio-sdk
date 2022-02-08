@@ -54,11 +54,11 @@ export class DocumentController {
                 .then((data) => data.json() as unknown as RenderResponse)
                 .catch((err) => (error = err));
             DOWNLOAD_URL = renderURLs.BASE_URL + response.resultUrl;
-            console.log(!error, error);
             let isFileDownloadable: true | DocumentError | null = error;
             if (!error) {
                 try {
-                    isFileDownloadable = await longPollForDownload(DOWNLOAD_URL);
+                    const resa = await longPollForDownload(DOWNLOAD_URL);
+                    isFileDownloadable = resa as unknown as true;
                 } catch (err) {
                     error = err as unknown as DocumentError;
                 }
@@ -71,13 +71,11 @@ export class DocumentController {
         return error
             ? {
                   success: false,
-                  status: 404,
                   data: null,
                   error,
               }
             : {
                   success: true,
-                  status: 200,
                   data: DOWNLOAD_URL,
                   error: null,
               };
