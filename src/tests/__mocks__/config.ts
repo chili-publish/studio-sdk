@@ -11,5 +11,6 @@ const mockConfig: ConfigType = {
     onSelectedLayoutPropertiesChanged: defaultMockReturn,
     onScrubberPositionChanged: defaultMockReturn,
     onFrameAnimationsChanged: defaultMockReturn,
+    onVariableListChanged: defaultMockReturn,
 };
 export default mockConfig;

@@ -78,4 +78,13 @@ export class SubscriberController {
         const callBack = this.config.onPageSelectionChanged;
         callBack();
     };
+
+    /**
+     * Listener on when variables change
+     * @param variablesJson Stringified array of Variable
+     */
+    onVariableListChanged = (variablesJson: string) => {
+        const callBack = this.config.onVariableListChanged;
+        callBack(JSON.parse(variablesJson));
+    };
 }

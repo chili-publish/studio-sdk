@@ -3,6 +3,7 @@ import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
 import { LayoutType, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
+import {Variable} from "./VariableTypes";
 
 export type ConfigType = {
     onStateChanged: (state: InitialStateType) => void;
@@ -14,6 +15,7 @@ export type ConfigType = {
     onSelectedLayoutPropertiesChanged: (state: LayoutPropertiesType) => void;
     onScrubberPositionChanged: (state: AnimationPlaybackType) => void;
     onFrameAnimationsChanged: (animationState: FrameAnimationType[]) => void;
+    onVariableListChanged: (variableList: Variable[]) => void;
 };
 
 export type EditorResponse = {
