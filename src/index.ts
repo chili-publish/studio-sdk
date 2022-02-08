@@ -8,6 +8,7 @@ import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
 
 import type { ConfigType, Child } from '../types/CommonTypes';
+import { VariableController } from './controllers/VariableController';
 
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
 
@@ -46,6 +47,7 @@ export class SDK {
     frame: FrameController;
     animation: AnimationController;
     document: DocumentController;
+    variable: VariableController;
     utils: UtilsController;
     private subscriber: SubscriberController;
 
@@ -64,6 +66,7 @@ export class SDK {
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
         this.document = new DocumentController(this.children, this.config);
+        this.variable = new VariableController(this.children, this.config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
     }
@@ -83,6 +86,7 @@ export class SDK {
                 onOpenLayoutPropertiesPanelChange: this.subscriber.onPageSelectionChanged,
                 onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
+                onVariableListChanged: this.subscriber.onVariableListChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -95,6 +99,7 @@ export class SDK {
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
         this.document = new DocumentController(this.children, this.config);
+        this.variable = new VariableController(this.children, this.config);
         this.utils = new UtilsController();
     };
 
