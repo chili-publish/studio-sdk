@@ -12,12 +12,11 @@ afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('longPollForDownload', () => {
-    
     it('calls fetch with given url', () => {
         longPollForDownload('url');
         expect(mockFetch).toHaveBeenLastCalledWith('url');
     });
-    jest.setTimeout(15000)
+    jest.setTimeout(15000);
     it('calls fetch till response status code is more than 200', async () => {
         mockFetch
             .mockReturnValueOnce(
