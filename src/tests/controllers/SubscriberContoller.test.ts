@@ -4,6 +4,7 @@ import mockConfig, { defaultMockReturn } from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
 import { FrameAnimationType } from '../../../types/AnimationTypes';
+import { VariableType } from '../../../types/VariableTypes';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -20,6 +21,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onPageSelectionChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutPropertiesChanged');
     jest.spyOn(mockedSubscribers, 'onStateChanged');
+    jest.spyOn(mockedSubscribers, 'onVariableListChanged');
     mockedSubscribers.onAnimationPlaybackChanged = defaultMockReturn;
 });
 
@@ -54,5 +56,11 @@ describe('Subscriber methods', () => {
 
         mockedSubscribers.onStateChanged(JSON.stringify(initialStateMock));
         expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
+
+        mockedSubscribers.onVariableListChanged('[{"id":"1","type":"group"}]');
+        expect(mockedSDK.variable.config.onVariableListChanged).toHaveBeenCalled();
+        expect(mockedSDK.variable.config.onVariableListChanged).toHaveBeenCalledWith([
+            { id: '1', type: VariableType.group },
+        ]);
     });
 });
