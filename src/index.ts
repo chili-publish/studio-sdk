@@ -33,7 +33,7 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from '../types/AnimationTypes';
-export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
+export type { ConfigType, InitialStateType, PageType, EditorResponse } from '../types/CommonTypes';
 
 let connection: Connection;
 
