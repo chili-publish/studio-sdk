@@ -22,6 +22,7 @@ export {
 export type { LayoutPropertiesType, FrameProperties, LayoutType } from '../types/LayoutTypes';
 export type { FrameLayoutType, FrameType } from '../types/FrameTypes';
 
+export type { DocumentError, RenderResponse } from '../types/DocumentTypes';
 export type {
     FrameAnimationType,
     FrameAnimationPropertiesType,
