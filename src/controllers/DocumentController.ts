@@ -59,7 +59,7 @@ export class DocumentController {
                     }
                 });
 
-            if ((response?.status && response.status !== 200) || response.error) {
+            if ((response?.status && response.status !== 200) || response?.error) {
                 error = response?.error;
             }
             PREPARE_DOWNLOAD_URL = response?.resultUrl ? renderURLs.BASE_URL + response?.resultUrl : null;
