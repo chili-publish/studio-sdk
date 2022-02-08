@@ -2,7 +2,7 @@ export enum VariableType {
     shorttext = 'shorttext', longtext = 'longtext', image = 'image', group = 'group'
 }
 
-export interface Variable {
+export type Variable  = {
     id: string;
     type: VariableType;
     parentId?: string;
