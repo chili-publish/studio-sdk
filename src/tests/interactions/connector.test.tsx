@@ -13,6 +13,7 @@ describe.skip('Editor Link Validator', () => {
                 onOpenLayoutPropertiesPanelChange: () => null,
                 onScrubberPositionChanged: () => null,
                 onFrameAnimationsChanged: () => null,
+                onVariableListChanged: () => null,
             },
             () => null,
         );
@@ -38,6 +39,7 @@ describe.skip('Editor Link Validator', () => {
                 onOpenLayoutPropertiesPanelChange: () => null,
                 onScrubberPositionChanged: () => null,
                 onFrameAnimationsChanged: () => null,
+                onVariableListChanged: () => null,
             },
             () => null,
         );
@@ -62,6 +64,7 @@ describe.skip('Editor Link Validator', () => {
                 onOpenLayoutPropertiesPanelChange: () => null,
                 onScrubberPositionChanged: () => null,
                 onFrameAnimationsChanged: () => null,
+                onVariableListChanged: () => null,
             },
             () => null,
         );

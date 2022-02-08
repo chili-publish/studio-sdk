@@ -49,6 +49,7 @@ interface ConfigParameterTypes {
     onOpenLayoutPropertiesPanelChange: () => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
+    onVariableListChanged: (state: string) => void;
 }
 
 const Connect = (
