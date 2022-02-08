@@ -10,7 +10,7 @@ export const longPollForDownload = async (url: string) => {
         if (response.status === 202) {
             setTimeout(() => {
                 longPollForDownload(url);
-            }, 500);
+            }, 5000);
         }
         result = true;
     } catch (err) {

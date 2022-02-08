@@ -49,7 +49,7 @@ export class DocumentController {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(currentDocument),
+                body:currentDocument,
             })
                 .then((data) => data.json() as unknown as RenderResponse)
                 .catch((err) => (error = err));
