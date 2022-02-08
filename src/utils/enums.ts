@@ -9,3 +9,8 @@ export enum LayoutProperyNames {
     LAYOUT_HEIGHT = 'layoutHeight',
     LAYOUT_WIDTH = 'layoutWidth',
 }
+
+export enum renderURLs {
+    BASE_URL= 'https://eap-rendering.azurewebsites.net'
+
+};
