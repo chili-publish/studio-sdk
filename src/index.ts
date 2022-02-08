@@ -31,7 +31,6 @@ export type {
 } from '../types/AnimationTypes';
 export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
 
-
 let connection: Connection;
 
 export class SDK {
