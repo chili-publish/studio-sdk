@@ -1,11 +1,14 @@
 # editor-sdk
 
-![Statements](https://img.shields.io/badge/statements-81.6%25-yellow.svg) ![Branches](https://img.shields.io/badge/branches-67.55%25-red.svg) ![Functions](https://img.shields.io/badge/functions-74.53%25-red.svg) ![Lines](https://img.shields.io/badge/lines-81.92%25-yellow.svg)
+![Statements](https://img.shields.io/badge/statements-80.58%25-yellow.svg) ![Branches](https://img.shields.io/badge/branches-67.83%25-red.svg) ![Functions](https://img.shields.io/badge/functions-74.31%25-red.svg) ![Lines](https://img.shields.io/badge/lines-82.87%25-yellow.svg)
 
 [![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
 
 
 This repository includes the editor-sdk, the SDK is used to plugin to the Chili Publisher API and will handle the communication between workspace (React) and editor (Flutter).
+
+## Documentation
+The technical documentation on the SDK can be found on [this page](https://chili-publish.github.io/editor-sdk/).
 
 ## Versioning
 
@@ -39,3 +42,7 @@ then
 ### Run linter
 
 `yarn lint`
+
+## License Check
+If a new package will be installed,please check the package license information.If it has a valid license, go to `https://chilipublishintranet.atlassian.net/wiki/spaces/QIR/pages/3966042120/License+Information+of+Editor-SDK+package`
+And add this new packages license information to the documentation.

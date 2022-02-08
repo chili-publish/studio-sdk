@@ -23,6 +23,7 @@ export const mocksetLayoutHeight = jest.fn().mockResolvedValue({ success: true, 
 export const mocksetLayoutWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetLayoutHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetCurrentDocumentState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const mockChild = {
     addLayout: mockAddLayout,
@@ -50,6 +51,7 @@ const mockChild = {
     setLayoutWidth: mocksetLayoutWidth,
     resetLayoutHeight: mockResetLayoutHeight,
     resetLayoutWidth: mockResetLayoutWidth,
+    getCurrentDocumentState: mockGetCurrentDocumentState,
 };
 
 export default mockChild;

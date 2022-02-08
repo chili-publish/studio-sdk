@@ -3,8 +3,8 @@ import mockConfig, { defaultMockReturn } from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 import { FrameAnimationType } from '../../../types/AnimationTypes';
 import mockChild from '../__mocks__/FrameProperties';
-import FrameController from '../../controllers/FrameController';
-import AnimationController from '../../controllers/AnimationController';
+import { FrameController } from '../../controllers/FrameController';
+import { AnimationController } from '../../controllers/AnimationController';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -31,7 +31,7 @@ afterEach(() => {
 });
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
-        await mockedSDK.animation.setFrameAnimation(JSON.stringify(mockedAnimation));
+        await mockedSDK.animation.setFrameAnimation(mockedAnimation.animation);
         expect(mockedSDK.animation.setFrameAnimation).toHaveBeenCalledTimes(1);
 
         await mockedSDK.animation.playAnimation();

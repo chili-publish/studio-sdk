@@ -1,15 +1,16 @@
 import { Connection } from 'penpal';
-import { ConfigType, Child } from '../types/CommonTypes';
 import Connect from './interactions/connector';
-import FrameController from './controllers/FrameController';
-import AnimationController from './controllers/AnimationController';
-import LayoutController from './controllers/LayoutController';
-import UtilsController from './controllers/UtilsController';
-import SubscriberController from './controllers/SubscriberController';
+import { FrameController } from './controllers/FrameController';
+import { AnimationController } from './controllers/AnimationController';
+import { LayoutController } from './controllers/LayoutController';
+import { UtilsController } from './controllers/UtilsController';
+import { SubscriberController } from './controllers/SubscriberController';
+import { DocumentController } from './controllers/DocumentController';
 
-export { default as loadEditor } from './components/editor/Editor';
-export { default as Connect } from './interactions/connector';
+import type { ConfigType, Child } from '../types/CommonTypes';
+
 export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
+
 export {
     SlideDirections,
     ShakeDirections,
@@ -18,23 +19,40 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 
-export type { BasicAnimationsType } from '../types/AnimationTypes';
+export type { LayoutPropertiesType, FrameProperties, LayoutType } from '../types/LayoutTypes';
+export type { FrameLayoutType, FrameType } from '../types/FrameTypes';
 
-export type { FrameAnimationType, EaseTweenCombinationType, AnimationPlaybackType } from '../types/AnimationTypes';
+export type {
+    FrameAnimationType,
+    FrameAnimationPropertiesType,
+    EaseTweenCombinationType,
+    AnimationPlaybackType,
+    BasicAnimationsType,
+} from '../types/AnimationTypes';
+export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
 
 let connection: Connection;
 
 export class SDK {
     config: ConfigType;
     connection: Connection;
+
+    /**
+     * @ignore
+     */
     children: Child;
 
     layout: LayoutController;
     frame: FrameController;
     animation: AnimationController;
+    document: DocumentController;
     utils: UtilsController;
-    subscriber: SubscriberController;
+    private subscriber: SubscriberController;
 
+    /**
+     * The SDK should be configured clientside and it exposes all controllers to work with in other applications
+     * @param config The configuration object where the SDK and editor can get configured
+     */
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
@@ -45,10 +63,15 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.document = new DocumentController(this.children, this.config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
     }
 
+    /**
+     * This method will initiate the editor, running this will result in the editor restarting
+     * It will generate an iframe in the document
+     */
     loadEditor = () => {
         Connect(
             this.config.editorLink,
@@ -71,6 +94,7 @@ export class SDK {
         this.layout = new LayoutController(this.children, this.config);
         this.frame = new FrameController(this.children, this.config);
         this.animation = new AnimationController(this.children, this.config);
+        this.document = new DocumentController(this.children, this.config);
         this.utils = new UtilsController();
     };
 

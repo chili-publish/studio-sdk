@@ -1,110 +1,214 @@
 import { FrameProperyNames } from '../index';
-import { SelectedFrameLayoutType, Child, ConfigType } from '../../types/CommonTypes';
+import type { Child, ConfigType } from '../../types/CommonTypes';
+import type { FrameLayoutType } from '../../types/FrameTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
-class FrameController {
+/**
+ * The FrameController is responsible for all communication regarding Frames.
+ * Methods inside this controller can be called by `window.SDK.frame.{method-name}`
+ */
+export class FrameController {
+    /**
+     * @ignore
+     */
     children: Child;
+    /**
+     * @ignore
+     */
     config: ConfigType;
 
+    /**
+     * @ignore
+     */
     constructor(children: Child, config: ConfigType) {
         this.children = children;
         this.config = config;
     }
 
-    resetFrameSize = async (frameId: string) => {
+    /**
+     * This method will reset the frame size (width and height) to the frame's original value
+     * @param frameId The ID of a specific frame
+     * @returns
+     */
+    resetFrameSize = async (frameId: number) => {
         const res = await this.children;
-        return res.resetFrameSize(parseInt(frameId));
+        return res.resetFrameSize(frameId);
     };
 
-    selectFrame = async (frameId: string) => {
+    /**
+     * This method will select a specific frame
+     * @param frameId The ID of a specific frame
+     * @returns
+     */
+    selectFrame = async (frameId: number) => {
         const res = await this.children;
-        return res.selectFrames([parseInt(frameId)]);
+        return res.selectFrames([frameId]);
     };
 
-    selectMultipleFrames = async (frameIds: string[]) => {
+    /**
+     * This method will select multipleFrames
+     * @param frameIds An array of all IDs you want to select
+     * @returns
+     */
+    selectMultipleFrames = async (frameIds: number[]) => {
         const res = await this.children;
-        return res.selectFrames(frameIds.map((frameId) => parseInt(frameId)));
+        return res.selectFrames(frameIds);
     };
 
-    setFrameHeight = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
+    /**
+     * This method will set the height of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param selectedFrame The frame that is selected with all it's properties
+     * @returns
+     */
+    setFrameHeight = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.HEIGHT, value, selectedFrame);
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.height.value) return null;
+
         return res.setFrameHeight(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameRotation = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
+    /**
+     * This method will set the rotation angle of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is degrees
+     * @param selectedFrame The frame that is selected with all it's properties
+     * @returns
+     */
+    setFrameRotation = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_ROTATION, value, selectedFrame);
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.rotationDegrees.value) return null;
+
         return res.setFrameRotation(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameWidth = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
+    /**
+     * This method will set the width of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
+     * @param selectedFrame The frame that is selected with all it's properties
+     * @returns
+     */
+    setFrameWidth = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.WIDTH, value, selectedFrame);
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.width.value) return null;
+
         return res.setFrameWidth(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameX = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
+    /**
+     * This method will set the x value of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
+     * @param selectedFrame The frame that is selected with all it's properties
+     * @returns
+     */
+    setFrameX = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_X, value, selectedFrame);
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.x.value) return null;
+
         return res.setFrameX(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    setFrameY = async (value: string, selectedFrame: SelectedFrameLayoutType) => {
+    /**
+     * This method will set the y value of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
+     * @param selectedFrame The frame that is selected with all it's properties
+     * @returns
+     */
+    setFrameY = async (value: string, selectedFrame: FrameLayoutType) => {
         const res = await this.children;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_Y, value, selectedFrame);
         if (calc === null) {
             return null;
         }
+        if (calc === selectedFrame?.y.value) return null;
+
         return res.setFrameY(selectedFrame?.frameId, parseFloat(calc.toString()));
     };
 
-    resetFrameX = async (frameId: string) => {
+    /**
+     * This method will reset the x value of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetFrameX = async (frameId: number) => {
         const res = await this.children;
-        return res.resetFrameX(parseInt(frameId));
+        return res.resetFrameX(frameId);
     };
 
-    resetFrameY = async (frameId: string) => {
+    /**
+     * This method will reset the y value of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetFrameY = async (frameId: number) => {
         const res = await this.children;
-        return res.resetFrameY(parseInt(frameId));
+        return res.resetFrameY(frameId);
     };
 
-    resetFrameRotation = async (frameId: string) => {
+    /**
+     * This method will reset the rotation value of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetFrameRotation = async (frameId: number) => {
         const res = await this.children;
-        return res.resetFrameRotation(parseInt(frameId));
+        return res.resetFrameRotation(frameId);
     };
 
-    resetFrameWidth = async (frameId: string) => {
+    /**
+     * This method will reset the width of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetFrameWidth = async (frameId: number) => {
         const res = await this.children;
-        return res.resetFrameWidth(parseInt(frameId));
+        return res.resetFrameWidth(frameId);
     };
 
-    resetFrameHeight = async (frameId: string) => {
+    /**
+     * This method will reset the height of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetFrameHeight = async (frameId: number) => {
         const res = await this.children;
-        return res.resetFrameHeight(parseInt(frameId));
+        return res.resetFrameHeight(frameId);
     };
 
-    setFrameVisibility = async (frameId: string, value: boolean) => {
+    /**
+     * This method will set the visibility property of a specified frame. If set to false the frame will be invisible and vice versa.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value True means the frame gets visible, false means the frame gets invisible
+     * @returns
+     */
+    setFrameVisibility = async (frameId: number, value: boolean) => {
         const res = await this.children;
-        return res.setFrameVisibility(parseInt(frameId), value);
+        return res.setFrameVisibility(frameId, value);
     };
-    getFramePropertyCalculatedValue = (
-        name: FrameProperyNames,
-        value: string,
-        selectedFrame: SelectedFrameLayoutType,
-    ) => {
+
+    /**
+     * This method will trigger a calculation with logic built in, based on its parameters
+     * @param name The name of the property of whom the calculation is for
+     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is dependent on the frame property that triggers this calculation
+     * @param selectedFrame The frame that is selected with all it's properties
+     * @returns
+     */
+    getFramePropertyCalculatedValue = (name: FrameProperyNames, value: string, selectedFrame: FrameLayoutType) => {
         let calc = getCalculatedValue(value);
         switch (name) {
             case FrameProperyNames.FRAME_X: {
@@ -173,4 +277,3 @@ class FrameController {
         return calc;
     };
 }
-export default FrameController;
