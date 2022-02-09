@@ -35,6 +35,12 @@ export class DocumentController {
         return res.getCurrentDocumentState();
     };
 
+    /**
+     * This method will call an external api to create a download url
+     * @param format The format of a downloadable url
+     * @returns the download link
+     */
+
     getDownloadLink = async (format: string) => {
         let error: DocumentError | null = null;
         let currentDocument: string | null = null;
