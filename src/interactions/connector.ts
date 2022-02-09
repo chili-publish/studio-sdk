@@ -94,6 +94,7 @@ const Connect = (
                 openLayoutPropertiesPanel: params.onOpenLayoutPropertiesPanelChange,
                 scrubberPositionChanged: params.onScrubberPositionChanged,
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
+                variableListChanged: params.onVariableListChanged,
             },
         }),
     );
