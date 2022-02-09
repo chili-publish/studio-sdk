@@ -96,6 +96,7 @@ const Connect = (
                 scrubberPositionChanged: params.onScrubberPositionChanged,
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
                 selectedToolChanged: params.onSelectedToolChanged,
+                variableListChanged: params.onVariableListChanged,
             },
         }),
     );
