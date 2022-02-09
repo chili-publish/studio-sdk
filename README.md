@@ -9,6 +9,7 @@ This repository includes the editor-sdk, the SDK is used to plugin to the Chili 
 
 ## Documentation
 The technical documentation on the SDK can be found on [this page](https://chili-publish.github.io/editor-sdk/).
+To update the documentation in your PR run `npx typedoc` from the root.
 
 ## Versioning
 
