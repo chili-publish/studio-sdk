@@ -40,4 +40,5 @@ export type InitialStateType = {
     layouts: LayoutType[];
     selectedLayoutId: number;
     pages: PageType[];
+    variables: Variable[];
 };
