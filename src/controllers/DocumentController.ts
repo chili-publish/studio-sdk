@@ -1,5 +1,5 @@
 import { Child, ConfigType } from '../../types/CommonTypes';
-import { DocumentError } from '../../types/DocumentTypes';
+import type { DocumentError } from '../../types/DocumentTypes';
 import { renderURLs } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';
