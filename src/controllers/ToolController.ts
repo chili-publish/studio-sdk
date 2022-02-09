@@ -24,12 +24,32 @@ export class ToolController {
     }
 
     /**
-     * This method sets the currently used toolk
+     * This method sets the currently used tool
      * @param tool 
-     * @returns The JSON document in the form of a string
      */
-    setTool = async (tool: Tools) => {
+    private setTool = async (tool: Tools) => {
         const res = await this.children;
         return res.setTool(tool);
     };
+
+    /**
+     * This method sets the used tool to a Pointer tool
+     */
+    setPointerTool = async () => {
+        await this.setTool(Tools.POINTER)
+    };
+
+     /**
+     * This method sets the used tool to a Move tool
+     */
+    setMoveTool = async () => {
+        await this.setTool(Tools.MOVE)
+    }
+
+     /**
+     * This method sets the used tool to a Zoom tool
+     */
+    setZoomTool = async () => {
+        await this.setTool(Tools.ZOOM)
+    }
 }
