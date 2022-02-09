@@ -50,6 +50,7 @@ interface ConfigParameterTypes {
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
     onVariableListChanged: (state: string) => void;
+    onSelectedToolChanged: (state: string) => void;
 }
 
 const Connect = (
@@ -94,6 +95,7 @@ const Connect = (
                 openLayoutPropertiesPanel: params.onOpenLayoutPropertiesPanelChange,
                 scrubberPositionChanged: params.onScrubberPositionChanged,
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
+                selectedToolChanged: params.onSelectedToolChanged,
             },
         }),
     );

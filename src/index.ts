@@ -9,8 +9,9 @@ import { DocumentController } from './controllers/DocumentController';
 
 import type { ConfigType, Child } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
+import { ToolController } from './controllers/ToolController';
 
-export { FrameProperyNames, LayoutProperyNames } from './utils/enums';
+export { FrameProperyNames, LayoutProperyNames, Tools } from './utils/enums';
 
 export {
     SlideDirections,
@@ -51,6 +52,7 @@ export class SDK {
     document: DocumentController;
     variable: VariableController;
     utils: UtilsController;
+    tool: ToolController;
     private subscriber: SubscriberController;
 
     /**
@@ -71,6 +73,7 @@ export class SDK {
         this.variable = new VariableController(this.children, this.config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
+        this.tool = new ToolController(this.children, this.config)
     }
 
     /**
@@ -89,6 +92,7 @@ export class SDK {
                 onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
                 onVariableListChanged: this.subscriber.onVariableListChanged,
+                onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -103,6 +107,7 @@ export class SDK {
         this.document = new DocumentController(this.children, this.config);
         this.variable = new VariableController(this.children, this.config);
         this.utils = new UtilsController();
+        this.tool = new ToolController(this.children, this.config)
     };
 
     setConnection = (newConnection: Connection) => {
