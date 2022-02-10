@@ -20,13 +20,13 @@ export class ToolController {
      */
     constructor(children: Child, config: ConfigType) {
         this.children = children;
-        this.config = config;   
+        this.config = config;
     }
 
     /**
-     * This method sets the currently used tool 
-     * @param tool 
-     */  
+     * This method sets the currently used tool
+     * @param tool
+     */
     private setTool = async (tool: Tools) => {
         const res = await this.children;
         return res.setTool(tool);
@@ -36,20 +36,20 @@ export class ToolController {
      * This method sets the used tool to a Pointer tool
      */
     setPointerTool = async () => {
-        await this.setTool(Tools.POINTER)
+        await this.setTool(Tools.POINTER);
     };
 
-     /**
+    /**
      * This method sets the used tool to a Move tool
      */
     setMoveTool = async () => {
-        await this.setTool(Tools.MOVE)
-    }
+        await this.setTool(Tools.MOVE);
+    };
 
-     /**
+    /**
      * This method sets the used tool to a Zoom tool
      */
     setZoomTool = async () => {
-        await this.setTool(Tools.ZOOM)
-    }
+        await this.setTool(Tools.ZOOM);
+    };
 }
