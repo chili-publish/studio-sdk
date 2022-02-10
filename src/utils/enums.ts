@@ -11,7 +11,7 @@ export enum LayoutProperyNames {
 }
 
 export enum Tools {
-    POINTER = 'pointer',
+    SELECT = 'select',
     ZOOM = 'zoom',
-    MOVE = 'move'
+    HAND = 'hand',
 }
