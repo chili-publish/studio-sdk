@@ -98,7 +98,6 @@ export class DocumentController {
                 success: true,
                 status: 200,
                 data: DOWNLOAD_URL,
-                error: null,
             };
         } catch (err) {
             error = err as DocumentError;
