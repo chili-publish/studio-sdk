@@ -72,7 +72,6 @@ describe('Document controller', () => {
             expect(downloadResponse).toMatchObject({
                 success: true,
                 data: 'https://eap-rendering.azurewebsites.net/url/1',
-                error: null,
             });
         });
 
