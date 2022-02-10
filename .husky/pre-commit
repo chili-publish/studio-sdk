@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-node_modules/pretty-quick/bin/pretty-quick.js --staged
+yarn format-staged
 yarn lint
