@@ -24,9 +24,9 @@ export class ToolController {
     }
 
     /**
-     * This method sets the currently used tool
+     * This method sets the currently used tool 
      * @param tool 
-     */
+     */  
     private setTool = async (tool: Tools) => {
         const res = await this.children;
         return res.setTool(tool);
