@@ -14,6 +14,7 @@ describe.skip('Editor Link Validator', () => {
                 onScrubberPositionChanged: () => null,
                 onFrameAnimationsChanged: () => null,
                 onVariableListChanged: () => null,
+                onSelectedToolChanged: () => null,
             },
             () => null,
         );
@@ -40,6 +41,7 @@ describe.skip('Editor Link Validator', () => {
                 onScrubberPositionChanged: () => null,
                 onFrameAnimationsChanged: () => null,
                 onVariableListChanged: () => null,
+                onSelectedToolChanged: () => null,
             },
             () => null,
         );
@@ -65,6 +67,7 @@ describe.skip('Editor Link Validator', () => {
                 onScrubberPositionChanged: () => null,
                 onFrameAnimationsChanged: () => null,
                 onVariableListChanged: () => null,
+                onSelectedToolChanged: () => null,
             },
             () => null,
         );
