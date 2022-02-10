@@ -26,6 +26,7 @@ export type { LayoutPropertiesType, FrameProperties, LayoutType } from '../types
 export type { FrameLayoutType, FrameType } from '../types/FrameTypes';
 export type { Variable } from '../types/VariableTypes';
 
+export type { DocumentError } from '../types/DocumentTypes';
 export type {
     FrameAnimationType,
     FrameAnimationPropertiesType,
@@ -33,7 +34,7 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from '../types/AnimationTypes';
-export type { ConfigType, InitialStateType, PageType } from '../types/CommonTypes';
+export type { ConfigType, InitialStateType, PageType, EditorResponse } from '../types/CommonTypes';
 
 let connection: Connection;
 

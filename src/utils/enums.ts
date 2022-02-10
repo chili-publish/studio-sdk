@@ -10,6 +10,9 @@ export enum LayoutProperyNames {
     LAYOUT_WIDTH = 'layoutWidth',
 }
 
+export enum renderURLs {
+    BASE_URL = 'https://eap-rendering.azurewebsites.net',
+}
 export enum Tools {
     SELECT = 'select',
     ZOOM = 'zoom',
