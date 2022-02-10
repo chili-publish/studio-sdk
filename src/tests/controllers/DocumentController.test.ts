@@ -3,7 +3,6 @@ import mockChild from '../__mocks__/FrameProperties';
 
 import { DocumentController } from '../../controllers/DocumentController';
 import * as FetchHelper from '../../utils/getFetchUrl';
-import * as longPoll from '../../utils/longPollForDownload';
 
 let document: DocumentController;
 let mockedFetURLGetter: jest.SpyInstance;
@@ -14,8 +13,7 @@ beforeEach(() => {
     document = new DocumentController(mockChild, mockConfig);
     jest.spyOn(document, 'getCurrentDocumentState');
     jest.spyOn(document, 'getDownloadLink');
-    jest.spyOn(longPoll, 'longPollForDownload');
-    mockedLongPoll = jest.spyOn(longPoll, 'longPollForDownload');
+    mockedLongPoll = jest.spyOn(document, 'longPollForDownload');
     mockedFetURLGetter = jest.spyOn(FetchHelper, 'getFetchURL');
     global.fetch = mockFetch;
     mockedFetURLGetter.mockReturnValue('test url');
@@ -152,6 +150,41 @@ describe('Document controller', () => {
                     Error: 'Second api call failed.',
                 },
             });
+        });
+    });
+    describe('longPollForDownload', () => {
+        it('calls fetch with given url', () => {
+            document.longPollForDownload('url');
+            expect(mockFetch).toHaveBeenLastCalledWith('url');
+        });
+        jest.setTimeout(15000);
+        it('calls fetch till response status code is more than 200', async () => {
+            mockFetch
+                .mockReturnValueOnce(
+                    new Promise((resolve) =>
+                        resolve({
+                            status: 202,
+                        }),
+                    ),
+                )
+                .mockReturnValueOnce(
+                    new Promise((resolve) =>
+                        resolve({
+                            status: 202,
+                        }),
+                    ),
+                )
+                .mockReturnValueOnce(
+                    new Promise((resolve) =>
+                        resolve({
+                            status: 200,
+                        }),
+                    ),
+                );
+
+            await document.longPollForDownload('url');
+
+            expect(mockFetch).toHaveBeenCalledTimes(8);
         });
     });
 });
