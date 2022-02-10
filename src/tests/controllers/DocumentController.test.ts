@@ -193,4 +193,9 @@ describe('Document controller', () => {
         await document.loadDocument(mockDocument);
         expect(document.children.loadDocument).toHaveBeenCalledTimes(1);
     });
+
+    it('load provided document', async () => {
+        await mockedSDK.document.loadDocument(mockDocument);
+        expect(mockedSDK.document.children.loadDocument).toHaveBeenCalledTimes(1);
+    });
 });
