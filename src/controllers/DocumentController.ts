@@ -5,7 +5,6 @@ import { Child, ConfigType } from '../../types/CommonTypes';
  * Methods inside this controller can be called by `window.SDK.document.{method-name}`
  */
 
-type JSONValue = string | number | boolean | { [x: string]: JSONValue } | Array<JSONValue>;
 export class DocumentController {
     /**
      * @ignore
