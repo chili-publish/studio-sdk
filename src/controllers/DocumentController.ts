@@ -34,7 +34,7 @@ export class DocumentController {
 
     /**
      * This method will load a provided document
-     * @param documentJson The document to load
+     * @param documentJson The document to load in string format
      * @returns starting of provided document
      */
 
