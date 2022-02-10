@@ -35,7 +35,7 @@ export class ToolController {
     /**
      * This method sets the used tool to a Pointer tool
      */
-    setSelectrTool = async () => {
+    setSelectTool = async () => {
         await this.setTool(Tools.SELECT);
     };
 

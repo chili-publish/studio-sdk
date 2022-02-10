@@ -16,7 +16,7 @@ describe('Tool controller', () => {
     });
 
     it('sets the pointer tool', async () => {
-        await mockedSDK.tool.setSelectrTool();
+        await mockedSDK.tool.setSelectTool();
         expect(mockedSDK.tool.children.setTool).toHaveBeenCalledTimes(1);
         expect(mockedSDK.tool.children.setTool).toHaveBeenCalledWith(Tools.SELECT);
     });
