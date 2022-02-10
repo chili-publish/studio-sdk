@@ -35,15 +35,15 @@ export class ToolController {
     /**
      * This method sets the used tool to a Pointer tool
      */
-    setPointerTool = async () => {
-        await this.setTool(Tools.POINTER);
+    setSelectTool = async () => {
+        await this.setTool(Tools.SELECT);
     };
 
     /**
      * This method sets the used tool to a Move tool
      */
-    setMoveTool = async () => {
-        await this.setTool(Tools.MOVE);
+    setHandTool = async () => {
+        await this.setTool(Tools.HAND);
     };
 
     /**

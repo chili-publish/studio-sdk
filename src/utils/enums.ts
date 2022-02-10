@@ -14,7 +14,7 @@ export enum renderURLs {
     BASE_URL = 'https://eap-rendering.azurewebsites.net',
 }
 export enum Tools {
-    POINTER = 'pointer',
+    SELECT = 'select',
     ZOOM = 'zoom',
-    MOVE = 'move'
+    HAND = 'hand',
 }

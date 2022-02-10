@@ -3,8 +3,6 @@ import mockChild from '../__mocks__/FrameProperties';
 import { SDK, Tools } from '../../index';
 import { ToolController } from '../../controllers/ToolController';
 
-
-
 describe('Tool controller', () => {
     let mockedSDK: SDK;
     beforeEach(() => {
@@ -12,20 +10,20 @@ describe('Tool controller', () => {
         mockedSDK.children = mockChild;
         mockedSDK.tool = new ToolController(mockChild, mockConfig);
     });
-    
+
     afterEach(() => {
         jest.restoreAllMocks();
     });
-    
+
     it('sets the pointer tool', async () => {
-        await mockedSDK.tool.setPointerTool();
+        await mockedSDK.tool.setSelectTool();
         expect(mockedSDK.tool.children.setTool).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.tool.children.setTool).toHaveBeenCalledWith(Tools.POINTER);
+        expect(mockedSDK.tool.children.setTool).toHaveBeenCalledWith(Tools.SELECT);
     });
     it('sets the move tool', async () => {
-        await mockedSDK.tool.setMoveTool();
+        await mockedSDK.tool.setHandTool();
         expect(mockedSDK.tool.children.setTool).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.tool.children.setTool).toHaveBeenCalledWith(Tools.MOVE);
+        expect(mockedSDK.tool.children.setTool).toHaveBeenCalledWith(Tools.HAND);
     });
 
     it('sets the zoom tool', async () => {

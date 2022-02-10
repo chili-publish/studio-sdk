@@ -1,5 +1,6 @@
 import mockConfig from '../__mocks__/config';
 import mockChild from '../__mocks__/FrameProperties';
+import { mockDocument } from '../__mocks__/mockDocument';
 
 import { DocumentController } from '../../controllers/DocumentController';
 import * as FetchHelper from '../../utils/getFetchUrl';
@@ -12,6 +13,7 @@ const mockFetch = jest.fn();
 beforeEach(() => {
     document = new DocumentController(mockChild, mockConfig);
     jest.spyOn(document, 'getCurrentDocumentState');
+    jest.spyOn(document, 'loadDocument');
     jest.spyOn(document, 'getDownloadLink');
     mockedLongPoll = jest.spyOn(document, 'longPollForDownload');
     mockedFetURLGetter = jest.spyOn(FetchHelper, 'getFetchURL');
@@ -185,5 +187,10 @@ describe('Document controller', () => {
 
             expect(mockFetch).toHaveBeenCalledTimes(8);
         });
+    });
+
+    it('load provided document', async () => {
+        await document.loadDocument(mockDocument);
+        expect(document.children.loadDocument).toHaveBeenCalledTimes(1);
     });
 });
