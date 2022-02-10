@@ -1,6 +1,6 @@
 # editor-sdk
 
-![Statements](https://img.shields.io/badge/statements-83.86%25-yellow.svg) ![Branches](https://img.shields.io/badge/branches-69.92%25-red.svg) ![Functions](https://img.shields.io/badge/functions-79.14%25-red.svg) ![Lines](https://img.shields.io/badge/lines-85.41%25-yellow.svg)
+![Statements](https://img.shields.io/badge/statements-84.01%25-yellow.svg) ![Branches](https://img.shields.io/badge/branches-70.04%25-red.svg) ![Functions](https://img.shields.io/badge/functions-79.43%25-red.svg) ![Lines](https://img.shields.io/badge/lines-85.51%25-yellow.svg)
 
 [![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
 
