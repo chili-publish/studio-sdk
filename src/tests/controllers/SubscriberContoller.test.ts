@@ -68,8 +68,8 @@ describe('Subscriber methods', () => {
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {
-        mockedSubscribers.onSelectedToolChanged(Tools.MOVE);
+        mockedSubscribers.onSelectedToolChanged(Tools.HAND);
         expect(mockedSDK.tool.config.onSelectedToolChanged).toHaveBeenCalled();
-        expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('move');
+        expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('hand');
     });
 });
