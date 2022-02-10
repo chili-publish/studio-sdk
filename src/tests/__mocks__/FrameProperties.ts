@@ -24,6 +24,7 @@ export const mocksetLayoutWidth = jest.fn().mockResolvedValue({ success: true, s
 export const mockResetLayoutHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetCurrentDocumentState = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockLoadDocument = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAddVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGroupVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -60,6 +61,7 @@ const mockChild = {
     resetLayoutHeight: mockResetLayoutHeight,
     resetLayoutWidth: mockResetLayoutWidth,
     getCurrentDocumentState: mockGetCurrentDocumentState,
+    loadDocument: mockLoadDocument,
     getVariableList: mockGetVariableList,
     getVariable: mockGetVariable,
     addVariable: mockAddVariable,
