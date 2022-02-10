@@ -37,7 +37,6 @@ export class DocumentController {
      * @param documentJson The document to load in string format
      * @returns The document loaded inside of the canvas
      */
-
     loadDocument = async (documentJson: string) => {
         const res = await this.children;
         return res.loadDocument(documentJson);
