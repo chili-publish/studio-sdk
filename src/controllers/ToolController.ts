@@ -20,7 +20,7 @@ export class ToolController {
      */
     constructor(children: Child, config: ConfigType) {
         this.children = children;
-        this.config = config;
+        this.config = config;   
     }
 
     /**
