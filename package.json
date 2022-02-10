@@ -59,11 +59,12 @@
         "format-staged": "pretty-quick --staged",
         "cover": "jest --coverage",
         "make-badges": "istanbul-badges-readme",
-        "validate-licenses": "node validate_licenses.js"
+        "validate-licenses": "node validate_licenses.js",
+        "postinstall": "node ./node_modules/husky/lib/bin install"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "format-staged"
+            "pre-commit": "npm run format-staged"
         }
     },
     "main": "./_bundles/main.js",

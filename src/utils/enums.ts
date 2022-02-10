@@ -9,3 +9,9 @@ export enum LayoutProperyNames {
     LAYOUT_HEIGHT = 'layoutHeight',
     LAYOUT_WIDTH = 'layoutWidth',
 }
+
+export enum Tools {
+    POINTER = 'pointer',
+    ZOOM = 'zoom',
+    MOVE = 'move'
+}
