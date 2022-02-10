@@ -1,4 +1,5 @@
 import { ConfigType } from '../../types/CommonTypes';
+import { Tools } from '../utils/enums';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the aplication-state from outside.
@@ -87,4 +88,13 @@ export class SubscriberController {
         const callBack = this.config.onVariableListChanged;
         callBack(JSON.parse(variablesJson));
     };
+
+    /**
+     * Listener on when the tool has changed by the canvas
+     * @param tool The string representation of a certain tool
+     */
+    onSelectedToolChanged = (tool: string) => {
+        const callBack = this.config.onSelectedToolChanged;
+        callBack(tool as Tools);
+    }
 }

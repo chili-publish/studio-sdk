@@ -12,5 +12,6 @@ const mockConfig: ConfigType = {
     onScrubberPositionChanged: defaultMockReturn,
     onFrameAnimationsChanged: defaultMockReturn,
     onVariableListChanged: defaultMockReturn,
+    onSelectedToolChanged: defaultMockReturn,
 };
 export default mockConfig;

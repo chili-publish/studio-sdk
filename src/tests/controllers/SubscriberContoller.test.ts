@@ -6,6 +6,8 @@ import { mockFrameAnimation } from '../__mocks__/animations';
 import { FrameAnimationType } from '../../../types/AnimationTypes';
 import { VariableType } from '../../../types/VariableTypes';
 
+import { Tools } from '../../utils/enums';
+
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
 let mockedSubscribers: SubscriberController;
@@ -22,6 +24,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutPropertiesChanged');
     jest.spyOn(mockedSubscribers, 'onStateChanged');
     jest.spyOn(mockedSubscribers, 'onVariableListChanged');
+    jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
     mockedSubscribers.onAnimationPlaybackChanged = defaultMockReturn;
 });
 
@@ -62,5 +65,11 @@ describe('Subscriber methods', () => {
         expect(mockedSDK.variable.config.onVariableListChanged).toHaveBeenCalledWith([
             { id: '1', type: VariableType.group },
         ]);
+    });
+
+    it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {
+        mockedSubscribers.onSelectedToolChanged(Tools.MOVE);
+        expect(mockedSDK.tool.config.onSelectedToolChanged).toHaveBeenCalled();
+        expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('move');
     });
 });

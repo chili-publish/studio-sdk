@@ -32,6 +32,7 @@ export const mockSetVariableLabel = jest.fn().mockResolvedValue({ success: true,
 export const mockSetVariableType = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetVariableList = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetTool = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const mockChild = {
     addLayout: mockAddLayout,
@@ -68,6 +69,7 @@ const mockChild = {
     setVariableName: mockSetVariableName,
     setVariableLabel: mockSetVariableLabel,
     setVariableType: mockSetVariableType,
+    setTool: mockSetTool,
 };
 
 export default mockChild;

@@ -13,3 +13,8 @@ export enum LayoutProperyNames {
 export enum renderURLs {
     BASE_URL = 'https://eap-rendering.azurewebsites.net',
 }
+export enum Tools {
+    POINTER = 'pointer',
+    ZOOM = 'zoom',
+    MOVE = 'move'
+}
