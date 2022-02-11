@@ -61,7 +61,7 @@ describe('Document controller', () => {
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1, undefined, undefined, undefined);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1);
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: 'document',
@@ -90,7 +90,7 @@ describe('Document controller', () => {
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1, undefined, undefined, undefined);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1);
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: 'document',
                 headers: { 'Content-Type': 'application/json' },
@@ -137,7 +137,7 @@ describe('Document controller', () => {
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1, undefined, undefined, undefined);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1);
             expect(mockFetch).toHaveBeenLastCalledWith('https://eap-rendering.azurewebsites.net/url/1');
 
             expect(mockedLongPoll).toHaveBeenCalledTimes(1);

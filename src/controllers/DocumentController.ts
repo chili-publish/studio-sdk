@@ -51,13 +51,7 @@ export class DocumentController {
      * @param layoutId id of layout to be downloaded
      * @returns the download link
      */
-    getDownloadLink = async (
-        format: string,
-        layoutId: number,
-        fps?: number,
-        pixelRatio?: number,
-        encoding?: string,
-    ) => {
+    getDownloadLink = async (format: string, layoutId: number) => {
         let error: DocumentError | null = null;
         let currentDocument: string | null = null;
         let PREPARE_DOWNLOAD_URL: string | null = null;
@@ -65,7 +59,7 @@ export class DocumentController {
 
         const documentResponse = await this.getCurrentDocumentState();
         currentDocument = documentResponse.data ? String(documentResponse.data) : null;
-        const FETCH_URL = getFetchURL(format, layoutId, fps, pixelRatio, encoding);
+        const FETCH_URL = getFetchURL(format, layoutId);
         try {
             const response = await fetch(FETCH_URL, {
                 method: 'POST',
