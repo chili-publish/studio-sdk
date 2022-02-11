@@ -60,15 +60,6 @@ export class VariableController {
     };
 
     /**
-     * This method adds a variable to a group
-     * @returns
-     */
-    groupVariable = async (variableId: string, parentId: string) => {
-        const res = await this.children;
-        return res.groupVariable(variableId, parentId);
-    };
-
-    /**
      * This method sets a new name for a variable
      * @returns
      */
@@ -93,5 +84,77 @@ export class VariableController {
     setVariableType = async (variableId: string, type: VariableType) => {
         const res = await this.children;
         return res.setVariableType(variableId, type);
+    };
+
+    /**
+     * This method sets a new value for a variable
+     * @returns
+     */
+    setDefaultVariableValue = async (variableId: string, value: string) => {
+        const res = await this.children;
+        return res.setDefaultVariableValue(variableId, value);
+    };
+
+    /**
+     * This method sets a new value for a variable
+     * @returns
+     */
+    setVariableValue = async (variableId: string, value: string) => {
+        const res = await this.children;
+        return res.setVariableValue(variableId, value);
+    };
+
+    /**
+     * This method creates a copy of a variable
+     * @returns
+     */
+    duplicateVariable = async (variableId: string) => {
+        const res = await this.children;
+        return res.duplicateVariable(variableId);
+    };
+
+    /**
+     * This method aggregates the provided variables into a new group
+     * @returns
+     */
+    groupVariables = async (groupName: string, variableIds: string[]) => {
+        const res = await this.children;
+        return res.groupVariables(groupName, variableIds);
+    };
+
+    /**
+     * This method moves a variable's position
+     * @returns
+     */
+    moveVariable = async (variableId: string, parentId: string, orderIndex: number) => {
+        const res = await this.children;
+        return res.moveVariable(variableId, parentId, orderIndex);
+    };
+
+    /**
+     * This method sets isHidden flag for a variable
+     * @returns
+     */
+    setVariableIsHidden = async (variableId: string, isHidden: boolean) => {
+        const res = await this.children;
+        return res.setVariableIsHidden(variableId, isHidden);
+    };
+
+    /**
+     * This method sets isRequired flag for a variable
+     * @returns
+     */
+    setVariableIsRequired = async (variableId: string, isRequired: boolean) => {
+        const res = await this.children;
+        return res.setVariableIsRequired(variableId, isRequired);
+    };
+
+    /**
+     * This method sets isReadonly flag for a variable
+     * @returns
+     */
+    setVariableIsReadonly = async (variableId: string, isReadonly: boolean) => {
+        const res = await this.children;
+        return res.setVariableIsReadonly(variableId, isReadonly);
     };
 }

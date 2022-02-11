@@ -3,8 +3,6 @@ import mockChild from '../__mocks__/FrameProperties';
 import { SDK, Tools } from '../../index';
 import { ToolController } from '../../controllers/ToolController';
 
-
-
 describe('Tool controller', () => {
     let mockedSDK: SDK;
     beforeEach(() => {
@@ -12,11 +10,11 @@ describe('Tool controller', () => {
         mockedSDK.children = mockChild;
         mockedSDK.tool = new ToolController(mockChild, mockConfig);
     });
-    
+
     afterEach(() => {
         jest.restoreAllMocks();
     });
-    
+
     it('sets the pointer tool', async () => {
         await mockedSDK.tool.setPointerTool();
         expect(mockedSDK.tool.children.setTool).toHaveBeenCalledTimes(1);

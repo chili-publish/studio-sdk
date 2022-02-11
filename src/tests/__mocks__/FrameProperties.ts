@@ -26,10 +26,17 @@ export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true,
 export const mockGetCurrentDocumentState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAddVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockGroupVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGroupVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableName = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableLabel = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableType = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetDefaultVariableValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetVariableValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMoveVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetVariableIsHidden = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetVariableIsRequired = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetVariableIsReadonly = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockDuplicateVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetVariableList = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetTool = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -65,10 +72,17 @@ const mockChild = {
     getVariable: mockGetVariable,
     addVariable: mockAddVariable,
     removeVariable: mockRemoveVariable,
-    groupVariable: mockGroupVariable,
+    groupVariables: mockGroupVariables,
     setVariableName: mockSetVariableName,
     setVariableLabel: mockSetVariableLabel,
     setVariableType: mockSetVariableType,
+    setDefaultVariableValue: mockSetDefaultVariableValue,
+    setVariableValue: mockSetVariableValue,
+    duplicateVariable: mockDuplicateVariable,
+    moveVariable: mockMoveVariable,
+    setVariableIsHidden: mockSetVariableIsHidden,
+    setVariableIsRequired: mockSetVariableIsRequired,
+    setVariableIsReadonly: mockSetVariableIsReadonly,
     setTool: mockSetTool,
 };
 

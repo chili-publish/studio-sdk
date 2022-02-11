@@ -96,5 +96,5 @@ export class SubscriberController {
     onSelectedToolChanged = (tool: string) => {
         const callBack = this.config.onSelectedToolChanged;
         callBack(tool as Tools);
-    }
+    };
 }

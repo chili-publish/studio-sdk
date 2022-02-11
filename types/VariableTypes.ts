@@ -9,6 +9,7 @@ export type Variable  = {
     name?: string;
     label?: string;
     isHidden?: boolean;
+    occurrences?: number;
     value?: string;
     defaultValue?: string;
 }

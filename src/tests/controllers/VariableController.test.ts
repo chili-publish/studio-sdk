@@ -43,12 +43,6 @@ describe('Variable controller', () => {
         expect(mockedSDK.variable.children.removeVariable).toHaveBeenCalledWith('2');
     });
 
-    it('group variable', async () => {
-        await mockedSDK.variable.groupVariable('3', '2');
-        expect(mockedSDK.variable.children.groupVariable).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.variable.children.groupVariable).toHaveBeenCalledWith('3', '2');
-    });
-
     it('set variable name', async () => {
         await mockedSDK.variable.setVariableName('3', 'newName');
         expect(mockedSDK.variable.children.setVariableName).toHaveBeenCalledTimes(1);
@@ -65,5 +59,53 @@ describe('Variable controller', () => {
         await mockedSDK.variable.setVariableType('3', VariableType.group);
         expect(mockedSDK.variable.children.setVariableType).toHaveBeenCalledTimes(1);
         expect(mockedSDK.variable.children.setVariableType).toHaveBeenCalledWith('3', VariableType.group);
+    });
+
+    it('set variable default value', async () => {
+        await mockedSDK.variable.setDefaultVariableValue('3', 'value');
+        expect(mockedSDK.variable.children.setDefaultVariableValue).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.setDefaultVariableValue).toHaveBeenCalledWith('3', 'value');
+    });
+
+    it('set variable value', async () => {
+        await mockedSDK.variable.setVariableValue('3', 'value');
+        expect(mockedSDK.variable.children.setVariableValue).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.setVariableValue).toHaveBeenCalledWith('3', 'value');
+    });
+
+    it('group variables', async () => {
+        await mockedSDK.variable.groupVariables('3', ['2', '5']);
+        expect(mockedSDK.variable.children.groupVariables).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.groupVariables).toHaveBeenCalledWith('3', ['2', '5']);
+    });
+
+    it('duplicate variable', async () => {
+        await mockedSDK.variable.duplicateVariable('3');
+        expect(mockedSDK.variable.children.duplicateVariable).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.duplicateVariable).toHaveBeenCalledWith('3');
+    });
+
+    it('moveVariable variable', async () => {
+        await mockedSDK.variable.moveVariable('1', '6', 0);
+        expect(mockedSDK.variable.children.moveVariable).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.moveVariable).toHaveBeenCalledWith('1', '6', 0);
+    });
+
+    it('set isHidden', async () => {
+        await mockedSDK.variable.setVariableIsHidden('1', false);
+        expect(mockedSDK.variable.children.setVariableIsHidden).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.setVariableIsHidden).toHaveBeenCalledWith('1', false);
+    });
+
+    it('set isRequired', async () => {
+        await mockedSDK.variable.setVariableIsRequired('1', true);
+        expect(mockedSDK.variable.children.setVariableIsRequired).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.setVariableIsRequired).toHaveBeenCalledWith('1', true);
+    });
+
+    it('set isReadonly', async () => {
+        await mockedSDK.variable.setVariableIsReadonly('1', true);
+        expect(mockedSDK.variable.children.setVariableIsReadonly).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.setVariableIsReadonly).toHaveBeenCalledWith('1', true);
     });
 });
