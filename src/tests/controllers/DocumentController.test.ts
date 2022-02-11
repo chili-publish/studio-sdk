@@ -53,7 +53,7 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink('mp4');
+            const downloadResponse = await document.getDownloadLink('mp4', 1);
 
             expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
@@ -61,7 +61,7 @@ describe('Document controller', () => {
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4');
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4',1);
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: 'document',
@@ -86,11 +86,11 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink('mp4');
+            const downloadResponse = await document.getDownloadLink('mp4', 1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4');
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4',1);
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: 'document',
@@ -132,13 +132,13 @@ describe('Document controller', () => {
                 ),
             );
 
-            const downloadResponse = await document.getDownloadLink('mp4');
+            const downloadResponse = await document.getDownloadLink('mp4', 1);
 
             expect(document.children.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4');
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4',1);
 
             expect(mockFetch).toHaveBeenLastCalledWith('https://eap-rendering.azurewebsites.net/url/1');
 
