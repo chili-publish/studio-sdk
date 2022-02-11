@@ -9,6 +9,8 @@ export type Variable  = {
     name?: string;
     label?: string;
     isHidden?: boolean;
+    isReadonly?: boolean;
+    isRequired?: boolean;
     occurrences?: number;
     value?: string;
     defaultValue?: string;

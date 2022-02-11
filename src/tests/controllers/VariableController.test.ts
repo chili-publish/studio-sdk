@@ -108,4 +108,10 @@ describe('Variable controller', () => {
         expect(mockedSDK.variable.children.setVariableIsReadonly).toHaveBeenCalledTimes(1);
         expect(mockedSDK.variable.children.setVariableIsReadonly).toHaveBeenCalledWith('1', true);
     });
+
+    it('ungroup variables', async () => {
+        await mockedSDK.variable.ungroupVariable('1');
+        expect(mockedSDK.variable.children.ungroupVariable).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.variable.children.ungroupVariable).toHaveBeenCalledWith('1');
+    });
 });

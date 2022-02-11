@@ -123,6 +123,15 @@ export class VariableController {
     };
 
     /**
+     * This method dissolves the specified group
+     * @returns
+     */
+    ungroupVariable = async (groupId: string) => {
+        const res = await this.children;
+        return res.ungroupVariable(groupId);
+    };
+
+    /**
      * This method moves a variable's position
      * @returns
      */
