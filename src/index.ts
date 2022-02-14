@@ -74,7 +74,7 @@ export class SDK {
         this.variable = new VariableController(this.children, this.config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
-        this.tool = new ToolController(this.children, this.config)
+        this.tool = new ToolController(this.children, this.config);
     }
 
     /**
@@ -108,7 +108,7 @@ export class SDK {
         this.document = new DocumentController(this.children, this.config);
         this.variable = new VariableController(this.children, this.config);
         this.utils = new UtilsController();
-        this.tool = new ToolController(this.children, this.config)
+        this.tool = new ToolController(this.children, this.config);
     };
 
     setConnection = (newConnection: Connection) => {
