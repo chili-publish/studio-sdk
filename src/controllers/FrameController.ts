@@ -141,6 +141,15 @@ export class FrameController {
     };
 
     /**
+     * This method will reset properties of a specific frame to their original values
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetFrame = async (frameId: number) => {
+        const res = await this.children;
+        return res.resetFrame(frameId);
+    };
+    /**
      * This method will reset the x value of a specific frame to its original value
      * @param frameId The ID of the frame that needs to get reset
      * @returns
