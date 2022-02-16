@@ -65,6 +65,7 @@ const Connect = (
     iframe.setAttribute('title', 'Chili-Editor');
     iframe.setAttribute('style', 'width: 100%; height: 100%;');
     iframe.setAttribute('frameBorder', '0');
+    iframe.setAttribute('referrerpolicy', 'origin');
 
     const setupNewFrame = () => {
         const iframeContainer = document.querySelector(editorSelectorId);
