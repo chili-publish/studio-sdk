@@ -141,7 +141,7 @@ export class FrameController {
     };
 
     /**
-     * This method will reset propertiesof a specific frame to its original value
+     * This method will reset properties of a specific frame to their original values
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
