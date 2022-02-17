@@ -104,6 +104,27 @@
                                                 >get<wbr />Current<wbr />Document<wbr />State</a
                                             >
                                         </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_DocumentController.DocumentController.html#getDownloadLink"
+                                                class="tsd-kind-icon"
+                                                >get<wbr />Download<wbr />Link</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_DocumentController.DocumentController.html#loadDocument"
+                                                class="tsd-kind-icon"
+                                                >load<wbr />Document</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_DocumentController.DocumentController.html#startPollingOnEndpoint"
+                                                class="tsd-kind-icon"
+                                                >start<wbr />Polling<wbr />On<wbr />Endpoint</a
+                                            >
+                                        </li>
                                     </ul>
                                 </section>
                             </div>
@@ -141,7 +162,11 @@
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
                                     ><span class="tsd-signature-symbol">&lt;</span
-                                    ><span class="tsd-signature-type">EditorResponse</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
                                     ><span class="tsd-signature-symbol">&gt;</span>
                                 </li>
                             </ul>
@@ -152,8 +177,8 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/c117f97/src/controllers/DocumentController.ts#L29"
-                                                    >src/controllers/DocumentController.ts:29</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/DocumentController.ts#L33"
+                                                    >src/controllers/DocumentController.ts:33</a
                                                 >
                                             </li>
                                         </ul>
@@ -166,10 +191,371 @@
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
-                                        ><span class="tsd-signature-type">EditorResponse</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
                                         ><span class="tsd-signature-symbol">&gt;</span>
                                     </h4>
                                     <div><p>The JSON document in the form of a string</p></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="getDownloadLink" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                get<wbr />Download<wbr />Link<a
+                                    href="#getDownloadLink"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    get<wbr />Download<wbr />Link<span class="tsd-signature-symbol">(</span>format<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span>, layoutId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol">; </span>status<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">any</span
+                                    ><span class="tsd-signature-symbol">; </span>success<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">boolean</span
+                                    ><span class="tsd-signature-symbol"> }</span
+                                    ><span class="tsd-signature-symbol"> | </span
+                                    ><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol"
+                                        >: </span
+                                    ><a
+                                        href="../modules/index.html#DocumentError"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >DocumentError</a
+                                    ><span class="tsd-signature-symbol">; </span>status<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">; </span>success<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">boolean</span
+                                    ><span class="tsd-signature-symbol"> }</span
+                                    ><span class="tsd-signature-symbol"> | </span
+                                    ><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol"> | </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">undefined</span
+                                    ><span class="tsd-signature-symbol">; </span>status<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">; </span>success<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">boolean</span
+                                    ><span class="tsd-signature-symbol"> }</span
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/DocumentController.ts#L54"
+                                                    >src/controllers/DocumentController.ts:54</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will call an external api to create a download url</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>format: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The format of a downloadable url</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>id of layout to be downloaded</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-symbol">{ </span>data<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol">; </span>error<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol">; </span>status<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">any</span
+                                        ><span class="tsd-signature-symbol">; </span>success<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">boolean</span
+                                        ><span class="tsd-signature-symbol"> }</span
+                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><span class="tsd-signature-symbol">{ </span>data<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol">; </span>error<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><a
+                                            href="../modules/index.html#DocumentError"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >DocumentError</a
+                                        ><span class="tsd-signature-symbol">; </span>status<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">number</span
+                                        ><span class="tsd-signature-symbol">; </span>success<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">boolean</span
+                                        ><span class="tsd-signature-symbol"> }</span
+                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><span class="tsd-signature-symbol">{ </span>data<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><span class="tsd-signature-type">string</span
+                                        ><span class="tsd-signature-symbol">; </span>error<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">undefined</span
+                                        ><span class="tsd-signature-symbol">; </span>status<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">number</span
+                                        ><span class="tsd-signature-symbol">; </span>success<span
+                                            class="tsd-signature-symbol"
+                                            >: </span
+                                        ><span class="tsd-signature-type">boolean</span
+                                        ><span class="tsd-signature-symbol"> }</span
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div><p>the download link</p></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="loadDocument" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                load<wbr />Document<a
+                                    href="#loadDocument"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    load<wbr />Document<span class="tsd-signature-symbol">(</span>documentJson<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/DocumentController.ts#L43"
+                                                    >src/controllers/DocumentController.ts:43</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will load a provided document</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>documentJson: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The document to load in string format</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div><p>The document loaded inside of the canvas</p></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="startPollingOnEndpoint" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                start<wbr />Polling<wbr />On<wbr />Endpoint<a
+                                    href="#startPollingOnEndpoint"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    start<wbr />Polling<wbr />On<wbr />Endpoint<span class="tsd-signature-symbol"
+                                        >(</span
+                                    >endpoint<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-type">unknown</span
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/DocumentController.ts#L130"
+                                                    >src/controllers/DocumentController.ts:130</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>
+                                                This method will call an external api endpoint, untill the api endpoint
+                                                returns a status code 200
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>endpoint: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>api endpoint to start polling on</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-type">unknown</span
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div><p>true when the endpoint call has successfully been resolved</p></div>
                                 </li>
                             </ul>
                         </section>
@@ -219,6 +605,27 @@
                                             href="controllers_DocumentController.DocumentController.html#getCurrentDocumentState"
                                             class="tsd-kind-icon"
                                             >get<wbr />Current<wbr />Document<wbr />State</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_DocumentController.DocumentController.html#getDownloadLink"
+                                            class="tsd-kind-icon"
+                                            >get<wbr />Download<wbr />Link</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_DocumentController.DocumentController.html#loadDocument"
+                                            class="tsd-kind-icon"
+                                            >load<wbr />Document</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_DocumentController.DocumentController.html#startPollingOnEndpoint"
+                                            class="tsd-kind-icon"
+                                            >start<wbr />Polling<wbr />On<wbr />Endpoint</a
                                         >
                                     </li>
                                 </ul>
