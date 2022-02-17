@@ -15,7 +15,7 @@ beforeEach(() => {
     jest.spyOn(document, 'getCurrentDocumentState');
     jest.spyOn(document, 'loadDocument');
     jest.spyOn(document, 'getDownloadLink');
-    mockedLongPoll = jest.spyOn(document, 'longPollForDownload');
+    mockedLongPoll = jest.spyOn(document, 'startPollingOnEndpoint');
     mockedFetURLGetter = jest.spyOn(FetchHelper, 'getFetchURL');
     global.fetch = mockFetch;
     mockedFetURLGetter.mockReturnValue('test url');
@@ -151,9 +151,9 @@ describe('Document controller', () => {
             });
         });
     });
-    describe('longPollForDownload', () => {
+    describe('startPollingOnEndpoint', () => {
         it('calls fetch with given url', () => {
-            document.longPollForDownload('url');
+            document.startPollingOnEndpoint('url');
             expect(mockFetch).toHaveBeenLastCalledWith('url');
         });
         jest.setTimeout(15000);
@@ -181,7 +181,7 @@ describe('Document controller', () => {
                     ),
                 );
 
-            await document.longPollForDownload('url');
+            await document.startPollingOnEndpoint('url');
 
             expect(mockFetch).toHaveBeenCalledTimes(8);
         });

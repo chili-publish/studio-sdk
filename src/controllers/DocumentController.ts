@@ -92,7 +92,7 @@ export class DocumentController {
             let isFileDownloadable: true | DocumentError | null | unknown = error;
 
             try {
-                isFileDownloadable = await this.longPollForDownload(PREPARE_DOWNLOAD_URL as string);
+                isFileDownloadable = await this.startPollingOnEndpoint(PREPARE_DOWNLOAD_URL as string);
             } catch (err) {
                 error = err as unknown as DocumentError;
             }
@@ -123,18 +123,18 @@ export class DocumentController {
     };
 
     /**
-     * This method will call an external api till api returns a status code 200
-     * @param url api url to call
-     * @returns true when longPoll successful and error when something is wrong
+     * This method will call an external api endpoint, untill the api endpoint returns a status code 200
+     * @param endpoint api endpoint to start polling on
+     * @returns true when the endpoint call has successfully been resolved
      */
-    longPollForDownload = async (url: string): Promise<true | unknown> => {
+    startPollingOnEndpoint = async (endpoint: string): Promise<true | unknown> => {
         try {
-            const response = await fetch(url)
+            const response = await fetch(endpoint)
                 .then((data) => data)
                 .catch((err) => err);
             if (response?.status === 202) {
                 await new Promise((resolve) => setTimeout(resolve, 2000));
-                return await this.longPollForDownload(url);
+                return await this.startPollingOnEndpoint(endpoint);
             } else {
                 return true;
             }
