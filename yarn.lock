@@ -4791,11 +4791,6 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-istanbul-badges-readme@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/istanbul-badges-readme/-/istanbul-badges-readme-1.4.0.tgz#4c635e9761056e214da135ed2f338b9711b5815d"
-  integrity sha512-YujvYtTjSGwALCIAtSWsV2c4rLTyIEVm3vSLAGLXsUm/T8xteaJyV6dxGWFKmuCcDnVq1IBnbGYDwq2byS7bYg==
-
 istanbul-lib-coverage@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.0.0.tgz#f5944a37c70b550b02a78a5c3b2055b280cec8ec"

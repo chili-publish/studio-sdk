@@ -31,7 +31,6 @@
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-prettier": "^3.4.0",
         "husky": "^7.0.1",
-        "istanbul-badges-readme": "^1.4.0",
         "jest": "^27.0.6",
         "jest-junit": "^12.3.0",
         "prettier": "^2.3.2",
@@ -58,7 +57,7 @@
         "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
         "format-staged": "pretty-quick --staged",
         "cover": "jest --coverage",
-        "make-badges": "istanbul-badges-readme",
+        "make-badges": "node createCoverageBadge",
         "validate-licenses": "node validate_licenses.js"
     },
     "husky": {
