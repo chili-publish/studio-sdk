@@ -28,7 +28,7 @@ jobs:
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
             - name: run license check
-              run: yarn validate-licenses                  
+              run: yarn validate-licenses
             - name: run linting
               run: yarn ci-lint
             - name: run tests

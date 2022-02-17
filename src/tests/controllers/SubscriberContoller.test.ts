@@ -1,6 +1,6 @@
 import { SDK } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
-import mockConfig, { defaultMockReturn } from '../__mocks__/config';
+import mockConfig from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
 import { FrameAnimationType } from '../../../types/AnimationTypes';
@@ -26,7 +26,6 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onVariableListChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
     jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
-
 });
 
 afterEach(() => {
