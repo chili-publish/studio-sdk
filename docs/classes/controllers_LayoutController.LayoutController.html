@@ -1,58 +1,1366 @@
-<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>LayoutController | @chili-publish/editor-sdk</title><meta name="description" content="Documentation for @chili-publish/editor-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@chili-publish/editor-sdk</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><ul class="tsd-breadcrumb"><li><a href="../modules.html">@chili-publish/editor-sdk</a></li><li><a href="../modules/controllers_LayoutController.html">controllers/LayoutController</a></li><li><a href="controllers_LayoutController.LayoutController.html">LayoutController</a></li></ul><h1>Class LayoutController</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><section class="tsd-panel tsd-comment"><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The LayoutController is responsible for all communication regarding Layouts.
-Methods inside this controller can be called by <code>window.SDK.layout.{method-name}</code></p>
-</div></div></section><section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><ul class="tsd-hierarchy"><li><span class="target">LayoutController</span></li></ul></section><section class="tsd-panel-group tsd-index-group"><h2>Index</h2><section class="tsd-panel tsd-index-panel"><div class="tsd-index-content"><section class="tsd-index-section "><h3>Methods</h3><ul class="tsd-index-list"><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#addLayout" class="tsd-kind-icon">add<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#duplicateLayout" class="tsd-kind-icon">duplicate<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#getLayoutPropertiesCalculatedValue" class="tsd-kind-icon">get<wbr/>Layout<wbr/>Properties<wbr/>Calculated<wbr/>Value</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#removeLayout" class="tsd-kind-icon">remove<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#resetLayout" class="tsd-kind-icon">reset<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#resetLayoutHeight" class="tsd-kind-icon">reset<wbr/>Layout<wbr/>Height</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#resetLayoutWidth" class="tsd-kind-icon">reset<wbr/>Layout<wbr/>Width</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#selectLayout" class="tsd-kind-icon">select<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#setLayoutHeight" class="tsd-kind-icon">set<wbr/>Layout<wbr/>Height</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#setLayoutName" class="tsd-kind-icon">set<wbr/>Layout<wbr/>Name</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#setLayoutWidth" class="tsd-kind-icon">set<wbr/>Layout<wbr/>Width</a></li></ul></section></div></section></section><section class="tsd-panel-group tsd-member-group "><h2>Methods</h2><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="addLayout" class="tsd-anchor"></a><h3 class="tsd-anchor-link">add<wbr/>Layout<a href="#addLayout" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">add<wbr/>Layout<span class="tsd-signature-symbol">(</span>parentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L43">src/controllers/LayoutController.ts:43</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will add a new child layout (a new layout is always child of a root / parentlayout)</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>parentId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout, being the parent</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="duplicateLayout" class="tsd-anchor"></a><h3 class="tsd-anchor-link">duplicate<wbr/>Layout<a href="#duplicateLayout" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">duplicate<wbr/>Layout<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L74">src/controllers/LayoutController.ts:74</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will duplicate a specific layout</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getLayoutPropertiesCalculatedValue" class="tsd-anchor"></a><h3 class="tsd-anchor-link">get<wbr/>Layout<wbr/>Properties<wbr/>Calculated<wbr/>Value<a href="#getLayoutPropertiesCalculatedValue" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">get<wbr/>Layout<wbr/>Properties<wbr/>Calculated<wbr/>Value<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><a href="../enums/index.LayoutProperyNames.html" class="tsd-signature-type" data-tsd-kind="Enumeration">LayoutProperyNames</a>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectedLayout<span class="tsd-signature-symbol">: </span><a href="../modules/index.html#LayoutPropertiesType" class="tsd-signature-type" data-tsd-kind="Type alias">LayoutPropertiesType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L150">src/controllers/LayoutController.ts:150</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will trigger a calculation with logic built in, based on its parameters</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>name: <a href="../enums/index.LayoutProperyNames.html" class="tsd-signature-type" data-tsd-kind="Enumeration">LayoutProperyNames</a></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The name of the property of whom the calculation is for</p>
-</div></div></li><li><h5>value: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is dependent on the frame property that triggers this calculation</p>
-</div></div></li><li><h5>selectedLayout: <a href="../modules/index.html#LayoutPropertiesType" class="tsd-signature-type" data-tsd-kind="Type alias">LayoutPropertiesType</a></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The layout that is selected with all it&#39;s properties</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="removeLayout" class="tsd-anchor"></a><h3 class="tsd-anchor-link">remove<wbr/>Layout<a href="#removeLayout" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">remove<wbr/>Layout<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L33">src/controllers/LayoutController.ts:33</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will remove a specific layout</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="resetLayout" class="tsd-anchor"></a><h3 class="tsd-anchor-link">reset<wbr/>Layout<a href="#resetLayout" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">reset<wbr/>Layout<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L84">src/controllers/LayoutController.ts:84</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will reset a specific layout to its original value</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="resetLayoutHeight" class="tsd-anchor"></a><h3 class="tsd-anchor-link">reset<wbr/>Layout<wbr/>Height<a href="#resetLayoutHeight" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">reset<wbr/>Layout<wbr/>Height<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L128">src/controllers/LayoutController.ts:128</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will reset the height of a specific layout to its original value</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="resetLayoutWidth" class="tsd-anchor"></a><h3 class="tsd-anchor-link">reset<wbr/>Layout<wbr/>Width<a href="#resetLayoutWidth" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">reset<wbr/>Layout<wbr/>Width<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L138">src/controllers/LayoutController.ts:138</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will reset the width of a specific layout to its original value</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="selectLayout" class="tsd-anchor"></a><h3 class="tsd-anchor-link">select<wbr/>Layout<a href="#selectLayout" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">select<wbr/>Layout<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L64">src/controllers/LayoutController.ts:64</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will select a specific layout</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setLayoutHeight" class="tsd-anchor"></a><h3 class="tsd-anchor-link">set<wbr/>Layout<wbr/>Height<a href="#setLayoutHeight" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">set<wbr/>Layout<wbr/>Height<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectedLayout<span class="tsd-signature-symbol">: </span><a href="../modules/index.html#LayoutPropertiesType" class="tsd-signature-type" data-tsd-kind="Type alias">LayoutPropertiesType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L95">src/controllers/LayoutController.ts:95</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will set the height of the layout to a specific value</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>value: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels</p>
-</div></div></li><li><h5>selectedLayout: <a href="../modules/index.html#LayoutPropertiesType" class="tsd-signature-type" data-tsd-kind="Type alias">LayoutPropertiesType</a></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The layout that is selected, with all of its properties</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setLayoutName" class="tsd-anchor"></a><h3 class="tsd-anchor-link">set<wbr/>Layout<wbr/>Name<a href="#setLayoutName" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">set<wbr/>Layout<wbr/>Name<span class="tsd-signature-symbol">(</span>layoutId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, layoutName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L54">src/controllers/LayoutController.ts:54</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will update the name of a specific layout</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>layoutId: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The ID of a specific layout</p>
-</div></div></li><li><h5>layoutName: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The new name that the layout should receive</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="setLayoutWidth" class="tsd-anchor"></a><h3 class="tsd-anchor-link">set<wbr/>Layout<wbr/>Width<a href="#setLayoutWidth" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">set<wbr/>Layout<wbr/>Width<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectedLayout<span class="tsd-signature-symbol">: </span><a href="../modules/index.html#LayoutPropertiesType" class="tsd-signature-type" data-tsd-kind="Type alias">LayoutPropertiesType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/chili-publish/editor-sdk/blob/d6989d4/src/controllers/LayoutController.ts#L112">src/controllers/LayoutController.ts:112</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
-<p>This method will set the width of the layout to a specific value</p>
-</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>value: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels</p>
-</div></div></li><li><h5>selectedLayout: <a href="../modules/index.html#LayoutPropertiesType" class="tsd-signature-type" data-tsd-kind="Type alias">LayoutPropertiesType</a></h5><div class="tsd-comment tsd-typography"><div class="lead">
-<p>The layout that is selected, with all of its properties</p>
-</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/index.html#EditorResponse" class="tsd-signature-type" data-tsd-kind="Type alias">EditorResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><div></div></li></ul></section></section></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class=""><a href="../modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="../modules/controllers_AnimationController.html">controllers/<wbr/>Animation<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="../modules/controllers_DocumentController.html">controllers/<wbr/>Document<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="../modules/controllers_FrameController.html">controllers/<wbr/>Frame<wbr/>Controller</a></li><li class="current tsd-kind-module"><a href="../modules/controllers_LayoutController.html">controllers/<wbr/>Layout<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="../modules/controllers_UtilsController.html">controllers/<wbr/>Utils<wbr/>Controller</a></li><li class=" tsd-kind-module"><a href="../modules/index.html">index</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="current tsd-kind-class tsd-parent-kind-module"><a href="controllers_LayoutController.LayoutController.html" class="tsd-kind-icon">Layout<wbr/>Controller</a><ul><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#addLayout" class="tsd-kind-icon">add<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#duplicateLayout" class="tsd-kind-icon">duplicate<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#getLayoutPropertiesCalculatedValue" class="tsd-kind-icon">get<wbr/>Layout<wbr/>Properties<wbr/>Calculated<wbr/>Value</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#removeLayout" class="tsd-kind-icon">remove<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#resetLayout" class="tsd-kind-icon">reset<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#resetLayoutHeight" class="tsd-kind-icon">reset<wbr/>Layout<wbr/>Height</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#resetLayoutWidth" class="tsd-kind-icon">reset<wbr/>Layout<wbr/>Width</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#selectLayout" class="tsd-kind-icon">select<wbr/>Layout</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#setLayoutHeight" class="tsd-kind-icon">set<wbr/>Layout<wbr/>Height</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#setLayoutName" class="tsd-kind-icon">set<wbr/>Layout<wbr/>Name</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="controllers_LayoutController.LayoutController.html#setLayoutWidth" class="tsd-kind-icon">set<wbr/>Layout<wbr/>Width</a></li></ul></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="../assets/main.js"></script></body></html>
+<!DOCTYPE html>
+<html class="default">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="IE=edge" />
+        <title>LayoutController | @chili-publish/editor-sdk</title>
+        <meta name="description" content="Documentation for @chili-publish/editor-sdk" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link rel="stylesheet" href="../assets/highlight.css" />
+        <script async src="../assets/search.js" id="search-script"></script>
+    </head>
+    <body>
+        <script>
+            document.body.classList.add(localStorage.getItem('tsd-theme') || 'os');
+        </script>
+        <header>
+            <div class="tsd-page-toolbar">
+                <div class="container">
+                    <div class="table-wrap">
+                        <div class="table-cell" id="tsd-search" data-base="..">
+                            <div class="field">
+                                <label for="tsd-search-field" class="tsd-widget search no-caption">Search</label
+                                ><input type="text" id="tsd-search-field" />
+                            </div>
+                            <ul class="results">
+                                <li class="state loading">Preparing search index...</li>
+                                <li class="state failure">The search index is not available</li>
+                            </ul>
+                            <a href="../index.html" class="title">@chili-publish/editor-sdk</a>
+                        </div>
+                        <div class="table-cell" id="tsd-widgets">
+                            <div id="tsd-filter">
+                                <a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+                                <div class="tsd-filter-group">
+                                    <div class="tsd-select" id="tsd-filter-visibility">
+                                        <span class="tsd-select-label">All</span>
+                                        <ul class="tsd-select-list">
+                                            <li data-value="public">Public</li>
+                                            <li data-value="protected">Public/Protected</li>
+                                            <li data-value="private" class="selected">All</li>
+                                        </ul>
+                                    </div>
+                                    <input type="checkbox" id="tsd-filter-inherited" checked /><label
+                                        class="tsd-widget"
+                                        for="tsd-filter-inherited"
+                                        >Inherited</label
+                                    ><input type="checkbox" id="tsd-filter-externals" checked /><label
+                                        class="tsd-widget"
+                                        for="tsd-filter-externals"
+                                        >Externals</label
+                                    >
+                                </div>
+                            </div>
+                            <a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tsd-page-title">
+                <div class="container">
+                    <ul class="tsd-breadcrumb">
+                        <li><a href="../modules.html">@chili-publish/editor-sdk</a></li>
+                        <li><a href="../modules/controllers_LayoutController.html">controllers/LayoutController</a></li>
+                        <li><a href="controllers_LayoutController.LayoutController.html">LayoutController</a></li>
+                    </ul>
+                    <h1>Class LayoutController</h1>
+                </div>
+            </div>
+        </header>
+        <div class="container container-main">
+            <div class="row">
+                <div class="col-8 col-content">
+                    <section class="tsd-panel tsd-comment">
+                        <div class="tsd-comment tsd-typography">
+                            <div class="lead">
+                                <p>
+                                    The LayoutController is responsible for all communication regarding Layouts. Methods
+                                    inside this controller can be called by <code>window.SDK.layout.{method-name}</code>
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="tsd-panel tsd-hierarchy">
+                        <h3>Hierarchy</h3>
+                        <ul class="tsd-hierarchy">
+                            <li><span class="target">LayoutController</span></li>
+                        </ul>
+                    </section>
+                    <section class="tsd-panel-group tsd-index-group">
+                        <h2>Index</h2>
+                        <section class="tsd-panel tsd-index-panel">
+                            <div class="tsd-index-content">
+                                <section class="tsd-index-section">
+                                    <h3>Methods</h3>
+                                    <ul class="tsd-index-list">
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#addLayout"
+                                                class="tsd-kind-icon"
+                                                >add<wbr />Layout</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#duplicateLayout"
+                                                class="tsd-kind-icon"
+                                                >duplicate<wbr />Layout</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#getLayoutPropertiesCalculatedValue"
+                                                class="tsd-kind-icon"
+                                                >get<wbr />Layout<wbr />Properties<wbr />Calculated<wbr />Value</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#removeLayout"
+                                                class="tsd-kind-icon"
+                                                >remove<wbr />Layout</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#resetLayout"
+                                                class="tsd-kind-icon"
+                                                >reset<wbr />Layout</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#resetLayoutHeight"
+                                                class="tsd-kind-icon"
+                                                >reset<wbr />Layout<wbr />Height</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#resetLayoutWidth"
+                                                class="tsd-kind-icon"
+                                                >reset<wbr />Layout<wbr />Width</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#selectLayout"
+                                                class="tsd-kind-icon"
+                                                >select<wbr />Layout</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#setLayoutHeight"
+                                                class="tsd-kind-icon"
+                                                >set<wbr />Layout<wbr />Height</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#setLayoutName"
+                                                class="tsd-kind-icon"
+                                                >set<wbr />Layout<wbr />Name</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_LayoutController.LayoutController.html#setLayoutWidth"
+                                                class="tsd-kind-icon"
+                                                >set<wbr />Layout<wbr />Width</a
+                                            >
+                                        </li>
+                                    </ul>
+                                </section>
+                            </div>
+                        </section>
+                    </section>
+                    <section class="tsd-panel-group tsd-member-group">
+                        <h2>Methods</h2>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="addLayout" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                add<wbr />Layout<a href="#addLayout" aria-label="Permalink" class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    add<wbr />Layout<span class="tsd-signature-symbol">(</span>parentId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L43"
+                                                    >src/controllers/LayoutController.ts:43</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>
+                                                This method will add a new child layout (a new layout is always child of
+                                                a root / parentlayout)
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>parentId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout, being the parent</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="duplicateLayout" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                duplicate<wbr />Layout<a
+                                    href="#duplicateLayout"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    duplicate<wbr />Layout<span class="tsd-signature-symbol">(</span>layoutId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L74"
+                                                    >src/controllers/LayoutController.ts:74</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will duplicate a specific layout</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="getLayoutPropertiesCalculatedValue" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                get<wbr />Layout<wbr />Properties<wbr />Calculated<wbr />Value<a
+                                    href="#getLayoutPropertiesCalculatedValue"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    get<wbr />Layout<wbr />Properties<wbr />Calculated<wbr />Value<span
+                                        class="tsd-signature-symbol"
+                                        >(</span
+                                    >name<span class="tsd-signature-symbol">: </span
+                                    ><a
+                                        href="../enums/index.LayoutProperyNames.html"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Enumeration"
+                                        >LayoutProperyNames</a
+                                    >, value<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, selectedLayout<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><a
+                                        href="../modules/index.html#LayoutPropertiesType"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >LayoutPropertiesType</a
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol"> | </span
+                                    ><span class="tsd-signature-type">number</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L150"
+                                                    >src/controllers/LayoutController.ts:150</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>
+                                                This method will trigger a calculation with logic built in, based on its
+                                                parameters
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>
+                                                name:
+                                                <a
+                                                    href="../enums/index.LayoutProperyNames.html"
+                                                    class="tsd-signature-type"
+                                                    data-tsd-kind="Enumeration"
+                                                    >LayoutProperyNames</a
+                                                >
+                                            </h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The name of the property of whom the calculation is for</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>
+                                                        The string value that will be calculated (f.e. 1+1 will reult in
+                                                        2). The notation is dependent on the frame property that
+                                                        triggers this calculation
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h5>
+                                                selectedLayout:
+                                                <a
+                                                    href="../modules/index.html#LayoutPropertiesType"
+                                                    class="tsd-signature-type"
+                                                    data-tsd-kind="Type alias"
+                                                    >LayoutPropertiesType</a
+                                                >
+                                            </h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The layout that is selected with all it&#39;s properties</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><span class="tsd-signature-type">number</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="removeLayout" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                remove<wbr />Layout<a
+                                    href="#removeLayout"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    remove<wbr />Layout<span class="tsd-signature-symbol">(</span>layoutId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L33"
+                                                    >src/controllers/LayoutController.ts:33</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will remove a specific layout</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="resetLayout" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                reset<wbr />Layout<a href="#resetLayout" aria-label="Permalink" class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    reset<wbr />Layout<span class="tsd-signature-symbol">(</span>layoutId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L84"
+                                                    >src/controllers/LayoutController.ts:84</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will reset a specific layout to its original value</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="resetLayoutHeight" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                reset<wbr />Layout<wbr />Height<a
+                                    href="#resetLayoutHeight"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    reset<wbr />Layout<wbr />Height<span class="tsd-signature-symbol">(</span
+                                    >layoutId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L128"
+                                                    >src/controllers/LayoutController.ts:128</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>
+                                                This method will reset the height of a specific layout to its original
+                                                value
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="resetLayoutWidth" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                reset<wbr />Layout<wbr />Width<a
+                                    href="#resetLayoutWidth"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    reset<wbr />Layout<wbr />Width<span class="tsd-signature-symbol">(</span
+                                    >layoutId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L138"
+                                                    >src/controllers/LayoutController.ts:138</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>
+                                                This method will reset the width of a specific layout to its original
+                                                value
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="selectLayout" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                select<wbr />Layout<a
+                                    href="#selectLayout"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    select<wbr />Layout<span class="tsd-signature-symbol">(</span>layoutId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L64"
+                                                    >src/controllers/LayoutController.ts:64</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will select a specific layout</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setLayoutHeight" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Layout<wbr />Height<a
+                                    href="#setLayoutHeight"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Layout<wbr />Height<span class="tsd-signature-symbol">(</span>value<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span>, selectedLayout<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><a
+                                        href="../modules/index.html#LayoutPropertiesType"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >LayoutPropertiesType</a
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol"> | </span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L95"
+                                                    >src/controllers/LayoutController.ts:95</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will set the height of the layout to a specific value</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>
+                                                        The string value that will be calculated (f.e. 1+1 will reult in
+                                                        2) The notation is in pixels
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h5>
+                                                selectedLayout:
+                                                <a
+                                                    href="../modules/index.html#LayoutPropertiesType"
+                                                    class="tsd-signature-type"
+                                                    data-tsd-kind="Type alias"
+                                                    >LayoutPropertiesType</a
+                                                >
+                                            </h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The layout that is selected, with all of its properties</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setLayoutName" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Layout<wbr />Name<a
+                                    href="#setLayoutName"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Layout<wbr />Name<span class="tsd-signature-symbol">(</span>layoutId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span>, layoutName<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L54"
+                                                    >src/controllers/LayoutController.ts:54</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will update the name of a specific layout</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>layoutId: <span class="tsd-signature-type">number</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The ID of a specific layout</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h5>layoutName: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The new name that the layout should receive</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setLayoutWidth" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Layout<wbr />Width<a
+                                    href="#setLayoutWidth"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Layout<wbr />Width<span class="tsd-signature-symbol">(</span>value<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span>, selectedLayout<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><a
+                                        href="../modules/index.html#LayoutPropertiesType"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >LayoutPropertiesType</a
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-type">null</span
+                                    ><span class="tsd-signature-symbol"> | </span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/257cead/src/controllers/LayoutController.ts#L112"
+                                                    >src/controllers/LayoutController.ts:112</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method will set the width of the layout to a specific value</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>
+                                                        The string value that will be calculated (f.e. 1+1 will reult in
+                                                        2) The notation is in pixels
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <h5>
+                                                selectedLayout:
+                                                <a
+                                                    href="../modules/index.html#LayoutPropertiesType"
+                                                    class="tsd-signature-type"
+                                                    data-tsd-kind="Type alias"
+                                                    >LayoutPropertiesType</a
+                                                >
+                                            </h5>
+                                            <div class="tsd-comment tsd-typography">
+                                                <div class="lead">
+                                                    <p>The layout that is selected, with all of its properties</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-type">null</span
+                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                    </section>
+                </div>
+                <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+                    <nav class="tsd-navigation primary">
+                        <ul>
+                            <li class=""><a href="../modules.html">Modules</a></li>
+                            <li class="tsd-kind-module">
+                                <a href="../modules/controllers_AnimationController.html"
+                                    >controllers/<wbr />Animation<wbr />Controller</a
+                                >
+                            </li>
+                            <li class="tsd-kind-module">
+                                <a href="../modules/controllers_DocumentController.html"
+                                    >controllers/<wbr />Document<wbr />Controller</a
+                                >
+                            </li>
+                            <li class="tsd-kind-module">
+                                <a href="../modules/controllers_FrameController.html"
+                                    >controllers/<wbr />Frame<wbr />Controller</a
+                                >
+                            </li>
+                            <li class="current tsd-kind-module">
+                                <a href="../modules/controllers_LayoutController.html"
+                                    >controllers/<wbr />Layout<wbr />Controller</a
+                                >
+                            </li>
+                            <li class="tsd-kind-module">
+                                <a href="../modules/controllers_UtilsController.html"
+                                    >controllers/<wbr />Utils<wbr />Controller</a
+                                >
+                            </li>
+                            <li class="tsd-kind-module"><a href="../modules/index.html">index</a></li>
+                        </ul>
+                    </nav>
+                    <nav class="tsd-navigation secondary menu-sticky">
+                        <ul>
+                            <li class="current tsd-kind-class tsd-parent-kind-module">
+                                <a href="controllers_LayoutController.LayoutController.html" class="tsd-kind-icon"
+                                    >Layout<wbr />Controller</a
+                                >
+                                <ul>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#addLayout"
+                                            class="tsd-kind-icon"
+                                            >add<wbr />Layout</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#duplicateLayout"
+                                            class="tsd-kind-icon"
+                                            >duplicate<wbr />Layout</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#getLayoutPropertiesCalculatedValue"
+                                            class="tsd-kind-icon"
+                                            >get<wbr />Layout<wbr />Properties<wbr />Calculated<wbr />Value</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#removeLayout"
+                                            class="tsd-kind-icon"
+                                            >remove<wbr />Layout</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#resetLayout"
+                                            class="tsd-kind-icon"
+                                            >reset<wbr />Layout</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#resetLayoutHeight"
+                                            class="tsd-kind-icon"
+                                            >reset<wbr />Layout<wbr />Height</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#resetLayoutWidth"
+                                            class="tsd-kind-icon"
+                                            >reset<wbr />Layout<wbr />Width</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#selectLayout"
+                                            class="tsd-kind-icon"
+                                            >select<wbr />Layout</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#setLayoutHeight"
+                                            class="tsd-kind-icon"
+                                            >set<wbr />Layout<wbr />Height</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#setLayoutName"
+                                            class="tsd-kind-icon"
+                                            >set<wbr />Layout<wbr />Name</a
+                                        >
+                                    </li>
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
+                                        <a
+                                            href="controllers_LayoutController.LayoutController.html#setLayoutWidth"
+                                            class="tsd-kind-icon"
+                                            >set<wbr />Layout<wbr />Width</a
+                                        >
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <footer class="with-border-bottom">
+            <div class="container">
+                <h2>Legend</h2>
+                <div class="tsd-legend-group">
+                    <ul class="tsd-legend">
+                        <li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+                        <li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+                    </ul>
+                    <ul class="tsd-legend">
+                        <li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+                    </ul>
+                    <ul class="tsd-legend">
+                        <li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+                    </ul>
+                </div>
+                <h2>Settings</h2>
+                <p>
+                    Theme
+                    <select id="theme">
+                        <option value="os">OS</option>
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select>
+                </p>
+            </div>
+        </footer>
+        <div class="container tsd-generator">
+            <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+        </div>
+        <div class="overlay"></div>
+        <script src="../assets/main.js"></script>
+    </body>
+</html>
