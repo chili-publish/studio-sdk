@@ -1,6 +1,6 @@
 import { connectToChild, Connection } from 'penpal';
 
-const validateEditorLink = (editorLink: string) => {
+export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
     let link = '';
     if (linkValidator.test(editorLink)) {
@@ -13,7 +13,7 @@ const validateEditorLink = (editorLink: string) => {
     return link;
 };
 
-const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
+export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     const link = validateEditorLink(editorLink);
     const html = `<html>
     <head>

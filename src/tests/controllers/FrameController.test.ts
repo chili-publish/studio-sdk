@@ -88,6 +88,9 @@ describe('FrameProperties', () => {
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith([5]);
     });
+    // ("it should return null while calling set frame methods if calculation is null",()=>{
+
+    // })
 });
 
 describe('User inputs for Frame Properties', () => {
@@ -127,10 +130,66 @@ describe('User inputs for Frame Properties', () => {
     it('Returns null when user input doesnt contain any number', () => {
         const responseX = mockedFrameProperties.getFramePropertyCalculatedValue(
             FrameProperyNames.FRAME_X,
-            'dfsfds',
+            'dasdsa',
+            mockSelectFrame,
+        );
+        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_Y,
+            'sdsadas',
+            mockSelectFrame,
+        );
+        const responseWidth = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.WIDTH,
+            'sd',
+            mockSelectFrame,
+        );
+        const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.HEIGHT,
+            'dds',
+            mockSelectFrame,
+        );
+        const responseRotation = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            'dsdsd',
             mockSelectFrame,
         );
         expect(responseX).toEqual(null);
+        expect(responseY).toEqual(null);
+        expect(responseWidth).toEqual(null);
+        expect(responseHeight).toEqual(null);
+        expect(responseRotation).toEqual(null);
+    });
+    it('Returns null when user input same with frame property value', () => {
+        const responseX = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_X,
+            '100',
+            mockSelectFrame,
+        );
+        const responseY = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_Y,
+            '20',
+            mockSelectFrame,
+        );
+        const responseWidth = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.WIDTH,
+            '220',
+            mockSelectFrame,
+        );
+        const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.HEIGHT,
+            '343',
+            mockSelectFrame,
+        );
+        const responseRotation = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.FRAME_ROTATION,
+            '22',
+            mockSelectFrame,
+        );
+        expect(responseX).toEqual(null);
+        expect(responseY).toEqual(null);
+        expect(responseWidth).toEqual(null);
+        expect(responseHeight).toEqual(null);
+        expect(responseRotation).toEqual(null);
     });
 
     it('Clears the input and only returns numbers from the input', () => {

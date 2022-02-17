@@ -52,8 +52,20 @@ describe('Layout methods', () => {
         await mockedSDK.layout.setLayoutHeight('32', mockSelectPage);
         expect(mockedSDK.children.setLayoutHeight).toHaveBeenCalledTimes(1);
 
+        await mockedSDK.layout.setLayoutHeight('null', mockSelectPage);
+        expect(mockedSDK.children.setLayoutHeight).toHaveBeenCalledTimes(1);
+
         await mockedSDK.layout.setLayoutWidth('34', mockSelectPage);
         expect(mockedSDK.children.setLayoutWidth).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.setLayoutWidth('null', mockSelectPage);
+        expect(mockedSDK.children.setLayoutWidth).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.resetLayoutHeight(1);
+        expect(mockedSDK.children.resetLayoutHeight).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.resetLayoutWidth(1);
+        expect(mockedSDK.children.resetLayoutWidth).toHaveBeenCalledTimes(1);
     });
 });
 
@@ -72,5 +84,35 @@ describe('User inputs for Layout Properties', () => {
 
         expect(responseHeight).toEqual(11);
         expect(responseWidth).toEqual(5);
+    });
+
+    it('Should calculate user Inputs and returns null when calculated value is null or same with selectedLayout property', () => {
+        let responseHeight = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
+            LayoutProperyNames.LAYOUT_HEIGHT,
+            '20',
+            mockSelectPage,
+        );
+        let responseWidth = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
+            LayoutProperyNames.LAYOUT_WIDTH,
+            '100',
+            mockSelectPage,
+        );
+
+        expect(responseHeight).toEqual(null);
+        expect(responseWidth).toEqual(null);
+
+        responseHeight = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
+            LayoutProperyNames.LAYOUT_HEIGHT,
+            'null',
+            mockSelectPage,
+        );
+        responseWidth = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
+            LayoutProperyNames.LAYOUT_WIDTH,
+            'null',
+            mockSelectPage,
+        );
+
+        expect(responseHeight).toEqual(null);
+        expect(responseWidth).toEqual(null);
     });
 });
