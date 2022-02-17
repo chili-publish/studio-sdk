@@ -88,9 +88,6 @@ describe('FrameProperties', () => {
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith([5]);
     });
-    // ("it should return null while calling set frame methods if calculation is null",()=>{
-
-    // })
 });
 
 describe('User inputs for Frame Properties', () => {
