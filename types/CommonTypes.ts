@@ -3,7 +3,7 @@ import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
 import { LayoutType, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
-import {Variable} from "./VariableTypes";
+import { Variable } from './VariableTypes';
 import { Tools } from '../src/utils/enums';
 
 export type ConfigType = {
@@ -24,6 +24,7 @@ export type EditorResponse = {
     success: boolean;
     status: number;
     data?: unknown;
+    error?: string;
 };
 export interface Child extends CallSender {
     [index: string]: (...args: unknown[]) => Promise<EditorResponse>;
