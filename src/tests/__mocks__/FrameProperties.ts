@@ -43,7 +43,11 @@ export const mockDuplicateVariable = jest.fn().mockResolvedValue({ success: true
 export const mockGetVariableList = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetTool = jest.fn().mockResolvedValue({ success: true, status: 0 });
-
+export const mockPlayAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockPauseAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 const mockChild = {
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
@@ -65,6 +69,11 @@ const mockChild = {
     resetFrameHeight: mockResetFrameHeight,
     resetFrameRotation: mockResetFrameRotation,
     setFrameAnimation: mockSetFrameAniation,
+    playAnimation: mockPlayAnimation,
+    pauseAnimation: mockPauseAnimation,
+    setScrubberPosition: mockSetScrubberPosition,
+    setAnimationDuration: mockSetAnimationDuration,
+    resetFrameAnimation: mockResetFrameAnimation,
     togglePlaybackAnimation: mockTogglePlaybackAnimation,
     resetFrameSize: mockResetFrameSize,
     setLayoutHeight: mocksetLayoutHeight,
