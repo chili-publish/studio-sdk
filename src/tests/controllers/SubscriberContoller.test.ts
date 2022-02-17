@@ -25,7 +25,8 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onStateChanged');
     jest.spyOn(mockedSubscribers, 'onVariableListChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
-    mockedSubscribers.onAnimationPlaybackChanged = defaultMockReturn;
+    jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
+
 });
 
 afterEach(() => {
@@ -35,9 +36,9 @@ describe('Subscriber methods', () => {
     it('Should call  all of the subscriber functions successfully', async () => {
         mockedSubscribers.onAnimationChanged(JSON.stringify(mockedAnimation));
 
-        mockedSubscribers.onAnimationPlaybackChanged('test');
+        mockedSubscribers.onAnimationPlaybackChanged(JSON.stringify('test'));
         expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledWith('test');
+        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
 
         mockedSubscribers.onSelectedFrameLayoutChanged('2');
         expect(mockedSubscribers.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
