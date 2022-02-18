@@ -67,14 +67,14 @@ export class SDK {
             return child;
         }) as unknown as Child;
 
-        this.layout = new LayoutController(this.children, this.config);
-        this.frame = new FrameController(this.children, this.config);
-        this.animation = new AnimationController(this.children, this.config);
-        this.document = new DocumentController(this.children, this.config);
-        this.variable = new VariableController(this.children, this.config);
+        this.layout = new LayoutController(this.children);
+        this.frame = new FrameController(this.children);
+        this.animation = new AnimationController(this.children);
+        this.document = new DocumentController(this.children);
+        this.variable = new VariableController(this.children);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
-        this.tool = new ToolController(this.children, this.config);
+        this.tool = new ToolController(this.children);
     }
 
     /**
@@ -102,13 +102,13 @@ export class SDK {
             return child;
         }) as unknown as Child;
 
-        this.layout = new LayoutController(this.children, this.config);
-        this.frame = new FrameController(this.children, this.config);
-        this.animation = new AnimationController(this.children, this.config);
-        this.document = new DocumentController(this.children, this.config);
-        this.variable = new VariableController(this.children, this.config);
+        this.layout = new LayoutController(this.children);
+        this.frame = new FrameController(this.children);
+        this.animation = new AnimationController(this.children);
+        this.document = new DocumentController(this.children);
+        this.variable = new VariableController(this.children);
         this.utils = new UtilsController();
-        this.tool = new ToolController(this.children, this.config);
+        this.tool = new ToolController(this.children);
     };
 
     setConnection = (newConnection: Connection) => {

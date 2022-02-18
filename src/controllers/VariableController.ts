@@ -1,4 +1,4 @@
-import { Child, ConfigType } from '../../types/CommonTypes';
+import { Child } from '../../types/CommonTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 /**
@@ -9,18 +9,13 @@ export class VariableController {
     /**
      * @ignore
      */
-    children: Child;
-    /**
-     * @ignore
-     */
-    config: ConfigType;
+    private children: Child;
 
     /**
      * @ignore
      */
-    constructor(children: Child, config: ConfigType) {
+    constructor(children: Child) {
         this.children = children;
-        this.config = config;
     }
 
     /**

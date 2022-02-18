@@ -1,5 +1,5 @@
 import { FrameProperyNames } from '../index';
-import type { Child, ConfigType } from '../../types/CommonTypes';
+import type { Child } from '../../types/CommonTypes';
 import type { FrameLayoutType } from '../../types/FrameTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
@@ -11,18 +11,13 @@ export class FrameController {
     /**
      * @ignore
      */
-    children: Child;
-    /**
-     * @ignore
-     */
-    config: ConfigType;
+    private children: Child;
 
     /**
      * @ignore
      */
-    constructor(children: Child, config: ConfigType) {
+    constructor(children: Child) {
         this.children = children;
-        this.config = config;
     }
 
     /**

@@ -46,10 +46,10 @@ describe('Subscriber methods', () => {
         expect(mockedSubscribers.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
 
         mockedSubscribers.onSelectedLayoutPropertiesChanged('5');
-        expect(mockedSDK.layout.config.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(5);
+        expect(mockedSDK.config.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(5);
 
         mockedSubscribers.onPageSelectionChanged();
-        expect(mockedSDK.layout.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
+        expect(mockedSDK.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
 
         const initialStateMock = {
             layouts: [],
@@ -61,15 +61,13 @@ describe('Subscriber methods', () => {
         expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
 
         mockedSubscribers.onVariableListChanged('[{"id":"1","type":"group"}]');
-        expect(mockedSDK.variable.config.onVariableListChanged).toHaveBeenCalled();
-        expect(mockedSDK.variable.config.onVariableListChanged).toHaveBeenCalledWith([
-            { id: '1', type: VariableType.group },
-        ]);
+        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalled();
+        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {
         mockedSubscribers.onSelectedToolChanged(Tools.HAND);
-        expect(mockedSDK.tool.config.onSelectedToolChanged).toHaveBeenCalled();
+        expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalled();
         expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('hand');
     });
 });
