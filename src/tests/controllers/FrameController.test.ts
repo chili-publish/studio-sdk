@@ -214,6 +214,15 @@ describe('User inputs for Frame Properties', () => {
         );
         expect(responseRotation).toBeNull();
     });
+
+    it('Should allow entering equal width and height properties', () => {
+        const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
+            FrameProperyNames.HEIGHT,
+            '220',
+            mockSelectFrame,
+        );
+        expect(responseHeight).toEqual(220);
+    });
 });
 
 describe('Math calculations', () => {
