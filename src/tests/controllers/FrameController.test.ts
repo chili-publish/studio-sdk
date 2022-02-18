@@ -216,18 +216,12 @@ describe('User inputs for Frame Properties', () => {
     });
 
     it('Should allow entering equal width and height properties', () => {
-        const responseWidth = mockedFrameProperties.getFramePropertyCalculatedValue(
-            FrameProperyNames.WIDTH,
-            '1000',
-            mockSelectFrame,
-        );
         const responseHeight = mockedFrameProperties.getFramePropertyCalculatedValue(
             FrameProperyNames.HEIGHT,
-            '1000',
+            '220',
             mockSelectFrame,
         );
-        expect(responseWidth).toEqual(1000);
-        expect(responseHeight).toEqual(1000);
+        expect(responseHeight).toEqual(220);
     });
 });
 
