@@ -1,4 +1,4 @@
-import type { Child, ConfigType } from '../../types/CommonTypes';
+import type { Child } from '../../types/CommonTypes';
 import type { LayoutPropertiesType } from '../../types/LayoutTypes';
 import { LayoutProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
@@ -11,18 +11,13 @@ export class LayoutController {
     /**
      * @ignore
      */
-    children: Child;
-    /**
-     * @ignore
-     */
-    config: ConfigType;
+    private children: Child;
 
     /**
      * @ignore
      */
-    constructor(children: Child, config: ConfigType) {
+    constructor(children: Child) {
         this.children = children;
-        this.config = config;
     }
 
     /**

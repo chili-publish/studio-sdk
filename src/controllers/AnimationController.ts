@@ -1,5 +1,5 @@
 import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
-import { Child, ConfigType } from '../../types/CommonTypes';
+import { Child } from '../../types/CommonTypes';
 
 /**
  * The AnimationController is responsible for all communication regarding Animations.
@@ -9,18 +9,13 @@ export class AnimationController {
     /**
      * @ignore
      */
-    children: Child;
-    /**
-     * @ignore
-     */
-    config: ConfigType;
+    private children: Child;
 
     /**
      * @ignore
      */
-    constructor(children: Child, config: ConfigType) {
+    constructor(children: Child) {
         this.children = children;
-        this.config = config;
     }
 
     /**

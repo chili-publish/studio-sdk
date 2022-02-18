@@ -9,7 +9,7 @@ export class SubscriberController {
     /**
      * @ignore
      */
-    config: ConfigType;
+    private config: ConfigType;
 
     /**
      * @ignore

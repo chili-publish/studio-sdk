@@ -1,4 +1,4 @@
-import { Child, ConfigType } from '../../types/CommonTypes';
+import { Child } from '../../types/CommonTypes';
 import { Tools } from '../utils/enums';
 
 /**
@@ -10,17 +10,12 @@ export class ToolController {
      * @ignore
      */
     children: Child;
-    /**
-     * @ignore
-     */
-    config: ConfigType;
 
     /**
      * @ignore
      */
-    constructor(children: Child, config: ConfigType) {
+    constructor(children: Child) {
         this.children = children;
-        this.config = config;
     }
 
     /**

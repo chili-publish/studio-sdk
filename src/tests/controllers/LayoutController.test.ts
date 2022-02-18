@@ -22,7 +22,7 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.layout, 'getLayoutPropertiesCalculatedValue');
 
     mockedSDK.children = mockChild;
-    mockedSDK.layout = new LayoutController(mockChild, mockConfig);
+    mockedSDK.layout = new LayoutController(mockChild);
 });
 
 afterEach(() => {
@@ -32,19 +32,19 @@ afterEach(() => {
 describe('Layout methods', () => {
     it('handles all layout methods', async () => {
         await mockedSDK.layout.removeLayout(1);
-        expect(mockedSDK.layout.children.removeLayout).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.children.removeLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.addLayout(1);
-        expect(mockedSDK.layout.children.addLayout).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.children.addLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.setLayoutName(1, 'TEST');
-        expect(mockedSDK.layout.children.renameLayout).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.children.renameLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.selectLayout(1);
-        expect(mockedSDK.layout.children.selectLayout).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.children.selectLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.duplicateLayout(1);
-        expect(mockedSDK.layout.children.duplicateLayout).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.children.duplicateLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.resetLayout(1);
         expect(mockedSDK.children.resetLayout).toHaveBeenCalledTimes(1);

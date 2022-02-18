@@ -1,4 +1,3 @@
-import mockConfig from '../__mocks__/config';
 import mockChild from '../__mocks__/FrameProperties';
 import { mockDocument } from '../__mocks__/mockDocument';
 
@@ -11,7 +10,7 @@ let mockedLongPoll: jest.SpyInstance;
 const mockFetch = jest.fn();
 
 beforeEach(() => {
-    document = new DocumentController(mockChild, mockConfig);
+    document = new DocumentController(mockChild);
     jest.spyOn(document, 'getCurrentDocumentState');
     jest.spyOn(document, 'loadDocument');
     jest.spyOn(document, 'getDownloadLink');
@@ -30,7 +29,7 @@ describe('Document controller', () => {
         it('retrieve current document state', async () => {
             await document.getCurrentDocumentState();
             expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
-            expect(document.children.getCurrentDocumentState).toHaveBeenCalledTimes(1);
+            expect(mockChild.getCurrentDocumentState).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -57,7 +56,7 @@ describe('Document controller', () => {
 
             expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
-            expect(document.children.getCurrentDocumentState).toHaveBeenCalledTimes(1);
+            expect(mockChild.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
@@ -165,7 +164,7 @@ describe('Document controller', () => {
 
             const downloadResponse = await document.getDownloadLink('mp4', 1);
 
-            expect(document.children.getCurrentDocumentState).toHaveBeenCalledTimes(1);
+            expect(mockChild.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
@@ -221,6 +220,6 @@ describe('Document controller', () => {
 
     it('load provided document', async () => {
         await document.loadDocument(mockDocument);
-        expect(document.children.loadDocument).toHaveBeenCalledTimes(1);
+        expect(mockChild.loadDocument).toHaveBeenCalledTimes(1);
     });
 });
