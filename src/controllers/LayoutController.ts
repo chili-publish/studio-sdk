@@ -153,7 +153,6 @@ export class LayoutController {
         selectedLayout: LayoutPropertiesType,
     ) => {
         let calc = getCalculatedValue(value);
-
         switch (name) {
             case LayoutProperyNames.LAYOUT_HEIGHT: {
                 if (calc === null || calc === Infinity) {

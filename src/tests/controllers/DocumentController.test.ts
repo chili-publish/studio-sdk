@@ -110,6 +110,38 @@ describe('Document controller', () => {
             });
         });
 
+        it(' returns error when first api call fails without a code', async () => {
+            mockFetch.mockRejectedValueOnce({
+                status: 400,
+                Error: 'Not found',
+            });
+
+            mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
+
+            const downloadResponse = await document.getDownloadLink('mp4', 1);
+
+            expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
+
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1);
+            expect(mockFetch).toHaveBeenLastCalledWith('test url', {
+                body: 'document',
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+            });
+
+            expect(mockedLongPoll).toHaveBeenCalledTimes(0);
+
+            expect(downloadResponse).toMatchObject({
+                success: false,
+                data: null,
+                error: {
+                    error: {
+                        Error: 'Not found',
+                    },
+                },
+            });
+        });
+
         it(' returns error when second api call fails', async () => {
             mockFetch.mockResolvedValueOnce(
                 new Promise((resolve) =>
@@ -183,7 +215,7 @@ describe('Document controller', () => {
 
             await document.startPollingOnEndpoint('url');
 
-            expect(mockFetch).toHaveBeenCalledTimes(8);
+            expect(mockFetch).toHaveBeenCalledTimes(9);
         });
     });
 
