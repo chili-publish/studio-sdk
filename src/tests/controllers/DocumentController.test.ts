@@ -69,11 +69,11 @@ describe('Document controller', () => {
                 method: 'POST',
             });
 
-            expect(mockedLongPoll).toHaveBeenLastCalledWith('https://eap-rendering.azurewebsites.net/url/1');
+            expect(mockedLongPoll).toHaveBeenLastCalledWith('https://rendering.chili-publish-sandbox.online/url/1');
 
             expect(downloadResponse).toMatchObject({
                 success: true,
-                data: 'https://eap-rendering.azurewebsites.net/url/1',
+                data: 'https://rendering.chili-publish-sandbox.online/url/1',
             });
         });
 
@@ -170,7 +170,7 @@ describe('Document controller', () => {
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith('mp4', 1);
-            expect(mockFetch).toHaveBeenLastCalledWith('https://eap-rendering.azurewebsites.net/url/1');
+            expect(mockFetch).toHaveBeenLastCalledWith('https://rendering.chili-publish-sandbox.online/url/1');
 
             expect(mockedLongPoll).toHaveBeenCalledTimes(1);
 

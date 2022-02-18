@@ -11,7 +11,7 @@ export enum LayoutProperyNames {
 }
 
 export enum renderURLs {
-    BASE_URL = 'https://eap-rendering.azurewebsites.net',
+    BASE_URL = 'https://rendering.chili-publish-sandbox.online',
 }
 export enum Tools {
     SELECT = 'select',
