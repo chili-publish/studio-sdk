@@ -7,7 +7,7 @@ import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
 
-import type { ConfigType, Child } from '../types/CommonTypes';
+import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 
@@ -45,7 +45,7 @@ export class SDK {
     /**
      * @ignore
      */
-    children: Child;
+    editorAPI: EditorAPI;
 
     layout: LayoutController;
     frame: FrameController;
@@ -63,18 +63,18 @@ export class SDK {
     constructor(config: ConfigType) {
         this.config = config;
         this.connection = connection;
-        this.children = connection?.promise.then((child) => {
+        this.editorAPI = connection?.promise.then((child) => {
             return child;
-        }) as unknown as Child;
+        }) as unknown as EditorAPI;
 
-        this.layout = new LayoutController(this.children);
-        this.frame = new FrameController(this.children);
-        this.animation = new AnimationController(this.children);
-        this.document = new DocumentController(this.children);
-        this.variable = new VariableController(this.children);
+        this.layout = new LayoutController(this.editorAPI);
+        this.frame = new FrameController(this.editorAPI);
+        this.animation = new AnimationController(this.editorAPI);
+        this.document = new DocumentController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
-        this.tool = new ToolController(this.children);
+        this.tool = new ToolController(this.editorAPI);
     }
 
     /**
@@ -98,17 +98,17 @@ export class SDK {
             this.setConnection,
             this.config.editorId,
         );
-        this.children = connection?.promise.then((child) => {
-            return child;
-        }) as unknown as Child;
+        this.editorAPI = connection?.promise.then((editorAPI) => {
+            return editorAPI;
+        }) as unknown as EditorAPI;
 
-        this.layout = new LayoutController(this.children);
-        this.frame = new FrameController(this.children);
-        this.animation = new AnimationController(this.children);
-        this.document = new DocumentController(this.children);
-        this.variable = new VariableController(this.children);
+        this.layout = new LayoutController(this.editorAPI);
+        this.frame = new FrameController(this.editorAPI);
+        this.animation = new AnimationController(this.editorAPI);
+        this.document = new DocumentController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
-        this.tool = new ToolController(this.children);
+        this.tool = new ToolController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {

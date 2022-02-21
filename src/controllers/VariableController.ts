@@ -1,4 +1,4 @@
-import { Child } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 /**
@@ -9,13 +9,13 @@ export class VariableController {
     /**
      * @ignore
      */
-    private children: Child;
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(children: Child) {
-        this.children = children;
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
     }
 
     /**
@@ -23,7 +23,7 @@ export class VariableController {
      * @returns
      */
     getVariableList = async () => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.getVariableList();
     };
 
@@ -32,7 +32,7 @@ export class VariableController {
      * @returns
      */
     getVariable = async (variableId: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.getVariable(variableId);
     };
 
@@ -41,7 +41,7 @@ export class VariableController {
      * @returns The new created variable id
      */
     addVariable = async (parentId: string, variableType: VariableType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.addVariable(parentId, variableType);
     };
 
@@ -50,7 +50,7 @@ export class VariableController {
      * @returns
      */
     removeVariable = async (variableId: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.removeVariable(variableId);
     };
 
@@ -59,7 +59,7 @@ export class VariableController {
      * @returns
      */
     setVariableName = async (variableId: string, name: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableName(variableId, name);
     };
 
@@ -68,7 +68,7 @@ export class VariableController {
      * @returns
      */
     setVariableLabel = async (variableId: string, label: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableLabel(variableId, label);
     };
 
@@ -77,7 +77,7 @@ export class VariableController {
      * @returns
      */
     setVariableType = async (variableId: string, type: VariableType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableType(variableId, type);
     };
 
@@ -86,7 +86,7 @@ export class VariableController {
      * @returns
      */
     setDefaultVariableValue = async (variableId: string, value: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setDefaultVariableValue(variableId, value);
     };
 
@@ -95,7 +95,7 @@ export class VariableController {
      * @returns
      */
     setVariableValue = async (variableId: string, value: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableValue(variableId, value);
     };
 
@@ -104,7 +104,7 @@ export class VariableController {
      * @returns
      */
     duplicateVariable = async (variableId: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.duplicateVariable(variableId);
     };
 
@@ -113,7 +113,7 @@ export class VariableController {
      * @returns
      */
     groupVariables = async (groupName: string, variableIds: string[]) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.groupVariables(groupName, variableIds);
     };
 
@@ -122,7 +122,7 @@ export class VariableController {
      * @returns
      */
     ungroupVariable = async (groupId: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.ungroupVariable(groupId);
     };
 
@@ -131,7 +131,7 @@ export class VariableController {
      * @returns
      */
     moveVariable = async (variableId: string, parentId: string, orderIndex: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.moveVariable(variableId, parentId, orderIndex);
     };
 
@@ -140,7 +140,7 @@ export class VariableController {
      * @returns
      */
     setVariableIsHidden = async (variableId: string, isHidden: boolean) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableIsHidden(variableId, isHidden);
     };
 
@@ -149,7 +149,7 @@ export class VariableController {
      * @returns
      */
     setVariableIsRequired = async (variableId: string, isRequired: boolean) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableIsRequired(variableId, isRequired);
     };
 
@@ -158,7 +158,7 @@ export class VariableController {
      * @returns
      */
     setVariableIsReadonly = async (variableId: string, isReadonly: boolean) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setVariableIsReadonly(variableId, isReadonly);
     };
 }

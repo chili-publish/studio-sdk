@@ -1,4 +1,4 @@
-import { Child } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { Tools } from '../utils/enums';
 
 /**
@@ -9,13 +9,13 @@ export class ToolController {
     /**
      * @ignore
      */
-    children: Child;
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(children: Child) {
-        this.children = children;
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
     }
 
     /**
@@ -23,7 +23,7 @@ export class ToolController {
      * @param tool
      */
     private setTool = async (tool: Tools) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setTool(tool);
     };
 

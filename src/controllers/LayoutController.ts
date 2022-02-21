@@ -1,4 +1,4 @@
-import type { Child } from '../../types/CommonTypes';
+import type { EditorAPI } from '../../types/CommonTypes';
 import type { LayoutPropertiesType } from '../../types/LayoutTypes';
 import { LayoutProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
@@ -11,13 +11,13 @@ export class LayoutController {
     /**
      * @ignore
      */
-    private children: Child;
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(children: Child) {
-        this.children = children;
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
     }
 
     /**
@@ -26,7 +26,7 @@ export class LayoutController {
      * @returns
      */
     removeLayout = async (layoutId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.removeLayout(layoutId);
     };
 
@@ -36,7 +36,7 @@ export class LayoutController {
      * @returns
      */
     addLayout = async (parentId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.addLayout(parentId);
     };
 
@@ -47,7 +47,7 @@ export class LayoutController {
      * @returns
      */
     setLayoutName = async (layoutId: number, layoutName: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.renameLayout(layoutId, layoutName);
     };
 
@@ -57,7 +57,7 @@ export class LayoutController {
      * @returns
      */
     selectLayout = async (layoutId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.selectLayout(layoutId);
     };
 
@@ -67,7 +67,7 @@ export class LayoutController {
      * @returns
      */
     duplicateLayout = async (layoutId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.duplicateLayout(layoutId);
     };
 
@@ -77,7 +77,7 @@ export class LayoutController {
      * @returns
      */
     resetLayout = async (layoutId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetLayout(layoutId);
     };
 
@@ -88,7 +88,7 @@ export class LayoutController {
      * @returns
      */
     setLayoutHeight = async (value: string, selectedLayout: LayoutPropertiesType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_HEIGHT, value, selectedLayout);
         if (calc === null) {
             return null;
@@ -105,7 +105,7 @@ export class LayoutController {
      * @returns
      */
     setLayoutWidth = async (value: string, selectedLayout: LayoutPropertiesType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_WIDTH, value, selectedLayout);
         if (calc === null) {
             return null;
@@ -121,7 +121,7 @@ export class LayoutController {
      * @returns
      */
     resetLayoutHeight = async (layoutId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetLayoutHeight(layoutId);
     };
 
@@ -131,7 +131,7 @@ export class LayoutController {
      * @returns
      */
     resetLayoutWidth = async (layoutId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetLayoutWidth(layoutId);
     };
 

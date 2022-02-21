@@ -8,7 +8,7 @@ describe('utils controller', () => {
     let mockedSDK: SDK;
     beforeEach(() => {
         mockedSDK = new SDK(mockConfig);
-        mockedSDK.children = mockChild;
+        mockedSDK.editorAPI = mockChild;
         mockedSDK.utils = new UtilsController();
         jest.spyOn(calculationUtils, 'getCalculatedValue');
         jest.spyOn(calculationUtils, 'round');
