@@ -1,11 +1,11 @@
 import { FrameController } from '../../controllers/FrameController';
-import mockChild, { mockSelectFrame } from '../__mocks__/FrameProperties';
+import MockEditorAPI, { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { FrameProperyNames } from '../../utils/enums';
 
 let mockedFrameProperties: FrameController;
 
 beforeEach(() => {
-    mockedFrameProperties = new FrameController(mockChild);
+    mockedFrameProperties = new FrameController(MockEditorAPI);
     jest.spyOn(mockedFrameProperties, 'setFrameHeight');
     jest.spyOn(mockedFrameProperties, 'setFrameWidth');
 
@@ -37,7 +37,7 @@ afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('FrameProperties', () => {
-    it('Should call  all of the Frame Functions of Child successfully', () => {
+    it('Should call  all of the Frame Functions of EditorAPI successfully', () => {
         mockedFrameProperties.setFrameHeight('300', mockSelectFrame);
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(1);
 

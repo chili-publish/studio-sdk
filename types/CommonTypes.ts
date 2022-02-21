@@ -26,7 +26,7 @@ export type EditorResponse = {
     data?: unknown;
     error?: string;
 };
-export interface Child extends CallSender {
+export interface EditorAPI extends CallSender {
     [index: string]: (...args: unknown[]) => Promise<EditorResponse>;
 }
 

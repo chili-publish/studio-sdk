@@ -48,7 +48,7 @@ export const mockPauseAnimation = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
-const mockChild = {
+const MockEditorAPI = {
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
     renameLayout: mockSetLayoutName,
@@ -101,7 +101,7 @@ const mockChild = {
     setTool: mockSetTool,
 };
 
-export default mockChild;
+export default MockEditorAPI;
 
 export const mockSelectFrame = {
     frameId: 300,

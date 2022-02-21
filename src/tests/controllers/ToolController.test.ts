@@ -7,7 +7,7 @@ describe('Tool controller', () => {
     let mockedSDK: SDK;
     beforeEach(() => {
         mockedSDK = new SDK(mockConfig);
-        mockedSDK.children = mockChild;
+        mockedSDK.editorAPI = mockChild;
         mockedSDK.tool = new ToolController(mockChild);
     });
 
@@ -17,18 +17,18 @@ describe('Tool controller', () => {
 
     it('sets the pointer tool', async () => {
         await mockedSDK.tool.setSelectTool();
-        expect(mockedSDK.children.setTool).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.children.setTool).toHaveBeenCalledWith(Tools.SELECT);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.SELECT);
     });
     it('sets the move tool', async () => {
         await mockedSDK.tool.setHandTool();
-        expect(mockedSDK.children.setTool).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.children.setTool).toHaveBeenCalledWith(Tools.HAND);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.HAND);
     });
 
     it('sets the zoom tool', async () => {
         await mockedSDK.tool.setZoomTool();
-        expect(mockedSDK.children.setTool).toHaveBeenCalledTimes(3);
-        expect(mockedSDK.children.setTool).toHaveBeenCalledWith(Tools.ZOOM);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(3);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.ZOOM);
     });
 });

@@ -1,5 +1,5 @@
 import { FrameProperyNames } from '../index';
-import type { Child } from '../../types/CommonTypes';
+import type { EditorAPI } from '../../types/CommonTypes';
 import type { FrameLayoutType } from '../../types/FrameTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
@@ -11,13 +11,13 @@ export class FrameController {
     /**
      * @ignore
      */
-    private children: Child;
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(children: Child) {
-        this.children = children;
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
     }
 
     /**
@@ -26,7 +26,7 @@ export class FrameController {
      * @returns
      */
     resetFrameSize = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameSize(frameId);
     };
 
@@ -36,7 +36,7 @@ export class FrameController {
      * @returns
      */
     selectFrame = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.selectFrames([frameId]);
     };
 
@@ -46,7 +46,7 @@ export class FrameController {
      * @returns
      */
     selectMultipleFrames = async (frameIds: number[]) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.selectFrames(frameIds);
     };
 
@@ -57,7 +57,7 @@ export class FrameController {
      * @returns
      */
     setFrameHeight = async (value: string, selectedFrame: FrameLayoutType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.HEIGHT, value, selectedFrame);
         if (calc === null) {
             return null;
@@ -74,7 +74,7 @@ export class FrameController {
      * @returns
      */
     setFrameRotation = async (value: string, selectedFrame: FrameLayoutType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_ROTATION, value, selectedFrame);
         if (calc === null) {
             return null;
@@ -91,7 +91,7 @@ export class FrameController {
      * @returns
      */
     setFrameWidth = async (value: string, selectedFrame: FrameLayoutType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.WIDTH, value, selectedFrame);
         if (calc === null) {
             return null;
@@ -108,7 +108,7 @@ export class FrameController {
      * @returns
      */
     setFrameX = async (value: string, selectedFrame: FrameLayoutType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_X, value, selectedFrame);
         if (calc === null) {
             return null;
@@ -125,7 +125,7 @@ export class FrameController {
      * @returns
      */
     setFrameY = async (value: string, selectedFrame: FrameLayoutType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_Y, value, selectedFrame);
         if (calc === null) {
             return null;
@@ -141,7 +141,7 @@ export class FrameController {
      * @returns
      */
     resetFrame = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrame(frameId);
     };
     /**
@@ -150,7 +150,7 @@ export class FrameController {
      * @returns
      */
     resetFrameX = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameX(frameId);
     };
 
@@ -160,7 +160,7 @@ export class FrameController {
      * @returns
      */
     resetFrameY = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameY(frameId);
     };
 
@@ -170,7 +170,7 @@ export class FrameController {
      * @returns
      */
     resetFrameRotation = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameRotation(frameId);
     };
 
@@ -180,7 +180,7 @@ export class FrameController {
      * @returns
      */
     resetFrameWidth = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameWidth(frameId);
     };
 
@@ -190,7 +190,7 @@ export class FrameController {
      * @returns
      */
     resetFrameHeight = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameHeight(frameId);
     };
 
@@ -201,7 +201,7 @@ export class FrameController {
      * @returns
      */
     setFrameVisibility = async (frameId: number, value: boolean) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setFrameVisibility(frameId, value);
     };
 

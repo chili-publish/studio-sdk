@@ -1,6 +1,6 @@
-import { Child } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import type { DocumentError } from '../../types/DocumentTypes';
-import { renderURLs } from '../utils/enums';
+import { renderURLs, DownloadFormats } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';
 /**
@@ -12,13 +12,13 @@ export class DocumentController {
     /**
      * @ignore
      */
-    private children: Child;
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(children: Child) {
-        this.children = children;
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
     }
 
     /**
@@ -26,7 +26,7 @@ export class DocumentController {
      * @returns The JSON document in the form of a string
      */
     getCurrentDocumentState = async () => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.getCurrentDocumentState();
     };
 
@@ -36,7 +36,7 @@ export class DocumentController {
      * @returns The document loaded inside of the canvas
      */
     loadDocument = async (documentJson: string) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.loadDocument(documentJson);
     };
 
@@ -46,7 +46,7 @@ export class DocumentController {
      * @param layoutId id of layout to be downloaded
      * @returns the download link
      */
-    getDownloadLink = async (format: string, layoutId: number) => {
+    getDownloadLink = async (format: DownloadFormats, layoutId: number) => {
         let error: DocumentError | null = null;
         let currentDocument: string | null = null;
         let PREPARE_DOWNLOAD_URL: string | null = null;

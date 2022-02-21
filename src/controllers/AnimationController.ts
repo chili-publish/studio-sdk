@@ -1,5 +1,5 @@
 import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
-import { Child } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 
 /**
  * The AnimationController is responsible for all communication regarding Animations.
@@ -9,13 +9,13 @@ export class AnimationController {
     /**
      * @ignore
      */
-    private children: Child;
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(children: Child) {
-        this.children = children;
+    constructor(children: EditorAPI) {
+        this.#editorAPI = children;
     }
 
     /**
@@ -24,7 +24,7 @@ export class AnimationController {
      * @returns
      */
     setFrameAnimation = async (animation: FrameAnimationPropertiesType) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setFrameAnimation(JSON.stringify(animation));
     };
 
@@ -33,7 +33,7 @@ export class AnimationController {
      * @returns
      */
     playAnimation = async () => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.playAnimation();
     };
 
@@ -42,7 +42,7 @@ export class AnimationController {
      * @returns
      */
     pauseAnimation = async () => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.pauseAnimation();
     };
 
@@ -52,7 +52,7 @@ export class AnimationController {
      * @returns
      */
     setScrubberPosition = async (timeInMS: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setScrubberPosition(timeInMS);
     };
 
@@ -62,7 +62,7 @@ export class AnimationController {
      * @returns
      */
     setAnimationDuration = async (timeInMS: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.setAnimationDuration(timeInMS);
     };
 
@@ -72,7 +72,7 @@ export class AnimationController {
      * @returns
      */
     resetFrameAnimation = async (frameId: number) => {
-        const res = await this.children;
+        const res = await this.#editorAPI;
         return res.resetFrameAnimation(frameId);
     };
 }
