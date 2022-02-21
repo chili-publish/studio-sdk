@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="IE=edge" />
-        <title>FrameController | @chili-publish/editor-sdk</title>
+        <title>VariableController | @chili-publish/editor-sdk</title>
         <meta name="description" content="Documentation for @chili-publish/editor-sdk" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="../assets/style.css" />
@@ -61,10 +61,12 @@
                 <div class="container">
                     <ul class="tsd-breadcrumb">
                         <li><a href="../modules.html">@chili-publish/editor-sdk</a></li>
-                        <li><a href="../modules/controllers_FrameController.html">controllers/FrameController</a></li>
-                        <li><a href="controllers_FrameController.FrameController.html">FrameController</a></li>
+                        <li>
+                            <a href="../modules/controllers_VariableController.html">controllers/VariableController</a>
+                        </li>
+                        <li><a href="controllers_VariableController.VariableController.html">VariableController</a></li>
                     </ul>
-                    <h1>Class FrameController</h1>
+                    <h1>Class VariableController</h1>
                 </div>
             </div>
         </header>
@@ -75,8 +77,9 @@
                         <div class="tsd-comment tsd-typography">
                             <div class="lead">
                                 <p>
-                                    The FrameController is responsible for all communication regarding Frames. Methods
-                                    inside this controller can be called by <code>window.SDK.frame.{method-name}</code>
+                                    The VariableController is responsible for all communication regarding the variables.
+                                    Methods inside this controller can be called by
+                                    <code>window.SDK.variable.{method-name}</code>
                                 </p>
                             </div>
                         </div>
@@ -84,7 +87,7 @@
                     <section class="tsd-panel tsd-hierarchy">
                         <h3>Hierarchy</h3>
                         <ul class="tsd-hierarchy">
-                            <li><span class="target">FrameController</span></li>
+                            <li><span class="target">VariableController</span></li>
                         </ul>
                     </section>
                     <section class="tsd-panel-group tsd-index-group">
@@ -96,114 +99,114 @@
                                     <ul class="tsd-index-list">
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#getFramePropertyCalculatedValue"
+                                                href="controllers_VariableController.VariableController.html#addVariable"
                                                 class="tsd-kind-icon"
-                                                >get<wbr />Frame<wbr />Property<wbr />Calculated<wbr />Value</a
+                                                >add<wbr />Variable</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrame"
+                                                href="controllers_VariableController.VariableController.html#duplicateVariable"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />Frame</a
+                                                >duplicate<wbr />Variable</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrameHeight"
+                                                href="controllers_VariableController.VariableController.html#getVariable"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />Frame<wbr />Height</a
+                                                >get<wbr />Variable</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrameRotation"
+                                                href="controllers_VariableController.VariableController.html#getVariableList"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />Frame<wbr />Rotation</a
+                                                >get<wbr />Variable<wbr />List</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrameSize"
+                                                href="controllers_VariableController.VariableController.html#groupVariables"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />Frame<wbr />Size</a
+                                                >group<wbr />Variables</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrameWidth"
+                                                href="controllers_VariableController.VariableController.html#moveVariable"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />Frame<wbr />Width</a
+                                                >move<wbr />Variable</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrameX"
+                                                href="controllers_VariableController.VariableController.html#removeVariable"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />FrameX</a
+                                                >remove<wbr />Variable</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#resetFrameY"
+                                                href="controllers_VariableController.VariableController.html#setDefaultVariableValue"
                                                 class="tsd-kind-icon"
-                                                >reset<wbr />FrameY</a
+                                                >set<wbr />Default<wbr />Variable<wbr />Value</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#selectFrame"
+                                                href="controllers_VariableController.VariableController.html#setVariableIsHidden"
                                                 class="tsd-kind-icon"
-                                                >select<wbr />Frame</a
+                                                >set<wbr />Variable<wbr />Is<wbr />Hidden</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#selectMultipleFrames"
+                                                href="controllers_VariableController.VariableController.html#setVariableIsReadonly"
                                                 class="tsd-kind-icon"
-                                                >select<wbr />Multiple<wbr />Frames</a
+                                                >set<wbr />Variable<wbr />Is<wbr />Readonly</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#setFrameHeight"
+                                                href="controllers_VariableController.VariableController.html#setVariableIsRequired"
                                                 class="tsd-kind-icon"
-                                                >set<wbr />Frame<wbr />Height</a
+                                                >set<wbr />Variable<wbr />Is<wbr />Required</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#setFrameRotation"
+                                                href="controllers_VariableController.VariableController.html#setVariableLabel"
                                                 class="tsd-kind-icon"
-                                                >set<wbr />Frame<wbr />Rotation</a
+                                                >set<wbr />Variable<wbr />Label</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#setFrameVisibility"
+                                                href="controllers_VariableController.VariableController.html#setVariableName"
                                                 class="tsd-kind-icon"
-                                                >set<wbr />Frame<wbr />Visibility</a
+                                                >set<wbr />Variable<wbr />Name</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#setFrameWidth"
+                                                href="controllers_VariableController.VariableController.html#setVariableType"
                                                 class="tsd-kind-icon"
-                                                >set<wbr />Frame<wbr />Width</a
+                                                >set<wbr />Variable<wbr />Type</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#setFrameX"
+                                                href="controllers_VariableController.VariableController.html#setVariableValue"
                                                 class="tsd-kind-icon"
-                                                >set<wbr />FrameX</a
+                                                >set<wbr />Variable<wbr />Value</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_FrameController.FrameController.html#setFrameY"
+                                                href="controllers_VariableController.VariableController.html#ungroupVariable"
                                                 class="tsd-kind-icon"
-                                                >set<wbr />FrameY</a
+                                                >ungroup<wbr />Variable</a
                                             >
                                         </li>
                                     </ul>
@@ -214,12 +217,9 @@
                     <section class="tsd-panel-group tsd-member-group">
                         <h2>Methods</h2>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="getFramePropertyCalculatedValue" class="tsd-anchor"></a>
+                            <a id="addVariable" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                get<wbr />Frame<wbr />Property<wbr />Calculated<wbr />Value<a
-                                    href="#getFramePropertyCalculatedValue"
-                                    aria-label="Permalink"
-                                    class="tsd-anchor-icon"
+                                add<wbr />Variable<a href="#addVariable" aria-label="Permalink" class="tsd-anchor-icon"
                                     ><svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-link"
@@ -237,29 +237,27 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    get<wbr />Frame<wbr />Property<wbr />Calculated<wbr />Value<span
+                                    add<wbr />Variable<span class="tsd-signature-symbol">(</span>parentId<span
                                         class="tsd-signature-symbol"
-                                        >(</span
-                                    >name<span class="tsd-signature-symbol">: </span
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span>, variableType<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
                                     ><a
-                                        href="../enums/index.FrameProperyNames.html"
+                                        href="../enums/index.VariableType.html"
                                         class="tsd-signature-type"
                                         data-tsd-kind="Enumeration"
-                                        >FrameProperyNames</a
-                                    >, value<span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">string</span>, selectedFrame<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><a
-                                        href="../modules/index.html#FrameLayoutType"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >FrameLayoutType</a
+                                        >VariableType</a
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
-                                    ><span class="tsd-signature-type">number</span>
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
                                 </li>
                             </ul>
                             <ul class="tsd-descriptions">
@@ -269,143 +267,32 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L215"
-                                                    >src/controllers/FrameController.ts:215</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L43"
+                                                    >src/controllers/VariableController.ts:43</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>
-                                                This method will trigger a calculation with logic built in, based on its
-                                                parameters
-                                            </p>
+                                            <p>This method adds a new variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
+                                            <h5>parentId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
                                             <h5>
-                                                name:
+                                                variableType:
                                                 <a
-                                                    href="../enums/index.FrameProperyNames.html"
+                                                    href="../enums/index.VariableType.html"
                                                     class="tsd-signature-type"
                                                     data-tsd-kind="Enumeration"
-                                                    >FrameProperyNames</a
+                                                    >VariableType</a
                                                 >
                                             </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The name of the property of whom the calculation is for</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        The string value that will be calculated (f.e. 1+1 will reult in
-                                                        2). The notation is dependent on the frame property that
-                                                        triggers this calculation
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h5>
-                                                selectedFrame:
-                                                <a
-                                                    href="../modules/index.html#FrameLayoutType"
-                                                    class="tsd-signature-type"
-                                                    data-tsd-kind="Type alias"
-                                                    >FrameLayoutType</a
-                                                >
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The frame that is selected with all it&#39;s properties</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
-                                        ><span class="tsd-signature-type">number</span>
-                                    </h4>
-                                    <div></div>
-                                </li>
-                            </ul>
-                        </section>
-                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrame" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                reset<wbr />Frame<a href="#resetFrame" aria-label="Permalink" class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />Frame<span class="tsd-signature-symbol">(</span>frameId<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><span class="tsd-signature-type">number</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">Promise</span
-                                    ><span class="tsd-signature-symbol">&lt;</span
-                                    ><a
-                                        href="../modules/index.html#EditorResponse"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >EditorResponse</a
-                                    ><span class="tsd-signature-symbol">&gt;</span>
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <aside class="tsd-sources">
-                                        <ul>
-                                            <li>
-                                                Defined in
-                                                <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L143"
-                                                    >src/controllers/FrameController.ts:143</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </aside>
-                                    <div class="tsd-comment tsd-typography">
-                                        <div class="lead">
-                                            <p>
-                                                This method will reset properties of a specific frame to their original
-                                                values
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get reset</p>
-                                                </div>
-                                            </div>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
@@ -418,15 +305,15 @@
                                             >EditorResponse</a
                                         ><span class="tsd-signature-symbol">&gt;</span>
                                     </h4>
-                                    <div></div>
+                                    <div><p>The new created variable id</p></div>
                                 </li>
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrameHeight" class="tsd-anchor"></a>
+                            <a id="duplicateVariable" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                reset<wbr />Frame<wbr />Height<a
-                                    href="#resetFrameHeight"
+                                duplicate<wbr />Variable<a
+                                    href="#duplicateVariable"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -446,9 +333,10 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />Frame<wbr />Height<span class="tsd-signature-symbol">(</span
-                                    >frameId<span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">number</span
+                                    duplicate<wbr />Variable<span class="tsd-signature-symbol">(</span>variableId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
@@ -468,29 +356,21 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L192"
-                                                    >src/controllers/FrameController.ts:192</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L106"
+                                                    >src/controllers/VariableController.ts:106</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>
-                                                This method will reset the height of a specific frame to its original
-                                                value
-                                            </p>
+                                            <p>This method creates a copy of a variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get reset</p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
@@ -508,10 +388,85 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrameRotation" class="tsd-anchor"></a>
+                            <a id="getVariable" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                reset<wbr />Frame<wbr />Rotation<a
-                                    href="#resetFrameRotation"
+                                get<wbr />Variable<a href="#getVariable" aria-label="Permalink" class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    get<wbr />Variable<span class="tsd-signature-symbol">(</span>variableId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L34"
+                                                    >src/controllers/VariableController.ts:34</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method returns a variable by id</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="getVariableList" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                get<wbr />Variable<wbr />List<a
+                                    href="#getVariableList"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -531,9 +486,7 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />Frame<wbr />Rotation<span class="tsd-signature-symbol">(</span
-                                    >frameId<span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">number</span
+                                    get<wbr />Variable<wbr />List<span class="tsd-signature-symbol">(</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
@@ -553,31 +506,17 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L172"
-                                                    >src/controllers/FrameController.ts:172</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L25"
+                                                    >src/controllers/VariableController.ts:25</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>
-                                                This method will reset the rotation value of a specific frame to its
-                                                original value
-                                            </p>
+                                            <p>This method returns the list of variables</p>
                                         </div>
                                     </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get reset</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
@@ -593,10 +532,10 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrameSize" class="tsd-anchor"></a>
+                            <a id="groupVariables" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                reset<wbr />Frame<wbr />Size<a
-                                    href="#resetFrameSize"
+                                group<wbr />Variables<a
+                                    href="#groupVariables"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -616,427 +555,13 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />Frame<wbr />Size<span class="tsd-signature-symbol">(</span>frameId<span
+                                    group<wbr />Variables<span class="tsd-signature-symbol">(</span>groupName<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">number</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">Promise</span
-                                    ><span class="tsd-signature-symbol">&lt;</span
-                                    ><a
-                                        href="../modules/index.html#EditorResponse"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >EditorResponse</a
-                                    ><span class="tsd-signature-symbol">&gt;</span>
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <aside class="tsd-sources">
-                                        <ul>
-                                            <li>
-                                                Defined in
-                                                <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L28"
-                                                    >src/controllers/FrameController.ts:28</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </aside>
-                                    <div class="tsd-comment tsd-typography">
-                                        <div class="lead">
-                                            <p>
-                                                This method will reset the frame size (width and height) to the
-                                                frame&#39;s original value
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of a specific frame</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">Promise</span
-                                        ><span class="tsd-signature-symbol">&lt;</span
-                                        ><a
-                                            href="../modules/index.html#EditorResponse"
-                                            class="tsd-signature-type"
-                                            data-tsd-kind="Type alias"
-                                            >EditorResponse</a
-                                        ><span class="tsd-signature-symbol">&gt;</span>
-                                    </h4>
-                                    <div></div>
-                                </li>
-                            </ul>
-                        </section>
-                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrameWidth" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                reset<wbr />Frame<wbr />Width<a
-                                    href="#resetFrameWidth"
-                                    aria-label="Permalink"
-                                    class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />Frame<wbr />Width<span class="tsd-signature-symbol">(</span>frameId<span
+                                    ><span class="tsd-signature-type">string</span>, variableIds<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">number</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">Promise</span
-                                    ><span class="tsd-signature-symbol">&lt;</span
-                                    ><a
-                                        href="../modules/index.html#EditorResponse"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >EditorResponse</a
-                                    ><span class="tsd-signature-symbol">&gt;</span>
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <aside class="tsd-sources">
-                                        <ul>
-                                            <li>
-                                                Defined in
-                                                <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L182"
-                                                    >src/controllers/FrameController.ts:182</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </aside>
-                                    <div class="tsd-comment tsd-typography">
-                                        <div class="lead">
-                                            <p>
-                                                This method will reset the width of a specific frame to its original
-                                                value
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get reset</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">Promise</span
-                                        ><span class="tsd-signature-symbol">&lt;</span
-                                        ><a
-                                            href="../modules/index.html#EditorResponse"
-                                            class="tsd-signature-type"
-                                            data-tsd-kind="Type alias"
-                                            >EditorResponse</a
-                                        ><span class="tsd-signature-symbol">&gt;</span>
-                                    </h4>
-                                    <div></div>
-                                </li>
-                            </ul>
-                        </section>
-                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrameX" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                reset<wbr />FrameX<a href="#resetFrameX" aria-label="Permalink" class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />FrameX<span class="tsd-signature-symbol">(</span>frameId<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><span class="tsd-signature-type">number</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">Promise</span
-                                    ><span class="tsd-signature-symbol">&lt;</span
-                                    ><a
-                                        href="../modules/index.html#EditorResponse"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >EditorResponse</a
-                                    ><span class="tsd-signature-symbol">&gt;</span>
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <aside class="tsd-sources">
-                                        <ul>
-                                            <li>
-                                                Defined in
-                                                <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L152"
-                                                    >src/controllers/FrameController.ts:152</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </aside>
-                                    <div class="tsd-comment tsd-typography">
-                                        <div class="lead">
-                                            <p>
-                                                This method will reset the x value of a specific frame to its original
-                                                value
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get reset</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">Promise</span
-                                        ><span class="tsd-signature-symbol">&lt;</span
-                                        ><a
-                                            href="../modules/index.html#EditorResponse"
-                                            class="tsd-signature-type"
-                                            data-tsd-kind="Type alias"
-                                            >EditorResponse</a
-                                        ><span class="tsd-signature-symbol">&gt;</span>
-                                    </h4>
-                                    <div></div>
-                                </li>
-                            </ul>
-                        </section>
-                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="resetFrameY" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                reset<wbr />FrameY<a href="#resetFrameY" aria-label="Permalink" class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    reset<wbr />FrameY<span class="tsd-signature-symbol">(</span>frameId<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><span class="tsd-signature-type">number</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">Promise</span
-                                    ><span class="tsd-signature-symbol">&lt;</span
-                                    ><a
-                                        href="../modules/index.html#EditorResponse"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >EditorResponse</a
-                                    ><span class="tsd-signature-symbol">&gt;</span>
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <aside class="tsd-sources">
-                                        <ul>
-                                            <li>
-                                                Defined in
-                                                <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L162"
-                                                    >src/controllers/FrameController.ts:162</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </aside>
-                                    <div class="tsd-comment tsd-typography">
-                                        <div class="lead">
-                                            <p>
-                                                This method will reset the y value of a specific frame to its original
-                                                value
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get reset</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">Promise</span
-                                        ><span class="tsd-signature-symbol">&lt;</span
-                                        ><a
-                                            href="../modules/index.html#EditorResponse"
-                                            class="tsd-signature-type"
-                                            data-tsd-kind="Type alias"
-                                            >EditorResponse</a
-                                        ><span class="tsd-signature-symbol">&gt;</span>
-                                    </h4>
-                                    <div></div>
-                                </li>
-                            </ul>
-                        </section>
-                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="selectFrame" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                select<wbr />Frame<a href="#selectFrame" aria-label="Permalink" class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    select<wbr />Frame<span class="tsd-signature-symbol">(</span>frameId<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><span class="tsd-signature-type">number</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">Promise</span
-                                    ><span class="tsd-signature-symbol">&lt;</span
-                                    ><a
-                                        href="../modules/index.html#EditorResponse"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >EditorResponse</a
-                                    ><span class="tsd-signature-symbol">&gt;</span>
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <aside class="tsd-sources">
-                                        <ul>
-                                            <li>
-                                                Defined in
-                                                <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L38"
-                                                    >src/controllers/FrameController.ts:38</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </aside>
-                                    <div class="tsd-comment tsd-typography">
-                                        <div class="lead">
-                                            <p>This method will select a specific frame</p>
-                                        </div>
-                                    </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of a specific frame</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">Promise</span
-                                        ><span class="tsd-signature-symbol">&lt;</span
-                                        ><a
-                                            href="../modules/index.html#EditorResponse"
-                                            class="tsd-signature-type"
-                                            data-tsd-kind="Type alias"
-                                            >EditorResponse</a
-                                        ><span class="tsd-signature-symbol">&gt;</span>
-                                    </h4>
-                                    <div></div>
-                                </li>
-                            </ul>
-                        </section>
-                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="selectMultipleFrames" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                select<wbr />Multiple<wbr />Frames<a
-                                    href="#selectMultipleFrames"
-                                    aria-label="Permalink"
-                                    class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    select<wbr />Multiple<wbr />Frames<span class="tsd-signature-symbol">(</span
-                                    >frameIds<span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">number</span
+                                    ><span class="tsd-signature-type">string</span
                                     ><span class="tsd-signature-symbol">[]</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
@@ -1057,29 +582,27 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L48"
-                                                    >src/controllers/FrameController.ts:48</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L115"
+                                                    >src/controllers/VariableController.ts:115</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method will select multipleFrames</p>
+                                            <p>This method aggregates the provided variables into a new group</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
+                                            <h5>groupName: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
                                             <h5>
-                                                frameIds: <span class="tsd-signature-type">number</span
+                                                variableIds: <span class="tsd-signature-type">string</span
                                                 ><span class="tsd-signature-symbol">[]</span>
                                             </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>An array of all IDs you want to select</p>
-                                                </div>
-                                            </div>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
@@ -1097,10 +620,10 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="setFrameHeight" class="tsd-anchor"></a>
+                            <a id="moveVariable" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                set<wbr />Frame<wbr />Height<a
-                                    href="#setFrameHeight"
+                                move<wbr />Variable<a
+                                    href="#moveVariable"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -1120,23 +643,20 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    set<wbr />Frame<wbr />Height<span class="tsd-signature-symbol">(</span>value<span
+                                    move<wbr />Variable<span class="tsd-signature-symbol">(</span>variableId<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">string</span>, selectedFrame<span
+                                    ><span class="tsd-signature-type">string</span>, parentId<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><a
-                                        href="../modules/index.html#FrameLayoutType"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >FrameLayoutType</a
+                                    ><span class="tsd-signature-type">string</span>, orderIndex<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">number</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
                                     ><span class="tsd-signature-symbol">&lt;</span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
                                     ><a
                                         href="../modules/index.html#EditorResponse"
                                         class="tsd-signature-type"
@@ -1152,52 +672,32 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L59"
-                                                    >src/controllers/FrameController.ts:59</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L133"
+                                                    >src/controllers/VariableController.ts:133</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method will set the height of a specific frame</p>
+                                            <p>This method moves a variable&#39;s position</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        The string value that will be calculated (f.e. 1+1 will reult in
-                                                        2) The notation is in pixels
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                         <li>
-                                            <h5>
-                                                selectedFrame:
-                                                <a
-                                                    href="../modules/index.html#FrameLayoutType"
-                                                    class="tsd-signature-type"
-                                                    data-tsd-kind="Type alias"
-                                                    >FrameLayoutType</a
-                                                >
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The frame that is selected with all it&#39;s properties</p>
-                                                </div>
-                                            </div>
+                                            <h5>parentId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
+                                            <h5>orderIndex: <span class="tsd-signature-type">number</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
-                                        ><span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
                                         ><a
                                             href="../modules/index.html#EditorResponse"
                                             class="tsd-signature-type"
@@ -1210,10 +710,10 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="setFrameRotation" class="tsd-anchor"></a>
+                            <a id="removeVariable" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                set<wbr />Frame<wbr />Rotation<a
-                                    href="#setFrameRotation"
+                                remove<wbr />Variable<a
+                                    href="#removeVariable"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -1233,23 +733,14 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    set<wbr />Frame<wbr />Rotation<span class="tsd-signature-symbol">(</span>value<span
+                                    remove<wbr />Variable<span class="tsd-signature-symbol">(</span>variableId<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">string</span>, selectedFrame<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><a
-                                        href="../modules/index.html#FrameLayoutType"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >FrameLayoutType</a
+                                    ><span class="tsd-signature-type">string</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
                                     ><span class="tsd-signature-symbol">&lt;</span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
                                     ><a
                                         href="../modules/index.html#EditorResponse"
                                         class="tsd-signature-type"
@@ -1265,52 +756,26 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L76"
-                                                    >src/controllers/FrameController.ts:76</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L52"
+                                                    >src/controllers/VariableController.ts:52</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method will set the rotation angle of a specific frame</p>
+                                            <p>This method removes variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        The string value that will be calculated (f.e. 1+1 will reult in
-                                                        2). The notation is degrees
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h5>
-                                                selectedFrame:
-                                                <a
-                                                    href="../modules/index.html#FrameLayoutType"
-                                                    class="tsd-signature-type"
-                                                    data-tsd-kind="Type alias"
-                                                    >FrameLayoutType</a
-                                                >
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The frame that is selected with all it&#39;s properties</p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
-                                        ><span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
                                         ><a
                                             href="../modules/index.html#EditorResponse"
                                             class="tsd-signature-type"
@@ -1323,10 +788,10 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="setFrameVisibility" class="tsd-anchor"></a>
+                            <a id="setDefaultVariableValue" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                set<wbr />Frame<wbr />Visibility<a
-                                    href="#setFrameVisibility"
+                                set<wbr />Default<wbr />Variable<wbr />Value<a
+                                    href="#setDefaultVariableValue"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -1346,9 +811,93 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    set<wbr />Frame<wbr />Visibility<span class="tsd-signature-symbol">(</span
-                                    >frameId<span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">number</span>, value<span
+                                    set<wbr />Default<wbr />Variable<wbr />Value<span class="tsd-signature-symbol"
+                                        >(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, value<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L88"
+                                                    >src/controllers/VariableController.ts:88</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method sets a new value for a variable</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
+                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setVariableIsHidden" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Variable<wbr />Is<wbr />Hidden<a
+                                    href="#setVariableIsHidden"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Variable<wbr />Is<wbr />Hidden<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, isHidden<span
                                         class="tsd-signature-symbol"
                                         >: </span
                                     ><span class="tsd-signature-type">boolean</span
@@ -1371,40 +920,24 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L203"
-                                                    >src/controllers/FrameController.ts:203</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L142"
+                                                    >src/controllers/VariableController.ts:142</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>
-                                                This method will set the visibility property of a specified frame. If
-                                                set to false the frame will be invisible and vice versa.
-                                            </p>
+                                            <p>This method sets isHidden flag for a variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>frameId: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The ID of the frame that needs to get updated</p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                         <li>
-                                            <h5>value: <span class="tsd-signature-type">boolean</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        True means the frame gets visible, false means the frame gets
-                                                        invisible
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <h5>isHidden: <span class="tsd-signature-type">boolean</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
@@ -1422,10 +955,10 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="setFrameWidth" class="tsd-anchor"></a>
+                            <a id="setVariableIsReadonly" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                set<wbr />Frame<wbr />Width<a
-                                    href="#setFrameWidth"
+                                set<wbr />Variable<wbr />Is<wbr />Readonly<a
+                                    href="#setVariableIsReadonly"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -1445,23 +978,16 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    set<wbr />Frame<wbr />Width<span class="tsd-signature-symbol">(</span>value<span
+                                    set<wbr />Variable<wbr />Is<wbr />Readonly<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, isReadonly<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">string</span>, selectedFrame<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><a
-                                        href="../modules/index.html#FrameLayoutType"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >FrameLayoutType</a
+                                    ><span class="tsd-signature-type">boolean</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
                                     ><span class="tsd-signature-symbol">&lt;</span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
                                     ><a
                                         href="../modules/index.html#EditorResponse"
                                         class="tsd-signature-type"
@@ -1477,52 +1003,29 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L93"
-                                                    >src/controllers/FrameController.ts:93</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L160"
+                                                    >src/controllers/VariableController.ts:160</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method will set the width of a specific frame</p>
+                                            <p>This method sets isReadonly flag for a variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        The string value that will be calculated (f.e. 1+1 will reult in
-                                                        2). The notation is in pixels
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                         <li>
-                                            <h5>
-                                                selectedFrame:
-                                                <a
-                                                    href="../modules/index.html#FrameLayoutType"
-                                                    class="tsd-signature-type"
-                                                    data-tsd-kind="Type alias"
-                                                    >FrameLayoutType</a
-                                                >
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The frame that is selected with all it&#39;s properties</p>
-                                                </div>
-                                            </div>
+                                            <h5>isReadonly: <span class="tsd-signature-type">boolean</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
-                                        ><span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
                                         ><a
                                             href="../modules/index.html#EditorResponse"
                                             class="tsd-signature-type"
@@ -1535,9 +1038,12 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="setFrameX" class="tsd-anchor"></a>
+                            <a id="setVariableIsRequired" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                set<wbr />FrameX<a href="#setFrameX" aria-label="Permalink" class="tsd-anchor-icon"
+                                set<wbr />Variable<wbr />Is<wbr />Required<a
+                                    href="#setVariableIsRequired"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
                                     ><svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-link"
@@ -1555,23 +1061,16 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    set<wbr />FrameX<span class="tsd-signature-symbol">(</span>value<span
+                                    set<wbr />Variable<wbr />Is<wbr />Required<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, isRequired<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">string</span>, selectedFrame<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><a
-                                        href="../modules/index.html#FrameLayoutType"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >FrameLayoutType</a
+                                    ><span class="tsd-signature-type">boolean</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
                                     ><span class="tsd-signature-symbol">&lt;</span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
                                     ><a
                                         href="../modules/index.html#EditorResponse"
                                         class="tsd-signature-type"
@@ -1587,52 +1086,29 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L110"
-                                                    >src/controllers/FrameController.ts:110</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L151"
+                                                    >src/controllers/VariableController.ts:151</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method will set the x value of a specific frame</p>
+                                            <p>This method sets isRequired flag for a variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        The string value that will be calculated (f.e. 1+1 will reult in
-                                                        2). The notation is in pixels
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                         <li>
-                                            <h5>
-                                                selectedFrame:
-                                                <a
-                                                    href="../modules/index.html#FrameLayoutType"
-                                                    class="tsd-signature-type"
-                                                    data-tsd-kind="Type alias"
-                                                    >FrameLayoutType</a
-                                                >
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The frame that is selected with all it&#39;s properties</p>
-                                                </div>
-                                            </div>
+                                            <h5>isRequired: <span class="tsd-signature-type">boolean</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
-                                        ><span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
                                         ><a
                                             href="../modules/index.html#EditorResponse"
                                             class="tsd-signature-type"
@@ -1645,9 +1121,12 @@
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="setFrameY" class="tsd-anchor"></a>
+                            <a id="setVariableLabel" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                set<wbr />FrameY<a href="#setFrameY" aria-label="Permalink" class="tsd-anchor-icon"
+                                set<wbr />Variable<wbr />Label<a
+                                    href="#setVariableLabel"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
                                     ><svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-link"
@@ -1665,23 +1144,16 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    set<wbr />FrameY<span class="tsd-signature-symbol">(</span>value<span
+                                    set<wbr />Variable<wbr />Label<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, label<span
                                         class="tsd-signature-symbol"
                                         >: </span
-                                    ><span class="tsd-signature-type">string</span>, selectedFrame<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><a
-                                        href="../modules/index.html#FrameLayoutType"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Type alias"
-                                        >FrameLayoutType</a
+                                    ><span class="tsd-signature-type">string</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
                                     ><span class="tsd-signature-type">Promise</span
                                     ><span class="tsd-signature-symbol">&lt;</span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
                                     ><a
                                         href="../modules/index.html#EditorResponse"
                                         class="tsd-signature-type"
@@ -1697,52 +1169,368 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/FrameController.ts#L127"
-                                                    >src/controllers/FrameController.ts:127</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L70"
+                                                    >src/controllers/VariableController.ts:70</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method will set the y value of a specific frame</p>
+                                            <p>This method sets a new label for a variable</p>
                                         </div>
                                     </div>
                                     <h4 class="tsd-parameters-title">Parameters</h4>
                                     <ul class="tsd-parameters">
                                         <li>
-                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        The string value that will be calculated (f.e. 1+1 will reult in
-                                                        2). The notation is in pixels
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                         <li>
-                                            <h5>
-                                                selectedFrame:
-                                                <a
-                                                    href="../modules/index.html#FrameLayoutType"
-                                                    class="tsd-signature-type"
-                                                    data-tsd-kind="Type alias"
-                                                    >FrameLayoutType</a
-                                                >
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>The frame that is selected with all it&#39;s properties</p>
-                                                </div>
-                                            </div>
+                                            <h5>label: <span class="tsd-signature-type">string</span></h5>
                                         </li>
                                     </ul>
                                     <h4 class="tsd-returns-title">
                                         Returns <span class="tsd-signature-type">Promise</span
                                         ><span class="tsd-signature-symbol">&lt;</span
-                                        ><span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setVariableName" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Variable<wbr />Name<a
+                                    href="#setVariableName"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Variable<wbr />Name<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, name<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L61"
+                                                    >src/controllers/VariableController.ts:61</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method sets a new name for a variable</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
+                                            <h5>name: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setVariableType" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Variable<wbr />Type<a
+                                    href="#setVariableType"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Variable<wbr />Type<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, type<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><a
+                                        href="../enums/index.VariableType.html"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Enumeration"
+                                        >VariableType</a
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L79"
+                                                    >src/controllers/VariableController.ts:79</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method sets a new type for a variable</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
+                                            <h5>
+                                                type:
+                                                <a
+                                                    href="../enums/index.VariableType.html"
+                                                    class="tsd-signature-type"
+                                                    data-tsd-kind="Enumeration"
+                                                    >VariableType</a
+                                                >
+                                            </h5>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setVariableValue" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Variable<wbr />Value<a
+                                    href="#setVariableValue"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Variable<wbr />Value<span class="tsd-signature-symbol">(</span
+                                    >variableId<span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">string</span>, value<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L97"
+                                                    >src/controllers/VariableController.ts:97</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method sets a new value for a variable</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>variableId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                        <li>
+                                            <h5>value: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><a
+                                            href="../modules/index.html#EditorResponse"
+                                            class="tsd-signature-type"
+                                            data-tsd-kind="Type alias"
+                                            >EditorResponse</a
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
+                                    <div></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="ungroupVariable" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                ungroup<wbr />Variable<a
+                                    href="#ungroupVariable"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    ungroup<wbr />Variable<span class="tsd-signature-symbol">(</span>groupId<span
+                                        class="tsd-signature-symbol"
+                                        >: </span
+                                    ><span class="tsd-signature-type">string</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><a
+                                        href="../modules/index.html#EditorResponse"
+                                        class="tsd-signature-type"
+                                        data-tsd-kind="Type alias"
+                                        >EditorResponse</a
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/b5005fb/src/controllers/VariableController.ts#L124"
+                                                    >src/controllers/VariableController.ts:124</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method dissolves the specified group</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-parameters-title">Parameters</h4>
+                                    <ul class="tsd-parameters">
+                                        <li>
+                                            <h5>groupId: <span class="tsd-signature-type">string</span></h5>
+                                        </li>
+                                    </ul>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
                                         ><a
                                             href="../modules/index.html#EditorResponse"
                                             class="tsd-signature-type"
@@ -1770,7 +1558,7 @@
                                     >controllers/<wbr />Document<wbr />Controller</a
                                 >
                             </li>
-                            <li class="current tsd-kind-module">
+                            <li class="tsd-kind-module">
                                 <a href="../modules/controllers_FrameController.html"
                                     >controllers/<wbr />Frame<wbr />Controller</a
                                 >
@@ -1790,7 +1578,7 @@
                                     >controllers/<wbr />Utils<wbr />Controller</a
                                 >
                             </li>
-                            <li class="tsd-kind-module">
+                            <li class="current tsd-kind-module">
                                 <a href="../modules/controllers_VariableController.html"
                                     >controllers/<wbr />Variable<wbr />Controller</a
                                 >
@@ -1801,120 +1589,120 @@
                     <nav class="tsd-navigation secondary menu-sticky">
                         <ul>
                             <li class="current tsd-kind-class tsd-parent-kind-module">
-                                <a href="controllers_FrameController.FrameController.html" class="tsd-kind-icon"
-                                    >Frame<wbr />Controller</a
+                                <a href="controllers_VariableController.VariableController.html" class="tsd-kind-icon"
+                                    >Variable<wbr />Controller</a
                                 >
                                 <ul>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#getFramePropertyCalculatedValue"
+                                            href="controllers_VariableController.VariableController.html#addVariable"
                                             class="tsd-kind-icon"
-                                            >get<wbr />Frame<wbr />Property<wbr />Calculated<wbr />Value</a
+                                            >add<wbr />Variable</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrame"
+                                            href="controllers_VariableController.VariableController.html#duplicateVariable"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />Frame</a
+                                            >duplicate<wbr />Variable</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrameHeight"
+                                            href="controllers_VariableController.VariableController.html#getVariable"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />Frame<wbr />Height</a
+                                            >get<wbr />Variable</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrameRotation"
+                                            href="controllers_VariableController.VariableController.html#getVariableList"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />Frame<wbr />Rotation</a
+                                            >get<wbr />Variable<wbr />List</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrameSize"
+                                            href="controllers_VariableController.VariableController.html#groupVariables"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />Frame<wbr />Size</a
+                                            >group<wbr />Variables</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrameWidth"
+                                            href="controllers_VariableController.VariableController.html#moveVariable"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />Frame<wbr />Width</a
+                                            >move<wbr />Variable</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrameX"
+                                            href="controllers_VariableController.VariableController.html#removeVariable"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />FrameX</a
+                                            >remove<wbr />Variable</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#resetFrameY"
+                                            href="controllers_VariableController.VariableController.html#setDefaultVariableValue"
                                             class="tsd-kind-icon"
-                                            >reset<wbr />FrameY</a
+                                            >set<wbr />Default<wbr />Variable<wbr />Value</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#selectFrame"
+                                            href="controllers_VariableController.VariableController.html#setVariableIsHidden"
                                             class="tsd-kind-icon"
-                                            >select<wbr />Frame</a
+                                            >set<wbr />Variable<wbr />Is<wbr />Hidden</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#selectMultipleFrames"
+                                            href="controllers_VariableController.VariableController.html#setVariableIsReadonly"
                                             class="tsd-kind-icon"
-                                            >select<wbr />Multiple<wbr />Frames</a
+                                            >set<wbr />Variable<wbr />Is<wbr />Readonly</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#setFrameHeight"
+                                            href="controllers_VariableController.VariableController.html#setVariableIsRequired"
                                             class="tsd-kind-icon"
-                                            >set<wbr />Frame<wbr />Height</a
+                                            >set<wbr />Variable<wbr />Is<wbr />Required</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#setFrameRotation"
+                                            href="controllers_VariableController.VariableController.html#setVariableLabel"
                                             class="tsd-kind-icon"
-                                            >set<wbr />Frame<wbr />Rotation</a
+                                            >set<wbr />Variable<wbr />Label</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#setFrameVisibility"
+                                            href="controllers_VariableController.VariableController.html#setVariableName"
                                             class="tsd-kind-icon"
-                                            >set<wbr />Frame<wbr />Visibility</a
+                                            >set<wbr />Variable<wbr />Name</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#setFrameWidth"
+                                            href="controllers_VariableController.VariableController.html#setVariableType"
                                             class="tsd-kind-icon"
-                                            >set<wbr />Frame<wbr />Width</a
+                                            >set<wbr />Variable<wbr />Type</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#setFrameX"
+                                            href="controllers_VariableController.VariableController.html#setVariableValue"
                                             class="tsd-kind-icon"
-                                            >set<wbr />FrameX</a
+                                            >set<wbr />Variable<wbr />Value</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_FrameController.FrameController.html#setFrameY"
+                                            href="controllers_VariableController.VariableController.html#ungroupVariable"
                                             class="tsd-kind-icon"
-                                            >set<wbr />FrameY</a
+                                            >ungroup<wbr />Variable</a
                                         >
                                     </li>
                                 </ul>
