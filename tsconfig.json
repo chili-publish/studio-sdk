@@ -27,9 +27,10 @@
             "src/controllers/FrameController.ts",
             "src/controllers/LayoutController.ts",
             "src/controllers/UtilsController.ts",
-            "src/controllers/DocumentController.ts"
+            "src/controllers/DocumentController.ts",
+            "src/controllers/ToolController.ts"
         ],
         "out": "docs",
-        "excludePrivate": true,
+        "excludePrivate": true
     }
 }
