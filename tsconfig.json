@@ -28,7 +28,8 @@
             "src/controllers/LayoutController.ts",
             "src/controllers/UtilsController.ts",
             "src/controllers/DocumentController.ts",
-            "src/controllers/ToolController.ts"
+            "src/controllers/ToolController.ts",
+            "src/controllers/VariableController.ts"
         ],
         "out": "docs",
         "excludePrivate": true
