@@ -1,6 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import type { DocumentError } from '../../types/DocumentTypes';
-import { renderURLs } from '../utils/enums';
+import { renderURLs, DownloadFormats } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';
 /**
@@ -46,7 +46,7 @@ export class DocumentController {
      * @param layoutId id of layout to be downloaded
      * @returns the download link
      */
-    getDownloadLink = async (format: string, layoutId: number) => {
+    getDownloadLink = async (format: DownloadFormats, layoutId: number) => {
         let error: DocumentError | null = null;
         let currentDocument: string | null = null;
         let PREPARE_DOWNLOAD_URL: string | null = null;

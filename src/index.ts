@@ -11,7 +11,7 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 
-export { FrameProperyNames, LayoutProperyNames, Tools } from './utils/enums';
+export { FrameProperyNames, LayoutProperyNames, Tools, DownloadFormats } from './utils/enums';
 
 export {
     SlideDirections,

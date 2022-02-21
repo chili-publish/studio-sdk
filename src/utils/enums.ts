@@ -18,3 +18,7 @@ export enum Tools {
     ZOOM = 'zoom',
     HAND = 'hand',
 }
+export enum DownloadFormats {
+    MP4 = 'mp4',
+    GIF = 'gif',
+}
