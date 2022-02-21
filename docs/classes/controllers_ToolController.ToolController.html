@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="IE=edge" />
-        <title>UtilsController | @chili-publish/editor-sdk</title>
+        <title>ToolController | @chili-publish/editor-sdk</title>
         <meta name="description" content="Documentation for @chili-publish/editor-sdk" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="../assets/style.css" />
@@ -61,10 +61,10 @@
                 <div class="container">
                     <ul class="tsd-breadcrumb">
                         <li><a href="../modules.html">@chili-publish/editor-sdk</a></li>
-                        <li><a href="../modules/controllers_UtilsController.html">controllers/UtilsController</a></li>
-                        <li><a href="controllers_UtilsController.UtilsController.html">UtilsController</a></li>
+                        <li><a href="../modules/controllers_ToolController.html">controllers/ToolController</a></li>
+                        <li><a href="controllers_ToolController.ToolController.html">ToolController</a></li>
                     </ul>
-                    <h1>Class UtilsController</h1>
+                    <h1>Class ToolController</h1>
                 </div>
             </div>
         </header>
@@ -75,9 +75,8 @@
                         <div class="tsd-comment tsd-typography">
                             <div class="lead">
                                 <p>
-                                    The UtilsController exposes a set of usefull utilities that can be used to make some
-                                    repeated tasks a bit easier Methods inside this controller can be called by
-                                    <code>window.SDK.utils.{method-name}</code>
+                                    The ToolController is responsible for all communication regarding the tools. Methods
+                                    inside this controller can be called by <code>window.SDK.tool.{method-name}</code>
                                 </p>
                             </div>
                         </div>
@@ -85,7 +84,7 @@
                     <section class="tsd-panel tsd-hierarchy">
                         <h3>Hierarchy</h3>
                         <ul class="tsd-hierarchy">
-                            <li><span class="target">UtilsController</span></li>
+                            <li><span class="target">ToolController</span></li>
                         </ul>
                     </section>
                     <section class="tsd-panel-group tsd-index-group">
@@ -93,32 +92,27 @@
                         <section class="tsd-panel tsd-index-panel">
                             <div class="tsd-index-content">
                                 <section class="tsd-index-section">
-                                    <h3>Constructors</h3>
-                                    <ul class="tsd-index-list">
-                                        <li class="tsd-kind-constructor tsd-parent-kind-class">
-                                            <a
-                                                href="controllers_UtilsController.UtilsController.html#constructor"
-                                                class="tsd-kind-icon"
-                                                >constructor</a
-                                            >
-                                        </li>
-                                    </ul>
-                                </section>
-                                <section class="tsd-index-section">
                                     <h3>Methods</h3>
                                     <ul class="tsd-index-list">
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_UtilsController.UtilsController.html#calculateFromString"
+                                                href="controllers_ToolController.ToolController.html#setHandTool"
                                                 class="tsd-kind-icon"
-                                                >calculate<wbr />From<wbr />String</a
+                                                >set<wbr />Hand<wbr />Tool</a
                                             >
                                         </li>
                                         <li class="tsd-kind-method tsd-parent-kind-class">
                                             <a
-                                                href="controllers_UtilsController.UtilsController.html#round"
+                                                href="controllers_ToolController.ToolController.html#setSelectTool"
                                                 class="tsd-kind-icon"
-                                                >round</a
+                                                >set<wbr />Select<wbr />Tool</a
+                                            >
+                                        </li>
+                                        <li class="tsd-kind-method tsd-parent-kind-class">
+                                            <a
+                                                href="controllers_ToolController.ToolController.html#setZoomTool"
+                                                class="tsd-kind-icon"
+                                                >set<wbr />Zoom<wbr />Tool</a
                                             >
                                         </li>
                                     </ul>
@@ -127,61 +121,12 @@
                         </section>
                     </section>
                     <section class="tsd-panel-group tsd-member-group">
-                        <h2>Constructors</h2>
-                        <section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-                            <a id="constructor" class="tsd-anchor"></a>
-                            <h3 class="tsd-anchor-link">
-                                constructor<a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"
-                                    ><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-link"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="2"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
-                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
-                                ></a>
-                            </h3>
-                            <ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-                                <li class="tsd-signature tsd-kind-icon">
-                                    new <wbr />Utils<wbr />Controller<span class="tsd-signature-symbol">(</span
-                                    ><span class="tsd-signature-symbol">)</span
-                                    ><span class="tsd-signature-symbol">: </span
-                                    ><a
-                                        href="controllers_UtilsController.UtilsController.html"
-                                        class="tsd-signature-type"
-                                        data-tsd-kind="Class"
-                                        >UtilsController</a
-                                    >
-                                </li>
-                            </ul>
-                            <ul class="tsd-descriptions">
-                                <li class="tsd-description">
-                                    <h4 class="tsd-returns-title">
-                                        Returns
-                                        <a
-                                            href="controllers_UtilsController.UtilsController.html"
-                                            class="tsd-signature-type"
-                                            data-tsd-kind="Class"
-                                            >UtilsController</a
-                                        >
-                                    </h4>
-                                </li>
-                            </ul>
-                        </section>
-                    </section>
-                    <section class="tsd-panel-group tsd-member-group">
                         <h2>Methods</h2>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="calculateFromString" class="tsd-anchor"></a>
+                            <a id="setHandTool" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                calculate<wbr />From<wbr />String<a
-                                    href="#calculateFromString"
+                                set<wbr />Hand<wbr />Tool<a
+                                    href="#setHandTool"
                                     aria-label="Permalink"
                                     class="tsd-anchor-icon"
                                     ><svg
@@ -201,18 +146,13 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    calculate<wbr />From<wbr />String<span class="tsd-signature-symbol">(</span>val<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><span class="tsd-signature-type">string</span>, precision<span
-                                        class="tsd-signature-symbol"
-                                        >?: </span
-                                    ><span class="tsd-signature-type">number</span
+                                    set<wbr />Hand<wbr />Tool<span class="tsd-signature-symbol">(</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">null</span
-                                    ><span class="tsd-signature-symbol"> | </span
-                                    ><span class="tsd-signature-type">number</span>
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-type">void</span
+                                    ><span class="tsd-signature-symbol">&gt;</span>
                                 </li>
                             </ul>
                             <ul class="tsd-descriptions">
@@ -222,61 +162,33 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/d1f95ec/src/controllers/UtilsController.ts#L14"
-                                                    >src/controllers/UtilsController.ts:14</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/d1f95ec/src/controllers/ToolController.ts#L40"
+                                                    >src/controllers/ToolController.ts:40</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>
-                                                This method can calculate what&#39;s inside a string that represents a
-                                                calculation (f.e. &quot;1 + 5 - 2&quot; will result in 4)
-                                            </p>
+                                            <p>This method sets the used tool to a Move tool</p>
                                         </div>
                                     </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>val: <span class="tsd-signature-type">string</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>the string value that needs to be calculated</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h5>
-                                                <span class="tsd-flag ts-flagOptional">Optional</span> precision:
-                                                <span class="tsd-signature-type">number</span>
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>
-                                                        the precision that the calculation should round to (f.e. if the
-                                                        return value is 5.012 and precision is 2, the endresult should
-                                                        be 5.01) 2 is also the default
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
                                     <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">null</span
-                                        ><span class="tsd-signature-symbol"> | </span
-                                        ><span class="tsd-signature-type">number</span>
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-type">void</span
+                                        ><span class="tsd-signature-symbol">&gt;</span>
                                     </h4>
-                                    <div>
-                                        <p>The calculated value or null in case that it can&#39;t be calculated</p>
-                                    </div>
                                 </li>
                             </ul>
                         </section>
                         <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-                            <a id="round" class="tsd-anchor"></a>
+                            <a id="setSelectTool" class="tsd-anchor"></a>
                             <h3 class="tsd-anchor-link">
-                                round<a href="#round" aria-label="Permalink" class="tsd-anchor-icon"
+                                set<wbr />Select<wbr />Tool<a
+                                    href="#setSelectTool"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
                                     ><svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-link"
@@ -294,16 +206,13 @@
                             </h3>
                             <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
                                 <li class="tsd-signature tsd-kind-icon">
-                                    round<span class="tsd-signature-symbol">(</span>val<span
-                                        class="tsd-signature-symbol"
-                                        >: </span
-                                    ><span class="tsd-signature-type">number</span>, precision<span
-                                        class="tsd-signature-symbol"
-                                        >?: </span
-                                    ><span class="tsd-signature-type">number</span
+                                    set<wbr />Select<wbr />Tool<span class="tsd-signature-symbol">(</span
                                     ><span class="tsd-signature-symbol">)</span
                                     ><span class="tsd-signature-symbol">: </span
-                                    ><span class="tsd-signature-type">number</span>
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-type">void</span
+                                    ><span class="tsd-signature-symbol">&gt;</span>
                                 </li>
                             </ul>
                             <ul class="tsd-descriptions">
@@ -313,43 +222,83 @@
                                             <li>
                                                 Defined in
                                                 <a
-                                                    href="https://github.com/chili-publish/editor-sdk/blob/d1f95ec/src/controllers/UtilsController.ts#L22"
-                                                    >src/controllers/UtilsController.ts:22</a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/d1f95ec/src/controllers/ToolController.ts#L33"
+                                                    >src/controllers/ToolController.ts:33</a
                                                 >
                                             </li>
                                         </ul>
                                     </aside>
                                     <div class="tsd-comment tsd-typography">
                                         <div class="lead">
-                                            <p>This method can round a value to a certain precision, default is 2</p>
+                                            <p>This method sets the used tool to a Pointer tool</p>
                                         </div>
                                     </div>
-                                    <h4 class="tsd-parameters-title">Parameters</h4>
-                                    <ul class="tsd-parameters">
-                                        <li>
-                                            <h5>val: <span class="tsd-signature-type">number</span></h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>the value that needs to be rounded</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h5>
-                                                <span class="tsd-flag ts-flagOptional">Optional</span> precision:
-                                                <span class="tsd-signature-type">number</span>
-                                            </h5>
-                                            <div class="tsd-comment tsd-typography">
-                                                <div class="lead">
-                                                    <p>the precision of the rounding operation</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
                                     <h4 class="tsd-returns-title">
-                                        Returns <span class="tsd-signature-type">number</span>
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-type">void</span
+                                        ><span class="tsd-signature-symbol">&gt;</span>
                                     </h4>
-                                    <div><p>The rounded value as a number</p></div>
+                                </li>
+                            </ul>
+                        </section>
+                        <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+                            <a id="setZoomTool" class="tsd-anchor"></a>
+                            <h3 class="tsd-anchor-link">
+                                set<wbr />Zoom<wbr />Tool<a
+                                    href="#setZoomTool"
+                                    aria-label="Permalink"
+                                    class="tsd-anchor-icon"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-link"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg
+                                ></a>
+                            </h3>
+                            <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+                                <li class="tsd-signature tsd-kind-icon">
+                                    set<wbr />Zoom<wbr />Tool<span class="tsd-signature-symbol">(</span
+                                    ><span class="tsd-signature-symbol">)</span
+                                    ><span class="tsd-signature-symbol">: </span
+                                    ><span class="tsd-signature-type">Promise</span
+                                    ><span class="tsd-signature-symbol">&lt;</span
+                                    ><span class="tsd-signature-type">void</span
+                                    ><span class="tsd-signature-symbol">&gt;</span>
+                                </li>
+                            </ul>
+                            <ul class="tsd-descriptions">
+                                <li class="tsd-description">
+                                    <aside class="tsd-sources">
+                                        <ul>
+                                            <li>
+                                                Defined in
+                                                <a
+                                                    href="https://github.com/chili-publish/editor-sdk/blob/d1f95ec/src/controllers/ToolController.ts#L47"
+                                                    >src/controllers/ToolController.ts:47</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="tsd-comment tsd-typography">
+                                        <div class="lead">
+                                            <p>This method sets the used tool to a Zoom tool</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="tsd-returns-title">
+                                        Returns <span class="tsd-signature-type">Promise</span
+                                        ><span class="tsd-signature-symbol">&lt;</span
+                                        ><span class="tsd-signature-type">void</span
+                                        ><span class="tsd-signature-symbol">&gt;</span>
+                                    </h4>
                                 </li>
                             </ul>
                         </section>
@@ -379,12 +328,12 @@
                                     >controllers/<wbr />Layout<wbr />Controller</a
                                 >
                             </li>
-                            <li class="tsd-kind-module">
+                            <li class="current tsd-kind-module">
                                 <a href="../modules/controllers_ToolController.html"
                                     >controllers/<wbr />Tool<wbr />Controller</a
                                 >
                             </li>
-                            <li class="current tsd-kind-module">
+                            <li class="tsd-kind-module">
                                 <a href="../modules/controllers_UtilsController.html"
                                     >controllers/<wbr />Utils<wbr />Controller</a
                                 >
@@ -395,29 +344,29 @@
                     <nav class="tsd-navigation secondary menu-sticky">
                         <ul>
                             <li class="current tsd-kind-class tsd-parent-kind-module">
-                                <a href="controllers_UtilsController.UtilsController.html" class="tsd-kind-icon"
-                                    >Utils<wbr />Controller</a
+                                <a href="controllers_ToolController.ToolController.html" class="tsd-kind-icon"
+                                    >Tool<wbr />Controller</a
                                 >
                                 <ul>
-                                    <li class="tsd-kind-constructor tsd-parent-kind-class">
+                                    <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_UtilsController.UtilsController.html#constructor"
+                                            href="controllers_ToolController.ToolController.html#setHandTool"
                                             class="tsd-kind-icon"
-                                            >constructor</a
+                                            >set<wbr />Hand<wbr />Tool</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_UtilsController.UtilsController.html#calculateFromString"
+                                            href="controllers_ToolController.ToolController.html#setSelectTool"
                                             class="tsd-kind-icon"
-                                            >calculate<wbr />From<wbr />String</a
+                                            >set<wbr />Select<wbr />Tool</a
                                         >
                                     </li>
                                     <li class="tsd-kind-method tsd-parent-kind-class">
                                         <a
-                                            href="controllers_UtilsController.UtilsController.html#round"
+                                            href="controllers_ToolController.ToolController.html#setZoomTool"
                                             class="tsd-kind-icon"
-                                            >round</a
+                                            >set<wbr />Zoom<wbr />Tool</a
                                         >
                                     </li>
                                 </ul>
@@ -433,9 +382,6 @@
                 <div class="tsd-legend-group">
                     <ul class="tsd-legend">
                         <li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-                        <li class="tsd-kind-constructor tsd-parent-kind-class">
-                            <span class="tsd-kind-icon">Constructor</span>
-                        </li>
                         <li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
                     </ul>
                     <ul class="tsd-legend">
