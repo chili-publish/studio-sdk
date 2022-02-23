@@ -89,14 +89,16 @@
                         </a>
                         <p>
                             The SDK consist of controllers which are individual Javascript classes and methods of these
-                            classes. Currently there are 5 different controllers:
+                            classes. Currently there are 7 different controllers:
                         </p>
                         <ul>
                             <li>AnimationController</li>
                             <li>FrameController</li>
-                            <li>LayoutsController</li>
+                            <li>LayoutController</li>
                             <li>UtilsController</li>
                             <li>DocumentController</li>
+                            <li>VariableController</li>
+                            <li>ToolController</li>
                         </ul>
                         <p>
                             These controllers are exposing the methods for each part of the document in a structured
@@ -192,7 +194,25 @@
                         >
                             <h3>Retrieving data from the editor</h3>
                         </a>
-                        <p>TBI</p>
+                        <p>
+                            For retrieving the data, there are 2 ways. For starters we can retrieve data using global
+                            listeners, that are configured on initialisation of the SDK.
+                        </p>
+                        <p>Below you can find an example for tools:</p>
+                        <pre><code class="language-javascript"><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">sdk</span><span class="hl-2"> = </span><span class="hl-6">new</span><span class="hl-2"> </span><span class="hl-8">EditorSDK</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-8">onSelectedToolChanged</span><span class="hl-9">:</span><span class="hl-2"> (</span><span class="hl-9">tool</span><span class="hl-2">) </span><span class="hl-6">=&gt;</span><span class="hl-2"> {</span><br/><span class="hl-2">        </span><span class="hl-11">// here you can do stuff with the newly selected tool</span><br/><span class="hl-2">    },</span><br/><span class="hl-2">    </span><span class="hl-9">editorLink:</span><span class="hl-2"> </span><span class="hl-10">&#39;https://link/to/the/editor&#39;</span><span class="hl-2">, </span><span class="hl-11">// Will be provided</span><br/><span class="hl-2">    </span><span class="hl-9">editorId:</span><span class="hl-2"> </span><span class="hl-10">&#39;chili-editor-example&#39;</span><span class="hl-2">, </span><span class="hl-11">// if not provided, default will be &#39;chili-editor&#39;</span><br/><span class="hl-2">});</span>
+</code></pre>
+                        <p>
+                            Another way is to retrieve state using a getter. For now only in VariableController there
+                            are already some getters available, but in the future we&#39;ll provide lots of others on
+                            all different aspects. That way we have multiple ways of retrieving data from the current
+                            state.
+                        </p>
+                        <pre><code class="language-javascript"><span class="hl-11">// Retrieve a list of all variables</span><br/><span class="hl-9">window</span><span class="hl-2">.</span><span class="hl-7">SDK</span><span class="hl-2">.</span><span class="hl-9">variable</span><span class="hl-2">.</span><span class="hl-8">getVariableList</span><span class="hl-2">();</span>
+</code></pre>
+                        <p>
+                            To check all ways of accessing data, check the controllers in detail, there you see every
+                            method available.
+                        </p>
                         <br />
 
                         <a
@@ -202,13 +222,28 @@
                         >
                             <h3>Sending data to the editor</h3>
                         </a>
-                        <p>TBI</p>
+                        <p>
+                            Sending data is fairly easy, you just run a method from a controller, with or without
+                            parameters.
+                        </p>
+                        <p>Below you find an example on changing the tool:</p>
+                        <pre><code class="language-javascript"><span class="hl-11">// Set the Hand tool</span><br/><span class="hl-9">window</span><span class="hl-2">.</span><span class="hl-7">SDK</span><span class="hl-2">.</span><span class="hl-9">tool</span><span class="hl-2">.</span><span class="hl-8">setHandTool</span><span class="hl-2">();</span>
+</code></pre>
+                        <p>Or an example with a parameter:</p>
+                        <pre><code class="language-javascript"><span class="hl-11">// Add a new layout whom inherits from layout with ID 2</span><br/><span class="hl-9">window</span><span class="hl-2">.</span><span class="hl-7">SDK</span><span class="hl-2">.</span><span class="hl-9">layout</span><span class="hl-2">.</span><span class="hl-8">addLayout</span><span class="hl-2">(</span><span class="hl-12">2</span><span class="hl-2">);</span>
+</code></pre>
                         <br />
 
                         <a href="#recap" id="recap" style="color: inherit; text-decoration: none">
                             <h3>Recap</h3>
                         </a>
-                        <p>TBI</p>
+                        <p>
+                            So to recap, you first need to initialise the SDK and Editor, then add an empty div with the
+                            ID that you want to pass through the SDK to inject the Editor in. Then you&#39;re ready to
+                            go, if you initialise some listeners with callbacks or use a getter you can easily retrieve
+                            data on change or on request. To send data you just call the sdk method, with or without
+                            parameters (depends on the method).
+                        </p>
                     </div>
                 </div>
                 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
