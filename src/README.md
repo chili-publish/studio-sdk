@@ -9,13 +9,15 @@ Happy coding and enjoy the **spicy** ride.
 ## General Structure
 
 The SDK consist of controllers which are individual Javascript classes and methods of these classes.
-Currently there are 5 different controllers:
+Currently there are 7 different controllers:
 
 -   AnimationController
 -   FrameController
--   LayoutsController
+-   LayoutController
 -   UtilsController
 -   DocumentController
+-   VariableController
+-   ToolController
 
 These controllers are exposing the methods for each part of the document in a structured way, you can get a more detailed overview of all methods in the modules itself.
 
@@ -112,16 +114,54 @@ If you now refresh your page in the browser you will see And like magic an insta
 
 ### Retrieving data from the editor
 
-TBI
+For retrieving the data, there are 2 ways. For starters we can retrieve data using global listeners, that are configured on initialisation of the SDK.
+
+Below you can find an example for tools:
+
+```javascript
+const sdk = new EditorSDK({
+    onSelectedToolChanged: (tool) => {
+        // here you can do stuff with the newly selected tool
+    },
+    editorLink: 'https://link/to/the/editor', // Will be provided
+    editorId: 'chili-editor-example', // if not provided, default will be 'chili-editor'
+});
+```
+
+Another way is to retrieve state using a getter. For now only in VariableController there are already some getters available, but in the future we'll provide lots of others on all different aspects.
+That way we have multiple ways of retrieving data from the current state.
+
+```javascript
+// Retrieve a list of all variables
+window.SDK.variable.getVariableList();
+```
+
+To check all ways of accessing data, check the controllers in detail, there you see every method available.
 
 <br/>
 
 ### Sending data to the editor
 
-TBI
+Sending data is fairly easy, you just run a method from a controller, with or without parameters.
+
+Below you find an example on changing the tool:
+
+```javascript
+// Set the Hand tool
+window.SDK.tool.setHandTool();
+```
+
+Or an example with a parameter:
+
+```javascript
+// Add a new layout whom inherits from layout with ID 2
+window.SDK.layout.addLayout(2);
+```
 
 <br/>
 
 ### Recap
 
-TBI
+So to recap, you first need to initialise the SDK and Editor, then add an empty div with the ID that you want to pass through the SDK to inject the Editor in.
+Then you're ready to go, if you initialise some listeners with callbacks or use a getter you can easily retrieve data on change or on request.
+To send data you just call the sdk method, with or without parameters (depends on the method).
