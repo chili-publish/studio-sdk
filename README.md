@@ -4,48 +4,56 @@
 
 [![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
 
-This repository includes the editor-sdk, the SDK is used to plugin to the Chili Publisher API and will handle the communication between workspace (React) and editor (Flutter).
+This is the Open Source CHILI publisher Editor SDK which will make your life easier when you’re working on and integrating the new CHILI publisher Editor.
+
+The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/editor-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publis/editor-sdk/blob/main/CONTRIBUTING.md) file to get started on your first contribution.
+
+## Early Access Program
+
+To integrate and start using the SDK, you will need to be accepted to the Early Access program, reach out to your contact @chili to receive more information. Once accepted, you will receive the needed credentials to configure and setup the SDK.
+
+## Overview
+
+This repository includes the editor-sdk, the SDK is used to plugin to the CHILI publisher API and will handle the communication between integrations (workspace, etc) and editor engine.
+
+The goal for the SDK is to be as lightweight as possible. We don’t want to store state in here, that would be hard to maintain and keep in sync with the engine. In general the SDK is an abstraction layer for the editor engine, providing a fixed API for the integrators, and flexibility for the engine to evolve.
+
+Conceptually you can think of the SDK - Editor Engine relation as a client - server relation. The SDK will issue requests to the engine and expects a certain result. The other way around the analogy with WebSockets could be used to define how data flows from the engine to the SDK (and eventually consumers of the SDK).
+
+![architecture diagram](https://user-images.githubusercontent.com/956362/155481965-1d2fe57b-11ec-4327-bbc3-5b4e03a01f28.png)
+
+## Getting started
+
+There are 2 ways of getting the SDK. The most easy approach would be installing it using a package manager like `npm` or `yarn` just do:
+
+```bash
+npm install @chili-publish/editor-sdk
+```
+
+or
+
+```bash
+yarn add @chili-publish/editor-sdk
+```
+
+The other way would be to include the sdk using the script tag just before the closure. of the body.
+
+```html
+<script src="https://path/to/sdk/latest/main.js"></script>
+```
+
+To really get started, there is a nice guide on [the official documentation page](https://chili-publish.github.io/editor-sdk/).
+And you can find basic integration examples in [one of our other repositories](https://github.com/chili-publish/editor-sdk-integration-examples).
 
 ## Documentation
 
-The technical documentation on the SDK can be found on [this page](https://chili-publish.github.io/editor-sdk/).
-To update the documentation in your PR run `npx typedoc` from the root.
+[Link to private zendesk](https://mysupport.chili-publish.com/hc/en-us/articles/4411254307868-E2-The-one-called-Editor-2)
+[Link to the official SDK documentation on GitHub](https://chili-publish.github.io/editor-sdk/)
 
-## Versioning
+## Feedback?
 
-Versioning is handled automatically, but you can have a say in what version needs to be updated by including following words in the title of your PR:
+If you have any feedback on the technical parts of the application, a feature request, a bug to report or a general technical question, don’t hesitate to [create a new issue](https://github.com/chili-publish/editor-sdk/issues/new/choose).
 
--   Fix or FIX: updates the patch version (when you add a minor fix without breaking changes) This is the default too
--   Feature or FEATURE: updates the minor version (when you add a new feature / call for example)
--   Breaking or BREAKING: updates the major version (only use this when there will be compatibility issues with previous versions)
+## License
 
-## Publish package
-
-be sure to add your Github Personal Access token to your local .npmrc file (npmrc file for windows, ~/.npmrc for mac and linux)
-
-### Login to the chili organization
-
-`npm login --scope=@chili-publish --registry=https://npm.pkg.github.com`
-
-also make sure to change the version of the package
-
-### Publish when done
-
-`yarn build`
-then
-`npm publish`
-
-## Scripts
-
-### Make production build
-
-`yarn build`
-
-### Run linter
-
-`yarn lint`
-
-## License Check
-
-If a new package will be installed,please check the package license information.If it has a valid license, go to `https://chilipublishintranet.atlassian.net/wiki/spaces/QIR/pages/3966042120/License+Information+of+Editor-SDK+package`
-And add this new packages license information to the documentation.
+This project is [MIT licensed](https://github.com/chili-publis/editor-sdk/blob/main/LICENSE)

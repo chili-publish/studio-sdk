@@ -1,36 +1,31 @@
-# EDITOR-SDK GUIDELINES
+# Contributing
 
-This README includes guides about SDK development.
+Hi there! We're thrilled that you'd like to contribute to our SDK. We definitely could use your help to keep this SDK great.
 
-## General Structure
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
 
-SDK consist of controllers which are individual Javascript classes and methods of these classes.
-Currently there are 6 different controllers:
+## Submitting a pull request
 
--   AnimationController
--   FrameController
--   LayoutsController
--   UtilsController
--   SubscriberController
--   DocumentController
+1. [Fork](https://github.com/chili-publish/editor-sdk/fork) and clone this repository
+2. Create a new branch: `git checkout -b my-branch-name` \*
+3. Make your change and remember to add tests
+4. Build the project locally and run local tests
+5. Push to your fork and [submit a pull request](https://github.com/chili-publish/editor-sdk/compare)
+6. Pat your self on the back and wait for your pull request to be reviewed and get merged.
 
-These controllers have their own methods within them.SubscriberController's methods are methods of children(Flutter-Editor).These methods required by flutter and without these methods you can't initialize SDK.
+\*replace my-branch-name with something specific. We use the prefixes fix and feature in our branches to indicate what they represent. An example for a branch that fixes a bug in playAnimation f.e. could be `fix/play-animation-fixdescription`
 
+## Acceptance criteria
 
-## Naming a new method
+Here are a few things you can do that will increase the likelihood of your pull request being accepted:
 
-A method can be a getter,setter,listener or custom type.
-If a method is for getting some properties from another source,if its a getter method, the name of the method must be start with "get".For example name of a method for getting latest state from flutter must be written like this:
-`getLatestState`
-If its a set method we must use "set" at the beginning of the method.For example name of a method for setting a frame's height property must be written like this:
-`setFrameHeight`
-If its a listener method,It must start with "on" and end with "changed".
-For example for listening state changes at flutter level we should name our method like this:
-`onStateChanged`
-If a method requires different names from these names,It must be descriptive.For example method for playing an animation can be named :
-`playAnimation`
+-   Write tests.
+-   Keep your change as focused as possible. If there are multiple changes you would like to make that are not dependent upon each other, submit them as separate pull requests.
+-   Write [good commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
+-   Prefix the title with [Fix] or [Feature] to describe what the scope is
 
-### Adding a new controller
+## Recourses
 
-When a new contoller required,a new contoller must be added to src/contollers folder.Name of the file must be descriptive.The new contoller must be initialized at index.ts file so that this controller and its methods will be available from the SDK.
-After new controller created and initialized at index.ts file,test cases of this new contoller and its methods must be added too.
+-   [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+-   [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
+-   [GitHub Help](https://help.github.com/)
