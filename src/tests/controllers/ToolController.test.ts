@@ -1,6 +1,6 @@
 import mockConfig from '../__mocks__/config';
 import mockChild from '../__mocks__/FrameProperties';
-import { SDK, Tools } from '../../index';
+import { SDK, ToolType } from '../../index';
 import { ToolController } from '../../controllers/ToolController';
 
 describe('Tool controller', () => {
@@ -15,20 +15,25 @@ describe('Tool controller', () => {
         jest.restoreAllMocks();
     });
 
+    it('calls getSelectedTool', async () => {
+        await mockedSDK.tool.getSelectedTool();
+        expect(mockedSDK.editorAPI.getSelectedTool).toHaveBeenCalledTimes(1);
+    });
+
     it('sets the pointer tool', async () => {
         await mockedSDK.tool.setSelectTool();
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.SELECT);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SELECT);
     });
     it('sets the move tool', async () => {
         await mockedSDK.tool.setHandTool();
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.HAND);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.HAND);
     });
 
     it('sets the zoom tool', async () => {
         await mockedSDK.tool.setZoomTool();
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(3);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.ZOOM);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.ZOOM);
     });
 });

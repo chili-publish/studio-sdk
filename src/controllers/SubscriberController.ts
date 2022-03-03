@@ -1,5 +1,5 @@
 import { ConfigType } from '../../types/CommonTypes';
-import { Tools } from '../utils/enums';
+import { ToolType } from '../utils/enums';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the aplication-state from outside.
@@ -95,6 +95,6 @@ export class SubscriberController {
      */
     onSelectedToolChanged = (tool: string) => {
         const callBack = this.config.onSelectedToolChanged;
-        callBack(tool as Tools);
+        callBack(tool as ToolType);
     };
 }

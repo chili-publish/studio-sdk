@@ -3,6 +3,7 @@ import Connect from './interactions/connector';
 import { FrameController } from './controllers/FrameController';
 import { AnimationController } from './controllers/AnimationController';
 import { LayoutController } from './controllers/LayoutController';
+import { PageController } from './controllers/PageController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
@@ -11,7 +12,7 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 
-export { FrameProperyNames, LayoutProperyNames, Tools, DownloadFormats } from './utils/enums';
+export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
 export {
     SlideDirections,
@@ -54,6 +55,7 @@ export class SDK {
     variable: VariableController;
     utils: UtilsController;
     tool: ToolController;
+    page: PageController;
     private subscriber: SubscriberController;
 
     /**
@@ -75,6 +77,7 @@ export class SDK {
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
         this.tool = new ToolController(this.editorAPI);
+        this.page = new PageController(this.editorAPI);
     }
 
     /**
@@ -109,6 +112,7 @@ export class SDK {
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
+        this.page = new PageController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {

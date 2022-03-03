@@ -6,7 +6,7 @@ import { mockFrameAnimation } from '../__mocks__/animations';
 import { FrameAnimationType } from '../../../types/AnimationTypes';
 import { VariableType } from '../../../types/VariableTypes';
 
-import { Tools } from '../../utils/enums';
+import { ToolType } from '../../utils/enums';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -66,7 +66,7 @@ describe('Subscriber methods', () => {
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {
-        mockedSubscribers.onSelectedToolChanged(Tools.HAND);
+        mockedSubscribers.onSelectedToolChanged(ToolType.HAND);
         expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalled();
         expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('hand');
     });

@@ -16,6 +16,9 @@ beforeEach(() => {
     mockedSDK.frame = new FrameController(mockChild);
     mockedSDK.frame.getFramePropertyCalculatedValue = jest.fn().mockResolvedValue(true);
     mockedSDK.animation = new AnimationController(mockChild);
+    jest.spyOn(mockedSDK.animation, 'getAnimationsOnSelectedLayout');
+    jest.spyOn(mockedSDK.animation, 'getAnimationByFrameId');
+    jest.spyOn(mockedSDK.animation, 'getAnimationsByLayoutId');
     jest.spyOn(mockedSDK.animation, 'playAnimation');
     jest.spyOn(mockedSDK.animation, 'pauseAnimation');
     jest.spyOn(mockedSDK.animation, 'setFrameAnimation');
@@ -29,6 +32,17 @@ afterEach(() => {
 });
 describe('Animation methods', () => {
     it('Should call  all of the animation functions of child successfully', async () => {
+        await mockedSDK.animation.getAnimationsOnSelectedLayout();
+        expect(mockedSDK.editorAPI.getAnimationsOnSelectedLayout).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.animation.getAnimationByFrameId(4, 8);
+        expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledWith(4, 8);
+
+        await mockedSDK.animation.getAnimationsByLayoutId(4);
+        expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledWith(4);
+
         await mockedSDK.animation.setFrameAnimation(mockedAnimation.animation);
         expect(mockedSDK.editorAPI.setFrameAnimation).toHaveBeenCalledTimes(1);
 
