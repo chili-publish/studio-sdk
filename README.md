@@ -6,7 +6,7 @@
 
 This is the Open Source CHILI publisher Editor SDK which will make your life easier when you’re working on and integrating the new CHILI publisher Editor.
 
-The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/editor-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publis/editor-sdk/blob/main/CONTRIBUTING.md) file to get started on your first contribution.
+The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/editor-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publis/editor-sdk/blob/develop/CONTRIBUTING.md) file to get started on your first contribution.
 
 ## Early Access Program
 
@@ -59,4 +59,4 @@ If you have any feedback on the technical parts of the application, a feature re
 
 ## License
 
-This project is [MIT licensed](https://github.com/chili-publis/editor-sdk/blob/main/LICENSE)
+This project is [MIT licensed](https://github.com/chili-publis/editor-sdk/blob/develop/LICENSE)
