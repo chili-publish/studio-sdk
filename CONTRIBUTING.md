@@ -11,7 +11,7 @@ Please note that this project is released with a Contributor Code of Conduct. By
 3. Make your change and remember to add tests
 4. Build the project locally and run local tests
 5. Push to your fork and [submit a pull request](https://github.com/chili-publish/editor-sdk/compare)
-6. Pat your self on the back and wait for your pull request to be reviewed and get merged.
+6. Pat yourself on the back and wait for your pull request to be reviewed and get merged.
 
 \*replace my-branch-name with something specific. We use the prefixes fix and feature in our branches to indicate what they represent. An example for a branch that fixes a bug in playAnimation f.e. could be `fix/play-animation-fixdescription`
 
@@ -24,7 +24,7 @@ Here are a few things you can do that will increase the likelihood of your pull 
 -   Write [good commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 -   Prefix the title with [Fix] or [Feature] to describe what the scope is
 
-## Recourses
+## Resources
 
 -   [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
 -   [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
