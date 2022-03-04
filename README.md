@@ -12,6 +12,14 @@ The project is currently under active development, contributions are welcome in 
 
 To integrate and start using the SDK, you will need to be accepted to the Early Access program, reach out to your contact @chili to receive more information. Once accepted, you will receive the needed credentials to configure and setup the SDK.
 
+## Documentation
+
+[Link to private zendesk](https://mysupport.chili-publish.com/hc/en-us/articles/4411254307868-E2-The-one-called-Editor-2)
+
+[Link to the official SDK documentation on GitHub](https://chili-publish.github.io/editor-sdk/)\*
+
+\*Note: the hosted documentation is always based on the latest version. To get the documentation of the release that you use, you can download the sourcecode of that release and open `/docs/index.html`.
+
 ## Overview
 
 This repository includes the editor-sdk, the SDK is used to plugin to the CHILI publisher API and will handle the communication between integrations (workspace, etc) and editor engine.
@@ -44,11 +52,6 @@ The other way would be to include the sdk using the script tag just before the c
 
 To really get started, there is a nice guide on [the official documentation page](https://chili-publish.github.io/editor-sdk/).
 And you can find basic integration examples in [one of our other repositories](https://github.com/chili-publish/editor-sdk-integration-examples).
-
-## Documentation
-
-[Link to private zendesk](https://mysupport.chili-publish.com/hc/en-us/articles/4411254307868-E2-The-one-called-Editor-2)
-[Link to the official SDK documentation on GitHub](https://chili-publish.github.io/editor-sdk/)
 
 ## Feedback?
 
