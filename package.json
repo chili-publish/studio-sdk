@@ -77,8 +77,9 @@
         "url": "https://github.com/chili-publish/editor-sdk/issues"
     },
     "homepage": "https://github.com/chili-publish/editor-sdk#readme",
-    "author": "",
+    "author": "chili-publish",
     "directories": {
+        "doc": "docs",
         "lib": "lib"
     }
 }
