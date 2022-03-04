@@ -19,14 +19,20 @@ export type FrameProperties = {
     y: number | null;
 };
 
-export type LayoutType = {
+export type Layout = {
     layoutId: number;
     layoutName: string;
     parentLayoutId?: number;
-    frameProperties: FrameProperties[];
     width: number | null;
     height: number | null;
+    timelineLengthMs?: number;
+    frameProperties: FrameProperties[];
     childLayouts: number[];
-    layoutType: string;
-    children?: LayoutType[];
+    layoutType: LayoutType;
+    children?: Layout[];
+}
+
+export enum LayoutType {
+    top = 'top',
+    child = 'child'
 }

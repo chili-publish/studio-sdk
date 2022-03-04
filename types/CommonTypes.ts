@@ -1,6 +1,6 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { LayoutType, LayoutPropertiesType } from './LayoutTypes';
+import { Layout, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
@@ -38,7 +38,7 @@ export type PageType = {
 };
 
 export type InitialStateType = {
-    layouts: LayoutType[];
+    layouts: Layout[];
     selectedLayoutId: number;
     pages: PageType[];
     variables: Variable[];

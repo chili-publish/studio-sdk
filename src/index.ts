@@ -23,7 +23,7 @@ export {
 } from '../types/AnimationTypes';
 export { VariableType } from '../types/VariableTypes';
 
-export type { LayoutPropertiesType, FrameProperties, LayoutType } from '../types/LayoutTypes';
+export type { LayoutPropertiesType, FrameProperties, Layout } from '../types/LayoutTypes';
 export type { FrameLayoutType, FrameType } from '../types/FrameTypes';
 export type { Variable } from '../types/VariableTypes';
 
