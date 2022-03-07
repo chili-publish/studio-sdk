@@ -40,12 +40,12 @@ describe('Tool controller', () => {
     it('sets the text  tool', async () => {
         await mockedSDK.tool.setTextFrameTool();
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(4);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.TEXT_FRAME);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.TEXT_FRAME);
     });
 
     it('sets the image tool', async () => {
         await mockedSDK.tool.setImageFrameTool();
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(5);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.IMAGE_FRAME);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.IMAGE_FRAME);
     });
 });
