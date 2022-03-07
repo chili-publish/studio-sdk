@@ -21,6 +21,84 @@ export class FrameController {
     }
 
     /**
+     * This method returns the list of frames
+     * @returns
+     */
+    getFrames = async () => {
+        const res = await this.#editorAPI;
+        return res.getFrames();
+    };
+
+    /**
+     * This method returns the list of selected frames
+     * @returns
+     */
+    getSelectedFrames = async () => {
+        const res = await this.#editorAPI;
+        return res.getSelectedFrames();
+    };
+
+    /**
+     * This method returns the list of frames by pageId
+     * @param pageId The ID of a specific page
+     * @returns
+     */
+    getFramesByPageId = async (pageId: number) => {
+        const res = await this.#editorAPI;
+        return res.getFramesByPageId(pageId);
+    };
+
+    /**
+     * This method returns a frame by its name
+     * @param name The name of a specific frame
+     * @returns
+     */
+    getFrameByName = async (name: string) => {
+        const res = await this.#editorAPI;
+        return res.getFrameByName(name);
+    };
+
+    /**
+     * This method returns a frame by its id
+     * @param id The ID of a specific frame
+     * @returns
+     */
+    getFrameById = async (id: number) => {
+        const res = await this.#editorAPI;
+        return res.getFrameById(id);
+    };
+
+    /**
+     * This method returns all frame properties on current layout
+     * @returns
+     */
+    getFramePropertiesOnSelectedLayout = async () => {
+        const res = await this.#editorAPI;
+        return res.getFramePropertiesOnSelectedLayout();
+    };
+
+    /**
+     * This method returns frame properties for a given frame and layout
+     * @param frameId The ID of a specific frame
+     * @param layoutId The ID of a specific layout
+     * @returns
+     */
+    getFramePropertiesByFrameId = async (frameId: number, layoutId?: number) => {
+        const res = await this.#editorAPI;
+        return res.getFramePropertiesByFrameId(frameId, layoutId);
+    };
+
+    /**
+     * This method returns frame properties for a given layout
+     * @param layoutId The ID of a specific layout
+     * @returns
+     */
+    getFramesProperties = async (layoutId: number) => {
+        const res = await this.#editorAPI;
+        return res.getFramesProperties(layoutId);
+    };
+
+    /**
      * This method will reset the frame size (width and height) to the frame's original value
      * @param frameId The ID of a specific frame
      * @returns

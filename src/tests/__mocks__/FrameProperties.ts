@@ -4,6 +4,14 @@ export const mockSetLayoutName = jest.fn().mockResolvedValue({ success: true, st
 export const mockSelectLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDuplicateLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFrames = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetSelectedFrames = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFramesByPageId = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFrameByName = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFrameById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFramePropertiesOnSelectedLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFramePropertiesByFrameId = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFramesProperties = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSelectFrames = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -20,6 +28,10 @@ export const mockResetFrameRotation = jest.fn().mockResolvedValue({ success: tru
 export const mockSetFrameAniation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockTogglePlaybackAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameSize = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetLayouts = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetLayoutById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetLayoutByName = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetSelectedLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mocksetLayoutHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mocksetLayoutWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetLayoutHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -40,14 +52,22 @@ export const mockSetVariableIsRequired = jest.fn().mockResolvedValue({ success: 
 export const mockSetVariableIsReadonly = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUngroupVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDuplicateVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockGetVariableList = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockGetVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetVariableById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetVariableByName = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetSelectedTool = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetTool = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockPlayAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockPauseAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetPages = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetAnimationsOnSelectedLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetAnimationByFrameId = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetAnimationsByLayoutId = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 const MockEditorAPI = {
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
@@ -55,6 +75,14 @@ const MockEditorAPI = {
     selectLayout: mockSelectLayout,
     duplicateLayout: mockDuplicateLayout,
     resetLayout: mockResetLayout,
+    getFrames: mockGetFrames,
+    getSelectedFrames: mockGetSelectedFrames,
+    getFramesByPageId: mockGetFramesByPageId,
+    getFrameByName: mockGetFrameByName,
+    getFrameById: mockGetFrameById,
+    getFramePropertiesOnSelectedLayout: mockGetFramePropertiesOnSelectedLayout,
+    getFramePropertiesByFrameId: mockGetFramePropertiesByFrameId,
+    getFramesProperties: mockGetFramesProperties,
     selectFrames: mockSelectFrames,
     setFrameHeight: mockSetFrameHeight,
     setFrameWidth: mockSetFrameWidth,
@@ -69,6 +97,9 @@ const MockEditorAPI = {
     resetFrameHeight: mockResetFrameHeight,
     resetFrameRotation: mockResetFrameRotation,
     setFrameAnimation: mockSetFrameAniation,
+    getAnimationsOnSelectedLayout: mockGetAnimationsOnSelectedLayout,
+    getAnimationByFrameId: mockGetAnimationByFrameId,
+    getAnimationsByLayoutId: mockGetAnimationsByLayoutId,
     playAnimation: mockPlayAnimation,
     pauseAnimation: mockPauseAnimation,
     setScrubberPosition: mockSetScrubberPosition,
@@ -76,14 +107,19 @@ const MockEditorAPI = {
     resetFrameAnimation: mockResetFrameAnimation,
     togglePlaybackAnimation: mockTogglePlaybackAnimation,
     resetFrameSize: mockResetFrameSize,
+    getLayouts: mockGetLayouts,
+    getLayoutById: mockGetLayoutById,
+    getLayoutByName: mockGetLayoutByName,
+    getSelectedLayout: mockGetSelectedLayout,
     setLayoutHeight: mocksetLayoutHeight,
     setLayoutWidth: mocksetLayoutWidth,
     resetLayoutHeight: mockResetLayoutHeight,
     resetLayoutWidth: mockResetLayoutWidth,
     getCurrentDocumentState: mockGetCurrentDocumentState,
     loadDocument: mockLoadDocument,
-    getVariableList: mockGetVariableList,
-    getVariable: mockGetVariable,
+    getVariables: mockGetVariables,
+    getVariableById: mockGetVariableById,
+    getVariableByName: mockGetVariableByName,
     addVariable: mockAddVariable,
     removeVariable: mockRemoveVariable,
     groupVariables: mockGroupVariables,
@@ -98,7 +134,10 @@ const MockEditorAPI = {
     setVariableIsRequired: mockSetVariableIsRequired,
     setVariableIsReadonly: mockSetVariableIsReadonly,
     ungroupVariable: mockUngroupVariable,
+    getSelectedTool: mockGetSelectedTool,
     setTool: mockSetTool,
+    getPages: mockGetPages,
+    getPageById: mockGetPageById,
 };
 
 export default MockEditorAPI;

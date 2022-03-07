@@ -21,6 +21,44 @@ export class LayoutController {
     }
 
     /**
+     * This method returns the list of layouts
+     * @returns
+     */
+    getLayouts = async () => {
+        const res = await this.#editorAPI;
+        return res.getLayouts();
+    };
+
+    /**
+     * This method returns a layout by its id
+     * @param id The ID of a specific layout
+     * @returns
+     */
+    getLayoutById = async (id: number) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutById(id);
+    };
+
+    /**
+     * This method returns a layout by its name
+     * @param name The name of a specific layout
+     * @returns
+     */
+    getLayoutByName = async (name: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutByName(name);
+    };
+
+    /**
+     * This method returns the selected layout
+     * @returns
+     */
+    getSelectedLayout = async () => {
+        const res = await this.#editorAPI;
+        return res.getSelectedLayout();
+    };
+
+    /**
      * This method will remove a specific layout
      * @param layoutId The ID of a specific layout
      * @returns
