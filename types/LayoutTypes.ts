@@ -1,3 +1,5 @@
+import {PropertyState} from "./CommonTypes";
+
 export type LayoutPropertiesType = {
     layoutId: number;
 
@@ -19,7 +21,7 @@ export type FrameProperties = {
     y: number | null;
 };
 
-export type Layout = {
+export type LayoutWithFrameProperties = {
     layoutId: number;
     layoutName: string;
     parentLayoutId?: number;
@@ -29,7 +31,18 @@ export type Layout = {
     frameProperties: FrameProperties[];
     childLayouts: number[];
     layoutType: LayoutType;
-    children?: Layout[];
+    children?: LayoutWithFrameProperties[];
+}
+
+// used by new getter methods
+export type Layout = {
+    layoutId: number;
+    layoutName: string;
+    parentLayoutId?: number;
+    timelineLengthMs?: number;
+    width: PropertyState<number>;
+    height: PropertyState<number>;
+    childLayouts: number[];
 }
 
 export enum LayoutType {

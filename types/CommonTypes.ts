@@ -1,6 +1,6 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { Layout, LayoutPropertiesType } from './LayoutTypes';
+import { LayoutWithFrameProperties, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
@@ -31,6 +31,7 @@ export interface EditorAPI extends CallSender {
 }
 
 export type PageType = {
+    pageId: number;
     pageNumber: number;
     width: number | null;
     height: number | null;
@@ -38,8 +39,13 @@ export type PageType = {
 };
 
 export type InitialStateType = {
-    layouts: Layout[];
+    layouts: LayoutWithFrameProperties[];
     selectedLayoutId: number;
     pages: PageType[];
     variables: Variable[];
 };
+
+export interface PropertyState<T> {
+    value: T;
+    isOverride: boolean;
+}

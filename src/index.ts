@@ -21,10 +21,12 @@ export {
     TweenTypes,
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
+export { LayoutType } from '../types/LayoutTypes';
+export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection } from '../types/FrameTypes';
 export { VariableType } from '../types/VariableTypes';
 
-export type { LayoutPropertiesType, FrameProperties, Layout } from '../types/LayoutTypes';
-export type { FrameLayoutType, FrameType } from '../types/FrameTypes';
+export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
+export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame } from '../types/FrameTypes';
 export type { Variable } from '../types/VariableTypes';
 
 export type { DocumentError } from '../types/DocumentTypes';
