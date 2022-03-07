@@ -34,7 +34,7 @@ describe('Tool controller', () => {
 
     it('sets the text  tool', async () => {
         await mockedSDK.tool.setTextFrameTool();
-        expect(mockedSDK.editorAPI.se).toHaveBeenCalledTimes(4);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(4);
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(Tools.TEXT_FRAME);
     });
 
