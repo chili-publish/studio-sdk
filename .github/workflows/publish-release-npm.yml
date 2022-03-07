@@ -46,10 +46,10 @@ jobs:
               run: |
                   path=early-access/sdk/latest
                   versionpath=early-access/sdk/${{ github.event.release.name }}
-                  mkdir -p ${path%"/merge"}
-                  cp -R _bundles/* ${path%"/merge"}
-                  mkdir -p ${versionpath%"/merge"}
-                  cp -R _bundles/* ${versionpath%"/merge"}
+                  mkdir -p upload/${path%"/merge"}
+                  cp -R _bundles/* upload/${path%"/merge"}
+                  mkdir -p upload/${versionpath%"/merge"}
+                  cp -R _bundles/* upload/${versionpath%"/merge"}
             - name: publish to Azure
               uses: lauchacarro/Azure-Storage-Action@v1.1
               with:
