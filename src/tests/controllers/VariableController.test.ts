@@ -21,20 +21,14 @@ afterEach(() => {
 
 describe('Variable controller', () => {
     it('get variable by id', async () => {
-        await mockedSDK.variable.getVariableById('2');
-        expect(mockedSDK.editorAPI.getVariableById).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getVariableById).toHaveBeenCalledWith('2');
-    });
-
-    it('get variable by name', async () => {
-        await mockedSDK.variable.getVariableByName('name');
-        expect(mockedSDK.editorAPI.getVariableByName).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getVariableByName).toHaveBeenCalledWith('name');
+        await mockedSDK.variable.getVariable('2');
+        expect(mockedSDK.editorAPI.getVariable).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.getVariable).toHaveBeenCalledWith('2');
     });
 
     it('get variable list', async () => {
-        await mockedSDK.variable.getVariables();
-        expect(mockedSDK.editorAPI.getVariables).toHaveBeenCalledTimes(1);
+        await mockedSDK.variable.getVariableList();
+        expect(mockedSDK.editorAPI.getVariableList).toHaveBeenCalledTimes(1);
     });
 
     it('add a new variable', async () => {

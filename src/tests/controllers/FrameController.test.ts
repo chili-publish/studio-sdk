@@ -6,15 +6,6 @@ let mockedFrameProperties: FrameController;
 
 beforeEach(() => {
     mockedFrameProperties = new FrameController(MockEditorAPI);
-    jest.spyOn(mockedFrameProperties, 'getFrames');
-    jest.spyOn(mockedFrameProperties, 'getSelectedFrames');
-    jest.spyOn(mockedFrameProperties, 'getFramesByPageId');
-    jest.spyOn(mockedFrameProperties, 'getFrameByName');
-    jest.spyOn(mockedFrameProperties, 'getFrameById');
-    jest.spyOn(mockedFrameProperties, 'getFramePropertiesOnSelectedLayout');
-    jest.spyOn(mockedFrameProperties, 'getFramePropertiesByFrameId');
-    jest.spyOn(mockedFrameProperties, 'getFramesProperties');
-
     jest.spyOn(mockedFrameProperties, 'setFrameHeight');
     jest.spyOn(mockedFrameProperties, 'setFrameWidth');
 
@@ -47,35 +38,6 @@ afterAll(() => {
 });
 describe('FrameProperties', () => {
     it('Should call  all of the Frame Functions of EditorAPI successfully', () => {
-        mockedFrameProperties.getFrames();
-        expect(mockedFrameProperties.getFrames).toHaveBeenCalledTimes(1);
-
-        mockedFrameProperties.getSelectedFrames();
-        expect(mockedFrameProperties.getSelectedFrames).toHaveBeenCalledTimes(1);
-
-        mockedFrameProperties.getFramesByPageId(2);
-        expect(mockedFrameProperties.getFramesByPageId).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFramesByPageId).toHaveBeenCalledWith(2);
-
-        mockedFrameProperties.getFrameByName('frame');
-        expect(mockedFrameProperties.getFrameByName).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFrameByName).toHaveBeenCalledWith('frame');
-
-        mockedFrameProperties.getFrameById(5);
-        expect(mockedFrameProperties.getFrameById).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFrameById).toHaveBeenCalledWith(5);
-
-        mockedFrameProperties.getFramePropertiesOnSelectedLayout();
-        expect(mockedFrameProperties.getFramePropertiesOnSelectedLayout).toHaveBeenCalledTimes(1);
-
-        mockedFrameProperties.getFramePropertiesByFrameId(1, 2);
-        expect(mockedFrameProperties.getFramePropertiesByFrameId).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFramePropertiesByFrameId).toHaveBeenCalledWith(1, 2);
-
-        mockedFrameProperties.getFramesProperties(1);
-        expect(mockedFrameProperties.getFramesProperties).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFramesProperties).toHaveBeenCalledWith(1);
-
         mockedFrameProperties.setFrameHeight('300', mockSelectFrame);
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(1);
 

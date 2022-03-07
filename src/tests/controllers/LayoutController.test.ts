@@ -8,10 +8,6 @@ let mockedSDK: SDK;
 
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
-    jest.spyOn(mockedSDK.layout, 'getLayouts');
-    jest.spyOn(mockedSDK.layout, 'getLayoutById');
-    jest.spyOn(mockedSDK.layout, 'getLayoutByName');
-    jest.spyOn(mockedSDK.layout, 'getSelectedLayout');
     jest.spyOn(mockedSDK.layout, 'removeLayout');
     jest.spyOn(mockedSDK.layout, 'addLayout');
     jest.spyOn(mockedSDK.layout, 'setLayoutName');
@@ -35,20 +31,6 @@ afterEach(() => {
 
 describe('Layout methods', () => {
     it('handles all layout methods', async () => {
-        await mockedSDK.layout.getLayouts();
-        expect(mockedSDK.editorAPI.getLayouts).toHaveBeenCalledTimes(1);
-
-        await mockedSDK.layout.getLayoutById(1);
-        expect(mockedSDK.editorAPI.getLayoutById).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getLayoutById).toHaveBeenCalledWith(1);
-
-        await mockedSDK.layout.getLayoutByName('layout');
-        expect(mockedSDK.editorAPI.getLayoutByName).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getLayoutByName).toHaveBeenCalledWith('layout');
-
-        await mockedSDK.layout.getSelectedLayout();
-        expect(mockedSDK.editorAPI.getSelectedLayout).toHaveBeenCalledTimes(1);
-
         await mockedSDK.layout.removeLayout(1);
         expect(mockedSDK.editorAPI.removeLayout).toHaveBeenCalledTimes(1);
 

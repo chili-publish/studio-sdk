@@ -19,36 +19,6 @@ export class AnimationController {
     }
 
     /**
-     * This method returns all animations on current layout
-     * @returns
-     */
-    getAnimationsOnSelectedLayout = async () => {
-        const res = await this.#editorAPI;
-        return res.getAnimationsOnSelectedLayout();
-    };
-
-    /**
-     * This method returns an animation for a given frame and layout
-     * @param frameId The ID of a specific frame
-     * @param layoutId The ID of a specific layout
-     * @returns
-     */
-    getAnimationByFrameId = async (frameId: number, layoutId?: number) => {
-        const res = await this.#editorAPI;
-        return res.getAnimationByFrameId(frameId, layoutId);
-    };
-
-    /**
-     * This method returns the animations for a given layout
-     * @param layoutId The ID of a specific layout
-     * @returns
-     */
-    getAnimationsByLayoutId = async (layoutId: number) => {
-        const res = await this.#editorAPI;
-        return res.getAnimationsByLayoutId(layoutId);
-    };
-
-    /**
      * This method sets the animation state for a certain Frame
      * @param animation
      * @returns

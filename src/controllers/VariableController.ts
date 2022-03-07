@@ -22,29 +22,18 @@ export class VariableController {
      * This method returns the list of variables
      * @returns
      */
-    getVariables = async () => {
+    getVariableList = async () => {
         const res = await this.#editorAPI;
-        return res.getVariables();
+        return res.getVariableList();
     };
 
     /**
      * This method returns a variable by id
-     * @param variableId The ID of a specific variable
      * @returns
      */
-    getVariableById = async (variableId: string) => {
+    getVariable = async (variableId: string) => {
         const res = await this.#editorAPI;
-        return res.getVariableById(variableId);
-    };
-
-    /**
-     * This method returns a variable by name
-     * @param variableName The name of a specific variable
-     * @returns
-     */
-    getVariableByName = async (variableName: string) => {
-        const res = await this.#editorAPI;
-        return res.getVariableByName(variableName);
+        return res.getVariable(variableId);
     };
 
     /**

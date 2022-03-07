@@ -1,10 +1,10 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { LayoutWithFrameProperties, LayoutPropertiesType } from './LayoutTypes';
+import { LayoutType, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ToolType } from '../src/utils/enums';
+import { Tools } from '../src/utils/enums';
 
 export type ConfigType = {
     onStateChanged: (state: InitialStateType) => void;
@@ -17,7 +17,7 @@ export type ConfigType = {
     onScrubberPositionChanged: (state: AnimationPlaybackType) => void;
     onFrameAnimationsChanged: (animationState: FrameAnimationType[]) => void;
     onVariableListChanged: (variableList: Variable[]) => void;
-    onSelectedToolChanged: (tool: ToolType) => void;
+    onSelectedToolChanged: (tool: Tools) => void;
 };
 
 export type EditorResponse = {
@@ -31,7 +31,6 @@ export interface EditorAPI extends CallSender {
 }
 
 export type PageType = {
-    pageId: number;
     pageNumber: number;
     width: number | null;
     height: number | null;
@@ -39,13 +38,8 @@ export type PageType = {
 };
 
 export type InitialStateType = {
-    layouts: LayoutWithFrameProperties[];
+    layouts: LayoutType[];
     selectedLayoutId: number;
     pages: PageType[];
     variables: Variable[];
 };
-
-export interface PropertyState<T> {
-    value: T;
-    isOverride: boolean;
-}

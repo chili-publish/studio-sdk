@@ -13,7 +13,7 @@ export enum LayoutProperyNames {
 export enum renderURLs {
     BASE_URL = 'https://rendering.chili-publish-sandbox.online',
 }
-export enum ToolType {
+export enum Tools {
     SELECT = 'select',
     ZOOM = 'zoom',
     HAND = 'hand',
