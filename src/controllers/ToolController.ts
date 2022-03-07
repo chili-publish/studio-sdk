@@ -47,15 +47,16 @@ export class ToolController {
     setZoomTool = async () => {
         await this.setTool(Tools.ZOOM);
     };
+
     /**
-     * This method sets the used tool to a Text tool
+     * This method sets the used tool to a TextFrame tool
      */
     setTextFrameTool = async () => {
         await this.setTool(Tools.TEXT_FRAME);
     };
 
     /**
-     * This method sets the used tool to a Zoom tool
+     * This method sets the used tool to a ImageFrame tool
      */
     setImageFrameTool = async () => {
         await this.setTool(Tools.IMAGE_FRAME);
