@@ -17,8 +17,8 @@ export enum Tools {
     SELECT = 'select',
     ZOOM = 'zoom',
     HAND = 'hand',
-    IMAGE_FRAME='imageFrame',
-    TEXT_FRAME="textFrame"
+    IMAGE_FRAME = 'imageFrame',
+    TEXT_FRAME = 'textFrame',
 }
 export enum DownloadFormats {
     MP4 = 'mp4',

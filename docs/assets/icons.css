@@ -5,7 +5,7 @@
     text-indent: -20px;
 }
 .tsd-kind-icon:before {
-    content: "";
+    content: '';
     display: inline-block;
     vertical-align: middle;
     width: 17px;
@@ -47,8 +47,7 @@
 .tsd-kind-class.tsd-has-type-parameter > .tsd-kind-icon:before {
     background-position: 0px -51px;
 }
-.tsd-kind-class.tsd-has-type-parameter.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-class.tsd-has-type-parameter.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -17px -51px;
 }
 .tsd-kind-class.tsd-has-type-parameter.tsd-is-private > .tsd-kind-icon:before {
@@ -68,12 +67,10 @@
 .tsd-kind-interface.tsd-has-type-parameter > .tsd-kind-icon:before {
     background-position: 0px -85px;
 }
-.tsd-kind-interface.tsd-has-type-parameter.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-interface.tsd-has-type-parameter.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -17px -85px;
 }
-.tsd-kind-interface.tsd-has-type-parameter.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-interface.tsd-has-type-parameter.tsd-is-private > .tsd-kind-icon:before {
     background-position: -34px -85px;
 }
 
@@ -140,12 +137,10 @@
 .tsd-kind-type-alias.tsd-has-type-parameter > .tsd-kind-icon:before {
     background-position: 0px -187px;
 }
-.tsd-kind-type-alias.tsd-has-type-parameter.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-type-alias.tsd-has-type-parameter.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -17px -187px;
 }
-.tsd-kind-type-alias.tsd-has-type-parameter.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-type-alias.tsd-has-type-parameter.tsd-is-private > .tsd-kind-icon:before {
     background-position: -34px -187px;
 }
 
@@ -161,27 +156,22 @@
 .tsd-kind-variable.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -0px;
 }
-.tsd-kind-variable.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-variable.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -0px;
 }
-.tsd-kind-variable.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-variable.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -0px;
 }
-.tsd-kind-variable.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-variable.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -0px;
 }
-.tsd-kind-variable.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-variable.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -0px;
 }
 .tsd-kind-variable.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -0px;
 }
-.tsd-kind-variable.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-variable.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -0px;
 }
 .tsd-kind-variable.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
@@ -190,8 +180,7 @@
 .tsd-kind-variable.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -0px;
 }
-.tsd-kind-variable.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-variable.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -0px;
 }
 
@@ -207,27 +196,22 @@
 .tsd-kind-property.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -0px;
 }
-.tsd-kind-property.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-property.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -0px;
 }
-.tsd-kind-property.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-property.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -0px;
 }
-.tsd-kind-property.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-property.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -0px;
 }
-.tsd-kind-property.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-property.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -0px;
 }
 .tsd-kind-property.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -0px;
 }
-.tsd-kind-property.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-property.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -0px;
 }
 .tsd-kind-property.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
@@ -236,8 +220,7 @@
 .tsd-kind-property.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -0px;
 }
-.tsd-kind-property.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-property.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -0px;
 }
 
@@ -253,38 +236,31 @@
 .tsd-kind-get-signature.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -17px;
 }
 .tsd-kind-get-signature.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -17px;
 }
 .tsd-kind-get-signature.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -17px;
 }
-.tsd-kind-get-signature.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-get-signature.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -17px;
 }
 
@@ -300,38 +276,31 @@
 .tsd-kind-set-signature.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -34px;
 }
 .tsd-kind-set-signature.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -34px;
 }
 .tsd-kind-set-signature.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -34px;
 }
-.tsd-kind-set-signature.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-set-signature.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -34px;
 }
 
@@ -347,27 +316,22 @@
 .tsd-kind-accessor.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -51px;
 }
-.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -51px;
 }
-.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -51px;
 }
-.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -51px;
 }
-.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-accessor.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -51px;
 }
 .tsd-kind-accessor.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -51px;
 }
-.tsd-kind-accessor.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-accessor.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -51px;
 }
 .tsd-kind-accessor.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
@@ -376,8 +340,7 @@
 .tsd-kind-accessor.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -51px;
 }
-.tsd-kind-accessor.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-accessor.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -51px;
 }
 
@@ -393,27 +356,22 @@
 .tsd-kind-function.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -68px;
 }
-.tsd-kind-function.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -68px;
 }
-.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -68px;
 }
-.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -68px;
 }
-.tsd-kind-function.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -68px;
 }
 .tsd-kind-function.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -68px;
 }
-.tsd-kind-function.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -68px;
 }
 .tsd-kind-function.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
@@ -422,8 +380,7 @@
 .tsd-kind-function.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -68px;
 }
-.tsd-kind-function.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -68px;
 }
 
@@ -439,16 +396,13 @@
 .tsd-kind-method.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -68px;
 }
-.tsd-kind-method.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -68px;
 }
-.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -68px;
 }
-.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -68px;
 }
 .tsd-kind-method.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
@@ -466,8 +420,7 @@
 .tsd-kind-method.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -68px;
 }
-.tsd-kind-method.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -68px;
 }
 
@@ -483,141 +436,113 @@
 .tsd-kind-call-signature.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -68px;
 }
 .tsd-kind-call-signature.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -68px;
 }
 .tsd-kind-call-signature.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -68px;
 }
-.tsd-kind-call-signature.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-call-signature.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -68px;
 }
 
 .tsd-kind-function.tsd-has-type-parameter > .tsd-kind-icon:before {
     background-position: -136px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -153px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -85px;
 }
 .tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
     > .tsd-kind-icon:before {
     background-position: -102px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-enum
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -85px;
 }
-.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-function.tsd-has-type-parameter.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -85px;
 }
 
 .tsd-kind-method.tsd-has-type-parameter > .tsd-kind-icon:before {
     background-position: -136px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -153px -85px;
 }
 .tsd-kind-method.tsd-has-type-parameter.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -85px;
 }
 .tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
     > .tsd-kind-icon:before {
     background-position: -102px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-enum
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -85px;
 }
-.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-method.tsd-has-type-parameter.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -85px;
 }
 
@@ -633,38 +558,31 @@
 .tsd-kind-constructor.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -102px;
 }
 .tsd-kind-constructor.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -102px;
 }
 .tsd-kind-constructor.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -102px;
 }
-.tsd-kind-constructor.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -102px;
 }
 
@@ -680,39 +598,31 @@
 .tsd-kind-constructor-signature.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -102px;
 }
 .tsd-kind-constructor-signature.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -102px;
 }
-.tsd-kind-constructor-signature.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-constructor-signature.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -102px;
 }
 
@@ -728,38 +638,31 @@
 .tsd-kind-index-signature.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -119px;
 }
 .tsd-kind-index-signature.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -119px;
 }
 .tsd-kind-index-signature.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -119px;
 }
-.tsd-kind-index-signature.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-index-signature.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -119px;
 }
 
@@ -781,8 +684,7 @@
 .tsd-kind-event.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -136px;
 }
-.tsd-kind-event.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-event.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -136px;
 }
 .tsd-kind-event.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
@@ -800,8 +702,7 @@
 .tsd-kind-event.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -136px;
 }
-.tsd-kind-event.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-kind-event.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -136px;
 }
 
@@ -823,8 +724,7 @@
 .tsd-is-static.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -153px;
 }
-.tsd-is-static.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -153px;
 }
 .tsd-is-static.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
@@ -842,8 +742,7 @@
 .tsd-is-static.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -153px;
 }
-.tsd-is-static.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -153px;
 }
 
@@ -859,39 +758,31 @@
 .tsd-is-static.tsd-kind-function.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
 .tsd-is-static.tsd-kind-function.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -170px;
 }
-.tsd-is-static.tsd-kind-function.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-function.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -170px;
 }
 
@@ -907,90 +798,71 @@
 .tsd-is-static.tsd-kind-method.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
 .tsd-is-static.tsd-kind-method.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -170px;
 }
-.tsd-is-static.tsd-kind-method.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-method.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -170px;
 }
 
 .tsd-is-static.tsd-kind-call-signature > .tsd-kind-icon:before {
     background-position: -136px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -153px -170px;
 }
 .tsd-is-static.tsd-kind-call-signature.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-enum
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -170px;
 }
-.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-call-signature.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -170px;
 }
 
@@ -1006,38 +878,30 @@
 .tsd-is-static.tsd-kind-event.tsd-parent-kind-class > .tsd-kind-icon:before {
     background-position: -51px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -68px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -85px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-protected.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -102px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-class.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -187px;
 }
 .tsd-is-static.tsd-kind-event.tsd-parent-kind-enum > .tsd-kind-icon:before {
     background-position: -170px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-enum.tsd-is-protected
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-enum.tsd-is-protected > .tsd-kind-icon:before {
     background-position: -187px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-enum.tsd-is-private
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-enum.tsd-is-private > .tsd-kind-icon:before {
     background-position: -119px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-interface
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-interface > .tsd-kind-icon:before {
     background-position: -204px -187px;
 }
-.tsd-is-static.tsd-kind-event.tsd-parent-kind-interface.tsd-is-inherited
-    > .tsd-kind-icon:before {
+.tsd-is-static.tsd-kind-event.tsd-parent-kind-interface.tsd-is-inherited > .tsd-kind-icon:before {
     background-position: -221px -187px;
 }
