@@ -23,7 +23,7 @@ export type ConfigType = {
 export type EditorResponse = {
     success: boolean;
     status: number;
-    data?: unknown;
+    data?: string;
     error?: string;
 };
 export interface EditorAPI extends CallSender {
