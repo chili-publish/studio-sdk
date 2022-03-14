@@ -36,7 +36,7 @@ describe('Document controller', () => {
 
     describe('api calls that is using current document', () => {
         beforeEach(() => {
-            document.getCurrentDocumentState = jest.fn().mockResolvedValue({ data: 'document' });
+            document.getCurrentDocumentState = jest.fn().mockResolvedValue('{test: "hello"}');
         });
         it('retrieve returns a download link from current document when there is no error', async () => {
             mockFetch.mockReturnValueOnce(
@@ -64,7 +64,7 @@ describe('Document controller', () => {
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
-                body: 'document',
+                body: null,
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
             });
@@ -92,7 +92,7 @@ describe('Document controller', () => {
 
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
-                body: 'document',
+                body: null,
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
             });
@@ -124,7 +124,7 @@ describe('Document controller', () => {
 
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
-                body: 'document',
+                body: null,
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
             });
