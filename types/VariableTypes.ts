@@ -15,3 +15,9 @@ export type Variable  = {
     value?: string;
     defaultValue?: string;
 }
+
+export type MoveVariable = {
+    id: string;
+    parent: string;
+    order: number;
+}

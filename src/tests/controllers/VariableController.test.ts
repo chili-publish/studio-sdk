@@ -97,6 +97,12 @@ describe('Variable controller', () => {
         expect(mockedSDK.editorAPI.moveVariable).toHaveBeenCalledWith('1', '6', 0);
     });
 
+    it('moveVariables', async () => {
+        await mockedSDK.variable.moveVariables([{ id: '1', parent: '6', order: 0 }]);
+        expect(mockedSDK.editorAPI.moveVariables).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.moveVariables).toHaveBeenCalledWith([{ id: '1', parent: '6', order: 0 }]);
+    });
+
     it('set isHidden', async () => {
         await mockedSDK.variable.setVariableIsHidden('1', false);
         expect(mockedSDK.editorAPI.setVariableIsHidden).toHaveBeenCalledTimes(1);
