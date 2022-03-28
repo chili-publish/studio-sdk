@@ -27,7 +27,7 @@ export { VariableType } from '../types/VariableTypes';
 
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
 export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame } from '../types/FrameTypes';
-export type { Variable } from '../types/VariableTypes';
+export type { Variable, MoveVariable } from '../types/VariableTypes';
 
 export type { DocumentError } from '../types/DocumentTypes';
 export type {
