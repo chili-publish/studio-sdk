@@ -34,6 +34,42 @@ If you want an example on integration with React, we can help you out as well, j
 
 ### Initialise the SDK
 
+There are 2 ways of including the SDK, you can use npm or yarn:
+
+#### Using a package manager
+
+The most easy approach would be installing it using a package manager like `npm` or `yarn` just do:
+
+```bash
+npm install --save @chili-publish/editor-sdk
+```
+
+or
+
+```bash
+yarn add @chili-publish/editor-sdk
+```
+
+Then you can easily import the SDK in your JS and TS files, but also the typing is included with this approach.
+
+Example in `integration.js`:
+
+```typescript
+// TS example
+import EditorSDK from '@chili-publish/editor-sdk';
+import type { Variable } from '@chili-publish/editor-sdk';
+```
+
+If you want to pin yourself to a certain version of the SDK you can add one of our tags at the end. f.e.
+
+`npm install --save @chili-publish/editor-sdk@v0.0.1`
+
+To check our versions and tags, go to [our package on npmjs ](https://www.npmjs.com/package/@chili-publish/editor-sdk/v/0.47.1?activeTab=versions) or take [the title of our github release](https://github.com/chili-publish/editor-sdk/releases), this is always in sync with the tagname that is used.
+
+<br>
+
+#### Using the script tag
+
 Once you have received access to the SDK, you will receive a link the SDK javascript file that you need to include inside your html.
 
 We recommend including the script in a script tag, right before the closing tag of the body (`</body>`) but keep in mind that your integration script should come below the SDK inclusion.
