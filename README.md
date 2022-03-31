@@ -34,9 +34,6 @@ Conceptually you can think of the SDK - Editor Engine relation as a client - ser
 
 There are 2 ways of getting the SDK.
 
-<br/>
-<br/>
-
 ### NPM (with TS support)
 
 The most easy approach would be installing it using a package manager like `npm` or `yarn` just do:
@@ -58,8 +55,6 @@ Then you can easily import the SDK in your JS and TS files, but also the typing 
 import EditorSDK from '@chili-publish/editor-sdk';
 import type { Variable } from '@chili-publish/editor-sdk';
 ```
-
-<br>
 
 ### Load script
 

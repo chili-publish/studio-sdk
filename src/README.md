@@ -60,8 +60,13 @@ import EditorSDK from '@chili-publish/editor-sdk';
 import type { Variable } from '@chili-publish/editor-sdk';
 ```
 
-If you want to pin yourself to a certain version of the SDK you can add one of our tags at the end. f.e. `npm install --save @chili-publish/editor-sdk@v0.0.1`.
+If you want to pin yourself to a certain version of the SDK you can add one of our tags at the end. f.e.
+
+`npm install --save @chili-publish/editor-sdk@v0.0.1`
+
 To check our versions and tags, go to [our package on npmjs ](https://www.npmjs.com/package/@chili-publish/editor-sdk/v/0.47.1?activeTab=versions) or take [the title of our github release](https://github.com/chili-publish/editor-sdk/releases), this is always in sync with the tagname that is used.
+
+<br>
 
 #### Using the script tag
 
