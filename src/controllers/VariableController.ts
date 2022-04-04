@@ -152,7 +152,7 @@ export class VariableController {
      */
     moveVariables = async (movedVariables: VariableMoves) => {
         const res = await this.#editorAPI;
-        return res.moveVariables(movedVariables);
+        return res.moveVariables(movedVariables.moves, movedVariables.parent, movedVariables.order);
     };
 
     /**
