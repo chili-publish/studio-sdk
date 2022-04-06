@@ -1,6 +1,4 @@
-import { FrameProperyNames } from '../index';
 import type { EditorAPI } from '../../types/CommonTypes';
-import type { FrameLayoutType } from '../../types/FrameTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 /**
@@ -134,7 +132,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setFrameHeight = async (frameId: string, value: string) => {
+    setFrameHeight = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -150,7 +148,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setFrameRotation = async (frameId: string, value: string) => {
+    setFrameRotation = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -166,7 +164,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setFrameWidth = async (frameId: string, value: string) => {
+    setFrameWidth = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -182,14 +180,13 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setFrameX = async (frameId: string, value: string) => {
+    setFrameX = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
 
         if (calc === null || calc === Infinity) {
             return null;
         }
-
         return res.setFrameX(frameId, parseFloat(calc.toString()));
     };
 
@@ -199,7 +196,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setFrameY = async (frameId: string, value: string) => {
+    setFrameY = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
 

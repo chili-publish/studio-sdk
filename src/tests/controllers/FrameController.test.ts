@@ -1,9 +1,8 @@
 import { FrameController } from '../../controllers/FrameController';
 import MockEditorAPI, { mockSelectFrame } from '../__mocks__/FrameProperties';
-import { FrameProperyNames } from '../../utils/enums';
 
 let mockedFrameProperties: FrameController;
-let frameId = '';
+let frameId: number;
 beforeEach(() => {
     mockedFrameProperties = new FrameController(MockEditorAPI);
     jest.spyOn(mockedFrameProperties, 'getFrames');
@@ -39,7 +38,7 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetFrameSize');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
-    frameId = frameId;
+    frameId = mockSelectFrame.frameId;
 });
 
 afterAll(() => {

@@ -125,7 +125,7 @@ export class LayoutController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setLayoutHeight = async (layoutId: string, value: string) => {
+    setLayoutHeight = async (layoutId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -140,7 +140,7 @@ export class LayoutController {
      * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
      * @returns
      */
-    setLayoutWidth = async (layoutId: string, value: string) => {
+    setLayoutWidth = async (layoutId: number, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {

@@ -4,7 +4,7 @@ import mockConfig from '../__mocks__/config';
 import mockChild, { mockSelectPage } from '../__mocks__/FrameProperties';
 
 let mockedSDK: SDK;
-let mockId = '';
+let mockId: number;
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
     jest.spyOn(mockedSDK.layout, 'getLayouts');
@@ -25,7 +25,7 @@ beforeEach(() => {
 
     mockedSDK.editorAPI = mockChild;
     mockedSDK.layout = new LayoutController(mockChild);
-    mockId = String(mockSelectPage.layoutId);
+    mockId = mockSelectPage.layoutId;
 });
 
 afterEach(() => {
