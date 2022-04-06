@@ -1,11 +1,10 @@
 import { LayoutController } from '../../controllers/LayoutController';
 import { SDK } from '../../index';
-import { LayoutProperyNames } from '../../utils/enums';
 import mockConfig from '../__mocks__/config';
 import mockChild, { mockSelectPage } from '../__mocks__/FrameProperties';
 
 let mockedSDK: SDK;
-
+let mockId = '';
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
     jest.spyOn(mockedSDK.layout, 'getLayouts');
@@ -23,10 +22,10 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.layout, 'setLayoutWidth');
     jest.spyOn(mockedSDK.layout, 'resetLayoutHeight');
     jest.spyOn(mockedSDK.layout, 'resetLayoutWidth');
-    jest.spyOn(mockedSDK.layout, 'getLayoutPropertiesCalculatedValue');
 
     mockedSDK.editorAPI = mockChild;
     mockedSDK.layout = new LayoutController(mockChild);
+    mockId = String(mockSelectPage.layoutId);
 });
 
 afterEach(() => {
@@ -67,16 +66,16 @@ describe('Layout methods', () => {
         await mockedSDK.layout.resetLayout(1);
         expect(mockedSDK.editorAPI.resetLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutHeight('32', mockSelectPage);
+        await mockedSDK.layout.setLayoutHeight(mockId, '32');
         expect(mockedSDK.editorAPI.setLayoutHeight).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutHeight('null', mockSelectPage);
+        await mockedSDK.layout.setLayoutHeight(mockId, 'null');
         expect(mockedSDK.editorAPI.setLayoutHeight).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutWidth('34', mockSelectPage);
+        await mockedSDK.layout.setLayoutWidth(mockId, '34');
         expect(mockedSDK.editorAPI.setLayoutWidth).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutWidth('null', mockSelectPage);
+        await mockedSDK.layout.setLayoutWidth(mockId, 'null');
         expect(mockedSDK.editorAPI.setLayoutWidth).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.resetLayoutHeight(1);
@@ -88,47 +87,9 @@ describe('Layout methods', () => {
 });
 
 describe('User inputs for Layout Properties', () => {
-    it('Should calculate user Inputs and returns the calculated value', () => {
-        const responseHeight = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
-            LayoutProperyNames.LAYOUT_HEIGHT,
-            '11',
-            mockSelectPage,
-        );
-        const responseWidth = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
-            LayoutProperyNames.LAYOUT_WIDTH,
-            '5',
-            mockSelectPage,
-        );
-
-        expect(responseHeight).toEqual(11);
-        expect(responseWidth).toEqual(5);
-    });
-
-    it('Should calculate user Inputs and returns null when calculated value is null or same with selectedLayout property', () => {
-        let responseHeight = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
-            LayoutProperyNames.LAYOUT_HEIGHT,
-            '20',
-            mockSelectPage,
-        );
-        let responseWidth = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
-            LayoutProperyNames.LAYOUT_WIDTH,
-            '100',
-            mockSelectPage,
-        );
-
-        expect(responseHeight).toEqual(null);
-        expect(responseWidth).toEqual(null);
-
-        responseHeight = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
-            LayoutProperyNames.LAYOUT_HEIGHT,
-            'null',
-            mockSelectPage,
-        );
-        responseWidth = mockedSDK.layout.getLayoutPropertiesCalculatedValue(
-            LayoutProperyNames.LAYOUT_WIDTH,
-            'null',
-            mockSelectPage,
-        );
+    it('Should calculate user Inputs and returns null when calculated value is null or same with selectedLayout property', async () => {
+        const responseHeight = await mockedSDK.layout.setLayoutHeight(mockId, 'fsadfafasf');
+        const responseWidth = await mockedSDK.layout.setLayoutWidth(mockId, '20/0');
 
         expect(responseHeight).toEqual(null);
         expect(responseWidth).toEqual(null);
