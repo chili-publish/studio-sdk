@@ -55,7 +55,8 @@ export class DocumentController {
         let DOWNLOAD_URL: string | null = null;
 
         const documentResponse = await this.getCurrentDocumentState();
-        currentDocument = documentResponse.data ? JSON.parse(documentResponse.data) : null;
+        console.log(documentResponse, 'DMDMDMDMDMDMDMMDM');
+        currentDocument = documentResponse.data ?? null;
         const FETCH_URL = getFetchURL(format, layoutId);
         try {
             const response = await fetch(FETCH_URL, {
