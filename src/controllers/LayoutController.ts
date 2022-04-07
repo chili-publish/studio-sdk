@@ -1,6 +1,4 @@
 import type { EditorAPI } from '../../types/CommonTypes';
-import type { LayoutPropertiesType } from '../../types/LayoutTypes';
-import { LayoutProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 /**
