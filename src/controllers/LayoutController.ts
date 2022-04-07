@@ -120,7 +120,7 @@ export class LayoutController {
     /**
      * This method will set the height of the layout to a specific value
      * @param layoutId The ID of a specific layout
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setLayoutHeight = async (layoutId: number, value: string) => {
@@ -135,7 +135,7 @@ export class LayoutController {
     /**
      * This method will set the width of the layout to a specific value
      * @param layoutId The ID of a specific layout
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setLayoutWidth = async (layoutId: number, value: string) => {

@@ -129,7 +129,7 @@ export class FrameController {
     /**
      * This method will set the height of a specific frame
      * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setFrameHeight = async (frameId: number, value: string) => {
@@ -145,7 +145,7 @@ export class FrameController {
     /**
      * This method will set the rotation angle of a specific frame
      * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setFrameRotation = async (frameId: number, value: string) => {
@@ -161,7 +161,7 @@ export class FrameController {
     /**
      * This method will set the width of a specific frame
      * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setFrameWidth = async (frameId: number, value: string) => {
@@ -177,7 +177,7 @@ export class FrameController {
     /**
      * This method will set the x value of a specific frame
      * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setFrameX = async (frameId: number, value: string) => {
@@ -193,7 +193,7 @@ export class FrameController {
     /**
      * This method will set the y value of a specific frame
      * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
     setFrameY = async (frameId: number, value: string) => {
