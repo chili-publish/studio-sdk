@@ -1,6 +1,4 @@
-import { FrameProperyNames } from '../index';
 import type { EditorAPI } from '../../types/CommonTypes';
-import type { FrameLayoutType } from '../../types/FrameTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 /**
@@ -130,87 +128,83 @@ export class FrameController {
 
     /**
      * This method will set the height of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
-     * @param selectedFrame The frame that is selected with all it's properties
+     * @param frameId The ID of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameHeight = async (value: string, selectedFrame: FrameLayoutType) => {
+    setFrameHeight = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.HEIGHT, value, selectedFrame);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedFrame?.height.value) return null;
 
-        return res.setFrameHeight(selectedFrame?.frameId, parseFloat(calc.toString()));
+        return res.setFrameHeight(frameId, parseFloat(calc.toString()));
     };
 
     /**
      * This method will set the rotation angle of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is degrees
-     * @param selectedFrame The frame that is selected with all it's properties
+     * @param frameId The ID of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameRotation = async (value: string, selectedFrame: FrameLayoutType) => {
+    setFrameRotation = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_ROTATION, value, selectedFrame);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedFrame?.rotationDegrees.value) return null;
 
-        return res.setFrameRotation(selectedFrame?.frameId, parseFloat(calc.toString()));
+        return res.setFrameRotation(frameId, parseFloat(calc.toString()));
     };
 
     /**
      * This method will set the width of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
-     * @param selectedFrame The frame that is selected with all it's properties
+     * @param frameId The ID of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameWidth = async (value: string, selectedFrame: FrameLayoutType) => {
+    setFrameWidth = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.WIDTH, value, selectedFrame);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedFrame?.width.value) return null;
 
-        return res.setFrameWidth(selectedFrame?.frameId, parseFloat(calc.toString()));
+        return res.setFrameWidth(frameId, parseFloat(calc.toString()));
     };
 
     /**
      * This method will set the x value of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
-     * @param selectedFrame The frame that is selected with all it's properties
+     * @param frameId The ID of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameX = async (value: string, selectedFrame: FrameLayoutType) => {
+    setFrameX = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_X, value, selectedFrame);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedFrame?.x.value) return null;
-
-        return res.setFrameX(selectedFrame?.frameId, parseFloat(calc.toString()));
+        return res.setFrameX(frameId, parseFloat(calc.toString()));
     };
 
     /**
      * This method will set the y value of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is in pixels
-     * @param selectedFrame The frame that is selected with all it's properties
+     * @param frameId The ID of a specific frame
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameY = async (value: string, selectedFrame: FrameLayoutType) => {
+    setFrameY = async (frameId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getFramePropertyCalculatedValue(FrameProperyNames.FRAME_Y, value, selectedFrame);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedFrame?.y.value) return null;
 
-        return res.setFrameY(selectedFrame?.frameId, parseFloat(calc.toString()));
+        return res.setFrameY(frameId, parseFloat(calc.toString()));
     };
 
     /**
@@ -281,81 +275,5 @@ export class FrameController {
     setFrameVisibility = async (frameId: number, value: boolean) => {
         const res = await this.#editorAPI;
         return res.setFrameVisibility(frameId, value);
-    };
-
-    /**
-     * This method will trigger a calculation with logic built in, based on its parameters
-     * @param name The name of the property of whom the calculation is for
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is dependent on the frame property that triggers this calculation
-     * @param selectedFrame The frame that is selected with all it's properties
-     * @returns
-     */
-    getFramePropertyCalculatedValue = (name: FrameProperyNames, value: string, selectedFrame: FrameLayoutType) => {
-        let calc = getCalculatedValue(value);
-        switch (name) {
-            case FrameProperyNames.FRAME_X: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedFrame) {
-                    if (selectedFrame.x.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-
-            case FrameProperyNames.FRAME_Y: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedFrame) {
-                    if (selectedFrame.y.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-
-            case FrameProperyNames.WIDTH: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedFrame) {
-                    if (selectedFrame.width.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-
-            case FrameProperyNames.HEIGHT: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedFrame) {
-                    if (selectedFrame.height.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-
-            case FrameProperyNames.FRAME_ROTATION: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedFrame) {
-                    if (selectedFrame.rotationDegrees.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-
-            default:
-                break;
-        }
-        return calc;
     };
 }
