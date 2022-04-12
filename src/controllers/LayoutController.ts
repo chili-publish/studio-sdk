@@ -1,6 +1,4 @@
 import type { EditorAPI } from '../../types/CommonTypes';
-import type { LayoutPropertiesType } from '../../types/LayoutTypes';
-import { LayoutProperyNames } from '../utils/enums';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 /**
@@ -121,36 +119,33 @@ export class LayoutController {
 
     /**
      * This method will set the height of the layout to a specific value
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
-     * @param selectedLayout The layout that is selected, with all of its properties
+     * @param layoutId The ID of a specific layout
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setLayoutHeight = async (value: string, selectedLayout: LayoutPropertiesType) => {
+    setLayoutHeight = async (layoutId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_HEIGHT, value, selectedLayout);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedLayout?.height.value) return null;
-
-        return res.setLayoutHeight(selectedLayout?.layoutId, parseFloat(calc.toString()));
+        return res.setLayoutHeight(layoutId, parseFloat(calc.toString()));
     };
 
     /**
      * This method will set the width of the layout to a specific value
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2) The notation is in pixels
-     * @param selectedLayout The layout that is selected, with all of its properties
+     * @param layoutId The ID of a specific layout
+     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setLayoutWidth = async (value: string, selectedLayout: LayoutPropertiesType) => {
+    setLayoutWidth = async (layoutId: number, value: string) => {
         const res = await this.#editorAPI;
-        const calc = this.getLayoutPropertiesCalculatedValue(LayoutProperyNames.LAYOUT_WIDTH, value, selectedLayout);
-        if (calc === null) {
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
             return null;
         }
-        if (calc === selectedLayout?.width.value) return null;
 
-        return res.setLayoutWidth(selectedLayout?.layoutId, parseFloat(calc.toString()));
+        return res.setLayoutWidth(layoutId, parseFloat(calc.toString()));
     };
 
     /**
@@ -171,48 +166,5 @@ export class LayoutController {
     resetLayoutWidth = async (layoutId: number) => {
         const res = await this.#editorAPI;
         return res.resetLayoutWidth(layoutId);
-    };
-
-    /**
-     * This method will trigger a calculation with logic built in, based on its parameters
-     * @param name The name of the property of whom the calculation is for
-     * @param value The string value that will be calculated (f.e. 1+1 will reult in 2). The notation is dependent on the frame property that triggers this calculation
-     * @param selectedLayout The layout that is selected with all it's properties
-     * @returns
-     */
-    getLayoutPropertiesCalculatedValue = (
-        name: LayoutProperyNames,
-        value: string,
-        selectedLayout: LayoutPropertiesType,
-    ) => {
-        let calc = getCalculatedValue(value);
-        switch (name) {
-            case LayoutProperyNames.LAYOUT_HEIGHT: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedLayout) {
-                    if (selectedLayout.height.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-
-            case LayoutProperyNames.LAYOUT_WIDTH: {
-                if (calc === null || calc === Infinity) {
-                    calc = null;
-                } else if (selectedLayout) {
-                    if (selectedLayout.width.value === calc) {
-                        calc = null;
-                    }
-                }
-
-                break;
-            }
-            default:
-                break;
-        }
-        return calc;
     };
 }

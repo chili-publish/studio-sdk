@@ -1,5 +1,5 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { MoveVariable, VariableType } from '../../types/VariableTypes';
+import { VariableMoves, VariableType } from '../../types/VariableTypes';
 
 /**
  * The VariableController is responsible for all communication regarding the variables.
@@ -150,9 +150,9 @@ export class VariableController {
      * This method changes positions of variables
      * @returns
      */
-    moveVariables = async (movedVariables: MoveVariable[]) => {
+    moveVariables = async (movedVariables: VariableMoves) => {
         const res = await this.#editorAPI;
-        return res.moveVariables(movedVariables);
+        return res.moveVariables(movedVariables.moves, movedVariables.parent, movedVariables.order);
     };
 
     /**

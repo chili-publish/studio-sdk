@@ -14,7 +14,6 @@ beforeEach(() => {
     mockedAnimation = mockFrameAnimation;
     mockedSDK.editorAPI = mockChild;
     mockedSDK.frame = new FrameController(mockChild);
-    mockedSDK.frame.getFramePropertyCalculatedValue = jest.fn().mockResolvedValue(true);
     mockedSDK.animation = new AnimationController(mockChild);
     jest.spyOn(mockedSDK.animation, 'getAnimationsOnSelectedLayout');
     jest.spyOn(mockedSDK.animation, 'getAnimationByFrameId');

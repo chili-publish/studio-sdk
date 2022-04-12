@@ -16,8 +16,8 @@ export type Variable  = {
     defaultValue?: string;
 }
 
-export type MoveVariable = {
-    id: string;
-    parent: string;
+export type VariableMoves = {
+    moves: string[];
     order: number;
+    parent: string;
 }
