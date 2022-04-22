@@ -276,4 +276,9 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setFrameVisibility(frameId, value);
     };
+
+    addImgFrame = async (name: string, url: string) => {
+        const res = await this.#editorAPI;
+        return res.addImgFrame(name, url);
+    };
 }
