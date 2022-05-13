@@ -7,7 +7,7 @@ import { PageController } from './controllers/PageController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
-
+import { TranslationController } from './controllers/TranslationController';
 import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
@@ -38,7 +38,7 @@ export type {
     BasicAnimationsType,
 } from '../types/AnimationTypes';
 export type { ConfigType, InitialStateType, PageType, EditorResponse } from '../types/CommonTypes';
-
+export { languagesTypes } from '../types/TranslationTypes';
 let connection: Connection;
 
 export class SDK {
@@ -58,6 +58,7 @@ export class SDK {
     utils: UtilsController;
     tool: ToolController;
     page: PageController;
+    translation: TranslationController;
     private subscriber: SubscriberController;
 
     /**
@@ -80,6 +81,7 @@ export class SDK {
         this.subscriber = new SubscriberController(this.config);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
+        this.translation = new TranslationController();
     }
 
     /**
