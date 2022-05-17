@@ -7,6 +7,7 @@ import { PageController } from './controllers/PageController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
+import { DebugController } from './controllers/DebugController';
 
 import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
@@ -58,6 +59,7 @@ export class SDK {
     utils: UtilsController;
     tool: ToolController;
     page: PageController;
+    debug: DebugController;
     private subscriber: SubscriberController;
 
     /**
@@ -80,6 +82,7 @@ export class SDK {
         this.subscriber = new SubscriberController(this.config);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
+        this.debug = new DebugController(this.editorAPI);
     }
 
     /**
@@ -115,6 +118,7 @@ export class SDK {
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
+        this.debug = new DebugController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {
