@@ -72,6 +72,8 @@ export const mockGetLogs = jest.fn().mockResolvedValue({ success: true, status: 
 export const mockToggleDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockEnableDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDisableDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -148,6 +150,8 @@ const MockEditorAPI = {
     enableDebugPanel: mockEnableDebugPanel,
     disableDebugPanel: mockDisableDebugPanel,
     toggleDebugPanel: mockToggleDebugPanel,
+    undo: mockUndo,
+    redo: mockRedo,
 };
 
 export default MockEditorAPI;

@@ -97,4 +97,14 @@ export class SubscriberController {
         const callBack = this.config.onSelectedToolChanged;
         callBack(tool as ToolType);
     };
+
+    /**
+     * Listener on state changes
+     * @param undoStackState Stringified object of UndoStackState
+     */
+    onUndoStackStateChanged = (undoStackState: string) => {
+        console.log('here');
+        const callBack = this.config.onUndoStackStateChanged;
+        callBack(JSON.parse(undoStackState));
+    };
 }
