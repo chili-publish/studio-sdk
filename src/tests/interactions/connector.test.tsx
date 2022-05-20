@@ -20,7 +20,7 @@ describe.skip('Editor Link Validator', () => {
                 onFrameAnimationsChanged: () => null,
                 onVariableListChanged: () => null,
                 onSelectedToolChanged: () => null,
-                onUndoStackStateChanged: () => null,
+                onUndoStateChanged: () => null,
             },
             () => null,
         );
@@ -48,7 +48,7 @@ describe.skip('Editor Link Validator', () => {
                 onFrameAnimationsChanged: () => null,
                 onVariableListChanged: () => null,
                 onSelectedToolChanged: () => null,
-                onUndoStackStateChanged: () => null,
+                onUndoStateChanged: () => null,
             },
             () => null,
         );
@@ -75,7 +75,7 @@ describe.skip('Editor Link Validator', () => {
                 onFrameAnimationsChanged: () => null,
                 onVariableListChanged: () => null,
                 onSelectedToolChanged: () => null,
-                onUndoStackStateChanged: () => null,
+                onUndoStateChanged: () => null,
             },
             () => null,
         );

@@ -1,10 +1,10 @@
 import { EditorAPI } from '../../types/CommonTypes';
 
 /**
- * The UndoController is responsible for all communication regarding the Undo-Manager.
+ * The UndoManagerController is responsible for all communication regarding the Undo-Manager.
  * Methods inside this controller can be called by `window.SDK.undoManager.{method-name}`
  */
-export class UndoController {
+export class UndoManagerController {
     /**
      * @ignore
      */

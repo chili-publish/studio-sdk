@@ -26,7 +26,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onVariableListChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
     jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
-    jest.spyOn(mockedSubscribers, 'onUndoStackStateChanged');
+    jest.spyOn(mockedSubscribers, 'onUndoStateChanged');
 });
 
 afterEach(() => {
@@ -73,7 +73,7 @@ describe('Subscriber methods', () => {
     });
 
     it('Should call trigger the UndoStateChanges subscriber when triggered', () => {
-        mockedSubscribers.onUndoStackStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
+        mockedSubscribers.onUndoStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
         expect(mockedSDK.config.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 });
