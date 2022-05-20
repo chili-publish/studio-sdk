@@ -5,7 +5,7 @@ import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src/utils/enums';
-import {UndoStackState} from "./DocumentTypes";
+import {UndoState} from "./DocumentTypes";
 
 export type ConfigType = {
     onStateChanged: (state: InitialStateType) => void;
@@ -19,7 +19,7 @@ export type ConfigType = {
     onFrameAnimationsChanged: (animationState: FrameAnimationType[]) => void;
     onVariableListChanged: (variableList: Variable[]) => void;
     onSelectedToolChanged: (tool: ToolType) => void;
-    onUndoStackStateChanged: (undoStackState: UndoStackState) => void;
+    onUndoStackStateChanged: (undoStackState: UndoState) => void;
 };
 
 export type EditorResponse = {

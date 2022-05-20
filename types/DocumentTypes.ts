@@ -1,6 +1,6 @@
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
-export type UndoStackState =  {
+export type UndoState =  {
     canUndo: boolean;
     canRedo: boolean;
     undoItemName: OperationName;

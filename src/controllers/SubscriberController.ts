@@ -100,10 +100,10 @@ export class SubscriberController {
 
     /**
      * Listener on state changes
-     * @param undoStackState Stringified object of UndoStackState
+     * @param undoState Stringified object of UndoState
      */
-    onUndoStateChanged = (undoStackState: string) => {
+    onUndoStateChanged = (undoState: string) => {
         const callBack = this.config.onUndoStackStateChanged;
-        callBack(JSON.parse(undoStackState));
+        callBack(JSON.parse(undoState));
     };
 }
