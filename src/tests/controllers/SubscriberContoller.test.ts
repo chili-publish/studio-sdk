@@ -26,6 +26,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onVariableListChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
     jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
+    jest.spyOn(mockedSubscribers, 'onUndoStateChanged');
 });
 
 afterEach(() => {
@@ -69,5 +70,10 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onSelectedToolChanged(ToolType.HAND);
         expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalled();
         expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('hand');
+    });
+
+    it('Should call trigger the UndoStateChanges subscriber when triggered', () => {
+        mockedSubscribers.onUndoStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
+        expect(mockedSDK.config.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 });
