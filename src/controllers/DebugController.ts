@@ -36,20 +36,20 @@ export class DebugController {
     };
 
     /**
-     * This method enables the debug panel
+     * This method enables the debugging
      * @returns
      */
-    enableDebugPanel = async () => {
+    enableDebug = async () => {
         const res = await this.#editorAPI;
-        return res.enableDebugPanel();
+        return res.enableDebug();
     };
 
     /**
-     * This method disables the debug panel
+     * This method disables the debugging
      * @returns
      */
-    disableDebugPanel = async () => {
+    disableDebug = async () => {
         const res = await this.#editorAPI;
-        return res.disableDebugPanel();
+        return res.disableDebug();
     };
 }
