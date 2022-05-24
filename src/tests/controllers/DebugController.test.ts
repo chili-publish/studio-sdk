@@ -7,8 +7,8 @@ beforeEach(() => {
     mockedDebugProperties = new DebugController(MockEditorAPI);
     jest.spyOn(mockedDebugProperties, 'getLogs');
     jest.spyOn(mockedDebugProperties, 'toggleDebugPanel');
-    jest.spyOn(mockedDebugProperties, 'enableDebugPanel');
-    jest.spyOn(mockedDebugProperties, 'disableDebugPanel');
+    jest.spyOn(mockedDebugProperties, 'enableDebug');
+    jest.spyOn(mockedDebugProperties, 'disableDebug');
 });
 
 afterAll(() => {
@@ -20,9 +20,9 @@ describe('DebugProperties', () => {
         expect(mockedDebugProperties.getLogs).toHaveBeenCalledTimes(1);
         mockedDebugProperties.toggleDebugPanel();
         expect(mockedDebugProperties.toggleDebugPanel).toHaveBeenCalledTimes(1);
-        mockedDebugProperties.enableDebugPanel();
-        expect(mockedDebugProperties.enableDebugPanel).toHaveBeenCalledTimes(1);
-        mockedDebugProperties.disableDebugPanel();
-        expect(mockedDebugProperties.disableDebugPanel).toHaveBeenCalledTimes(1);
+        mockedDebugProperties.enableDebug();
+        expect(mockedDebugProperties.enableDebug).toHaveBeenCalledTimes(1);
+        mockedDebugProperties.disableDebug();
+        expect(mockedDebugProperties.disableDebug).toHaveBeenCalledTimes(1);
     });
 });

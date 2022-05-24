@@ -70,8 +70,8 @@ export const mockGetAnimationByFrameId = jest.fn().mockResolvedValue({ success: 
 export const mockGetAnimationsByLayoutId = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetLogs = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockToggleDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockEnableDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockDisableDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockEnableDebug = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockDisableDebug = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
@@ -147,8 +147,8 @@ const MockEditorAPI = {
     getPages: mockGetPages,
     getPageById: mockGetPageById,
     getLogs: mockGetLogs,
-    enableDebugPanel: mockEnableDebugPanel,
-    disableDebugPanel: mockDisableDebugPanel,
+    enableDebug: mockEnableDebug,
+    disableDebug: mockDisableDebug,
     toggleDebugPanel: mockToggleDebugPanel,
     undo: mockUndo,
     redo: mockRedo,
