@@ -39,7 +39,7 @@ export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true,
 export const mockGetCurrentDocumentState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockLoadDocument = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAddVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockRemoveVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGroupVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableName = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableLabel = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -128,7 +128,7 @@ const MockEditorAPI = {
     getVariableById: mockGetVariableById,
     getVariableByName: mockGetVariableByName,
     addVariable: mockAddVariable,
-    removeVariable: mockRemoveVariable,
+    removeVariables: mockRemoveVariables,
     groupVariables: mockGroupVariables,
     setVariableName: mockSetVariableName,
     setVariableLabel: mockSetVariableLabel,
