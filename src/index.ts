@@ -7,10 +7,12 @@ import { PageController } from './controllers/PageController';
 import { UtilsController } from './controllers/UtilsController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
+import { DebugController } from './controllers/DebugController';
 
 import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
+import { UndoManagerController } from './controllers/UndoManagerController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -58,6 +60,9 @@ export class SDK {
     utils: UtilsController;
     tool: ToolController;
     page: PageController;
+    debug: DebugController;
+    undoManager: UndoManagerController;
+
     private subscriber: SubscriberController;
 
     /**
@@ -80,6 +85,8 @@ export class SDK {
         this.subscriber = new SubscriberController(this.config);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
+        this.debug = new DebugController(this.editorAPI);
+        this.undoManager = new UndoManagerController(this.editorAPI);
     }
 
     /**
@@ -99,6 +106,7 @@ export class SDK {
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
                 onVariableListChanged: this.subscriber.onVariableListChanged,
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
+                onUndoStateChanged: this.subscriber.onUndoStateChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -115,6 +123,8 @@ export class SDK {
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
+        this.debug = new DebugController(this.editorAPI);
+        this.undoManager = new UndoManagerController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {

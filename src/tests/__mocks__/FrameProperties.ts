@@ -39,7 +39,7 @@ export const mockResetLayoutWidth = jest.fn().mockResolvedValue({ success: true,
 export const mockGetCurrentDocumentState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockLoadDocument = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAddVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockRemoveVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGroupVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableName = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableLabel = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -68,6 +68,12 @@ export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, stat
 export const mockGetAnimationsOnSelectedLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetAnimationByFrameId = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetAnimationsByLayoutId = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetLogs = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockToggleDebugPanel = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockEnableDebug = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockDisableDebug = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -122,7 +128,7 @@ const MockEditorAPI = {
     getVariableById: mockGetVariableById,
     getVariableByName: mockGetVariableByName,
     addVariable: mockAddVariable,
-    removeVariable: mockRemoveVariable,
+    removeVariables: mockRemoveVariables,
     groupVariables: mockGroupVariables,
     setVariableName: mockSetVariableName,
     setVariableLabel: mockSetVariableLabel,
@@ -140,6 +146,12 @@ const MockEditorAPI = {
     setTool: mockSetTool,
     getPages: mockGetPages,
     getPageById: mockGetPageById,
+    getLogs: mockGetLogs,
+    enableDebug: mockEnableDebug,
+    disableDebug: mockDisableDebug,
+    toggleDebugPanel: mockToggleDebugPanel,
+    undo: mockUndo,
+    redo: mockRedo,
 };
 
 export default MockEditorAPI;

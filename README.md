@@ -1,6 +1,6 @@
 # editor-sdk
 
-![Coverage](https://img.shields.io/badge/coverage-94.93%25-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/coverage-95.94%25-brightgreen.svg)
 
 [![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
 
@@ -32,10 +32,14 @@ Conceptually you can think of the SDK - Editor Engine relation as a client - ser
 
 ## Getting started
 
-There are 2 ways of getting the SDK. The most easy approach would be installing it using a package manager like `npm` or `yarn` just do:
+There are 2 ways of getting the SDK.
+
+### NPM (with TS support)
+
+The most easy approach would be installing it using a package manager like `npm` or `yarn` just do:
 
 ```bash
-npm install @chili-publish/editor-sdk
+npm install --save @chili-publish/editor-sdk
 ```
 
 or
@@ -43,6 +47,16 @@ or
 ```bash
 yarn add @chili-publish/editor-sdk
 ```
+
+Then you can easily import the SDK in your JS and TS files, but also the typing is included with this approach.
+
+```typescript
+// TS example
+import EditorSDK from '@chili-publish/editor-sdk';
+import type { Variable } from '@chili-publish/editor-sdk';
+```
+
+### Load script
 
 The other way would be to include the sdk using the script tag just before the closure. of the body.
 

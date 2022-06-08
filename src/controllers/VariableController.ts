@@ -57,12 +57,12 @@ export class VariableController {
     };
 
     /**
-     * This method removes variable
+     * This method removes a list of variables
      * @returns
      */
-    removeVariable = async (variableId: string) => {
+    removeVariables = async (variableIds: string[]) => {
         const res = await this.#editorAPI;
-        return res.removeVariable(variableId);
+        return res.removeVariables(variableIds);
     };
 
     /**
@@ -152,7 +152,7 @@ export class VariableController {
      */
     moveVariables = async (movedVariables: VariableMoves) => {
         const res = await this.#editorAPI;
-        return res.moveVariables(movedVariables);
+        return res.moveVariables(movedVariables.moves, movedVariables.parent, movedVariables.order);
     };
 
     /**

@@ -9,7 +9,7 @@ let mockedSDK: SDK;
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
     jest.spyOn(mockedSDK.variable, 'addVariable');
-    jest.spyOn(mockedSDK.variable, 'removeVariable');
+    jest.spyOn(mockedSDK.variable, 'removeVariables');
 
     mockedSDK.editorAPI = mockChild;
     mockedSDK.variable = new VariableController(mockChild);
@@ -44,9 +44,9 @@ describe('Variable controller', () => {
     });
 
     it('remove a variable', async () => {
-        await mockedSDK.variable.removeVariable('2');
-        expect(mockedSDK.editorAPI.removeVariable).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.removeVariable).toHaveBeenCalledWith('2');
+        await mockedSDK.variable.removeVariables(['2']);
+        expect(mockedSDK.editorAPI.removeVariables).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.removeVariables).toHaveBeenCalledWith(['2']);
     });
 
     it('set variable name', async () => {
@@ -100,7 +100,7 @@ describe('Variable controller', () => {
     it('moveVariables', async () => {
         await mockedSDK.variable.moveVariables({ moves: ['1'], parent: '6', order: 0 });
         expect(mockedSDK.editorAPI.moveVariables).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.moveVariables).toHaveBeenCalledWith({ moves: ['1'], parent: '6', order: 0 });
+        expect(mockedSDK.editorAPI.moveVariables).toHaveBeenCalledWith(['1'], '6', 0);
     });
 
     it('set isHidden', async () => {

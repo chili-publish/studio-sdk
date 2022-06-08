@@ -13,5 +13,6 @@ const mockConfig: ConfigType = {
     onFrameAnimationsChanged: defaultMockReturn,
     onVariableListChanged: defaultMockReturn,
     onSelectedToolChanged: defaultMockReturn,
+    onUndoStackStateChanged: jest.fn().mockResolvedValue({ success: true, status: 0 }),
 };
 export default mockConfig;

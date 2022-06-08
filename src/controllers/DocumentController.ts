@@ -42,6 +42,8 @@ export class DocumentController {
 
     /**
      * This method will call an external api to create a download url
+     * The video will be generated in the dimensions (and resolution) of the layout.
+     * This means that any upscaling (e.g. playing the video full screen on a 4k monitor) will result in interpolation (= quality loss).
      * @param format The format of a downloadable url
      * @param layoutId id of layout to be downloaded
      * @returns the download link
@@ -53,7 +55,7 @@ export class DocumentController {
         let DOWNLOAD_URL: string | null = null;
 
         const documentResponse = await this.getCurrentDocumentState();
-        currentDocument = documentResponse.data ? JSON.parse(documentResponse.data) : null;
+        currentDocument = documentResponse.data ?? null;
         const FETCH_URL = getFetchURL(format, layoutId);
         try {
             const response = await fetch(FETCH_URL, {
