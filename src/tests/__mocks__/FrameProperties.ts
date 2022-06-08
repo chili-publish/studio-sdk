@@ -174,4 +174,5 @@ export const mockSelectPage = {
     layoutId: 1,
     width: { value: 100, isOverride: false },
     height: { value: 20, isOverride: true },
+    timelineLengthMs: { value: 5000, isOverride: false },
 };

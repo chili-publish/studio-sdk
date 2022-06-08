@@ -1,10 +1,11 @@
-import {PropertyState} from "./CommonTypes";
+import { PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
     layoutId: number;
 
     width: { value: number; isOverride: boolean };
     height: { value: number; isOverride: boolean };
+    timelineLengthMs: { value: number; isOverride: boolean };
     [key: string]: number | string | Record<string, unknown>;
 } | null;
 
@@ -32,7 +33,7 @@ export type LayoutWithFrameProperties = {
     childLayouts: number[];
     layoutType: LayoutType;
     children?: LayoutWithFrameProperties[];
-}
+};
 
 // used by new getter methods
 export type Layout = {
@@ -43,9 +44,9 @@ export type Layout = {
     width: PropertyState<number>;
     height: PropertyState<number>;
     childLayouts: number[];
-}
+};
 
 export enum LayoutType {
     top = 'top',
-    child = 'child'
+    child = 'child',
 }
