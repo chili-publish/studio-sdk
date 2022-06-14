@@ -34,15 +34,16 @@ export enum TweenTypes {
 }
 
 export enum BasicAnimationsEmphasisStyles {
-    // bounce = 'bounce',
+    bounce = 'bounce',
     flash = 'flash',
-    // pulse = 'pulse',
-    // rubberBand = 'rubberBand',
-    // shake = 'shake',
-    // headshake = 'headshake',
-    // swing = 'swing',
-    // tada = 'tada',
-    // heartbeat = 'heartbeat',
+    headshake = 'headShake',
+    heartbeat = 'heartbeat',
+    pulse = 'pulse',
+    rubberBand = 'rubberBand',
+    vertical = 'vertical',
+    horizontal = 'horizontal',
+    swing = 'swing',
+    tada = 'tada',
 }
 
 export type EaseTweenCombinationType = `${EaseTypes}${TweenTypes}` | 'noEase';
@@ -78,7 +79,7 @@ export type BasicAnimationsEmphasisType = {
         flash?: boolean;
         pulse?: boolean;
         rubberBand?: boolean;
-        shake?: {
+        shake: {
             shakeDirection: ShakeDirections;
         };
         headshake?: boolean;
