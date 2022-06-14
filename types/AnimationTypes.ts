@@ -82,6 +82,8 @@ export type BasicAnimationsEmphasisType = {
         shake: {
             shakeDirection: ShakeDirections;
         };
+        vertical: boolean;
+        horizontal: boolean;
         headshake?: boolean;
         swing?: boolean;
         tada?: boolean;
