@@ -79,11 +79,11 @@ export type BasicAnimationsEmphasisType = {
         flash?: boolean;
         pulse?: boolean;
         rubberBand?: boolean;
-        shake: {
+        shake?: {
             shakeDirection: ShakeDirections;
         };
-        vertical: boolean;
-        horizontal: boolean;
+        vertical?: boolean;
+        horizontal?: boolean;
         headshake?: boolean;
         swing?: boolean;
         tada?: boolean;
