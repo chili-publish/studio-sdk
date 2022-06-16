@@ -38,6 +38,9 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetFrameSize');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
+
+    jest.spyOn(mockedFrameProperties, 'setFrameName');
+
     frameId = mockSelectFrame.frameId;
 });
 
@@ -92,6 +95,9 @@ describe('FrameProperties', () => {
 
         mockedFrameProperties.setFrameHeight(frameId, '32');
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(2);
+
+        mockedFrameProperties.setFrameName(1, 'TEST');
+        expect(mockedFrameProperties.setFrameName).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameVisibility(2, false);
         expect(mockedFrameProperties.setFrameVisibility).toHaveBeenCalledTimes(1);

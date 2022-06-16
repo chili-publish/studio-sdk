@@ -1,3 +1,4 @@
+import { re } from 'mathjs';
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
@@ -205,6 +206,17 @@ export class FrameController {
         }
 
         return res.setFrameY(frameId, parseFloat(calc.toString()));
+    };
+
+    /**
+     * This method will update the name of a specific frame
+     * @param frameId The ID of a specific frame
+     * @param frameName The new name that the frame should receive
+     * @returns
+     */
+    setFrameName = async (frameId: number, frameName: string) => {
+        const res = await this.#editorAPI;
+        return res.renameFrame(frameId, frameName);
     };
 
     /**
