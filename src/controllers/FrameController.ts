@@ -1,4 +1,3 @@
-import { re } from 'mathjs';
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
