@@ -208,6 +208,17 @@ export class FrameController {
     };
 
     /**
+     * This method will update the name of a specific frame
+     * @param frameId The ID of a specific frame
+     * @param frameName The new name that the frame should receive
+     * @returns
+     */
+    setFrameName = async (frameId: number, frameName: string) => {
+        const res = await this.#editorAPI;
+        return res.renameFrame(frameId, frameName);
+    };
+
+    /**
      * This method will reset properties of a specific frame to their original values
      * @param frameId The ID of the frame that needs to get reset
      * @returns

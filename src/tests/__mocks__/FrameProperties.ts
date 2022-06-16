@@ -79,6 +79,7 @@ const MockEditorAPI = {
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
     renameLayout: mockSetLayoutName,
+    renameFrame: mockSetLayoutName,
     selectLayout: mockSelectLayout,
     duplicateLayout: mockDuplicateLayout,
     resetLayout: mockResetLayout,
