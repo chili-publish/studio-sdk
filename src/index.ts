@@ -13,6 +13,7 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
+import { ResourceController } from './controllers/ResourceController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -27,11 +28,14 @@ export { LayoutType } from '../types/LayoutTypes';
 export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection } from '../types/FrameTypes';
 export { VariableType } from '../types/VariableTypes';
 
+export * from '../types/ResourceTypes';
+
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
 export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame } from '../types/FrameTypes';
 export type { Variable, VariableMoves } from '../types/VariableTypes';
 
 export type { DocumentError } from '../types/DocumentTypes';
+
 export type {
     FrameAnimationType,
     FrameAnimationPropertiesType,
@@ -62,6 +66,7 @@ export class SDK {
     page: PageController;
     debug: DebugController;
     undoManager: UndoManagerController;
+    resource: ResourceController;
 
     private subscriber: SubscriberController;
 
@@ -87,6 +92,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
+        this.resource = new ResourceController(this.editorAPI);
     }
 
     /**
@@ -125,6 +131,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
+        this.resource = new ResourceController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {
