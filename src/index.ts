@@ -39,7 +39,7 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from '../types/AnimationTypes';
-export type { ConfigType, InitialStateType, PageType, EditorResponse } from '../types/CommonTypes';
+export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLayoutFrame } from '../types/CommonTypes';
 
 let connection: Connection;
 
@@ -107,6 +107,7 @@ export class SDK {
                 onVariableListChanged: this.subscriber.onVariableListChanged,
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
+                onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,
             },
             this.setConnection,
             this.config.editorId,

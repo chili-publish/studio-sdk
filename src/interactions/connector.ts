@@ -52,6 +52,7 @@ interface ConfigParameterTypes {
     onVariableListChanged: (state: string) => void;
     onSelectedToolChanged: (state: string) => void;
     onUndoStateChanged: (state: string) => void;
+    onSelectedLayoutFramesChanged: (state: string) => void;
 }
 
 const Connect = (
@@ -100,6 +101,7 @@ const Connect = (
                 selectedToolChanged: params.onSelectedToolChanged,
                 variableListChanged: params.onVariableListChanged,
                 undoStackStateChanged: params.onUndoStateChanged,
+                selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
             },
         }),
     );

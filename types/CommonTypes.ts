@@ -5,7 +5,7 @@ import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src/utils/enums';
-import {UndoState} from "./DocumentTypes";
+import { UndoState } from './DocumentTypes';
 
 export type ConfigType = {
     onStateChanged: (state: InitialStateType) => void;
@@ -20,6 +20,7 @@ export type ConfigType = {
     onVariableListChanged: (variableList: Variable[]) => void;
     onSelectedToolChanged: (tool: ToolType) => void;
     onUndoStackStateChanged: (undoStackState: UndoState) => void;
+    onSelectedLayoutFramesChanged: (frames: SelectedLayoutFrame[]) => void;
 };
 
 export type EditorResponse = {
@@ -50,4 +51,10 @@ export type InitialStateType = {
 export interface PropertyState<T> {
     value: T;
     isOverride: boolean;
+}
+
+export interface SelectedLayoutFrame {
+    frameId: number;
+    frameName: string;
+    included: boolean;
 }

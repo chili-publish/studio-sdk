@@ -27,6 +27,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
     jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
     jest.spyOn(mockedSubscribers, 'onUndoStateChanged');
+    jest.spyOn(mockedSubscribers, 'onSelectedLayoutFramesChanged');
 });
 
 afterEach(() => {
@@ -64,6 +65,9 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onVariableListChanged('[{"id":"1","type":"group"}]');
         expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalled();
         expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
+
+        mockedSubscribers.onSelectedLayoutFramesChanged('5');
+        expect(mockedSDK.config.onSelectedLayoutFramesChanged).toHaveBeenCalledTimes(9);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {
