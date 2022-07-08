@@ -106,4 +106,13 @@ export class SubscriberController {
         const callBack = this.config.onUndoStackStateChanged;
         callBack(JSON.parse(undoState));
     };
+
+    /**
+     * Listener on the state of the currently selected layout's frames, if this changes, this listener will get triggered with the updates
+     * @param frames Stringified object of Frames
+     */
+    onSelectedLayoutFramesChanged = (frames: string) => {
+        const callBack = this.config.onSelectedLayoutFramesChanged;
+        callBack(JSON.parse(frames));
+    };
 }
