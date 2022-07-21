@@ -63,6 +63,7 @@ export const mockPauseAnimation = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPages = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetAnimationsOnSelectedLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -113,6 +114,7 @@ const MockEditorAPI = {
     setScrubberPosition: mockSetScrubberPosition,
     setAnimationDuration: mockSetAnimationDuration,
     resetFrameAnimation: mockResetFrameAnimation,
+    resetAnimation: mockResetAnimation,
     togglePlaybackAnimation: mockTogglePlaybackAnimation,
     resetFrameSize: mockResetFrameSize,
     getLayouts: mockGetLayouts,
