@@ -24,6 +24,7 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.animation, 'setScrubberPosition');
     jest.spyOn(mockedSDK.animation, 'setAnimationDuration');
     jest.spyOn(mockedSDK.animation, 'resetFrameAnimation');
+    jest.spyOn(mockedSDK.animation, 'resetAnimation');
 });
 
 afterEach(() => {
@@ -61,5 +62,8 @@ describe('Animation methods', () => {
 
         await mockedSDK.animation.resetFrameAnimation(mockFrameAnimation.animation.frameId);
         expect(mockedSDK.editorAPI.resetFrameAnimation).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.animation.resetAnimation();
+        expect(mockedSDK.editorAPI.resetAnimation).toHaveBeenCalledTimes(1);
     });
 });
