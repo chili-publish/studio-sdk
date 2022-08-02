@@ -115,4 +115,13 @@ export class SubscriberController {
         const callBack = this.config.onSelectedLayoutFramesChanged;
         callBack(JSON.parse(frames));
     };
+
+    /**
+     * Listener on the state of the currently selected text's styles, if this changes, this listener will get triggered with the updates
+     * @param styles Stringified object of styles
+     */
+    onSelectedTextStyleChanged = (styles: string) => {
+        const callBack = this.config.onSelectedTextStyleChanged;
+        callBack(JSON.parse(styles));
+    };
 }

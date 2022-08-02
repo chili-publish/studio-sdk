@@ -41,6 +41,17 @@ export type {
 } from '../types/AnimationTypes';
 export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLayoutFrame } from '../types/CommonTypes';
 
+export type { TextProperties, TextStyle, AppearanceProperties, TextStyleUpdateType } from '../types/TextStyleTypes';
+export {
+    TextSelectionSections,
+    TextSelectionStyles,
+    FontWeights,
+    Alignment,
+    TextPosition,
+    Case,
+    Scripting,
+    BlendModes,
+} from '../types/TextStyleTypes';
 let connection: Connection;
 
 export class SDK {
@@ -108,11 +119,13 @@ export class SDK {
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
                 onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,
+                onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
             },
             this.setConnection,
             this.config.editorId,
         );
         this.editorAPI = connection?.promise.then((editorAPI) => {
+            console.log(editorAPI, 'HEERE WE GOOO');
             return editorAPI;
         }) as unknown as EditorAPI;
 
