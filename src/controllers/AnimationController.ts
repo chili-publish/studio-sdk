@@ -105,4 +105,13 @@ export class AnimationController {
         const res = await this.#editorAPI;
         return res.resetFrameAnimation(frameId);
     };
+
+    /**
+     * This method resets the layout's animations and animation duration to its initial state 
+     * @returns
+     */
+    resetAnimation = async () => {
+        const res = await this.#editorAPI;
+        return res.resetAnimation();
+    };
 }
