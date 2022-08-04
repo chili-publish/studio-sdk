@@ -49,10 +49,13 @@ export interface TextStyle {
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 export type TextStyleUpdateType = {
-    [key in keyof TextProperties]: {
+    [key in keyof typeof TextSelectionStyles]?
+    : {
         value: number | string | boolean;
     };
 };
+
+
 
 export interface AppearanceProperties {
     blendMode?: string;
@@ -108,3 +111,8 @@ export enum BlendModes {
     COLOR = 'color',
     LUMINOSITY = 'luminosity',
 }
+
+export interface UpdateStyleType {
+    path: { value: number | string | Record<string, unknown> | null | boolean | undefined }
+}
+
