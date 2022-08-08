@@ -45,7 +45,7 @@ export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLa
 export type { TextProperties, TextStyle, AppearanceProperties, TextStyleUpdateType, UpdateStyleType } from '../types/TextStyleTypes';
 export {
     SelectedTextStyleSections,
-    SelectedTextStyleStyles,
+    SelectedTextStyles,
     FontWeights,
     Alignment,
     TextPosition,

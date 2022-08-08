@@ -47,7 +47,7 @@ export interface TextStyle {
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 export type TextStyleUpdateType = {
-    [key in keyof typeof SelectedTextStyleStyles]?
+    [key in keyof typeof SelectedTextStyles]?
     : {
         value: number | string | boolean;
     };
@@ -71,7 +71,7 @@ export enum SelectedTextStyleSections {
     APPEARANCE = 'appearance',
 }
 
-export enum SelectedTextStyleStyles {
+export enum SelectedTextStyles {
     PARAGRAPH = 'paragraph',
     CHARACTER = 'character',
     FONT_FAMILY = 'fontFamily',
