@@ -13,7 +13,7 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
-import { TextSelectionController } from './controllers/TextSelectionController'
+import { TextStyleController } from './controllers/TextSelectionController'
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -44,8 +44,8 @@ export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLa
 
 export type { TextProperties, TextStyle, AppearanceProperties, TextStyleUpdateType, UpdateStyleType } from '../types/TextStyleTypes';
 export {
-    TextSelectionSections,
-    TextSelectionStyles,
+    SelectedTextStyleSections,
+    SelectedTextStyleStyles,
     FontWeights,
     Alignment,
     TextPosition,
@@ -74,7 +74,7 @@ export class SDK {
     page: PageController;
     debug: DebugController;
     undoManager: UndoManagerController;
-    textSelection: TextSelectionController;
+    textSelection: TextStyleController;
 
     private subscriber: SubscriberController;
 
@@ -100,7 +100,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextSelectionController(this.editorAPI)
+        this.textSelection = new TextStyleController(this.editorAPI)
 
     }
 
@@ -143,7 +143,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextSelectionController(this.editorAPI)
+        this.textSelection = new TextStyleController(this.editorAPI)
     };
 
     setConnection = (newConnection: Connection) => {

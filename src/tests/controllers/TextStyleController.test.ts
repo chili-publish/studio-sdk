@@ -1,10 +1,10 @@
 import MockEditorAPI from '../__mocks__/FrameProperties';
-import { TextSelectionController } from '../../controllers/TextSelectionController';
+import { TextStyleController } from '../../controllers/TextSelectionController';
 
-let mockedTextProperties: TextSelectionController;
+let mockedTextProperties: TextStyleController;
 
 beforeEach(() => {
-    mockedTextProperties = new TextSelectionController(MockEditorAPI);
+    mockedTextProperties = new TextStyleController(MockEditorAPI);
     jest.spyOn(mockedTextProperties, 'setTextStyleProperties');
 
 });
@@ -13,7 +13,7 @@ afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('TextProperties', () => {
-    it('Should call all of the TextSelection Functions of EditorAPI successfully', () => {
+    it('Should call all of the TextStyle Functions of EditorAPI successfully', () => {
         mockedTextProperties.setTextStyleProperties({ FONT_SIZE: { value: 34 } });
         expect(mockedTextProperties.setTextStyleProperties).toHaveBeenCalledTimes(1);
 

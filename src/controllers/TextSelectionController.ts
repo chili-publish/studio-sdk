@@ -1,10 +1,10 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { TextStyleUpdateType } from '../../types/TextStyleTypes';
 /**
- * The TextSelectionController is responsible for all communication regarding text styles.
+ * The TextStyleController is responsible for all communication regarding text styles.
  * Methods inside this controller can be called by `window.SDK.textStyle.{method-name}`
  */
-export class TextSelectionController {
+export class TextStyleController {
     /**
      * @ignore
      */
@@ -18,7 +18,7 @@ export class TextSelectionController {
     }
 
     /**
-     * This method returns all debug logs
+     * This method updates a selected Text's style properties
      * @returns
      */
     setTextStyleProperties = async (style: TextStyleUpdateType) => {

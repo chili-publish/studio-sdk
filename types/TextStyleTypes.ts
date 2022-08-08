@@ -47,7 +47,7 @@ export interface TextStyle {
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 export type TextStyleUpdateType = {
-    [key in keyof typeof TextSelectionStyles]?
+    [key in keyof typeof SelectedTextStyleStyles]?
     : {
         value: number | string | boolean;
     };
@@ -65,13 +65,13 @@ export interface AppearanceProperties {
     strokeColor?: string;
     dropShadowColor?: string;
 }
-export enum TextSelectionSections {
+export enum SelectedTextStyleSections {
     STYLE = 'textStyle',
     PROPERTIES = 'textProperties',
     APPEARANCE = 'appearance',
 }
 
-export enum TextSelectionStyles {
+export enum SelectedTextStyleStyles {
     PARAGRAPH = 'paragraph',
     CHARACTER = 'character',
     FONT_FAMILY = 'fontFamily',
