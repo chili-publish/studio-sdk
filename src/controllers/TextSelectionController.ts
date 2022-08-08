@@ -23,6 +23,6 @@ export class TextSelectionController {
      */
     setTextStyleProperties = async (style: TextStyleUpdateType) => {
         const res = await this.#editorAPI;
-        return res.selectedTextStyleDeltaUpdate(JSON.stringify({ style }));
+        return res.selectedTextStyleDeltaUpdate(JSON.stringify(style));
     };
 }

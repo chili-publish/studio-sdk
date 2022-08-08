@@ -21,7 +21,7 @@ export enum Case {
     NORMAL = 'normal',
 }
 export enum Scripting {
-    SUPERSCRIPT = 'superScript',
+    SUPERSCRIPT = 'superscript',
     SUBSCRIPT = 'subscript',
     NORMAL = 'normal',
 }
@@ -36,10 +36,8 @@ export interface TextProperties {
     lineThrough?: boolean;
     letterSpacing?: string;
     lineHeight?: string;
-    superScript?: boolean;
-    subscript?: boolean;
+    SUB_SUPER_SCRIPT?: Scripting;
     typographicCase?: Case;
-    scripting?: Scripting;
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 
@@ -83,8 +81,8 @@ export enum TextSelectionStyles {
     LINE_HEIGHT = 'lineHeight',
     TEXT_ALIGN = 'textAlign',
     POSITON = 'position',
-    FONT_CASE = 'case',
-    SCRIPTING = 'scripting',
+    TYPOGRAPHIC_CASE = 'typographicCase',
+    SUB_SUPER_SCRIPT = 'subSuperScript',
     UNDERLINE = 'underline',
     LINETHROUGH = 'lineThrough',
     FILL_COLOR = 'fillColor',
