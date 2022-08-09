@@ -1,7 +1,7 @@
 export enum FontWeights {
-    BOLD = 'bold',
-    ITALIC = 'italic',
-    REGULAR = 'regular',
+    BOLD = 'Bold',
+    ITALIC = 'Italic',
+    REGULAR = 'Regular',
 }
 export enum Alignment {
     LEFT = 'left',
@@ -28,7 +28,7 @@ export enum Scripting {
 
 export interface TextProperties {
     fontFamily?: string;
-    fontWeight?: FontWeights;
+    fontStyle?: FontWeights;
     fontSize?: string;
     textAlign?: Alignment;
     position?: TextPosition;
@@ -75,7 +75,7 @@ export enum SelectedTextStyles {
     PARAGRAPH = 'paragraph',
     CHARACTER = 'character',
     FONT_FAMILY = 'fontFamily',
-    FONT_WEIGHT = 'fontWeight',
+    FONT_STYLE = 'fontStyle',
     FONT_SIZE = 'fontSize',
     LETTER_SPACING = 'letterSpacing',
     LINE_HEIGHT = 'lineHeight',
