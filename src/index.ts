@@ -13,7 +13,7 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
-import { TextStyleController } from './controllers/TextSelectionController'
+import { TextStyleController } from './controllers/TextStyleController'
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
