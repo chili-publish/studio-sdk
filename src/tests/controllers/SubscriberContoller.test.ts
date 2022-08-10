@@ -28,6 +28,8 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
     jest.spyOn(mockedSubscribers, 'onUndoStateChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutFramesChanged');
+    jest.spyOn(mockedSubscribers, 'onSelectedTextStyleChanged');
+
 });
 
 afterEach(() => {

@@ -21,6 +21,7 @@ export type ConfigType = {
     onSelectedToolChanged: (tool: ToolType) => void;
     onUndoStackStateChanged: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged: (frames: SelectedLayoutFrame[]) => void;
+    onSelectedTextStyleChanged: (styles: any) => void;
 };
 
 export type EditorResponse = {

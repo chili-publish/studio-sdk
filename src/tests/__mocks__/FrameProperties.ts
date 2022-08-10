@@ -75,6 +75,7 @@ export const mockEnableDebug = jest.fn().mockResolvedValue({ success: true, stat
 export const mockDisableDebug = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockDeltaUpdate = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -155,6 +156,7 @@ const MockEditorAPI = {
     toggleDebugPanel: mockToggleDebugPanel,
     undo: mockUndo,
     redo: mockRedo,
+    selectedTextStyleDeltaUpdate: mockDeltaUpdate
 };
 
 export default MockEditorAPI;

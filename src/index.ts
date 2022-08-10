@@ -13,6 +13,7 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
+import { TextStyleController } from './controllers/TextStyleController'
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -41,6 +42,17 @@ export type {
 } from '../types/AnimationTypes';
 export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLayoutFrame } from '../types/CommonTypes';
 
+export type { TextProperties, TextStyle, AppearanceProperties, TextStyleUpdateType, UpdateStyleType } from '../types/TextStyleTypes';
+export {
+    SelectedTextStyleSections,
+    SelectedTextStyles,
+    FontWeights,
+    Alignment,
+    TextPosition,
+    Case,
+    Scripting,
+    BlendModes,
+} from '../types/TextStyleTypes';
 let connection: Connection;
 
 export class SDK {
@@ -62,6 +74,7 @@ export class SDK {
     page: PageController;
     debug: DebugController;
     undoManager: UndoManagerController;
+    textSelection: TextStyleController;
 
     private subscriber: SubscriberController;
 
@@ -87,6 +100,8 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
+        this.textSelection = new TextStyleController(this.editorAPI)
+
     }
 
     /**
@@ -108,6 +123,7 @@ export class SDK {
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
                 onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,
+                onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -126,6 +142,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
+        this.textSelection = new TextStyleController(this.editorAPI)
     };
 
     setConnection = (newConnection: Connection) => {
