@@ -129,7 +129,6 @@ export class SDK {
             this.config.editorId,
         );
         this.editorAPI = connection?.promise.then((editorAPI) => {
-            console.log(editorAPI, 'HEERE WE GOOO');
             return editorAPI;
         }) as unknown as EditorAPI;
 
