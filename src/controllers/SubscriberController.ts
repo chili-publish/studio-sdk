@@ -24,7 +24,7 @@ export class SubscriberController {
      */
     onAnimationChanged = (animation: string) => {
         const callBack = this.config.onFrameAnimationsChanged;
-        callBack(JSON.parse(animation));
+        callBack && callBack(JSON.parse(animation));
     };
 
     /**
@@ -33,7 +33,7 @@ export class SubscriberController {
      */
     onAnimationPlaybackChanged = (animationPlaybackState: string) => {
         const callBack = this.config.onScrubberPositionChanged;
-        callBack(JSON.parse(animationPlaybackState));
+        callBack && callBack(JSON.parse(animationPlaybackState));
     };
 
     /**
@@ -42,7 +42,7 @@ export class SubscriberController {
      */
     onSelectedLayoutPropertiesChanged = (properties: string) => {
         const callBack = this.config.onSelectedLayoutPropertiesChanged;
-        callBack(JSON.parse(properties));
+        callBack && callBack(JSON.parse(properties));
     };
 
     /**
@@ -51,7 +51,7 @@ export class SubscriberController {
      */
     onSelectedFrameLayoutChanged = (frame: string) => {
         const callBack = this.config.onSelectedFrameLayoutChanged;
-        callBack(JSON.parse(frame));
+        callBack && callBack(JSON.parse(frame));
     };
 
     /**
@@ -60,7 +60,7 @@ export class SubscriberController {
      */
     onSelectedFrameContentChanged = (frame: string) => {
         const callBack = this.config.onSelectedFrameContentChanged;
-        callBack(JSON.parse(frame));
+        callBack && callBack(JSON.parse(frame));
     };
 
     /**
@@ -69,7 +69,7 @@ export class SubscriberController {
      */
     onStateChanged = (document: string) => {
         const callBack = this.config.onStateChanged;
-        callBack(JSON.parse(document));
+        callBack && callBack(JSON.parse(document));
     };
 
     /**
@@ -77,7 +77,7 @@ export class SubscriberController {
      */
     onPageSelectionChanged = () => {
         const callBack = this.config.onPageSelectionChanged;
-        callBack();
+        callBack && callBack();
     };
 
     /**
@@ -86,7 +86,7 @@ export class SubscriberController {
      */
     onVariableListChanged = (variablesJson: string) => {
         const callBack = this.config.onVariableListChanged;
-        callBack(JSON.parse(variablesJson));
+        callBack && callBack(JSON.parse(variablesJson));
     };
 
     /**
@@ -95,7 +95,7 @@ export class SubscriberController {
      */
     onSelectedToolChanged = (tool: string) => {
         const callBack = this.config.onSelectedToolChanged;
-        callBack(tool as ToolType);
+        callBack && callBack(tool as ToolType);
     };
 
     /**
@@ -104,7 +104,7 @@ export class SubscriberController {
      */
     onUndoStateChanged = (undoState: string) => {
         const callBack = this.config.onUndoStackStateChanged;
-        callBack(JSON.parse(undoState));
+        callBack && callBack(JSON.parse(undoState));
     };
 
     /**
@@ -113,7 +113,7 @@ export class SubscriberController {
      */
     onSelectedLayoutFramesChanged = (frames: string) => {
         const callBack = this.config.onSelectedLayoutFramesChanged;
-        callBack(JSON.parse(frames));
+        callBack && callBack(JSON.parse(frames));
     };
 
     /**
@@ -122,6 +122,6 @@ export class SubscriberController {
      */
     onSelectedTextStyleChanged = (styles: string) => {
         const callBack = this.config.onSelectedTextStyleChanged;
-        callBack(JSON.parse(styles));
+        callBack && callBack(JSON.parse(styles));
     };
 }
