@@ -43,6 +43,7 @@ module.exports = (env) => ({
     plugins: [
         new BundleAnalyzerPlugin({
             analyzerMode: 'static',
+            openAnalyzer: false,
         }),
     ],
     optimization: {

@@ -8,20 +8,20 @@ import { ToolType } from '../src/utils/enums';
 import { UndoState } from './DocumentTypes';
 
 export type ConfigType = {
-    onStateChanged: (state: InitialStateType) => void;
-    onSelectedFrameLayoutChanged: (state: FrameLayoutType) => void;
-    onSelectedFrameContentChanged: (state: FrameType) => void;
+    onStateChanged?: (state: InitialStateType) => void;
+    onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
+    onSelectedFrameContentChanged?: (state: FrameType) => void;
     editorLink: string;
     editorId?: string;
-    onPageSelectionChanged: () => void;
-    onSelectedLayoutPropertiesChanged: (state: LayoutPropertiesType) => void;
-    onScrubberPositionChanged: (state: AnimationPlaybackType) => void;
-    onFrameAnimationsChanged: (animationState: FrameAnimationType[]) => void;
-    onVariableListChanged: (variableList: Variable[]) => void;
-    onSelectedToolChanged: (tool: ToolType) => void;
-    onUndoStackStateChanged: (undoStackState: UndoState) => void;
-    onSelectedLayoutFramesChanged: (frames: SelectedLayoutFrame[]) => void;
-    onSelectedTextStyleChanged: (styles: any) => void;
+    onPageSelectionChanged?: () => void;
+    onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
+    onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
+    onFrameAnimationsChanged?: (animationState: FrameAnimationType[]) => void;
+    onVariableListChanged?: (variableList: Variable[]) => void;
+    onSelectedToolChanged?: (tool: ToolType) => void;
+    onUndoStackStateChanged?: (undoStackState: UndoState) => void;
+    onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
+    onSelectedTextStyleChanged?: (styles: any) => void;
 };
 
 export type EditorResponse = {
