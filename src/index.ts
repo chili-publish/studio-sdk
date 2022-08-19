@@ -13,7 +13,8 @@ import type { ConfigType, EditorAPI } from '../types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
-import { TextStyleController } from './controllers/TextStyleController'
+import { TextStyleController } from './controllers/TextStyleController';
+import { ColorStyleController } from './controllers/ColorStyleController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -31,6 +32,7 @@ export { VariableType } from '../types/VariableTypes';
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
 export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame } from '../types/FrameTypes';
 export type { Variable, VariableMoves } from '../types/VariableTypes';
+export type { Color, DocumentColor, ColorUpdate } from '../types/ColorStyleTypes';
 
 export type { DocumentError } from '../types/DocumentTypes';
 export type {
@@ -42,7 +44,13 @@ export type {
 } from '../types/AnimationTypes';
 export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLayoutFrame } from '../types/CommonTypes';
 
-export type { TextProperties, TextStyle, AppearanceProperties, TextStyleUpdateType, UpdateStyleType } from '../types/TextStyleTypes';
+export type {
+    TextProperties,
+    TextStyle,
+    AppearanceProperties,
+    TextStyleUpdateType,
+    UpdateStyleType,
+} from '../types/TextStyleTypes';
 export {
     SelectedTextStyleSections,
     SelectedTextStyles,
@@ -53,6 +61,8 @@ export {
     Scripting,
     BlendModes,
 } from '../types/TextStyleTypes';
+export { ColorType } from '../types/ColorStyleTypes';
+
 let connection: Connection;
 
 export class SDK {
@@ -75,6 +85,7 @@ export class SDK {
     debug: DebugController;
     undoManager: UndoManagerController;
     textSelection: TextStyleController;
+    colorStyle: ColorStyleController;
 
     private subscriber: SubscriberController;
 
@@ -100,8 +111,8 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextStyleController(this.editorAPI)
-
+        this.textSelection = new TextStyleController(this.editorAPI);
+        this.colorStyle = new ColorStyleController(this.editorAPI);
     }
 
     /**
@@ -124,6 +135,7 @@ export class SDK {
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
                 onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,
                 onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
+                onColorsChanged: this.subscriber.onColorsChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -142,7 +154,8 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextStyleController(this.editorAPI)
+        this.textSelection = new TextStyleController(this.editorAPI);
+        this.colorStyle = new ColorStyleController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {

@@ -156,7 +156,15 @@ const MockEditorAPI = {
     toggleDebugPanel: mockToggleDebugPanel,
     undo: mockUndo,
     redo: mockRedo,
-    selectedTextStyleDeltaUpdate: mockDeltaUpdate
+    selectedTextStyleDeltaUpdate: mockDeltaUpdate,
+    getColors: jest.fn(),
+    getColorById: jest.fn(),
+    createColor: jest.fn(),
+    duplicateColor: jest.fn(),
+    moveColors: jest.fn(),
+    renameColor: jest.fn(),
+    updateColor: jest.fn(),
+    removeColor: jest.fn(),
 };
 
 export default MockEditorAPI;
