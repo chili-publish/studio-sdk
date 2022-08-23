@@ -67,6 +67,14 @@ The other way would be to include the sdk using the script tag just before the c
 To really get started, there is a nice guide on [the official documentation page](https://chili-publish.github.io/editor-sdk/).
 And you can find basic integration examples in [one of our other repositories](https://github.com/chili-publish/editor-sdk-integration-examples).
 
+## Build documentation
+
+After installing all dependencies, you're able to build the typedoc documentation. You only need to run the following command
+
+```bash
+npx typedoc --hideBreadcrumbs
+```
+
 ## Feedback?
 
 If you have any feedback on the technical parts of the application, a feature request, a bug to report or a general technical question, don’t hesitate to [create a new issue](https://github.com/chili-publish/editor-sdk/issues/new/choose).

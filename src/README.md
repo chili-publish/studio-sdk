@@ -14,3 +14,7 @@ So on these pages you'll find some very technical but super handy descriptions o
 -   [UtilsController](classes/controllers_UtilsController.UtilsController.md)
 -   [VariableController](classes/controllers_VariableController.VariableController.md)
 -   [Default methods (SDK)](classes/index.SDK.md)
+
+## Enums, Types, Interfaces and general Methods
+
+If you want to check out some types, interfaces and general methods, you can find them all bundled [under the modules page](modules).
