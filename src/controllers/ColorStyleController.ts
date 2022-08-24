@@ -86,7 +86,7 @@ export class ColorStyleController {
      */
     updateColor = async (id: string, color: ColorUpdate) => {
         const res = await this.#editorAPI;
-        return res.updateColor(id, color);
+        return res.updateColor(id, JSON.stringify(color));
     };
 
     /**
