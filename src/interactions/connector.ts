@@ -54,6 +54,7 @@ interface ConfigParameterTypes {
     onUndoStateChanged: (state: string) => void;
     onSelectedLayoutFramesChanged: (state: string) => void;
     onSelectedTextStyleChanged: (styles: string) => void;
+    onColorsChanged: (colors: string) => void;
 }
 
 const Connect = (
@@ -104,6 +105,7 @@ const Connect = (
                 undoStackStateChanged: params.onUndoStateChanged,
                 selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
                 selectedTextStyleChanged: params.onSelectedTextStyleChanged,
+                colorsChanged: params.onColorsChanged,
             },
         }),
     );
