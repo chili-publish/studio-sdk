@@ -25,6 +25,8 @@ beforeEach(() => {
 
     jest.spyOn(mockedFrameProperties, 'setFrameVisibility');
 
+    jest.spyOn(mockedFrameProperties, 'removeFrame');
+
     jest.spyOn(mockedFrameProperties, 'resetFrame');
 
     jest.spyOn(mockedFrameProperties, 'resetFrameX');
@@ -101,6 +103,9 @@ describe('FrameProperties', () => {
 
         mockedFrameProperties.setFrameVisibility(2, false);
         expect(mockedFrameProperties.setFrameVisibility).toHaveBeenCalledTimes(1);
+
+        mockedFrameProperties.removeFrame(1);
+        expect(mockedFrameProperties.removeFrame).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.resetFrame(2);
         expect(mockedFrameProperties.resetFrame).toHaveBeenCalledTimes(1);
