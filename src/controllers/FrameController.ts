@@ -287,4 +287,15 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setFrameVisibility(frameId, value);
     };
+
+    /**
+     * This method will remove a specific frame using the Id.
+     * @param frameId The ID of the frame that needs to be deleted
+     * @returns
+     */
+     removeFrame = async (frameId: number) => {
+        const res = await this.#editorAPI;
+        console.log('%c⧭', 'color: #1d3f73', res);
+        return res.removeFrame(frameId);
+    };
 }
