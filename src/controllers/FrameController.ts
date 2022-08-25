@@ -295,7 +295,6 @@ export class FrameController {
      */
      removeFrame = async (frameId: number) => {
         const res = await this.#editorAPI;
-        console.log('%c⧭', 'color: #1d3f73', res);
         return res.removeFrame(frameId);
     };
 }
