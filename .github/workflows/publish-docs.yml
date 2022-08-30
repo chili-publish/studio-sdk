@@ -52,9 +52,9 @@ jobs:
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
             - name: build documentation to md
-              run: typedoc --hideBreadcrumbs --out ./docs/md
+              run: npx typedoc --hideBreadcrumbs --out ./docs/md
             - name: build documentation to html
-              run: typedoc --out ./docs/html --plugin none
+              run: npx typedoc --out ./docs/html --plugin none
             - name: Setup Pages
               uses: actions/configure-pages@v2
             - name: Upload artifact
