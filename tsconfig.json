@@ -29,7 +29,12 @@
             "src/controllers/UtilsController.ts",
             "src/controllers/DocumentController.ts",
             "src/controllers/ToolController.ts",
-            "src/controllers/VariableController.ts"
+            "src/controllers/VariableController.ts",
+            "src/controllers/DebugController.ts",
+            "src/controllers/PageController.ts",
+            "src/controllers/SubscriberController.ts",
+            "src/controllers/TextStyleController.ts",
+            "src/controllers/UndoManagerController.ts"
         ],
         "out": "docs",
         "excludePrivate": true
