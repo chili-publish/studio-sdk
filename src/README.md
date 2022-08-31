@@ -13,6 +13,11 @@ So on these pages you'll find some very technical but super handy descriptions o
 -   [ToolController](classes/controllers_ToolController.ToolController.md)
 -   [UtilsController](classes/controllers_UtilsController.UtilsController.md)
 -   [VariableController](classes/controllers_VariableController.VariableController.md)
+-   [DebugController](classes/controllers_DebugController.DebugController.md)
+-   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
+-   [PageController](classes/controllers_PageController.PageController.md)
+-   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
+-   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.md)
 -   [Default methods (SDK)](classes/index.SDK.md)
 
 ## Enums, Types, Interfaces and general Methods
