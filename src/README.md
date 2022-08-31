@@ -16,7 +16,7 @@ So on these pages you'll find some very technical but super handy descriptions o
 -   [DebugController](classes/controllers_DebugController.DebugController.md)
 -   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
 -   [PageController](classes/controllers_PageController.PageController.md)
--   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
+-   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.md)
 -   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.md)
 -   [Default methods (SDK)](classes/index.SDK.md)
 
