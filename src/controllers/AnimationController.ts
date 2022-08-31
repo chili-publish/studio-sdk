@@ -107,7 +107,7 @@ export class AnimationController {
     };
 
     /**
-     * This method resets the layout's animations and animation duration to its initial state 
+     * This method resets the layout's animations and animation duration to its initial state
      * @returns
      */
     resetAnimation = async () => {

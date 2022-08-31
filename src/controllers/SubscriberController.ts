@@ -124,4 +124,13 @@ export class SubscriberController {
         const callBack = this.config.onSelectedTextStyleChanged;
         callBack && callBack(JSON.parse(styles));
     };
+
+    /**
+     * Listener on the state of the currently selected color's styles, if this changes, this listener will get triggered with the updates
+     * @param styles Stringified object of colors
+     */
+    onColorsChanged = (colors: string) => {
+        const callBack = this.config.onColorsChanged;
+        callBack && callBack(JSON.parse(colors));
+    };
 }

@@ -17,6 +17,7 @@ export const mockSetFrameHeight = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetFrameWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameRotation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameVisibility = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -97,6 +98,7 @@ const MockEditorAPI = {
     setFrameHeight: mockSetFrameHeight,
     setFrameWidth: mockSetFrameWidth,
     setFrameVisibility: mockSetFrameVisibility,
+    removeFrame: mockRemoveFrame,
     setFrameX: mockSetFrameX,
     setFrameY: mockSetFrameY,
     setFrameRotation: mockSetFrameRotation,
@@ -156,7 +158,15 @@ const MockEditorAPI = {
     toggleDebugPanel: mockToggleDebugPanel,
     undo: mockUndo,
     redo: mockRedo,
-    selectedTextStyleDeltaUpdate: mockDeltaUpdate
+    selectedTextStyleDeltaUpdate: mockDeltaUpdate,
+    getColors: jest.fn(),
+    getColorById: jest.fn(),
+    createColor: jest.fn(),
+    duplicateColor: jest.fn(),
+    moveColors: jest.fn(),
+    renameColor: jest.fn(),
+    updateColor: jest.fn(),
+    removeColor: jest.fn(),
 };
 
 export default MockEditorAPI;

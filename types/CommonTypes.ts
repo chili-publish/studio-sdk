@@ -6,6 +6,7 @@ import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src/utils/enums';
 import { UndoState } from './DocumentTypes';
+import {DocumentColor} from "./ColorStyleTypes";
 
 export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
@@ -22,6 +23,8 @@ export type ConfigType = {
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
     onSelectedTextStyleChanged?: (styles: any) => void;
+    onColorsChanged?: (colors: DocumentColor[]) => void;
+
 };
 
 export type EditorResponse = {

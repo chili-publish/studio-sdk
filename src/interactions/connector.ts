@@ -46,7 +46,7 @@ interface ConfigParameterTypes {
     onSelectedFrameContentChanged: (state: string) => void;
     onSelectedFrameLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
-    onOpenLayoutPropertiesPanelChange: () => void;
+    onPageSelectionChanged: () => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
     onVariableListChanged: (state: string) => void;
@@ -54,6 +54,7 @@ interface ConfigParameterTypes {
     onUndoStateChanged: (state: string) => void;
     onSelectedLayoutFramesChanged: (state: string) => void;
     onSelectedTextStyleChanged: (styles: string) => void;
+    onColorsChanged: (colors: string) => void;
 }
 
 const Connect = (
@@ -96,7 +97,7 @@ const Connect = (
                 selectedFrameContent: params.onSelectedFrameContentChanged,
                 selectedFrameLayout: params.onSelectedFrameLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
-                openLayoutPropertiesPanel: params.onOpenLayoutPropertiesPanelChange,
+                openLayoutPropertiesPanel: params.onPageSelectionChanged,
                 scrubberPositionChanged: params.onScrubberPositionChanged,
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
                 selectedToolChanged: params.onSelectedToolChanged,
@@ -104,6 +105,7 @@ const Connect = (
                 undoStackStateChanged: params.onUndoStateChanged,
                 selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
                 selectedTextStyleChanged: params.onSelectedTextStyleChanged,
+                colorsChanged: params.onColorsChanged,
             },
         }),
     );
