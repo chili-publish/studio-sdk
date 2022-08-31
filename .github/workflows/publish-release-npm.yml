@@ -36,7 +36,7 @@ jobs:
             - name: build code
               run: yarn build
             - name: publish build
-              run: yarn publish --tag ${{ github.event.release.name }}
+              run: yarn publish --tag ${{ github.event.release.name }} --tag latest
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
             - name: get new npm version
