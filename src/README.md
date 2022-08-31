@@ -18,6 +18,7 @@ So on these pages you'll find some very technical but super handy descriptions o
 -   [PageController](classes/controllers_PageController.PageController.md)
 -   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.md)
 -   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.md)
+-   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.md)
 -   [Default methods (SDK)](classes/index.SDK.md)
 
 ## Enums, Types, Interfaces and general Methods
