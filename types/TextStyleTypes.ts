@@ -86,6 +86,7 @@ export enum SelectedTextStyles {
     UNDERLINE = 'underline',
     LINETHROUGH = 'lineThrough',
     FILL_COLOR = 'fillColor',
+    COLOR = 'color',
     STROKE_COLOR = 'strokeColor',
     DROP_SHADOW_COLOR = 'dropShadowColor',
     BLEND_MODE = 'blendMode',
