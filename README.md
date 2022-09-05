@@ -1,6 +1,6 @@
 # editor-sdk
 
-![Coverage](https://img.shields.io/badge/coverage-95.04%25-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/coverage-95.51%25-brightgreen.svg)
 
 [![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
 
