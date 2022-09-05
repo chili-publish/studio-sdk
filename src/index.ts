@@ -52,6 +52,10 @@ export type {
     TextStyleUpdateType,
     UpdateStyleType,
 } from '../types/TextStyleTypes';
+
+export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage } from '../types/ParagraphStyleTypes';
+export { ColorUsageType } from '../types/ParagraphStyleTypes';
+
 export {
     SelectedTextStyleSections,
     SelectedTextStyles,
