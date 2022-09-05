@@ -29,6 +29,8 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onUndoStateChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutFramesChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedTextStyleChanged');
+    jest.spyOn(mockedSubscribers, 'onColorsChanged');
+    jest.spyOn(mockedSubscribers, 'onParagraphStylesChanged');
 });
 
 afterEach(() => {
@@ -69,6 +71,12 @@ describe('Subscriber methods', () => {
 
         mockedSubscribers.onSelectedLayoutFramesChanged('5');
         expect(mockedSDK.config.onSelectedLayoutFramesChanged).toHaveBeenCalledTimes(9);
+
+        mockedSubscribers.onColorsChanged(JSON.stringify([]));
+        expect(mockedSDK.config.onColorsChanged).toHaveBeenCalledTimes(10);
+
+        mockedSubscribers.onParagraphStylesChanged(JSON.stringify([{ id: 1, name: 'P1' }]));
+        expect(mockedSDK.config.onParagraphStylesChanged).toHaveBeenCalledTimes(11);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

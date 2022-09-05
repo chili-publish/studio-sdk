@@ -24,6 +24,7 @@ describe.skip('Editor Link Validator', () => {
                 onSelectedLayoutFramesChanged: () => null,
                 onSelectedTextStyleChanged: () => null,
                 onColorsChanged: () => null,
+                onParagraphStylesChanged: () => null,
             },
             () => null,
         );
@@ -55,6 +56,7 @@ describe.skip('Editor Link Validator', () => {
                 onSelectedLayoutFramesChanged: () => null,
                 onSelectedTextStyleChanged: () => null,
                 onColorsChanged: () => null,
+                onParagraphStylesChanged: () => null,
             },
             () => null,
         );
@@ -85,6 +87,7 @@ describe.skip('Editor Link Validator', () => {
                 onSelectedLayoutFramesChanged: () => null,
                 onSelectedTextStyleChanged: () => null,
                 onColorsChanged: () => null,
+                onParagraphStylesChanged: () => null,
             },
             () => null,
         );
