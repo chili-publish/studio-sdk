@@ -293,7 +293,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to be deleted
      * @returns
      */
-     removeFrame = async (frameId: number) => {
+    removeFrame = async (frameId: number) => {
         const res = await this.#editorAPI;
         return res.removeFrame(frameId);
     };

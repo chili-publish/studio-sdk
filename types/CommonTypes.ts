@@ -7,6 +7,7 @@ import { Variable } from './VariableTypes';
 import { ToolType } from '../src/utils/enums';
 import { UndoState } from './DocumentTypes';
 import {DocumentColor} from "./ColorStyleTypes";
+import {ParagraphStyle} from "./ParagraphStyleTypes";
 
 export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
@@ -24,6 +25,7 @@ export type ConfigType = {
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
     onSelectedTextStyleChanged?: (styles: any) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
+    onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
 
 };
 

@@ -16,5 +16,7 @@ const mockConfig: ConfigType = {
     onUndoStackStateChanged: jest.fn().mockResolvedValue({ success: true, status: 0 }),
     onSelectedLayoutFramesChanged: defaultMockReturn,
     onSelectedTextStyleChanged: defaultMockReturn,
+    onColorsChanged: defaultMockReturn,
+    onParagraphStylesChanged: defaultMockReturn,
 };
 export default mockConfig;

@@ -15,6 +15,7 @@ import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
+import { ParagraphStyleController } from './controllers/ParagraphStyleController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -85,6 +86,7 @@ export class SDK {
     debug: DebugController;
     undoManager: UndoManagerController;
     textSelection: TextStyleController;
+    paragraphStyle: ParagraphStyleController;
     colorStyle: ColorStyleController;
 
     private subscriber: SubscriberController;
@@ -113,6 +115,7 @@ export class SDK {
         this.undoManager = new UndoManagerController(this.editorAPI);
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
+        this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
     }
 
     /**
@@ -136,6 +139,7 @@ export class SDK {
                 onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,
                 onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
                 onColorsChanged: this.subscriber.onColorsChanged,
+                onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -156,6 +160,7 @@ export class SDK {
         this.undoManager = new UndoManagerController(this.editorAPI);
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
+        this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
     };
 
     setConnection = (newConnection: Connection) => {

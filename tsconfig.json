@@ -34,6 +34,7 @@
             "src/controllers/PageController.ts",
             "src/controllers/SubscriberController.ts",
             "src/controllers/TextStyleController.ts",
+            "src/controllers/ParagraphStyleController.ts",
             "src/controllers/UndoManagerController.ts"
         ],
         "out": "docs",

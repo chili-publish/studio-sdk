@@ -167,6 +167,14 @@ const MockEditorAPI = {
     renameColor: jest.fn(),
     updateColor: jest.fn(),
     removeColor: jest.fn(),
+    getParagraphStyles: jest.fn(),
+    getParagraphStyleById: jest.fn(),
+    createParagraphStyle: jest.fn(),
+    duplicateParagraphStyle: jest.fn(),
+    renameParagraphStyle: jest.fn(),
+    removeParagraphStyle: jest.fn(),
+    moveParagraphStyles: jest.fn(),
+    updateParagraphStyle: jest.fn(),
 };
 
 export default MockEditorAPI;

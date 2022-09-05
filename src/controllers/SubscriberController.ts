@@ -133,4 +133,13 @@ export class SubscriberController {
         const callBack = this.config.onColorsChanged;
         callBack && callBack(JSON.parse(colors));
     };
+
+    /**
+     * Listener on paragraph styles, if this changes, this listener will get triggered with the updates
+     * @param paragraphStyles Stringified object of paragraph styles
+     */
+    onParagraphStylesChanged = (paragraphStyles: string) => {
+        const callBack = this.config.onParagraphStylesChanged;
+        callBack && callBack(JSON.parse(paragraphStyles));
+    };
 }

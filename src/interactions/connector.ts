@@ -55,6 +55,7 @@ interface ConfigParameterTypes {
     onSelectedLayoutFramesChanged: (state: string) => void;
     onSelectedTextStyleChanged: (styles: string) => void;
     onColorsChanged: (colors: string) => void;
+    onParagraphStylesChanged: (paragraphStyles: string) => void;
 }
 
 const Connect = (
@@ -106,6 +107,7 @@ const Connect = (
                 selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
                 selectedTextStyleChanged: params.onSelectedTextStyleChanged,
                 colorsChanged: params.onColorsChanged,
+                paragraphStylesChanged: params.onParagraphStylesChanged,
             },
         }),
     );
