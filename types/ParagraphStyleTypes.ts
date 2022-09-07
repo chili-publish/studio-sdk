@@ -39,52 +39,70 @@ export type ParagraphStyle = {
     lineThrough: boolean;
 }
 export type ParagraphStyleUpdate = {
-    fontSize: {
+    fontFamily?: {
+        value: string;
+    },
+    fontStyle?: {
+        value: string;
+    },
+    fontSize?: {
         value: number
     },
-    typographicCase: {
+    typographicCase?: {
         value: Case;
     },
-    kerningOn: {
+    kerningOn?: {
         value: boolean;
     },
-    subSuperScript: {
+    subSuperScript?: {
         value: Scripting;
     },
-    trackingLeft: {
+    trackingLeft?: {
         value: string;
     },
-    trackingRight: {
+    trackingRight?: {
         value: string;
     },
-    textIndent: {
+    paragraphStartIndent?: {
         value: string;
     },
-    alignToBaseLine: {
+    paragraphEndIndent?: {
+        value: string;
+    },
+    paragraphSpaceBefore?: {
+        value: string;
+    },
+    paragraphSpaceAfter?: {
+        value: string;
+    },
+    textIndent?: {
+        value: string;
+    },
+    alignToBaseLine?: {
         value: boolean
     },
-    baselineShiftValue: {
+    baselineShiftValue?: {
         value: string;
     },
-    lineHeight: {
+    lineHeight?: {
         value: number;
     },
-    textAlign: {
+    textAlign?: {
         value: Alignment;
     },
-    textAlignLast: {
+    textAlignLast?: {
         value: Alignment;
     },
-    textOverprint: {
+    textOverprint?: {
         value: boolean
     },
-    color: {
+    color?: {
         value: ColorUsage
     },
-    underline: {
+    underline?: {
         value: boolean
     },
-    lineThrough: {
+    lineThrough?: {
         value: boolean
     }
 }

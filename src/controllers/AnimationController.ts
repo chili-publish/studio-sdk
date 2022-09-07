@@ -1,5 +1,6 @@
 import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
+import { EditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The AnimationController is responsible for all communication regarding Animations.
@@ -24,7 +25,9 @@ export class AnimationController {
      */
     getAnimationsOnSelectedLayout = async () => {
         const res = await this.#editorAPI;
-        return res.getAnimationsOnSelectedLayout();
+        return res
+            .getAnimationsOnSelectedLayout()
+            .then((result) => new EditorResponseData(result.success, result.status, result.data, result.error));
     };
 
     /**
@@ -35,7 +38,7 @@ export class AnimationController {
      */
     getAnimationByFrameId = async (frameId: number, layoutId?: number) => {
         const res = await this.#editorAPI;
-        return res.getAnimationByFrameId(frameId, layoutId);
+        return res.getAnimationByFrameId<string>(frameId, layoutId);
     };
 
     /**
@@ -55,7 +58,17 @@ export class AnimationController {
      */
     setFrameAnimation = async (animation: FrameAnimationPropertiesType) => {
         const res = await this.#editorAPI;
-        return res.setFrameAnimation(JSON.stringify(animation));
+        return res
+            .setFrameAnimation()
+            .then(
+                (result) =>
+                    new EditorResponseData<FrameAnimationPropertiesType>(
+                        result.success,
+                        result.status,
+                        JSON.stringify(animation),
+                        result.error,
+                    ),
+            );
     };
 
     /**
@@ -93,7 +106,17 @@ export class AnimationController {
      */
     setAnimationDuration = async (timeInMS: number) => {
         const res = await this.#editorAPI;
-        return res.setAnimationDuration(timeInMS);
+        return res
+            .setAnimationDuration(timeInMS)
+            .then(
+                (result) =>
+                    new EditorResponseData<any>(
+                        result.success,
+                        result.status,
+                        result.data,
+                        result.error,
+                    ),
+            );
     };
 
     /**

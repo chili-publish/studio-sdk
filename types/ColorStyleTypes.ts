@@ -22,7 +22,7 @@ export type Color = {
     r: number;
     g: number;
     b: number;
-    displayValue: string;
+    displayValue?: string;
 }
 
 export type DocumentColor = {

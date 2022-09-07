@@ -29,14 +29,16 @@ export type ConfigType = {
 
 };
 
-export type EditorResponse = {
+export interface EditorResponse<T> {
     success: boolean;
     status: number;
     data?: string;
     error?: string;
+    parseData: () => T;
 };
 export interface EditorAPI extends CallSender {
-    [index: string]: (...args: unknown[]) => Promise<EditorResponse>;
+    [index: string]: <T>(...args: unknown[])=> Promise<EditorResponse<T>>;
+    // getAnimationsOnSelectedLayout: () => Promise<EditorResponse<T>>
 }
 
 export type PageType = {
