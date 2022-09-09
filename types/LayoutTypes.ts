@@ -26,12 +26,12 @@ export type LayoutWithFrameProperties = {
     layoutId: number;
     layoutName: string;
     parentLayoutId?: number;
+    frameProperties: FrameProperties[];
     width: number | null;
     height: number | null;
-    timelineLengthMs?: number;
-    frameProperties: FrameProperties[];
     childLayouts: number[];
     layoutType: LayoutType;
+    timelineLengthMs?: number;
     children?: LayoutWithFrameProperties[];
 };
 
@@ -40,10 +40,10 @@ export type Layout = {
     layoutId: number;
     layoutName: string;
     parentLayoutId?: number;
-    timelineLengthMs?: number;
     width: PropertyState<number>;
     height: PropertyState<number>;
     childLayouts: number[];
+    timelineLengthMs?: number;
 };
 
 export enum LayoutType {

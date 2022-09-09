@@ -1,5 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { TextStyleUpdateType } from '../../types/TextStyleTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 /**
  * The TextStyleController is responsible for all communication regarding text styles.
  * Methods inside this controller can be called by `window.SDK.textStyle.{method-name}`
@@ -23,6 +24,8 @@ export class TextStyleController {
      */
     setTextStyleProperties = async (style: TextStyleUpdateType) => {
         const res = await this.#editorAPI;
-        return res.selectedTextStyleDeltaUpdate(JSON.stringify(style));
+        return res
+            .selectedTextStyleDeltaUpdate(JSON.stringify(style))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

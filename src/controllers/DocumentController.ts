@@ -1,8 +1,9 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import type { DocumentError } from '../../types/DocumentTypes';
+import type { Document, DocumentError } from '../../types/DocumentTypes';
 import { renderURLs, DownloadFormats } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 /**
  * The DocumentController is responsible for all communication regarding the Document.
  * Methods inside this controller can be called by `window.SDK.document.{method-name}`
@@ -27,7 +28,7 @@ export class DocumentController {
      */
     getCurrentDocumentState = async () => {
         const res = await this.#editorAPI;
-        return res.getCurrentDocumentState();
+        return res.getCurrentDocumentState().then((result) => getEditorResponseData<Document>(result));
     };
 
     /**
@@ -37,7 +38,7 @@ export class DocumentController {
      */
     loadDocument = async (documentJson: string) => {
         const res = await this.#editorAPI;
-        return res.loadDocument(documentJson);
+        return res.loadDocument(documentJson).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

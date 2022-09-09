@@ -1,5 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { VariableMoves, VariableType } from '../../types/VariableTypes';
+import { Variable, VariableMoves, VariableType } from '../../types/VariableTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The VariableController is responsible for all communication regarding the variables.
@@ -24,7 +25,7 @@ export class VariableController {
      */
     getVariables = async () => {
         const res = await this.#editorAPI;
-        return res.getVariables();
+        return res.getVariables().then((result) => getEditorResponseData<Variable[]>(result));
     };
 
     /**
@@ -34,7 +35,7 @@ export class VariableController {
      */
     getVariableById = async (variableId: string) => {
         const res = await this.#editorAPI;
-        return res.getVariableById(variableId);
+        return res.getVariableById(variableId).then((result) => getEditorResponseData<Variable>(result));
     };
 
     /**
@@ -44,7 +45,7 @@ export class VariableController {
      */
     getVariableByName = async (variableName: string) => {
         const res = await this.#editorAPI;
-        return res.getVariableByName(variableName);
+        return res.getVariableByName(variableName).then((result) => getEditorResponseData<Variable>(result));
     };
 
     /**
@@ -53,7 +54,7 @@ export class VariableController {
      */
     addVariable = async (parentId: string, variableType: VariableType) => {
         const res = await this.#editorAPI;
-        return res.addVariable(parentId, variableType);
+        return res.addVariable(parentId, variableType).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -62,7 +63,7 @@ export class VariableController {
      */
     removeVariables = async (variableIds: string[]) => {
         const res = await this.#editorAPI;
-        return res.removeVariables(variableIds);
+        return res.removeVariables(variableIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -71,7 +72,7 @@ export class VariableController {
      */
     setVariableName = async (variableId: string, name: string) => {
         const res = await this.#editorAPI;
-        return res.setVariableName(variableId, name);
+        return res.setVariableName(variableId, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -80,7 +81,7 @@ export class VariableController {
      */
     setVariableLabel = async (variableId: string, label: string) => {
         const res = await this.#editorAPI;
-        return res.setVariableLabel(variableId, label);
+        return res.setVariableLabel(variableId, label).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -89,7 +90,7 @@ export class VariableController {
      */
     setVariableType = async (variableId: string, type: VariableType) => {
         const res = await this.#editorAPI;
-        return res.setVariableType(variableId, type);
+        return res.setVariableType(variableId, type).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -98,7 +99,7 @@ export class VariableController {
      */
     setDefaultVariableValue = async (variableId: string, value: string) => {
         const res = await this.#editorAPI;
-        return res.setDefaultVariableValue(variableId, value);
+        return res.setDefaultVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -107,7 +108,7 @@ export class VariableController {
      */
     setVariableValue = async (variableId: string, value: string) => {
         const res = await this.#editorAPI;
-        return res.setVariableValue(variableId, value);
+        return res.setVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -116,7 +117,7 @@ export class VariableController {
      */
     duplicateVariable = async (variableId: string) => {
         const res = await this.#editorAPI;
-        return res.duplicateVariable(variableId);
+        return res.duplicateVariable(variableId).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -125,7 +126,7 @@ export class VariableController {
      */
     groupVariables = async (groupName: string, variableIds: string[]) => {
         const res = await this.#editorAPI;
-        return res.groupVariables(groupName, variableIds);
+        return res.groupVariables(groupName, variableIds).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -134,7 +135,7 @@ export class VariableController {
      */
     ungroupVariable = async (groupId: string) => {
         const res = await this.#editorAPI;
-        return res.ungroupVariable(groupId);
+        return res.ungroupVariable(groupId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -143,7 +144,7 @@ export class VariableController {
      */
     moveVariable = async (variableId: string, parentId: string, orderIndex: number) => {
         const res = await this.#editorAPI;
-        return res.moveVariable(variableId, parentId, orderIndex);
+        return res.moveVariable(variableId, parentId, orderIndex).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -152,7 +153,9 @@ export class VariableController {
      */
     moveVariables = async (movedVariables: VariableMoves) => {
         const res = await this.#editorAPI;
-        return res.moveVariables(movedVariables.moves, movedVariables.parent, movedVariables.order);
+        return res
+            .moveVariables(movedVariables.moves, movedVariables.parent, movedVariables.order)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -161,7 +164,7 @@ export class VariableController {
      */
     setVariableIsHidden = async (variableId: string, isHidden: boolean) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsHidden(variableId, isHidden);
+        return res.setVariableIsHidden(variableId, isHidden).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -170,7 +173,7 @@ export class VariableController {
      */
     setVariableIsRequired = async (variableId: string, isRequired: boolean) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsRequired(variableId, isRequired);
+        return res.setVariableIsRequired(variableId, isRequired).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -179,6 +182,6 @@ export class VariableController {
      */
     setVariableIsReadonly = async (variableId: string, isReadonly: boolean) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsReadonly(variableId, isReadonly);
+        return res.setVariableIsReadonly(variableId, isReadonly).then((result) => getEditorResponseData<null>(result));
     };
 }

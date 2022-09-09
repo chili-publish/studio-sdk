@@ -1,4 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { Page } from '../../types/PageTypes';
 
 /**
  * The PageController is responsible for all communication regarding Pages.
@@ -23,7 +25,7 @@ export class PageController {
      */
     getPages = async () => {
         const res = await this.#editorAPI;
-        return res.getPages();
+        return res.getPages().then((result) => getEditorResponseData<Page[]>(result));
     };
 
     /**
@@ -33,6 +35,6 @@ export class PageController {
      */
     getPageById = async (pageId: number) => {
         const res = await this.#editorAPI;
-        return res.getPageById(pageId);
+        return res.getPageById(pageId).then((result) => getEditorResponseData<Page>(result));
     };
 }

@@ -1,5 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
+import { ParagraphStyle, ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The ParagraphStyleController is responsible for all communication regarding paragraph styles.
@@ -24,7 +25,7 @@ export class ParagraphStyleController {
      */
     getParagraphStyles = async () => {
         const res = await this.#editorAPI;
-        return res.getParagraphStyles();
+        return res.getParagraphStyles().then((result) => getEditorResponseData<ParagraphStyle[]>(result));
     };
 
     /**
@@ -34,7 +35,9 @@ export class ParagraphStyleController {
      */
     getParagraphStyleById = async (paragraphStyleId: string) => {
         const res = await this.#editorAPI;
-        return res.getParagraphStyleById(paragraphStyleId);
+        return res
+            .getParagraphStyleById(paragraphStyleId)
+            .then((result) => getEditorResponseData<ParagraphStyle>(result));
     };
 
     /**
@@ -43,7 +46,7 @@ export class ParagraphStyleController {
      */
     createParagraphStyle = async () => {
         const res = await this.#editorAPI;
-        return res.createParagraphStyle();
+        return res.createParagraphStyle().then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -53,7 +56,7 @@ export class ParagraphStyleController {
      */
     duplicateParagraphStyle = async (paragraphStyleId: string) => {
         const res = await this.#editorAPI;
-        return res.duplicateParagraphStyle(paragraphStyleId);
+        return res.duplicateParagraphStyle(paragraphStyleId).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -64,7 +67,9 @@ export class ParagraphStyleController {
      */
     updateParagraphStyle = async (id: string, paragraphStyle: ParagraphStyleUpdate) => {
         const res = await this.#editorAPI;
-        return res.updateParagraphStyle(id, JSON.stringify(paragraphStyle));
+        return res
+            .updateParagraphStyle(id, JSON.stringify(paragraphStyle))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -75,7 +80,7 @@ export class ParagraphStyleController {
      */
     renameParagraphStyle = async (id: string, name: string) => {
         const res = await this.#editorAPI;
-        return res.renameParagraphStyle(id, name);
+        return res.renameParagraphStyle(id, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -85,7 +90,7 @@ export class ParagraphStyleController {
      */
     removeParagraphStyle = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.removeParagraphStyle(id);
+        return res.removeParagraphStyle(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -96,6 +101,6 @@ export class ParagraphStyleController {
      */
     moveParagraphStyles = async (order: number, paragraphStyleIds: string[]) => {
         const res = await this.#editorAPI;
-        return res.moveParagraphStyles(order, paragraphStyleIds);
+        return res.moveParagraphStyles(order, paragraphStyleIds).then((result) => getEditorResponseData<null>(result));
     };
 }

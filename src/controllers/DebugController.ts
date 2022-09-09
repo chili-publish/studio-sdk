@@ -1,4 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { DebugData } from '../../types/DebugTypes';
 
 /**
  * The DebugController is responsible for all communication regarding Debugging.
@@ -23,7 +25,7 @@ export class DebugController {
      */
     getLogs = async () => {
         const res = await this.#editorAPI;
-        return res.getLogs();
+        return res.getLogs().then((result) => getEditorResponseData<DebugData[]>(result));
     };
 
     /**
@@ -32,7 +34,7 @@ export class DebugController {
      */
     toggleDebugPanel = async () => {
         const res = await this.#editorAPI;
-        return res.toggleDebugPanel();
+        return res.toggleDebugPanel().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -41,7 +43,7 @@ export class DebugController {
      */
     enableDebug = async () => {
         const res = await this.#editorAPI;
-        return res.enableDebug();
+        return res.enableDebug().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -50,6 +52,6 @@ export class DebugController {
      */
     disableDebug = async () => {
         const res = await this.#editorAPI;
-        return res.disableDebug();
+        return res.disableDebug().then((result) => getEditorResponseData<null>(result));
     };
 }

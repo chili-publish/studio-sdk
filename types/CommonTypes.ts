@@ -34,7 +34,7 @@ export interface EditorResponse<T> {
     status: number;
     data?: string;
     error?: string;
-    parseData: () => T;
+    parsedData: T | null;
 };
 export interface EditorAPI extends CallSender {
     [index: string]: <T>(...args: unknown[])=> Promise<EditorResponse<T>>;

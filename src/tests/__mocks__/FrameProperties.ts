@@ -77,6 +77,22 @@ export const mockDisableDebug = jest.fn().mockResolvedValue({ success: true, sta
 export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDeltaUpdate = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetColors = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetColorById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockCreateColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockDuplicateColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMoveColors = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRenameColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetParagraphStyles = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetParagraphStyleById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockCreateParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockDuplicateParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRenameParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMoveParagraphStyles = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -159,22 +175,22 @@ const MockEditorAPI = {
     undo: mockUndo,
     redo: mockRedo,
     selectedTextStyleDeltaUpdate: mockDeltaUpdate,
-    getColors: jest.fn(),
-    getColorById: jest.fn(),
-    createColor: jest.fn(),
-    duplicateColor: jest.fn(),
-    moveColors: jest.fn(),
-    renameColor: jest.fn(),
-    updateColor: jest.fn(),
-    removeColor: jest.fn(),
-    getParagraphStyles: jest.fn(),
-    getParagraphStyleById: jest.fn(),
-    createParagraphStyle: jest.fn(),
-    duplicateParagraphStyle: jest.fn(),
-    renameParagraphStyle: jest.fn(),
-    removeParagraphStyle: jest.fn(),
-    moveParagraphStyles: jest.fn(),
-    updateParagraphStyle: jest.fn(),
+    getColors: mockGetColors,
+    getColorById: mockGetColorById,
+    createColor: mockCreateColor,
+    duplicateColor: mockDuplicateColor,
+    moveColors: mockMoveColors,
+    renameColor: mockRenameColor,
+    updateColor: mockUpdateColor,
+    removeColor: mockRemoveColor,
+    getParagraphStyles: mockGetParagraphStyles,
+    getParagraphStyleById: mockGetParagraphStyleById,
+    createParagraphStyle: mockCreateParagraphStyle,
+    duplicateParagraphStyle: mockDuplicateParagraphStyle,
+    renameParagraphStyle: mockRenameParagraphStyle,
+    removeParagraphStyle: mockRemoveParagraphStyle,
+    moveParagraphStyles: mockMoveParagraphStyles,
+    updateParagraphStyle: mockUpdateParagraphStyle,
 };
 
 export default MockEditorAPI;

@@ -1,5 +1,7 @@
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { FrameLayoutType, FrameType } from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -24,7 +26,7 @@ export class FrameController {
      */
     getFrames = async () => {
         const res = await this.#editorAPI;
-        return res.getFrames();
+        return res.getFrames().then((result) => getEditorResponseData<FrameType[]>(result));
     };
 
     /**
@@ -33,7 +35,7 @@ export class FrameController {
      */
     getSelectedFrames = async () => {
         const res = await this.#editorAPI;
-        return res.getSelectedFrames();
+        return res.getSelectedFrames().then((result) => getEditorResponseData<FrameType[]>(result));
     };
 
     /**
@@ -43,7 +45,7 @@ export class FrameController {
      */
     getFramesByPageId = async (pageId: number) => {
         const res = await this.#editorAPI;
-        return res.getFramesByPageId(pageId);
+        return res.getFramesByPageId(pageId).then((result) => getEditorResponseData<FrameType[]>(result));
     };
 
     /**
@@ -53,7 +55,7 @@ export class FrameController {
      */
     getFrameByName = async (name: string) => {
         const res = await this.#editorAPI;
-        return res.getFrameByName(name);
+        return res.getFrameByName(name).then((result) => getEditorResponseData<FrameType>(result));
     };
 
     /**
@@ -63,7 +65,7 @@ export class FrameController {
      */
     getFrameById = async (id: number) => {
         const res = await this.#editorAPI;
-        return res.getFrameById(id);
+        return res.getFrameById(id).then((result) => getEditorResponseData<FrameType>(result));
     };
 
     /**
@@ -72,7 +74,9 @@ export class FrameController {
      */
     getFramePropertiesOnSelectedLayout = async () => {
         const res = await this.#editorAPI;
-        return res.getFramePropertiesOnSelectedLayout();
+        return res
+            .getFramePropertiesOnSelectedLayout()
+            .then((result) => getEditorResponseData<FrameLayoutType[]>(result));
     };
 
     /**
@@ -83,7 +87,9 @@ export class FrameController {
      */
     getFramePropertiesByFrameId = async (frameId: number, layoutId?: number) => {
         const res = await this.#editorAPI;
-        return res.getFramePropertiesByFrameId(frameId, layoutId);
+        return res
+            .getFramePropertiesByFrameId(frameId, layoutId)
+            .then((result) => getEditorResponseData<FrameLayoutType>(result));
     };
 
     /**
@@ -93,7 +99,7 @@ export class FrameController {
      */
     getFramesProperties = async (layoutId: number) => {
         const res = await this.#editorAPI;
-        return res.getFramesProperties(layoutId);
+        return res.getFramesProperties(layoutId).then((result) => getEditorResponseData<FrameLayoutType[]>(result));
     };
 
     /**
@@ -103,7 +109,7 @@ export class FrameController {
      */
     resetFrameSize = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrameSize(frameId);
+        return res.resetFrameSize(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -113,7 +119,7 @@ export class FrameController {
      */
     selectFrame = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.selectFrames([frameId]);
+        return res.selectFrames([frameId]).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -123,7 +129,7 @@ export class FrameController {
      */
     selectMultipleFrames = async (frameIds: number[]) => {
         const res = await this.#editorAPI;
-        return res.selectFrames(frameIds);
+        return res.selectFrames(frameIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -139,7 +145,9 @@ export class FrameController {
             return null;
         }
 
-        return res.setFrameHeight(frameId, parseFloat(calc.toString()));
+        return res
+            .setFrameHeight(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -155,7 +163,9 @@ export class FrameController {
             return null;
         }
 
-        return res.setFrameRotation(frameId, parseFloat(calc.toString()));
+        return res
+            .setFrameRotation(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -171,7 +181,9 @@ export class FrameController {
             return null;
         }
 
-        return res.setFrameWidth(frameId, parseFloat(calc.toString()));
+        return res
+            .setFrameWidth(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -187,7 +199,9 @@ export class FrameController {
         if (calc === null || calc === Infinity) {
             return null;
         }
-        return res.setFrameX(frameId, parseFloat(calc.toString()));
+        return res
+            .setFrameX(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -204,7 +218,9 @@ export class FrameController {
             return null;
         }
 
-        return res.setFrameY(frameId, parseFloat(calc.toString()));
+        return res
+            .setFrameY(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -215,7 +231,7 @@ export class FrameController {
      */
     setFrameName = async (frameId: number, frameName: string) => {
         const res = await this.#editorAPI;
-        return res.renameFrame(frameId, frameName);
+        return res.renameFrame(frameId, frameName).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -225,7 +241,7 @@ export class FrameController {
      */
     resetFrame = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrame(frameId);
+        return res.resetFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
     /**
      * This method will reset the x value of a specific frame to its original value
@@ -234,7 +250,7 @@ export class FrameController {
      */
     resetFrameX = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrameX(frameId);
+        return res.resetFrameX(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -244,7 +260,7 @@ export class FrameController {
      */
     resetFrameY = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrameY(frameId);
+        return res.resetFrameY(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -254,7 +270,7 @@ export class FrameController {
      */
     resetFrameRotation = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrameRotation(frameId);
+        return res.resetFrameRotation(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -264,7 +280,7 @@ export class FrameController {
      */
     resetFrameWidth = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrameWidth(frameId);
+        return res.resetFrameWidth(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -274,7 +290,7 @@ export class FrameController {
      */
     resetFrameHeight = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.resetFrameHeight(frameId);
+        return res.resetFrameHeight(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -285,7 +301,7 @@ export class FrameController {
      */
     setFrameVisibility = async (frameId: number, value: boolean) => {
         const res = await this.#editorAPI;
-        return res.setFrameVisibility(frameId, value);
+        return res.setFrameVisibility(frameId, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -295,6 +311,6 @@ export class FrameController {
      */
     removeFrame = async (frameId: number) => {
         const res = await this.#editorAPI;
-        return res.removeFrame(frameId);
+        return res.removeFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
 }
