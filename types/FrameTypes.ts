@@ -1,5 +1,5 @@
 // FramePropertiesDto
-import {PropertyState} from "./CommonTypes";
+import { PropertyState } from './CommonTypes';
 
 export type FrameLayoutType = {
     frameId: number;
@@ -13,7 +13,6 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
 } | null;
-
 
 //Frame.image
 export type FrameType = {
@@ -29,14 +28,14 @@ export type Frame = TextFrame | ImageFrame;
 export type ImageFrame = {
     frameId: number;
     frameName: string;
-    frameType: FrameTypeEnum.image
+    frameType: FrameTypeEnum.image;
     src: string;
     blendMode: BlendMode;
-}
+};
 export type TextFrame = {
     frameId: number;
     frameName: string;
-    frameType: FrameTypeEnum.text
+    frameType: FrameTypeEnum.text;
     textContent: string;
     paddingLeft: number;
     paddingTop: number;
@@ -52,31 +51,59 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
-}
+};
 
 export enum FrameTypeEnum {
-    text= 'text',
-    image = 'image'
+    text = 'text',
+    image = 'image',
 }
 
 export enum TextDirection {
     leftToRight = 'leftToRight',
     rightToLeft = 'rightToLeft',
-    weak = 'weak'
+    weak = 'weak',
 }
 
 export enum FlowDirection {
     horizontal = 'horizontal',
     vertical = 'vertical',
-    onPath = 'onPath'
+    onPath = 'onPath',
 }
 
 export enum VerticalAlign {
     top = 'top',
     bottom = 'bottom',
-    middle= 'middle',
-    justify= 'justify'
+    middle = 'middle',
+    justify = 'justify',
 }
 export enum BlendMode {
-    srcOver= 'srcOver'
+    clear,
+    src,
+    dst,
+    srcOver,
+    dstOver,
+    srcIn,
+    dstIn,
+    srcOut,
+    dstOut,
+    srcATop,
+    dstATop,
+    xor,
+    plus,
+    modulate,
+    screen,
+    overlay,
+    darken,
+    lighten,
+    colorDodge,
+    colorBurn,
+    hardLight,
+    softLight,
+    difference,
+    exclusion,
+    multiply,
+    hue,
+    saturation,
+    color,
+    luminosity,
 }

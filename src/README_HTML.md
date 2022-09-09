@@ -21,6 +21,11 @@ So on these pages you'll find some very technical but super handy descriptions o
 -   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.html)
 -   [Default methods (SDK)](classes/index.SDK.html)
 
+## The document
+
+We have made an effort to type the document that is used by the editor-engine as ChiliDocument.
+You can find the entire definition [on this page](interfaces/types_DocumentTypes.ChiliDocument.html).
+
 ## Enums, Types, Interfaces and general Methods
 
 If you want to check out some types, interfaces and general methods, you can find them all bundled [under the modules page](modules).

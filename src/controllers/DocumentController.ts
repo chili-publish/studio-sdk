@@ -1,5 +1,5 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import type { DocumentError } from '../../types/DocumentTypes';
+import type { ChiliDocument, DocumentError } from '../../types/DocumentTypes';
 import { renderURLs, DownloadFormats } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';
@@ -32,12 +32,13 @@ export class DocumentController {
 
     /**
      * This method will load a provided document
-     * @param documentJson The document to load in string format
+     * @param doc The document to load in
      * @returns The document loaded inside of the canvas
      */
-    loadDocument = async (documentJson: string) => {
+    loadDocument = async (doc: ChiliDocument) => {
         const res = await this.#editorAPI;
-        return res.loadDocument(documentJson);
+        if (typeof doc === 'string') return res.loadDocument(doc);
+        return res.loadDocument(JSON.stringify(doc));
     };
 
     /**

@@ -35,7 +35,8 @@
             "src/controllers/SubscriberController.ts",
             "src/controllers/TextStyleController.ts",
             "src/controllers/ParagraphStyleController.ts",
-            "src/controllers/UndoManagerController.ts"
+            "src/controllers/UndoManagerController.ts",
+            "types/DocumentTypes.ts"
         ],
         "out": "docs",
         "excludePrivate": true

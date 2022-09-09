@@ -1,10 +1,11 @@
-import {Alignment, Case, Scripting} from "./TextStyleTypes";
-import {ColorUpdate} from "./ColorStyleTypes";
+import { Alignment, Case, Scripting } from './TextStyleTypes';
+import { ColorUpdate } from './ColorStyleTypes';
 
 export type ColorUsage = {
     color: ColorUpdate;
     usageType: ColorUsageType;
-}
+    opacity?: number;
+};
 export enum ColorUsageType {
     local = 'local',
     reference = 'reference',
@@ -14,7 +15,7 @@ export type ParagraphStyle = {
     id: string;
     name: string;
     fontFamily: string;
-    fontStyle: string
+    fontStyle: string;
     fontSize: number;
     typographicCase: Case;
     kerningOn: boolean;
@@ -37,54 +38,55 @@ export type ParagraphStyle = {
     color: ColorUsage;
     underline: boolean;
     lineThrough: boolean;
-}
+};
+
 export type ParagraphStyleUpdate = {
     fontSize: {
-        value: number
-    },
+        value: number;
+    };
     typographicCase: {
         value: Case;
-    },
+    };
     kerningOn: {
         value: boolean;
-    },
+    };
     subSuperScript: {
         value: Scripting;
-    },
+    };
     trackingLeft: {
         value: string;
-    },
+    };
     trackingRight: {
         value: string;
-    },
+    };
     textIndent: {
         value: string;
-    },
+    };
     alignToBaseLine: {
-        value: boolean
-    },
+        value: boolean;
+    };
     baselineShiftValue: {
         value: string;
-    },
+    };
     lineHeight: {
         value: number;
-    },
+    };
     textAlign: {
         value: Alignment;
-    },
+    };
     textAlignLast: {
         value: Alignment;
-    },
+    };
     textOverprint: {
-        value: boolean
-    },
+        value: boolean;
+    };
     color: {
-        value: ColorUsage
-    },
+        value: ColorUsage;
+    };
     underline: {
-        value: boolean
-    },
+        value: boolean;
+    };
     lineThrough: {
-        value: boolean
-    }
-}
+        value: boolean;
+    };
+};
