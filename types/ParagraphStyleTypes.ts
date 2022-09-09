@@ -1,8 +1,13 @@
 import {Alignment, Case, Scripting} from "./TextStyleTypes";
-import {ColorUpdate} from "./ColorStyleTypes";
+import {Color, ColorUpdate} from "./ColorStyleTypes";
+
+export type ColorUsageUpdate = {
+    color: ColorUpdate;
+    usageType: ColorUsageType;
+}
 
 export type ColorUsage = {
-    color: ColorUpdate;
+    color: Color;
     usageType: ColorUsageType;
 }
 export enum ColorUsageType {
@@ -79,7 +84,7 @@ export type ParagraphStyleUpdate = {
         value: boolean
     },
     color: {
-        value: ColorUsage
+        value: ColorUsageUpdate
     },
     underline: {
         value: boolean
