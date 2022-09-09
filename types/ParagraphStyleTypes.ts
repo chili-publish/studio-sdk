@@ -1,11 +1,17 @@
 import { Alignment, Case, Scripting } from './TextStyleTypes';
-import { ColorUpdate } from './ColorStyleTypes';
+import { Color, ColorUpdate } from './ColorStyleTypes';
+
+export type ColorUsageUpdate = {
+    color: ColorUpdate;
+    usageType: ColorUsageType;
+};
 
 export type ColorUsage = {
-    color: ColorUpdate;
+    color: Color;
     usageType: ColorUsageType;
     opacity?: number;
 };
+
 export enum ColorUsageType {
     local = 'local',
     reference = 'reference',
@@ -81,7 +87,7 @@ export type ParagraphStyleUpdate = {
         value: boolean;
     };
     color: {
-        value: ColorUsage;
+        value: ColorUsageUpdate;
     };
     underline: {
         value: boolean;
