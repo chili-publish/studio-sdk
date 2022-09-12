@@ -1,15 +1,17 @@
-import {Alignment, Case, Scripting} from "./TextStyleTypes";
-import {Color, ColorUpdate} from "./ColorStyleTypes";
+import { Alignment, Case, Scripting } from './TextStyleTypes';
+import { Color, ColorUpdate } from './ColorStyleTypes';
 
 export type ColorUsageUpdate = {
     color: ColorUpdate;
     usageType: ColorUsageType;
-}
+};
 
 export type ColorUsage = {
     color: Color;
     usageType: ColorUsageType;
-}
+    opacity?: number;
+};
+
 export enum ColorUsageType {
     local = 'local',
     reference = 'reference',
@@ -19,7 +21,7 @@ export type ParagraphStyle = {
     id: string;
     name: string;
     fontFamily: string;
-    fontStyle: string
+    fontStyle: string;
     fontSize: number;
     typographicCase: Case;
     kerningOn: boolean;
@@ -42,54 +44,55 @@ export type ParagraphStyle = {
     color: ColorUsage;
     underline: boolean;
     lineThrough: boolean;
-}
+};
+
 export type ParagraphStyleUpdate = {
     fontSize: {
-        value: number
-    },
+        value: number;
+    };
     typographicCase: {
         value: Case;
-    },
+    };
     kerningOn: {
         value: boolean;
-    },
+    };
     subSuperScript: {
         value: Scripting;
-    },
+    };
     trackingLeft: {
         value: string;
-    },
+    };
     trackingRight: {
         value: string;
-    },
+    };
     textIndent: {
         value: string;
-    },
+    };
     alignToBaseLine: {
-        value: boolean
-    },
+        value: boolean;
+    };
     baselineShiftValue: {
         value: string;
-    },
+    };
     lineHeight: {
         value: number;
-    },
+    };
     textAlign: {
         value: Alignment;
-    },
+    };
     textAlignLast: {
         value: Alignment;
-    },
+    };
     textOverprint: {
-        value: boolean
-    },
+        value: boolean;
+    };
     color: {
-        value: ColorUsageUpdate
-    },
+        value: ColorUsageUpdate;
+    };
     underline: {
-        value: boolean
-    },
+        value: boolean;
+    };
     lineThrough: {
-        value: boolean
-    }
-}
+        value: boolean;
+    };
+};

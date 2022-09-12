@@ -220,7 +220,7 @@ describe('Document controller', () => {
     });
 
     it('load provided document', async () => {
-        await document.loadDocument(mockDocument);
+        await document.loadDocument(JSON.parse(mockDocument));
         expect(mockChild.loadDocument).toHaveBeenCalledTimes(1);
     });
 });
