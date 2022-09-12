@@ -1,3 +1,5 @@
+import {ColorUsage} from "./ParagraphStyleTypes";
+
 export enum FontWeights {
     BOLD = 'Bold',
     ITALIC = 'Italic',
@@ -38,6 +40,7 @@ export interface TextProperties {
     lineHeight?: string;
     SUB_SUPER_SCRIPT?: Scripting;
     typographicCase?: Case;
+    color?: ColorUsage;
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 
