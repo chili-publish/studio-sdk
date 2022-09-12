@@ -31,8 +31,8 @@ export type ConfigType = {
 export interface EditorResponse<T> {
     success: boolean;
     status: number;
-    data?: string;
-    error?: string;
+    data?: string | null;
+    error?: string | {code: number, error: Record<string, unknown>} | null;
     parsedData: T | null;
 };
 export interface EditorAPI extends CallSender {
