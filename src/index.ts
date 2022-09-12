@@ -53,7 +53,7 @@ export type {
     UpdateStyleType,
 } from '../types/TextStyleTypes';
 
-export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage } from '../types/ParagraphStyleTypes';
+export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
 export {
