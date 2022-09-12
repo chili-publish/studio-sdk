@@ -75,13 +75,16 @@ export class DocumentController {
                     return error;
                 });
             if (response?.error || error) {
-                return getEditorResponseData<string>({
-                    success: false,
-                    data: DOWNLOAD_URL,
-                    error,
-                    status: response.status,
-                    parsedData: null,
-                });
+                return getEditorResponseData<string>(
+                    {
+                        success: false,
+                        data: DOWNLOAD_URL,
+                        error,
+                        status: response.status,
+                        parsedData: null,
+                    },
+                    false,
+                );
             }
             PREPARE_DOWNLOAD_URL = response?.resultUrl ? renderURLs.BASE_URL + response?.resultUrl : null;
 
@@ -97,29 +100,38 @@ export class DocumentController {
 
             if (isFileDownloadable !== true) error = isFileDownloadable as DocumentError;
             if (error) {
-                return getEditorResponseData<string>({
+                return getEditorResponseData<string>(
+                    {
+                        success: false,
+                        data: '',
+                        error,
+                        status: error?.code ?? 400,
+                        parsedData: null,
+                    },
+                    false,
+                );
+            }
+            return getEditorResponseData<string>(
+                {
+                    success: true,
+                    status: 200,
+                    data: DOWNLOAD_URL,
+                    parsedData: null,
+                },
+                false,
+            );
+        } catch (err) {
+            error = err as DocumentError;
+            return getEditorResponseData<string>(
+                {
                     success: false,
-                    data: '',
+                    data: DOWNLOAD_URL,
                     error,
                     status: error?.code ?? 400,
                     parsedData: null,
-                });
-            }
-            return getEditorResponseData<string>({
-                success: true,
-                status: 200,
-                data: DOWNLOAD_URL,
-                parsedData: null,
-            });
-        } catch (err) {
-            error = err as DocumentError;
-            return getEditorResponseData<string>({
-                success: false,
-                data: DOWNLOAD_URL,
-                error,
-                status: error?.code ?? 400,
-                parsedData: null,
-            });
+                },
+                false,
+            );
         }
     };
 

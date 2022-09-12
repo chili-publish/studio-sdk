@@ -57,8 +57,6 @@ describe('Document controller', () => {
 
             expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
-            expect(mockChild.getCurrentDocumentState).toHaveBeenCalledTimes(1);
-
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
@@ -101,7 +99,7 @@ describe('Document controller', () => {
 
             expect(downloadResponse).toMatchObject({
                 success: false,
-                data: null,
+                data: '',
                 error: {
                     error: {
                         Error: 'Not found',
@@ -133,7 +131,7 @@ describe('Document controller', () => {
 
             expect(downloadResponse).toMatchObject({
                 success: false,
-                data: null,
+                data: '',
                 error: {
                     error: {
                         Error: 'Not found',
@@ -165,8 +163,6 @@ describe('Document controller', () => {
 
             const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, 1);
 
-            expect(mockChild.getCurrentDocumentState).toHaveBeenCalledTimes(1);
-
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
@@ -176,7 +172,7 @@ describe('Document controller', () => {
 
             expect(downloadResponse).toMatchObject({
                 success: false,
-                data: null,
+                data: '',
                 error: {
                     Error: 'Second api call failed.',
                 },
