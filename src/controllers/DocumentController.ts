@@ -35,18 +35,10 @@ export class DocumentController {
      * @param doc The document to load in
      * @returns The document loaded inside of the canvas
      */
-    loadDocument = async (doc: ChiliDocument) => {
-        this.loadDocumentString(JSON.stringify(doc));
-    };
-
-    /**
-     * This method will load a provided document in the stringified ChiliDocument format
-     * @param doc The stringified document to load in
-     * @returns The document loaded inside of the canvas
-     */
-    loadDocumentString = async (doc: string) => {
+    loadDocument = async (doc: ChiliDocument | string) => {
         const res = await this.#editorAPI;
-        return res.loadDocument(doc);
+        if (typeof doc === 'string') return res.loadDocument(doc);
+        return res.loadDocument(JSON.stringify(doc));
     };
 
     /**
