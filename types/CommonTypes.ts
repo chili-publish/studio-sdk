@@ -33,7 +33,6 @@ export type EditorResponse = {
     status: number;
     data?: string;
     error?: string;
-    test?: ChiliDocument;
 };
 export interface EditorAPI extends CallSender {
     [index: string]: (...args: unknown[]) => Promise<EditorResponse>;

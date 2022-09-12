@@ -63,12 +63,11 @@ export interface TextFrame extends DocumentFrame {
 }
 
 export enum ImageFrameSourceType {
-    url,
-    assetProvider,
-    variable,
+    url = 'url',
+    assetProvider = 'assetProvider',
+    variable = 'variable',
 }
 export interface ImageFrameSource {
-    url?: string;
     sourceType: ImageFrameSourceType;
 }
 
@@ -112,8 +111,8 @@ export interface ChildLayout extends Layout {
 }
 
 export enum FramePropertiesType {
-    top,
-    child,
+    top = 'top',
+    child = 'child',
 }
 export interface FrameProperty {
     frameId: string;
