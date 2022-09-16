@@ -1,5 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { ColorUpdate } from '../../types/ColorStyleTypes';
+import { ColorUpdate, DocumentColor } from '../../types/ColorStyleTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The ColorStyleController is responsible for all communication regarding color styles.
@@ -24,7 +25,7 @@ export class ColorStyleController {
      */
     getColors = async () => {
         const res = await this.#editorAPI;
-        return res.getColors();
+        return res.getColors().then((result) => getEditorResponseData<DocumentColor[]>(result));
     };
 
     /**
@@ -34,7 +35,7 @@ export class ColorStyleController {
      */
     getColorById = async (colorId: string) => {
         const res = await this.#editorAPI;
-        return res.getColorById(colorId);
+        return res.getColorById(colorId).then((result) => getEditorResponseData<DocumentColor>(result));
     };
 
     /**
@@ -43,7 +44,7 @@ export class ColorStyleController {
      */
     createColor = async () => {
         const res = await this.#editorAPI;
-        return res.createColor();
+        return res.createColor().then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -53,7 +54,7 @@ export class ColorStyleController {
      */
     duplicateColor = async (colorId: string) => {
         const res = await this.#editorAPI;
-        return res.duplicateColor(colorId);
+        return res.duplicateColor(colorId).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -64,7 +65,7 @@ export class ColorStyleController {
      */
     moveColors = async (order: number, colorIds: string[]) => {
         const res = await this.#editorAPI;
-        return res.moveColors(order, colorIds);
+        return res.moveColors(order, colorIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -75,7 +76,7 @@ export class ColorStyleController {
      */
     renameColor = async (id: string, name: string) => {
         const res = await this.#editorAPI;
-        return res.renameColor(id, name);
+        return res.renameColor(id, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -86,7 +87,7 @@ export class ColorStyleController {
      */
     updateColor = async (id: string, color: ColorUpdate) => {
         const res = await this.#editorAPI;
-        return res.updateColor(id, JSON.stringify(color));
+        return res.updateColor(id, JSON.stringify(color)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -96,6 +97,6 @@ export class ColorStyleController {
      */
     removeColor = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.removeColor(id);
+        return res.removeColor(id).then((result) => getEditorResponseData<null>(result));
     };
 }

@@ -1,4 +1,5 @@
 import { EditorAPI } from '../../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The UndoManagerController is responsible for all communication regarding the Undo-Manager.
@@ -23,7 +24,7 @@ export class UndoManagerController {
      */
     undo = async () => {
         const res = await this.#editorAPI;
-        return res.undo();
+        return res.undo().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -32,6 +33,6 @@ export class UndoManagerController {
      */
     redo = async () => {
         const res = await this.#editorAPI;
-        return res.redo();
+        return res.redo().then((result) => getEditorResponseData<null>(result));
     };
 }

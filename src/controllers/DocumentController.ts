@@ -3,6 +3,7 @@ import type { ChiliDocument, DocumentError } from '../../types/DocumentTypes';
 import { renderURLs, DownloadFormats } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 /**
  * The DocumentController is responsible for all communication regarding the Document.
  * Methods inside this controller can be called by `window.SDK.document.{method-name}`
@@ -27,7 +28,7 @@ export class DocumentController {
      */
     getCurrentDocumentState = async () => {
         const res = await this.#editorAPI;
-        return res.getCurrentDocumentState();
+        return res.getCurrentDocumentState().then((result) => getEditorResponseData<ChiliDocument>(result));
     };
 
     /**
@@ -38,7 +39,7 @@ export class DocumentController {
     loadDocument = async (doc: ChiliDocument | string) => {
         const res = await this.#editorAPI;
         if (typeof doc === 'string') return res.loadDocument(doc);
-        return res.loadDocument(JSON.stringify(doc));
+        return res.loadDocument(JSON.stringify(doc)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -51,12 +52,10 @@ export class DocumentController {
      */
     getDownloadLink = async (format: DownloadFormats, layoutId: number) => {
         let error: DocumentError | null = null;
-        let currentDocument: string | null = null;
         let PREPARE_DOWNLOAD_URL: string | null = null;
-        let DOWNLOAD_URL: string | null = null;
+        let DOWNLOAD_URL = '';
 
         const documentResponse = await this.getCurrentDocumentState();
-        currentDocument = documentResponse.data ?? null;
         const FETCH_URL = getFetchURL(format, layoutId);
         try {
             const response = await fetch(FETCH_URL, {
@@ -64,7 +63,7 @@ export class DocumentController {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: currentDocument,
+                body: (documentResponse.data as string) ?? null,
             })
                 .then((data) => data.json())
                 .catch((err) => {
@@ -76,16 +75,20 @@ export class DocumentController {
                     return error;
                 });
             if (response?.error || error) {
-                return {
-                    success: false,
-                    data: null,
-                    error,
-                    status: response.status,
-                };
+                return getEditorResponseData<string>(
+                    {
+                        success: false,
+                        data: DOWNLOAD_URL,
+                        error,
+                        status: response.status,
+                        parsedData: null,
+                    },
+                    false,
+                );
             }
             PREPARE_DOWNLOAD_URL = response?.resultUrl ? renderURLs.BASE_URL + response?.resultUrl : null;
 
-            DOWNLOAD_URL = response?.downloadUrl ? renderURLs.BASE_URL + response?.downloadUrl : null;
+            DOWNLOAD_URL = response?.downloadUrl ? renderURLs.BASE_URL + response?.downloadUrl : '';
 
             let isFileDownloadable: true | DocumentError | null | unknown = error;
 
@@ -97,26 +100,38 @@ export class DocumentController {
 
             if (isFileDownloadable !== true) error = isFileDownloadable as DocumentError;
             if (error) {
-                return {
-                    success: false,
-                    data: null,
-                    error,
-                    status: error?.code ?? 400,
-                };
+                return getEditorResponseData<string>(
+                    {
+                        success: false,
+                        data: '',
+                        error,
+                        status: error?.code ?? 400,
+                        parsedData: null,
+                    },
+                    false,
+                );
             }
-            return {
-                success: true,
-                status: 200,
-                data: DOWNLOAD_URL,
-            };
+            return getEditorResponseData<string>(
+                {
+                    success: true,
+                    status: 200,
+                    data: DOWNLOAD_URL,
+                    parsedData: null,
+                },
+                false,
+            );
         } catch (err) {
             error = err as DocumentError;
-            return {
-                success: false,
-                data: null,
-                error,
-                status: error?.code ?? 400,
-            };
+            return getEditorResponseData<string>(
+                {
+                    success: false,
+                    data: DOWNLOAD_URL,
+                    error,
+                    status: error?.code ?? 400,
+                    parsedData: null,
+                },
+                false,
+            );
         }
     };
 

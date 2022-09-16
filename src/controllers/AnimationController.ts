@@ -1,5 +1,6 @@
 import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
 import { EditorAPI } from '../../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The AnimationController is responsible for all communication regarding Animations.
@@ -24,7 +25,9 @@ export class AnimationController {
      */
     getAnimationsOnSelectedLayout = async () => {
         const res = await this.#editorAPI;
-        return res.getAnimationsOnSelectedLayout();
+        return res
+            .getAnimationsOnSelectedLayout()
+            .then((result) => getEditorResponseData<FrameAnimationPropertiesType[]>(result));
     };
 
     /**
@@ -35,7 +38,9 @@ export class AnimationController {
      */
     getAnimationByFrameId = async (frameId: number, layoutId?: number) => {
         const res = await this.#editorAPI;
-        return res.getAnimationByFrameId(frameId, layoutId);
+        return res
+            .getAnimationByFrameId<string>(frameId, layoutId)
+            .then((result) => getEditorResponseData<FrameAnimationPropertiesType>(result));
     };
 
     /**
@@ -45,7 +50,9 @@ export class AnimationController {
      */
     getAnimationsByLayoutId = async (layoutId: number) => {
         const res = await this.#editorAPI;
-        return res.getAnimationsByLayoutId(layoutId);
+        return res
+            .getAnimationsByLayoutId(layoutId)
+            .then((result) => getEditorResponseData<FrameAnimationPropertiesType>(result));
     };
 
     /**
@@ -55,7 +62,11 @@ export class AnimationController {
      */
     setFrameAnimation = async (animation: FrameAnimationPropertiesType) => {
         const res = await this.#editorAPI;
-        return res.setFrameAnimation(JSON.stringify(animation));
+        return res
+            .setFrameAnimation()
+            .then((result) =>
+                getEditorResponseData<FrameAnimationPropertiesType>({ ...result, data: JSON.stringify(animation) }),
+            );
     };
 
     /**
@@ -64,7 +75,7 @@ export class AnimationController {
      */
     playAnimation = async () => {
         const res = await this.#editorAPI;
-        return res.playAnimation();
+        return res.playAnimation().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -73,7 +84,7 @@ export class AnimationController {
      */
     pauseAnimation = async () => {
         const res = await this.#editorAPI;
-        return res.pauseAnimation();
+        return res.pauseAnimation().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -93,7 +104,7 @@ export class AnimationController {
      */
     setAnimationDuration = async (timeInMS: number) => {
         const res = await this.#editorAPI;
-        return res.setAnimationDuration(timeInMS);
+        return res.setAnimationDuration(timeInMS).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

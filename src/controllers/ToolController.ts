@@ -1,5 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { ToolType } from '../utils/enums';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The ToolController is responsible for all communication regarding the tools.
@@ -24,7 +25,7 @@ export class ToolController {
      */
     private setTool = async (tool: ToolType) => {
         const res = await this.#editorAPI;
-        return res.setTool(tool);
+        return res.setTool(tool).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -32,21 +33,21 @@ export class ToolController {
      */
     getSelectedTool = async () => {
         const res = await this.#editorAPI;
-        return res.getSelectedTool();
+        return res.getSelectedTool().then((result) => getEditorResponseData<ToolType>(result));
     };
 
     /**
      * This method sets the used tool to a Pointer tool
      */
     setSelectTool = async () => {
-        await this.setTool(ToolType.SELECT);
+        return this.setTool(ToolType.SELECT);
     };
 
     /**
      * This method sets the used tool to a Move tool
      */
     setHandTool = async () => {
-        await this.setTool(ToolType.HAND);
+        return this.setTool(ToolType.HAND);
     };
 
     /**
@@ -60,13 +61,13 @@ export class ToolController {
      * This method sets the used tool to a TextFrame tool
      */
     setTextFrameTool = async () => {
-        await this.setTool(ToolType.TEXT_FRAME);
+        return this.setTool(ToolType.TEXT_FRAME);
     };
 
     /**
      * This method sets the used tool to a ImageFrame tool
      */
     setImageFrameTool = async () => {
-        await this.setTool(ToolType.IMAGE_FRAME);
+        return this.setTool(ToolType.IMAGE_FRAME);
     };
 }

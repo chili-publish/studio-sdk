@@ -127,7 +127,7 @@ export class SubscriberController {
 
     /**
      * Listener on the state of the currently selected color's styles, if this changes, this listener will get triggered with the updates
-     * @param styles Stringified object of colors
+     * @param colors Stringified object of colors
      */
     onColorsChanged = (colors: string) => {
         const callBack = this.config.onColorsChanged;

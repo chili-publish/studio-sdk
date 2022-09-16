@@ -1,4 +1,5 @@
 import { getCalculatedValue, round } from '../utils/getCalculatedValue';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The UtilsController exposes a set of usefull utilities that can be used to make some repeated tasks a bit easier
@@ -11,7 +12,13 @@ export class UtilsController {
      * @param precision the precision that the calculation should round to (f.e. if the return value is 5.012 and precision is 2, the endresult should be 5.01) 2 is also the default
      * @returns The calculated value or null in case that it can't be calculated
      */
-    calculateFromString = (val: string, precision?: number) => getCalculatedValue(val, precision);
+    calculateFromString = (val: string, precision?: number) =>
+        getEditorResponseData<number>({
+            data: String(getCalculatedValue(val, precision)),
+            success: true,
+            status: 200,
+            parsedData: null,
+        });
 
     /**
      * This method can round a value to a certain precision, default is 2
@@ -19,5 +26,11 @@ export class UtilsController {
      * @param precision the precision of the rounding operation
      * @returns The rounded value as a number
      */
-    round = (val: number, precision?: number) => round(val, precision);
+    round = (val: number, precision?: number) =>
+        getEditorResponseData<number>({
+            data: String(round(val, precision)),
+            success: true,
+            status: 200,
+            parsedData: null,
+        });
 }

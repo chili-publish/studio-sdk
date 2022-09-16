@@ -28,14 +28,16 @@ export type ConfigType = {
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
 };
 
-export type EditorResponse = {
+export interface EditorResponse<T> {
     success: boolean;
     status: number;
-    data?: string;
-    error?: string;
+    data?: string | null;
+    error?: string | {code: number, error: Record<string, unknown>} | null;
+    parsedData: T | null;
 };
 export interface EditorAPI extends CallSender {
-    [index: string]: (...args: unknown[]) => Promise<EditorResponse>;
+    [index: string]: <T>(...args: unknown[])=> Promise<EditorResponse<T>>;
+    // getAnimationsOnSelectedLayout: () => Promise<EditorResponse<T>>
 }
 
 export type PageType = {
