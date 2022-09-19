@@ -13,7 +13,7 @@ export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
     onSelectedFrameContentChanged?: (state: FrameType) => void;
-    editorLink: string;
+    editorLink?: string;
     editorId?: string;
     onPageSelectionChanged?: () => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
@@ -32,11 +32,11 @@ export interface EditorResponse<T> {
     success: boolean;
     status: number;
     data?: string | null;
-    error?: string | {code: number, error: Record<string, unknown>} | null;
+    error?: string | { code: number; error: Record<string, unknown> } | null;
     parsedData: T | null;
-};
+}
 export interface EditorAPI extends CallSender {
-    [index: string]: <T>(...args: unknown[])=> Promise<EditorResponse<T>>;
+    [index: string]: <T>(...args: unknown[]) => Promise<EditorResponse<T>>;
     // getAnimationsOnSelectedLayout: () => Promise<EditorResponse<T>>
 }
 
