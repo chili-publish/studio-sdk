@@ -66,7 +66,7 @@ jobs:
               uses: lauchacarro/Azure-Storage-Action@v1.1
               with:
                   # Connection String of the Azure Storage Container
-                  connection-string: ${{ secrets.AZURE_CDN_SECRET }}
+                  connection-string: ${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}
                   # Folder what contains the files for upload to Storage Container
                   folder: upload
                   # Name of Blob Container Storage
