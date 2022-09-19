@@ -44,8 +44,8 @@ jobs:
               uses: martinbeentjes/npm-get-version-action@master
             - name: copy file branch
               run: |
-                  path=upload/builds/latest
-                  versionpath=upload/builds/${{ github.event.release.name }}
+                  path=upload/latest
+                  versionpath=upload/${{ github.event.release.name }}
                   mkdir -p upload/${path%"/merge"}
                   cp -R _bundles/* upload/${path%"/merge"}
                   mkdir -p upload/${versionpath%"/merge"}
