@@ -1,0 +1,74 @@
+name: Publish package
+on:
+    push:
+        branches:
+            - main
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [14.17]
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  token: ${{ secrets.PACKAGE_SECRET }}
+            - name: Check cache
+              id: cache
+              uses: actions/cache@v1
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+            - name: Use Node ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@chili-publish'
+            - name: install dependencies
+              run: yarn install
+            - name: run linting
+              run: yarn ci-lint
+            - name: run tests
+              run: yarn cover
+            - name: run readmeUpdater
+              run: yarn make-badges
+            - name: build code
+              run: yarn build
+            - name: bump version
+              uses: phips28/gh-action-bump-version@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+              with:
+                  minor-wording: 'Feature,FEATURE'
+                  major-wording: 'Breaking,BREAKING'
+                  patch-wording: 'Fix,FIX'
+                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            - name: publish build
+              run: yarn publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+            - name: get new npm version
+              id: package-version
+              uses: martinbeentjes/npm-get-version-action@master
+            - name: copy file branch
+              run: |
+                  path=upload/latest
+                  versionpath=upload/${{ steps.package-version.outputs.current-version}}
+                  mkdir -p ${path%"/merge"}
+                  cp -R _bundles/* ${path%"/merge"}
+                  mkdir -p ${versionpath%"/merge"}
+                  cp -R _bundles/* ${versionpath%"/merge"}
+            - name: publish to Azure
+              uses: lauchacarro/Azure-Storage-Action@v1.1
+              with:
+                  # Connection String of the Azure Storage Container
+                  connection-string: ${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}
+                  # Folder what contains the files for upload to Storage Container
+                  folder: upload
+                  # Name of Blob Container Storage
+                  blob-container-name: sdk
+                  public-access-policy: BlobContainer

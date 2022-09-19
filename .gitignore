@@ -11,4 +11,7 @@ template/src/__tests__/__snapshots__/
 dist/
 *.log
 lib/
+lib-esm/
 _bundles/
+coverage/
+docs/

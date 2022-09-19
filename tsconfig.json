@@ -1,12 +1,11 @@
 {
     "compilerOptions": {
         "outDir": "lib",
-        "target": "ES5" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
+        "target": "ES6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
         "module": "ESNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
         "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */ /* Type declaration files to be included in compilation. */,
         "lib": ["DOM", "ESNext"] /* Specify library files to be included in the compilation. */,
         "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', 'react' or 'react-jsx'. */,
-        "noEmit": true /* Do not emit outputs. */,
         "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
         "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
         "strict": true /* Enable all strict type-checking options. */,
@@ -20,5 +19,26 @@
         "sourceMap": true
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "build"] // *** The files to not type check ***
+    "exclude": ["node_modules", "build"], // *** The files to not type check ***
+    "typedocOptions": {
+        "entryPoints": [
+            "src/index.ts",
+            "src/controllers/AnimationController.ts",
+            "src/controllers/FrameController.ts",
+            "src/controllers/LayoutController.ts",
+            "src/controllers/UtilsController.ts",
+            "src/controllers/DocumentController.ts",
+            "src/controllers/ToolController.ts",
+            "src/controllers/VariableController.ts",
+            "src/controllers/DebugController.ts",
+            "src/controllers/PageController.ts",
+            "src/controllers/SubscriberController.ts",
+            "src/controllers/TextStyleController.ts",
+            "src/controllers/ParagraphStyleController.ts",
+            "src/controllers/UndoManagerController.ts",
+            "types/DocumentTypes.ts"
+        ],
+        "out": "docs",
+        "excludePrivate": true
+    }
 }
