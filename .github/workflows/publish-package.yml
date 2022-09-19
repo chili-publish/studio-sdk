@@ -2,7 +2,7 @@ name: Publish package
 on:
     push:
         branches:
-            - develop
+            - main
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -56,8 +56,8 @@ jobs:
               uses: martinbeentjes/npm-get-version-action@master
             - name: copy file branch
               run: |
-                  path=upload/builds/latest
-                  versionpath=upload/builds/${{ steps.package-version.outputs.current-version}}
+                  path=upload/latest
+                  versionpath=upload/${{ steps.package-version.outputs.current-version}}
                   mkdir -p ${path%"/merge"}
                   cp -R _bundles/* ${path%"/merge"}
                   mkdir -p ${versionpath%"/merge"}
@@ -66,7 +66,7 @@ jobs:
               uses: lauchacarro/Azure-Storage-Action@v1.1
               with:
                   # Connection String of the Azure Storage Container
-                  connection-string: ${{ secrets.AZURE_CDN_SECRET }}
+                  connection-string: ${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}
                   # Folder what contains the files for upload to Storage Container
                   folder: upload
                   # Name of Blob Container Storage
