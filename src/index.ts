@@ -70,6 +70,8 @@ export { ColorType } from '../types/ColorStyleTypes';
 
 let connection: Connection;
 
+const FIXED_EDITOR_LINK = 'https://stgrafxstudioprdpublic.blob.core.windows.net/editor/0.0.6/web';
+
 export class SDK {
     config: ConfigType;
     connection: Connection;
@@ -128,7 +130,7 @@ export class SDK {
      */
     loadEditor = () => {
         Connect(
-            this.config.editorLink,
+            this.config.editorLink || FIXED_EDITOR_LINK,
             {
                 onStateChanged: this.subscriber.onStateChanged,
                 onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
