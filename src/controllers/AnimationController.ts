@@ -63,7 +63,7 @@ export class AnimationController {
     setFrameAnimation = async (animation: FrameAnimationPropertiesType) => {
         const res = await this.#editorAPI;
         return res
-            .setFrameAnimation()
+            .setFrameAnimation(JSON.stringify(animation))
             .then((result) =>
                 getEditorResponseData<FrameAnimationPropertiesType>({ ...result, data: JSON.stringify(animation) }),
             );

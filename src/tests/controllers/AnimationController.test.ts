@@ -45,6 +45,7 @@ describe('Animation methods', () => {
 
         await mockedSDK.animation.setFrameAnimation(mockedAnimation.animation);
         expect(mockedSDK.editorAPI.setFrameAnimation).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setFrameAnimation).toHaveBeenCalledWith(JSON.stringify(mockedAnimation.animation));
 
         await mockedSDK.animation.playAnimation();
         expect(mockedSDK.editorAPI.playAnimation).toHaveBeenCalledTimes(1);
