@@ -6,19 +6,19 @@ So on these pages you'll find some very technical but super handy descriptions o
 
 ## Controllers
 
--   [AnimationController](classes/controllers_AnimationController.AnimationController.html)
--   [DocumentController](classes/controllers_DocumentController.DocumentController.html)
--   [FrameController](classes/controllers_FrameController.FrameController.html)
--   [LayoutController](classes/controllers_LayoutController.LayoutController.html)
--   [ToolController](classes/controllers_ToolController.ToolController.html)
--   [UtilsController](classes/controllers_UtilsController.UtilsController.html)
--   [VariableController](classes/controllers_VariableController.VariableController.html)
--   [DebugController](classes/controllers_DebugController.DebugController.html)
--   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.html)
--   [PageController](classes/controllers_PageController.PageController.html)
--   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.html)
--   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.html)
--   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.html)
+-   [AnimationController](classes/src_controllers_AnimationController.AnimationController.html)
+-   [DocumentController](classes/src_controllers_DocumentController.DocumentController.html)
+-   [FrameController](classes/src_controllers_FrameController.FrameController.html)
+-   [LayoutController](classes/src_controllers_LayoutController.LayoutController.html)
+-   [ToolController](classes/src_controllers_ToolController.ToolController.html)
+-   [UtilsController](classes/src_controllers_UtilsController.UtilsController.html)
+-   [VariableController](classes/src_controllers_VariableController.VariableController.html)
+-   [DebugController](classes/src_controllers_DebugController.DebugController.html)
+-   [SubscriberController](classes/src_controllers_SubscriberController.SubscriberController.html)
+-   [PageController](classes/src_controllers_PageController.PageController.html)
+-   [TextStyleController](classes/src_controllers_TextStyleController.TextStyleController.html)
+-   [UndoManagerController](classes/src_controllers_UndoManagerController.UndoManagerController.html)
+-   [ColorStyleController](classes/src_controllers_ColorStyleController.ColorStyleController.html)
 -   [Default methods (SDK)](classes/index.SDK.html)
 
 ## The document
