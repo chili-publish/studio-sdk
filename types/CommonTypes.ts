@@ -4,7 +4,7 @@ import { LayoutWithFrameProperties, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ToolType } from '../src/utils/enums';
+import { ToolType } from '../src';
 import { UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -23,6 +23,7 @@ export type ConfigType = {
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSelectedTextStyleChanged?: (styles: any) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
@@ -35,9 +36,13 @@ export interface EditorResponse<T> {
     error?: string | { code: number; error: Record<string, unknown> } | null;
     parsedData: T | null;
 }
+
+export interface EditorRawAPI extends CallSender {
+    [index: string]: <T>(...args: unknown[]) => Promise<T>;
+}
+
 export interface EditorAPI extends CallSender {
     [index: string]: <T>(...args: unknown[]) => Promise<EditorResponse<T>>;
-    // getAnimationsOnSelectedLayout: () => Promise<EditorResponse<T>>
 }
 
 export type PageType = {

@@ -2,9 +2,9 @@ import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 import { FrameAnimationType } from '../../../types/AnimationTypes';
-import mockChild from '../__mocks__/FrameProperties';
 import { FrameController } from '../../controllers/FrameController';
 import { AnimationController } from '../../controllers/AnimationController';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;

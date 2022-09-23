@@ -16,6 +16,7 @@ import { UndoManagerController } from './controllers/UndoManagerController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
+import {MediaConnectorController} from "./controllers/MediaConnectorController";
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -83,6 +84,7 @@ export class SDK {
 
     layout: LayoutController;
     frame: FrameController;
+    mediaConnector: MediaConnectorController;
     animation: AnimationController;
     document: DocumentController;
     variable: VariableController;
@@ -110,6 +112,7 @@ export class SDK {
 
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.variable = new VariableController(this.editorAPI);
@@ -167,6 +170,8 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI);
+
     };
 
     setConnection = (newConnection: Connection) => {

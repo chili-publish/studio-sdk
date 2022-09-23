@@ -1,7 +1,7 @@
 import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/FrameProperties';
 import { SDK, ToolType } from '../../index';
 import { ToolController } from '../../controllers/ToolController';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 describe('Tool controller', () => {
     let mockedSDK: SDK;

@@ -1,8 +1,8 @@
 import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/FrameProperties';
 import { SDK } from '../../index';
 import { UtilsController } from '../../controllers/UtilsController';
 import * as calculationUtils from '../../utils/getCalculatedValue';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 describe('utils controller', () => {
     let mockedSDK: SDK;

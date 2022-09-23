@@ -1,5 +1,5 @@
-import MockEditorAPI from '../__mocks__/FrameProperties';
 import { TextStyleController } from '../../controllers/TextStyleController';
+import MockEditorAPI from "../__mocks__/MockEditorAPI";
 
 let mockedTextProperties: TextStyleController;
 

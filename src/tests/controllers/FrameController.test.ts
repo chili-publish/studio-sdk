@@ -1,5 +1,6 @@
 import { FrameController } from '../../controllers/FrameController';
-import MockEditorAPI, { mockSelectFrame } from '../__mocks__/FrameProperties';
+import { mockSelectFrame } from '../__mocks__/FrameProperties';
+import MockEditorAPI from "../__mocks__/MockEditorAPI";
 
 let mockedFrameProperties: FrameController;
 let frameId: number;
