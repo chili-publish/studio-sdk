@@ -1,6 +1,6 @@
-import {EditorAPI, EditorRawAPI} from '../../types/CommonTypes';
-import {getEditorResponseData, getRawEditorResponseData} from '../utils/EditorResponseData';
-import {Media, DownloadType, MediaConnectorCapabilities, QueryOptions} from '../../types/MediaConnectorTypes';
+import {ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData} from '../../types/CommonTypes';
+import {getEditorResponseData} from '../utils/EditorResponseData';
+import {DownloadType, MediaConnectorCapabilities, MediaPage, QueryOptions} from '../../types/MediaConnectorTypes';
 import {CallSender} from "penpal";
 
 /**
@@ -37,9 +37,9 @@ export class MediaConnectorController {
      * @param queryOptions stringified instance of `QueryOptions`
      * @param context stringified `Map<string, string>` of dynamic options
      */
-    query = async (connectorId: string, queryOptions: QueryOptions, context: Map<string, string>) => {
+    query = async (connectorId: string, queryOptions: QueryOptions, context: MetaData) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorQuery(connectorId, queryOptions, context).then((result) => getEditorResponseData<Media[]>(result));
+        return res.mediaConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context)).then((result) => getEditorResponseData<MediaPage>(result));
     }
 
     /**
@@ -51,9 +51,9 @@ export class MediaConnectorController {
      * @param downloadType hint to the media connector about desired quality of the downloaded media
      * @param context dynamic map of additional options potentially used by the connector
      */
-    download = async (connectorId: string, mediaId: string, downloadType: DownloadType, context: Map<string, string>): Promise<Uint8Array> => {
+    download = async (connectorId: string, mediaId: string, downloadType: DownloadType, context: MetaData): Promise<Uint8Array | EditorResponse<null>> => {
         const res = await this.#blobAPI;
-        return res.mediaConnectorDownload(connectorId, mediaId, downloadType, context).then((result) => getRawEditorResponseData<Uint8Array>(result as Uint8Array));
+        return res.mediaConnectorDownload(connectorId, mediaId, downloadType, JSON.stringify(context)).then((result) => result as Uint8Array ?? result as EditorResponse<null>);
     }
 
     /**
@@ -99,7 +99,7 @@ export class MediaConnectorController {
     getQueryOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
         console.log(res.mediaConnectorGetQueryOptions);
-        return res.mediaConnectorGetQueryOptions(connectorId).then((result) => getEditorResponseData<Map<string, string>>(result));
+        return res.mediaConnectorGetQueryOptions(connectorId).then((result) => getEditorResponseData<ConnectorOptions>(result));
     }
 
     /**
@@ -110,7 +110,7 @@ export class MediaConnectorController {
      */
     getDownloadOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorGetDownloadOptions(connectorId).then((result) => getEditorResponseData<Map<string, string>>(result));
+        return res.mediaConnectorGetDownloadOptions(connectorId).then((result) => getEditorResponseData<ConnectorOptions>(result));
     }
 
     /**

@@ -70,3 +70,11 @@ export interface SelectedLayoutFrame {
     frameName: string;
     included: boolean;
 }
+
+export interface MetaData{
+    [key: string]: string;
+}
+
+export interface ConnectorOptions{
+    [key: string]: string;
+}

@@ -1,13 +1,13 @@
-export enum sortBy { name = 'name', path = 'relativePath', id = 'id' }
+export enum SortBy { name = 'name', path = 'relativePath', id = 'id' }
 
-export enum sortOrder { ascending = 'asc', descending = 'desc' }
+export enum SortOrder { ascending = 'asc', descending = 'desc' }
 
 export type QueryOptions = {
-    filter: string[];
-    pageToken: string;
-    pageSize: number;
-    sortBy: sortBy;
-    sortOrder: sortOrder;
+    filter: string[] | null;
+    pageToken: string | null;
+    pageSize: number | null;
+    sortBy: SortBy | null;
+    sortOrder: SortOrder | null;
 }
 
 export enum DownloadType {
@@ -30,4 +30,9 @@ export type Media = {
     name: string;
     relativePath: string;
     metaData: Map<string, string>;
+}
+
+export type MediaPage = {
+    nextPageToken: string;
+    data: Media[];
 }
