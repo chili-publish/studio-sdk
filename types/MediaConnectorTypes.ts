@@ -2,8 +2,11 @@ export enum SortBy { name = 'name', path = 'relativePath', id = 'id' }
 
 export enum SortOrder { ascending = 'asc', descending = 'desc' }
 
+export enum MediaType { file = '0', collection = '1' }
+
 export type QueryOptions = {
     filter: string[] | null;
+    collection: string | null;
     pageToken: string | null;
     pageSize: number | null;
     sortBy: SortBy | null;
@@ -12,9 +15,7 @@ export type QueryOptions = {
 
 export enum DownloadType {
     LowResolutionWeb = 'LowResolutionWeb',
-    HighResolutionWeb = 'HighResolutionWeb',
-    // outputVideo = 'outputVideo',
-    // outputPdf = 'outputPdf'
+    HighResolutionWeb = 'HighResolutionWeb'
 }
 
 export type MediaConnectorCapabilities = {
@@ -29,6 +30,7 @@ export type Media = {
     id: string;
     name: string;
     relativePath: string;
+    type: MediaType,
     metaData: Map<string, string>;
 }
 
