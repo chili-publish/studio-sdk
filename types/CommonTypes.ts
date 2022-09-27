@@ -4,7 +4,7 @@ import { LayoutWithFrameProperties, LayoutPropertiesType } from './LayoutTypes';
 import { FrameLayoutType } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ToolType } from '../src/utils/enums';
+import { ToolType } from '../src';
 import { UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -15,6 +15,7 @@ export type ConfigType = {
     onSelectedFrameContentChanged?: (state: FrameType) => void;
     editorLink?: string;
     editorId?: string;
+    chiliEnvironmentUrl?: string;
     onPageSelectionChanged?: () => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
@@ -23,7 +24,7 @@ export type ConfigType = {
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
-    onSelectedTextStyleChanged?: (styles: any) => void;
+    onSelectedTextStyleChanged?: (styles: unknown) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
 };

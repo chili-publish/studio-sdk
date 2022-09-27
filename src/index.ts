@@ -16,6 +16,7 @@ import { UndoManagerController } from './controllers/UndoManagerController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
+import {ConfigurationController} from "./controllers/ConfigurationController";
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -85,6 +86,7 @@ export class SDK {
     frame: FrameController;
     animation: AnimationController;
     document: DocumentController;
+    configuration: ConfigurationController;
     variable: VariableController;
     utils: UtilsController;
     tool: ToolController;
@@ -112,6 +114,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
+        this.configuration = new ConfigurationController(this.editorAPI, this.config);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
@@ -158,6 +161,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
+        this.configuration=  new ConfigurationController(this.editorAPI, this.config);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
@@ -167,6 +171,8 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+
+        this.configuration.provideInitialConfiguration();
     };
 
     setConnection = (newConnection: Connection) => {
