@@ -1,6 +1,6 @@
-import MockEditorAPI from '../__mocks__/FrameProperties';
 import { ColorStyleController } from '../../controllers/ColorStyleController';
 import { ColorType } from '../../../types/ColorStyleTypes';
+import MockEditorAPI from "../__mocks__/MockEditorAPI";
 
 let mockedColorStyleController: ColorStyleController;
 

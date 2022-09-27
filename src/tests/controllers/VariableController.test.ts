@@ -1,8 +1,8 @@
 import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/FrameProperties';
 import { SDK } from '../../index';
 import { VariableController } from '../../controllers/VariableController';
 import { VariableType } from '../../../types/VariableTypes';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 let mockedSDK: SDK;
 

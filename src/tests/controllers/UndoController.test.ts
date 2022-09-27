@@ -1,7 +1,7 @@
 import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/FrameProperties';
 import { SDK } from '../../index';
 import { UndoManagerController } from '../../controllers/UndoManagerController';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 describe('undo controller', () => {
     let mockedSDK: SDK;

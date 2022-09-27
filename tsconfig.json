@@ -36,7 +36,9 @@
             "src/controllers/TextStyleController.ts",
             "src/controllers/ParagraphStyleController.ts",
             "src/controllers/UndoManagerController.ts",
-            "types/DocumentTypes.ts"
+            "src/controllers/MediaConnectorController.ts",
+            "types/DocumentTypes.ts",
+            "types/MediaConnectorTypes.ts"
         ],
         "out": "docs",
         "excludePrivate": true
