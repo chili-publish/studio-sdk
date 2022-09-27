@@ -23,8 +23,7 @@ export type ConfigType = {
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onSelectedTextStyleChanged?: (styles: any) => void;
+    onSelectedTextStyleChanged?: (styles: unknown) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
 };
