@@ -1,4 +1,3 @@
-import packageInfo from '../../package.json';
 import {ConfigType, EditorAPI} from '../../types/CommonTypes';
 import {getEditorResponseData} from '../utils/EditorResponseData';
 import {WellKnownConfigurationKeys} from "../../types/ConfigurationTypes";
@@ -20,12 +19,6 @@ export class ConfigurationController {
     constructor(editorAPI: EditorAPI, config: ConfigType) {
         this.#editorAPI = editorAPI;
         this.config = config;
-    }
-
-    provideInitialConfiguration = async () => {
-        const res = await this.#editorAPI;
-        await res.setConfigValue(WellKnownConfigurationKeys.ChiliUrl, this.config.chiliEnvironmentUrl);
-        await res.setConfigValue(WellKnownConfigurationKeys.SdkVersion, packageInfo.version);
     }
 
     /**

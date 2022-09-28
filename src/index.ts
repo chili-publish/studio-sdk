@@ -1,22 +1,24 @@
-import { Connection } from 'penpal';
+import {Connection} from 'penpal';
 import Connect from './interactions/connector';
-import { FrameController } from './controllers/FrameController';
-import { AnimationController } from './controllers/AnimationController';
-import { LayoutController } from './controllers/LayoutController';
-import { PageController } from './controllers/PageController';
-import { UtilsController } from './controllers/UtilsController';
-import { SubscriberController } from './controllers/SubscriberController';
-import { DocumentController } from './controllers/DocumentController';
-import { DebugController } from './controllers/DebugController';
+import {FrameController} from './controllers/FrameController';
+import {AnimationController} from './controllers/AnimationController';
+import {LayoutController} from './controllers/LayoutController';
+import {PageController} from './controllers/PageController';
+import {UtilsController} from './controllers/UtilsController';
+import {SubscriberController} from './controllers/SubscriberController';
+import {DocumentController} from './controllers/DocumentController';
+import {DebugController} from './controllers/DebugController';
 
-import type { ConfigType, EditorAPI } from '../types/CommonTypes';
-import { VariableController } from './controllers/VariableController';
-import { ToolController } from './controllers/ToolController';
-import { UndoManagerController } from './controllers/UndoManagerController';
-import { TextStyleController } from './controllers/TextStyleController';
-import { ColorStyleController } from './controllers/ColorStyleController';
-import { ParagraphStyleController } from './controllers/ParagraphStyleController';
+import type {ConfigType, EditorAPI} from '../types/CommonTypes';
+import {VariableController} from './controllers/VariableController';
+import {ToolController} from './controllers/ToolController';
+import {UndoManagerController} from './controllers/UndoManagerController';
+import {TextStyleController} from './controllers/TextStyleController';
+import {ColorStyleController} from './controllers/ColorStyleController';
+import {ParagraphStyleController} from './controllers/ParagraphStyleController';
 import {ConfigurationController} from "./controllers/ConfigurationController";
+import {WellKnownConfigurationKeys} from "../types/ConfigurationTypes";
+import packageInfo from '../package.json';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -172,7 +174,10 @@ export class SDK {
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
 
-        this.configuration.provideInitialConfiguration();
+        // as soon as the editor loads, provide it with the SDK verison
+        // used to make it start. This enables engine compatibility checks
+        // on the Flutter side
+        this.configuration.setValue(WellKnownConfigurationKeys.GraFxStudioSdkVersion, packageInfo.version);
     };
 
     setConnection = (newConnection: Connection) => {

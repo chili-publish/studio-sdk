@@ -1,4 +1,4 @@
 export enum WellKnownConfigurationKeys {
-    ChiliUrl = "CHILI_URL",
-    SdkVersion = "SDK_VERSION"
+    GraFxStudioEnvironmentApiUrl = "ENVIRONMENT_API",
+    GraFxStudioSdkVersion = "SDK_VERSION"
 }
