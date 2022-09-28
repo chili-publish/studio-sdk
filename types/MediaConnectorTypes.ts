@@ -1,8 +1,18 @@
-export enum MediaType { file = 0, collection = 1 }
+export enum MediaType {
+    file = 0,
+    collection = 1,
+}
 
-export enum SortBy { name = 'name', path = 'relativePath', id = 'id' }
+export enum SortBy {
+    name = 'name',
+    path = 'relativePath',
+    id = 'id',
+}
 
-export enum SortOrder { ascending = 'asc', descending = 'desc' }
+export enum SortOrder {
+    ascending = 'asc',
+    descending = 'desc',
+}
 
 export type QueryOptions = {
     filter?: string[] | null;
@@ -11,11 +21,11 @@ export type QueryOptions = {
     pageSize?: number | null;
     sortBy?: SortBy | null;
     sortOrder?: SortOrder | null;
-}
+};
 
 export enum DownloadType {
-    LowResolutionWeb = 'LowResolutionWeb',
-    HighResolutionWeb = 'HighResolutionWeb'
+    LowResolutionWeb = 'lowresWeb',
+    HighResolutionWeb = 'highresWeb',
 }
 
 export type MediaConnectorCapabilities = {
@@ -24,17 +34,17 @@ export type MediaConnectorCapabilities = {
     query?: boolean;
     remove?: boolean;
     copy?: boolean;
-}
+};
 
 export type Media = {
     id: string;
     name: string;
     relativePath: string;
-    type: MediaType,
+    type: MediaType;
     metaData: Map<string, string>;
-}
+};
 
 export type MediaPage = {
     nextPageToken?: string;
     data: Media[];
-}
+};
