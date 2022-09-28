@@ -36,9 +36,13 @@ export interface EditorResponse<T> {
     error?: string | { code: number; error: Record<string, unknown> } | null;
     parsedData: T | null;
 }
+
+export interface EditorRawAPI extends CallSender {
+    [index: string]: <T>(...args: unknown[]) => Promise<T>;
+}
+
 export interface EditorAPI extends CallSender {
     [index: string]: <T>(...args: unknown[]) => Promise<EditorResponse<T>>;
-    // getAnimationsOnSelectedLayout: () => Promise<EditorResponse<T>>
 }
 
 export type PageType = {
@@ -65,4 +69,12 @@ export interface SelectedLayoutFrame {
     frameId: number;
     frameName: string;
     included: boolean;
+}
+
+export interface MetaData{
+    [key: string]: string;
+}
+
+export interface ConnectorOptions{
+    [key: string]: string;
 }

@@ -1,7 +1,8 @@
 import { LayoutController } from '../../controllers/LayoutController';
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
-import mockChild, { mockSelectPage } from '../__mocks__/FrameProperties';
+import { mockSelectPage } from '../__mocks__/FrameProperties';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 let mockedSDK: SDK;
 let mockId: number;

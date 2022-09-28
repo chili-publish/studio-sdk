@@ -1,9 +1,9 @@
-import mockChild from '../__mocks__/FrameProperties';
 import { mockDocument } from '../__mocks__/mockDocument';
 
 import { DocumentController } from '../../controllers/DocumentController';
 import * as FetchHelper from '../../utils/getFetchUrl';
 import { DownloadFormats } from '../../utils/enums';
+import mockChild from "../__mocks__/MockEditorAPI";
 
 let document: DocumentController;
 let mockedFetURLGetter: jest.SpyInstance;

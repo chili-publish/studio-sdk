@@ -17,6 +17,7 @@ import {TextStyleController} from './controllers/TextStyleController';
 import {ColorStyleController} from './controllers/ColorStyleController';
 import {ParagraphStyleController} from './controllers/ParagraphStyleController';
 import {ConfigurationController} from "./controllers/ConfigurationController";
+import {MediaConnectorController} from "./controllers/MediaConnectorController";
 import {WellKnownConfigurationKeys} from "../types/ConfigurationTypes";
 import packageInfo from '../package.json';
 
@@ -86,6 +87,7 @@ export class SDK {
 
     layout: LayoutController;
     frame: FrameController;
+    mediaConnector: MediaConnectorController;
     animation: AnimationController;
     document: DocumentController;
     configuration: ConfigurationController;
@@ -114,6 +116,7 @@ export class SDK {
 
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new ConfigurationController(this.editorAPI, this.config);
@@ -173,6 +176,7 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK verison
         // used to make it start. This enables engine compatibility checks
