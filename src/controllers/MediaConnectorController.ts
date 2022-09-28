@@ -1,7 +1,7 @@
-import {ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData} from '../../types/CommonTypes';
-import {getEditorResponseData} from '../utils/EditorResponseData';
-import {DownloadType, MediaConnectorCapabilities, MediaPage, QueryOptions} from '../../types/MediaConnectorTypes';
-import {CallSender} from "penpal";
+import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { DownloadType, MediaConnectorCapabilities, MediaPage, QueryOptions } from '../../types/MediaConnectorTypes';
+import { CallSender } from 'penpal';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -27,7 +27,7 @@ export class MediaConnectorController {
      */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = (editorAPI as CallSender) as EditorRawAPI;
+        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
     }
 
     /**
@@ -39,8 +39,10 @@ export class MediaConnectorController {
      */
     query = async (connectorId: string, queryOptions: QueryOptions, context: MetaData) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context)).then((result) => getEditorResponseData<MediaPage>(result));
-    }
+        return res
+            .mediaConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context))
+            .then((result) => getEditorResponseData<MediaPage>(result));
+    };
 
     /**
      * The combination of a `connectorId` and `mediaId` is typically enough for a media connector to
@@ -51,10 +53,17 @@ export class MediaConnectorController {
      * @param downloadType hint to the media connector about desired quality of the downloaded media
      * @param context dynamic map of additional options potentially used by the connector
      */
-    download = async (connectorId: string, mediaId: string, downloadType: DownloadType, context: MetaData): Promise<Uint8Array | EditorResponse<null>> => {
+    download = async (
+        connectorId: string,
+        mediaId: string,
+        downloadType: DownloadType,
+        context: MetaData,
+    ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
-        return res.mediaConnectorDownload(connectorId, mediaId, downloadType, JSON.stringify(context)).then((result) => result as Uint8Array ?? result as EditorResponse<null>);
-    }
+        return res
+            .mediaConnectorDownload(connectorId, mediaId, downloadType, JSON.stringify(context))
+            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+    };
 
     /**
      * Depending on the connector capabilities, this api method allows you to upload new media to the
@@ -65,8 +74,10 @@ export class MediaConnectorController {
      */
     upload = async (connectorId: string, mediaId: string, blob: Uint8Array) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorUpload(connectorId, mediaId, blob).then((result) => getEditorResponseData<null>(result));
-    }
+        return res
+            .mediaConnectorUpload(connectorId, mediaId, blob)
+            .then((result) => getEditorResponseData<null>(result));
+    };
 
     /**
      * Depending on the connector capabilities, removes media identified by `mediaId` from the connector's backend storage
@@ -76,7 +87,7 @@ export class MediaConnectorController {
     remove = async (connectorId: string, mediaId: string) => {
         const res = await this.#editorAPI;
         return res.mediaConnectorRemove(connectorId, mediaId).then((result) => getEditorResponseData<null>(result));
-    }
+    };
 
     /**
      * Depending on the connector capabilities, copies media identified by `mediaId` to a new media item on the
@@ -87,8 +98,10 @@ export class MediaConnectorController {
      */
     copy = async (connectorId: string, mediaId: string, newName: string) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorCopy(connectorId, mediaId, newName).then((result) => getEditorResponseData<null>(result));
-    }
+        return res
+            .mediaConnectorCopy(connectorId, mediaId, newName)
+            .then((result) => getEditorResponseData<null>(result));
+    };
 
     /**
      * All connectors have a certain set of queryOptions they allow to be passed in the query context. This
@@ -99,8 +112,10 @@ export class MediaConnectorController {
     getQueryOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
         console.log(res.mediaConnectorGetQueryOptions);
-        return res.mediaConnectorGetQueryOptions(connectorId).then((result) => getEditorResponseData<ConnectorOptions>(result));
-    }
+        return res
+            .mediaConnectorGetQueryOptions(connectorId)
+            .then((result) => getEditorResponseData<ConnectorOptions>(result));
+    };
 
     /**
      * All connectors have a certain set of downloadOptions they allow to be passed in the download context. This
@@ -110,8 +125,10 @@ export class MediaConnectorController {
      */
     getDownloadOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorGetDownloadOptions(connectorId).then((result) => getEditorResponseData<ConnectorOptions>(result));
-    }
+        return res
+            .mediaConnectorGetDownloadOptions(connectorId)
+            .then((result) => getEditorResponseData<ConnectorOptions>(result));
+    };
 
     /**
      * This method returns what capabilities the selected connector has. It gives an indication what methods can
@@ -120,6 +137,8 @@ export class MediaConnectorController {
      */
     getCapabilities = async (connectorId: string) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorGetCapabilities(connectorId).then((result) => getEditorResponseData<MediaConnectorCapabilities>(result));
-    }
+        return res
+            .mediaConnectorGetCapabilities(connectorId)
+            .then((result) => getEditorResponseData<MediaConnectorCapabilities>(result));
+    };
 }
