@@ -1,28 +1,29 @@
-import {ConfigType, EditorAPI} from '../../types/CommonTypes';
-import {getEditorResponseData} from '../utils/EditorResponseData';
-import {WellKnownConfigurationKeys} from "../../types/ConfigurationTypes";
+import { EditorAPI } from '../../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
 
 /**
- * The PageController is responsible for all communication regarding Pages.
- * Methods inside this controller can be called by `window.SDK.page.{method-name}`
+ * The ConfigurationController allows setting editor session data. This data is not stored in the document and
+ * can only be used at runtime. Amongst others, the configuration store is available to the editor connectors and
+ * Javascript actions running in the editor.
+ * Methods inside this controller can be called by `window.SDK.configuration.{method-name}`
  */
 export class ConfigurationController {
     /**
      * @ignore
      */
     #editorAPI: EditorAPI;
-    private config: ConfigType;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, config: ConfigType) {
+    constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
-        this.config = config;
     }
 
     /**
-     * This method returns the list of pages
+     * This method returns the value for a given configuration key. If a value was not found in the configuration store
+     * this method returns an error. The key cannot be null.
      * @returns
      */
     getValue = async (key: WellKnownConfigurationKeys | string) => {
@@ -31,7 +32,8 @@ export class ConfigurationController {
     };
 
     /**
-     * This method returns the list of pages
+     * This method sets, or overrides the value for a given key. Null values are not allowed for both key and value,
+     * using them will result in an error.
      * @returns
      */
     setValue = async (key: WellKnownConfigurationKeys | string, value: string) => {

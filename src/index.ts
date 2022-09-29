@@ -121,7 +121,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new ConfigurationController(this.editorAPI, this.config);
+        this.configuration = new ConfigurationController(this.editorAPI);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
@@ -168,7 +168,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new ConfigurationController(this.editorAPI, this.config);
+        this.configuration = new ConfigurationController(this.editorAPI);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
