@@ -72,6 +72,8 @@ export {
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 
+export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+
 let connection: Connection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/0.0.6/web';
@@ -178,7 +180,7 @@ export class SDK {
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
 
-        // as soon as the editor loads, provide it with the SDK verison
+        // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
         // on the Flutter side
         this.configuration.setValue(WellKnownConfigurationKeys.GraFxStudioSdkVersion, packageInfo.version);
