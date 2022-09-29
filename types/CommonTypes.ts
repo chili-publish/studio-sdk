@@ -24,7 +24,7 @@ export type ConfigType = {
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
-    onSelectedTextStyleChanged?: (styles: unknown) => void;
+    onSelectedTextStyleChanged?: (styles: any) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
 };
