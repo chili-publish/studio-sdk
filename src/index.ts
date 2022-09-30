@@ -16,7 +16,7 @@ import { UndoManagerController } from './controllers/UndoManagerController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
-import {MediaConnectorController} from "./controllers/MediaConnectorController";
+import { MediaConnectorController } from './controllers/MediaConnectorController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -68,6 +68,7 @@ export {
     BlendModes,
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
+export * from '../types/MediaConnectorTypes';
 
 let connection: Connection;
 
@@ -171,7 +172,6 @@ export class SDK {
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
-
     };
 
     setConnection = (newConnection: Connection) => {
