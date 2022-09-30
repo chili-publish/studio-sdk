@@ -93,14 +93,16 @@ export const mockRenameParagraphStyle = jest.fn().mockResolvedValue({ success: t
 export const mockRemoveParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMoveParagraphStyles = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUpdateParagraphStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockMediaConnectorQuery = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorDownload = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorRemove = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorCopy = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorUpload = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorGetCapabilities = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorGetQueryOptions = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockMediaConnectorGetDownloadOptions = jest.fn().mockResolvedValue({success: true, status: 0});
+export const mockMediaConnectorQuery = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorDownload = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorRemove = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorCopy = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorUpload = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -207,6 +209,8 @@ const MockEditorAPI = {
     mediaConnectorGetCapabilities: mockMediaConnectorGetCapabilities,
     mediaConnectorGetQueryOptions: mockMediaConnectorGetQueryOptions,
     mediaConnectorGetDownloadOptions: mockMediaConnectorGetDownloadOptions,
+    getConfigValue: mockGetConfigValue,
+    setConfigValue: mockSetConfigValue,
 };
 
 export default MockEditorAPI;

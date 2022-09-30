@@ -16,7 +16,10 @@ import { UndoManagerController } from './controllers/UndoManagerController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
-import {MediaConnectorController} from "./controllers/MediaConnectorController";
+import { ConfigurationController } from './controllers/ConfigurationController';
+import { MediaConnectorController } from './controllers/MediaConnectorController';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import packageInfo from '../package.json';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -69,6 +72,8 @@ export {
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 
+export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+
 let connection: Connection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/0.0.6/web';
@@ -87,6 +92,7 @@ export class SDK {
     mediaConnector: MediaConnectorController;
     animation: AnimationController;
     document: DocumentController;
+    configuration: ConfigurationController;
     variable: VariableController;
     utils: UtilsController;
     tool: ToolController;
@@ -115,6 +121,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
+        this.configuration = new ConfigurationController(this.editorAPI);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
@@ -161,6 +168,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
+        this.configuration = new ConfigurationController(this.editorAPI);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
@@ -172,6 +180,10 @@ export class SDK {
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
 
+        // as soon as the editor loads, provide it with the SDK version
+        // used to make it start. This enables engine compatibility checks
+        // on the Flutter side
+        this.configuration.setValue(WellKnownConfigurationKeys.GraFxStudioSdkVersion, packageInfo.version);
     };
 
     setConnection = (newConnection: Connection) => {
