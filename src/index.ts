@@ -47,7 +47,14 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from '../types/AnimationTypes';
-export type { ConfigType, InitialStateType, PageType, EditorResponse, SelectedLayoutFrame } from '../types/CommonTypes';
+export type {
+    ConfigType,
+    InitialStateType,
+    PageType,
+    EditorResponse,
+    SelectedLayoutFrame,
+    MetaData,
+} from '../types/CommonTypes';
 
 export type {
     TextProperties,
