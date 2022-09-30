@@ -1,6 +1,13 @@
 import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DownloadType, MediaConnectorCapabilities, MediaPage, QueryOptions } from '../../types/MediaConnectorTypes';
+import {
+    DeprecatedMediaType,
+    DownloadType,
+    MediaConnectorCapabilities,
+    MediaPage,
+    MediaType,
+    QueryOptions,
+} from '../../types/MediaConnectorTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -140,5 +147,14 @@ export class MediaConnectorController {
         return res
             .mediaConnectorGetCapabilities(connectorId)
             .then((result) => getEditorResponseData<MediaConnectorCapabilities>(result));
+    };
+
+    /**
+     * This method will parse the deprecatedMediaType to the new media type. This method will be removed once the deprecatedMediaType is out of use
+     * @param deprecatedType is 0 or 1
+     */
+    parseDeprecatedMediaType = (deprecatedType: DeprecatedMediaType) => {
+        if (deprecatedType === DeprecatedMediaType.file) return MediaType.file;
+        if (deprecatedType === DeprecatedMediaType.collection) return MediaType.collection;
     };
 }
