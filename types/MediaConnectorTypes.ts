@@ -1,6 +1,11 @@
-export enum MediaType {
+export enum DeprecatedMediaType {
     file = 0,
     collection = 1,
+}
+
+export enum MediaType {
+    file = 'file',
+    collection = 'collection',
 }
 
 export enum SortBy {
