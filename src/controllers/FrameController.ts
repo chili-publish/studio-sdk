@@ -315,7 +315,7 @@ export class FrameController {
     };
 
     /**
-     * This method will assign an image from the medioConnector to the correct imageFrame
+     * This method will assign an image from the mediaConnector to the correct imageFrame
      * @param frameId The ID of the imageFrame where an image needs to be assigned to
      * @param connectorId Unique Id of the media connector
      * @param imageId Unique Id of the image that you want to assign to the imageFrame
