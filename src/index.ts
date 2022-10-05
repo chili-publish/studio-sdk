@@ -67,6 +67,8 @@ export type {
 export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
+export type { Font } from '../types/FontTypes';
+
 export {
     SelectedTextStyleSections,
     SelectedTextStyles,
