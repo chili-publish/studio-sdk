@@ -313,4 +313,16 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.removeFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will assign an image from the medioConnector to the correct imageFrame
+     * @param frameId The ID of the imageFrame where an image needs to be assigned to
+     * @param connectorId Unique Id of the media connector
+     * @param imageId Unique Id of the image that you want to assign to the imageFrame
+     * @returns
+     */
+    assignImageToFrame = async (frameId: number, connectorId: string, imageId: string) => {
+        const res = await this.#editorAPI;
+        return res.assignImage(frameId, connectorId, imageId).then((result) => getEditorResponseData<null>(result));
+    };
 }
