@@ -5,4 +5,4 @@ export type Font = {
     fontStyle: string;
     fontId: string;
     connectorId: string;
-}
+};
