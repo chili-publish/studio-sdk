@@ -1,5 +1,5 @@
 import { DebugController } from '../../controllers/DebugController';
-import MockEditorAPI from "../__mocks__/MockEditorAPI";
+import MockEditorAPI from '../__mocks__/MockEditorAPI';
 
 let mockedDebugProperties: DebugController;
 

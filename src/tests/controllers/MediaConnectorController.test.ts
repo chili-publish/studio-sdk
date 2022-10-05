@@ -1,11 +1,10 @@
-import {SDK} from '../../index';
+import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
-import {MediaConnectorController} from '../../controllers/MediaConnectorController';
-import {DownloadType, SortBy, SortOrder} from "../../../types/MediaConnectorTypes";
-import mockChild from "../__mocks__/MockEditorAPI";
+import { MediaConnectorController } from '../../controllers/MediaConnectorController';
+import { DownloadType, SortBy, SortOrder } from '../../../types/MediaConnectorTypes';
+import mockChild from '../__mocks__/MockEditorAPI';
 
 let mockedSDK: SDK;
-
 
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
@@ -29,20 +28,20 @@ describe('MediaConnector methods', () => {
         const connectorId = 'dam';
         const mediaId = 'm123';
         const queryOptions1 = {
-            'filter': ['test'],
+            filter: ['test'],
             pageSize: 1,
             pageToken: 'token',
             sortBy: SortBy.id,
-            sortOrder: SortOrder.ascending
+            sortOrder: SortOrder.ascending,
         };
         const queryOptions2 = {
-            'filter': ['test'],
+            filter: ['test'],
             pageSize: 1,
             pageToken: 'token',
             sortBy: SortBy.name,
-            sortOrder: SortOrder.descending
+            sortOrder: SortOrder.descending,
         };
-        const context = {'debug': 'true'};
+        const context = { debug: 'true' };
         const blob = new Uint8Array([1, 2, 3]);
 
         await mockedSDK.mediaConnector.copy(connectorId, mediaId, 'newName');
@@ -51,15 +50,28 @@ describe('MediaConnector methods', () => {
 
         await mockedSDK.mediaConnector.query(connectorId, queryOptions1, context);
         expect(mockedSDK.editorAPI.mediaConnectorQuery).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.mediaConnectorQuery).toHaveBeenCalledWith(connectorId, JSON.stringify(queryOptions1), JSON.stringify(context));
+        expect(mockedSDK.editorAPI.mediaConnectorQuery).toHaveBeenCalledWith(
+            connectorId,
+            JSON.stringify(queryOptions1),
+            JSON.stringify(context),
+        );
 
         await mockedSDK.mediaConnector.query(connectorId, queryOptions2, context);
         expect(mockedSDK.editorAPI.mediaConnectorQuery).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.mediaConnectorQuery).toHaveBeenCalledWith(connectorId,  JSON.stringify(queryOptions2), JSON.stringify(context));
+        expect(mockedSDK.editorAPI.mediaConnectorQuery).toHaveBeenCalledWith(
+            connectorId,
+            JSON.stringify(queryOptions2),
+            JSON.stringify(context),
+        );
 
         await mockedSDK.mediaConnector.download(connectorId, mediaId, DownloadType.LowResolutionWeb, context);
         expect(mockedSDK.editorAPI.mediaConnectorDownload).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.mediaConnectorDownload).toHaveBeenCalledWith(connectorId, mediaId, DownloadType.LowResolutionWeb, JSON.stringify(context));
+        expect(mockedSDK.editorAPI.mediaConnectorDownload).toHaveBeenCalledWith(
+            connectorId,
+            mediaId,
+            DownloadType.LowResolutionWeb,
+            JSON.stringify(context),
+        );
 
         await mockedSDK.mediaConnector.remove(connectorId, mediaId);
         expect(mockedSDK.editorAPI.mediaConnectorRemove).toHaveBeenCalledTimes(1);

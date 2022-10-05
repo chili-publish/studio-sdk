@@ -67,6 +67,8 @@ export type {
 export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
+export type { Font } from '../types/FontTypes';
+
 export {
     SelectedTextStyleSections,
     SelectedTextStyles,
@@ -164,6 +166,7 @@ export class SDK {
                 onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
                 onColorsChanged: this.subscriber.onColorsChanged,
                 onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
+                onFontsChanged: this.subscriber.onFontsChanged,
             },
             this.setConnection,
             this.config.editorId,

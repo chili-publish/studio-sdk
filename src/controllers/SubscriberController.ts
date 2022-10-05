@@ -142,4 +142,13 @@ export class SubscriberController {
         const callBack = this.config.onParagraphStylesChanged;
         callBack && callBack(JSON.parse(paragraphStyles));
     };
+
+    /**
+     * Listener on fonts, if this changes, this listener will get triggered with the updates
+     * @param fonts Stringified object of fonts
+     */
+    onFontsChanged = (fonts: string) => {
+        const callBack = this.config.onFontsChanged;
+        callBack && callBack(JSON.parse(fonts));
+    };
 }
