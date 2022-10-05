@@ -1,4 +1,4 @@
-import {EditorResponse} from '../../types/CommonTypes';
+import { EditorResponse } from '../../types/CommonTypes';
 
 export function getEditorResponseData<T>(response: EditorResponse<unknown>, parse = true): EditorResponse<T> {
     return {

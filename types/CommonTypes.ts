@@ -8,6 +8,7 @@ import { ToolType } from '../src';
 import { UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
+import {Font} from "./FontTypes";
 
 export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
@@ -27,6 +28,7 @@ export type ConfigType = {
     onSelectedTextStyleChanged?: (styles: any) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
+    onFontsChanged?: (fonts: Font[]) => void;
 };
 
 export interface EditorResponse<T> {

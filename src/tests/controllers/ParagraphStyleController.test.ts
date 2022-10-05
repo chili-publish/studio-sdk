@@ -2,7 +2,7 @@ import { ColorType } from '../../../types/ColorStyleTypes';
 import { ParagraphStyleController } from '../../controllers/ParagraphStyleController';
 import { ColorUsageType, ParagraphStyleUpdate } from '../../../types/ParagraphStyleTypes';
 import { Alignment, Case, Scripting } from '../../../types/TextStyleTypes';
-import MockEditorAPI from "../__mocks__/MockEditorAPI";
+import MockEditorAPI from '../__mocks__/MockEditorAPI';
 
 let mockedParagraphStyleController: ParagraphStyleController;
 

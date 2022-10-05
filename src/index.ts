@@ -164,6 +164,7 @@ export class SDK {
                 onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
                 onColorsChanged: this.subscriber.onColorsChanged,
                 onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
+                onFontsChanged: this.subscriber.onFontsChanged,
             },
             this.setConnection,
             this.config.editorId,

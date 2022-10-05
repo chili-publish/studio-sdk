@@ -1,5 +1,5 @@
 import { PageController } from '../../controllers/PageController';
-import MockEditorAPI from "../__mocks__/MockEditorAPI";
+import MockEditorAPI from '../__mocks__/MockEditorAPI';
 
 let mockedPageProperties: PageController;
 
