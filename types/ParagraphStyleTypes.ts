@@ -20,7 +20,7 @@ export enum ColorUsageType {
 export type ParagraphStyle = {
     id: string;
     name: string;
-    fontFamily: string;
+    fontKey: string;
     fontStyle: string;
     fontSize: number;
     typographicCase: Case;
