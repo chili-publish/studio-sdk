@@ -29,7 +29,7 @@ export enum Scripting {
 }
 
 export interface TextProperties {
-    fontFamily?: string;
+    fontKey?: string;
     fontStyle?: FontWeights;
     fontSize?: string;
     textAlign?: Alignment;

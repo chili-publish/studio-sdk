@@ -4,7 +4,7 @@ import {ColorUsage} from "./ParagraphStyleTypes";
 export type CharacterStyle = {
     id: string;
     name: string;
-    fontFamily?: string;
+    fontKey?: string;
     fontStyle?: string
     fontSize?: number;
     typographicCase?: Case;
