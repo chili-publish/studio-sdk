@@ -76,6 +76,7 @@ export enum VerticalAlign {
     middle = 'middle',
     justify = 'justify',
 }
+
 export enum BlendMode {
     clear = 'clear',
     src = 'src',
@@ -106,4 +107,9 @@ export enum BlendMode {
     saturation = 'saturation',
     color = 'color',
     luminosity = 'luminosity',
+}
+
+export enum FitMode {
+    fit = 'fit',
+    fill = 'fill',
 }
