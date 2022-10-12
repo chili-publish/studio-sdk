@@ -1,6 +1,6 @@
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
-import { MediaConnectorController } from '../../controllers/MediaConnectorController';
+import { ConnectorAuthenticationController, MediaConnectorController } from '../../controllers/MediaConnectorController';
 import { DownloadType, SortBy, SortOrder } from '../../../types/MediaConnectorTypes';
 import mockChild from '../__mocks__/MockEditorAPI';
 
@@ -10,6 +10,7 @@ beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
     mockedSDK.editorAPI = mockChild;
     mockedSDK.mediaConnector = new MediaConnectorController(mockChild);
+    mockedSDK.mediaConnector.authentication = new ConnectorAuthenticationController(mockChild);
     jest.spyOn(mockedSDK.mediaConnector, 'query');
     jest.spyOn(mockedSDK.mediaConnector, 'download');
     jest.spyOn(mockedSDK.mediaConnector, 'upload');
@@ -18,6 +19,8 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.mediaConnector, 'getCapabilities');
     jest.spyOn(mockedSDK.mediaConnector, 'getQueryOptions');
     jest.spyOn(mockedSDK.mediaConnector, 'getDownloadOptions');
+    jest.spyOn(mockedSDK.mediaConnector.authentication, 'setChiliToken');
+    jest.spyOn(mockedSDK.mediaConnector.authentication, 'setHttpHeader');
 });
 
 afterEach(() => {
@@ -43,6 +46,9 @@ describe('MediaConnector methods', () => {
         };
         const context = { debug: 'true' };
         const blob = new Uint8Array([1, 2, 3]);
+        const token = 'myToken';
+        const headerName = 'headerName';
+        const headerValue = 'headerValue';
 
         await mockedSDK.mediaConnector.copy(connectorId, mediaId, 'newName');
         expect(mockedSDK.editorAPI.mediaConnectorCopy).toHaveBeenCalledTimes(1);
@@ -92,5 +98,13 @@ describe('MediaConnector methods', () => {
         await mockedSDK.mediaConnector.getDownloadOptions(connectorId);
         expect(mockedSDK.editorAPI.mediaConnectorGetDownloadOptions).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.mediaConnectorGetDownloadOptions).toHaveBeenLastCalledWith(connectorId);
+
+        await mockedSDK.mediaConnector.authentication.setChiliToken(connectorId, token);
+        expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
+
+        await mockedSDK.mediaConnector.authentication.setHttpHeader(connectorId, headerName, headerValue);
+        expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(connectorId, headerName, headerValue);
     });
 });

@@ -101,6 +101,8 @@ export const mockMediaConnectorUpload = jest.fn().mockResolvedValue({ success: t
 export const mockMediaConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockConnectorAuthenticationSetChiliToken = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
@@ -209,6 +211,8 @@ const MockEditorAPI = {
     mediaConnectorGetCapabilities: mockMediaConnectorGetCapabilities,
     mediaConnectorGetQueryOptions: mockMediaConnectorGetQueryOptions,
     mediaConnectorGetDownloadOptions: mockMediaConnectorGetDownloadOptions,
+    connectorAuthenticationSetChiliToken: mockConnectorAuthenticationSetChiliToken,
+    connectorAuthenticationSetHttpHeader: mockConnectorAuthenticationSetHttpHeader,
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
 };
