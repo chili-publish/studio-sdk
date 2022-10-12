@@ -1,45 +1,9 @@
-export enum DeprecatedMediaType {
-    file = 0,
-    collection = 1,
-}
+import { MediaType } from "./ConnectorTypes";
 
-export enum MediaType {
-    file = 'file',
-    collection = 'collection',
-}
-
-export enum SortBy {
-    name = 'name',
-    path = 'relativePath',
-    id = 'id',
-}
-
-export enum SortOrder {
-    ascending = 'asc',
-    descending = 'desc',
-}
-
-export type QueryOptions = {
-    filter?: string[] | null;
-    collection?: string | null;
-    pageToken?: string | null;
-    pageSize?: number | null;
-    sortBy?: SortBy | null;
-    sortOrder?: SortOrder | null;
-};
-
-export enum DownloadType {
+export enum MediaDownloadType {
     LowResolutionWeb = 'lowresWeb',
     HighResolutionWeb = 'highresWeb',
 }
-
-export type MediaConnectorCapabilities = {
-    filtering?: boolean;
-    upload?: boolean;
-    query?: boolean;
-    remove?: boolean;
-    copy?: boolean;
-};
 
 export type Media = {
     id: string;

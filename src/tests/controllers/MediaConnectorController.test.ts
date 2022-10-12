@@ -1,7 +1,8 @@
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
-import { DownloadType, SortBy, SortOrder } from '../../../types/MediaConnectorTypes';
+import { SortBy, SortOrder } from '../../../types/ConnectorTypes';
+import { MediaDownloadType } from '../../../types/MediaConnectorTypes';
 import mockChild from '../__mocks__/MockEditorAPI';
 
 let mockedSDK: SDK;
@@ -64,12 +65,12 @@ describe('MediaConnector methods', () => {
             JSON.stringify(context),
         );
 
-        await mockedSDK.mediaConnector.download(connectorId, mediaId, DownloadType.LowResolutionWeb, context);
+        await mockedSDK.mediaConnector.download(connectorId, mediaId, MediaDownloadType.LowResolutionWeb, context);
         expect(mockedSDK.editorAPI.mediaConnectorDownload).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.mediaConnectorDownload).toHaveBeenCalledWith(
             connectorId,
             mediaId,
-            DownloadType.LowResolutionWeb,
+            MediaDownloadType.LowResolutionWeb,
             JSON.stringify(context),
         );
 
