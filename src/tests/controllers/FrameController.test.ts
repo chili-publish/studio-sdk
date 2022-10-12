@@ -1,3 +1,4 @@
+import { FitMode } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
@@ -14,35 +15,24 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'getFramePropertiesOnSelectedLayout');
     jest.spyOn(mockedFrameProperties, 'getFramePropertiesByFrameId');
     jest.spyOn(mockedFrameProperties, 'getFramesProperties');
-
     jest.spyOn(mockedFrameProperties, 'setFrameHeight');
     jest.spyOn(mockedFrameProperties, 'setFrameWidth');
-
     jest.spyOn(mockedFrameProperties, 'setFrameX');
-
     jest.spyOn(mockedFrameProperties, 'setFrameY');
-
     jest.spyOn(mockedFrameProperties, 'setFrameRotation');
-
     jest.spyOn(mockedFrameProperties, 'setFrameVisibility');
-
     jest.spyOn(mockedFrameProperties, 'removeFrame');
-
     jest.spyOn(mockedFrameProperties, 'resetFrame');
-
     jest.spyOn(mockedFrameProperties, 'resetFrameX');
     jest.spyOn(mockedFrameProperties, 'resetFrameY');
-
     jest.spyOn(mockedFrameProperties, 'resetFrameHeight');
-
     jest.spyOn(mockedFrameProperties, 'resetFrameWidth');
     jest.spyOn(mockedFrameProperties, 'resetFrameRotation');
-
     jest.spyOn(mockedFrameProperties, 'resetFrameSize');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
-
     jest.spyOn(mockedFrameProperties, 'setFrameName');
+    jest.spyOn(mockedFrameProperties, 'setImageFrameFitMode');
 
     frameId = mockSelectFrame.frameId;
 });
@@ -135,6 +125,10 @@ describe('FrameProperties', () => {
         mockedFrameProperties.selectMultipleFrames([5]);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith([5]);
+
+        mockedFrameProperties.setImageFrameFitMode(frameId, FitMode.fit);
+        expect(mockedFrameProperties.setImageFrameFitMode).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setImageFrameFitMode).toHaveBeenCalledWith(frameId, FitMode.fit);
     });
 });
 
