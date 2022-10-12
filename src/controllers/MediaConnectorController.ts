@@ -179,9 +179,12 @@ export class ConnectorAuthenticationController {
     }
 
     /**
-     * This method sets the token for the 'chili' authentication type.
+     * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
+     * The CHILI Token will be used in every connector fetch call.
+     * Gives access to the CHILI environment API.
+     * Can only be used after a connector has been registered.
      * @param connectorId unique Id of the media connector
-     * @param token token for the chili authentication
+     * @param token token for the CHILI authentication
      */
     setChiliToken = async (connectorId: string, token: string) => {
         const res = await this.#editorAPI;
@@ -190,7 +193,9 @@ export class ConnectorAuthenticationController {
     }
 
     /**
-     * This method sets the http headers for the 'staticKey' authentication type.
+     * This method sets the HTTP headers for the 'staticKey' authentication type.
+     * Those authentication headers will be used in every connector fetch call.
+     * Can only be used after a connector has been registered.
      * @param connectorId unique Id of the media connector
      * @param headerName name of the header
      * @param headerValue value of the header
