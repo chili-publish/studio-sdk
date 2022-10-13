@@ -1,7 +1,7 @@
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FrameLayoutType, FrameType } from '../../types/FrameTypes';
+import { FrameLayoutType, FrameType, FrameTypeEnum } from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -313,18 +313,32 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.removeFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
+    /**
+     * This method will add a new frame of 'frameType' to the template positioned on the requested
+     * coordinates.
+     * @param frameType The type of frame to create
+     * @param x X coordinate of the new frame within the template
+     * @param y Y coordinate of the new frame within the template
+     * @param width Width of the new frame within the template
+     * @param height Height of the new frame within the template
+     * @returns The newly created frame's ID
+     */
+    addFrame = async (frameType: FrameTypeEnum, x: number, y: number, width: number, height: number) => {
+        const res = await this.#editorAPI;
+        return res.addFrame(frameType, x, y, width, height).then((result) => getEditorResponseData<number>(result));
+    };
 
     /**
-     * This method will assign an image from the mediaConnector to the correct imageFrame
+     * This method will assign an image from a mediaConnector to the correct imageFrame
      * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
      * @param connectorId Unique Id of the media connector
-     * @param imageId Unique Id of the image that you want to assign to the imageFrame
+     * @param resourceId Unique Id of the asset that you want to assign to the imageFrame
      * @returns
      */
-    assignImageToFrame = async (imageFrameId: number, connectorId: string, imageId: string) => {
+    setImageFromConnector = async (imageFrameId: number, connectorId: string, resourceId: string) => {
         const res = await this.#editorAPI;
         return res
-            .assignImage(imageFrameId, connectorId, imageId)
+            .assignImage(imageFrameId, connectorId, resourceId)
             .then((result) => getEditorResponseData<null>(result));
     };
 }
