@@ -32,7 +32,7 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 export { LayoutType } from '../types/LayoutTypes';
-export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection } from '../types/FrameTypes';
+export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection, FitMode } from '../types/FrameTypes';
 export { VariableType } from '../types/VariableTypes';
 
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';

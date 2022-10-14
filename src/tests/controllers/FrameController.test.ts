@@ -1,6 +1,7 @@
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
+import { FitMode } from '../../../types/FrameTypes';
 
 let mockedFrameProperties: FrameController;
 let frameId: number;
@@ -23,6 +24,8 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'setFrameY');
 
     jest.spyOn(mockedFrameProperties, 'setFrameRotation');
+
+    jest.spyOn(mockedFrameProperties, 'setFrameFitMode');
 
     jest.spyOn(mockedFrameProperties, 'setFrameVisibility');
 
@@ -98,6 +101,9 @@ describe('FrameProperties', () => {
 
         mockedFrameProperties.setFrameHeight(frameId, '32');
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(2);
+
+        mockedFrameProperties.setFrameFitMode(2, FitMode.fill);
+        expect(mockedFrameProperties.setFrameFitMode).toHaveBeenCalledTimes(1);
 
         mockedFrameProperties.setFrameName(1, 'TEST');
         expect(mockedFrameProperties.setFrameName).toHaveBeenCalledTimes(1);

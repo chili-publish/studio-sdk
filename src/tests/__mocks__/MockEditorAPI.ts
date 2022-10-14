@@ -20,6 +20,7 @@ export const mockSetFrameVisibility = jest.fn().mockResolvedValue({ success: tru
 export const mockRemoveFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -129,6 +130,7 @@ const MockEditorAPI = {
     setFrameX: mockSetFrameX,
     setFrameY: mockSetFrameY,
     setFrameRotation: mockSetFrameRotation,
+    setFitMode: mockSetFrameFitMode,
     resetFrame: mockResetFrame,
     resetFrameX: mockResetFrameX,
     resetFrameY: mockResetFrameY,

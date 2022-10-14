@@ -12,6 +12,7 @@ export type FrameLayoutType = {
     scaleX: PropertyState<number>;
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
+    fitMode: PropertyState<FitMode>
 } | null;
 
 //Frame.image
@@ -106,4 +107,9 @@ export enum BlendMode {
     saturation = 'saturation',
     color = 'color',
     luminosity = 'luminosity',
+}
+
+export enum FitMode {
+    fill = 'fill',
+    fit = 'fit'
 }

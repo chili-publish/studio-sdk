@@ -1,7 +1,7 @@
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FrameLayoutType, FrameType, FrameTypeEnum } from '../../types/FrameTypes';
+import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum } from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -221,6 +221,18 @@ export class FrameController {
         return res
             .setFrameY(frameId, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the fitMode value of a specific frame
+     * @param frameId The ID of a specific frame
+     * @param value The new fit mode
+     * @returns
+     */
+    setFrameFitMode = async (frameId: number, value: FitMode) => {
+        const res = await this.#editorAPI;
+
+        return res.setFitMode(frameId, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
