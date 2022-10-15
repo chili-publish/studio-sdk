@@ -7,10 +7,10 @@ export type ConnectorRegistration = {
 }
 
 export enum ConnectorType {
-    media,
-    font
+    media = 'media',
+    font = 'font'
 }
 
 export enum ConnectorRegistrationSource {
-    url
+    url = 'url'
 }
