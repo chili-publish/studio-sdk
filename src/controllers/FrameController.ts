@@ -1,7 +1,7 @@
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FrameLayoutType, FrameType, FrameTypeEnum } from '../../types/FrameTypes';
+import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum } from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -340,5 +340,16 @@ export class FrameController {
         return res
             .assignImage(imageFrameId, connectorId, resourceId)
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the fitMode property of a specified image frame.
+     * @param imageFrameId The ID of the imageFrame that needs to get updated.
+     * @param fitMode The new fitMode that you want to set to the imageFrame.
+     * @returns
+     */
+    setImageFrameFitMode = async (imageFrameId: number, fitMode: FitMode) => {
+        const res = await this.#editorAPI;
+        return res.setFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
 }
