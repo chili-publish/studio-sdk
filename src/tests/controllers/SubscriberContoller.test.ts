@@ -31,6 +31,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onSelectedTextStyleChanged');
     jest.spyOn(mockedSubscribers, 'onColorsChanged');
     jest.spyOn(mockedSubscribers, 'onParagraphStylesChanged');
+    jest.spyOn(mockedSubscribers, 'onCharacterStylesChanged');
     jest.spyOn(mockedSubscribers, 'onFontsChanged');
 });
 
@@ -81,6 +82,9 @@ describe('Subscriber methods', () => {
 
         mockedSubscribers.onFontsChanged(JSON.stringify([{ id: 1, name: 'F1', fontFamily: 'Arial' }]));
         expect(mockedSDK.config.onFontsChanged).toHaveBeenCalledTimes(12);
+
+        mockedSubscribers.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
+        expect(mockedSDK.config.onCharacterStylesChanged).toHaveBeenCalledTimes(13);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

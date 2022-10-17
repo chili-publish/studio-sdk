@@ -66,6 +66,7 @@ export type {
 } from '../types/TextStyleTypes';
 
 export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
+export type { CharacterStyle } from '../types/CharacterStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
 export type { Font } from '../types/FontTypes';
@@ -169,6 +170,7 @@ export class SDK {
                 onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
                 onColorsChanged: this.subscriber.onColorsChanged,
                 onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
+                onCharacterStylesChanged: this.subscriber.onCharacterStylesChanged,
                 onFontsChanged: this.subscriber.onFontsChanged,
             },
             this.setConnection,
