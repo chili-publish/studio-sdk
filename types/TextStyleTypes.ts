@@ -75,8 +75,8 @@ export enum SelectedTextStyleSections {
 }
 
 export enum SelectedTextStyles {
-    PARAGRAPH = 'paragraph',
-    CHARACTER = 'character',
+    PARAGRAPH = 'paragraphStyleId',
+    CHARACTER = 'characterStyleId',
     FONT_FAMILY = 'fontKey',
     FONT_STYLE = 'fontStyle',
     FONT_SIZE = 'fontSize',
