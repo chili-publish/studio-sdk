@@ -105,6 +105,7 @@ export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, s
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
+export const mockMediaConnectorRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -214,6 +215,7 @@ const MockEditorAPI = {
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
     setFitMode: mockSetFitMode,
+    mediaConnectorRegisterConnector: mockMediaConnectorRegisterConnector,
 };
 
 export default MockEditorAPI;

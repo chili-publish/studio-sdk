@@ -18,7 +18,7 @@ export type FrameLayoutType = {
 export type FrameType = {
     frameId: number;
     frameName: string;
-    frameType: 'image';
+    frameType: FrameTypeEnum;
     imageUrl: string;
     blendMode: string;
 };
