@@ -1,7 +1,5 @@
 export type ConnectorRegistration = {
     id: string,
-    name: string,
-    type: ConnectorType,
     source: ConnectorRegistrationSource,
     url: string
 }

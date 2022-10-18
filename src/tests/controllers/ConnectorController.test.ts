@@ -20,9 +20,7 @@ describe('Connector methods', () => {
     it('Should call  all of the connector functions of child successfully', async () => {
         const registration = {
             id: '',
-            name: '',
             source: ConnectorRegistrationSource.url,
-            type: ConnectorType.media,
             url: '',
         };
 
