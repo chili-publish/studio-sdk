@@ -17,7 +17,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('Connector methods', () => {
-    it('Should call  all of the connector functions of child successfully', async () => {
+    it('Should call all of the connector functions of child successfully', async () => {
         const registration = {
             id: '',
             source: ConnectorRegistrationSource.url,

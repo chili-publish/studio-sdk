@@ -39,7 +39,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('Subscriber methods', () => {
-    it('Should call  all of the subscriber functions successfully', async () => {
+    it('Should call all of the subscriber functions successfully', async () => {
         mockedSubscribers.onAnimationChanged(JSON.stringify(mockedAnimation));
 
         mockedSubscribers.onAnimationPlaybackChanged(JSON.stringify('test'));
