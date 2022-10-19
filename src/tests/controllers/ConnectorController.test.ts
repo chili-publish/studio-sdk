@@ -1,8 +1,9 @@
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
-import { ConnectorAuthenticationController, ConnectorController } from '../../controllers/ConnectorController';
+import { ConnectorController } from '../../controllers/ConnectorController';
 import { ConnectorRegistrationSource } from '../../../types/ConnectorTypes';
 import mockChild from '../__mocks__/MockEditorAPI';
+import { ConnectorAuthenticationController } from '../../controllers/ConnectorAuthenticationController';
 
 let mockedSDK: SDK;
 
