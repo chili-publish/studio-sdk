@@ -1,6 +1,7 @@
 import { ConnectorRegistration } from '../../types/ConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+import { ConnectorAuthenticationController } from './ConnectorAuthenticationController';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
@@ -19,19 +20,21 @@ export class ConnectorController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    authentication: ConnectorAuthenticationController;
 
     /**
      * @ignore
      */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
+        this.authentication = new ConnectorAuthenticationController(editorAPI);
     }
 
     /**
      * Registers a new connector in the SDK. After successfull registration, depending
      * on the connector type, the connector can be configured and used in the template
      * Remember to add custom authentication information after registering the connector
-     * @param ConnectorRegistration registration object containing all details about the connector
+     * @param registration registration object containing all details about the connector
      */
     registerConnector = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
