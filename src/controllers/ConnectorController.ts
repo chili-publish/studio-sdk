@@ -19,6 +19,39 @@ export class ConnectorController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    authentication: ConnectorAuthenticationController;
+
+    /**
+     * @ignore
+     */
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+        this.authentication = new ConnectorAuthenticationController(editorAPI);
+    }
+
+    /**
+     * Registers a new connector in the SDK. After successfull registration, depending
+     * on the connector type, the connector can be configured and used in the template
+     * Remember to add custom authentication information after registering the connector
+     * @param registration registration object containing all details about the connector
+     */
+    registerConnector = async (registration: ConnectorRegistration) => {
+        const res = await this.#editorAPI;
+        return res
+            .mediaConnectorRegisterConnector(JSON.stringify(registration))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+}
+
+/**
+ * The ConnectorAuthenticationController is responsible for authenticating regarding media connectors.
+ * Methods inside this controller can be called by `window.SDK.mediaConnector.authentication.{method-name}`
+ */
+export class ConnectorAuthenticationController {
+    /**
+     * @ignore
+     */
+    #editorAPI: EditorAPI;
 
     /**
      * @ignore
@@ -28,15 +61,31 @@ export class ConnectorController {
     }
 
     /**
-     * Registers a new connector in the SDK. After successfull registration, depending
-     * on the connector type, the connector can be configured and used in the template
-     * Remember to add custom authentication information after registering the connector
-     * @param ConnectorRegistration registration object containing all details about the connector
+     * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
+     * The CHILI Token will be used to authenticate every grafx-media connector http call.
+     * Can only be used after a connector has been registered.
+     * @param connectorId unique Id of the media connector
+     * @param token token for the CHILI authentication
      */
-    registerConnector = async (registration: ConnectorRegistration) => {
+    setChiliToken = async (connectorId: string, token: string) => {
         const res = await this.#editorAPI;
         return res
-            .mediaConnectorRegisterConnector(JSON.stringify(registration))
+            .connectorAuthenticationSetChiliToken(connectorId, token)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the HTTP headers for the 'staticKey' authentication type.
+     * These additional headers will be added to all connector http calls.
+     * Can only be used after a connector has been registered.
+     * @param connectorId unique Id of the media connector
+     * @param headerName name of the header
+     * @param headerValue value of the header
+     */
+    setHttpHeader = async (connectorId: string, headerName: string, headerValue: string) => {
+        const res = await this.#editorAPI;
+        return res
+            .connectorAuthenticationSetHttpHeader(connectorId, headerName, headerValue)
             .then((result) => getEditorResponseData<null>(result));
     };
 }
