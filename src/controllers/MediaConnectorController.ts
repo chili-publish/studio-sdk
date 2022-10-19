@@ -1,11 +1,6 @@
 import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import {
-    DeprecatedMediaType,
-    ConnectorCapabilities,
-    MediaType,
-    QueryOptions
-} from '../../types/ConnectorTypes';
+import { DeprecatedMediaType, ConnectorCapabilities, MediaType, QueryOptions } from '../../types/ConnectorTypes';
 import { CallSender } from 'penpal';
 import { MediaDownloadType, MediaPage } from '../../types/MediaConnectorTypes';
 
