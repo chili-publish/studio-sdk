@@ -35,3 +35,13 @@ export type ConnectorCapabilities = {
     remove?: boolean;
     copy?: boolean;
 };
+
+export type ConnectorRegistration = {
+    id: string;
+    source: ConnectorRegistrationSource;
+    url: string;
+};
+
+export enum ConnectorRegistrationSource {
+    url = 'url',
+}

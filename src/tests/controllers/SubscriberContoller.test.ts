@@ -31,6 +31,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onSelectedTextStyleChanged');
     jest.spyOn(mockedSubscribers, 'onColorsChanged');
     jest.spyOn(mockedSubscribers, 'onParagraphStylesChanged');
+    jest.spyOn(mockedSubscribers, 'onCharacterStylesChanged');
     jest.spyOn(mockedSubscribers, 'onFontsChanged');
 });
 
@@ -38,7 +39,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('Subscriber methods', () => {
-    it('Should call  all of the subscriber functions successfully', async () => {
+    it('Should call all of the subscriber functions successfully', async () => {
         mockedSubscribers.onAnimationChanged(JSON.stringify(mockedAnimation));
 
         mockedSubscribers.onAnimationPlaybackChanged(JSON.stringify('test'));
@@ -81,6 +82,9 @@ describe('Subscriber methods', () => {
 
         mockedSubscribers.onFontsChanged(JSON.stringify([{ id: 1, name: 'F1', fontFamily: 'Arial' }]));
         expect(mockedSDK.config.onFontsChanged).toHaveBeenCalledTimes(12);
+
+        mockedSubscribers.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
+        expect(mockedSDK.config.onCharacterStylesChanged).toHaveBeenCalledTimes(13);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

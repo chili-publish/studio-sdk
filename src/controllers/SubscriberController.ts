@@ -144,6 +144,15 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on character styles, if this changes, this listener will get triggered with the updates
+     * @param characterStyles Stringified object of character styles
+     */
+    onCharacterStylesChanged = (characterStyles: string) => {
+        const callBack = this.config.onCharacterStylesChanged;
+        callBack && callBack(JSON.parse(characterStyles));
+    };
+
+    /**
      * Listener on fonts, if this changes, this listener will get triggered with the updates
      * @param fonts Stringified object of fonts
      */

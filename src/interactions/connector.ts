@@ -56,6 +56,7 @@ interface ConfigParameterTypes {
     onSelectedTextStyleChanged: (styles: string) => void;
     onColorsChanged: (colors: string) => void;
     onParagraphStylesChanged: (paragraphStyles: string) => void;
+    onCharacterStylesChanged: (characterStyles: string) => void;
     onFontsChanged: (fonts: string) => void;
 }
 
@@ -109,6 +110,7 @@ const Connect = (
                 selectedTextStyleChanged: params.onSelectedTextStyleChanged,
                 colorsChanged: params.onColorsChanged,
                 paragraphStylesChanged: params.onParagraphStylesChanged,
+                characterStylesChanged: params.onCharacterStylesChanged,
                 fontsChanged: params.onFontsChanged,
             },
         }),

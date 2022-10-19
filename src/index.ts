@@ -21,6 +21,7 @@ import { MediaConnectorController } from './controllers/MediaConnectorController
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import { FontConnectorController } from './controllers/FontConnectorController';
+import { ConnectorController } from './controllers/ConnectorController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -32,7 +33,7 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 export { LayoutType } from '../types/LayoutTypes';
-export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection } from '../types/FrameTypes';
+export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection, FitMode } from '../types/FrameTypes';
 export { VariableType } from '../types/VariableTypes';
 
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
@@ -66,6 +67,7 @@ export type {
 } from '../types/TextStyleTypes';
 
 export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
+export type { CharacterStyle } from '../types/CharacterStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
 export type { Font } from '../types/FontTypes';
@@ -100,6 +102,7 @@ export class SDK {
 
     layout: LayoutController;
     frame: FrameController;
+    connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
     animation: AnimationController;
@@ -130,6 +133,7 @@ export class SDK {
 
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
@@ -169,6 +173,7 @@ export class SDK {
                 onSelectedTextStyleChanged: this.subscriber.onSelectedTextStyleChanged,
                 onColorsChanged: this.subscriber.onColorsChanged,
                 onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
+                onCharacterStylesChanged: this.subscriber.onCharacterStylesChanged,
                 onFontsChanged: this.subscriber.onFontsChanged,
             },
             this.setConnection,
@@ -194,6 +199,7 @@ export class SDK {
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks

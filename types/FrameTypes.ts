@@ -12,13 +12,14 @@ export type FrameLayoutType = {
     scaleX: PropertyState<number>;
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
+    fitMode: PropertyState<FitMode>;
 } | null;
 
 //Frame.image
 export type FrameType = {
     frameId: number;
     frameName: string;
-    frameType: 'image';
+    frameType: FrameTypeEnum;
     imageUrl: string;
     blendMode: string;
 };
@@ -76,6 +77,7 @@ export enum VerticalAlign {
     middle = 'middle',
     justify = 'justify',
 }
+
 export enum BlendMode {
     clear = 'clear',
     src = 'src',
@@ -106,4 +108,9 @@ export enum BlendMode {
     saturation = 'saturation',
     color = 'color',
     luminosity = 'luminosity',
+}
+
+export enum FitMode {
+    fit = 'fit',
+    fill = 'fill',
 }
