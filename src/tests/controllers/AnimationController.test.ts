@@ -31,7 +31,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('Animation methods', () => {
-    it('Should call  all of the animation functions of child successfully', async () => {
+    it('Should call all of the animation functions of child successfully', async () => {
         await mockedSDK.animation.getAnimationsOnSelectedLayout();
         expect(mockedSDK.editorAPI.getAnimationsOnSelectedLayout).toHaveBeenCalledTimes(1);
 

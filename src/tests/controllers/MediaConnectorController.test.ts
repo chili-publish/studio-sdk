@@ -24,7 +24,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('MediaConnector methods', () => {
-    it('Should call  all of the mediaConnector functions of child successfully', async () => {
+    it('Should call all of the mediaConnector functions of child successfully', async () => {
         const connectorId = 'dam';
         const mediaId = 'm123';
         const queryOptions1 = {

@@ -1,7 +1,7 @@
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
 import { ConnectorController } from '../../controllers/ConnectorController';
-import { ConnectorRegistrationSource, ConnectorType } from '../../../types/ConnectorTypes';
+import { ConnectorRegistrationSource } from '../../../types/ConnectorTypes';
 import mockChild from '../__mocks__/MockEditorAPI';
 
 let mockedSDK: SDK;
@@ -17,12 +17,10 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('Connector methods', () => {
-    it('Should call  all of the connector functions of child successfully', async () => {
+    it('Should call all of the connector functions of child successfully', async () => {
         const registration = {
             id: '',
-            name: '',
             source: ConnectorRegistrationSource.url,
-            type: ConnectorType.media,
             url: '',
         };
 
