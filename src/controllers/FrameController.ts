@@ -1,7 +1,7 @@
 import type { EditorAPI } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum } from '../../types/FrameTypes';
+import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum, VerticalAlign } from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -351,5 +351,16 @@ export class FrameController {
     setImageFrameFitMode = async (imageFrameId: number, fitMode: FitMode) => {
         const res = await this.#editorAPI;
         return res.setFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the vertical alignment property of a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param verticalAlign The new vertical alignment to be set to the frame.
+     * @returns
+     */
+    setVerticalAlignment = async (frameId: number, verticalAlign: VerticalAlign) => {
+        const res = await this.#editorAPI;
+        return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };
 }

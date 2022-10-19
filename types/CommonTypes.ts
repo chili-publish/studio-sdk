@@ -1,7 +1,7 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
 import { LayoutWithFrameProperties, LayoutPropertiesType } from './LayoutTypes';
-import { FrameLayoutType } from './FrameTypes';
+import {Frame, FrameLayoutType} from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src';
@@ -14,7 +14,7 @@ import {CharacterStyle} from "./CharacterStyleTypes";
 export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
-    onSelectedFrameContentChanged?: (state: FrameType) => void;
+    onSelectedFrameContentChanged?: (state: Frame) => void;
     editorLink?: string;
     editorId?: string;
     chiliEnvironmentUrl?: string;
