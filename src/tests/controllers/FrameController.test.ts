@@ -1,6 +1,6 @@
-import {FitMode, VerticalAlign} from '../../../types/FrameTypes';
-import {FrameController} from '../../controllers/FrameController';
-import {mockSelectFrame} from '../__mocks__/FrameProperties';
+import { FitMode, VerticalAlign } from '../../../types/FrameTypes';
+import { FrameController } from '../../controllers/FrameController';
+import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
 
 let mockedFrameProperties: FrameController;
