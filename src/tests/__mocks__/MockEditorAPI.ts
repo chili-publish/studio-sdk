@@ -101,6 +101,16 @@ export const mockMediaConnectorUpload = jest.fn().mockResolvedValue({ success: t
 export const mockMediaConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorQuery = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorDownload = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorRemove = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorCopy = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorUpload = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockConnectorAuthenticationSetChiliToken = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -213,6 +223,16 @@ const MockEditorAPI = {
     mediaConnectorGetCapabilities: mockMediaConnectorGetCapabilities,
     mediaConnectorGetQueryOptions: mockMediaConnectorGetQueryOptions,
     mediaConnectorGetDownloadOptions: mockMediaConnectorGetDownloadOptions,
+    fontConnectorCopy: mockFontConnectorCopy,
+    fontConnectorQuery: mockFontConnectorQuery,
+    fontConnectorDownload: mockFontConnectorDownload,
+    fontConnectorRemove: mockFontConnectorRemove,
+    fontConnectorUpload: mockFontConnectorUpload,
+    fontConnectorGetCapabilities: mockFontConnectorGetCapabilities,
+    fontConnectorGetQueryOptions: mockFontConnectorGetQueryOptions,
+    fontConnectorGetDownloadOptions: mockFontConnectorGetDownloadOptions,
+    connectorAuthenticationSetChiliToken: mockConnectorAuthenticationSetChiliToken,
+    connectorAuthenticationSetHttpHeader: mockConnectorAuthenticationSetHttpHeader,
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
     setFitMode: mockSetFitMode,

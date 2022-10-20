@@ -17,7 +17,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('ConfigurationConnector methods', () => {
-    it('Should call  all of the configuration functions of child successfully', async () => {
+    it('Should call all of the configuration functions of child successfully', async () => {
         const configKey = 'dam';
         const configValue = 'm123';
 

@@ -16,7 +16,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('SDK methods', () => {
-    it('Should call  all of the frame properties methods of editorAPI successfully', async () => {
+    it('Should call all of the frame properties methods of editorAPI successfully', async () => {
         mockedSDK.loadEditor();
         expect(mockedSDK.loadEditor).toHaveBeenCalledTimes(1);
     });

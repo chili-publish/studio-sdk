@@ -42,7 +42,7 @@ afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('FrameProperties', () => {
-    it('Should call  all of the Frame Functions of EditorAPI successfully', () => {
+    it('Should call all of the Frame Functions of EditorAPI successfully', () => {
         mockedFrameProperties.getFrames();
         expect(mockedFrameProperties.getFrames).toHaveBeenCalledTimes(1);
 
