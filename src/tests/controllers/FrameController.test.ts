@@ -1,10 +1,11 @@
+import { Id } from '../../../types/CommonTypes';
 import { FitMode, VerticalAlign } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
 
 let mockedFrameProperties: FrameController;
-let frameId: number;
+let frameId: Id;
 beforeEach(() => {
     mockedFrameProperties = new FrameController(MockEditorAPI);
     jest.spyOn(mockedFrameProperties, 'getFrames');
@@ -49,28 +50,28 @@ describe('FrameProperties', () => {
         mockedFrameProperties.getSelectedFrames();
         expect(mockedFrameProperties.getSelectedFrames).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.getFramesByPageId(2);
+        mockedFrameProperties.getFramesByPageId('2');
         expect(mockedFrameProperties.getFramesByPageId).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFramesByPageId).toHaveBeenCalledWith(2);
+        expect(mockedFrameProperties.getFramesByPageId).toHaveBeenCalledWith('2');
 
         mockedFrameProperties.getFrameByName('frame');
         expect(mockedFrameProperties.getFrameByName).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.getFrameByName).toHaveBeenCalledWith('frame');
 
-        mockedFrameProperties.getFrameById(5);
+        mockedFrameProperties.getFrameById('5');
         expect(mockedFrameProperties.getFrameById).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFrameById).toHaveBeenCalledWith(5);
+        expect(mockedFrameProperties.getFrameById).toHaveBeenCalledWith('5');
 
         mockedFrameProperties.getFramePropertiesOnSelectedLayout();
         expect(mockedFrameProperties.getFramePropertiesOnSelectedLayout).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.getFramePropertiesByFrameId(1, 2);
+        mockedFrameProperties.getFramePropertiesByFrameId('1', '2');
         expect(mockedFrameProperties.getFramePropertiesByFrameId).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFramePropertiesByFrameId).toHaveBeenCalledWith(1, 2);
+        expect(mockedFrameProperties.getFramePropertiesByFrameId).toHaveBeenCalledWith('1', '2');
 
-        mockedFrameProperties.getFramesProperties(1);
+        mockedFrameProperties.getFramesProperties('1');
         expect(mockedFrameProperties.getFramesProperties).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.getFramesProperties).toHaveBeenCalledWith(1);
+        expect(mockedFrameProperties.getFramesProperties).toHaveBeenCalledWith('1');
 
         mockedFrameProperties.setFrameHeight(frameId, '300');
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(1);
@@ -90,42 +91,42 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setFrameHeight(frameId, '32');
         expect(mockedFrameProperties.setFrameHeight).toHaveBeenCalledTimes(2);
 
-        mockedFrameProperties.setFrameName(1, 'TEST');
+        mockedFrameProperties.setFrameName('1', 'TEST');
         expect(mockedFrameProperties.setFrameName).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.setFrameVisibility(2, false);
+        mockedFrameProperties.setFrameVisibility('2', false);
         expect(mockedFrameProperties.setFrameVisibility).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.removeFrame(1);
+        mockedFrameProperties.removeFrame('1');
         expect(mockedFrameProperties.removeFrame).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrame(2);
+        mockedFrameProperties.resetFrame('2');
         expect(mockedFrameProperties.resetFrame).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameX(2);
+        mockedFrameProperties.resetFrameX('2');
         expect(mockedFrameProperties.resetFrameX).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameY(2);
+        mockedFrameProperties.resetFrameY('2');
         expect(mockedFrameProperties.resetFrameY).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameRotation(2);
+        mockedFrameProperties.resetFrameRotation('2');
         expect(mockedFrameProperties.resetFrameRotation).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameHeight(2);
+        mockedFrameProperties.resetFrameHeight('2');
         expect(mockedFrameProperties.resetFrameHeight).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameWidth(2);
+        mockedFrameProperties.resetFrameWidth('2');
         expect(mockedFrameProperties.resetFrameWidth).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.resetFrameSize(2);
+        mockedFrameProperties.resetFrameSize('2');
         expect(mockedFrameProperties.resetFrameSize).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.selectFrame(2);
+        mockedFrameProperties.selectFrame('2');
         expect(mockedFrameProperties.selectFrame).toHaveBeenCalledTimes(1);
 
-        mockedFrameProperties.selectMultipleFrames([5]);
+        mockedFrameProperties.selectMultipleFrames(['5']);
         expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith([5]);
+        expect(mockedFrameProperties.selectMultipleFrames).toHaveBeenCalledWith(['5']);
 
         mockedFrameProperties.setImageFrameFitMode(frameId, FitMode.fit);
         expect(mockedFrameProperties.setImageFrameFitMode).toHaveBeenCalledTimes(1);

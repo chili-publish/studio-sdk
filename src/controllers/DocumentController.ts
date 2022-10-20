@@ -1,4 +1,4 @@
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../../types/CommonTypes';
 import type { ChiliDocument, DocumentError } from '../../types/DocumentTypes';
 import { renderURLs, DownloadFormats } from '../utils/enums';
 
@@ -50,7 +50,7 @@ export class DocumentController {
      * @param layoutId id of layout to be downloaded
      * @returns the download link
      */
-    getDownloadLink = async (format: DownloadFormats, layoutId: number) => {
+    getDownloadLink = async (format: DownloadFormats, layoutId: Id) => {
         let error: DocumentError | null = null;
         let PREPARE_DOWNLOAD_URL: string | null = null;
         let DOWNLOAD_URL = '';

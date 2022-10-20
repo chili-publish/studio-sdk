@@ -53,13 +53,13 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, 1);
+            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, '1');
 
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: null,
@@ -84,11 +84,11 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, 1);
+            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, '1');
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: null,
                 headers: { 'Content-Type': 'application/json' },
@@ -116,11 +116,11 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, 1);
+            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, '1');
             expect(mockFetch).toHaveBeenLastCalledWith('test url', {
                 body: null,
                 headers: { 'Content-Type': 'application/json' },
@@ -161,11 +161,11 @@ describe('Document controller', () => {
                 ),
             );
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, 1);
+            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
-            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, 1);
+            expect(FetchHelper.getFetchURL).toHaveBeenLastCalledWith(DownloadFormats.MP4, '1');
             expect(mockFetch).toHaveBeenLastCalledWith('https://rendering.chili-publish-sandbox.online/url/1');
 
             expect(mockedLongPoll).toHaveBeenCalledTimes(1);

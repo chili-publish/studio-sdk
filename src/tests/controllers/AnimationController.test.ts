@@ -35,13 +35,13 @@ describe('Animation methods', () => {
         await mockedSDK.animation.getAnimationsOnSelectedLayout();
         expect(mockedSDK.editorAPI.getAnimationsOnSelectedLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.getAnimationByFrameId(4, 8);
+        await mockedSDK.animation.getAnimationByFrameId('4', '8');
         expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledWith(4, 8);
+        expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledWith('4', '8');
 
-        await mockedSDK.animation.getAnimationsByLayoutId(4);
+        await mockedSDK.animation.getAnimationsByLayoutId('4');
         expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledWith(4);
+        expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledWith('4');
 
         await mockedSDK.animation.setFrameAnimation(mockedAnimation.animation);
         expect(mockedSDK.editorAPI.setFrameAnimation).toHaveBeenCalledTimes(1);

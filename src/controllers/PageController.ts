@@ -1,4 +1,4 @@
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Page } from '../../types/PageTypes';
 
@@ -33,7 +33,7 @@ export class PageController {
      * @param pageId The ID of a specific page
      * @returns
      */
-    getPageById = async (pageId: number) => {
+    getPageById = async (pageId: Id) => {
         const res = await this.#editorAPI;
         return res.getPageById(pageId).then((result) => getEditorResponseData<Page>(result));
     };

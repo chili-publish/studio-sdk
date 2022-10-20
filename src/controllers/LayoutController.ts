@@ -1,4 +1,4 @@
-import type { EditorAPI } from '../../types/CommonTypes';
+import type { EditorAPI, Id } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Layout } from '../../types/LayoutTypes';
@@ -34,7 +34,7 @@ export class LayoutController {
      * @param id The ID of a specific layout
      * @returns
      */
-    getLayoutById = async (id: number) => {
+    getLayoutById = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getLayoutById(id).then((result) => getEditorResponseData<Layout>(result));
     };
@@ -63,7 +63,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    removeLayout = async (layoutId: number) => {
+    removeLayout = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.removeLayout(layoutId).then((result) => getEditorResponseData<null>(result));
     };
@@ -73,7 +73,7 @@ export class LayoutController {
      * @param parentId The ID of a specific layout, being the parent
      * @returns
      */
-    addLayout = async (parentId: number) => {
+    addLayout = async (parentId: Id) => {
         const res = await this.#editorAPI;
         return res.addLayout(parentId).then((result) => getEditorResponseData<number>(result));
     };
@@ -84,7 +84,7 @@ export class LayoutController {
      * @param layoutName The new name that the layout should receive
      * @returns
      */
-    setLayoutName = async (layoutId: number, layoutName: string) => {
+    setLayoutName = async (layoutId: Id, layoutName: string) => {
         const res = await this.#editorAPI;
         return res.renameLayout(layoutId, layoutName).then((result) => getEditorResponseData<null>(result));
     };
@@ -94,7 +94,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    selectLayout = async (layoutId: number) => {
+    selectLayout = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.selectLayout(layoutId).then((result) => getEditorResponseData<null>(result));
     };
@@ -104,7 +104,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    duplicateLayout = async (layoutId: number) => {
+    duplicateLayout = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.duplicateLayout(layoutId).then((result) => getEditorResponseData<number>(result));
     };
@@ -114,7 +114,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    resetLayout = async (layoutId: number) => {
+    resetLayout = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayout(layoutId).then((result) => getEditorResponseData<null>(result));
     };
@@ -125,7 +125,7 @@ export class LayoutController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setLayoutHeight = async (layoutId: number, value: string) => {
+    setLayoutHeight = async (layoutId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -142,7 +142,7 @@ export class LayoutController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setLayoutWidth = async (layoutId: number, value: string) => {
+    setLayoutWidth = async (layoutId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -159,7 +159,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    resetLayoutHeight = async (layoutId: number) => {
+    resetLayoutHeight = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutHeight(layoutId).then((result) => getEditorResponseData<null>(result));
     };
@@ -169,7 +169,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    resetLayoutWidth = async (layoutId: number) => {
+    resetLayoutWidth = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutWidth(layoutId).then((result) => getEditorResponseData<null>(result));
     };

@@ -1,5 +1,6 @@
 import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsOutroType } from './AnimationTypes';
 import { DocumentColor } from './ColorStyleTypes';
+import { Id } from './CommonTypes';
 import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutType } from './LayoutTypes';
 import { ColorUsage, ParagraphStyle } from './ParagraphStyleTypes';
@@ -101,13 +102,13 @@ export interface TopLayout extends Layout {
     frameAnimations: FrameAnimation[];
     timelineLengthMs: number;
     animated: boolean;
-    parentLayoutId: number;
+    parentLayoutId: Id;
     width: number;
     height: number;
 }
 
 export interface ChildLayout extends Layout {
-    parentLayoutId: string;
+    parentLayoutId: Id;
 }
 
 export enum FramePropertiesType {
@@ -115,7 +116,7 @@ export enum FramePropertiesType {
     child = 'child',
 }
 export interface FrameProperty {
-    frameId: string;
+    frameId: Id;
     x?: number;
     y?: number;
     width?: number;
@@ -142,7 +143,7 @@ export interface TopFrameProperty extends FrameProperty {
 }
 
 export interface FrameAnimation {
-    frameId: string;
+    frameId: Id;
     from: number;
     to: number;
     basicAnimations: BasicAnimations;
@@ -161,7 +162,7 @@ export interface DocumentStyleKit {
 }
 
 export interface DocumentCharacterStyle {
-    id: string;
+    id: Id;
     name: string;
     fontFamily?: string;
     fontStyle?: string;
@@ -183,7 +184,7 @@ export interface DocumentCharacterStyle {
 export type DocumentParagraphStyle = ParagraphStyle;
 
 export interface DocumentVariable extends Variable {
-    parentId: string;
+    parentId: Id;
     name: string;
     label: string;
     isHidden: boolean;

@@ -17,8 +17,8 @@ describe('PageProperties', () => {
         mockedPageProperties.getPages();
         expect(mockedPageProperties.getPages).toHaveBeenCalledTimes(1);
 
-        mockedPageProperties.getPageById(4);
+        mockedPageProperties.getPageById('4');
         expect(mockedPageProperties.getPageById).toHaveBeenCalledTimes(1);
-        expect(mockedPageProperties.getPageById).toHaveBeenCalledWith(4);
+        expect(mockedPageProperties.getPageById).toHaveBeenCalledWith('4');
     });
 });

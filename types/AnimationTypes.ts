@@ -1,3 +1,5 @@
+import { Id } from "./CommonTypes";
+
 export enum SlideDirections {
     top = 'top',
     left = 'left',
@@ -105,7 +107,7 @@ export type BasicAnimationsType = {
 };
 
 export type FrameAnimationPropertiesType = {
-    frameId: number;
+    frameId: Id;
     from: number;
     to: number;
     basicAnimations: BasicAnimationsType;

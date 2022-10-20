@@ -1,9 +1,9 @@
 // FramePropertiesDto
-import { PropertyState } from './CommonTypes';
+import { Id, PropertyState } from './CommonTypes';
 
 export type FrameLayoutType = {
-    frameId: number;
-    layoutId: number;
+    frameId: Id;
+    layoutId: Id;
     x: PropertyState<number>;
     y: PropertyState<number>;
     width: PropertyState<number>;
@@ -17,7 +17,7 @@ export type FrameLayoutType = {
 
 //Frame.image
 export type FrameType = {
-    frameId: number;
+    frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum;
     imageUrl: string;
@@ -27,14 +27,14 @@ export type FrameType = {
 export type Frame = TextFrame | ImageFrame;
 // used by new getter methods
 export type ImageFrame = {
-    frameId: number;
+    frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum.image;
     src: string;
     blendMode: BlendMode;
 };
 export type TextFrame = {
-    frameId: number;
+    frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum.text;
     textContent: string;

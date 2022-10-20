@@ -1,5 +1,5 @@
 import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -36,7 +36,7 @@ export class AnimationController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    getAnimationByFrameId = async (frameId: number, layoutId?: number) => {
+    getAnimationByFrameId = async (frameId: Id, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res
             .getAnimationByFrameId<string>(frameId, layoutId)
@@ -48,7 +48,7 @@ export class AnimationController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    getAnimationsByLayoutId = async (layoutId: number) => {
+    getAnimationsByLayoutId = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res
             .getAnimationsByLayoutId(layoutId)
@@ -112,7 +112,7 @@ export class AnimationController {
      * @param frameId The id of a certain frame
      * @returns
      */
-    resetFrameAnimation = async (frameId: number) => {
+    resetFrameAnimation = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameAnimation(frameId);
     };
