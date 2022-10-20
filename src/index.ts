@@ -20,6 +20,7 @@ import { ConfigurationController } from './controllers/ConfigurationController';
 import { MediaConnectorController } from './controllers/MediaConnectorController';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
+import { FontConnectorController } from './controllers/FontConnectorController';
 import { ConnectorController } from './controllers/ConnectorController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
@@ -103,6 +104,7 @@ export class SDK {
     frame: FrameController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
+    fontConnector: FontConnectorController;
     animation: AnimationController;
     document: DocumentController;
     configuration: ConfigurationController;
@@ -133,6 +135,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
+        this.fontConnector = new FontConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new ConfigurationController(this.editorAPI);
@@ -195,6 +198,7 @@ export class SDK {
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
+        this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version

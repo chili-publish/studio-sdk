@@ -1,4 +1,4 @@
-import {ColorUsage} from "./ParagraphStyleTypes";
+import { ColorUsage } from './ParagraphStyleTypes';
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -50,13 +50,10 @@ export interface TextStyle {
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 export type TextStyleUpdateType = {
-    [key in keyof typeof SelectedTextStyles]?
-    : {
+    [key in keyof typeof SelectedTextStyles]?: {
         value: number | string | boolean;
     };
 };
-
-
 
 export interface AppearanceProperties {
     blendMode?: string;
@@ -115,6 +112,5 @@ export enum BlendModes {
 }
 
 export interface UpdateStyleType {
-    path: { value: number | string | Record<string, unknown> | null | boolean | undefined }
+    path: { value: number | string | Record<string, unknown> | null | boolean | undefined };
 }
-

@@ -12,7 +12,7 @@ export type FrameLayoutType = {
     scaleX: PropertyState<number>;
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
-    fitMode: PropertyState<FitMode>
+    fitMode: PropertyState<FitMode>;
 } | null;
 
 //Frame.image

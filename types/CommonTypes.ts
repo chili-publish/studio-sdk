@@ -8,8 +8,8 @@ import { ToolType } from '../src';
 import { UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
-import {Font} from "./FontTypes";
-import {CharacterStyle} from "./CharacterStyleTypes";
+import { Font } from './FontTypes';
+import { CharacterStyle } from './CharacterStyleTypes';
 
 export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
