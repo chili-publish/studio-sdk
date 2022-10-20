@@ -109,6 +109,8 @@ export const mockFontConnectorUpload = jest.fn().mockResolvedValue({ success: tr
 export const mockFontConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockConnectorAuthenticationSetChiliToken = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -228,6 +230,8 @@ const MockEditorAPI = {
     fontConnectorGetCapabilities: mockFontConnectorGetCapabilities,
     fontConnectorGetQueryOptions: mockFontConnectorGetQueryOptions,
     fontConnectorGetDownloadOptions: mockFontConnectorGetDownloadOptions,
+    connectorAuthenticationSetChiliToken: mockConnectorAuthenticationSetChiliToken,
+    connectorAuthenticationSetHttpHeader: mockConnectorAuthenticationSetHttpHeader,
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
     setFitMode: mockSetFitMode,

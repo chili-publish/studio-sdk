@@ -89,7 +89,7 @@ export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 let connection: Connection;
 
-const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/0.0.9/web';
+const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/0.0.11/web';
 
 export class SDK {
     config: ConfigType;
