@@ -84,6 +84,7 @@ export {
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
+export { MediaType } from '../types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
