@@ -114,7 +114,7 @@ export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedVa
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
-
+export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
@@ -137,6 +137,7 @@ const MockEditorAPI = {
     setFrameHeight: mockSetFrameHeight,
     setFrameWidth: mockSetFrameWidth,
     setFrameVisibility: mockSetFrameVisibility,
+    setVerticalAlignment: mockSetVerticalAlignment,
     removeFrame: mockRemoveFrame,
     setFrameX: mockSetFrameX,
     setFrameY: mockSetFrameY,

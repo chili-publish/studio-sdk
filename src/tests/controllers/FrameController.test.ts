@@ -1,4 +1,4 @@
-import { FitMode } from '../../../types/FrameTypes';
+import { FitMode, VerticalAlign } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
@@ -33,6 +33,7 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameName');
     jest.spyOn(mockedFrameProperties, 'setImageFrameFitMode');
+    jest.spyOn(mockedFrameProperties, 'setVerticalAlignment');
 
     frameId = mockSelectFrame.frameId;
 });
@@ -129,6 +130,10 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setImageFrameFitMode(frameId, FitMode.fit);
         expect(mockedFrameProperties.setImageFrameFitMode).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setImageFrameFitMode).toHaveBeenCalledWith(frameId, FitMode.fit);
+
+        mockedFrameProperties.setVerticalAlignment(frameId, VerticalAlign.justify);
+        expect(mockedFrameProperties.setVerticalAlignment).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setVerticalAlignment).toHaveBeenCalledWith(frameId, VerticalAlign.justify);
     });
 });
 

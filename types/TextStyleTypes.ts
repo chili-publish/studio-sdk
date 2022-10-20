@@ -1,4 +1,5 @@
-import { ColorUsage } from './ParagraphStyleTypes';
+import {ColorUsage} from "./ParagraphStyleTypes";
+import {VerticalAlign} from "./FrameTypes";
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -33,7 +34,7 @@ export interface TextProperties {
     fontStyle?: FontWeights;
     fontSize?: string;
     textAlign?: Alignment;
-    position?: TextPosition;
+    verticalAlign?: VerticalAlign;
     underline?: boolean;
     lineThrough?: boolean;
     letterSpacing?: string;
@@ -80,7 +81,7 @@ export enum SelectedTextStyles {
     LETTER_SPACING = 'letterSpacing',
     LINE_HEIGHT = 'lineHeight',
     TEXT_ALIGN = 'textAlign',
-    POSITON = 'position',
+    VERTICAL_ALIGN = 'verticalAlign',
     TYPOGRAPHIC_CASE = 'typographicCase',
     SUB_SUPER_SCRIPT = 'subSuperScript',
     UNDERLINE = 'underline',
