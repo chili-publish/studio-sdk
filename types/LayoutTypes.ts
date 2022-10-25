@@ -46,6 +46,14 @@ export type Layout = {
     timelineLengthMs?: number;
 };
 
+// used by onLayoutsChanged
+export type LayoutListItemType = {
+    layoutId: String;
+    layoutName: string;
+    parentLayoutId?: String;
+    childLayouts: String[];
+};
+
 export enum LayoutType {
     top = 'top',
     child = 'child',

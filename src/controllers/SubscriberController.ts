@@ -160,4 +160,22 @@ export class SubscriberController {
         const callBack = this.config.onFontsChanged;
         callBack && callBack(JSON.parse(fonts));
     };
+
+    /**
+     * Listener on selected layout id, if this changes, this listener will get triggered with the updates
+     * @param layoutId the currently selected layout id
+     */
+    onSelectedLayoutIdChanged = (layoutId: string) => {
+        const callBack = this.config.onSelectedLayoutIdChanged;
+        callBack && callBack(layoutId);
+    };
+
+    /**
+     * Listener on layouts, if this changes, this listener will get triggered with the updates
+     * @param layouts Stringified object of layouts
+     */
+    onLayoutsChanged = (layouts: string) => {
+        const callBack = this.config.onLayoutsChanged;
+        callBack && callBack(JSON.parse(layouts));
+    };
 }
