@@ -14,6 +14,7 @@ export type Media = {
 };
 
 export type MediaPage = {
+    pageSize: number;
     nextPageToken?: string;
     data: Media[];
 };
