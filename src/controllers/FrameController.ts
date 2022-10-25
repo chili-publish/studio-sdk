@@ -1,4 +1,4 @@
-import type { EditorAPI } from '../../types/CommonTypes';
+import type { EditorAPI, Id } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum, VerticalAlign } from '../../types/FrameTypes';
@@ -43,7 +43,7 @@ export class FrameController {
      * @param pageId The ID of a specific page
      * @returns
      */
-    getFramesByPageId = async (pageId: number) => {
+    getFramesByPageId = async (pageId: Id) => {
         const res = await this.#editorAPI;
         return res.getFramesByPageId(pageId).then((result) => getEditorResponseData<FrameType[]>(result));
     };
@@ -63,7 +63,7 @@ export class FrameController {
      * @param id The ID of a specific frame
      * @returns
      */
-    getFrameById = async (id: number) => {
+    getFrameById = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getFrameById(id).then((result) => getEditorResponseData<FrameType>(result));
     };
@@ -85,7 +85,7 @@ export class FrameController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    getFramePropertiesByFrameId = async (frameId: number, layoutId?: number) => {
+    getFramePropertiesByFrameId = async (frameId: Id, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res
             .getFramePropertiesByFrameId(frameId, layoutId)
@@ -97,7 +97,7 @@ export class FrameController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    getFramesProperties = async (layoutId: number) => {
+    getFramesProperties = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.getFramesProperties(layoutId).then((result) => getEditorResponseData<FrameLayoutType[]>(result));
     };
@@ -107,7 +107,7 @@ export class FrameController {
      * @param frameId The ID of a specific frame
      * @returns
      */
-    resetFrameSize = async (frameId: number) => {
+    resetFrameSize = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameSize(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -117,7 +117,7 @@ export class FrameController {
      * @param frameId The ID of a specific frame
      * @returns
      */
-    selectFrame = async (frameId: number) => {
+    selectFrame = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.selectFrames([frameId]).then((result) => getEditorResponseData<null>(result));
     };
@@ -127,7 +127,7 @@ export class FrameController {
      * @param frameIds An array of all IDs you want to select
      * @returns
      */
-    selectMultipleFrames = async (frameIds: number[]) => {
+    selectMultipleFrames = async (frameIds: Id[]) => {
         const res = await this.#editorAPI;
         return res.selectFrames(frameIds).then((result) => getEditorResponseData<null>(result));
     };
@@ -138,7 +138,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameHeight = async (frameId: number, value: string) => {
+    setFrameHeight = async (frameId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -156,7 +156,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameRotation = async (frameId: number, value: string) => {
+    setFrameRotation = async (frameId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -174,7 +174,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameWidth = async (frameId: number, value: string) => {
+    setFrameWidth = async (frameId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
         if (calc === null || calc === Infinity) {
@@ -192,7 +192,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameX = async (frameId: number, value: string) => {
+    setFrameX = async (frameId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
 
@@ -210,7 +210,7 @@ export class FrameController {
      * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameY = async (frameId: number, value: string) => {
+    setFrameY = async (frameId: Id, value: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(value);
 
@@ -229,7 +229,7 @@ export class FrameController {
      * @param frameName The new name that the frame should receive
      * @returns
      */
-    setFrameName = async (frameId: number, frameName: string) => {
+    setFrameName = async (frameId: Id, frameName: string) => {
         const res = await this.#editorAPI;
         return res.renameFrame(frameId, frameName).then((result) => getEditorResponseData<null>(result));
     };
@@ -239,7 +239,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
-    resetFrame = async (frameId: number) => {
+    resetFrame = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -248,7 +248,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
-    resetFrameX = async (frameId: number) => {
+    resetFrameX = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameX(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -258,7 +258,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
-    resetFrameY = async (frameId: number) => {
+    resetFrameY = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameY(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -268,7 +268,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
-    resetFrameRotation = async (frameId: number) => {
+    resetFrameRotation = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameRotation(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -278,7 +278,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
-    resetFrameWidth = async (frameId: number) => {
+    resetFrameWidth = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameWidth(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -288,7 +288,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to get reset
      * @returns
      */
-    resetFrameHeight = async (frameId: number) => {
+    resetFrameHeight = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameHeight(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -299,7 +299,7 @@ export class FrameController {
      * @param value True means the frame gets visible, false means the frame gets invisible
      * @returns
      */
-    setFrameVisibility = async (frameId: number, value: boolean) => {
+    setFrameVisibility = async (frameId: Id, value: boolean) => {
         const res = await this.#editorAPI;
         return res.setFrameVisibility(frameId, value).then((result) => getEditorResponseData<null>(result));
     };
@@ -309,7 +309,7 @@ export class FrameController {
      * @param frameId The ID of the frame that needs to be deleted
      * @returns
      */
-    removeFrame = async (frameId: number) => {
+    removeFrame = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.removeFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -335,7 +335,7 @@ export class FrameController {
      * @param resourceId Unique Id of the asset that you want to assign to the imageFrame
      * @returns
      */
-    setImageFromConnector = async (imageFrameId: number, connectorId: string, resourceId: string) => {
+    setImageFromConnector = async (imageFrameId: Id, connectorId: string, resourceId: string) => {
         const res = await this.#editorAPI;
         return res
             .assignImage(imageFrameId, connectorId, resourceId)
@@ -348,7 +348,7 @@ export class FrameController {
      * @param fitMode The new fitMode that you want to set to the imageFrame.
      * @returns
      */
-    setImageFrameFitMode = async (imageFrameId: number, fitMode: FitMode) => {
+    setImageFrameFitMode = async (imageFrameId: Id, fitMode: FitMode) => {
         const res = await this.#editorAPI;
         return res.setFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
@@ -359,7 +359,7 @@ export class FrameController {
      * @param verticalAlign The new vertical alignment to be set to the frame.
      * @returns
      */
-    setVerticalAlignment = async (frameId: number, verticalAlign: VerticalAlign) => {
+    setVerticalAlignment = async (frameId: Id, verticalAlign: VerticalAlign) => {
         const res = await this.#editorAPI;
         return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };

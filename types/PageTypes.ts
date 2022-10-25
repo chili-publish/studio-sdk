@@ -1,5 +1,7 @@
+import { Id } from "./CommonTypes";
+
 export type Page = {
-    pageId: number;
+    pageId: Id;
     pageNumber: number;
     width?: number;
     height?: number;

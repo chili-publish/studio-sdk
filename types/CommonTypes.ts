@@ -11,6 +11,8 @@ import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Font } from './FontTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 
+export type Id = string;
+
 export type ConfigType = {
     onStateChanged?: (state: InitialStateType) => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
@@ -50,7 +52,7 @@ export interface EditorAPI extends CallSender {
 }
 
 export type PageType = {
-    pageId: number;
+    pageId: Id;
     pageNumber: number;
     width: number | null;
     height: number | null;
@@ -59,7 +61,7 @@ export type PageType = {
 
 export type InitialStateType = {
     layouts: LayoutWithFrameProperties[];
-    selectedLayoutId: number;
+    selectedLayoutId: Id;
     pages: PageType[];
     variables: Variable[];
 };
@@ -70,7 +72,7 @@ export interface PropertyState<T> {
 }
 
 export interface SelectedLayoutFrame {
-    frameId: number;
+    frameId: Id;
     frameName: string;
     included: boolean;
 }

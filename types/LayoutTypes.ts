@@ -1,7 +1,7 @@
-import { PropertyState } from './CommonTypes';
+import { Id, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
-    layoutId: number;
+    layoutId: Id;
 
     width: { value: number; isOverride: boolean };
     height: { value: number; isOverride: boolean };
@@ -10,7 +10,7 @@ export type LayoutPropertiesType = {
 } | null;
 
 export type FrameProperties = {
-    frameId: number;
+    frameId: Id;
     framePropertiesType: string;
     height: number | null;
     included: boolean | null;
@@ -23,13 +23,13 @@ export type FrameProperties = {
 };
 
 export type LayoutWithFrameProperties = {
-    layoutId: number;
+    layoutId: Id;
     layoutName: string;
-    parentLayoutId?: number;
+    parentLayoutId?: Id;
     frameProperties: FrameProperties[];
     width: number | null;
     height: number | null;
-    childLayouts: number[];
+    childLayouts: Id[];
     layoutType: LayoutType;
     timelineLengthMs?: number;
     children?: LayoutWithFrameProperties[];
@@ -37,12 +37,12 @@ export type LayoutWithFrameProperties = {
 
 // used by new getter methods
 export type Layout = {
-    layoutId: number;
+    layoutId: Id;
     layoutName: string;
-    parentLayoutId?: number;
+    parentLayoutId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
-    childLayouts: number[];
+    childLayouts: Id[];
     timelineLengthMs?: number;
 };
 

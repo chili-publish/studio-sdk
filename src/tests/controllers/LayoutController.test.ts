@@ -1,3 +1,4 @@
+import { Id } from '../../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
@@ -5,7 +6,7 @@ import { mockSelectPage } from '../__mocks__/FrameProperties';
 import mockChild from '../__mocks__/MockEditorAPI';
 
 let mockedSDK: SDK;
-let mockId: number;
+let mockId: Id;
 beforeEach(() => {
     mockedSDK = new SDK(mockConfig);
     jest.spyOn(mockedSDK.layout, 'getLayouts');
@@ -38,9 +39,9 @@ describe('Layout methods', () => {
         await mockedSDK.layout.getLayouts();
         expect(mockedSDK.editorAPI.getLayouts).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.getLayoutById(1);
+        await mockedSDK.layout.getLayoutById('1');
         expect(mockedSDK.editorAPI.getLayoutById).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getLayoutById).toHaveBeenCalledWith(1);
+        expect(mockedSDK.editorAPI.getLayoutById).toHaveBeenCalledWith('1');
 
         await mockedSDK.layout.getLayoutByName('layout');
         expect(mockedSDK.editorAPI.getLayoutByName).toHaveBeenCalledTimes(1);
@@ -49,22 +50,22 @@ describe('Layout methods', () => {
         await mockedSDK.layout.getSelectedLayout();
         expect(mockedSDK.editorAPI.getSelectedLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.removeLayout(1);
+        await mockedSDK.layout.removeLayout('1');
         expect(mockedSDK.editorAPI.removeLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.addLayout(1);
+        await mockedSDK.layout.addLayout('1');
         expect(mockedSDK.editorAPI.addLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.setLayoutName(1, 'TEST');
+        await mockedSDK.layout.setLayoutName('1', 'TEST');
         expect(mockedSDK.editorAPI.renameLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.selectLayout(1);
+        await mockedSDK.layout.selectLayout('1');
         expect(mockedSDK.editorAPI.selectLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.duplicateLayout(1);
+        await mockedSDK.layout.duplicateLayout('1');
         expect(mockedSDK.editorAPI.duplicateLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.resetLayout(1);
+        await mockedSDK.layout.resetLayout('1');
         expect(mockedSDK.editorAPI.resetLayout).toHaveBeenCalledTimes(1);
 
         await mockedSDK.layout.setLayoutHeight(mockId, '32');
@@ -79,10 +80,10 @@ describe('Layout methods', () => {
         await mockedSDK.layout.setLayoutWidth(mockId, 'null');
         expect(mockedSDK.editorAPI.setLayoutWidth).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.resetLayoutHeight(1);
+        await mockedSDK.layout.resetLayoutHeight('1');
         expect(mockedSDK.editorAPI.resetLayoutHeight).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.layout.resetLayoutWidth(1);
+        await mockedSDK.layout.resetLayoutWidth('1');
         expect(mockedSDK.editorAPI.resetLayoutWidth).toHaveBeenCalledTimes(1);
     });
 });
