@@ -24,6 +24,11 @@
         "entryPoints": [
             "src/index.ts",
             "src/controllers/AnimationController.ts",
+            "src/controllers/ConnectorController.ts",
+            "src/controllers/MediaConnectorController.ts",
+            "src/controllers/FontConnectorController.ts", 
+            "src/controllers/ColorStyleController.ts", 
+            "src/controllers/ConfigurationController.ts", 
             "src/controllers/FrameController.ts",
             "src/controllers/LayoutController.ts",
             "src/controllers/UtilsController.ts",
