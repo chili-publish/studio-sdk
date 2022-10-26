@@ -162,7 +162,7 @@ export class SubscriberController {
     };
 
     /**
-     * Listener on selected layout id, if this changes, this listener will get triggered with the updates
+     * Listener on selected layout id, this listener will get triggered when a different layout is selected.
      * @param layoutId the currently selected layout id
      */
     onSelectedLayoutIdChanged = (layoutId: string) => {
@@ -171,7 +171,11 @@ export class SubscriberController {
     };
 
     /**
-     * Listener on layouts, if this changes, this listener will get triggered with the updates
+     * Listener on layouts, this listener will get triggered when a (sub)layout is
+     * - added
+     * - removed
+     * - renamed
+     * - duplicted
      * @param layouts Stringified object of layouts
      */
     onLayoutsChanged = (layouts: string) => {
