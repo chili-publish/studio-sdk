@@ -6,20 +6,24 @@ So on these pages you'll find some very technical but super handy descriptions o
 
 ## Controllers
 
+-   [Default methods (SDK)](classes/index.SDK.md)
 -   [AnimationController](classes/controllers_AnimationController.AnimationController.md)
+-   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.md)
+-   [ConfigurationController](classes/controllers_ConfigurationController.ConfigurationController.md)
+-   [ConnectorController](classes/controllers_ConnectorController.ConnectorController.md)
+-   [DebugController](classes/controllers_DebugController.DebugController.md)
 -   [DocumentController](classes/controllers_DocumentController.DocumentController.md)
+-   [FontConnectorController](classes/controllers_FontConnectorController.FontConnectorController.md)
 -   [FrameController](classes/controllers_FrameController.FrameController.md)
 -   [LayoutController](classes/controllers_LayoutController.LayoutController.md)
+-   [MediaConnectorController](classes/controllers_MediaConnectorController.MediaConnectorController.md)
+-   [PageController](classes/controllers_PageController.PageController.md)
+-   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
+-   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.md)
 -   [ToolController](classes/controllers_ToolController.ToolController.md)
+-   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.md)
 -   [UtilsController](classes/controllers_UtilsController.UtilsController.md)
 -   [VariableController](classes/controllers_VariableController.VariableController.md)
--   [DebugController](classes/controllers_DebugController.DebugController.md)
--   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
--   [PageController](classes/controllers_PageController.PageController.md)
--   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.md)
--   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.md)
--   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.md)
--   [Default methods (SDK)](classes/index.SDK.md)
 
 ## The document
 
