@@ -56,7 +56,7 @@ export type {
     EditorResponse,
     SelectedLayoutFrame,
     MetaData,
-    Id
+    Id,
 } from '../types/CommonTypes';
 
 export type {
@@ -178,6 +178,8 @@ export class SDK {
                 onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
                 onCharacterStylesChanged: this.subscriber.onCharacterStylesChanged,
                 onFontsChanged: this.subscriber.onFontsChanged,
+                onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
+                onLayoutsChanged: this.subscriber.onLayoutsChanged,
             },
             this.setConnection,
             this.config.editorId,
