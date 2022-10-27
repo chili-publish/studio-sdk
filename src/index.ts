@@ -20,8 +20,9 @@ import { ConfigurationController } from './controllers/ConfigurationController';
 import { MediaConnectorController } from './controllers/MediaConnectorController';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
-import { FontConnectorController } from './controllers/FontConnectorController';
+import { FontController } from './controllers/FontController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { FontConnectorController } from './controllers/FontConnectorController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -120,6 +121,7 @@ export class SDK {
     textSelection: TextStyleController;
     paragraphStyle: ParagraphStyleController;
     colorStyle: ColorStyleController;
+    font: FontController;
 
     private subscriber: SubscriberController;
 
@@ -152,6 +154,7 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.font = new FontController(this.editorAPI);
     }
 
     /**
@@ -203,6 +206,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
+        this.font = new FontController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
