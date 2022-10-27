@@ -20,6 +20,7 @@ import { ConfigurationController } from './controllers/ConfigurationController';
 import { MediaConnectorController } from './controllers/MediaConnectorController';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
+import engineInfo from '../editor-engine.json';
 import { FontConnectorController } from './controllers/FontConnectorController';
 import { ConnectorController } from './controllers/ConnectorController';
 
@@ -92,7 +93,7 @@ export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 let connection: Connection;
 
-const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/0.0.11/web';
+const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/'+ engineInfo.current  +'/web';
 
 export class SDK {
     config: ConfigType;
