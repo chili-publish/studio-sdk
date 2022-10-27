@@ -72,7 +72,8 @@ export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate
 export type { CharacterStyle } from '../types/CharacterStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
-export type { Font } from '../types/FontTypes';
+export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';
+
 
 export {
     SelectedTextStyleSections,
@@ -86,6 +87,7 @@ export {
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
+export * from '../types/FontConnectorTypes';
 export { MediaType } from '../types/ConnectorTypes';
 export type { QueryOptions } from '../types/ConnectorTypes';
 

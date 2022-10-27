@@ -13,7 +13,7 @@ export type Media = {
     metaData: Map<string, string>;
 };
 
-export type MediaPage = {
+export type QueryPage<T> = {
     nextPageToken?: string;
-    data: Media[];
-};
+    data: T[];
+}

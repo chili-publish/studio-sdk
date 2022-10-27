@@ -8,7 +8,7 @@ import { ToolType } from '../src';
 import { UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
-import { Font } from './FontTypes';
+import { DocumentFont } from './FontTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 
 export type Id = string;
@@ -32,7 +32,7 @@ export type ConfigType = {
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
     onCharacterStylesChanged?: (characterStyles: CharacterStyle[]) => void;
-    onFontsChanged?: (fonts: Font[]) => void;
+    onFontsChanged?: (fonts: DocumentFont[]) => void;
 };
 
 export interface EditorResponse<T> {

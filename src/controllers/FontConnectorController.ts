@@ -1,8 +1,9 @@
 import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { DeprecatedMediaType, ConnectorCapabilities, MediaType, QueryOptions } from '../../types/ConnectorTypes';
-import { FontDownloadType, FontPage } from '../../types/FontConnectorTypes';
+import { Font, FontDownloadType, FontPage } from '../../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
+import { QueryPage } from '../../types/MediaConnectorTypes';
 
 /**
  * The FontConnectorController is responsible for all communication regarding Font connectors.
@@ -42,7 +43,7 @@ export class FontConnectorController {
         const res = await this.#editorAPI;
         return res
             .fontConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context))
-            .then((result) => getEditorResponseData<FontPage>(result));
+            .then((result) => getEditorResponseData<QueryPage<Font>>(result));
     };
 
     /**
