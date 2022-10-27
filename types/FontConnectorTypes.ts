@@ -16,6 +16,7 @@ export type Font = {
 };
 
 export type FontPage = {
+    pageSize: number;
     nextPageToken?: string;
     data: Font[];
 };
