@@ -1,5 +1,5 @@
 import { Id } from '../../../types/CommonTypes';
-import { FitMode, VerticalAlign } from '../../../types/FrameTypes';
+import { FitMode, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
@@ -35,6 +35,8 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'setFrameName');
     jest.spyOn(mockedFrameProperties, 'setImageFrameFitMode');
     jest.spyOn(mockedFrameProperties, 'setVerticalAlignment');
+    jest.spyOn(mockedFrameProperties, 'reorderFrames');
+    jest.spyOn(mockedFrameProperties, 'setFrameZIndex');
 
     frameId = mockSelectFrame.frameId;
 });
@@ -135,6 +137,14 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setVerticalAlignment(frameId, VerticalAlign.justify);
         expect(mockedFrameProperties.setVerticalAlignment).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setVerticalAlignment).toHaveBeenCalledWith(frameId, VerticalAlign.justify);
+
+        mockedFrameProperties.reorderFrames(1, [frameId]);
+        expect(mockedFrameProperties.reorderFrames).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.reorderFrames).toHaveBeenCalledWith(1, [frameId]);
+
+        mockedFrameProperties.setFrameZIndex(frameId, UpdateZIndexMethod.sendBackward);
+        expect(mockedFrameProperties.setFrameZIndex).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setFrameZIndex).toHaveBeenCalledWith(frameId, UpdateZIndexMethod.sendBackward);
     });
 });
 

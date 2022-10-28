@@ -114,3 +114,10 @@ export enum FitMode {
     fit = 'fit',
     fill = 'fill',
 }
+
+export enum UpdateZIndexMethod {
+    bringToFront = 'bringToFront',
+    bringToBack = 'bringToBack',
+    sendForward = 'sendForward',
+    sendBackward = 'sendBackward',
+}
