@@ -52,4 +52,14 @@ export class FontController {
         const res = await this.#editorAPI;        
         return res.addFont(connectorId, JSON.stringify(font)).then((result) => getEditorResponseData<null>(result));    
     }
+
+    /**
+     * Check if the font is used anywhere in the document
+     * @param fontKey The ID of the font to check
+     * @returns Whether the font is used 
+     */
+    isFontUsed = async (fontKey: string) => {
+        const res = await this.#editorAPI;        
+        return res.isFontUsed(fontKey).then((result) => getEditorResponseData<boolean>(result));    
+    }
 }
