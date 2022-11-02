@@ -1,4 +1,4 @@
-import { MediaType } from "./ConnectorTypes";
+import { MediaType } from './ConnectorTypes';
 
 export enum MediaDownloadType {
     LowResolutionWeb = 'lowresWeb',
@@ -12,8 +12,3 @@ export type Media = {
     type: MediaType;
     metaData: Map<string, string>;
 };
-
-export type QueryPage<T> = {
-    nextPageToken?: string;
-    data: T[];
-}

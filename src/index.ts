@@ -57,7 +57,7 @@ export type {
     EditorResponse,
     SelectedLayoutFrame,
     MetaData,
-    Id
+    Id,
 } from '../types/CommonTypes';
 
 export type {
@@ -74,7 +74,6 @@ export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
 export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';
 
-
 export {
     SelectedTextStyleSections,
     SelectedTextStyles,
@@ -88,8 +87,8 @@ export {
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
 export * from '../types/FontConnectorTypes';
-export { MediaType } from '../types/ConnectorTypes';
-export type { QueryOptions } from '../types/ConnectorTypes';
+export { MediaType, SortBy, SortOrder, DeprecatedMediaType } from '../types/ConnectorTypes';
+export type { QueryOptions, ConnectorCapabilities, ConnectorRegistration, QueryPage } from '../types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 

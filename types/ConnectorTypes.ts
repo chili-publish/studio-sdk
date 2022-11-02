@@ -45,3 +45,8 @@ export type ConnectorRegistration = {
 export enum ConnectorRegistrationSource {
     url = 'url',
 }
+
+export type QueryPage<T> = {
+    nextPageToken?: string;
+    data: T[];
+};
