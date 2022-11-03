@@ -33,6 +33,7 @@ export type DocumentColor = {
     name: string;
     color: Color;
 }
+
 export type StyleKit = {
     colors: DocumentColor[];
     characterStyles: CharacterStyle[];
