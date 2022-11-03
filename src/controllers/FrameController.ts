@@ -1,7 +1,7 @@
 import type { EditorAPI, Id } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum, VerticalAlign } from '../../types/FrameTypes';
+import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum, UpdateZIndexMethod, VerticalAlign } from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -130,6 +130,28 @@ export class FrameController {
     selectMultipleFrames = async (frameIds: Id[]) => {
         const res = await this.#editorAPI;
         return res.selectFrames(frameIds).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method changes the order of frames in the z-index list. 
+     * @param orderIndex The index in the list to move to
+     * @param frameIdsToMove An array of all IDs you want to move to the given index
+     * @returns
+     */
+     reorderFrames = async (orderIndex: number, frameIdsToMove: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.reorderFrames(orderIndex, frameIdsToMove).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will update the z-index of a frame.
+     * @param frameId The ID of the frame you want to change the z-index of
+     * @param method The z-index update method to perform
+     * @returns
+     */
+     setFrameZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
+        const res = await this.#editorAPI;
+        return res.setFrameZIndex(frameId, method).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
