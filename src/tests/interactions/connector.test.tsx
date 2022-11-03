@@ -29,6 +29,7 @@ describe.skip('Editor Link Validator', () => {
                 onFontsChanged: () => null,
                 onSelectedLayoutIdChanged: () => null,
                 onLayoutsChanged: () => null,
+                onConnectorStateChanged: () => null,
             },
             () => null,
         );
@@ -65,6 +66,7 @@ describe.skip('Editor Link Validator', () => {
                 onFontsChanged: () => null,
                 onSelectedLayoutIdChanged: () => null,
                 onLayoutsChanged: () => null,
+                onConnectorStateChanged: () => null,
             },
             () => null,
         );
@@ -100,6 +102,7 @@ describe.skip('Editor Link Validator', () => {
                 onFontsChanged: () => null,
                 onSelectedLayoutIdChanged: () => null,
                 onLayoutsChanged: () => null,
+                onConnectorStateChanged: () => null,
             },
             () => null,
         );

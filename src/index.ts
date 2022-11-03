@@ -180,6 +180,7 @@ export class SDK {
                 onFontsChanged: this.subscriber.onFontsChanged,
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
+                onConnectorStateChanged: this.subscriber.onConnectorStateChanged,
             },
             this.setConnection,
             this.config.editorId,
