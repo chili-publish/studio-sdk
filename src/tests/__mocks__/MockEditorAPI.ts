@@ -115,9 +115,11 @@ export const mockConnectorAuthenticationSetChiliToken = jest.fn().mockResolvedVa
 export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -239,7 +241,8 @@ const MockEditorAPI = {
     connectorAuthenticationSetHttpHeader: mockConnectorAuthenticationSetHttpHeader,
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
-    setFitMode: mockSetFitMode,
+    setImageFrameFitMode: mockSetImageFrameFitMode,
+    resetImageFrameFitMode: mockResetImageFrameFitMode,
     registerConnector: mockRegisterConnector,
 };
 
