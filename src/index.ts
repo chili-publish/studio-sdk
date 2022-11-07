@@ -22,7 +22,6 @@ import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
 import { FontController } from './controllers/FontController';
-import { FontConnectorController } from './controllers/FontConnectorController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { FontConnectorController } from './controllers/FontConnectorController';
 
