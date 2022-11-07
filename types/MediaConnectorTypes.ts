@@ -12,3 +12,9 @@ export type Media = {
     type: MediaType;
     metaData: Map<string, string>;
 };
+
+export type MediaPage = {
+    pageSize: number;
+    nextPageToken?: string;
+    data: Media[];
+};

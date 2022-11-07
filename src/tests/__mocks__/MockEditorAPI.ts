@@ -17,6 +17,8 @@ export const mockSetFrameHeight = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetFrameWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameRotation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameVisibility = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockReorderFrames = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetFrameZIndex = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -115,7 +117,7 @@ export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, s
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockMediaConnectorRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -138,6 +140,8 @@ const MockEditorAPI = {
     setFrameWidth: mockSetFrameWidth,
     setFrameVisibility: mockSetFrameVisibility,
     setVerticalAlignment: mockSetVerticalAlignment,
+    reorderFrames: mockReorderFrames,
+    setFrameZIndex: mockSetFrameZIndex,
     removeFrame: mockRemoveFrame,
     setFrameX: mockSetFrameX,
     setFrameY: mockSetFrameY,
@@ -236,7 +240,7 @@ const MockEditorAPI = {
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
     setFitMode: mockSetFitMode,
-    mediaConnectorRegisterConnector: mockMediaConnectorRegisterConnector,
+    registerConnector: mockRegisterConnector,
 };
 
 export default MockEditorAPI;

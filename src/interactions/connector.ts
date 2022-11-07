@@ -58,6 +58,8 @@ interface ConfigParameterTypes {
     onParagraphStylesChanged: (paragraphStyles: string) => void;
     onCharacterStylesChanged: (characterStyles: string) => void;
     onFontsChanged: (fonts: string) => void;
+    onSelectedLayoutIdChanged: (layoutId: string) => void;
+    onLayoutsChanged: (layouts: string) => void;
 }
 
 const Connect = (
@@ -112,6 +114,8 @@ const Connect = (
                 paragraphStylesChanged: params.onParagraphStylesChanged,
                 characterStylesChanged: params.onCharacterStylesChanged,
                 fontsChanged: params.onFontsChanged,
+                selectedLayoutId: params.onSelectedLayoutIdChanged,
+                layoutListChanged: params.onLayoutsChanged,
             },
         }),
     );

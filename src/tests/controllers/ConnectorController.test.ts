@@ -33,8 +33,8 @@ describe('Connector methods', () => {
         const headerValue = 'headerValue';
 
         await mockedSDK.connector.registerConnector(registration);
-        expect(mockedSDK.editorAPI.mediaConnectorRegisterConnector).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.mediaConnectorRegisterConnector).toHaveBeenCalledWith(JSON.stringify(registration));
+        expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
 
         await mockedSDK.connector.authentication.setChiliToken(connectorId, token);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);

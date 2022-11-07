@@ -14,3 +14,9 @@ export type Font = {
     type: MediaType;
     metaData: Map<string, string>;
 };
+
+export type FontPage = {
+    pageSize: number;
+    nextPageToken?: string;
+    data: Font[];
+};

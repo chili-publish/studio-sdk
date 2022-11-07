@@ -39,7 +39,7 @@ export class ConnectorController {
     registerConnector = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
         return res
-            .mediaConnectorRegisterConnector(JSON.stringify(registration))
+            .registerConnector(JSON.stringify(registration))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
