@@ -1,7 +1,14 @@
-import type { EditorAPI, Id } from '../../types/CommonTypes';
-import { getCalculatedValue } from '../utils/getCalculatedValue';
-import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum, UpdateZIndexMethod, VerticalAlign } from '../../types/FrameTypes';
+import type {EditorAPI, Id} from '../../types/CommonTypes';
+import {getCalculatedValue} from '../utils/getCalculatedValue';
+import {getEditorResponseData} from '../utils/EditorResponseData';
+import {
+    FitMode,
+    FrameLayoutType,
+    FrameType,
+    FrameTypeEnum,
+    UpdateZIndexMethod,
+    VerticalAlign
+} from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -133,12 +140,12 @@ export class FrameController {
     };
 
     /**
-     * This method changes the order of frames in the z-index list. 
+     * This method changes the order of frames in the z-index list.
      * @param orderIndex The index in the list to move to
      * @param frameIdsToMove An array of all IDs you want to move to the given index
      * @returns
      */
-     reorderFrames = async (orderIndex: number, frameIdsToMove: Id[]) => {
+    reorderFrames = async (orderIndex: number, frameIdsToMove: Id[]) => {
         const res = await this.#editorAPI;
         return res.reorderFrames(orderIndex, frameIdsToMove).then((result) => getEditorResponseData<null>(result));
     };
@@ -149,7 +156,7 @@ export class FrameController {
      * @param method The z-index update method to perform
      * @returns
      */
-     setFrameZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
+    setFrameZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
         const res = await this.#editorAPI;
         return res.setFrameZIndex(frameId, method).then((result) => getEditorResponseData<null>(result));
     };
@@ -385,4 +392,54 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };
+
+
+    /**
+     * This method will set the min copyFitting property of a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value The new min copyFitting value to be set to the frame.
+     * @returns
+     */
+    setMinCopyFitting = async (frameId: Id, value: string) => {
+        const res = await this.#editorAPI;
+
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
+            return null;
+        }
+
+        return res
+            .setMinCopyFitting(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
+     * This method will set the max copyFitting property of a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value The new max copyFitting value to be set to the frame.
+     * @returns
+     */
+    setMaxCopyFitting = async (frameId: Id, value: string) => {
+        const res = await this.#editorAPI;
+
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
+            return null;
+        }
+
+        return res
+            .setMaxCopyFitting(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
+     * This method will enable copyFitting on a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value The new value to be set to the frame.
+     * @returns
+     */
+    setEnableCopyFitting = async (frameId: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setEnableCopyFitting(frameId, value).then((result) => getEditorResponseData<null>(result));
+    }
 }

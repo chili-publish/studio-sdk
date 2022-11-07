@@ -35,6 +35,9 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'setFrameName');
     jest.spyOn(mockedFrameProperties, 'setImageFrameFitMode');
     jest.spyOn(mockedFrameProperties, 'setVerticalAlignment');
+    jest.spyOn(mockedFrameProperties, 'setMinCopyFitting');
+    jest.spyOn(mockedFrameProperties, 'setMaxCopyFitting');
+    jest.spyOn(mockedFrameProperties, 'setEnableCopyFitting');
     jest.spyOn(mockedFrameProperties, 'reorderFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameZIndex');
 
@@ -137,6 +140,18 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setVerticalAlignment(frameId, VerticalAlign.justify);
         expect(mockedFrameProperties.setVerticalAlignment).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setVerticalAlignment).toHaveBeenCalledWith(frameId, VerticalAlign.justify);
+
+        mockedFrameProperties.setMinCopyFitting(frameId, '0.5');
+        expect(mockedFrameProperties.setMinCopyFitting).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setMinCopyFitting).toHaveBeenCalledWith(frameId, '0.5');
+
+        mockedFrameProperties.setMaxCopyFitting(frameId, '5.0');
+        expect(mockedFrameProperties.setMaxCopyFitting).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setMaxCopyFitting).toHaveBeenCalledWith(frameId, '5.0');
+
+        mockedFrameProperties.setEnableCopyFitting(frameId, true);
+        expect(mockedFrameProperties.setEnableCopyFitting).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setEnableCopyFitting).toHaveBeenCalledWith(frameId, true);
 
         mockedFrameProperties.reorderFrames(1, [frameId]);
         expect(mockedFrameProperties.reorderFrames).toHaveBeenCalledTimes(1);
