@@ -117,6 +117,9 @@ export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, s
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetMinCopyFitting = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetMaxCopyFitting = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetEnableCopyFitting = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
@@ -140,6 +143,9 @@ const MockEditorAPI = {
     setFrameWidth: mockSetFrameWidth,
     setFrameVisibility: mockSetFrameVisibility,
     setVerticalAlignment: mockSetVerticalAlignment,
+    setMinCopyFitting: mockSetMinCopyFitting,
+    setMaxCopyFitting: mockSetMaxCopyFitting,
+    setEnableCopyFitting: mockSetEnableCopyFitting,
     reorderFrames: mockReorderFrames,
     setFrameZIndex: mockSetFrameZIndex,
     removeFrame: mockRemoveFrame,

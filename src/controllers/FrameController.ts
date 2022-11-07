@@ -411,7 +411,7 @@ export class FrameController {
         return res
             .setMinCopyFitting(frameId, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
-    }
+    };
 
     /**
      * This method will set the max copyFitting property of a specified frame.
@@ -430,7 +430,7 @@ export class FrameController {
         return res
             .setMaxCopyFitting(frameId, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
-    }
+    };
 
     /**
      * This method will enable copyFitting on a specified frame.
@@ -441,5 +441,5 @@ export class FrameController {
     setEnableCopyFitting = async (frameId: Id, value: boolean) => {
         const res = await this.#editorAPI;
         return res.setEnableCopyFitting(frameId, value).then((result) => getEditorResponseData<null>(result));
-    }
+    };
 }
