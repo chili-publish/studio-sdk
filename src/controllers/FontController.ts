@@ -3,7 +3,7 @@ import { AddDocumentFont, DocumentFont } from '../../types/FontTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
- * The FontController is responsible for all communication regarding color styles.
+ * The FontController is responsible for all communication regarding font styles.
  * Methods inside this controller can be called by `window.SDK.font.{method-name}`
  */
 export class FontController {
@@ -20,7 +20,7 @@ export class FontController {
     }
 
     /**
-     * This method returns the list of colors
+     * This method returns the list of fonts
      * @returns
      */
     getFonts = async () => {
@@ -29,8 +29,8 @@ export class FontController {
     };
 
     /**
-     * This method returns a color by id
-     * @param colorId The ID of a specific color
+     * This method returns a font by id
+     * @param fontId The ID of a specific font
      * @returns
      */
     getFontById = async (fontId: Id) => {
@@ -39,8 +39,8 @@ export class FontController {
     };
 
     /**
-     * This method removes a color
-     * @param id The ID of a specific color
+     * This method removes a font
+     * @param id The ID of a specific font
      * @returns
      */
     removeFont = async (id: Id) => {
@@ -48,18 +48,24 @@ export class FontController {
         return res.removeFont(id).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method adds a font
+     * @param connectorId unique Id of the font connector
+     * @param font The font object
+     * @returns
+     */
     addFont = async (connectorId: Id, font: AddDocumentFont) => {
-        const res = await this.#editorAPI;        
-        return res.addFont(connectorId, JSON.stringify(font)).then((result) => getEditorResponseData<null>(result));    
+        const res = await this.#editorAPI;
+        return res.addFont(connectorId, JSON.stringify(font)).then((result) => getEditorResponseData<null>(result));
     }
 
     /**
      * Check if the font is used anywhere in the document
      * @param fontKey The ID of the font to check
-     * @returns Whether the font is used 
+     * @returns Whether the font is used
      */
     isFontUsed = async (fontKey: string) => {
-        const res = await this.#editorAPI;        
-        return res.isFontUsed(fontKey).then((result) => getEditorResponseData<boolean>(result));    
+        const res = await this.#editorAPI;
+        return res.isFontUsed(fontKey).then((result) => getEditorResponseData<boolean>(result));
     }
 }
