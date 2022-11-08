@@ -2,19 +2,54 @@ import { Alignment, Case, Scripting } from './TextStyleTypes';
 import { Color, ColorUpdate } from './ColorStyleTypes';
 
 export type ColorUsageUpdate = {
-    color: ColorUpdate;
+    /**
+     * Reference to the stylekit color, can only be used if it is a stylekit color.
+     */
+    colorId?: string;
+    /**
+     * The local color object, can only be used if it is a local color.
+     */
+    color?: ColorUpdate;
     usageType: ColorUsageType;
+    /**
+     * Opacity of the color (0-100) where 0 = fully transparent.
+     */
+    opacity?: number;
+    /**
+     * Indicates if the color will be applied or not.
+     */
+    isApplied?: boolean;
 };
 
 export type ColorUsage = {
-    color: Color;
+    /**
+     * Reference to the stylekit color, can only be used if it is a stylekit color.
+     */
+    colorId?: string;
+    /**
+     * The local color object, can only be used if it is a local color.
+     */
+    color?: Color;
     usageType: ColorUsageType;
+    /**
+     * Opacity of the color (0-100) where 0 = fully transparent.
+     */
     opacity?: number;
+    /**
+     * Indicates if the color will be applied or not.
+     */
+    isApplied?: boolean;
 };
 
 export enum ColorUsageType {
+    /**
+     * The color is defined locally on the object
+     */
     local = 'local',
-    reference = 'reference',
+    /**
+     * THe color is referencing a stylekit color
+     */
+    stylekit = 'stylekit',
 }
 
 export type ParagraphStyle = {
