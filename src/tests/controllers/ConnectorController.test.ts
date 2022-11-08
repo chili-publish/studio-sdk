@@ -12,6 +12,7 @@ beforeEach(() => {
     mockedSDK.connector = new ConnectorController(mockChild);
     jest.spyOn(mockedSDK.connector, 'registerConnector');
     jest.spyOn(mockedSDK.connector, 'configure');
+    jest.spyOn(mockedSDK.connector, 'getState');
 });
 
 afterEach(() => {
@@ -29,15 +30,19 @@ describe('Connector methods', () => {
         const headerName = 'headerName';
         const headerValue = 'headerValue';
 
+        await mockedSDK.connector.getState(connectorId);
+        expect(mockedSDK.editorAPI.getConnectorState).toHaveBeenCalledTimes(1);
+
         await mockedSDK.connector.registerConnector(registration);
         expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
 
-        await mockedSDK.connector.configure(connectorId, async (configurator) => { configurator.setChiliToken(connectorId, token); });
+        await mockedSDK.connector.configure(connectorId, async (configurator) => { configurator.setChiliToken(token); });
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
+        expect(mockedSDK.editorAPI.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.connector.configure(connectorId, async (configurator) => { configurator.setHttpHeader(connectorId, headerName, headerValue); });
+        await mockedSDK.connector.configure(connectorId, async (configurator) => { configurator.setHttpHeader(headerName, headerValue); });
         expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
             connectorId,

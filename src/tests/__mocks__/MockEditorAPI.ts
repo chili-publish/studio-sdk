@@ -119,6 +119,7 @@ export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, statu
 export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUpdateConnectorConfiguration = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockgetConnectorState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -243,6 +244,7 @@ const MockEditorAPI = {
     setFitMode: mockSetFitMode,
     registerConnector: mockRegisterConnector,
     updateConnectorConfiguration: mockUpdateConnectorConfiguration,
+    getConnectorState: mockgetConnectorState,
 };
 
 export default MockEditorAPI;

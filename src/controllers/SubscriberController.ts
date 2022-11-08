@@ -185,6 +185,7 @@ export class SubscriberController {
 
     /**
      * Listener on connector states, this listener will get triggered when a connector is
+     * - loading
      * - loaded
      * - unloaded
      * - running

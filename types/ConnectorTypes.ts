@@ -57,6 +57,7 @@ export type ConnectorEvent = {
 }
 
 export enum ConnectorEventType {
+    loading = 'loading',
     loaded = 'loaded',
     unloaded = 'unloaded',
     running = 'running',

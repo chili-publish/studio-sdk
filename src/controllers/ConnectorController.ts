@@ -1,5 +1,5 @@
-import { EditorAPI } from '../../types/CommonTypes';
-import { ConnectorRegistration } from '../../types/ConnectorTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
+import { ConnectorEvent, ConnectorEventType, ConnectorRegistration } from '../../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -49,10 +49,63 @@ export class ConnectorController {
      */
     configure = async (connectorId: string, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
         const res = await this.#editorAPI;
+        // wait for connector to be ready
+        await this.waitForConnectorReady(connectorId);
+        // execute callback
         await configurationCallback(new ConnectorConfigurator(connectorId, res));
+        // invalidate connector in engine
         return res.updateConnectorConfiguration(connectorId).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitForConnectorReady'
+     * method in this controller. 
+     * @param connectorId Id of your registered connector you want to make sure it is loaded
+     */
+    getState = async (connectorId: string) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorState(connectorId).then((result) => getEditorResponseData<ConnectorEvent>(result));
+    };
+
+    /**
+     * Connectors are loaded asynchronously in the editor engine, this causes some challenges while configuring them. To make sure
+     * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
+     * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially
+     * usefull during startup of the SDK / rigth after the loadDocument call.
+     * @param connectorId Id of your registered connector you want to make sure it is loaded
+     */
+    waitForConnectorReady = async (connectorId: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
+
+        // minimum timeout is 500ms
+        let timeout = Math.max(timeoutMilliseconds, 500);
+
+        // maximum timeout is 5000ms
+        timeout = Math.min(timeout, 5000);
+
+        const waitTime = 100;
+        let retries = 0;
+
+        try {
+            // using while loop will prevent stackoverflow issues when using recursion
+            // wait for maximum 2 seconds to fail
+            while (retries * waitTime < timeout) {
+                const result = await this.getState(connectorId);
+
+                if (result.success && result.parsedData && result.parsedData.type !== ConnectorEventType.error && result.parsedData.type !== ConnectorEventType.loading) {
+                    return getEditorResponseData<null>({ data: null, success: true, error: undefined, status: 0, parsedData: undefined }, false);
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, waitTime));
+                retries++;
+            }
+        } catch (err) {
+            return getEditorResponseData<null>({ data: null, success: false, error: `Error while getting connector state ${err}`, status: 50000, parsedData: undefined }, false);
+        }
+
+        return getEditorResponseData<null>({ data: null, success: false, error: `Timed out waiting for connector`, status: 50000, parsedData: undefined }, false);
+    }
 }
+
 
 /**
  * Helper to setup your connector
@@ -93,9 +146,9 @@ class ConnectorConfigurator {
      * @param connectorId unique Id of the media connector
      * @param token token for the CHILI authentication
      */
-    setChiliToken = async (connectorId: string, token: string) => {
+    setChiliToken = async (token: string) => {
         return this.#res
-            .connectorAuthenticationSetChiliToken(connectorId, token)
+            .connectorAuthenticationSetChiliToken(this.#connectorId, token)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -107,9 +160,9 @@ class ConnectorConfigurator {
      * @param headerName name of the header
      * @param headerValue value of the header
      */
-    setHttpHeader = async (connectorId: string, headerName: string, headerValue: string) => {
+    setHttpHeader = async (headerName: string, headerValue: string) => {
         return this.#res
-            .connectorAuthenticationSetHttpHeader(connectorId, headerName, headerValue)
+            .connectorAuthenticationSetHttpHeader(this.#connectorId, headerName, headerValue)
             .then((result) => getEditorResponseData<null>(result));
     };
 };
