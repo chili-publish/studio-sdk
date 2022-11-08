@@ -44,4 +44,24 @@ export type ConnectorRegistration = {
 
 export enum ConnectorRegistrationSource {
     url = 'url',
+};
+
+export type ConnectorMapping = {
+    name: string,
+    value: string,
+};
+
+export type ConnectorEvent = {
+    id: string;
+    type: ConnectorEventType;
 }
+
+export enum ConnectorEventType {
+    loading = 'loading',
+    loaded = 'loaded',
+    unloaded = 'unloaded',
+    running = 'running',
+    ready = 'ready',
+    reloaded = 'reloaded',
+    error = 'error',
+};
