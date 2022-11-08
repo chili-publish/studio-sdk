@@ -10,6 +10,7 @@ import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { DocumentFont } from './FontTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
+import { ConnectorEvent } from './ConnectorTypes';
 
 export type Id = string;
 
@@ -35,6 +36,7 @@ export type ConfigType = {
     onFontsChanged?: (fonts: DocumentFont[]) => void;
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
+    onConnectorStateChanged?: (event: ConnectorEvent) => void;
 };
 
 export interface EditorResponse<T> {

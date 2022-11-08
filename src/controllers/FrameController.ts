@@ -138,7 +138,7 @@ export class FrameController {
      * @param frameIdsToMove An array of all IDs you want to move to the given index
      * @returns
      */
-     reorderFrames = async (orderIndex: number, frameIdsToMove: Id[]) => {
+    reorderFrames = async (orderIndex: number, frameIdsToMove: Id[]) => {
         const res = await this.#editorAPI;
         return res.reorderFrames(orderIndex, frameIdsToMove).then((result) => getEditorResponseData<null>(result));
     };
@@ -149,7 +149,7 @@ export class FrameController {
      * @param method The z-index update method to perform
      * @returns
      */
-     setFrameZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
+    setFrameZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
         const res = await this.#editorAPI;
         return res.setFrameZIndex(frameId, method).then((result) => getEditorResponseData<null>(result));
     };
@@ -316,6 +316,16 @@ export class FrameController {
     };
 
     /**
+     * This method will reset the fitMode property of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetImageFrameFitMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetImageFrameFitMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the visibility property of a specified frame. If set to false the frame will be invisible and vice versa.
      * @param frameId The ID of the frame that needs to get updated
      * @param value True means the frame gets visible, false means the frame gets invisible
@@ -372,7 +382,7 @@ export class FrameController {
      */
     setImageFrameFitMode = async (imageFrameId: Id, fitMode: FitMode) => {
         const res = await this.#editorAPI;
-        return res.setFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
+        return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
