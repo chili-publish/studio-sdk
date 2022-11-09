@@ -118,8 +118,9 @@ export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateConnectorConfiguration = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockgetConnectorState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
-
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -244,6 +245,8 @@ const MockEditorAPI = {
     setImageFrameFitMode: mockSetImageFrameFitMode,
     resetImageFrameFitMode: mockResetImageFrameFitMode,
     registerConnector: mockRegisterConnector,
+    updateConnectorConfiguration: mockUpdateConnectorConfiguration,
+    getConnectorState: mockgetConnectorState,
 };
 
 export default MockEditorAPI;

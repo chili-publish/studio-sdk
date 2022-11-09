@@ -182,4 +182,20 @@ export class SubscriberController {
         const callBack = this.config.onLayoutsChanged;
         callBack && callBack(JSON.parse(layouts));
     };
+
+    /**
+     * Listener on connector states, this listener will get triggered when a connector is
+     * - loading
+     * - loaded
+     * - unloaded
+     * - running
+     * - ready
+     * - reloaded
+     * - error
+     * @param connectorEvent Stringified object of ConnectorEvent
+     */
+    onConnectorStateChanged = (connectorEvent: string) => {
+        const callBack = this.config.onConnectorStateChanged;
+        callBack && callBack(JSON.parse(connectorEvent));
+    };
 }
