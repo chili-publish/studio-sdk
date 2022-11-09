@@ -21,8 +21,9 @@ import { MediaConnectorController } from './controllers/MediaConnectorController
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
-import { FontConnectorController } from './controllers/FontConnectorController';
+import { FontController } from './controllers/FontController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { FontConnectorController } from './controllers/FontConnectorController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -72,7 +73,7 @@ export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate
 export type { CharacterStyle } from '../types/CharacterStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
-export type { Font } from '../types/FontTypes';
+export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';
 
 export {
     SelectedTextStyleSections,
@@ -86,8 +87,9 @@ export {
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
-export { MediaType } from '../types/ConnectorTypes';
-export type { QueryOptions } from '../types/ConnectorTypes';
+export * from '../types/FontConnectorTypes';
+export { MediaType, SortBy, SortOrder, DeprecatedMediaType } from '../types/ConnectorTypes';
+export type { QueryOptions, ConnectorCapabilities, ConnectorRegistration, QueryPage } from '../types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
@@ -121,6 +123,7 @@ export class SDK {
     textSelection: TextStyleController;
     paragraphStyle: ParagraphStyleController;
     colorStyle: ColorStyleController;
+    font: FontController;
 
     private subscriber: SubscriberController;
 
@@ -153,6 +156,7 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.font = new FontController(this.editorAPI);
     }
 
     /**
@@ -207,6 +211,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
+        this.font = new FontController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks

@@ -1,7 +1,13 @@
 import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DeprecatedMediaType, ConnectorCapabilities, MediaType, QueryOptions } from '../../types/ConnectorTypes';
-import { FontDownloadType, FontPage } from '../../types/FontConnectorTypes';
+import {
+    DeprecatedMediaType,
+    ConnectorCapabilities,
+    MediaType,
+    QueryOptions,
+    QueryPage,
+} from '../../types/ConnectorTypes';
+import { Font, FontDownloadType } from '../../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -42,7 +48,7 @@ export class FontConnectorController {
         const res = await this.#editorAPI;
         return res
             .fontConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context))
-            .then((result) => getEditorResponseData<FontPage>(result));
+            .then((result) => getEditorResponseData<QueryPage<Font>>(result));
     };
 
     /**

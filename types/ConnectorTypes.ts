@@ -56,6 +56,11 @@ export type ConnectorEvent = {
     type: ConnectorEventType;
 }
 
+export type QueryPage<T> = {
+    nextPageToken?: string;
+    data: T[];
+};
+
 export enum ConnectorEventType {
     loading = 'loading',
     loaded = 'loaded',
