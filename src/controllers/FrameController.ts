@@ -1,7 +1,14 @@
 import type { EditorAPI, Id } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { FitMode, FrameLayoutType, FrameType, FrameTypeEnum, UpdateZIndexMethod, VerticalAlign } from '../../types/FrameTypes';
+import {
+    FitMode,
+    FrameLayoutType,
+    FrameType,
+    FrameTypeEnum,
+    UpdateZIndexMethod,
+    VerticalAlign,
+} from '../../types/FrameTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -133,7 +140,7 @@ export class FrameController {
     };
 
     /**
-     * This method changes the order of frames in the z-index list. 
+     * This method changes the order of frames in the z-index list.
      * @param orderIndex The index in the list to move to
      * @param frameIdsToMove An array of all IDs you want to move to the given index
      * @returns
@@ -361,7 +368,7 @@ export class FrameController {
     };
 
     /**
-     * This method will assign an image from a mediaConnector to the correct imageFrame
+     * This method will assign an image from a mediaConnector to the correct ImageFrame
      * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
      * @param connectorId Unique Id of the media connector
      * @param resourceId Unique Id of the asset that you want to assign to the imageFrame
@@ -372,6 +379,18 @@ export class FrameController {
         return res
             .assignImage(imageFrameId, connectorId, resourceId)
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will assign an image from url to the correct ImageFrame
+     * Make sure the url can be accessed by the editor.
+     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param url A valid image uri
+     * @returns
+     */
+    setImageFromUrl = async (imageFrameId: Id, url: string) => {
+        const res = await this.#editorAPI;
+        return res.assignImageFromUrl(imageFrameId, url).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
