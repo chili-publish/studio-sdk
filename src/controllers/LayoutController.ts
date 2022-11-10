@@ -1,7 +1,8 @@
-import type { EditorAPI, Id } from '../../types/CommonTypes';
+import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Layout } from '../../types/LayoutTypes';
+import { CallSender } from 'penpal';
 
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
@@ -12,12 +13,14 @@ export class LayoutController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    #blobAPI: EditorRawAPI;
 
     /**
      * @ignore
      */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
+        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
     }
 
     /**
@@ -169,8 +172,17 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-    resetLayoutWidth = async (layoutId: Id) => {
+     resetLayoutWidth = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutWidth(layoutId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method returns a UInt8Array containing a PNG encoded image of the currently selected layout.
+     * @returns UInt8Array snapshot of the current layout
+     */
+    getSelectedLayoutSnapshot = async () => {
+        const res = await this.#blobAPI;
+        return res.getPageSnapshot().then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 }

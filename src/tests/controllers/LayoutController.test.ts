@@ -24,6 +24,7 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.layout, 'setLayoutWidth');
     jest.spyOn(mockedSDK.layout, 'resetLayoutHeight');
     jest.spyOn(mockedSDK.layout, 'resetLayoutWidth');
+    jest.spyOn(mockedSDK.layout, 'getSelectedLayoutSnapshot');
 
     mockedSDK.editorAPI = mockChild;
     mockedSDK.layout = new LayoutController(mockChild);
@@ -85,6 +86,9 @@ describe('Layout methods', () => {
 
         await mockedSDK.layout.resetLayoutWidth('1');
         expect(mockedSDK.editorAPI.resetLayoutWidth).toHaveBeenCalledTimes(1);
+
+        await mockedSDK.layout.getSelectedLayoutSnapshot();
+        expect(mockedSDK.editorAPI.getPageSnapshot).toHaveBeenCalledTimes(1);
     });
 });
 
