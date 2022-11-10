@@ -35,7 +35,15 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 export { LayoutType } from '../types/LayoutTypes';
-export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection, FitMode } from '../types/FrameTypes';
+export {
+    BlendMode,
+    FrameTypeEnum,
+    VerticalAlign,
+    TextDirection,
+    FlowDirection,
+    FitMode,
+    UpdateZIndexMethod,
+} from '../types/FrameTypes';
 export { VariableType } from '../types/VariableTypes';
 
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
@@ -95,7 +103,7 @@ export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 let connection: Connection;
 
-const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/'+ engineInfo.current  +'/web';
+const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
 
 export class SDK {
     config: ConfigType;

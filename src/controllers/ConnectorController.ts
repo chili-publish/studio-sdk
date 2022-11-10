@@ -40,14 +40,16 @@ export class ConnectorController {
             .then((result) => getEditorResponseData<null>(result));
     };
 
-
     /**
      * Configures a registered connector. A configurator helper is passed as an argument
      * of the callback for you to setup your connector.
      * @param connectorId Id of your registered connector
      * @param configurationCallback callback to setup the connector
      */
-    configure = async (connectorId: string, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
+    configure = async (
+        connectorId: string,
+        configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>,
+    ) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
         await this.waitForConnectorReady(connectorId);
@@ -59,7 +61,7 @@ export class ConnectorController {
 
     /**
      * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitForConnectorReady'
-     * method in this controller. 
+     * method in this controller.
      * @param connectorId Id of your registered connector you want to make sure it is loaded
      */
     getState = async (connectorId: string) => {
@@ -75,7 +77,6 @@ export class ConnectorController {
      * @param connectorId Id of your registered connector you want to make sure it is loaded
      */
     waitForConnectorReady = async (connectorId: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
-
         // minimum timeout is 500ms
         let timeout = Math.max(timeoutMilliseconds, 500);
 
@@ -91,21 +92,46 @@ export class ConnectorController {
             while (retries * waitTime < timeout) {
                 const result = await this.getState(connectorId);
 
-                if (result.success && result.parsedData && result.parsedData.type !== ConnectorEventType.error && result.parsedData.type !== ConnectorEventType.loading) {
-                    return getEditorResponseData<null>({ data: null, success: true, error: undefined, status: 0, parsedData: undefined }, false);
+                if (
+                    result.success &&
+                    result.parsedData &&
+                    result.parsedData.type !== ConnectorEventType.error &&
+                    result.parsedData.type !== ConnectorEventType.loading
+                ) {
+                    return getEditorResponseData<null>(
+                        { data: null, success: true, error: undefined, status: 0, parsedData: undefined },
+                        false,
+                    );
                 }
 
                 await new Promise((resolve) => setTimeout(resolve, waitTime));
                 retries++;
             }
         } catch (err) {
-            return getEditorResponseData<null>({ data: null, success: false, error: `Error while getting connector state ${err}`, status: 50000, parsedData: undefined }, false);
+            return getEditorResponseData<null>(
+                {
+                    data: null,
+                    success: false,
+                    error: `Error while getting connector state ${err}`,
+                    status: 50000,
+                    parsedData: undefined,
+                },
+                false,
+            );
         }
 
-        return getEditorResponseData<null>({ data: null, success: false, error: `Timed out waiting for connector`, status: 50000, parsedData: undefined }, false);
-    }
+        return getEditorResponseData<null>(
+            {
+                data: null,
+                success: false,
+                error: `Timed out waiting for connector`,
+                status: 50000,
+                parsedData: undefined,
+            },
+            false,
+        );
+    };
 }
-
 
 /**
  * Helper to setup your connector
@@ -118,8 +144,8 @@ class ConnectorConfigurator {
     #res: EditorAPI;
 
     /**
-    * @ignore
-    */
+     * @ignore
+     */
     constructor(connectorId: string, res: EditorAPI) {
         this.#connectorId = connectorId;
         this.#res = res;
@@ -165,4 +191,4 @@ class ConnectorConfigurator {
             .connectorAuthenticationSetHttpHeader(this.#connectorId, headerName, headerValue)
             .then((result) => getEditorResponseData<null>(result));
     };
-};
+}

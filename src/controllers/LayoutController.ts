@@ -172,7 +172,7 @@ export class LayoutController {
      * @param layoutId The ID of a specific layout
      * @returns
      */
-     resetLayoutWidth = async (layoutId: Id) => {
+    resetLayoutWidth = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutWidth(layoutId).then((result) => getEditorResponseData<null>(result));
     };
