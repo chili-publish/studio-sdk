@@ -37,12 +37,16 @@ describe('Connector methods', () => {
         expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
 
-        await mockedSDK.connector.configure(connectorId, async (configurator) => { configurator.setChiliToken(token); });
+        await mockedSDK.connector.configure(connectorId, async (configurator) => {
+            configurator.setChiliToken(token);
+        });
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
         expect(mockedSDK.editorAPI.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.connector.configure(connectorId, async (configurator) => { configurator.setHttpHeader(headerName, headerValue); });
+        await mockedSDK.connector.configure(connectorId, async (configurator) => {
+            configurator.setHttpHeader(headerName, headerValue);
+        });
         expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
             connectorId,

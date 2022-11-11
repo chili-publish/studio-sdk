@@ -96,7 +96,7 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onLayoutsChanged(JSON.stringify([]));
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(15);
 
-        mockedSubscribers.onConnectorStateChanged(JSON.stringify({id: 'id', type: ConnectorEventType.loaded}));
+        mockedSubscribers.onConnectorStateChanged(JSON.stringify({ id: 'id', type: ConnectorEventType.loaded }));
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
     });
 

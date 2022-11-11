@@ -122,7 +122,7 @@ export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: t
 export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUpdateConnectorConfiguration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockgetConnectorState = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });   
+export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageSnapshot = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
