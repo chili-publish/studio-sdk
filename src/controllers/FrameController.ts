@@ -414,4 +414,14 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will insert a text variable in the selected frame.
+     * @param variableId The ID of the variable to be inserted.
+     * @returns
+     */
+    insertTextVariable = async (variableId: Id) => {
+        const res = await this.#editorAPI;
+        return res.insertTextVariable(variableId).then((result) => getEditorResponseData<null>(result));
+    };
 }

@@ -68,6 +68,7 @@ export const mockPauseAnimation = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockInsertTextVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPages = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -159,6 +160,7 @@ const MockEditorAPI = {
     resetFrameHeight: mockResetFrameHeight,
     resetFrameRotation: mockResetFrameRotation,
     setFrameAnimation: mockSetFrameAniation,
+    insertTextVariable: mockInsertTextVariable,
     assignImage: mockAssignImage,
     assignImageFromUrl: mockAssignImageFromUrl,
     getAnimationsOnSelectedLayout: mockGetAnimationsOnSelectedLayout,

@@ -40,6 +40,7 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'setVerticalAlignment');
     jest.spyOn(mockedFrameProperties, 'reorderFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameZIndex');
+    jest.spyOn(mockedFrameProperties, 'insertTextVariable');
 
     frameId = mockSelectFrame.frameId;
 });
@@ -159,6 +160,10 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setImageFromUrl(frameId, 'image url');
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledWith(frameId, 'image url');
+
+        mockedFrameProperties.insertTextVariable('5');
+        expect(mockedFrameProperties.insertTextVariable).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.insertTextVariable).toHaveBeenCalledWith('5');
     });
 });
 
