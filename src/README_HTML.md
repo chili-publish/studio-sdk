@@ -24,6 +24,7 @@ So on these pages you'll find some very technical but super handy descriptions o
 -   [UndoManagerController](classes/src_controllers_UndoManagerController.UndoManagerController.html)
 -   [UtilsController](classes/src_controllers_UtilsController.UtilsController.html)
 -   [VariableController](classes/src_controllers_VariableController.VariableController.html)
+-   [ExperimentController](classes/src_controllers_ExperimentController.ExperimentController.html)
 
 ## The document
 
