@@ -24,6 +24,7 @@ import engineInfo from '../editor-engine.json';
 import { FontController } from './controllers/FontController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { FontConnectorController } from './controllers/FontConnectorController';
+import { ExperimentController } from './controllers/ExperimentController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -132,6 +133,7 @@ export class SDK {
     paragraphStyle: ParagraphStyleController;
     colorStyle: ColorStyleController;
     font: FontController;
+    experiment: ExperimentController;
 
     private subscriber: SubscriberController;
 
@@ -165,6 +167,7 @@ export class SDK {
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
+        this.experiment = new ExperimentController(this.editorAPI);
     }
 
     /**
@@ -220,6 +223,7 @@ export class SDK {
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
+        this.experiment = new ExperimentController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
