@@ -21,8 +21,10 @@ import { MediaConnectorController } from './controllers/MediaConnectorController
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
-import { FontConnectorController } from './controllers/FontConnectorController';
+import { FontController } from './controllers/FontController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { FontConnectorController } from './controllers/FontConnectorController';
+import { ExperimentController } from './controllers/ExperimentController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -34,7 +36,15 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 export { LayoutType } from '../types/LayoutTypes';
-export { BlendMode, FrameTypeEnum, VerticalAlign, TextDirection, FlowDirection, FitMode } from '../types/FrameTypes';
+export {
+    BlendMode,
+    FrameTypeEnum,
+    VerticalAlign,
+    TextDirection,
+    FlowDirection,
+    FitMode,
+    UpdateZIndexMethod,
+} from '../types/FrameTypes';
 export { VariableType } from '../types/VariableTypes';
 
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
@@ -72,7 +82,7 @@ export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate
 export type { CharacterStyle } from '../types/CharacterStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
-export type { Font } from '../types/FontTypes';
+export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';
 
 export {
     SelectedTextStyleSections,
@@ -86,14 +96,15 @@ export {
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
-export { MediaType } from '../types/ConnectorTypes';
-export type { QueryOptions } from '../types/ConnectorTypes';
+export * from '../types/FontConnectorTypes';
+export { MediaType, SortBy, SortOrder, DeprecatedMediaType } from '../types/ConnectorTypes';
+export type { QueryOptions, ConnectorCapabilities, ConnectorRegistration, QueryPage } from '../types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 let connection: Connection;
 
-const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/'+ engineInfo.current  +'/web';
+const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
 
 export class SDK {
     config: ConfigType;
@@ -121,6 +132,8 @@ export class SDK {
     textSelection: TextStyleController;
     paragraphStyle: ParagraphStyleController;
     colorStyle: ColorStyleController;
+    font: FontController;
+    experiment: ExperimentController;
 
     private subscriber: SubscriberController;
 
@@ -153,6 +166,8 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.font = new FontController(this.editorAPI);
+        this.experiment = new ExperimentController(this.editorAPI);
     }
 
     /**
@@ -181,6 +196,7 @@ export class SDK {
                 onFontsChanged: this.subscriber.onFontsChanged,
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
+                onConnectorStateChanged: this.subscriber.onConnectorStateChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -206,6 +222,8 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
+        this.font = new FontController(this.editorAPI);
+        this.experiment = new ExperimentController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks

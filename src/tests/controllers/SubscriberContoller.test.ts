@@ -7,6 +7,7 @@ import { FrameAnimationType } from '../../../types/AnimationTypes';
 import { VariableType } from '../../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
+import { ConnectorEventType } from '../../../types/ConnectorTypes';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -35,6 +36,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onFontsChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockedSubscribers, 'onLayoutsChanged');
+    jest.spyOn(mockedSubscribers, 'onConnectorStateChanged');
 });
 
 afterEach(() => {
@@ -93,6 +95,9 @@ describe('Subscriber methods', () => {
 
         mockedSubscribers.onLayoutsChanged(JSON.stringify([]));
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(15);
+
+        mockedSubscribers.onConnectorStateChanged(JSON.stringify({ id: 'id', type: ConnectorEventType.loaded }));
+        expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

@@ -30,6 +30,9 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetFrameWidth');
     jest.spyOn(mockedFrameProperties, 'resetFrameRotation');
     jest.spyOn(mockedFrameProperties, 'resetFrameSize');
+    jest.spyOn(mockedFrameProperties, 'resetImageFrameFitMode');
+    jest.spyOn(mockedFrameProperties, 'setImageFromConnector');
+    jest.spyOn(mockedFrameProperties, 'setImageFromUrl');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameName');
@@ -129,6 +132,9 @@ describe('FrameProperties', () => {
         mockedFrameProperties.resetFrameSize('2');
         expect(mockedFrameProperties.resetFrameSize).toHaveBeenCalledTimes(1);
 
+        mockedFrameProperties.resetImageFrameFitMode('2');
+        expect(mockedFrameProperties.resetImageFrameFitMode).toHaveBeenCalledTimes(1);
+
         mockedFrameProperties.selectFrame('2');
         expect(mockedFrameProperties.selectFrame).toHaveBeenCalledTimes(1);
 
@@ -172,6 +178,14 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setFrameZIndex(frameId, UpdateZIndexMethod.sendBackward);
         expect(mockedFrameProperties.setFrameZIndex).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setFrameZIndex).toHaveBeenCalledWith(frameId, UpdateZIndexMethod.sendBackward);
+
+        mockedFrameProperties.setImageFromConnector(frameId, 'connector id', 'asset id');
+        expect(mockedFrameProperties.setImageFromConnector).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setImageFromConnector).toHaveBeenCalledWith(frameId, 'connector id', 'asset id');
+
+        mockedFrameProperties.setImageFromUrl(frameId, 'image url');
+        expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledWith(frameId, 'image url');
     });
 });
 

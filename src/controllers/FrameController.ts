@@ -8,6 +8,7 @@ import {
     FrameTypeEnum,
     UpdateZIndexMethod,
     VerticalAlign
+,
 } from '../../types/FrameTypes';
 
 /**
@@ -323,6 +324,16 @@ export class FrameController {
     };
 
     /**
+     * This method will reset the fitMode property of a specific frame to its original value
+     * @param frameId The ID of the frame that needs to get reset
+     * @returns
+     */
+    resetImageFrameFitMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetImageFrameFitMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the visibility property of a specified frame. If set to false the frame will be invisible and vice versa.
      * @param frameId The ID of the frame that needs to get updated
      * @param value True means the frame gets visible, false means the frame gets invisible
@@ -358,7 +369,7 @@ export class FrameController {
     };
 
     /**
-     * This method will assign an image from a mediaConnector to the correct imageFrame
+     * This method will assign an image from a mediaConnector to the correct ImageFrame
      * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
      * @param connectorId Unique Id of the media connector
      * @param resourceId Unique Id of the asset that you want to assign to the imageFrame
@@ -372,6 +383,18 @@ export class FrameController {
     };
 
     /**
+     * This method will assign an image from url to the correct ImageFrame
+     * Make sure the url can be accessed by the editor.
+     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param url A valid image uri
+     * @returns
+     */
+    setImageFromUrl = async (imageFrameId: Id, url: string) => {
+        const res = await this.#editorAPI;
+        return res.assignImageFromUrl(imageFrameId, url).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the fitMode property of a specified image frame.
      * @param imageFrameId The ID of the imageFrame that needs to get updated.
      * @param fitMode The new fitMode that you want to set to the imageFrame.
@@ -379,7 +402,7 @@ export class FrameController {
      */
     setImageFrameFitMode = async (imageFrameId: Id, fitMode: FitMode) => {
         const res = await this.#editorAPI;
-        return res.setFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
+        return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

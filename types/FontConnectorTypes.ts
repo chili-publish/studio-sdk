@@ -1,4 +1,4 @@
-import { MediaType } from "./ConnectorTypes";
+import { MediaType } from './ConnectorTypes';
 
 export enum FontDownloadType {
     Preview = 'lowresWeb',
@@ -8,8 +8,8 @@ export enum FontDownloadType {
 export type Font = {
     id: string;
     name: string;
-    fontFamily?: string | null;
-    fontStyle?: string | null;
+    family: string | null;
+    style: string | null;
     relativePath: string;
     type: MediaType;
     metaData: Map<string, string>;

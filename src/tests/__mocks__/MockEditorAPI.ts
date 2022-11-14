@@ -22,6 +22,8 @@ export const mockSetFrameZIndex = jest.fn().mockResolvedValue({ success: true, s
 export const mockRemoveFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockAssignImage = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockAssignImageFromUrl = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -66,6 +68,7 @@ export const mockPauseAnimation = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockInsertTextVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPages = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -115,7 +118,7 @@ export const mockConnectorAuthenticationSetChiliToken = jest.fn().mockResolvedVa
 export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockSetFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVerticalAlignment = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetMinCopyfitting = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetMaxCopyfitting = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -125,6 +128,10 @@ export const mockResetMaxCopyfitting = jest.fn().mockResolvedValue({ success: tr
 export const mockResetEnableCopyfitting = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 export const mockRegisterConnector = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateConnectorConfiguration = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockgetConnectorState = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetPageSnapshot = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -166,6 +173,9 @@ const MockEditorAPI = {
     resetFrameHeight: mockResetFrameHeight,
     resetFrameRotation: mockResetFrameRotation,
     setFrameAnimation: mockSetFrameAniation,
+    insertTextVariable: mockInsertTextVariable,
+    assignImage: mockAssignImage,
+    assignImageFromUrl: mockAssignImageFromUrl,
     getAnimationsOnSelectedLayout: mockGetAnimationsOnSelectedLayout,
     getAnimationByFrameId: mockGetAnimationByFrameId,
     getAnimationsByLayoutId: mockGetAnimationsByLayoutId,
@@ -252,8 +262,12 @@ const MockEditorAPI = {
     connectorAuthenticationSetHttpHeader: mockConnectorAuthenticationSetHttpHeader,
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
-    setFitMode: mockSetFitMode,
+    setImageFrameFitMode: mockSetImageFrameFitMode,
+    resetImageFrameFitMode: mockResetImageFrameFitMode,
     registerConnector: mockRegisterConnector,
+    updateConnectorConfiguration: mockUpdateConnectorConfiguration,
+    getConnectorState: mockgetConnectorState,
+    getPageSnapshot: mockGetPageSnapshot,
 };
 
 export default MockEditorAPI;

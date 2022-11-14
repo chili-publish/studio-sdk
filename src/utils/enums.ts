@@ -23,4 +23,6 @@ export enum ToolType {
 export enum DownloadFormats {
     MP4 = 'mp4',
     GIF = 'gif',
+    PNG = 'png',
+    JPG = 'jpg',
 }

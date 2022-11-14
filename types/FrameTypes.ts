@@ -117,7 +117,7 @@ export enum FitMode {
 
 export enum UpdateZIndexMethod {
     bringToFront = 'bringToFront',
-    bringToBack = 'bringToBack',
-    sendForward = 'sendForward',
+    sendToBack = 'sendToBack',
+    bringForward = 'bringForward',
     sendBackward = 'sendBackward',
 }

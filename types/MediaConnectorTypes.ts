@@ -1,4 +1,4 @@
-import { MediaType } from "./ConnectorTypes";
+import { MediaType } from './ConnectorTypes';
 
 export enum MediaDownloadType {
     LowResolutionWeb = 'lowresWeb',
