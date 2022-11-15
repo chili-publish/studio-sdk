@@ -1,5 +1,5 @@
-import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { ConnectorEvent, ConnectorEventType, ConnectorRegistration } from '../../types/ConnectorTypes';
+import { ConnectorOptions, EditorAPI, EditorResponse } from '../../types/CommonTypes';
+import { ConnectorEvent, ConnectorEventType, ConnectorMapping, ConnectorRegistration } from '../../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -153,24 +153,33 @@ class ConnectorConfigurator {
         this.#res = res;
     }
 
-    // Future-proofing
-    // setOptions = async (options: ConnectorOptions) => {
-    //     return this.#res
-    //         .setConnectorOptions(this.#connectorId, JSON.stringify(options))
-    //         .then((result) => getEditorResponseData<null>(result));
-    // };
+    /**
+     * Allows to customize the context data a connector can work with. The options data
+     * will be available using the context parameter in the connector implementation code.
+     * @param options object containing key value data to pass to connector context
+     */
+    setOptions = async (options: ConnectorOptions) => {
+        return this.#res
+            .setConnectorOptions(this.#connectorId, JSON.stringify(options))
+            .then((result) => getEditorResponseData<null>(result));
+    };
 
-    // Future-proofing
-    // setMappings = async (mappings: Array<ConnectorMapping>) => {
-    //     const result = await this.#res
-    //         .setConnectorMappings(this.#connectorId, JSON.stringify(mappings));
-    //     return getEditorResponseData<null>(result);
-    // };
+    /**
+     * Allows to map document data (variables, selectedFrame, etc) to connector context data.
+     * By defining the mappings, we can trigger redownload of assets (dynamic asset provider)
+     * or populate filters for the query endpoint. The mapped data will be available using 
+     * the context parameter in the connector implementation code.
+     * @param mappings collection of mappings to set to this connector
+     */
+    setMappings = async (mappings: ConnectorMapping[]) => {
+        const result = await this.#res
+            .setConnectorMappings(this.#connectorId, mappings.map(function (m) { return JSON.stringify(m); }));
+        return getEditorResponseData<null>(result);
+    };
 
     /**
      * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
      * The CHILI Token will be used to authenticate every grafx connector http call.
-     * @param connectorId unique Id of the media connector
      * @param token token for the CHILI authentication
      */
     setChiliToken = async (token: string) => {
@@ -183,7 +192,6 @@ class ConnectorConfigurator {
      * This method sets the HTTP headers for the 'staticKey' authentication type.
      * These additional headers will be added to all connector http calls.
      * Can only be used after a connector has been registered. (if you are using a grafx connector no registration is needed)
-     * @param connectorId unique Id of the media connector
      * @param headerName name of the header
      * @param headerValue value of the header
      */

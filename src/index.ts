@@ -97,8 +97,7 @@ export {
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
 export * from '../types/FontConnectorTypes';
-export { MediaType, SortBy, SortOrder, DeprecatedMediaType } from '../types/ConnectorTypes';
-export type { QueryOptions, ConnectorCapabilities, ConnectorRegistration, QueryPage } from '../types/ConnectorTypes';
+export * from '../types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
