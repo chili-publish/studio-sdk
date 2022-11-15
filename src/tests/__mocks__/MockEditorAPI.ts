@@ -125,6 +125,8 @@ export const mockUpdateConnectorConfiguration = jest.fn().mockResolvedValue({ su
 export const mockgetConnectorState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageSnapshot = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetConnectorMappings = jest.fn().mockResolvedValue({success: true, status: 0});
+export const mockSetConnectorOptions = jest.fn().mockResolvedValue({success: true, status: 0});
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -255,6 +257,8 @@ const MockEditorAPI = {
     updateConnectorConfiguration: mockUpdateConnectorConfiguration,
     getConnectorState: mockgetConnectorState,
     getPageSnapshot: mockGetPageSnapshot,
+    setConnectorMappings: mockSetConnectorMappings,
+    setConnectorOptions:  mockSetConnectorOptions,
 };
 
 export default MockEditorAPI;

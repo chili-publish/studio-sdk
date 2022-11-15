@@ -46,10 +46,16 @@ export enum ConnectorRegistrationSource {
     url = 'url',
 };
 
-export type ConnectorMapping = {
-    name: string,
-    value: string,
-};
+export class ConnectorMapping {
+    
+    name: string;
+    value: string;
+
+    constructor(mapTo: ConnectorMappingTarget, contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string) {
+        this.name = `${mapTo}.${contextProperty}`;
+        this.value = `${mapFrom}.${sourceValue}`;
+    }
+}
 
 export type ConnectorEvent = {
     id: string;
@@ -60,6 +66,15 @@ export type QueryPage<T> = {
     nextPageToken?: string;
     data: T[];
 };
+
+export enum ConnectorMappingTarget {
+    query = 'query',
+    download = 'download'
+}
+
+export enum ConnectorMappingSource {
+    variable = 'var',
+}
 
 export enum ConnectorEventType {
     loading = 'loading',
