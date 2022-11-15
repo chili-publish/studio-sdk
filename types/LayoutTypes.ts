@@ -48,10 +48,10 @@ export type Layout = {
 
 // used by onLayoutsChanged
 export type LayoutListItemType = {
-    layoutId: String;
+    layoutId: string;
     layoutName: string;
-    parentLayoutId?: String;
-    childLayouts: String[];
+    parentLayoutId?: string;
+    childLayouts: string[];
 };
 
 export enum LayoutType {
