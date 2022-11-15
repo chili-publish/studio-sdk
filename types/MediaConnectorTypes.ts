@@ -11,7 +11,7 @@ export type Media = {
     relativePath: string;
     type: MediaType;
     metaData: {
-        [key: string]: string
+        [key: string]: string;
     };
 };
 
