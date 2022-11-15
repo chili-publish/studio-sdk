@@ -13,6 +13,9 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
+    minCopyfitting: PropertyState<number>;
+    maxCopyfitting: PropertyState<number>;
+    enableCopyfitting: PropertyState<boolean>;
 } | null;
 
 //Frame.image
