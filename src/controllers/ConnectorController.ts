@@ -12,7 +12,9 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
  * is loaded in the studio engine using a sandboxed Javascript execution engine (QuickJs). This allows us to
  * execute the media connector both on web using webassembly and on the server side during e.g. animation output
  * generation.
- * This controller is an interface to the running connector instance inside the studio engine.
+ * This controller is an interface to the running connector instance inside the studio engine. The engine will
+ * automatically register the 'grafx-media' and 'grafx-font' connectors. Custom connectors need to be registered
+ * manually.
  */
 export class ConnectorController {
     /**
@@ -177,8 +179,7 @@ class ConnectorConfigurator {
 
     /**
      * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
-     * The CHILI Token will be used to authenticate every grafx-media connector http call.
-     * Can only be used after a connector has been registered.
+     * The CHILI Token will be used to authenticate every grafx connector http call.
      * @param token token for the CHILI authentication
      */
     setChiliToken = async (token: string) => {
@@ -190,7 +191,7 @@ class ConnectorConfigurator {
     /**
      * This method sets the HTTP headers for the 'staticKey' authentication type.
      * These additional headers will be added to all connector http calls.
-     * Can only be used after a connector has been registered.
+     * Can only be used after a connector has been registered. (if you are using a grafx connector no registration is needed)
      * @param headerName name of the header
      * @param headerValue value of the header
      */
