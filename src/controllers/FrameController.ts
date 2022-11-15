@@ -1,14 +1,13 @@
-import type {EditorAPI, Id} from '../../types/CommonTypes';
-import {getCalculatedValue} from '../utils/getCalculatedValue';
-import {getEditorResponseData} from '../utils/EditorResponseData';
+import type { EditorAPI, Id } from '../../types/CommonTypes';
+import { getCalculatedValue } from '../utils/getCalculatedValue';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     FitMode,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
     UpdateZIndexMethod,
-    VerticalAlign
-,
+    VerticalAlign,
 } from '../../types/FrameTypes';
 
 /**
@@ -416,7 +415,6 @@ export class FrameController {
         return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };
 
-
     /**
      * This method will set the min copyFitting property of a specified frame.
      * @param frameId The ID of the frame that needs to get updated
@@ -495,6 +493,4 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.resetEnableCopyfitting(frameId).then((result) => getEditorResponseData<null>(result));
     };
-
-
 }
