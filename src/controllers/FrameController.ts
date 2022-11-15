@@ -414,4 +414,83 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will set the min copyFitting property of a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value The new min copyFitting value to be set to the frame.
+     * @returns
+     */
+    setMinCopyfitting = async (frameId: Id, value: string) => {
+        const res = await this.#editorAPI;
+
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
+            return null;
+        }
+
+        return res
+            .setMinCopyfitting(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the max copyFitting property of a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value The new max copyFitting value to be set to the frame.
+     * @returns
+     */
+    setMaxCopyfitting = async (frameId: Id, value: string) => {
+        const res = await this.#editorAPI;
+
+        const calc = getCalculatedValue(value);
+        if (calc === null || calc === Infinity) {
+            return null;
+        }
+
+        return res
+            .setMaxCopyfitting(frameId, parseFloat(calc.toString()))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will enable copyFitting on a specified frame.
+     * @param frameId The ID of the frame that needs to get updated
+     * @param value The new value to be set to the frame.
+     * @returns
+     */
+    setEnableCopyfitting = async (frameId: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setEnableCopyfitting(frameId, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the frame minCopyfitting to the frame's original value
+     * @param frameId The ID of a specific frame
+     * @returns
+     */
+    resetMinCopyfitting = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetMinCopyfitting(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the frame maxCopyfitting to the frame's original value
+     * @param frameId The ID of a specific frame
+     * @returns
+     */
+    resetMaxCopyfitting = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetMaxCopyfitting(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the frame enableCopyfitting to the frame's original value
+     * @param frameId The ID of a specific frame
+     * @returns
+     */
+    resetEnableCopyfitting = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetEnableCopyfitting(frameId).then((result) => getEditorResponseData<null>(result));
+    };
 }
