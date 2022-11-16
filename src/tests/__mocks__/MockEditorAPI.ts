@@ -69,6 +69,8 @@ export const mockSetScrubberPosition = jest.fn().mockResolvedValue({ success: tr
 export const mockSetAnimationDuration = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockInsertTextVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockEnterTextEditMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockExitTextEditMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPages = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -132,8 +134,8 @@ export const mockUpdateConnectorConfiguration = jest.fn().mockResolvedValue({ su
 export const mockgetConnectorState = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetImageFrameFitMode = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageSnapshot = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockSetConnectorMappings = jest.fn().mockResolvedValue({success: true, status: 0});
-export const mockSetConnectorOptions = jest.fn().mockResolvedValue({success: true, status: 0});
+export const mockSetConnectorMappings = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetConnectorOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addLayout: mockAddLayout,
@@ -176,6 +178,8 @@ const MockEditorAPI = {
     resetFrameRotation: mockResetFrameRotation,
     setFrameAnimation: mockSetFrameAniation,
     insertTextVariable: mockInsertTextVariable,
+    enterTextEditMode: mockEnterTextEditMode,
+    exitTextEditMode: mockExitTextEditMode,
     assignImage: mockAssignImage,
     assignImageFromUrl: mockAssignImageFromUrl,
     getAnimationsOnSelectedLayout: mockGetAnimationsOnSelectedLayout,
@@ -271,7 +275,7 @@ const MockEditorAPI = {
     getConnectorState: mockgetConnectorState,
     getPageSnapshot: mockGetPageSnapshot,
     setConnectorMappings: mockSetConnectorMappings,
-    setConnectorOptions:  mockSetConnectorOptions,
+    setConnectorOptions: mockSetConnectorOptions,
 };
 
 export default MockEditorAPI;
