@@ -364,7 +364,7 @@ export class FrameController {
      */
     addFrame = async (frameType: FrameTypeEnum, x: number, y: number, width: number, height: number) => {
         const res = await this.#editorAPI;
-        return res.addFrame(frameType, x, y, width, height).then((result) => getEditorResponseData<number>(result));
+        return res.addFrame(frameType, x, y, width, height).then((result) => getEditorResponseData<string>(result));
     };
 
     /**

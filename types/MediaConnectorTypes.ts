@@ -10,7 +10,9 @@ export type Media = {
     name: string;
     relativePath: string;
     type: MediaType;
-    metaData: Map<string, string>;
+    metaData: {
+        [key: string]: string;
+    };
 };
 
 export type MediaPage = {
