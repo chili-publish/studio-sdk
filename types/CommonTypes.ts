@@ -1,7 +1,7 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
 import { LayoutWithFrameProperties, LayoutPropertiesType, LayoutListItemType } from './LayoutTypes';
-import { Frame, FrameLayoutType } from './FrameTypes';
+import {Frame, FrameLayoutType, FrameTypeEnum} from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src';
@@ -78,6 +78,7 @@ export interface PropertyState<T> {
 export interface SelectedLayoutFrame {
     frameId: Id;
     frameName: string;
+    frameType: FrameTypeEnum;
     included: boolean;
 }
 

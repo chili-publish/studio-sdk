@@ -1,5 +1,10 @@
 import { ConnectorOptions, EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { ConnectorEvent, ConnectorEventType, ConnectorMapping, ConnectorRegistration } from '../../types/ConnectorTypes';
+import {
+    ConnectorEvent,
+    ConnectorEventType,
+    ConnectorMapping,
+    ConnectorRegistration,
+} from '../../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -167,13 +172,17 @@ class ConnectorConfigurator {
     /**
      * Allows to map document data (variables, selectedFrame, etc) to connector context data.
      * By defining the mappings, we can trigger redownload of assets (dynamic asset provider)
-     * or populate filters for the query endpoint. The mapped data will be available using 
+     * or populate filters for the query endpoint. The mapped data will be available using
      * the context parameter in the connector implementation code.
      * @param mappings collection of mappings to set to this connector
      */
     setMappings = async (mappings: ConnectorMapping[]) => {
-        const result = await this.#res
-            .setConnectorMappings(this.#connectorId, mappings.map(function (m) { return JSON.stringify(m); }));
+        const result = await this.#res.setConnectorMappings(
+            this.#connectorId,
+            mappings.map(function (m) {
+                return JSON.stringify(m);
+            }),
+        );
         return getEditorResponseData<null>(result);
     };
 
