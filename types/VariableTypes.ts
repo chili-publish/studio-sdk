@@ -10,7 +10,7 @@ interface UrlImageVariableSource extends ImageVariableSource {
     url: string;
 }
 
-interface mediaConnectorImageVariableSource extends ImageVariableSource {
+interface MediaConnectorImageVariableSource extends ImageVariableSource {
     connectorId: string;
     assetId: string;
 }
@@ -30,7 +30,7 @@ export type Variable  = {
     occurrences?: number;
     value?: string;
     defaultValue?: string;
-    src?: mediaConnectorImageVariableSource | UrlImageVariableSource
+    src?: MediaConnectorImageVariableSource | UrlImageVariableSource
 }
 
 export type VariableMoves = {
