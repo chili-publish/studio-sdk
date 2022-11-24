@@ -6,11 +6,11 @@ interface ImageVariableSource {
     sourceType: ImageVariableSourceType;
 }
 
-interface UrlImageVariableSource extends ImageVariableSource {
+export interface UrlImageVariableSource extends ImageVariableSource {
     url: string;
 }
 
-interface MediaConnectorImageVariableSource extends ImageVariableSource {
+export interface MediaConnectorImageVariableSource extends ImageVariableSource {
     connectorId: string;
     assetId: string;
 }
