@@ -25,6 +25,7 @@ import { FontController } from './controllers/FontController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { FontConnectorController } from './controllers/FontConnectorController';
 import { ExperimentController } from './controllers/ExperimentController';
+import { CharacterStyleController } from './controllers/CharacterStyleController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -130,6 +131,7 @@ export class SDK {
     undoManager: UndoManagerController;
     textSelection: TextStyleController;
     paragraphStyle: ParagraphStyleController;
+    characterStyle: CharacterStyleController;
     colorStyle: ColorStyleController;
     font: FontController;
     experiment: ExperimentController;
@@ -165,6 +167,7 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
     }
@@ -218,6 +221,7 @@ export class SDK {
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
+        this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
