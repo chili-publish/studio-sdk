@@ -10,6 +10,7 @@ export type Media = {
     name: string;
     relativePath: string;
     type: MediaType;
+    extension: string,
     metaData: {
         [key: string]: string;
     };
