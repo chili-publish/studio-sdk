@@ -80,7 +80,7 @@ export type {
 } from '../types/TextStyleTypes';
 
 export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
-export type { CharacterStyle } from '../types/CharacterStyleTypes';
+export type { CharacterStyle, CharacterStyleUpdate } from '../types/CharacterStyleTypes';
 export { ColorUsageType } from '../types/ParagraphStyleTypes';
 
 export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';

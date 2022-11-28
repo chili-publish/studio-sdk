@@ -1,6 +1,7 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { CharacterStyle } from '../../types/CharacterStyleTypes';
+import { CharacterStyle, CharacterStyleUpdate } from '../../types/CharacterStyleTypes';
+import { ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
 
 /**
  * The CharacterStyleController is responsible for all communication regarding character styles.
@@ -41,11 +42,24 @@ export class CharacterStyleController {
     };
 
     /**
-     * This method create a new character style
+     * This method creates a new character style
      * @returns the new created character style id
      */
     createCharacterStyle = async () => {
         const res = await this.#editorAPI;
         return res.createCharacterStyle().then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method updates a character style
+     * @param id The ID of a specific character style
+     * @param characterStyle The new character style properties
+     * @returns
+     */
+    updateCharacterStyle = async (id: string, characterStyle: CharacterStyleUpdate) => {
+        const res = await this.#editorAPI;
+        return res
+            .updateCharacterStyle(id, JSON.stringify(characterStyle))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
