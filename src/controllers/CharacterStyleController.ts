@@ -1,7 +1,6 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyle, CharacterStyleUpdate } from '../../types/CharacterStyleTypes';
-import { ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
 
 /**
  * The CharacterStyleController is responsible for all communication regarding character styles.
