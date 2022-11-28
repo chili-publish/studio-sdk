@@ -12,7 +12,7 @@ export type Font = {
     style: string | null;
     relativePath: string;
     type: MediaType;
-    extension: string;
+    extension: string | null;
     metaData: Map<string, string>;
 };
 
