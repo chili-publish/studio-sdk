@@ -1,5 +1,5 @@
 import { Id } from '../../../types/CommonTypes';
-import { FitMode, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
+import { FitMode, ShapeType, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
@@ -46,6 +46,15 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetEnableCopyfitting');
     jest.spyOn(mockedFrameProperties, 'reorderFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameZIndex');
+    jest.spyOn(mockedFrameProperties, 'setShapeFrameType');
+    jest.spyOn(mockedFrameProperties, 'setShapeFrameFillColor');
+    jest.spyOn(mockedFrameProperties, 'setShapeFrameEnableStroke');
+    jest.spyOn(mockedFrameProperties, 'setShapeFrameStrokeColor');
+    jest.spyOn(mockedFrameProperties, 'setShapeFrameStrokeWeight');
+    jest.spyOn(mockedFrameProperties, 'resetShapeFrameFillColor');
+    jest.spyOn(mockedFrameProperties, 'resetShapeFrameEnableStroke');
+    jest.spyOn(mockedFrameProperties, 'resetShapeFrameStrokeColor');
+    jest.spyOn(mockedFrameProperties, 'resetShapeFrameStrokeWeight');
 
     frameId = mockSelectFrame.frameId;
 });
@@ -186,6 +195,42 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setImageFromUrl(frameId, 'image url');
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledWith(frameId, 'image url');
+
+        mockedFrameProperties.setShapeFrameType(frameId, ShapeType.triangle);
+        expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledWith(frameId, ShapeType.triangle);
+
+        mockedFrameProperties.setShapeFrameFillColor(frameId, 9000);
+        expect(mockedFrameProperties.setShapeFrameFillColor).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setShapeFrameFillColor).toHaveBeenCalledWith(frameId, 9000);
+
+        mockedFrameProperties.setShapeFrameEnableStroke(frameId, true);
+        expect(mockedFrameProperties.setShapeFrameEnableStroke).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setShapeFrameEnableStroke).toHaveBeenCalledWith(frameId, true);
+
+        mockedFrameProperties.setShapeFrameStrokeColor(frameId, 9000);
+        expect(mockedFrameProperties.setShapeFrameStrokeColor).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setShapeFrameStrokeColor).toHaveBeenCalledWith(frameId, 9000);
+
+        mockedFrameProperties.setShapeFrameStrokeWeight(frameId, 10);
+        expect(mockedFrameProperties.setShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId, 10);
+
+        mockedFrameProperties.resetShapeFrameFillColor(frameId);
+        expect(mockedFrameProperties.resetShapeFrameFillColor).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.resetShapeFrameFillColor).toHaveBeenCalledWith(frameId);
+
+        mockedFrameProperties.resetShapeFrameEnableStroke(frameId);
+        expect(mockedFrameProperties.resetShapeFrameEnableStroke).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.resetShapeFrameEnableStroke).toHaveBeenCalledWith(frameId);
+
+        mockedFrameProperties.resetShapeFrameStrokeColor(frameId);
+        expect(mockedFrameProperties.resetShapeFrameStrokeColor).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.resetShapeFrameStrokeColor).toHaveBeenCalledWith(frameId);
+
+        mockedFrameProperties.resetShapeFrameStrokeWeight(frameId);
+        expect(mockedFrameProperties.resetShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.resetShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId);
     });
 });
 
