@@ -103,6 +103,7 @@ export const mockUpdateParagraphStyle = jest.fn().mockResolvedValue({ success: t
 export const mockGetCharacterStyles = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetCharacterStyleById = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockCreateCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorQuery = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorDownload = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorRemove = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -264,6 +265,7 @@ const MockEditorAPI = {
     getCharacterStyles: mockGetCharacterStyles,
     getCharacterStyleById: mockGetCharacterStyleById,
     createCharacterStyle: mockCreateCharacterStyle,
+    updateCharacterStyle: mockUpdateCharacterStyle,
     mediaConnectorCopy: mockMediaConnectorCopy,
     mediaConnectorQuery: mockMediaConnectorQuery,
     mediaConnectorDownload: mockMediaConnectorDownload,
