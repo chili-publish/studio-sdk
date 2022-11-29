@@ -32,13 +32,13 @@ export enum Scripting {
 export interface TextProperties {
     fontKey?: string;
     fontStyle?: FontWeights;
-    fontSize?: string;
+    fontSize?: number;
     textAlign?: Alignment;
     verticalAlign?: VerticalAlign;
     underline?: boolean;
     lineThrough?: boolean;
     letterSpacing?: string;
-    lineHeight?: string;
+    lineHeight?: number;
     SUB_SUPER_SCRIPT?: Scripting;
     typographicCase?: Case;
     color?: ColorUsage;
