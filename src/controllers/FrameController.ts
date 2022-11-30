@@ -507,6 +507,17 @@ export class FrameController {
     };
 
     /**
+     * This method will set the visibility of the shape fill.
+     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param enableFill Whether the shape fill is visible.
+     * @returns
+     */
+    setShapeFrameEnableFill = async (shapeFrameId: Id, enableFill: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setShapeFrameEnableFill(shapeFrameId, enableFill).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the shape fill color of a specified shape frame.
      * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
      * @param fillColor The new shape fill color that you want to set to the shapeFrame.
@@ -548,6 +559,16 @@ export class FrameController {
     setShapeFrameStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
         const res = await this.#editorAPI;
         return res.setShapeFrameStrokeWeight(shapeFrameId, strokeWeight).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the shape fill visibility to the frame's original value
+     * @param frameId The ID of a specific frame
+     * @returns
+     */
+    resetShapeFrameEnableFill = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetShapeFrameEnableFill(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

@@ -47,10 +47,12 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'reorderFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameZIndex');
     jest.spyOn(mockedFrameProperties, 'setShapeFrameType');
+    jest.spyOn(mockedFrameProperties, 'setShapeFrameEnableFill');
     jest.spyOn(mockedFrameProperties, 'setShapeFrameFillColor');
     jest.spyOn(mockedFrameProperties, 'setShapeFrameEnableStroke');
     jest.spyOn(mockedFrameProperties, 'setShapeFrameStrokeColor');
     jest.spyOn(mockedFrameProperties, 'setShapeFrameStrokeWeight');
+    jest.spyOn(mockedFrameProperties, 'resetShapeFrameEnableFill');
     jest.spyOn(mockedFrameProperties, 'resetShapeFrameFillColor');
     jest.spyOn(mockedFrameProperties, 'resetShapeFrameEnableStroke');
     jest.spyOn(mockedFrameProperties, 'resetShapeFrameStrokeColor');
@@ -200,6 +202,10 @@ describe('FrameProperties', () => {
         expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledWith(frameId, ShapeType.triangle);
 
+        mockedFrameProperties.setShapeFrameEnableFill(frameId, true);
+        expect(mockedFrameProperties.setShapeFrameEnableFill).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.setShapeFrameEnableFill).toHaveBeenCalledWith(frameId, true);
+
         mockedFrameProperties.setShapeFrameFillColor(frameId, 9000);
         expect(mockedFrameProperties.setShapeFrameFillColor).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setShapeFrameFillColor).toHaveBeenCalledWith(frameId, 9000);
@@ -215,6 +221,10 @@ describe('FrameProperties', () => {
         mockedFrameProperties.setShapeFrameStrokeWeight(frameId, 10);
         expect(mockedFrameProperties.setShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId, 10);
+
+        mockedFrameProperties.resetShapeFrameEnableFill(frameId);
+        expect(mockedFrameProperties.resetShapeFrameEnableFill).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.resetShapeFrameEnableFill).toHaveBeenCalledWith(frameId);
 
         mockedFrameProperties.resetShapeFrameFillColor(frameId);
         expect(mockedFrameProperties.resetShapeFrameFillColor).toHaveBeenCalledTimes(1);
