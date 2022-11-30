@@ -127,7 +127,7 @@ export enum UpdateZIndexMethod {
 }
 
 export enum ShapeType {
-    circle = 'circle',
+    ellipse = 'ellipse',
     rectangle = 'rectangle',
     triangle = 'triangle',
 }
