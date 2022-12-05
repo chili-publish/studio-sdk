@@ -198,9 +198,9 @@ describe('FrameProperties', () => {
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledWith(frameId, 'image url');
 
-        mockedFrameProperties.setShapeFrameType(frameId, ShapeType.triangle);
+        mockedFrameProperties.setShapeFrameType(frameId, ShapeType.polygon);
         expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledWith(frameId, ShapeType.triangle);
+        expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledWith(frameId, ShapeType.polygon);
 
         mockedFrameProperties.setShapeFrameEnableFill(frameId, true);
         expect(mockedFrameProperties.setShapeFrameEnableFill).toHaveBeenCalledTimes(1);
