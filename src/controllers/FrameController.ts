@@ -353,20 +353,35 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.removeFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
+
     /**
-     * This method will add a new frame of a specific type to the template positioned on the requested
-     * coordinates. If you pass 'shape' as a frame type, shape type will default to 'rectangle'.
-     * If you pass any specific shape, frame created will be of that shape type.
-     * @param frameOrShapeType The type of frame to create
+     * This method will add a new frame of 'frameType' to the template positioned on the requested
+     * coordinates.
+     * @param frameType The type of frame to create
      * @param x X coordinate of the new frame within the template
      * @param y Y coordinate of the new frame within the template
      * @param width Width of the new frame within the template
      * @param height Height of the new frame within the template
      * @returns The newly created frame's ID
      */
-    addFrame = async (frameOrShapeType: FrameTypeEnum | ShapeType, x: number, y: number, width: number, height: number) => {
+    addFrame = async (frameType: FrameTypeEnum, x: number, y: number, width: number, height: number) => {
         const res = await this.#editorAPI;
-        return res.addFrame(frameOrShapeType, x, y, width, height).then((result) => getEditorResponseData<string>(result));
+        return res.addFrame(frameType, x, y, width, height).then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method will add a new frame of 'shapeType' type to the template positioned on the requested
+     * coordinates.
+     * @param shapeType The type of frame to create
+     * @param x X coordinate of the new frame within the template
+     * @param y Y coordinate of the new frame within the template
+     * @param width Width of the new frame within the template
+     * @param height Height of the new frame within the template
+     * @returns The newly created frame's ID
+     */
+    addShapeFrame = async (shapeType: ShapeType, x: number, y: number, width: number, height: number) => {
+        const res = await this.#editorAPI;
+        return res.addFrame(shapeType, x, y, width, height).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
