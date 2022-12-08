@@ -1,5 +1,5 @@
 import { Id } from '../../../types/CommonTypes';
-import { FitMode, ShapeType, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
+import { FitMode, FrameTypeEnum, ShapeType, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
@@ -8,6 +8,8 @@ let mockedFrameProperties: FrameController;
 let frameId: Id;
 beforeEach(() => {
     mockedFrameProperties = new FrameController(MockEditorAPI);
+    jest.spyOn(mockedFrameProperties, 'addFrame');
+    jest.spyOn(mockedFrameProperties, 'addShapeFrame');
     jest.spyOn(mockedFrameProperties, 'getFrames');
     jest.spyOn(mockedFrameProperties, 'getSelectedFrames');
     jest.spyOn(mockedFrameProperties, 'getFramesByPageId');
@@ -66,6 +68,14 @@ afterAll(() => {
 });
 describe('FrameProperties', () => {
     it('Should call all of the Frame Functions of EditorAPI successfully', () => {
+        mockedFrameProperties.addFrame(FrameTypeEnum.image, 100, 100, 100, 100);
+        expect(mockedFrameProperties.addFrame).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.addFrame).toHaveBeenCalledWith(FrameTypeEnum.image, 100, 100, 100, 100);
+
+        mockedFrameProperties.addShapeFrame(ShapeType.ellipse, 100, 100, 100, 100);
+        expect(mockedFrameProperties.addShapeFrame).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.addShapeFrame).toHaveBeenCalledWith(ShapeType.ellipse, 100, 100, 100, 100);
+
         mockedFrameProperties.getFrames();
         expect(mockedFrameProperties.getFrames).toHaveBeenCalledTimes(1);
 

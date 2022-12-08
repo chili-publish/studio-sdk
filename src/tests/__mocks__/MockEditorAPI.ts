@@ -1,3 +1,5 @@
+export const mockAddFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockAddShapeFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAddLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetLayoutName = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -154,6 +156,8 @@ export const mockResetShapeFrameStrokeColor = jest.fn().mockResolvedValue({ succ
 export const mockResetShapeFrameStrokeWeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
+    addFrame: mockAddFrame,
+    addShapeFrame: mockAddShapeFrame,
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
     renameLayout: mockSetLayoutName,
