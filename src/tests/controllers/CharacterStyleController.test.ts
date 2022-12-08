@@ -13,6 +13,9 @@ beforeEach(() => {
     jest.spyOn(mockedCharacterStyleController, 'getCharacterStyleById');
     jest.spyOn(mockedCharacterStyleController, 'createCharacterStyle');
     jest.spyOn(mockedCharacterStyleController, 'updateCharacterStyle');
+    jest.spyOn(mockedCharacterStyleController, 'duplicateCharacterStyle');
+    jest.spyOn(mockedCharacterStyleController, 'renameCharacterStyle');
+    jest.spyOn(mockedCharacterStyleController, 'removeCharacterStyle');
 });
 
 afterAll(() => {
@@ -88,5 +91,17 @@ describe('Character Style', () => {
 
         mockedCharacterStyleController.updateCharacterStyle('5', updateCharacterStyle);
         expect(mockedCharacterStyleController.updateCharacterStyle).toHaveBeenCalledTimes(1);
+
+        mockedCharacterStyleController.removeCharacterStyle('5');
+        expect(mockedCharacterStyleController.removeCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockedCharacterStyleController.removeCharacterStyle).toHaveBeenCalledWith('5');
+
+        mockedCharacterStyleController.duplicateCharacterStyle('6');
+        expect(mockedCharacterStyleController.duplicateCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockedCharacterStyleController.duplicateCharacterStyle).toHaveBeenCalledWith('6');
+
+        mockedCharacterStyleController.renameCharacterStyle('5', 'name');
+        expect(mockedCharacterStyleController.renameCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockedCharacterStyleController.renameCharacterStyle).toHaveBeenCalledWith('5', 'name');
     });
 });
