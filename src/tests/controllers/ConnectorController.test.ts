@@ -1,7 +1,12 @@
 import { SDK } from '../../index';
 import mockConfig from '../__mocks__/config';
 import { ConnectorController } from '../../controllers/ConnectorController';
-import { ConnectorMapping, ConnectorMappingSource, ConnectorMappingTarget, ConnectorRegistrationSource } from '../../../types/ConnectorTypes';
+import {
+    ConnectorMapping,
+    ConnectorMappingSource,
+    ConnectorMappingTarget,
+    ConnectorRegistrationSource,
+} from '../../../types/ConnectorTypes';
 import mockChild from '../__mocks__/MockEditorAPI';
 
 let mockedSDK: SDK;
@@ -39,15 +44,17 @@ describe('Connector methods', () => {
 
         await mockedSDK.connector.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);
-            configurator.setMappings([new ConnectorMapping(ConnectorMappingTarget.download, "data", ConnectorMappingSource.variable, "Var 1")])
-            configurator.setOptions({'test':'data'});
+            configurator.setMappings([
+                new ConnectorMapping(ConnectorMappingTarget.download, 'data', ConnectorMappingSource.variable, 'Var 1'),
+            ]);
+            configurator.setOptions({ test: 'data' });
             configurator.setChiliToken(token);
         });
 
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
         expect(mockedSDK.editorAPI.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
-        
+
         expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
             connectorId,
@@ -56,9 +63,14 @@ describe('Connector methods', () => {
         );
 
         expect(mockedSDK.editorAPI.setConnectorMappings).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setConnectorMappings).toHaveBeenCalledWith(connectorId, [JSON.stringify({name:'download.data', value:'var.Var 1'})]);
-        
+        expect(mockedSDK.editorAPI.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
+            JSON.stringify({ name: 'download.data', value: 'var.Var 1' }),
+        ]);
+
         expect(mockedSDK.editorAPI.setConnectorOptions).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setConnectorOptions).toHaveBeenCalledWith(connectorId, JSON.stringify({'test':'data'}));        
+        expect(mockedSDK.editorAPI.setConnectorOptions).toHaveBeenCalledWith(
+            connectorId,
+            JSON.stringify({ test: 'data' }),
+        );
     });
 });

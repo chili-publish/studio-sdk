@@ -30,4 +30,23 @@ export class ExperimentController {
         const res = await this.#editorAPI;
         return res.insertTextVariable(variableId).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will enter text editing mode on the provided frame.
+     * @param frameId The ID frame to enter text edit mode on.
+     * @returns
+     */
+    enterTextEditMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterTextEditMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit text editing mode.
+     * @returns
+     */
+    exitTextEditMode = async () => {
+        const res = await this.#editorAPI;
+        return res.exitTextEditMode().then((result) => getEditorResponseData<null>(result));
+    };
 }

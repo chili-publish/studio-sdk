@@ -5,6 +5,8 @@ let mockedExperiments: ExperimentController;
 beforeEach(() => {
     mockedExperiments = new ExperimentController(MockEditorAPI);
     jest.spyOn(mockedExperiments, 'insertTextVariable');
+    jest.spyOn(mockedExperiments, 'enterTextEditMode');
+    jest.spyOn(mockedExperiments, 'exitTextEditMode');
 });
 
 afterAll(() => {
@@ -16,5 +18,12 @@ describe('Experiments', () => {
         mockedExperiments.insertTextVariable('5');
         expect(mockedExperiments.insertTextVariable).toHaveBeenCalledTimes(1);
         expect(mockedExperiments.insertTextVariable).toHaveBeenCalledWith('5');
+
+        mockedExperiments.enterTextEditMode('5');
+        expect(mockedExperiments.enterTextEditMode).toHaveBeenCalledTimes(1);
+        expect(mockedExperiments.enterTextEditMode).toHaveBeenCalledWith('5');
+
+        mockedExperiments.exitTextEditMode();
+        expect(mockedExperiments.exitTextEditMode).toHaveBeenCalledTimes(1);
     });
 });
