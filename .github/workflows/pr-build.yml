@@ -45,13 +45,8 @@ jobs:
               run: |
                   path=upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R coverage/lcov-report/index.html coverage/lcov-report/coverage.html &&
                   cp -R coverage/lcov-report/src coverage/lcov-report/coverage.html coverage/lcov-report/base.css coverage/lcov-report/prettify.css ${path%"/merge"}
-            - name: publish to Azure
-              uses: lauchacarro/Azure-Storage-Action@v1.1
+            - name: Copy to Azure Blob Storage
+              uses: azure/CLI@v1
               with:
-                  # Connection String of the Azure Storage Container
-                  connection-string: ${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}
-                  # Folder what contains the files for upload to Storage Container
-                  folder: upload
-                  # Name of Blob Container Storage
-                  blob-container-name: sdk
-                  public-access-policy: BlobContainer
+                  inlineScript: |
+                      az storage blob upload-batch -d sdk -s upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
