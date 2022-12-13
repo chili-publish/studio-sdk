@@ -1,3 +1,5 @@
+export const mockAddFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockAddShapeFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAddLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetLayoutName = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -144,7 +146,21 @@ export const mockGetPageSnapshot = jest.fn().mockResolvedValue({ success: true, 
 export const mockSetConnectorMappings = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConnectorOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
+export const mockSetShapeFrameType = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetShapeFrameEnableFill = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetShapeFrameFillColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetShapeFrameEnableStroke = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetShapeFrameStrokeColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetShapeFrameStrokeWeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetShapeFrameEnableFill = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetShapeFrameFillColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetShapeFrameEnableStroke = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetShapeFrameStrokeColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockResetShapeFrameStrokeWeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 const MockEditorAPI = {
+    addFrame: mockAddFrame,
+    addShapeFrame: mockAddShapeFrame,
     addLayout: mockAddLayout,
     removeLayout: mockRemoveLayout,
     renameLayout: mockSetLayoutName,
@@ -290,6 +306,17 @@ const MockEditorAPI = {
     getPageSnapshot: mockGetPageSnapshot,
     setConnectorMappings: mockSetConnectorMappings,
     setConnectorOptions: mockSetConnectorOptions,
+    setShapeFrameType: mockSetShapeFrameType,
+    setShapeFrameEnableFill: mockSetShapeFrameEnableFill,
+    setShapeFrameFillColor: mockSetShapeFrameFillColor,
+    setShapeFrameEnableStroke: mockSetShapeFrameEnableStroke,
+    setShapeFrameStrokeColor: mockSetShapeFrameStrokeColor,
+    setShapeFrameStrokeWeight: mockSetShapeFrameStrokeWeight,
+    resetShapeFrameEnableFill: mockResetShapeFrameEnableFill,
+    resetShapeFrameFillColor: mockResetShapeFrameFillColor,
+    resetShapeFrameEnableStroke: mockResetShapeFrameEnableStroke,
+    resetShapeFrameStrokeColor: mockResetShapeFrameStrokeColor,
+    resetShapeFrameStrokeWeight: mockResetShapeFrameStrokeWeight,
 };
 
 export default MockEditorAPI;

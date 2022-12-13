@@ -6,7 +6,7 @@ interface ImageVariable {
     sourceType: ImageVariableSourceType;
 }
 
-export interface UrlImageVariable extends ImageVariable{
+export interface UrlImageVariable extends ImageVariable {
     url: string;
 }
 
@@ -15,10 +15,13 @@ export interface MediaConnectorImageVariable extends ImageVariable {
     assetId: string;
 }
 export enum VariableType {
-    shorttext = 'shorttext', longtext = 'longtext', image = 'image', group = 'group'
+    shorttext = 'shorttext',
+    longtext = 'longtext',
+    image = 'image',
+    group = 'group',
 }
 
-export type Variable  = {
+export type Variable = {
     id: string;
     type: VariableType;
     parentId?: string;
@@ -30,11 +33,11 @@ export type Variable  = {
     occurrences?: number;
     value?: string;
     defaultValue?: string;
-    src?: MediaConnectorImageVariable | UrlImageVariable
-}
+    src?: MediaConnectorImageVariable | UrlImageVariable;
+};
 
 export type VariableMoves = {
     moves: string[];
     order: number;
     parent: string;
-}
+};

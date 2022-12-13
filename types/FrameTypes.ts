@@ -60,6 +60,7 @@ export type TextFrame = {
 export enum FrameTypeEnum {
     text = 'text',
     image = 'image',
+    shape = 'shape',
 }
 
 export enum TextDirection {
@@ -123,4 +124,10 @@ export enum UpdateZIndexMethod {
     sendToBack = 'sendToBack',
     bringForward = 'bringForward',
     sendBackward = 'sendBackward',
+}
+
+export enum ShapeType {
+    ellipse = 'ellipse',
+    rectangle = 'rectangle',
+    polygon = 'polygon',
 }

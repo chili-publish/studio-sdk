@@ -49,7 +49,7 @@ export {
 export { VariableType } from '../types/VariableTypes';
 
 export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
-export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame } from '../types/FrameTypes';
+export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame, ShapeType } from '../types/FrameTypes';
 export type { Variable, VariableMoves, UrlImageVariable, MediaConnectorImageVariable } from '../types/VariableTypes';
 export type { Color, DocumentColor, ColorUpdate } from '../types/ColorStyleTypes';
 
