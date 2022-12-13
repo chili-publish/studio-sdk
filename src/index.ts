@@ -77,11 +77,12 @@ export type {
     AppearanceProperties,
     TextStyleUpdateType,
     UpdateStyleType,
+    DisplayColor,
 } from '../types/TextStyleTypes';
 
-export type { ParagraphStyle, ParagraphStyleUpdate, ColorUsage, ColorUsageUpdate } from '../types/ParagraphStyleTypes';
+export type { ParagraphStyle, ParagraphStyleUpdate } from '../types/ParagraphStyleTypes';
 export type { CharacterStyle, CharacterStyleUpdate } from '../types/CharacterStyleTypes';
-export { ColorUsageType } from '../types/ParagraphStyleTypes';
+export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from '../types/ColorStyleTypes';
 
 export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';
 

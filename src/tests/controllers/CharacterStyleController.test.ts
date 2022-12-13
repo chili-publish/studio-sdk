@@ -1,8 +1,7 @@
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
 import { CharacterStyleController } from '../../controllers/CharacterStyleController';
-import { ColorUsageType } from '../../../types/ParagraphStyleTypes';
 import { Case, Scripting } from '../../../types/TextStyleTypes';
-import { ColorType } from '../../../types/ColorStyleTypes';
+import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
 import { CharacterStyleUpdate } from '../../../types/CharacterStyleTypes';
 
 let mockedCharacterStyleController: CharacterStyleController;

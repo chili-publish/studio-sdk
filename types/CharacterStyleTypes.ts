@@ -1,5 +1,5 @@
 import { Case, Scripting} from "./TextStyleTypes";
-import {ColorUsage, ColorUsageUpdate} from "./ParagraphStyleTypes";
+import {ColorUsage, ColorUsageUpdate} from "./ColorStyleTypes";
 
 export type CharacterStyle = {
     id: string;
@@ -20,6 +20,7 @@ export type CharacterStyle = {
     lineHeight?: number;
     textOverprint?: boolean;
     color: ColorUsage;
+    fillColorApplied?: boolean | null;
     underline: boolean;
     lineThrough: boolean;
 }
