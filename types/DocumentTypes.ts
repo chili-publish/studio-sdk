@@ -3,9 +3,9 @@ import { DocumentColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutType } from './LayoutTypes';
-import { ColorUsage, ParagraphStyle } from './ParagraphStyleTypes';
-import { Case, Scripting } from './TextStyleTypes';
+import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
+import {CharacterStyle} from "./CharacterStyleTypes";
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
@@ -161,26 +161,7 @@ export interface DocumentStyleKit {
     paragraphStyles: DocumentParagraphStyle[];
 }
 
-export interface DocumentCharacterStyle {
-    id: Id;
-    name: string;
-    fontFamily?: string;
-    fontStyle?: string;
-    fontSize?: number;
-    typographicCase?: Case;
-    kerningOn?: boolean;
-    subSuperScript?: Scripting;
-    trackingLeft?: string;
-    trackingRight?: string;
-    textIndent?: string;
-    baselineShiftValue?: string;
-    lineHeight?: number;
-    textOverprint?: boolean;
-    color?: ColorUsage;
-    underline?: boolean;
-    lineThrough?: boolean;
-}
-
+export type DocumentCharacterStyle = CharacterStyle;
 export type DocumentParagraphStyle = ParagraphStyle;
 
 export interface DocumentVariable extends Variable {

@@ -1,5 +1,5 @@
-import {ColorUsage} from "./ParagraphStyleTypes";
 import {VerticalAlign} from "./FrameTypes";
+import {ColorUsage} from "./ColorStyleTypes";
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -29,6 +29,9 @@ export enum Scripting {
     NORMAL = 'normal',
 }
 
+export type DisplayColor = ColorUsage & {
+    isApplied: boolean;
+}
 export interface TextProperties {
     fontKey?: string;
     fontStyle?: FontWeights;
@@ -41,7 +44,7 @@ export interface TextProperties {
     lineHeight?: number;
     SUB_SUPER_SCRIPT?: Scripting;
     typographicCase?: Case;
-    color?: ColorUsage;
+    color?: DisplayColor;
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 
@@ -88,6 +91,7 @@ export enum SelectedTextStyles {
     LINETHROUGH = 'lineThrough',
     FILL_COLOR = 'fillColor',
     COLOR = 'color',
+    FILL_COLOR_APPLIED = 'fillColorApplied',
     STROKE_COLOR = 'strokeColor',
     DROP_SHADOW_COLOR = 'dropShadowColor',
     BLEND_MODE = 'blendMode',

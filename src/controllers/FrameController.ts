@@ -530,7 +530,9 @@ export class FrameController {
      */
     setShapeFrameEnableFill = async (shapeFrameId: Id, enableFill: boolean) => {
         const res = await this.#editorAPI;
-        return res.setShapeFrameEnableFill(shapeFrameId, enableFill).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setShapeFrameEnableFill(shapeFrameId, enableFill)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -541,7 +543,9 @@ export class FrameController {
      */
     setShapeFrameFillColor = async (shapeFrameId: Id, fillColor: number) => {
         const res = await this.#editorAPI;
-        return res.setShapeFrameFillColor(shapeFrameId, fillColor).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setShapeFrameFillColor(shapeFrameId, fillColor)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -552,7 +556,9 @@ export class FrameController {
      */
     setShapeFrameEnableStroke = async (shapeFrameId: Id, enableStroke: boolean) => {
         const res = await this.#editorAPI;
-        return res.setShapeFrameEnableStroke(shapeFrameId, enableStroke).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setShapeFrameEnableStroke(shapeFrameId, enableStroke)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -563,7 +569,9 @@ export class FrameController {
      */
     setShapeFrameStrokeColor = async (shapeFrameId: Id, strokeColor: number) => {
         const res = await this.#editorAPI;
-        return res.setShapeFrameStrokeColor(shapeFrameId, strokeColor).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setShapeFrameStrokeColor(shapeFrameId, strokeColor)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -574,7 +582,9 @@ export class FrameController {
      */
     setShapeFrameStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
         const res = await this.#editorAPI;
-        return res.setShapeFrameStrokeWeight(shapeFrameId, strokeWeight).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setShapeFrameStrokeWeight(shapeFrameId, strokeWeight)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
