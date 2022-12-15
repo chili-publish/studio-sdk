@@ -1,5 +1,5 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { Variable, VariableMoves, VariableType } from '../../types/VariableTypes';
+import { Variable, VariableMoves, VariableSource, VariableType } from '../../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -183,5 +183,33 @@ export class VariableController {
     setVariableIsReadonly = async (variableId: string, isReadonly: boolean) => {
         const res = await this.#editorAPI;
         return res.setVariableIsReadonly(variableId, isReadonly).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets or removes the variable source
+     * @param variableId The ID of the variable to update
+     * @param src The new variable source
+     */
+    private updateVariableSource = async (variableId: string, src: VariableSource | null) => {
+        const res = await this.#editorAPI;
+        const srcJson = src !== null ? JSON.stringify(src) : null;
+        return res.setVariableSource(variableId, srcJson).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the variable source
+     * @param variableId The ID of the variable to update
+     * @param src The new variable source
+     */
+    setVariableSource = async (variableId: string, src: VariableSource) => {
+        return this.updateVariableSource(variableId, src);
+    };
+
+    /**
+     * This method removes the variable source
+     * @param variableId The ID of the variable to update
+     */
+    removeVariableSource = async (variableId: string) => {
+        return this.updateVariableSource(variableId, null);
     };
 }

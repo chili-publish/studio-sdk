@@ -58,6 +58,7 @@ export const mockMoveVariables = jest.fn().mockResolvedValue({ success: true, st
 export const mockSetVariableIsHidden = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableIsRequired = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableIsReadonly = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetVariableSource = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockUngroupVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDuplicateVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -243,6 +244,7 @@ const MockEditorAPI = {
     setVariableIsHidden: mockSetVariableIsHidden,
     setVariableIsRequired: mockSetVariableIsRequired,
     setVariableIsReadonly: mockSetVariableIsReadonly,
+    setVariableSource: mockSetVariableSource,
     ungroupVariable: mockUngroupVariable,
     getSelectedTool: mockGetSelectedTool,
     setTool: mockSetTool,
