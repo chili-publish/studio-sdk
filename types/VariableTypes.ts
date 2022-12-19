@@ -1,7 +1,8 @@
-enum ImageVariableSourceType {
+export enum ImageVariableSourceType {
     url = 'url',
     mediaConnector = 'mediaConnector',
 }
+
 interface ImageVariable {
     sourceType: ImageVariableSourceType;
 }
@@ -14,6 +15,9 @@ export interface MediaConnectorImageVariable extends ImageVariable {
     connectorId: string;
     assetId: string;
 }
+
+export type VariableSource = UrlImageVariable | MediaConnectorImageVariable;
+
 export enum VariableType {
     shorttext = 'shorttext',
     longtext = 'longtext',
@@ -33,7 +37,7 @@ export type Variable = {
     occurrences?: number;
     value?: string;
     defaultValue?: string;
-    src?: MediaConnectorImageVariable | UrlImageVariable;
+    src?: VariableSource;
 };
 
 export type VariableMoves = {

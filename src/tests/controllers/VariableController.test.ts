@@ -1,7 +1,7 @@
 import mockConfig from '../__mocks__/config';
 import { SDK } from '../../index';
 import { VariableController } from '../../controllers/VariableController';
-import { VariableType } from '../../../types/VariableTypes';
+import { ImageVariableSourceType, VariableType } from '../../../types/VariableTypes';
 import mockChild from '../__mocks__/MockEditorAPI';
 
 let mockedSDK: SDK;
@@ -125,5 +125,28 @@ describe('Variable controller', () => {
         await mockedSDK.variable.ungroupVariable('1');
         expect(mockedSDK.editorAPI.ungroupVariable).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.ungroupVariable).toHaveBeenCalledWith('1');
+    });
+
+    it('set variable source', async () => {
+        const varId = '1';
+        const src = {
+            url: 'mocked url',
+            sourceType: ImageVariableSourceType.url,
+        };
+        const srcJson = JSON.stringify(src);
+
+        await mockedSDK.variable.setVariableSource(varId, src);
+
+        expect(mockedSDK.editorAPI.setVariableSource).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setVariableSource).toHaveBeenCalledWith(varId, srcJson);
+    });
+
+    it('remove variable source', async () => {
+        const varId = '1';
+
+        await mockedSDK.variable.removeVariableSource(varId);
+
+        expect(mockedSDK.editorAPI.setVariableSource).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.setVariableSource).toHaveBeenCalledWith(varId, null);
     });
 });
