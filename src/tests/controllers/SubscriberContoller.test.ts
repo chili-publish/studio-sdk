@@ -1,4 +1,4 @@
-import { SDK } from '../../index';
+import { LayoutType, SDK } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import mockConfig from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
@@ -93,8 +93,11 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onSelectedLayoutIdChanged('new id');
         expect(mockedSDK.config.onSelectedLayoutIdChanged).toHaveBeenCalledWith('new id');
 
-        mockedSubscribers.onLayoutsChanged(JSON.stringify([]));
+        mockedSubscribers.onLayoutsChanged('[{"layoutId":"0","layoutName":"Rectangle","layoutType":"top","parentLayoutId":null,"childLayouts":["2"]}]');
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(15);
+        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([{ layoutId: "0", layoutName: "Rectangle", layoutType: LayoutType.top, parentLayoutId: null, childLayouts: ["2"] }]
+        );
+
 
         mockedSubscribers.onConnectorStateChanged(JSON.stringify({ id: 'id', type: ConnectorEventType.loaded }));
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);

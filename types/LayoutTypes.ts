@@ -50,6 +50,7 @@ export type Layout = {
 export type LayoutListItemType = {
     layoutId: string;
     layoutName: string;
+    layoutType: LayoutType;
     parentLayoutId?: string;
     childLayouts: string[];
 };
