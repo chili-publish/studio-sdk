@@ -48,9 +48,20 @@ export {
 } from '../types/FrameTypes';
 export { VariableType, ImageVariableSourceType } from '../types/VariableTypes';
 
-export type { LayoutPropertiesType, FrameProperties, LayoutWithFrameProperties } from '../types/LayoutTypes';
+export type {
+    LayoutPropertiesType,
+    FrameProperties,
+    LayoutWithFrameProperties,
+    LayoutListItemType,
+} from '../types/LayoutTypes';
 export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame, ShapeType } from '../types/FrameTypes';
-export type { Variable, VariableMoves, UrlImageVariable, MediaConnectorImageVariable, VariableSource } from '../types/VariableTypes';
+export type {
+    Variable,
+    VariableMoves,
+    UrlImageVariable,
+    MediaConnectorImageVariable,
+    VariableSource,
+} from '../types/VariableTypes';
 export type { Color, DocumentColor, ColorUpdate } from '../types/ColorStyleTypes';
 
 export type { DocumentError } from '../types/DocumentTypes';
