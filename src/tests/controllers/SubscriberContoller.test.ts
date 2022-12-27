@@ -93,11 +93,19 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onSelectedLayoutIdChanged('new id');
         expect(mockedSDK.config.onSelectedLayoutIdChanged).toHaveBeenCalledWith('new id');
 
-        mockedSubscribers.onLayoutsChanged('[{"layoutId":"0","layoutName":"Rectangle","layoutType":"top","parentLayoutId":null,"childLayouts":["2"]}]');
-        expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(15);
-        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([{ layoutId: "0", layoutName: "Rectangle", layoutType: LayoutType.top, parentLayoutId: null, childLayouts: ["2"] }]
+        mockedSubscribers.onLayoutsChanged(
+            '[{"layoutId":"0","layoutName":"Rectangle","layoutType":"top","parentLayoutId":null,"childLayouts":["2"]}]',
         );
-
+        expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(15);
+        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([
+            {
+                layoutId: '0',
+                layoutName: 'Rectangle',
+                layoutType: LayoutType.top,
+                parentLayoutId: null,
+                childLayouts: ['2'],
+            },
+        ]);
 
         mockedSubscribers.onConnectorStateChanged(JSON.stringify({ id: 'id', type: ConnectorEventType.loaded }));
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);

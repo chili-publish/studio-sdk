@@ -51,7 +51,7 @@ export type LayoutListItemType = {
     layoutId: string;
     layoutName: string;
     layoutType: LayoutType;
-    parentLayoutId?: string;
+    parentLayoutId?: string | null;
     childLayouts: string[];
 };
 
