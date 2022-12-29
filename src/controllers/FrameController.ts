@@ -412,7 +412,7 @@ export class FrameController {
     };
 
     /**
-     * This method will assign an image from a mediaConnector to the correct ImageFrame
+     * This method will assign/reset an image source to the ImageFrame
      * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
      * @param source The image source to set to the imageFrame. Can be asset image, url or none
      * @returns
