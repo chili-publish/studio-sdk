@@ -11,7 +11,6 @@ beforeEach(() => {
     mockedSDK.zoom = new ZoomController(mockChild);
 
     jest.spyOn(mockedSDK.zoom, 'zoomToFit');
-    jest.clearAllMocks();
 });
 
 afterAll(() => {
@@ -30,7 +29,7 @@ describe('Should call all of the ZoomController functions of child successfully'
 
     it('should call zoomToFit function of EditorAPI with params included', async () => {
         await mockedSDK.zoom.zoomToFit('0', 300, 0, 700, 400);
-        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(3);
         expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledWith('0', 300, 0, 700, 400);
     });
 });
