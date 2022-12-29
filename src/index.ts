@@ -148,7 +148,6 @@ export class SDK {
     colorStyle: ColorStyleController;
     font: FontController;
     experiment: ExperimentController;
-
     zoom: ZoomController;
 
     private subscriber: SubscriberController;
@@ -244,6 +243,7 @@ export class SDK {
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.zoom = new ZoomController(this.editorAPI);
+
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
         // on the Flutter side
