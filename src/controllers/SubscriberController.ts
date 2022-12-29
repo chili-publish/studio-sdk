@@ -64,12 +64,11 @@ export class SubscriberController {
     };
 
     /**
-     * A listener on the general state of the document, gets triggered everytime a change is done on the document. Use with care, very expensive operation
-     * @param document String value of the document, typed as InitialStateType
+     * A listener on the general state of the document, gets triggered everytime a change is done on the document.
      */
-    onStateChanged = (document: string) => {
+    onStateChanged = () => {
         const callBack = this.config.onStateChanged;
-        callBack && callBack(JSON.parse(document));
+        callBack && callBack();
     };
 
     /**
