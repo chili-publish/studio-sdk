@@ -43,12 +43,12 @@ export type ImageConnectorVariableSource = {
     url: string;
 }
 // used by new getter methods
-export type ImageFrameSource = ImageUrlVariableSource | ImageUrlSource | ImageConnectorVariableSource | undefined;
+export type ImageFrameSource = ImageUrlVariableSource | ImageUrlSource | ImageConnectorVariableSource;
 export type ImageFrame = {
     frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum.image;
-    src: ImageFrameSource;
+    src?: ImageFrameSource;
     blendMode: BlendMode;
 };
 export type TextFrame = {
