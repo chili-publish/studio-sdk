@@ -28,23 +28,23 @@ export type FrameType = {
 };
 
 export type Frame = TextFrame | ImageFrame;
-export type ImageVariableSource = {
+export type ImageUrlVariableSource = {
     assetId?: string;
     connectorId?: string;
-    sourceType: string;
+    sourceType: ImageSourceType.urlVariable;
     variableId: string;
 }
 export type ImageUrlSource = {
-    sourceType: string;
+    sourceType: ImageSourceType.url;
     url: string;
 }
 // used by new getter methods
-export type FrameSource = ImageVariableSource | ImageUrlSource | undefined;
+export type ImageFrameSource = ImageUrlVariableSource | ImageUrlSource | undefined;
 export type ImageFrame = {
     frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum.image;
-    src: FrameSource;
+    src: ImageFrameSource;
     blendMode: BlendMode;
 };
 export type TextFrame = {
@@ -67,6 +67,11 @@ export type TextFrame = {
     hasClippingPath: boolean;
     blendMode: BlendMode;
 };
+
+export enum ImageSourceType {
+    url = 'url',
+    urlVariable = 'urlVariable',
+}
 
 export enum FrameTypeEnum {
     text = 'text',
