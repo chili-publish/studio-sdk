@@ -29,8 +29,6 @@ export type FrameType = {
 
 export type Frame = TextFrame | ImageFrame;
 export type ImageUrlVariableSource = {
-    assetId?: string;
-    connectorId?: string;
     sourceType: ImageSourceType.urlVariable;
     variableId: string;
 }
@@ -38,8 +36,14 @@ export type ImageUrlSource = {
     sourceType: ImageSourceType.url;
     url: string;
 }
+export type ImageConnectorVariableSource = {
+    assetId: string;
+    connectorId: string;
+    sourceType: ImageSourceType.connectorVariable;
+    url: string;
+}
 // used by new getter methods
-export type ImageFrameSource = ImageUrlVariableSource | ImageUrlSource | undefined;
+export type ImageFrameSource = ImageUrlVariableSource | ImageUrlSource | ImageConnectorVariableSource | undefined;
 export type ImageFrame = {
     frameId: Id;
     frameName: string;
@@ -71,6 +75,7 @@ export type TextFrame = {
 export enum ImageSourceType {
     url = 'url',
     urlVariable = 'urlVariable',
+    connectorVariable = 'connectorVariable',
 }
 
 export enum FrameTypeEnum {
