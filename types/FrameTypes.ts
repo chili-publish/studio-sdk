@@ -28,12 +28,23 @@ export type FrameType = {
 };
 
 export type Frame = TextFrame | ImageFrame;
+export type ImageVariableSource = {
+    assetId?: string;
+    connectorId?: string;
+    sourceType: string;
+    variableId: string;
+}
+export type ImageUrlSource = {
+    sourceType: string;
+    url: string;
+}
 // used by new getter methods
+export type FrameSource = ImageVariableSource | ImageUrlSource | undefined;
 export type ImageFrame = {
     frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum.image;
-    src: string;
+    src: FrameSource;
     blendMode: BlendMode;
 };
 export type TextFrame = {
