@@ -10,6 +10,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
+import { ImageSource } from '../../types/DocumentTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -408,6 +409,17 @@ export class FrameController {
     setImageFromUrl = async (imageFrameId: Id, url: string) => {
         const res = await this.#editorAPI;
         return res.assignImageFromUrl(imageFrameId, url).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will assign an image from a mediaConnector to the correct ImageFrame
+     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param source The image source to set to the imageFrame. Can be asset image, url or none
+     * @returns
+     */
+    setImageSource = async (imageFrameId: Id, source?: ImageSource) => {
+        const res = await this.#editorAPI;
+        return res.setImageSource(imageFrameId, source).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

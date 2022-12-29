@@ -26,6 +26,7 @@ export const mockSetFrameX = jest.fn().mockResolvedValue({ success: true, status
 export const mockSetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAssignImage = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockAssignImageFromUrl = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetImageSource = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrame = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameX = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetFrameY = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -206,6 +207,7 @@ const MockEditorAPI = {
     exitTextEditMode: mockExitTextEditMode,
     assignImage: mockAssignImage,
     assignImageFromUrl: mockAssignImageFromUrl,
+    setImageSource: mockSetImageSource,
     getAnimationsOnSelectedLayout: mockGetAnimationsOnSelectedLayout,
     getAnimationByFrameId: mockGetAnimationByFrameId,
     getAnimationsByLayoutId: mockGetAnimationsByLayoutId,
