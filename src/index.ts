@@ -45,6 +45,7 @@ export {
     FlowDirection,
     FitMode,
     UpdateZIndexMethod,
+    ImageSourceType
 } from '../types/FrameTypes';
 export { VariableType, ImageVariableSourceType } from '../types/VariableTypes';
 
@@ -54,7 +55,17 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
 } from '../types/LayoutTypes';
-export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame, ShapeType } from '../types/FrameTypes';
+export type { FrameLayoutType,
+    FrameType,
+    Frame,
+    TextFrame,
+    ImageFrame,
+    ShapeType,
+    ImageFrameSource,
+    ImageUrlVariableSource,
+    ImageUrlSource,
+    ImageConnectorVariableSource,
+} from '../types/FrameTypes';
 export type {
     Variable,
     VariableMoves,
