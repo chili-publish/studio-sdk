@@ -37,34 +37,31 @@ export {
     BasicAnimationsEmphasisStyles,
 } from '../types/AnimationTypes';
 export { LayoutType } from '../types/LayoutTypes';
-export {
-    BlendMode,
-    FrameTypeEnum,
-    VerticalAlign,
-    TextDirection,
-    FlowDirection,
-    FitMode,
-    UpdateZIndexMethod,
-    ImageSourceType
-} from '../types/FrameTypes';
 export { VariableType, ImageVariableSourceType } from '../types/VariableTypes';
-
 export type {
     LayoutPropertiesType,
     FrameProperties,
     LayoutWithFrameProperties,
     LayoutListItemType,
 } from '../types/LayoutTypes';
-export type { FrameLayoutType,
-    FrameType,
+export type {
+    BlendMode,
+    FitMode,
+    FlowDirection,
     Frame,
-    TextFrame,
-    ImageFrame,
-    ShapeType,
-    ImageFrameSource,
-    ImageUrlVariableSource,
-    ImageUrlSource,
+    FrameLayoutType,
+    FrameType,
+    FrameTypeEnum,
     ImageConnectorVariableSource,
+    ImageFrame,
+    ImageFrameSource,
+    ImageUrlSource,
+    ImageUrlVariableSource,
+    ShapeType,
+    TextDirection,
+    TextFrame,
+    UpdateZIndexMethod,
+    VerticalAlign,
 } from '../types/FrameTypes';
 export type {
     Variable,
