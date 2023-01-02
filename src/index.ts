@@ -55,7 +55,18 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
 } from '../types/LayoutTypes';
-export type { FrameLayoutType, FrameType, Frame, TextFrame, ImageFrame, ImageFrameSource, ShapeType } from '../types/FrameTypes';
+export type {
+    FrameLayoutType,
+    FrameType,
+    Frame,
+    TextFrame,
+    ImageFrame,
+    ImageFrameSource,
+    ShapeType,
+    ImageUrlVariableSource,
+    ImageUrlSource,
+    ImageConnectorVariableSource,
+} from '../types/FrameTypes';
 export type {
     Variable,
     VariableMoves,
