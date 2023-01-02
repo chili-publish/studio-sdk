@@ -28,18 +28,19 @@ export type FrameType = {
 };
 
 export type Frame = TextFrame | ImageFrame;
+
 export type ImageUrlVariableSource = {
-    sourceType: ImageSourceType.urlVariable;
+    sourceType: ImageSourceTypeEnum.urlVariable;
     variableId: string;
 }
 export type ImageUrlSource = {
-    sourceType: ImageSourceType.url;
+    sourceType: ImageSourceTypeEnum.url;
     url: string;
 }
 export type ImageConnectorVariableSource = {
     assetId: string;
     connectorId: string;
-    sourceType: ImageSourceType.connectorVariable;
+    sourceType: ImageSourceTypeEnum.connectorVariable;
     url: string;
 }
 // used by new getter methods
@@ -72,7 +73,7 @@ export type TextFrame = {
     blendMode: BlendMode;
 };
 
-export enum ImageSourceType {
+export enum ImageSourceTypeEnum {
     url = 'url',
     urlVariable = 'urlVariable',
     connectorVariable = 'connectorVariable',

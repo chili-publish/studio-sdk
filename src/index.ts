@@ -45,6 +45,7 @@ export {
     FlowDirection,
     FitMode,
     UpdateZIndexMethod,
+    ImageSourceTypeEnum
 } from '../types/FrameTypes';
 export { VariableType, ImageVariableSourceType } from '../types/VariableTypes';
 
