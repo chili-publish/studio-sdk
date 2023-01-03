@@ -411,17 +411,6 @@ export class FrameController {
     };
 
     /**
-     * This method will assign an image from a variable to the correct ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
-     * @param variableId The ID of the variable which contains the image
-     * @returns
-     */
-    setImageFromUrlVariable = async (imageFrameId: Id, variableId: string) => {
-        const res = await this.#editorAPI;
-        return res.assignImageVariable(imageFrameId, variableId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * This method will set the fitMode property of a specified image frame.
      * @param imageFrameId The ID of the imageFrame that needs to get updated.
      * @param fitMode The new fitMode that you want to set to the imageFrame.
