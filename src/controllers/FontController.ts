@@ -39,6 +39,15 @@ export class FontController {
     };
 
     /**
+     * This method returns the default font.
+     * @returns
+     */
+    getDefaultFont = async () => {
+        const res = await this.#editorAPI;
+        return res.getDefaultFont().then((result) => getEditorResponseData<DocumentFont>(result));
+    };
+
+    /**
      * This method removes a font
      * @param id The ID of a specific font
      * @returns
