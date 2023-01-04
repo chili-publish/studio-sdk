@@ -20,16 +20,16 @@ afterAll(() => {
 describe('Should call all of the ZoomController functions of child successfully', () => {
     it('should call zoomToPage function of EditorAPI with no params provided', async () => {
         await mockedSDK.zoom.zoomToPage();
-        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(1);
 
         await mockedSDK.zoom.zoomToPage(null, null, null, null, null);
-        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledWith(null, null, null, null, null);
+        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledWith(null, null, null, null, null);
     });
 
     it('should call zoomToPage function of EditorAPI with params included', async () => {
         await mockedSDK.zoom.zoomToPage('0', 300, 0, 700, 400);
-        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(3);
-        expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledWith('0', 300, 0, 700, 400);
+        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(3);
+        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledWith('0', 300, 0, 700, 400);
     });
 });
