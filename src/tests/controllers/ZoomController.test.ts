@@ -10,7 +10,7 @@ beforeEach(() => {
     mockedSDK.editorAPI = mockChild;
     mockedSDK.zoom = new ZoomController(mockChild);
 
-    jest.spyOn(mockedSDK.zoom, 'zoomToFit');
+    jest.spyOn(mockedSDK.zoom, 'zoomToPage');
 });
 
 afterAll(() => {
@@ -18,17 +18,17 @@ afterAll(() => {
 });
 
 describe('Should call all of the ZoomController functions of child successfully', () => {
-    it('should call zoomToFit function of EditorAPI with no params provided', async () => {
-        await mockedSDK.zoom.zoomToFit();
+    it('should call zoomToPage function of EditorAPI with no params provided', async () => {
+        await mockedSDK.zoom.zoomToPage();
         expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.zoom.zoomToFit(null, null, null, null, null);
+        await mockedSDK.zoom.zoomToPage(null, null, null, null, null);
         expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(2);
         expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledWith(null, null, null, null, null);
     });
 
-    it('should call zoomToFit function of EditorAPI with params included', async () => {
-        await mockedSDK.zoom.zoomToFit('0', 300, 0, 700, 400);
+    it('should call zoomToPage function of EditorAPI with params included', async () => {
+        await mockedSDK.zoom.zoomToPage('0', 300, 0, 700, 400);
         expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledTimes(3);
         expect(mockedSDK.editorAPI.zoomToFit).toHaveBeenCalledWith('0', 300, 0, 700, 400);
     });

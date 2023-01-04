@@ -29,7 +29,7 @@ export class ZoomController {
      * @param height
      * @returns
      */
-    zoomToFit = async (
+    zoomToPage = async (
         pageId?: Id | null,
         left?: number | null,
         top?: number | null,
@@ -37,6 +37,6 @@ export class ZoomController {
         height?: number | null,
     ) => {
         const res = await this.#editorAPI;
-        return res.zoomToFit(pageId, left, top, width, height).then((result) => getEditorResponseData<null>(result));
+        return res.zoomToPage(pageId, left, top, width, height).then((result) => getEditorResponseData<null>(result));
     };
 }
