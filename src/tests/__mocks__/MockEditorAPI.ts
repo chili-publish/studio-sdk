@@ -110,6 +110,14 @@ export const mockUpdateCharacterStyle = jest.fn().mockResolvedValue({ success: t
 export const mockDuplicateCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRenameCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
+export const mockGetFonts = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetFontById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetDefaultFont = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveFont = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockAddFont = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockIsFontUsed = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 export const mockMediaConnectorQuery = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorDownload = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorRemove = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -280,6 +288,12 @@ const MockEditorAPI = {
     removeCharacterStyle: mockRemoveCharacterStyle,
     renameCharacterStyle: mockRenameCharacterStyle,
     duplicateCharacterStyle: mockDuplicateCharacterStyle,
+    getFonts: mockGetFonts,
+    getFontById: mockGetFontById,
+    getDefaultFont: mockGetDefaultFont,
+    removeFont: mockRemoveFont,
+    addFont: mockAddFont,
+    isFontUsed: mockIsFontUsed,
     mediaConnectorCopy: mockMediaConnectorCopy,
     mediaConnectorQuery: mockMediaConnectorQuery,
     mediaConnectorDownload: mockMediaConnectorDownload,
