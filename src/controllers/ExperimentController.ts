@@ -21,6 +21,17 @@ export class ExperimentController {
     }
 
     /**
+     * This method will assign an image from a variable to the correct ImageFrame
+     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param variableId The ID of the variable which contains the image
+     * @returns
+     */
+    insertImageVariableToFrame = async (imageFrameId: Id, variableId: string) => {
+        const res = await this.#editorAPI;
+        return res.assignImageVariable(imageFrameId, variableId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will insert a text variable in the selected frame. Calling this method
      * requires that the selected frame is in text editing mode.
      * @param variableId The ID of the variable to be inserted.

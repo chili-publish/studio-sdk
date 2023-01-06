@@ -39,6 +39,17 @@ export class FontController {
     };
 
     /**
+     * This method returns the default font.
+     * Be aware that the default font will not change during the entire lifetime of the SDK session. 
+     * It is not necessary to call this more than once in an integration, this value can be safely stored during the lifetime of this SDK session.
+     * @returns
+     */
+    getDefaultFont = async () => {
+        const res = await this.#editorAPI;
+        return res.getDefaultFont().then((result) => getEditorResponseData<DocumentFont>(result));
+    };
+
+    /**
      * This method removes a font
      * @param id The ID of a specific font
      * @returns

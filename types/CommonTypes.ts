@@ -1,7 +1,7 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
 import { LayoutWithFrameProperties, LayoutPropertiesType, LayoutListItemType } from './LayoutTypes';
-import {Frame, FrameLayoutType, FrameTypeEnum} from './FrameTypes';
+import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src';
@@ -15,7 +15,7 @@ import { ConnectorEvent } from './ConnectorTypes';
 export type Id = string;
 
 export type ConfigType = {
-    onStateChanged?: (state: InitialStateType) => void;
+    onStateChanged?: () => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
     onSelectedFrameContentChanged?: (state: Frame) => void;
     editorLink?: string;

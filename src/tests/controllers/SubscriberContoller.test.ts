@@ -62,13 +62,7 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onPageSelectionChanged();
         expect(mockedSDK.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
 
-        const initialStateMock = {
-            layouts: [],
-            selectedLayoutId: 1,
-            pages: [],
-        };
-
-        mockedSubscribers.onStateChanged(JSON.stringify(initialStateMock));
+        mockedSubscribers.onStateChanged();
         expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
 
         mockedSubscribers.onVariableListChanged('[{"id":"1","type":"group"}]');
