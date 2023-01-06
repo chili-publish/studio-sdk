@@ -119,6 +119,7 @@ export const mockAddFont = jest.fn().mockResolvedValue({ success: true, status: 
 export const mockIsFontUsed = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 export const mockMediaConnectorQuery = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockMediaConnectorDetail = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorDownload = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorRemove = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorCopy = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -126,7 +127,9 @@ export const mockMediaConnectorUpload = jest.fn().mockResolvedValue({ success: t
 export const mockMediaConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMediaConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 export const mockFontConnectorQuery = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockFontConnectorDetail = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorDownload = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorRemove = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorCopy = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -134,6 +137,7 @@ export const mockFontConnectorUpload = jest.fn().mockResolvedValue({ success: tr
 export const mockFontConnectorGetCapabilities = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorGetQueryOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockFontConnectorGetDownloadOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 export const mockConnectorAuthenticationSetChiliToken = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockConnectorAuthenticationSetHttpHeader = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetConfigValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -296,6 +300,7 @@ const MockEditorAPI = {
     isFontUsed: mockIsFontUsed,
     mediaConnectorCopy: mockMediaConnectorCopy,
     mediaConnectorQuery: mockMediaConnectorQuery,
+    mediaConnectorDetail: mockMediaConnectorDetail,
     mediaConnectorDownload: mockMediaConnectorDownload,
     mediaConnectorRemove: mockMediaConnectorRemove,
     mediaConnectorUpload: mockMediaConnectorUpload,
@@ -303,6 +308,7 @@ const MockEditorAPI = {
     mediaConnectorGetQueryOptions: mockMediaConnectorGetQueryOptions,
     mediaConnectorGetDownloadOptions: mockMediaConnectorGetDownloadOptions,
     fontConnectorCopy: mockFontConnectorCopy,
+    fontConnectorDetail: mockFontConnectorDetail,
     fontConnectorQuery: mockFontConnectorQuery,
     fontConnectorDownload: mockFontConnectorDownload,
     fontConnectorRemove: mockFontConnectorRemove,
