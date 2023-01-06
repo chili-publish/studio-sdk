@@ -53,16 +53,14 @@ export class MediaConnectorController {
 
     /**
      * Returns a single media using a specific MediaConnector.
-     * 
-     * The connector needs to list `detail` as a supported capability. 
+     *
+     * The connector needs to list `detail` as a supported capability.
      * @param connectorId unique Id of the Media connector
      * @param mediaId unique id of the Media
      */
     detail = async (connectorId: string, mediaId: string) => {
         const res = await this.#editorAPI;
-        return res
-            .mediaConnectorDetail(connectorId, mediaId)
-            .then((result) => getEditorResponseData<Media>(result));
+        return res.mediaConnectorDetail(connectorId, mediaId).then((result) => getEditorResponseData<Media>(result));
     };
 
     /**

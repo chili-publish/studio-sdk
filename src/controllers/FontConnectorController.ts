@@ -53,16 +53,14 @@ export class FontConnectorController {
 
     /**
      * Returns a single font using a specific FontConnector.
-     * 
-     * The connector needs to list `detail` as a supported capability. 
+     *
+     * The connector needs to list `detail` as a supported capability.
      * @param connectorId unique Id of the Font connector
      * @param fontId unique id of the Font
      */
     detail = async (connectorId: string, fontId: string) => {
         const res = await this.#editorAPI;
-        return res
-            .fontConnectorDetail(connectorId, fontId)
-            .then((result) => getEditorResponseData<Font>(result));
+        return res.fontConnectorDetail(connectorId, fontId).then((result) => getEditorResponseData<Font>(result));
     };
 
     /**
