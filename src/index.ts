@@ -26,6 +26,7 @@ import { ConnectorController } from './controllers/ConnectorController';
 import { FontConnectorController } from './controllers/FontConnectorController';
 import { ExperimentController } from './controllers/ExperimentController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
+import { CanvasController } from './controllers/CanvasController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -159,6 +160,7 @@ export class SDK {
     colorStyle: ColorStyleController;
     font: FontController;
     experiment: ExperimentController;
+    canvas: CanvasController;
 
     private subscriber: SubscriberController;
 
@@ -194,6 +196,7 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
+        this.canvas = new CanvasController(this.editorAPI);
     }
 
     /**
@@ -251,6 +254,7 @@ export class SDK {
         this.connector = new ConnectorController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
+        this.canvas = new CanvasController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
