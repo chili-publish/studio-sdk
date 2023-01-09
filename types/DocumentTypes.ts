@@ -69,8 +69,6 @@ export enum ImageFrameSourceType {
     variable = 'variable',
 }
 
-export type ImageSource = ImageFrameSource | UrlImageFrameSource | null;
-
 export interface ImageFrameSource {
     sourceType: ImageFrameSourceType;
 }

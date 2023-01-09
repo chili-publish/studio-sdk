@@ -7,6 +7,7 @@ beforeEach(() => {
     jest.spyOn(mockedExperiments, 'insertTextVariable');
     jest.spyOn(mockedExperiments, 'enterTextEditMode');
     jest.spyOn(mockedExperiments, 'exitTextEditMode');
+    jest.spyOn(mockedExperiments, 'insertImageVariableToFrame');
 });
 
 afterAll(() => {
@@ -25,5 +26,9 @@ describe('Experiments', () => {
 
         mockedExperiments.exitTextEditMode();
         expect(mockedExperiments.exitTextEditMode).toHaveBeenCalledTimes(1);
+
+        mockedExperiments.insertImageVariableToFrame('image-frame-id', 'variable-id');
+        expect(mockedExperiments.insertImageVariableToFrame).toHaveBeenCalledTimes(1);
+        expect(mockedExperiments.insertImageVariableToFrame).toHaveBeenCalledWith('image-frame-id', 'variable-id');
     });
 });

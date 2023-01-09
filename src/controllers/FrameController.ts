@@ -6,11 +6,14 @@ import {
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
+    ImageConnectorSource,
+    ImageFrameSource,
+    ImageSourceTypeEnum,
+    ImageUrlSource,
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
-import { ImageSource } from '../../types/DocumentTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -386,6 +389,26 @@ export class FrameController {
     };
 
     /**
+     * This method sets or removes the image source to the ImageFrame
+     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param src A new image source
+     * @returns
+     */
+    private updateImageSource = async (imageFrameId: Id, src: ImageFrameSource | null) => {
+        const res = await this.#editorAPI;
+        const srcJson = src !== null ? JSON.stringify(src) : null;
+        return res.setImageSource(imageFrameId, srcJson).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method removes the image source from the ImageFrame
+     * @param imageFrameId The ID of the imageFrame where an image needs to be removed from
+     */
+    removeImageSource = async (imageFrameId: string) => {
+        return this.updateImageSource(imageFrameId, null);
+    };
+
+    /**
      * This method will assign an image from a mediaConnector to the correct ImageFrame
      * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
      * @param connectorId Unique Id of the media connector
@@ -393,10 +416,12 @@ export class FrameController {
      * @returns
      */
     setImageFromConnector = async (imageFrameId: Id, connectorId: string, resourceId: string) => {
-        const res = await this.#editorAPI;
-        return res
-            .assignImage(imageFrameId, connectorId, resourceId)
-            .then((result) => getEditorResponseData<null>(result));
+        const src: ImageConnectorSource = {
+            assetId: resourceId,
+            connectorId: connectorId,
+            sourceType: ImageSourceTypeEnum.connector,
+        };
+        return this.updateImageSource(imageFrameId, src);
     };
 
     /**
@@ -407,19 +432,8 @@ export class FrameController {
      * @returns
      */
     setImageFromUrl = async (imageFrameId: Id, url: string) => {
-        const res = await this.#editorAPI;
-        return res.assignImageFromUrl(imageFrameId, url).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will assign/reset an image source to the ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
-     * @param source The image source to set to the imageFrame. Can be asset image, url or none
-     * @returns
-     */
-    setImageSource = async (imageFrameId: Id, source?: ImageSource) => {
-        const res = await this.#editorAPI;
-        return res.setImageSource(imageFrameId, source).then((result) => getEditorResponseData<null>(result));
+        const src: ImageUrlSource = { url: url, sourceType: ImageSourceTypeEnum.url };
+        return this.updateImageSource(imageFrameId, src);
     };
 
     /**

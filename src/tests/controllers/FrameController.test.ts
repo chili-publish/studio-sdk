@@ -35,7 +35,7 @@ beforeEach(() => {
     jest.spyOn(mockedFrameProperties, 'resetImageFrameFitMode');
     jest.spyOn(mockedFrameProperties, 'setImageFromConnector');
     jest.spyOn(mockedFrameProperties, 'setImageFromUrl');
-    jest.spyOn(mockedFrameProperties, 'setImageSource');
+    jest.spyOn(mockedFrameProperties, 'removeImageSource');
     jest.spyOn(mockedFrameProperties, 'selectFrame');
     jest.spyOn(mockedFrameProperties, 'selectMultipleFrames');
     jest.spyOn(mockedFrameProperties, 'setFrameName');
@@ -209,9 +209,9 @@ describe('FrameProperties', () => {
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.setImageFromUrl).toHaveBeenCalledWith(frameId, 'image url');
 
-        mockedFrameProperties.setImageSource(frameId, null);
-        expect(mockedFrameProperties.setImageSource).toHaveBeenCalledTimes(1);
-        expect(mockedFrameProperties.setImageSource).toHaveBeenCalledWith(frameId, null);
+        mockedFrameProperties.removeImageSource(frameId);
+        expect(mockedFrameProperties.removeImageSource).toHaveBeenCalledTimes(1);
+        expect(mockedFrameProperties.removeImageSource).toHaveBeenCalledWith(frameId);
 
         mockedFrameProperties.setShapeFrameType(frameId, ShapeType.polygon);
         expect(mockedFrameProperties.setShapeFrameType).toHaveBeenCalledTimes(1);
