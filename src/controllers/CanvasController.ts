@@ -2,10 +2,10 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
- * The ZoomController is responsible for all communication regarding Zoom functionality.
- * Methods inside this controller can be called by `window.SDK.zoom.{method-name}`
+ * The CanvasController is responsible for all Canvas-related functionality.
+ * Methods inside this controller can be called by `window.SDK.canvas.{method-name}`
  */
-export class ZoomController {
+export class CanvasController {
     /**
      * @ignore
      */
