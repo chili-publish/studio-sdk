@@ -12,6 +12,7 @@ beforeEach(() => {
     mockedSDK.editorAPI = mockChild;
     mockedSDK.fontConnector = new FontConnectorController(mockChild);
     jest.spyOn(mockedSDK.fontConnector, 'query');
+    jest.spyOn(mockedSDK.fontConnector, 'detail');
     jest.spyOn(mockedSDK.fontConnector, 'download');
     jest.spyOn(mockedSDK.fontConnector, 'upload');
     jest.spyOn(mockedSDK.fontConnector, 'remove');
@@ -93,5 +94,9 @@ describe('FontConnector methods', () => {
         await mockedSDK.fontConnector.getDownloadOptions(connectorId);
         expect(mockedSDK.editorAPI.fontConnectorGetDownloadOptions).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.fontConnectorGetDownloadOptions).toHaveBeenLastCalledWith(connectorId);
+
+        await mockedSDK.fontConnector.detail(connectorId, FontId);
+        expect(mockedSDK.editorAPI.fontConnectorDetail).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.fontConnectorDetail).toHaveBeenLastCalledWith(connectorId, FontId);
     });
 });

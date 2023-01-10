@@ -12,6 +12,7 @@ beforeEach(() => {
     mockedSDK.editorAPI = mockChild;
     mockedSDK.mediaConnector = new MediaConnectorController(mockChild);
     jest.spyOn(mockedSDK.mediaConnector, 'query');
+    jest.spyOn(mockedSDK.mediaConnector, 'detail');
     jest.spyOn(mockedSDK.mediaConnector, 'download');
     jest.spyOn(mockedSDK.mediaConnector, 'upload');
     jest.spyOn(mockedSDK.mediaConnector, 'remove');
@@ -93,5 +94,9 @@ describe('MediaConnector methods', () => {
         await mockedSDK.mediaConnector.getDownloadOptions(connectorId);
         expect(mockedSDK.editorAPI.mediaConnectorGetDownloadOptions).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.mediaConnectorGetDownloadOptions).toHaveBeenLastCalledWith(connectorId);
+
+        await mockedSDK.mediaConnector.detail(connectorId, mediaId);
+        expect(mockedSDK.editorAPI.mediaConnectorDetail).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.mediaConnectorDetail).toHaveBeenLastCalledWith(connectorId, mediaId);
     });
 });

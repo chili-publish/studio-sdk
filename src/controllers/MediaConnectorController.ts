@@ -52,6 +52,18 @@ export class MediaConnectorController {
     };
 
     /**
+     * Returns a single media using a specific MediaConnector.
+     *
+     * The connector needs to list `detail` as a supported capability.
+     * @param connectorId unique Id of the Media connector
+     * @param mediaId unique id of the Media
+     */
+    detail = async (connectorId: string, mediaId: string) => {
+        const res = await this.#editorAPI;
+        return res.mediaConnectorDetail(connectorId, mediaId).then((result) => getEditorResponseData<Media>(result));
+    };
+
+    /**
      * The combination of a `connectorId` and `mediaId` is typically enough for a media connector to
      * perform the download of this asset. The `download` endpoint is capable of relaying this information to the
      * media connector instance running in the editor engine.
