@@ -57,6 +57,11 @@ export class ConnectorMapping {
     }
 }
 
+export type ConnectorState = {
+    id: string;
+    type: ConnectorStateType;
+}
+
 export type ConnectorEvent = {
     id: string;
     type: ConnectorEventType;
@@ -76,12 +81,17 @@ export enum ConnectorMappingSource {
     variable = 'var',
 }
 
-export enum ConnectorEventType {
+export enum ConnectorStateType {
     loading = 'loading',
     loaded = 'loaded',
-    unloaded = 'unloaded',
     running = 'running',
     ready = 'ready',
-    reloaded = 'reloaded',
     error = 'error',
+};
+
+export enum ConnectorEventType {
+    stateChanged = 'stateChanged',
+    authChanged = 'authChanged',
+    reloadRequired = 'reloadRequired',
+    unloaded = 'unloaded',
 };

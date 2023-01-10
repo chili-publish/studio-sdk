@@ -7,7 +7,7 @@ import { FrameAnimationType } from '../../../types/AnimationTypes';
 import { VariableType } from '../../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
-import { ConnectorEventType } from '../../../types/ConnectorTypes';
+import { ConnectorStateType } from '../../../types/ConnectorTypes';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -101,7 +101,10 @@ describe('Subscriber methods', () => {
             },
         ]);
 
-        mockedSubscribers.onConnectorStateChanged(JSON.stringify({ id: 'id', type: ConnectorEventType.loaded }));
+        const connectorEvent = JSON.stringify({ id: 'id', type: ConnectorStateType.loaded });
+        mockedSubscribers.onConnectorStateChanged(connectorEvent);
+        expect(mockedSubscribers.onConnectorStateChanged).toHaveBeenCalledWith(connectorEvent);
+
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
     });
 

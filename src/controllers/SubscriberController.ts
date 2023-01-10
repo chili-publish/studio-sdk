@@ -191,6 +191,7 @@ export class SubscriberController {
      * - ready
      * - reloaded
      * - error
+     * - authentication changed
      * @param connectorEvent Stringified object of ConnectorEvent
      */
     onConnectorStateChanged = (connectorEvent: string) => {

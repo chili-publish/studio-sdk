@@ -1,7 +1,7 @@
 import { ConnectorOptions, EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import {
-    ConnectorEvent,
-    ConnectorEventType,
+    ConnectorState,
+    ConnectorStateType,
     ConnectorMapping,
     ConnectorRegistration,
 } from '../../types/ConnectorTypes';
@@ -73,7 +73,7 @@ export class ConnectorController {
      */
     getState = async (connectorId: string) => {
         const res = await this.#editorAPI;
-        return res.getConnectorState(connectorId).then((result) => getEditorResponseData<ConnectorEvent>(result));
+        return res.getConnectorState(connectorId).then((result) => getEditorResponseData<ConnectorState>(result));
     };
 
     /**
@@ -102,8 +102,8 @@ export class ConnectorController {
                 if (
                     result.success &&
                     result.parsedData &&
-                    result.parsedData.type !== ConnectorEventType.error &&
-                    result.parsedData.type !== ConnectorEventType.loading
+                    result.parsedData.type !== ConnectorStateType.error &&
+                    result.parsedData.type !== ConnectorStateType.loading
                 ) {
                     return getEditorResponseData<null>(
                         { data: null, success: true, error: undefined, status: 0, parsedData: undefined },

@@ -117,7 +117,7 @@ const Connect = (
                 fontsChanged: params.onFontsChanged,
                 selectedLayoutId: params.onSelectedLayoutIdChanged,
                 layoutListChanged: params.onLayoutsChanged,
-                connectorState: params.onConnectorStateChanged,
+                connectorEvent: params.onConnectorStateChanged,
             },
         }),
     );
