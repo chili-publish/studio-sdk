@@ -5,7 +5,7 @@ import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
-import {CharacterStyle} from "./CharacterStyleTypes";
+import { CharacterStyle } from './CharacterStyleTypes';
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
@@ -68,6 +68,7 @@ export enum ImageFrameSourceType {
     assetProvider = 'assetProvider',
     variable = 'variable',
 }
+
 export interface ImageFrameSource {
     sourceType: ImageFrameSourceType;
 }
