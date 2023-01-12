@@ -60,7 +60,7 @@ interface ConfigParameterTypes {
     onFontsChanged: (fonts: string) => void;
     onSelectedLayoutIdChanged: (layoutId: string) => void;
     onLayoutsChanged: (layouts: string) => void;
-    onConnectorStateChanged: (state: string) => void;
+    onConnectorEvent: (state: string) => void;
 }
 
 const Connect = (
@@ -117,7 +117,7 @@ const Connect = (
                 fontsChanged: params.onFontsChanged,
                 selectedLayoutId: params.onSelectedLayoutIdChanged,
                 layoutListChanged: params.onLayoutsChanged,
-                connectorEvent: params.onConnectorStateChanged,
+                connectorEvent: params.onConnectorEvent,
             },
         }),
     );

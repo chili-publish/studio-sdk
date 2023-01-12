@@ -36,7 +36,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onFontsChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockedSubscribers, 'onLayoutsChanged');
-    jest.spyOn(mockedSubscribers, 'onConnectorStateChanged');
+    jest.spyOn(mockedSubscribers, 'onConnectorEvent');
 });
 
 afterEach(() => {
@@ -102,8 +102,8 @@ describe('Subscriber methods', () => {
         ]);
 
         const connectorEvent = JSON.stringify({ id: 'id', type: ConnectorStateType.loaded });
-        mockedSubscribers.onConnectorStateChanged(connectorEvent);
-        expect(mockedSubscribers.onConnectorStateChanged).toHaveBeenCalledWith(connectorEvent);
+        mockedSubscribers.onConnectorEvent(connectorEvent);
+        expect(mockedSubscribers.onConnectorEvent).toHaveBeenCalledWith(connectorEvent);
 
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
     });

@@ -188,12 +188,12 @@ export class SubscriberController {
      * - authChanged
      * - unloaded
      * - stateChanged
-     * 
+     *
      * stateChanged - this event will be triggered by connector states: loading, loaded, running, ready, error
      * @param connectorEvent Stringified object of ConnectorEvent
      */
-    onConnectorStateChanged = (connectorEvent: string) => {
-        const callBack = this.config.onConnectorStateChanged;
+    onConnectorEvent = (connectorEvent: string) => {
+        const callBack = this.config.onConnectorEvent;
         callBack && callBack(JSON.parse(connectorEvent));
     };
 }

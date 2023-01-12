@@ -36,7 +36,7 @@ export type ConfigType = {
     onFontsChanged?: (fonts: DocumentFont[]) => void;
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
-    onConnectorStateChanged?: (event: ConnectorEvent) => void;
+    onConnectorEvent?: (event: ConnectorEvent) => void;
 };
 
 export interface EditorResponse<T> {
