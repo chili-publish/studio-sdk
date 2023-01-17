@@ -183,18 +183,17 @@ export class SubscriberController {
     };
 
     /**
-     * Listener on connector states, this listener will get triggered when a connector is
-     * - loading
-     * - loaded
+     * Listener on connector events, this listener will get triggered when a connector emits one of those events
+     * - reloadRequired
+     * - authChanged
      * - unloaded
-     * - running
-     * - ready
-     * - reloaded
-     * - error
+     * - stateChanged
+     *
+     * stateChanged - this event will be triggered by connector states: loading, loaded, running, ready, error
      * @param connectorEvent Stringified object of ConnectorEvent
      */
-    onConnectorStateChanged = (connectorEvent: string) => {
-        const callBack = this.config.onConnectorStateChanged;
+    onConnectorEvent = (connectorEvent: string) => {
+        const callBack = this.config.onConnectorEvent;
         callBack && callBack(JSON.parse(connectorEvent));
     };
 }

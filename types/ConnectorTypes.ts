@@ -57,6 +57,11 @@ export class ConnectorMapping {
     }
 }
 
+export type ConnectorState = {
+    id: string;
+    type: ConnectorStateType;
+}
+
 export type ConnectorEvent = {
     id: string;
     type: ConnectorEventType;
@@ -76,12 +81,63 @@ export enum ConnectorMappingSource {
     variable = 'var',
 }
 
-export enum ConnectorEventType {
+export enum ConnectorStateType {
+    /**
+     * Connector loading process has started.
+     * Any SDK methods that required the connector id, will start working now.
+     */
     loading = 'loading',
+
+    /**
+     * Connector loading completed.
+     */
     loaded = 'loaded',
-    unloaded = 'unloaded',
+
+    /**
+     * Connector is running in QuickJS. 
+     */
+
     running = 'running',
+
+    /**
+     * Connector is fully configured and has the correct authentication information.
+     * At this point the connector is ready to make requests.
+     */
     ready = 'ready',
-    reloaded = 'reloaded',
+
+    /**
+     * Something went wrong, the connector is in error state. 
+     * Check the error message for more information.
+     */
     error = 'error',
+};
+
+export enum ConnectorEventType {
+    /**
+     * This event will be triggered by the following state changes of the connector
+     * - loading
+     * - loaded
+     * - running
+     * - ready
+     * - error
+     */
+    stateChanged = 'stateChanged',
+
+    /**
+     * Authentication information is changed
+     */
+    authChanged = 'authChanged',
+
+    /**
+     * Connector configuration changed that requires the connector to be reloaded in QuickJS.
+     * This will trigger multiple 'stateChanged' events while it is reloading.
+     * Wait until 'ready'-stateChanged event is received to start using the connector again.
+     */
+    reloadRequired = 'reloadRequired',
+
+    /**
+     * Connector is unregistered and no longer exists inside the editor engine. 
+     * Don't use the 'connectorId' after receiving this event. 
+     */
+    unloaded = 'unloaded',
 };

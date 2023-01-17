@@ -7,7 +7,7 @@ import { FrameAnimationType } from '../../../types/AnimationTypes';
 import { VariableType } from '../../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
-import { ConnectorEventType } from '../../../types/ConnectorTypes';
+import { ConnectorStateType } from '../../../types/ConnectorTypes';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -36,7 +36,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onFontsChanged');
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockedSubscribers, 'onLayoutsChanged');
-    jest.spyOn(mockedSubscribers, 'onConnectorStateChanged');
+    jest.spyOn(mockedSubscribers, 'onConnectorEvent');
 });
 
 afterEach(() => {
@@ -101,7 +101,10 @@ describe('Subscriber methods', () => {
             },
         ]);
 
-        mockedSubscribers.onConnectorStateChanged(JSON.stringify({ id: 'id', type: ConnectorEventType.loaded }));
+        const connectorEvent = JSON.stringify({ id: 'id', type: ConnectorStateType.loaded });
+        mockedSubscribers.onConnectorEvent(connectorEvent);
+        expect(mockedSubscribers.onConnectorEvent).toHaveBeenCalledWith(connectorEvent);
+
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
     });
 

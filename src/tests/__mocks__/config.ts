@@ -22,6 +22,6 @@ const mockConfig: ConfigType = {
     onFontsChanged: defaultMockReturn,
     onSelectedLayoutIdChanged: defaultMockReturn,
     onLayoutsChanged: defaultMockReturn,
-    onConnectorStateChanged: defaultMockReturn,
+    onConnectorEvent: defaultMockReturn,
 };
 export default mockConfig;
