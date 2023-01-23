@@ -2,12 +2,17 @@ import { Id } from '../../../types/CommonTypes';
 import { FitMode, FrameTypeEnum, ShapeType, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
-import MockEditorAPI from '../__mocks__/MockEditorAPI';
+import mockConfig from '../__mocks__/config';
+import mockEditorApi from '../__mocks__/MockEditorAPI';
+import { SDK } from '../../index';
+import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
 
 let mockedFrameProperties: FrameController;
 let frameId: Id;
+
 beforeEach(() => {
-    mockedFrameProperties = new FrameController(MockEditorAPI);
+    mockedFrameProperties = new FrameController(mockEditorApi);
+
     jest.spyOn(mockedFrameProperties, 'addFrame');
     jest.spyOn(mockedFrameProperties, 'addShapeFrame');
     jest.spyOn(mockedFrameProperties, 'getFrames');
@@ -256,6 +261,48 @@ describe('FrameProperties', () => {
         mockedFrameProperties.resetShapeFrameStrokeWeight(frameId);
         expect(mockedFrameProperties.resetShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
         expect(mockedFrameProperties.resetShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId);
+    });
+});
+
+describe('ImageFrameSource manipulations', () => {
+    const mockedSDK = new SDK(mockConfig);
+    mockedSDK.editorAPI = mockEditorApi;
+
+    beforeAll(() => {
+        jest.clearAllMocks();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('setImageFromConnector() redirects to EditorAPI.setImageSource() with ImageConnectorSource param', async () => {
+        const connectorId = mockImageConnectorSource.connectorId;
+        const assetId = mockImageConnectorSource.assetId;
+
+        await mockedFrameProperties.setImageFromConnector(frameId, connectorId, assetId);
+
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify(mockImageConnectorSource),
+        );
+    });
+
+    it('setImageFromUrl() redirects to EditorAPI.setImageSource() with ImageUrlSource param', async () => {
+        const url = mockImageUrlSource.url;
+
+        await mockedFrameProperties.setImageFromUrl(frameId, url);
+
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify(mockImageUrlSource));
+    });
+
+    it('removeImageSource() redirects to EditorAPI.setImageSource() with null param', async () => {
+        await mockedFrameProperties.removeImageSource(frameId);
+
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, null);
     });
 });
 
