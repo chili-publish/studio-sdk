@@ -42,7 +42,7 @@ export type ImageConnectorSource = {
     connectorId: string;
     sourceType: ImageSourceTypeEnum.connector;
 };
-export type ImageFrameSource = ImageUrlSource | ImageConnectorSource;
+export type ImageFrameSource = ImageUrlSource | ImageConnectorSource | ImageVariableSource;
 // used by new getter methods
 export type ImageFrame = {
     frameId: Id;
