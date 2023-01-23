@@ -2,7 +2,7 @@ import { ExperimentController } from '../../controllers/ExperimentController';
 import mockEditorAPI from '../__mocks__/MockEditorAPI';
 import mockConfig from '../__mocks__/config';
 import { mockImageVariableSource } from '../__mocks__/MockImageFrameSource';
-import SDK from '../../index';
+import { SDK } from '../../index';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 
 let mockedExperiments: ExperimentController;
