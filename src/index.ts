@@ -64,9 +64,8 @@ export type {
     ImageFrame,
     ImageFrameSource,
     ShapeType,
-    ImageUrlVariableSource,
+    ImageVariableSource,
     ImageUrlSource,
-    ImageConnectorVariableSource,
 } from '../types/FrameTypes';
 export type {
     Variable,
