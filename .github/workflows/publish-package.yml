@@ -35,8 +35,6 @@ jobs:
               run: yarn cover
             - name: run readmeUpdater
               run: yarn make-badges
-            - name: build code
-              run: yarn build
             - name: bump version
               uses: phips28/gh-action-bump-version@master
               env:
@@ -47,6 +45,8 @@ jobs:
                   major-wording: 'Breaking,BREAKING'
                   patch-wording: 'Fix,FIX'
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            - name: build code
+              run: yarn build
             - name: publish build
               run: yarn publish
               env:
