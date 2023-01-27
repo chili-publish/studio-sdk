@@ -102,8 +102,8 @@ export class ConnectorController {
                 if (
                     result.success &&
                     result.parsedData &&
-                    result.parsedData.type !== ConnectorStateType.error &&
-                    result.parsedData.type !== ConnectorStateType.loading
+                    (result.parsedData.type === ConnectorStateType.running ||
+                        result.parsedData.type === ConnectorStateType.ready)
                 ) {
                     return getEditorResponseData<null>(
                         { data: null, success: true, error: undefined, status: 0, parsedData: undefined },
