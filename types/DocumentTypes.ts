@@ -23,6 +23,7 @@ export type OperationName = { translationKey: number; name: string };
  */
 export interface ChiliDocument {
     selectedLayoutId: string;
+    properties?: TemplateDocumentProperties | ProjectDocumentProperties;
     pages: DocumentPage[];
     layouts: (ChildLayout | TopLayout)[];
     styleKit: DocumentStyleKit;
@@ -174,4 +175,19 @@ export interface DocumentVariable extends Variable {
     isRequired: boolean;
     value: string;
     defaultValue: string;
+}
+
+export enum DocumentType {
+    project = 'project',
+    template = 'template',
+}
+
+export interface DocumentProperties {
+    type: DocumentType;
+}
+
+export type TemplateDocumentProperties = DocumentProperties;
+
+export interface ProjectDocumentProperties extends DocumentProperties {
+    templateId: string;
 }
