@@ -108,7 +108,7 @@ describe('Subscriber methods', () => {
 
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
 
-        mockedSubscribers.onZoomChanged(JSON.stringify('150'));
+        mockedSubscribers.onZoomChanged(JSON.stringify(150));
         expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledTimes(17);
         expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledWith(150);
     });
