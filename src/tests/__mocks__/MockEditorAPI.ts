@@ -170,6 +170,8 @@ export const mockResetShapeFrameEnableStroke = jest.fn().mockResolvedValue({ suc
 export const mockResetShapeFrameStrokeColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockResetShapeFrameStrokeWeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockZoomToPage = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockGetZoomPercentage = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetZoomPercentage = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const MockEditorAPI = {
     addFrame: mockAddFrame,
@@ -339,6 +341,8 @@ const MockEditorAPI = {
     resetShapeFrameStrokeColor: mockResetShapeFrameStrokeColor,
     resetShapeFrameStrokeWeight: mockResetShapeFrameStrokeWeight,
     zoomToPage: mockZoomToPage,
+    getZoomPercentage: mockGetZoomPercentage,
+    setZoomPercentage: mockSetZoomPercentage,
 };
 
 export default MockEditorAPI;

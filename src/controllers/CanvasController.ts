@@ -39,4 +39,22 @@ export class CanvasController {
         const res = await this.#editorAPI;
         return res.zoomToPage(pageId, left, top, width, height).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method gets the scale factor of the canvas
+     * @returns scale factor in percents
+     */
+    getZoomPercentage = async () => {
+        const res = await this.#editorAPI;
+        return res.getZoomPercentage().then((result) => getEditorResponseData<number>(result));
+    };
+
+    /**
+     * This method sets the scale factor to the canvas and re-centers the page
+     * @param scaleFactor scale factor in percents
+     */
+    setZoomPercentage = async (scaleFactor: number) => {
+        const res = await this.#editorAPI;
+        return res.setZoomPercentage(scaleFactor).then((result) => getEditorResponseData<null>(result));
+    };
 }

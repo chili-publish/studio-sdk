@@ -32,4 +32,15 @@ describe('Should call all of the CanvasController functions of child successfull
         expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(3);
         expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledWith('0', 300, 0, 700, 400);
     });
+
+    it('should call getZoomPercentage function of EditorAPI', async () => {
+        await mockedSDK.canvas.getZoomPercentage();
+        expect(mockedSDK.editorAPI.getZoomPercentage).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call setZoomPercentage function of EditorAPI', async () => {
+        await mockedSDK.canvas.setZoomPercentage(50);
+        expect(mockedSDK.editorAPI.setZoomPercentage).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setZoomPercentage).toHaveBeenCalledWith(50);
+    });
 });
