@@ -1,8 +1,8 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { LayoutWithFrameProperties, LayoutPropertiesType, LayoutListItemType } from './LayoutTypes';
-import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
+import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties } from './LayoutTypes';
 import type { FrameType } from './FrameTypes';
+import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src';
 import { UndoState } from './DocumentTypes';
@@ -37,6 +37,7 @@ export type ConfigType = {
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
     onConnectorEvent?: (event: ConnectorEvent) => void;
+    onZoomChanged?: (scaleFactor: number) => void;
 };
 
 export interface EditorResponse<T> {

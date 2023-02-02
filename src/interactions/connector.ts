@@ -1,4 +1,4 @@
-import { connectToChild, Connection } from 'penpal';
+import { Connection, connectToChild } from 'penpal';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -61,6 +61,7 @@ interface ConfigParameterTypes {
     onSelectedLayoutIdChanged: (layoutId: string) => void;
     onLayoutsChanged: (layouts: string) => void;
     onConnectorEvent: (state: string) => void;
+    onZoomChanged: (scaleFactor: string) => void;
 }
 
 const Connect = (
