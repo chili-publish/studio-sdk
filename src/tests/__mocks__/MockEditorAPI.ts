@@ -50,7 +50,6 @@ export const mockGroupVariables = jest.fn().mockResolvedValue({ success: true, s
 export const mockSetVariableName = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableLabel = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableType = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockSetDefaultVariableValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetVariableValue = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMoveVariable = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockMoveVariables = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -247,7 +246,6 @@ const MockEditorAPI = {
     setVariableName: mockSetVariableName,
     setVariableLabel: mockSetVariableLabel,
     setVariableType: mockSetVariableType,
-    setDefaultVariableValue: mockSetDefaultVariableValue,
     setVariableValue: mockSetVariableValue,
     duplicateVariable: mockDuplicateVariable,
     moveVariable: mockMoveVariable,

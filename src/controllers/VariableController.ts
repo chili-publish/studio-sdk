@@ -97,15 +97,6 @@ export class VariableController {
      * This method sets a new value for a variable
      * @returns
      */
-    setDefaultVariableValue = async (variableId: string, value: string) => {
-        const res = await this.#editorAPI;
-        return res.setDefaultVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method sets a new value for a variable
-     * @returns
-     */
     setVariableValue = async (variableId: string, value: string) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
