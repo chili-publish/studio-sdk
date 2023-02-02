@@ -27,6 +27,7 @@ import { FontConnectorController } from './controllers/FontConnectorController';
 import { ExperimentController } from './controllers/ExperimentController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { CanvasController } from './controllers/CanvasController';
+import { DocumentType } from '../types/DocumentTypes';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -259,6 +260,17 @@ export class SDK {
         // used to make it start. This enables engine compatibility checks
         // on the Flutter side
         this.configuration.setValue(WellKnownConfigurationKeys.GraFxStudioSdkVersion, packageInfo.version);
+
+        // Makes the engine aware which document type it should render, if this call
+        // isn't made, the engine will fall back to the type specified in the document.
+        //
+        // Loading a template JSON and setting the engine to `project` will cause
+        // the document JSON structure to be converted to a project on save.
+        // Using `getCurrentDocumentState` will also output the converted document.
+        this.configuration.setValue(
+            WellKnownConfigurationKeys.GraFxStudioDocumentType,
+            this.config.documentType || DocumentType.template,
+        );
     };
 
     setConnection = (newConnection: Connection) => {

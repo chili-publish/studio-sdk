@@ -1,4 +1,5 @@
 import { ConfigType } from '../../../types/CommonTypes';
+import { DocumentType } from '../../../types/DocumentTypes';
 
 export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
@@ -7,6 +8,7 @@ const mockConfig: ConfigType = {
     onSelectedFrameLayoutChanged: defaultMockReturn,
     onSelectedFrameContentChanged: defaultMockReturn,
     editorLink: 'https://chili-editor-dev.azurewebsites.net/',
+    documentType: DocumentType.template,
     onPageSelectionChanged: defaultMockReturn,
     onSelectedLayoutPropertiesChanged: defaultMockReturn,
     onScrubberPositionChanged: defaultMockReturn,

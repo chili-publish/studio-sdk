@@ -5,7 +5,7 @@ import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import type { FrameType } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ToolType } from '../src';
-import { UndoState } from './DocumentTypes';
+import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { DocumentFont } from './FontTypes';
@@ -21,6 +21,7 @@ export type ConfigType = {
     editorLink?: string;
     editorId?: string;
     chiliEnvironmentUrl?: string;
+    documentType?: DocumentType;
     onPageSelectionChanged?: () => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
