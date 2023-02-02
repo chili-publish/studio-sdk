@@ -119,6 +119,7 @@ const Connect = (
                 selectedLayoutId: params.onSelectedLayoutIdChanged,
                 layoutListChanged: params.onLayoutsChanged,
                 connectorEvent: params.onConnectorEvent,
+                zoomChanged: params.onZoomChanged,
             },
         }),
     );
