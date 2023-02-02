@@ -64,15 +64,19 @@ export type {
     ImageFrame,
     ImageFrameSource,
     ShapeType,
-    ImageVariableSource,
-    ImageUrlSource,
+    ImageFrameVariableSource,
+    ImageFrameUrlSource,
 } from '../types/FrameTypes';
 export type {
     Variable,
+    GroupVariable,
+    ImageVariable,
+    LongTextVariable,
+    ShortTextVariable,
     VariableMoves,
-    UrlImageVariable,
-    MediaConnectorImageVariable,
-    VariableSource,
+    UrlImageVariableSource,
+    MediaConnectorImageVariableSource,
+    ImageVariableSource,
 } from '../types/VariableTypes';
 export type { Color, DocumentColor, ColorUpdate } from '../types/ColorStyleTypes';
 
