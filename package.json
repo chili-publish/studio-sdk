@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/editor-sdk",
-    "version": "0.105.0",
+    "version": "0.105.1",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
