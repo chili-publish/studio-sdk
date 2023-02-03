@@ -183,6 +183,15 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on scale factor of the canvas, this listener will get triggered when a zoom is applied to the canvas
+     * @param zoomEvent Stringified scale factor
+     */
+    onZoomChanged = (zoomEvent: string) => {
+        const callBack = this.config.onZoomChanged;
+        callBack && callBack(JSON.parse(zoomEvent));
+    };
+
+    /**
      * Listener on connector events, this listener will get triggered when a connector emits one of those events
      * - reloadRequired
      * - authChanged

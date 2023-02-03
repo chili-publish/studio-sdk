@@ -30,6 +30,7 @@ describe.skip('Editor Link Validator', () => {
                 onSelectedLayoutIdChanged: () => null,
                 onLayoutsChanged: () => null,
                 onConnectorEvent: () => null,
+                onZoomChanged: () => null,
             },
             () => null,
         );
@@ -67,6 +68,7 @@ describe.skip('Editor Link Validator', () => {
                 onSelectedLayoutIdChanged: () => null,
                 onLayoutsChanged: () => null,
                 onConnectorEvent: () => null,
+                onZoomChanged: () => null,
             },
             () => null,
         );
@@ -103,6 +105,7 @@ describe.skip('Editor Link Validator', () => {
                 onSelectedLayoutIdChanged: () => null,
                 onLayoutsChanged: () => null,
                 onConnectorEvent: () => null,
+                onZoomChanged: () => null,
             },
             () => null,
         );

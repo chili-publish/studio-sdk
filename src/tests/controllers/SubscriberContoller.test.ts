@@ -37,6 +37,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockedSubscribers, 'onLayoutsChanged');
     jest.spyOn(mockedSubscribers, 'onConnectorEvent');
+    jest.spyOn(mockedSubscribers, 'onZoomChanged');
 });
 
 afterEach(() => {
@@ -106,6 +107,10 @@ describe('Subscriber methods', () => {
         expect(mockedSubscribers.onConnectorEvent).toHaveBeenCalledWith(connectorEvent);
 
         expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
+
+        mockedSubscribers.onZoomChanged(JSON.stringify(150));
+        expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledTimes(17);
+        expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledWith(150);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

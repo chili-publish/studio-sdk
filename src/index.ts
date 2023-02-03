@@ -226,6 +226,7 @@ export class SDK {
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,
+                onZoomChanged: this.subscriber.onZoomChanged,
             },
             this.setConnection,
             this.config.editorId,

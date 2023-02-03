@@ -25,5 +25,6 @@ const mockConfig: ConfigType = {
     onSelectedLayoutIdChanged: defaultMockReturn,
     onLayoutsChanged: defaultMockReturn,
     onConnectorEvent: defaultMockReturn,
+    onZoomChanged: defaultMockReturn,
 };
 export default mockConfig;
