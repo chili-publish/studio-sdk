@@ -1,5 +1,5 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { Variable, VariableMoves, VariableSource, VariableType } from '../../types/VariableTypes';
+import { Variable, VariableMoves, ImageVariableSource, VariableType } from '../../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -97,15 +97,6 @@ export class VariableController {
      * This method sets a new value for a variable
      * @returns
      */
-    setDefaultVariableValue = async (variableId: string, value: string) => {
-        const res = await this.#editorAPI;
-        return res.setDefaultVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method sets a new value for a variable
-     * @returns
-     */
     setVariableValue = async (variableId: string, value: string) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
@@ -190,7 +181,7 @@ export class VariableController {
      * @param variableId The ID of the variable to update
      * @param src The new variable source
      */
-    private updateVariableSource = async (variableId: string, src: VariableSource | null) => {
+    private updateVariableSource = async (variableId: string, src: ImageVariableSource | null) => {
         const res = await this.#editorAPI;
         const srcJson = src !== null ? JSON.stringify(src) : null;
         return res.setVariableSource(variableId, srcJson).then((result) => getEditorResponseData<null>(result));
@@ -201,7 +192,7 @@ export class VariableController {
      * @param variableId The ID of the variable to update
      * @param src The new variable source
      */
-    setVariableSource = async (variableId: string, src: VariableSource) => {
+    setVariableSource = async (variableId: string, src: ImageVariableSource) => {
         return this.updateVariableSource(variableId, src);
     };
 

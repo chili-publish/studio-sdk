@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { ImageSourceTypeEnum, ImageVariableSource } from '../../types/FrameTypes';
+import { ImageSourceTypeEnum, ImageFrameVariableSource } from '../../types/FrameTypes';
 
 /**
  * The ExperimentController contains all SDK functions that are considered for addition,
@@ -29,7 +29,7 @@ export class ExperimentController {
      */
     insertImageVariableToFrame = async (imageFrameId: Id, variableId: string) => {
         const res = await this.#editorAPI;
-        const src: ImageVariableSource = { variableId: variableId, sourceType: ImageSourceTypeEnum.variable };
+        const src: ImageFrameVariableSource = { variableId: variableId, sourceType: ImageSourceTypeEnum.variable };
         return res
             .setImageSource(imageFrameId, JSON.stringify(src))
             .then((result) => getEditorResponseData<null>(result));

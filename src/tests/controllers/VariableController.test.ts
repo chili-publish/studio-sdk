@@ -67,12 +67,6 @@ describe('Variable controller', () => {
         expect(mockedSDK.editorAPI.setVariableType).toHaveBeenCalledWith('3', VariableType.group);
     });
 
-    it('set variable default value', async () => {
-        await mockedSDK.variable.setDefaultVariableValue('3', 'value');
-        expect(mockedSDK.editorAPI.setDefaultVariableValue).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setDefaultVariableValue).toHaveBeenCalledWith('3', 'value');
-    });
-
     it('set variable value', async () => {
         await mockedSDK.variable.setVariableValue('3', 'value');
         expect(mockedSDK.editorAPI.setVariableValue).toHaveBeenCalledTimes(1);

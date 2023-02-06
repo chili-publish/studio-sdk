@@ -1,22 +1,22 @@
 import {
-    ImageConnectorSource,
+    ImageFrameConnectorSource,
     ImageSourceTypeEnum,
-    ImageUrlSource,
-    ImageVariableSource,
+    ImageFrameUrlSource,
+    ImageFrameVariableSource,
 } from '../../../types/FrameTypes';
 
-export const mockImageConnectorSource: ImageConnectorSource = {
+export const mockImageConnectorSource: ImageFrameConnectorSource = {
     assetId: 'asset-id',
     connectorId: 'connector-id',
     sourceType: ImageSourceTypeEnum.connector,
 };
 
-export const mockImageUrlSource: ImageUrlSource = {
+export const mockImageUrlSource: ImageFrameUrlSource = {
     url: 'https://image.url',
     sourceType: ImageSourceTypeEnum.url,
 };
 
-export const mockImageVariableSource: ImageVariableSource = {
+export const mockImageVariableSource: ImageFrameVariableSource = {
     variableId: 'variable-id',
     sourceType: ImageSourceTypeEnum.variable,
 };

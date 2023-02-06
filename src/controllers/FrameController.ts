@@ -6,10 +6,10 @@ import {
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
-    ImageConnectorSource,
+    ImageFrameConnectorSource,
     ImageFrameSource,
     ImageSourceTypeEnum,
-    ImageUrlSource,
+    ImageFrameUrlSource,
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
@@ -416,7 +416,7 @@ export class FrameController {
      * @returns
      */
     setImageFromConnector = async (imageFrameId: Id, connectorId: string, resourceId: string) => {
-        const src: ImageConnectorSource = {
+        const src: ImageFrameConnectorSource = {
             assetId: resourceId,
             connectorId: connectorId,
             sourceType: ImageSourceTypeEnum.connector,
@@ -432,7 +432,7 @@ export class FrameController {
      * @returns
      */
     setImageFromUrl = async (imageFrameId: Id, url: string) => {
-        const src: ImageUrlSource = { url: url, sourceType: ImageSourceTypeEnum.url };
+        const src: ImageFrameUrlSource = { url: url, sourceType: ImageSourceTypeEnum.url };
         return this.updateImageSource(imageFrameId, src);
     };
 
