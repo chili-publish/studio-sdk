@@ -33,14 +33,16 @@ describe('Should call all of the ActionController functions of child successfull
     });
 
     it('should call updateActionTriggers function of EditorAPI', async () => {
-        const trigger: ActionTrigger = {
-            event: ActionEditorEvent.frameMoved,
-            triggers: ['1', '2'],
-        };
+        const triggers: ActionTrigger[] = [
+            {
+                event: ActionEditorEvent.frameMoved,
+                triggers: ['1', '2'],
+            },
+        ];
 
-        await mockedSDK.action.updateActionTriggers('0', trigger);
+        await mockedSDK.action.updateActionTriggers('0', triggers);
         expect(mockedSDK.editorAPI.updateActionTriggers).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.updateActionTriggers).toHaveBeenCalledWith('0', JSON.stringify(trigger));
+        expect(mockedSDK.editorAPI.updateActionTriggers).toHaveBeenCalledWith('0', JSON.stringify(triggers));
     });
 
     it('should call updateActionScript function of EditorAPI', async () => {

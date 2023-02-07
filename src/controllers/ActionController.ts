@@ -50,12 +50,12 @@ export class ActionController {
     };
 
     /**
-     * This method updates the script the action uses.
+     * This method updates the triggers on which the action will react.
      * @param actionId The ID of a specific action
-     * @param script The JavaScript based action script
+     * @param triggers The triggers this action should react on.
      * @returns
      */
-    updateActionTriggers = async (actionId: Id, triggers: ActionTrigger) => {
+    updateActionTriggers = async (actionId: Id, triggers: ActionTrigger[]) => {
         const res = await this.#editorAPI;
         return res
             .updateActionTriggers(actionId, JSON.stringify(triggers))
