@@ -8,23 +8,23 @@ So on these pages you'll find some very technical but super handy descriptions o
 
 -   [Default methods (SDK)](classes/index.SDK.md)
 -   [AnimationController](classes/controllers_AnimationController.AnimationController.md)
+-   [CanvasController](classes/controllers_CanvasController.CanvasController.md)
+-   [CharacterStyleController](classes/controllers_CharacterStyleController.CharacterStyleController.md)
 -   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.md)
 -   [ConfigurationController](classes/controllers_ConfigurationController.ConfigurationController.md)
 -   [ConnectorController](classes/controllers_ConnectorController.ConnectorController.md)
 -   [DebugController](classes/controllers_DebugController.DebugController.md)
 -   [DocumentController](classes/controllers_DocumentController.DocumentController.md)
 -   [FontConnectorController](classes/controllers_FontConnectorController.FontConnectorController.md)
+-   [FontController](classes/controllers_FontController.FontController.md)
 -   [FrameController](classes/controllers_FrameController.FrameController.md)
 -   [LayoutController](classes/controllers_LayoutController.LayoutController.md)
 -   [MediaConnectorController](classes/controllers_MediaConnectorController.MediaConnectorController.md)
 -   [PageController](classes/controllers_PageController.PageController.md)
+-   [ParagraphStyleController](classes/controllers_ParagraphStyleController.ParagraphStyleController.md)
 -   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
 -   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.md)
 -   [ToolController](classes/controllers_ToolController.ToolController.md)
--   [UndoManagerController](classes/controllers_UndoManagerController.UndoManagerController.md)
--   [UtilsController](classes/controllers_UtilsController.UtilsController.md)
--   [VariableController](classes/controllers_VariableController.VariableController.md)
--   [ExperimentController](classes/controllers_ExperimentController.ExperimentController.md)
 
 ## The document
 
