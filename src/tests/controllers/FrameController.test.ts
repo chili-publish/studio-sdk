@@ -1,5 +1,5 @@
 import { Id } from '../../../types/CommonTypes';
-import { FitMode, FrameTypeEnum, ShapeType, UpdateZIndexMethod, VerticalAlign } from '../../../types/FrameTypes';
+import { FitMode, FrameTypeEnum, ShapeType, UpdateZIndexMethod, VerticalAlign, ImageSourceTypeEnum } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import mockConfig from '../__mocks__/config';
@@ -83,8 +83,8 @@ describe('FrameProperties', () => {
         expect(mockedSDK.editorAPI.addFrame).toHaveBeenCalledWith(FrameTypeEnum.image, 100, 100, 100, 100);
 
         await mockedSDK.frame.addShapeFrame(ShapeType.ellipse, 100, 100, 100, 100);
-        expect(mockedSDK.editorAPI.addShapeFrame).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.addShapeFrame).toHaveBeenCalledWith(ShapeType.ellipse, 100, 100, 100, 100);
+        expect(mockedSDK.editorAPI.addFrame).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.addFrame).toHaveBeenCalledWith(ShapeType.ellipse, 100, 100, 100, 100);
 
         await mockedSDK.frame.getFrames();
         expect(mockedSDK.editorAPI.getFrames).toHaveBeenCalledTimes(1);
@@ -134,7 +134,7 @@ describe('FrameProperties', () => {
         expect(mockedSDK.editorAPI.setFrameHeight).toHaveBeenCalledTimes(2);
 
         await mockedSDK.frame.setFrameName('1', 'TEST');
-        expect(mockedSDK.editorAPI.setFrameName).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.renameFrame).toHaveBeenCalledTimes(1);
 
         await mockedSDK.frame.setFrameVisibility('2', false);
         expect(mockedSDK.editorAPI.setFrameVisibility).toHaveBeenCalledTimes(1);
@@ -167,11 +167,11 @@ describe('FrameProperties', () => {
         expect(mockedSDK.editorAPI.resetImageFrameFitMode).toHaveBeenCalledTimes(1);
 
         await mockedSDK.frame.selectFrame('2');
-        expect(mockedSDK.editorAPI.selectFrame).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledTimes(1);
 
         await mockedSDK.frame.selectMultipleFrames(['5']);
-        expect(mockedSDK.editorAPI.selectMultipleFrames).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.selectMultipleFrames).toHaveBeenCalledWith(['5']);
+        expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledWith(['5']);
 
         await mockedSDK.frame.setImageFrameFitMode(frameId, FitMode.fit);
         expect(mockedSDK.editorAPI.setImageFrameFitMode).toHaveBeenCalledTimes(1);
@@ -187,11 +187,11 @@ describe('FrameProperties', () => {
 
         await mockedSDK.frame.setMinCopyfitting(frameId, '0.5');
         expect(mockedSDK.editorAPI.setMinCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setMinCopyfitting).toHaveBeenCalledWith(frameId, '0.5');
+        expect(mockedSDK.editorAPI.setMinCopyfitting).toHaveBeenCalledWith(frameId, 0.5);
 
         await mockedSDK.frame.setMaxCopyfitting(frameId, '5.0');
         expect(mockedSDK.editorAPI.setMaxCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setMaxCopyfitting).toHaveBeenCalledWith(frameId, '5.0');
+        expect(mockedSDK.editorAPI.setMaxCopyfitting).toHaveBeenCalledWith(frameId, 5.0);
 
         await mockedSDK.frame.setEnableCopyfitting(frameId, true);
         expect(mockedSDK.editorAPI.setEnableCopyfitting).toHaveBeenCalledTimes(1);
@@ -215,16 +215,20 @@ describe('FrameProperties', () => {
         expect(mockedSDK.editorAPI.setFrameZIndex).toHaveBeenCalledWith(frameId, UpdateZIndexMethod.sendBackward);
 
         await mockedSDK.frame.setImageFromConnector(frameId, 'connector id', 'asset id');
-        expect(mockedSDK.editorAPI.setImageFromConnector).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setImageFromConnector).toHaveBeenCalledWith(frameId, 'connector id', 'asset id');
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify({
+            assetId: 'asset id',
+            connectorId: 'connector id',
+            sourceType: ImageSourceTypeEnum.connector,
+        }));
 
         await mockedSDK.frame.setImageFromUrl(frameId, 'image url');
-        expect(mockedSDK.editorAPI.setImageFromUrl).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setImageFromUrl).toHaveBeenCalledWith(frameId, 'image url');
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify({ url: 'image url', sourceType: ImageSourceTypeEnum.url, }));
 
         await mockedSDK.frame.removeImageSource(frameId);
-        expect(mockedSDK.editorAPI.removeImageSource).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.removeImageSource).toHaveBeenCalledWith(frameId);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(3);
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, null);
 
         await mockedSDK.frame.setShapeFrameType(frameId, ShapeType.polygon);
         expect(mockedSDK.editorAPI.setShapeFrameType).toHaveBeenCalledTimes(1);
