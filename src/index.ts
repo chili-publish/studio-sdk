@@ -28,6 +28,7 @@ import { ExperimentController } from './controllers/ExperimentController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { CanvasController } from './controllers/CanvasController';
 import { DocumentType } from '../types/DocumentTypes';
+import { ActionController } from './controllers/ActionController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -131,6 +132,8 @@ export * from '../types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
+export * from '../types/ActionTypes';
+
 let connection: Connection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
@@ -144,6 +147,7 @@ export class SDK {
      */
     editorAPI: EditorAPI;
 
+    action: ActionController;
     layout: LayoutController;
     frame: FrameController;
     connector: ConnectorController;
@@ -179,6 +183,7 @@ export class SDK {
             return child;
         }) as unknown as EditorAPI;
 
+        this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
@@ -211,6 +216,7 @@ export class SDK {
         Connect(
             this.config.editorLink || FIXED_EDITOR_LINK,
             {
+                onActionsChanged: this.subscriber.onActionsChanged,
                 onStateChanged: this.subscriber.onStateChanged,
                 onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
                 onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
@@ -239,6 +245,7 @@ export class SDK {
             return editorAPI;
         }) as unknown as EditorAPI;
 
+        this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);

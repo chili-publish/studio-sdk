@@ -7,6 +7,7 @@ So on these pages you'll find some very technical but super handy descriptions o
 ## Controllers
 
 -   [Default methods (SDK)](classes/index.SDK.html)
+-   [ActionController](classes/src_controllers_ActionController.ActionController.html)
 -   [AnimationController](classes/src_controllers_AnimationController.AnimationController.html)
 -   [ColorStyleController](classes/src_controllers_ColorStyleController.ColorStyleController.html)
 -   [ConfigurationController](classes/src_controllers_ConfigurationController.ConfigurationController.html)

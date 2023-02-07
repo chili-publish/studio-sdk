@@ -109,6 +109,11 @@ export const mockDuplicateCharacterStyle = jest.fn().mockResolvedValue({ success
 export const mockRenameCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
+export const mockCreateAction = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveAction = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateActionTriggers = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateActionScript = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
 export const mockGetFonts = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetFontById = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetDefaultFont = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -291,6 +296,10 @@ const MockEditorAPI = {
     removeCharacterStyle: mockRemoveCharacterStyle,
     renameCharacterStyle: mockRenameCharacterStyle,
     duplicateCharacterStyle: mockDuplicateCharacterStyle,
+    createAction: mockCreateAction,
+    removeAction: mockRemoveAction,
+    updateActionTriggers: mockUpdateActionTriggers,
+    updateActionScript: mockUpdateActionScript,
     getFonts: mockGetFonts,
     getFontById: mockGetFontById,
     getDefaultFont: mockGetDefaultFont,
