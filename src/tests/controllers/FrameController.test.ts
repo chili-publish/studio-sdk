@@ -92,17 +92,17 @@ describe('FrameProperties', () => {
         await mockedSDK.frame.getSelectedFrames();
         expect(mockedSDK.editorAPI.getSelectedFrames).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.getFramesByPageId('2');
+        await mockedSDK.frame.getFramesByPageId(frameId);
         expect(mockedSDK.editorAPI.getFramesByPageId).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getFramesByPageId).toHaveBeenCalledWith('2');
+        expect(mockedSDK.editorAPI.getFramesByPageId).toHaveBeenCalledWith(frameId);
 
         await mockedSDK.frame.getFrameByName('frame');
         expect(mockedSDK.editorAPI.getFrameByName).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.getFrameByName).toHaveBeenCalledWith('frame');
 
-        await mockedSDK.frame.getFrameById('5');
+        await mockedSDK.frame.getFrameById(frameId);
         expect(mockedSDK.editorAPI.getFrameById).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getFrameById).toHaveBeenCalledWith('5');
+        expect(mockedSDK.editorAPI.getFrameById).toHaveBeenCalledWith(frameId);
 
         await mockedSDK.frame.getFramePropertiesOnSelectedLayout();
         expect(mockedSDK.editorAPI.getFramePropertiesOnSelectedLayout).toHaveBeenCalledTimes(1);
@@ -111,9 +111,9 @@ describe('FrameProperties', () => {
         expect(mockedSDK.editorAPI.getFramePropertiesByFrameId).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.getFramePropertiesByFrameId).toHaveBeenCalledWith('1', '2');
 
-        await mockedSDK.frame.getFramesProperties('1');
+        await mockedSDK.frame.getFramesProperties(frameId);
         expect(mockedSDK.editorAPI.getFramesProperties).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getFramesProperties).toHaveBeenCalledWith('1');
+        expect(mockedSDK.editorAPI.getFramesProperties).toHaveBeenCalledWith(frameId);
 
         await mockedSDK.frame.setFrameHeight(frameId, '300');
         expect(mockedSDK.editorAPI.setFrameHeight).toHaveBeenCalledTimes(1);
@@ -133,45 +133,45 @@ describe('FrameProperties', () => {
         await mockedSDK.frame.setFrameHeight(frameId, '32');
         expect(mockedSDK.editorAPI.setFrameHeight).toHaveBeenCalledTimes(2);
 
-        await mockedSDK.frame.setFrameName('1', 'TEST');
+        await mockedSDK.frame.setFrameName(frameId, 'TEST');
         expect(mockedSDK.editorAPI.renameFrame).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.setFrameVisibility('2', false);
+        await mockedSDK.frame.setFrameVisibility(frameId, false);
         expect(mockedSDK.editorAPI.setFrameVisibility).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.removeFrame('1');
+        await mockedSDK.frame.removeFrame(frameId);
         expect(mockedSDK.editorAPI.removeFrame).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrame('2');
+        await mockedSDK.frame.resetFrame(frameId);
         expect(mockedSDK.editorAPI.resetFrame).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrameX('2');
+        await mockedSDK.frame.resetFrameX(frameId);
         expect(mockedSDK.editorAPI.resetFrameX).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrameY('2');
+        await mockedSDK.frame.resetFrameY(frameId);
         expect(mockedSDK.editorAPI.resetFrameY).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrameRotation('2');
+        await mockedSDK.frame.resetFrameRotation(frameId);
         expect(mockedSDK.editorAPI.resetFrameRotation).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrameHeight('2');
+        await mockedSDK.frame.resetFrameHeight(frameId);
         expect(mockedSDK.editorAPI.resetFrameHeight).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrameWidth('2');
+        await mockedSDK.frame.resetFrameWidth(frameId);
         expect(mockedSDK.editorAPI.resetFrameWidth).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetFrameSize('2');
+        await mockedSDK.frame.resetFrameSize(frameId);
         expect(mockedSDK.editorAPI.resetFrameSize).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.resetImageFrameFitMode('2');
+        await mockedSDK.frame.resetImageFrameFitMode(frameId);
         expect(mockedSDK.editorAPI.resetImageFrameFitMode).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.selectFrame('2');
+        await mockedSDK.frame.selectFrame(frameId);
         expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.frame.selectMultipleFrames(['5']);
+        await mockedSDK.frame.selectMultipleFrames([frameId]);
         expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledWith(['5']);
+        expect(mockedSDK.editorAPI.selectFrames).toHaveBeenCalledWith([frameId]);
 
         await mockedSDK.frame.setImageFrameFitMode(frameId, FitMode.fit);
         expect(mockedSDK.editorAPI.setImageFrameFitMode).toHaveBeenCalledTimes(1);
