@@ -28,4 +28,11 @@ export class TextStyleController {
             .selectedTextStyleDeltaUpdate(JSON.stringify(style))
             .then((result) => getEditorResponseData<null>(result));
     };
+
+    cleanTextStyleProperties = async () => {
+        const res = await this.#editorAPI;
+        return res
+            .selectedTextStyleClean()
+            .then((result) => getEditorResponseData<null>(result));
+    }
 }

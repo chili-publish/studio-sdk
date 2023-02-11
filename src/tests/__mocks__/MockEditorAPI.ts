@@ -85,6 +85,7 @@ export const mockDisableDebug = jest.fn().mockResolvedValue({ success: true, sta
 export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDeltaUpdate = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockCleanStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetColors = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetColorById = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockCreateColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -268,6 +269,7 @@ const MockEditorAPI = {
     undo: mockUndo,
     redo: mockRedo,
     selectedTextStyleDeltaUpdate: mockDeltaUpdate,
+    selectedTextStyleClean: mockCleanStyle,
     getColors: mockGetColors,
     getColorById: mockGetColorById,
     createColor: mockCreateColor,
