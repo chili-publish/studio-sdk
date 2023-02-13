@@ -7,7 +7,7 @@ describe('TextProperties', () => {
     beforeEach(() => {
         mockedTextProperties = new TextStyleController(MockEditorAPI);
         jest.spyOn(mockedTextProperties, 'setTextStyleProperties');
-        jest.spyOn(mockedTextProperties, 'cleanTextStyleProperties');
+        jest.spyOn(mockedTextProperties, 'clearTextStyleProperties');
     });
 
     afterAll(() => {
@@ -20,7 +20,7 @@ describe('TextProperties', () => {
     });
 
     it('Should call cleanTextStyleProperties of EditorAPI successfully', () => {
-        mockedTextProperties.cleanTextStyleProperties();
-        expect(mockedTextProperties.cleanTextStyleProperties).toHaveBeenCalledTimes(1);
+        mockedTextProperties.clearTextStyleProperties();
+        expect(mockedTextProperties.clearTextStyleProperties).toHaveBeenCalledTimes(1);
     });
 });

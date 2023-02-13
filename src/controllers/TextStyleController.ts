@@ -29,7 +29,11 @@ export class TextStyleController {
             .then((result) => getEditorResponseData<null>(result));
     };
 
-    cleanTextStyleProperties = async () => {
+    /**
+     * This method clears a selected Text's style properties
+     * @returns
+     */
+    clearTextStyleProperties = async () => {
         const res = await this.#editorAPI;
         return res
             .selectedTextStyleClean()
