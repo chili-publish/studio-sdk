@@ -1,7 +1,7 @@
 import { TextStyleController } from '../../controllers/TextStyleController';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
-import mockConfig from "../__mocks__/config";
-import SDK from "../../index";
+import mockConfig from '../__mocks__/config';
+import {SDK} from '../../index';
 
 
 describe('TextProperties', () => {
