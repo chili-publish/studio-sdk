@@ -31,6 +31,9 @@ export class TextStyleController {
 
     /**
      * This method clears a selected Text's style properties
+     * If the text is selected, then the inline style properties will be cleared
+     * If the text is not selected and user tried to change any style property, the temporary style will be cleared
+     * if there is no text selection and there is no temporary style, the inline paragraph properties will be cleared
      * @returns
      */
     clearTextStyleProperties = async () => {
