@@ -42,6 +42,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     iframeDoc.close();
 };
 interface ConfigParameterTypes {
+    onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
     onSelectedFrameContentChanged: (state: string) => void;
     onSelectedFrameLayoutChanged: (state: string) => void;
@@ -100,6 +101,7 @@ const Connect = (
             // All the methods that we want to expose to the child should be inside the methods object
             // f.e. stateChange(documentJson)
             methods: {
+                actionsChanged: params.onActionsChanged,
                 stateChanged: params.onStateChanged,
                 selectedFrameContent: params.onSelectedFrameContentChanged,
                 selectedFrameLayout: params.onSelectedFrameLayoutChanged,

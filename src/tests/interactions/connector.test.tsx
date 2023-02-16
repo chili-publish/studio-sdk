@@ -11,6 +11,7 @@ describe.skip('Editor Link Validator', () => {
         ConnectorFunctions.default(
             'https://chili-editor-dev.azurewebsites.net/',
             {
+                onActionsChanged: () => null,
                 onStateChanged: () => null,
                 onSelectedFrameLayoutChanged: () => null,
                 onSelectedFrameContentChanged: () => null,
@@ -49,6 +50,7 @@ describe.skip('Editor Link Validator', () => {
         ConnectorFunctions.default(
             'https://chili-editor-dev.azurewebsites.net/index.html',
             {
+                onActionsChanged: () => null,
                 onStateChanged: () => null,
                 onSelectedFrameLayoutChanged: () => null,
                 onSelectedFrameContentChanged: () => null,
@@ -86,6 +88,7 @@ describe.skip('Editor Link Validator', () => {
         ConnectorFunctions.default(
             'https://chili-editor-dev.azurewebsites.net',
             {
+                onActionsChanged: () => null,
                 onStateChanged: () => null,
                 onSelectedFrameLayoutChanged: () => null,
                 onSelectedFrameContentChanged: () => null,

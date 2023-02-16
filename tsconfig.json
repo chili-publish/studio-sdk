@@ -24,6 +24,7 @@
         "entryPoints": [
             // Alphabetically!!
             "src/index.ts",
+            "src/controllers/ActionController.ts",
             "src/controllers/AnimationController.ts",
             "src/controllers/CanvasController.ts",
             "src/controllers/CharacterStyleController.ts",
