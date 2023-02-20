@@ -1,19 +1,29 @@
 import { TextStyleController } from '../../controllers/TextStyleController';
 import MockEditorAPI from '../__mocks__/MockEditorAPI';
+import mockConfig from '../__mocks__/config';
+import {SDK} from '../../index';
 
-let mockedTextProperties: TextStyleController;
 
-beforeEach(() => {
-    mockedTextProperties = new TextStyleController(MockEditorAPI);
-    jest.spyOn(mockedTextProperties, 'setTextStyleProperties');
-});
-
-afterAll(() => {
-    jest.restoreAllMocks();
-});
 describe('TextProperties', () => {
-    it('Should call all of the TextStyle Functions of EditorAPI successfully', () => {
-        mockedTextProperties.setTextStyleProperties({ FONT_SIZE: { value: 34 } });
-        expect(mockedTextProperties.setTextStyleProperties).toHaveBeenCalledTimes(1);
+    let mockedSDK: SDK;
+
+    beforeEach(() => {
+        mockedSDK = new SDK(mockConfig);
+        mockedSDK.editorAPI = MockEditorAPI;
+        mockedSDK.textSelection = new TextStyleController(MockEditorAPI);
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
+
+    it('Should call selectedTextStyleDeltaUpdate of EditorAPI successfully', async () => {
+        await mockedSDK.textSelection.setTextStyleProperties({ FONT_SIZE: { value: 34 } });
+        expect(mockedSDK.editorAPI.selectedTextStyleDeltaUpdate).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call selectedTextStyleClean of EditorAPI successfully', async () => {
+        await mockedSDK.textSelection.clearTextStyleProperties();
+        expect(mockedSDK.editorAPI.selectedTextStyleClean).toHaveBeenCalledTimes(1);
     });
 });
