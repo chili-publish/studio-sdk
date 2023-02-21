@@ -4,6 +4,7 @@ import { DocumentType } from '../../../types/DocumentTypes';
 export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 const mockConfig: ConfigType = {
+    onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
     onSelectedFrameLayoutChanged: defaultMockReturn,
     onSelectedFrameContentChanged: defaultMockReturn,

@@ -19,6 +19,15 @@ export class SubscriberController {
     }
 
     /**
+     * Listener on actions, if this changes, this listener will get triggered with the updates
+     * @param actions Stringified array of DocumentAction type
+     */
+    onActionsChanged = (actions: string) => {
+        const callBack = this.config.onActionsChanged;
+        callBack && callBack(JSON.parse(actions));
+    };
+
+    /**
      * Listener on when a certain animation gets changed
      * @param animation Stringified array of FrameAnimationType
      */

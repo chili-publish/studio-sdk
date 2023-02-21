@@ -6,6 +6,7 @@ import { LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
+import { DocumentAction } from './ActionTypes';
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
@@ -28,6 +29,7 @@ export interface ChiliDocument {
     layouts: (ChildLayout | TopLayout)[];
     styleKit: DocumentStyleKit;
     variables: Variable[];
+    actions: DocumentAction[];
 }
 
 export interface DocumentPage {

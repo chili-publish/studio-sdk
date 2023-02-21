@@ -1,4 +1,4 @@
-import { LayoutType, SDK } from '../../index';
+import { ActionEditorEvent, DocumentAction, LayoutType, SDK } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import mockConfig from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
@@ -38,6 +38,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onLayoutsChanged');
     jest.spyOn(mockedSubscribers, 'onConnectorEvent');
     jest.spyOn(mockedSubscribers, 'onZoomChanged');
+    jest.spyOn(mockedSubscribers, 'onActionsChanged');
 });
 
 afterEach(() => {
@@ -111,6 +112,18 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onZoomChanged(JSON.stringify(150));
         expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledTimes(17);
         expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledWith(150);
+
+        const actions: DocumentAction[] = [
+            {
+                actionName: 'name',
+                id: 'id',
+                script: 'script',
+                triggers: [{ triggers: ['1'], event: ActionEditorEvent.frameMoved }],
+            },
+        ];
+        mockedSubscribers.onActionsChanged(JSON.stringify(actions));
+        expect(mockedSDK.config.onActionsChanged).toHaveBeenCalledTimes(18);
+        expect(mockedSDK.config.onActionsChanged).toHaveBeenCalledWith(actions);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

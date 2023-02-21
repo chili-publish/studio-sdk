@@ -85,6 +85,7 @@ export const mockDisableDebug = jest.fn().mockResolvedValue({ success: true, sta
 export const mockUndo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRedo = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockDeltaUpdate = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockCleanStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetColors = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetColorById = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockCreateColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -108,6 +109,11 @@ export const mockUpdateCharacterStyle = jest.fn().mockResolvedValue({ success: t
 export const mockDuplicateCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRenameCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockRemoveCharacterStyle = jest.fn().mockResolvedValue({ success: true, status: 0 });
+
+export const mockCreateAction = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockRemoveAction = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateActionTriggers = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockUpdateActionScript = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 export const mockGetFonts = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetFontById = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -269,6 +275,7 @@ const MockEditorAPI = {
     undo: mockUndo,
     redo: mockRedo,
     selectedTextStyleDeltaUpdate: mockDeltaUpdate,
+    selectedTextStyleClean: mockCleanStyle,
     getColors: mockGetColors,
     getColorById: mockGetColorById,
     createColor: mockCreateColor,
@@ -292,6 +299,10 @@ const MockEditorAPI = {
     removeCharacterStyle: mockRemoveCharacterStyle,
     renameCharacterStyle: mockRenameCharacterStyle,
     duplicateCharacterStyle: mockDuplicateCharacterStyle,
+    createAction: mockCreateAction,
+    removeAction: mockRemoveAction,
+    updateActionTriggers: mockUpdateActionTriggers,
+    updateActionScript: mockUpdateActionScript,
     getFonts: mockGetFonts,
     getFontById: mockGetFontById,
     getDefaultFont: mockGetDefaultFont,
