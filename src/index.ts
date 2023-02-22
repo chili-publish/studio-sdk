@@ -64,6 +64,7 @@ export type {
     Frame,
     TextFrame,
     ImageFrame,
+    ShapeFrame,
     ImageFrameSource,
     ShapeType,
     ImageFrameVariableSource,

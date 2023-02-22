@@ -23,11 +23,13 @@ export type FrameType = {
     frameId: Id;
     frameName: string;
     frameType: FrameTypeEnum;
+    // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
+    isConstrained: boolean;
 };
 
-export type Frame = TextFrame | ImageFrame;
+export type Frame = TextFrame | ImageFrame | ShapeFrame;
 
 export type ImageFrameVariableSource = {
     sourceType: ImageSourceTypeEnum.variable;
@@ -54,7 +56,18 @@ export type ImageFrame = {
     frameType: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
+    isConstrained: boolean;
 };
+
+export type ShapeFrame = {
+    frameId: Id;
+    frameName: string;
+    shapeType: ShapeType;
+    frameType: FrameTypeEnum.shape;
+    blendMode: BlendMode;
+    isConstrained: boolean;
+};
+
 export type TextFrame = {
     frameId: Id;
     frameName: string;
@@ -74,6 +87,7 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
+    isConstrained: boolean;
 };
 
 export enum ImageSourceTypeEnum {
