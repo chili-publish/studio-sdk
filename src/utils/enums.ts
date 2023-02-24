@@ -19,6 +19,9 @@ export enum ToolType {
     HAND = 'hand',
     IMAGE_FRAME = 'imageFrame',
     TEXT_FRAME = 'textFrame',
+    SHAPE_RECT = 'rect',
+    SHAPE_ELLIPSE = 'ellipse',
+    SHAPE_POLYGON = 'polygon',
 }
 export enum DownloadFormats {
     MP4 = 'mp4',

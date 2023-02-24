@@ -48,4 +48,22 @@ describe('Tool controller', () => {
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(5);
         expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.IMAGE_FRAME);
     });
+
+    it('sets the shape rect tool', async () => {
+        await mockedSDK.tool.setShapeRectTool();
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(6);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SHAPE_RECT);
+    });
+
+    it('sets the shape ellipse tool', async () => {
+        await mockedSDK.tool.setShapeEllipseTool();
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(7);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SHAPE_ELLIPSE);
+    });
+
+    it('sets the shape polygon tool', async () => {
+        await mockedSDK.tool.setShapePolygonTool();
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(8);
+        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SHAPE_POLYGON);
+    });
 });

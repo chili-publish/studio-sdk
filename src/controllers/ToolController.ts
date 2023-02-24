@@ -70,4 +70,25 @@ export class ToolController {
     setImageFrameTool = async () => {
         return this.setTool(ToolType.IMAGE_FRAME);
     };
+
+    /**
+     * This method sets the used tool to a ShapeRectangle tool
+     */
+    setShapeRectTool = async () => {
+        return this.setTool(ToolType.SHAPE_RECT);
+    };
+
+    /**
+     * This method sets the used tool to a ShapeEllipse tool
+     */
+    setShapeEllipseTool = async () => {
+        return this.setTool(ToolType.SHAPE_ELLIPSE);
+    };
+
+    /**
+     * This method sets the used tool to a ShapePolygon tool
+     */
+    setShapePolygonTool = async () => {
+        return this.setTool(ToolType.SHAPE_POLYGON);
+    };
 }
