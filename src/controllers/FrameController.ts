@@ -453,9 +453,9 @@ export class FrameController {
      * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
-    setFrameConstraint = async (frameId: Id, constrainProportions: boolean) => {
+    setFrameConstrainProportions = async (frameId: Id, constrainProportions: boolean) => {
         const res = await this.#editorAPI;
-        return res.setFrameConstraint(frameId, constrainProportions).then((result) => getEditorResponseData<null>(result));
+        return res.setFrameConstrainProportions(frameId, constrainProportions).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

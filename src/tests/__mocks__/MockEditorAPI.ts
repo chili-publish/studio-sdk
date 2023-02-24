@@ -332,7 +332,7 @@ const MockEditorAPI = {
     getConfigValue: mockGetConfigValue,
     setConfigValue: mockSetConfigValue,
     setImageFrameFitMode: mockSetImageFrameFitMode,
-    setFrameConstraint: mockSetFrameConstraint,
+    setFrameConstrainProportions: mockSetFrameConstraint,
     resetImageFrameFitMode: mockResetImageFrameFitMode,
     registerConnector: mockRegisterConnector,
     updateConnectorConfiguration: mockUpdateConnectorConfiguration,
