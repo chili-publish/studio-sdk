@@ -448,14 +448,14 @@ export class FrameController {
     };
 
     /**
-     * This method will set the isConstrained property of a specified frame.
+     * This method will set the constrainProportions property of a specified frame.
      * @param frameId The ID of the frame that needs to get updated.
-     * @param isConstrained The new constraint that you want to set to the frame.
+     * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
-    setFrameConstraint = async (frameId: Id, isConstrained: boolean) => {
+    setFrameConstraint = async (frameId: Id, constrainProportions: boolean) => {
         const res = await this.#editorAPI;
-        return res.setFrameConstraint(frameId, isConstrained).then((result) => getEditorResponseData<null>(result));
+        return res.setFrameConstraint(frameId, constrainProportions).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
