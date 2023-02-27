@@ -47,7 +47,7 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.frame, 'selectMultipleFrames');
     jest.spyOn(mockedSDK.frame, 'setFrameName');
     jest.spyOn(mockedSDK.frame, 'setImageFrameFitMode');
-    jest.spyOn(mockedSDK.frame, 'setFrameConstraint');
+    jest.spyOn(mockedSDK.frame, 'setFrameConstrainProportions');
     jest.spyOn(mockedSDK.frame, 'setVerticalAlignment');
     jest.spyOn(mockedSDK.frame, 'setMinCopyfitting');
     jest.spyOn(mockedSDK.frame, 'setMaxCopyfitting');
@@ -195,9 +195,9 @@ describe('FrameProperties', () => {
         expect(mockedSDK.editorAPI.setImageFrameFitMode).toHaveBeenCalledTimes(1);
         expect(mockedSDK.editorAPI.setImageFrameFitMode).toHaveBeenCalledWith(frameId, FitMode.fit);
 
-        await mockedSDK.frame.setFrameConstraint(frameId, true);
-        expect(mockedSDK.editorAPI.setFrameConstraint).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setFrameConstraint).toHaveBeenCalledWith(frameId, true);
+        await mockedSDK.frame.setFrameConstrainProportions(frameId, true);
+        expect(mockedSDK.editorAPI.setFrameConstrainProportions).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setFrameConstrainProportions).toHaveBeenCalledWith(frameId, true);
 
         await mockedSDK.frame.setVerticalAlignment(frameId, VerticalAlign.justify);
         expect(mockedSDK.editorAPI.setVerticalAlignment).toHaveBeenCalledTimes(1);

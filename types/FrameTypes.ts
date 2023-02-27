@@ -26,7 +26,7 @@ export type FrameType = {
     // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
-    isConstrained: boolean;
+    constrainProportions: boolean;
 };
 
 export type Frame = TextFrame | ImageFrame | ShapeFrame;
@@ -56,7 +56,7 @@ export type ImageFrame = {
     frameType: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
-    isConstrained: boolean;
+    constrainProportions: boolean;
 };
 
 export type ShapeFrame = {
@@ -65,7 +65,7 @@ export type ShapeFrame = {
     shapeType: ShapeType;
     frameType: FrameTypeEnum.shape;
     blendMode: BlendMode;
-    isConstrained: boolean;
+    constrainProportions: boolean;
 };
 
 export type TextFrame = {
@@ -87,7 +87,7 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
-    isConstrained: boolean;
+    constrainProportions: boolean;
 };
 
 export enum ImageSourceTypeEnum {
