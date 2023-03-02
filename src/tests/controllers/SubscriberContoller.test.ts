@@ -8,6 +8,7 @@ import { VariableType } from '../../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
 import { ConnectorStateType } from '../../../types/ConnectorTypes';
+import { PageSize } from '../../../types/PageTypes';
 
 let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
@@ -39,6 +40,7 @@ beforeEach(() => {
     jest.spyOn(mockedSubscribers, 'onConnectorEvent');
     jest.spyOn(mockedSubscribers, 'onZoomChanged');
     jest.spyOn(mockedSubscribers, 'onActionsChanged');
+    jest.spyOn(mockedSubscribers, 'onPageSizeChanged');
 });
 
 afterEach(() => {
@@ -124,6 +126,11 @@ describe('Subscriber methods', () => {
         mockedSubscribers.onActionsChanged(JSON.stringify(actions));
         expect(mockedSDK.config.onActionsChanged).toHaveBeenCalledTimes(18);
         expect(mockedSDK.config.onActionsChanged).toHaveBeenCalledWith(actions);
+
+        const pageSize: PageSize = { pageId: 'pageId', width: 123, height: 456 };
+
+        mockedSubscribers.onPageSizeChanged(JSON.stringify(pageSize));
+        expect(mockedSDK.config.onPageSizeChanged).toHaveBeenCalledWith(pageSize);
     });
 
     it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {

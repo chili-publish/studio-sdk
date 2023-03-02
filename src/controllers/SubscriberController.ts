@@ -214,4 +214,14 @@ export class SubscriberController {
         const callBack = this.config.onConnectorEvent;
         callBack && callBack(JSON.parse(connectorEvent));
     };
+
+    /**
+     * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
+     * This will not emit anything if your document is a `template`.
+     * @param pageSize Stringified object of the PageSize
+     */
+    onPageSizeChanged = (pageSize: string) => {
+        const callBack = this.config.onPageSizeChanged;
+        callBack && callBack(JSON.parse(pageSize));
+    };
 }
