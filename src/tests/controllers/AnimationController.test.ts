@@ -1,70 +1,79 @@
-import { SDK } from '../../index';
-import mockConfig from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 import { FrameAnimationType } from '../../../types/AnimationTypes';
-import { FrameController } from '../../controllers/FrameController';
 import { AnimationController } from '../../controllers/AnimationController';
-import mockChild from '../__mocks__/MockEditorAPI';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
 
+let mockedAnimationController: AnimationController;
+
+const mockEditorApi: EditorAPI = {
+    getAnimationsOnSelectedLayout: async () => getEditorResponseData(castToEditorResponse(null)),
+    getAnimationByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
+    getAnimationsByLayoutId: async () => getEditorResponseData(castToEditorResponse(null)),
+    playAnimation: async () => getEditorResponseData(castToEditorResponse(null)),
+    pauseAnimation: async () => getEditorResponseData(castToEditorResponse(null)),
+    setScrubberPosition: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameAnimation: async () => getEditorResponseData(castToEditorResponse(null)),
+    setAnimationDuration: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetFrameAnimation: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAnimation: async () => getEditorResponseData(castToEditorResponse(null)),
+};
+
 beforeEach(() => {
-    mockedSDK = new SDK(mockConfig);
     mockedAnimation = mockFrameAnimation;
-    mockedSDK.editorAPI = mockChild;
-    mockedSDK.frame = new FrameController(mockChild);
-    mockedSDK.animation = new AnimationController(mockChild);
-    jest.spyOn(mockedSDK.animation, 'getAnimationsOnSelectedLayout');
-    jest.spyOn(mockedSDK.animation, 'getAnimationByFrameId');
-    jest.spyOn(mockedSDK.animation, 'getAnimationsByLayoutId');
-    jest.spyOn(mockedSDK.animation, 'playAnimation');
-    jest.spyOn(mockedSDK.animation, 'pauseAnimation');
-    jest.spyOn(mockedSDK.animation, 'setFrameAnimation');
-    jest.spyOn(mockedSDK.animation, 'setScrubberPosition');
-    jest.spyOn(mockedSDK.animation, 'setAnimationDuration');
-    jest.spyOn(mockedSDK.animation, 'resetFrameAnimation');
-    jest.spyOn(mockedSDK.animation, 'resetAnimation');
+    mockedAnimationController = new AnimationController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'getAnimationsOnSelectedLayout');
+    jest.spyOn(mockEditorApi, 'getAnimationByFrameId');
+    jest.spyOn(mockEditorApi, 'getAnimationsByLayoutId');
+    jest.spyOn(mockEditorApi, 'playAnimation');
+    jest.spyOn(mockEditorApi, 'pauseAnimation');
+    jest.spyOn(mockEditorApi, 'setFrameAnimation');
+    jest.spyOn(mockEditorApi, 'setScrubberPosition');
+    jest.spyOn(mockEditorApi, 'setAnimationDuration');
+    jest.spyOn(mockEditorApi, 'resetFrameAnimation');
+    jest.spyOn(mockEditorApi, 'resetAnimation');
 });
 
 afterEach(() => {
     jest.restoreAllMocks();
 });
-describe('Animation methods', () => {
+describe('AnimationController', () => {
     it('Should call all of the animation functions of child successfully', async () => {
-        await mockedSDK.animation.getAnimationsOnSelectedLayout();
-        expect(mockedSDK.editorAPI.getAnimationsOnSelectedLayout).toHaveBeenCalledTimes(1);
+        await mockedAnimationController.getAnimationsOnSelectedLayout();
+        expect(mockEditorApi.getAnimationsOnSelectedLayout).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.getAnimationByFrameId('4', '8');
-        expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getAnimationByFrameId).toHaveBeenCalledWith('4', '8');
+        await mockedAnimationController.getAnimationByFrameId('4', '8');
+        expect(mockEditorApi.getAnimationByFrameId).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getAnimationByFrameId).toHaveBeenCalledWith('4', '8');
 
-        await mockedSDK.animation.getAnimationsByLayoutId('4');
-        expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getAnimationsByLayoutId).toHaveBeenCalledWith('4');
+        await mockedAnimationController.getAnimationsByLayoutId('4');
+        expect(mockEditorApi.getAnimationsByLayoutId).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getAnimationsByLayoutId).toHaveBeenCalledWith('4');
 
-        await mockedSDK.animation.setFrameAnimation(mockedAnimation.animation);
-        expect(mockedSDK.editorAPI.setFrameAnimation).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setFrameAnimation).toHaveBeenCalledWith(JSON.stringify(mockedAnimation.animation));
+        await mockedAnimationController.setFrameAnimation(mockedAnimation.animation);
+        expect(mockEditorApi.setFrameAnimation).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setFrameAnimation).toHaveBeenCalledWith(JSON.stringify(mockedAnimation.animation));
 
-        await mockedSDK.animation.playAnimation();
-        expect(mockedSDK.editorAPI.playAnimation).toHaveBeenCalledTimes(1);
+        await mockedAnimationController.playAnimation();
+        expect(mockEditorApi.playAnimation).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.pauseAnimation();
-        expect(mockedSDK.editorAPI.pauseAnimation).toHaveBeenCalledTimes(1);
+        await mockedAnimationController.pauseAnimation();
+        expect(mockEditorApi.pauseAnimation).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.setScrubberPosition(5000);
-        expect(mockedSDK.animation.setScrubberPosition).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setScrubberPosition).toHaveBeenLastCalledWith(5000);
+        await mockedAnimationController.setScrubberPosition(5000);
+        expect(mockEditorApi.setScrubberPosition).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setScrubberPosition).toHaveBeenLastCalledWith(5000);
 
-        await mockedSDK.animation.setAnimationDuration(8000);
-        expect(mockedSDK.animation.setAnimationDuration).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setAnimationDuration).toHaveBeenLastCalledWith(8000);
+        await mockedAnimationController.setAnimationDuration(8000);
+        expect(mockEditorApi.setAnimationDuration).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setAnimationDuration).toHaveBeenLastCalledWith(8000);
 
-        await mockedSDK.animation.resetFrameAnimation(mockFrameAnimation.animation.frameId);
-        expect(mockedSDK.editorAPI.resetFrameAnimation).toHaveBeenCalledTimes(1);
+        await mockedAnimationController.resetFrameAnimation(mockFrameAnimation.animation.frameId);
+        expect(mockEditorApi.resetFrameAnimation).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.animation.resetAnimation();
-        expect(mockedSDK.editorAPI.resetAnimation).toHaveBeenCalledTimes(1);
+        await mockedAnimationController.resetAnimation();
+        expect(mockEditorApi.resetAnimation).toHaveBeenCalledTimes(1);
     });
 });

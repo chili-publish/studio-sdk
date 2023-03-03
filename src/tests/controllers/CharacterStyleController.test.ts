@@ -1,20 +1,31 @@
-import MockEditorAPI from '../__mocks__/MockEditorAPI';
 import { CharacterStyleController } from '../../controllers/CharacterStyleController';
 import { Case, Scripting } from '../../../types/TextStyleTypes';
 import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
 import { CharacterStyleUpdate } from '../../../types/CharacterStyleTypes';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedCharacterStyleController: CharacterStyleController;
 
+const mockEditorApi: EditorAPI = {
+    getCharacterStyles: async () => getEditorResponseData(castToEditorResponse(null)),
+    getCharacterStyleById: async () => getEditorResponseData(castToEditorResponse(null)),
+    createCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    duplicateCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    renameCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    removeCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+};
+
 beforeEach(() => {
-    mockedCharacterStyleController = new CharacterStyleController(MockEditorAPI);
-    jest.spyOn(mockedCharacterStyleController, 'getCharacterStyles');
-    jest.spyOn(mockedCharacterStyleController, 'getCharacterStyleById');
-    jest.spyOn(mockedCharacterStyleController, 'createCharacterStyle');
-    jest.spyOn(mockedCharacterStyleController, 'updateCharacterStyle');
-    jest.spyOn(mockedCharacterStyleController, 'duplicateCharacterStyle');
-    jest.spyOn(mockedCharacterStyleController, 'renameCharacterStyle');
-    jest.spyOn(mockedCharacterStyleController, 'removeCharacterStyle');
+    mockedCharacterStyleController = new CharacterStyleController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'getCharacterStyles');
+    jest.spyOn(mockEditorApi, 'getCharacterStyleById');
+    jest.spyOn(mockEditorApi, 'createCharacterStyle');
+    jest.spyOn(mockEditorApi, 'updateCharacterStyle');
+    jest.spyOn(mockEditorApi, 'duplicateCharacterStyle');
+    jest.spyOn(mockEditorApi, 'renameCharacterStyle');
+    jest.spyOn(mockEditorApi, 'removeCharacterStyle');
 });
 
 afterAll(() => {
@@ -76,31 +87,31 @@ const updateCharacterStyle: CharacterStyleUpdate = {
     },
 };
 
-describe('Character Style', () => {
-    it('Should call all of the CharacteStyle Functions of EditorAPI successfully', () => {
-        mockedCharacterStyleController.getCharacterStyles();
-        expect(mockedCharacterStyleController.getCharacterStyles).toHaveBeenCalledTimes(1);
+describe('CharacterStyleController', () => {
+    it('Should call all of the CharacteStyle Functions of EditorAPI successfully', async () => {
+        await mockedCharacterStyleController.getCharacterStyles();
+        expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
 
-        mockedCharacterStyleController.getCharacterStyleById('5');
-        expect(mockedCharacterStyleController.getCharacterStyleById).toHaveBeenCalledTimes(1);
-        expect(mockedCharacterStyleController.getCharacterStyleById).toHaveBeenCalledWith('5');
+        await mockedCharacterStyleController.getCharacterStyleById('5');
+        expect(mockEditorApi.getCharacterStyleById).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getCharacterStyleById).toHaveBeenCalledWith('5');
 
-        mockedCharacterStyleController.createCharacterStyle();
-        expect(mockedCharacterStyleController.createCharacterStyle).toHaveBeenCalledTimes(1);
+        await mockedCharacterStyleController.createCharacterStyle();
+        expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
 
-        mockedCharacterStyleController.updateCharacterStyle('5', updateCharacterStyle);
-        expect(mockedCharacterStyleController.updateCharacterStyle).toHaveBeenCalledTimes(1);
+        await mockedCharacterStyleController.updateCharacterStyle('5', updateCharacterStyle);
+        expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledTimes(1);
 
-        mockedCharacterStyleController.removeCharacterStyle('5');
-        expect(mockedCharacterStyleController.removeCharacterStyle).toHaveBeenCalledTimes(1);
-        expect(mockedCharacterStyleController.removeCharacterStyle).toHaveBeenCalledWith('5');
+        await mockedCharacterStyleController.removeCharacterStyle('5');
+        expect(mockEditorApi.removeCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.removeCharacterStyle).toHaveBeenCalledWith('5');
 
-        mockedCharacterStyleController.duplicateCharacterStyle('6');
-        expect(mockedCharacterStyleController.duplicateCharacterStyle).toHaveBeenCalledTimes(1);
-        expect(mockedCharacterStyleController.duplicateCharacterStyle).toHaveBeenCalledWith('6');
+        await mockedCharacterStyleController.duplicateCharacterStyle('6');
+        expect(mockEditorApi.duplicateCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.duplicateCharacterStyle).toHaveBeenCalledWith('6');
 
-        mockedCharacterStyleController.renameCharacterStyle('5', 'name');
-        expect(mockedCharacterStyleController.renameCharacterStyle).toHaveBeenCalledTimes(1);
-        expect(mockedCharacterStyleController.renameCharacterStyle).toHaveBeenCalledWith('5', 'name');
+        await mockedCharacterStyleController.renameCharacterStyle('5', 'name');
+        expect(mockEditorApi.renameCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.renameCharacterStyle).toHaveBeenCalledWith('5', 'name');
     });
 });

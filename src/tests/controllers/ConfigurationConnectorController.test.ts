@@ -1,32 +1,34 @@
-import { SDK } from '../../index';
-import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/MockEditorAPI';
 import { ConfigurationController } from '../../controllers/ConfigurationController';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-let mockedSDK: SDK;
+let mockedConfigurationController: ConfigurationController;
+
+const mockEditorApi: EditorAPI = {
+    setConfigValue: async () => getEditorResponseData(castToEditorResponse(null)),
+    getConfigValue: async () => getEditorResponseData(castToEditorResponse(null)),
+};
 
 beforeEach(() => {
-    mockedSDK = new SDK(mockConfig);
-    mockedSDK.editorAPI = mockChild;
-    mockedSDK.configuration = new ConfigurationController(mockChild);
-    jest.spyOn(mockedSDK.configuration, 'setValue');
-    jest.spyOn(mockedSDK.configuration, 'getValue');
+    mockedConfigurationController = new ConfigurationController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'setConfigValue');
+    jest.spyOn(mockEditorApi, 'getConfigValue');
 });
 
 afterEach(() => {
     jest.restoreAllMocks();
 });
-describe('ConfigurationConnector methods', () => {
+describe('ConfigurationController', () => {
     it('Should call all of the configuration functions of child successfully', async () => {
         const configKey = 'dam';
         const configValue = 'm123';
 
-        await mockedSDK.configuration.setValue(configKey, configValue);
-        expect(mockedSDK.editorAPI.setConfigValue).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setConfigValue).toHaveBeenCalledWith(configKey, configValue);
+        await mockedConfigurationController.setValue(configKey, configValue);
+        expect(mockEditorApi.setConfigValue).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConfigValue).toHaveBeenCalledWith(configKey, configValue);
 
-        await mockedSDK.configuration.getValue(configKey);
-        expect(mockedSDK.editorAPI.getConfigValue).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.getConfigValue).toHaveBeenCalledWith(configKey);
+        await mockedConfigurationController.getValue(configKey);
+        expect(mockEditorApi.getConfigValue).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getConfigValue).toHaveBeenCalledWith(configKey);
     });
 });
