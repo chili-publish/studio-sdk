@@ -1,7 +1,7 @@
 import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsOutroType } from './AnimationTypes';
-import { DocumentColor } from './ColorStyleTypes';
+import { ColorUsage, DocumentColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
-import { BlendMode, FrameTypeEnum } from './FrameTypes';
+import { BlendMode, FrameTypeEnum, ShapeType } from './FrameTypes';
 import { LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
@@ -35,7 +35,7 @@ export interface ChiliDocument {
 export interface DocumentPage {
     pageId: string;
     pageNumber: number;
-    frames: (ImageFrame | TextFrame)[];
+    frames: (ImageFrame | TextFrame | ShapeFrame)[];
 }
 
 export interface DocumentFrame {
@@ -43,10 +43,24 @@ export interface DocumentFrame {
     frameName: string;
     frameType: FrameTypeEnum;
     blendMode: BlendMode;
+    constrainProportions: boolean;
 }
 
 export interface ImageFrame extends DocumentFrame {
     src: VariableImageFrameSource | AssetProviderImageFrameSource | UrlImageFrameSource;
+}
+
+export interface ShapeFrame extends DocumentFrame {
+    shapeType: ShapeType;
+    shapeContent: ShapeContent;
+}
+
+export interface ShapeContent {
+    enableFill: boolean;
+    fillColor: ColorUsage;
+    enableStroke: boolean;
+    strokeColor: ColorUsage;
+    strokeWeight: number;
 }
 
 export interface TextFrame extends DocumentFrame {

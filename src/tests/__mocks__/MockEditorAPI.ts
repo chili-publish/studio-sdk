@@ -165,16 +165,12 @@ export const mockSetConnectorMappings = jest.fn().mockResolvedValue({ success: t
 export const mockSetConnectorOptions = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
 export const mockSetShapeFrameType = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetShapeFrameContent = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetShapeFrameEnableFill = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetShapeFrameFillColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetShapeFrameEnableStroke = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetShapeFrameStrokeColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetShapeFrameStrokeWeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockResetShapeFrameEnableFill = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockResetShapeFrameFillColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockResetShapeFrameEnableStroke = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockResetShapeFrameStrokeColor = jest.fn().mockResolvedValue({ success: true, status: 0 });
-export const mockResetShapeFrameStrokeWeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockZoomToPage = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetZoomPercentage = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockSetZoomPercentage = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -341,16 +337,12 @@ const MockEditorAPI = {
     setConnectorMappings: mockSetConnectorMappings,
     setConnectorOptions: mockSetConnectorOptions,
     setShapeFrameType: mockSetShapeFrameType,
+    setShapeFrameContent: mockSetShapeFrameContent,
     setShapeFrameEnableFill: mockSetShapeFrameEnableFill,
     setShapeFrameFillColor: mockSetShapeFrameFillColor,
     setShapeFrameEnableStroke: mockSetShapeFrameEnableStroke,
     setShapeFrameStrokeColor: mockSetShapeFrameStrokeColor,
     setShapeFrameStrokeWeight: mockSetShapeFrameStrokeWeight,
-    resetShapeFrameEnableFill: mockResetShapeFrameEnableFill,
-    resetShapeFrameFillColor: mockResetShapeFrameFillColor,
-    resetShapeFrameEnableStroke: mockResetShapeFrameEnableStroke,
-    resetShapeFrameStrokeColor: mockResetShapeFrameStrokeColor,
-    resetShapeFrameStrokeWeight: mockResetShapeFrameStrokeWeight,
     zoomToPage: mockZoomToPage,
     getZoomPercentage: mockGetZoomPercentage,
     setZoomPercentage: mockSetZoomPercentage,
