@@ -52,15 +52,15 @@ export interface ImageFrame extends DocumentFrame {
 
 export interface ShapeFrame extends DocumentFrame {
     shapeType: ShapeType;
-    shapeContent: ShapeContent;
+    shapeProperties: ShapeProperties;
 }
 
-export interface ShapeContent {
-    enableFill: boolean;
-    fillColor: ColorUsage;
-    enableStroke: boolean;
-    strokeColor: ColorUsage;
-    strokeWeight: number;
+export interface ShapeProperties {
+    enableFill?: boolean;
+    fillColor?: ColorUsage;
+    enableStroke?: boolean;
+    strokeColor?: ColorUsage;
+    strokeWeight?: number;
 }
 
 export interface TextFrame extends DocumentFrame {

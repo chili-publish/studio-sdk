@@ -1,6 +1,13 @@
 import { Id } from '../../../types/CommonTypes';
-import { FitMode, FrameTypeEnum, ShapeType, UpdateZIndexMethod, VerticalAlign, ImageSourceTypeEnum } from '../../../types/FrameTypes';
-import { ColorUsageType, ColorType } from '../../../types/ColorStyleTypes';
+import {
+    FitMode,
+    FrameTypeEnum,
+    ImageSourceTypeEnum,
+    ShapeType,
+    UpdateZIndexMethod,
+    VerticalAlign,
+} from '../../../types/FrameTypes';
+import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import mockConfig from '../__mocks__/config';
@@ -58,7 +65,6 @@ beforeEach(() => {
     jest.spyOn(mockedSDK.frame, 'resetEnableCopyfitting');
     jest.spyOn(mockedSDK.frame, 'reorderFrames');
     jest.spyOn(mockedSDK.frame, 'setFrameZIndex');
-    jest.spyOn(mockedSDK.frame, 'setShapeFrameType');
     jest.spyOn(mockedSDK.frame, 'setShapeFrameEnableFill');
     jest.spyOn(mockedSDK.frame, 'setShapeFrameFillColor');
     jest.spyOn(mockedSDK.frame, 'setShapeFrameEnableStroke');
@@ -233,44 +239,61 @@ describe('FrameProperties', () => {
 
         await mockedSDK.frame.setImageFromConnector(frameId, 'connector id', 'asset id');
         expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify({
-            assetId: 'asset id',
-            connectorId: 'connector id',
-            sourceType: ImageSourceTypeEnum.connector,
-        }));
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({
+                assetId: 'asset id',
+                connectorId: 'connector id',
+                sourceType: ImageSourceTypeEnum.connector,
+            }),
+        );
 
         await mockedSDK.frame.setImageFromUrl(frameId, 'image url');
         expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify({ url: 'image url', sourceType: ImageSourceTypeEnum.url, }));
+        expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ url: 'image url', sourceType: ImageSourceTypeEnum.url }),
+        );
 
         await mockedSDK.frame.removeImageSource(frameId);
         expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledTimes(3);
         expect(mockedSDK.editorAPI.setImageSource).toHaveBeenCalledWith(frameId, null);
 
-        await mockedSDK.frame.setShapeFrameType(frameId, ShapeType.polygon);
-        expect(mockedSDK.editorAPI.setShapeFrameType).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setShapeFrameType).toHaveBeenCalledWith(frameId, ShapeType.polygon);
-
         await mockedSDK.frame.setShapeFrameEnableFill(frameId, true);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledWith(frameId, true, null, null, null, null);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledTimes(1);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ enableFill: true }),
+        );
 
-        const color = { color: { colorType: ColorType.rgb, "r": 51, "g": 51, "b": 51 }, usageType: ColorUsageType.local, };
+        const color = { color: { colorType: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
         await mockedSDK.frame.setShapeFrameFillColor(frameId, color);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledWith(frameId, null, JSON.stringify(color), null, null, null);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledTimes(2);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ fillColor: color }),
+        );
 
         await mockedSDK.frame.setShapeFrameEnableStroke(frameId, true);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledTimes(3);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledWith(frameId, null, null, true, null, null);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledTimes(3);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ enableStroke: true }),
+        );
 
         await mockedSDK.frame.setShapeFrameStrokeColor(frameId, color);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledTimes(4);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledWith(frameId, null, null, null, JSON.stringify(color), null);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledTimes(4);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ strokeColor: color }),
+        );
 
         await mockedSDK.frame.setShapeFrameStrokeWeight(frameId, 10);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledTimes(5);
-        expect(mockedSDK.editorAPI.setShapeFrameContent).toHaveBeenCalledWith(frameId, null, null, null, null, 10);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledTimes(5);
+        expect(mockedSDK.editorAPI.setShapeProperties).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ strokeWeight: 10 }),
+        );
     });
 });
 

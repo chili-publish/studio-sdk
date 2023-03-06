@@ -1,6 +1,6 @@
-import {EditorAPI} from '../../types/CommonTypes';
-import {TextStyleUpdateType} from '../../types/TextStyleTypes';
-import {getEditorResponseData} from '../utils/EditorResponseData';
+import { EditorAPI } from '../../types/CommonTypes';
+import { TextStyleUpdateType } from '../../types/TextStyleTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The TextStyleController is responsible for all communication regarding text styles.
@@ -39,8 +39,6 @@ export class TextStyleController {
      */
     clearTextStyleProperties = async () => {
         const res = await this.#editorAPI;
-        return res
-            .selectedTextStyleClean()
-            .then((result) => getEditorResponseData<null>(result));
-    }
+        return res.selectedTextStyleClean().then((result) => getEditorResponseData<null>(result));
+    };
 }
