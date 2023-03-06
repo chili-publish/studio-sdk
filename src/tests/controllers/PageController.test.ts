@@ -7,6 +7,8 @@ beforeEach(() => {
     mockedPageProperties = new PageController(MockEditorAPI);
     jest.spyOn(mockedPageProperties, 'getPages');
     jest.spyOn(mockedPageProperties, 'getPageById');
+    jest.spyOn(mockedPageProperties, 'setPageWidth');
+    jest.spyOn(mockedPageProperties, 'setPageHeight');
 });
 
 afterAll(() => {
@@ -20,5 +22,13 @@ describe('PageProperties', () => {
         mockedPageProperties.getPageById('4');
         expect(mockedPageProperties.getPageById).toHaveBeenCalledTimes(1);
         expect(mockedPageProperties.getPageById).toHaveBeenCalledWith('4');
+
+        mockedPageProperties.setPageWidth('id', '4');
+        expect(mockedPageProperties.setPageWidth).toHaveBeenCalledTimes(1);
+        expect(mockedPageProperties.setPageWidth).toHaveBeenCalledWith('id', '4');
+
+        mockedPageProperties.setPageHeight('id', '4');
+        expect(mockedPageProperties.setPageHeight).toHaveBeenCalledTimes(1);
+        expect(mockedPageProperties.setPageHeight).toHaveBeenCalledWith('id', '4');
     });
 });
