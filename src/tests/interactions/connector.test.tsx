@@ -32,6 +32,7 @@ describe.skip('Editor Link Validator', () => {
                 onLayoutsChanged: () => null,
                 onConnectorEvent: () => null,
                 onZoomChanged: () => null,
+                onPageSizeChanged: () => null,
             },
             () => null,
         );
@@ -71,6 +72,7 @@ describe.skip('Editor Link Validator', () => {
                 onLayoutsChanged: () => null,
                 onConnectorEvent: () => null,
                 onZoomChanged: () => null,
+                onPageSizeChanged: () => null,
             },
             () => null,
         );
@@ -109,6 +111,7 @@ describe.skip('Editor Link Validator', () => {
                 onLayoutsChanged: () => null,
                 onConnectorEvent: () => null,
                 onZoomChanged: () => null,
+                onPageSizeChanged: () => null,
             },
             () => null,
         );

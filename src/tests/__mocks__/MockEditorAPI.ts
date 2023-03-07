@@ -75,6 +75,8 @@ export const mockExitTextEditMode = jest.fn().mockResolvedValue({ success: true,
 export const mockResetAnimation = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPages = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetPageById = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetPageHeight = jest.fn().mockResolvedValue({ success: true, status: 0 });
+export const mockSetPageWidth = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetAnimationsOnSelectedLayout = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetAnimationByFrameId = jest.fn().mockResolvedValue({ success: true, status: 0 });
 export const mockGetAnimationsByLayoutId = jest.fn().mockResolvedValue({ success: true, status: 0 });
@@ -268,6 +270,8 @@ const MockEditorAPI = {
     setTool: mockSetTool,
     getPages: mockGetPages,
     getPageById: mockGetPageById,
+    setPageWidth: mockSetPageWidth,
+    setPageHeight: mockSetPageHeight,
     getLogs: mockGetLogs,
     enableDebug: mockEnableDebug,
     disableDebug: mockDisableDebug,
