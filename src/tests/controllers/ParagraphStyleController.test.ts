@@ -2,20 +2,32 @@ import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
 import { ParagraphStyleController } from '../../controllers/ParagraphStyleController';
 import { ParagraphStyleUpdate } from '../../../types/ParagraphStyleTypes';
 import { Alignment, Case, Scripting } from '../../../types/TextStyleTypes';
-import MockEditorAPI from '../__mocks__/MockEditorAPI';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedParagraphStyleController: ParagraphStyleController;
 
+const mockEditorApi: EditorAPI = {
+    getParagraphStyles: async () => getEditorResponseData(castToEditorResponse(null)),
+    getParagraphStyleById: async () => getEditorResponseData(castToEditorResponse(null)),
+    createParagraphStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    duplicateParagraphStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    renameParagraphStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    removeParagraphStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    moveParagraphStyles: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateParagraphStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+};
+
 beforeEach(() => {
-    mockedParagraphStyleController = new ParagraphStyleController(MockEditorAPI);
-    jest.spyOn(mockedParagraphStyleController, 'getParagraphStyles');
-    jest.spyOn(mockedParagraphStyleController, 'getParagraphStyleById');
-    jest.spyOn(mockedParagraphStyleController, 'createParagraphStyle');
-    jest.spyOn(mockedParagraphStyleController, 'duplicateParagraphStyle');
-    jest.spyOn(mockedParagraphStyleController, 'renameParagraphStyle');
-    jest.spyOn(mockedParagraphStyleController, 'removeParagraphStyle');
-    jest.spyOn(mockedParagraphStyleController, 'moveParagraphStyles');
-    jest.spyOn(mockedParagraphStyleController, 'updateParagraphStyle');
+    mockedParagraphStyleController = new ParagraphStyleController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'getParagraphStyles');
+    jest.spyOn(mockEditorApi, 'getParagraphStyleById');
+    jest.spyOn(mockEditorApi, 'createParagraphStyle');
+    jest.spyOn(mockEditorApi, 'duplicateParagraphStyle');
+    jest.spyOn(mockEditorApi, 'renameParagraphStyle');
+    jest.spyOn(mockEditorApi, 'removeParagraphStyle');
+    jest.spyOn(mockEditorApi, 'moveParagraphStyles');
+    jest.spyOn(mockEditorApi, 'updateParagraphStyle');
 });
 
 afterAll(() => {
@@ -83,35 +95,48 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
     },
 };
 describe('ParagraphStyle', () => {
-    it('Should call all of the ParagraphStyle Functions of EditorAPI successfully', () => {
-        mockedParagraphStyleController.getParagraphStyles();
-        expect(mockedParagraphStyleController.getParagraphStyles).toHaveBeenCalledTimes(1);
+    it('Should call the getParagraphStyles method', async () => {
+        await mockedParagraphStyleController.getParagraphStyles();
+        expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
+    });
+    it('Should call the getParagraphStyleById method', async () => {
+        await mockedParagraphStyleController.getParagraphStyleById('5');
+        expect(mockEditorApi.getParagraphStyleById).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getParagraphStyleById).toHaveBeenCalledWith('5');
+    });
 
-        mockedParagraphStyleController.getParagraphStyleById('5');
-        expect(mockedParagraphStyleController.getParagraphStyleById).toHaveBeenCalledTimes(1);
-        expect(mockedParagraphStyleController.getParagraphStyleById).toHaveBeenCalledWith('5');
+    it('Should call the createParagraphStyle method', async () => {
+        await mockedParagraphStyleController.createParagraphStyle();
+        expect(mockEditorApi.createParagraphStyle).toHaveBeenCalledTimes(1);
+    });
 
-        mockedParagraphStyleController.createParagraphStyle();
-        expect(mockedParagraphStyleController.createParagraphStyle).toHaveBeenCalledTimes(1);
+    it('Should call the duplicateParagraphStyle method', async () => {
+        await mockedParagraphStyleController.duplicateParagraphStyle('4');
+        expect(mockEditorApi.duplicateParagraphStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.duplicateParagraphStyle).toHaveBeenCalledWith('4');
+    });
 
-        mockedParagraphStyleController.duplicateParagraphStyle('4');
-        expect(mockedParagraphStyleController.duplicateParagraphStyle).toHaveBeenCalledTimes(1);
-        expect(mockedParagraphStyleController.duplicateParagraphStyle).toHaveBeenCalledWith('4');
+    it('Should call the moveParagraphStyles method', async () => {
+        await mockedParagraphStyleController.moveParagraphStyles(2, ['1', '2']);
+        expect(mockEditorApi.moveParagraphStyles).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.moveParagraphStyles).toHaveBeenCalledWith(2, ['1', '2']);
+    });
 
-        mockedParagraphStyleController.moveParagraphStyles(2, ['1', '2']);
-        expect(mockedParagraphStyleController.moveParagraphStyles).toHaveBeenCalledTimes(1);
-        expect(mockedParagraphStyleController.moveParagraphStyles).toHaveBeenCalledWith(2, ['1', '2']);
+    it('Should call the renameParagraphStyle method', async () => {
+        await mockedParagraphStyleController.renameParagraphStyle('3', 'new paragraph name');
+        expect(mockEditorApi.renameParagraphStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.renameParagraphStyle).toHaveBeenCalledWith('3', 'new paragraph name');
+    });
 
-        mockedParagraphStyleController.renameParagraphStyle('3', 'new paragraph name');
-        expect(mockedParagraphStyleController.renameParagraphStyle).toHaveBeenCalledTimes(1);
-        expect(mockedParagraphStyleController.renameParagraphStyle).toHaveBeenCalledWith('3', 'new paragraph name');
+    it('Should call the updateParagraphStyle method', async () => {
+        await mockedParagraphStyleController.updateParagraphStyle('3', updateParagraphStyle);
+        expect(mockEditorApi.updateParagraphStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateParagraphStyle).toHaveBeenCalledWith('3', JSON.stringify(updateParagraphStyle));
+    });
 
-        mockedParagraphStyleController.updateParagraphStyle('3', updateParagraphStyle);
-        expect(mockedParagraphStyleController.updateParagraphStyle).toHaveBeenCalledTimes(1);
-        expect(mockedParagraphStyleController.updateParagraphStyle).toHaveBeenCalledWith('3', updateParagraphStyle);
-
-        mockedParagraphStyleController.removeParagraphStyle('4');
-        expect(mockedParagraphStyleController.removeParagraphStyle).toHaveBeenCalledTimes(1);
-        expect(mockedParagraphStyleController.removeParagraphStyle).toHaveBeenCalledWith('4');
+    it('Should call the removeParagraphStyle method', async () => {
+        await mockedParagraphStyleController.removeParagraphStyle('4');
+        expect(mockEditorApi.removeParagraphStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.removeParagraphStyle).toHaveBeenCalledWith('4');
     });
 });
