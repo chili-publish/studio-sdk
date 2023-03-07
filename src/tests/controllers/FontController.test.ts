@@ -1,49 +1,59 @@
-import MockEditorAPI from '../__mocks__/MockEditorAPI';
 import { FontController } from '../../controllers/FontController';
 import { AddDocumentFont } from '../../../types/FontTypes';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedFontController: FontController;
 
+const mockedEditorApi: EditorAPI = {
+    getFonts: async () => getEditorResponseData(castToEditorResponse(null)),
+    getFontById: async () => getEditorResponseData(castToEditorResponse(null)),
+    getDefaultFont: async () => getEditorResponseData(castToEditorResponse(null)),
+    removeFont: async () => getEditorResponseData(castToEditorResponse(null)),
+    addFont: async () => getEditorResponseData(castToEditorResponse(null)),
+    isFontUsed: async () => getEditorResponseData(castToEditorResponse(null)),
+};
+
 beforeEach(() => {
-    mockedFontController = new FontController(MockEditorAPI);
-    jest.spyOn(mockedFontController, 'getFonts');
-    jest.spyOn(mockedFontController, 'getFontById');
-    jest.spyOn(mockedFontController, 'getDefaultFont');
-    jest.spyOn(mockedFontController, 'removeFont');
-    jest.spyOn(mockedFontController, 'addFont');
-    jest.spyOn(mockedFontController, 'isFontUsed');
+    mockedFontController = new FontController(mockedEditorApi);
+    jest.spyOn(mockedEditorApi, 'getFonts');
+    jest.spyOn(mockedEditorApi, 'getFontById');
+    jest.spyOn(mockedEditorApi, 'getDefaultFont');
+    jest.spyOn(mockedEditorApi, 'removeFont');
+    jest.spyOn(mockedEditorApi, 'addFont');
+    jest.spyOn(mockedEditorApi, 'isFontUsed');
 });
 
 afterAll(() => {
     jest.restoreAllMocks();
 });
 
-describe('Font Controller', () => {
-    it('calls getFonts', () => {
-        mockedFontController.getFonts();
-        expect(mockedFontController.getFonts).toHaveBeenCalledTimes(1);
+describe('FontController', () => {
+    it('calls getFonts', async () => {
+        await mockedFontController.getFonts();
+        expect(mockedEditorApi.getFonts).toHaveBeenCalledTimes(1);
     });
 
-    it('calls getFontById', () => {
+    it('calls getFontById', async () => {
         const fontId = 'fontId';
-        mockedFontController.getFontById(fontId);
-        expect(mockedFontController.getFontById).toHaveBeenCalledTimes(1);
-        expect(mockedFontController.getFontById).toHaveBeenCalledWith(fontId);
+        await mockedFontController.getFontById(fontId);
+        expect(mockedEditorApi.getFontById).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getFontById).toHaveBeenCalledWith(fontId);
     });
 
-    it('calls getDefaultFont', () => {
-        mockedFontController.getDefaultFont();
-        expect(mockedFontController.getDefaultFont).toHaveBeenCalledTimes(1);
+    it('calls getDefaultFont', async () => {
+        await mockedFontController.getDefaultFont();
+        expect(mockedEditorApi.getDefaultFont).toHaveBeenCalledTimes(1);
     });
 
-    it('calls removeFont', () => {
+    it('calls removeFont', async () => {
         const fontId = 'fontId';
-        mockedFontController.removeFont(fontId);
-        expect(mockedFontController.removeFont).toHaveBeenCalledTimes(1);
-        expect(mockedFontController.removeFont).toHaveBeenCalledWith(fontId);
+        await mockedFontController.removeFont(fontId);
+        expect(mockedEditorApi.removeFont).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.removeFont).toHaveBeenCalledWith(fontId);
     });
 
-    it('calls addFont', () => {
+    it('calls addFont', async () => {
         const fontAddModel: AddDocumentFont = {
             fontFamily: 'family',
             fontId: 'fontId',
@@ -52,18 +62,18 @@ describe('Font Controller', () => {
         };
         const connectorId = 'connectorId';
 
-        mockedFontController.addFont(connectorId, fontAddModel);
+        await mockedFontController.addFont(connectorId, fontAddModel);
 
-        expect(mockedFontController.addFont).toHaveBeenCalledTimes(1);
-        expect(mockedFontController.addFont).toHaveBeenCalledWith(connectorId, fontAddModel);
+        expect(mockedEditorApi.addFont).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addFont).toHaveBeenCalledWith(connectorId, JSON.stringify(fontAddModel));
     });
 
-    it('calls isFontUsed', () => {
+    it('calls isFontUsed', async () => {
         const fontId = 'fontId';
 
-        mockedFontController.isFontUsed(fontId);
+        await mockedFontController.isFontUsed(fontId);
 
-        expect(mockedFontController.isFontUsed).toHaveBeenCalledTimes(1);
-        expect(mockedFontController.isFontUsed).toHaveBeenCalledWith(fontId);
+        expect(mockedEditorApi.isFontUsed).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.isFontUsed).toHaveBeenCalledWith(fontId);
     });
 });
