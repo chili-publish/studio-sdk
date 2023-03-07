@@ -1,6 +1,5 @@
-import { ActionEditorEvent, DocumentAction, LayoutType, SDK } from '../../index';
+import { ActionEditorEvent, DocumentAction, LayoutType } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
-import mockConfig from '../__mocks__/config';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
 import { FrameAnimationType } from '../../../types/AnimationTypes';
@@ -8,39 +7,68 @@ import { VariableType } from '../../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
 import { ConnectorStateType } from '../../../types/ConnectorTypes';
-import { PageSize } from '../../../types/PageTypes';
+import type { PageSize } from '../../../types/PageTypes';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-let mockedSDK: SDK;
 let mockedAnimation: FrameAnimationType;
-let mockedSubscribers: SubscriberController;
+let mockedSubscriberController: SubscriberController;
+
+const mockEditorApi: EditorAPI = {
+    onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedFrameLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayoutPropertiesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedToolChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onAnimationPlaybackChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onUndoStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayoutFramesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedTextStyleChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onColorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onParagraphStylesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCharacterStylesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onFontsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayoutIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onLayoutsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onConnectorEvent: async () => getEditorResponseData(castToEditorResponse(null)),
+    onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+};
 
 beforeEach(() => {
-    mockedSDK = new SDK(mockConfig);
-    mockedSubscribers = new SubscriberController(mockConfig);
+    mockedSubscriberController = new SubscriberController(mockEditorApi);
     mockedAnimation = mockFrameAnimation;
 
-    jest.spyOn(mockedSubscribers, 'onAnimationChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedFrameLayoutChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedFrameContentChanged');
-    jest.spyOn(mockedSubscribers, 'onPageSelectionChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedLayoutPropertiesChanged');
-    jest.spyOn(mockedSubscribers, 'onStateChanged');
-    jest.spyOn(mockedSubscribers, 'onVariableListChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedToolChanged');
-    jest.spyOn(mockedSubscribers, 'onAnimationPlaybackChanged');
-    jest.spyOn(mockedSubscribers, 'onUndoStateChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedLayoutFramesChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedTextStyleChanged');
-    jest.spyOn(mockedSubscribers, 'onColorsChanged');
-    jest.spyOn(mockedSubscribers, 'onParagraphStylesChanged');
-    jest.spyOn(mockedSubscribers, 'onCharacterStylesChanged');
-    jest.spyOn(mockedSubscribers, 'onFontsChanged');
-    jest.spyOn(mockedSubscribers, 'onSelectedLayoutIdChanged');
-    jest.spyOn(mockedSubscribers, 'onLayoutsChanged');
-    jest.spyOn(mockedSubscribers, 'onConnectorEvent');
-    jest.spyOn(mockedSubscribers, 'onZoomChanged');
-    jest.spyOn(mockedSubscribers, 'onActionsChanged');
-    jest.spyOn(mockedSubscribers, 'onPageSizeChanged');
+    jest.spyOn(mockEditorApi, 'onAnimationChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
+    jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayoutPropertiesChanged');
+    jest.spyOn(mockEditorApi, 'onStateChanged');
+    jest.spyOn(mockEditorApi, 'onVariableListChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedToolChanged');
+    jest.spyOn(mockEditorApi, 'onAnimationPlaybackChanged');
+    jest.spyOn(mockEditorApi, 'onUndoStateChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayoutFramesChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedTextStyleChanged');
+    jest.spyOn(mockEditorApi, 'onColorsChanged');
+    jest.spyOn(mockEditorApi, 'onParagraphStylesChanged');
+    jest.spyOn(mockEditorApi, 'onCharacterStylesChanged');
+    jest.spyOn(mockEditorApi, 'onFontsChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayoutIdChanged');
+    jest.spyOn(mockEditorApi, 'onLayoutsChanged');
+    jest.spyOn(mockEditorApi, 'onConnectorEvent');
+    jest.spyOn(mockEditorApi, 'onZoomChanged');
+    jest.spyOn(mockEditorApi, 'onActionsChanged');
+    jest.spyOn(mockEditorApi, 'onPageSizeChanged');
+    jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
+    jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
 });
 
 afterEach(() => {
@@ -48,54 +76,54 @@ afterEach(() => {
 });
 describe('Subscriber methods', () => {
     it('Should call all of the subscriber functions successfully', async () => {
-        mockedSubscribers.onAnimationChanged(JSON.stringify(mockedAnimation));
+        await mockedSubscriberController.onAnimationChanged(JSON.stringify(mockedAnimation));
 
-        mockedSubscribers.onAnimationPlaybackChanged(JSON.stringify('test'));
-        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.config.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
+        await mockedSubscriberController.onAnimationPlaybackChanged(JSON.stringify('test'));
+        expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
 
-        mockedSubscribers.onSelectedFrameLayoutChanged('2');
-        expect(mockedSubscribers.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
+        await mockedSubscriberController.onSelectedFrameLayoutChanged('2');
+        expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onSelectedFrameContentChanged('2');
-        expect(mockedSubscribers.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
+        await mockedSubscriberController.onSelectedFrameContentChanged('2');
+        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onSelectedLayoutPropertiesChanged('5');
-        expect(mockedSDK.config.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(5);
+        await mockedSubscriberController.onSelectedLayoutPropertiesChanged('5');
+        expect(mockEditorApi.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onPageSelectionChanged();
-        expect(mockedSDK.config.onPageSelectionChanged).toHaveBeenCalledTimes(6);
+        await mockedSubscriberController.onPageSelectionChanged();
+        expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onStateChanged();
-        expect(mockedSDK.config.onStateChanged).toHaveBeenCalledTimes(7);
+        await mockedSubscriberController.onStateChanged();
+        expect(mockEditorApi.onStateChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onVariableListChanged('[{"id":"1","type":"group"}]');
-        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalled();
-        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
+        await mockedSubscriberController.onVariableListChanged('[{"id":"1","type":"group"}]');
+        expect(mockEditorApi.onVariableListChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
 
-        mockedSubscribers.onSelectedLayoutFramesChanged('5');
-        expect(mockedSDK.config.onSelectedLayoutFramesChanged).toHaveBeenCalledTimes(9);
+        await mockedSubscriberController.onSelectedLayoutFramesChanged('5');
+        expect(mockEditorApi.onSelectedLayoutFramesChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onColorsChanged(JSON.stringify([]));
-        expect(mockedSDK.config.onColorsChanged).toHaveBeenCalledTimes(10);
+        await mockedSubscriberController.onColorsChanged(JSON.stringify([]));
+        expect(mockEditorApi.onColorsChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onParagraphStylesChanged(JSON.stringify([{ id: 1, name: 'P1' }]));
-        expect(mockedSDK.config.onParagraphStylesChanged).toHaveBeenCalledTimes(11);
+        await mockedSubscriberController.onParagraphStylesChanged(JSON.stringify([{ id: 1, name: 'P1' }]));
+        expect(mockEditorApi.onParagraphStylesChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onFontsChanged(JSON.stringify([{ id: 1, name: 'F1', fontFamily: 'Arial' }]));
-        expect(mockedSDK.config.onFontsChanged).toHaveBeenCalledTimes(12);
+        await mockedSubscriberController.onFontsChanged(JSON.stringify([{ id: 1, name: 'F1', fontFamily: 'Arial' }]));
+        expect(mockEditorApi.onFontsChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
-        expect(mockedSDK.config.onCharacterStylesChanged).toHaveBeenCalledTimes(13);
+        await mockedSubscriberController.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
+        expect(mockEditorApi.onCharacterStylesChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onSelectedLayoutIdChanged('new id');
-        expect(mockedSDK.config.onSelectedLayoutIdChanged).toHaveBeenCalledWith('new id');
+        await mockedSubscriberController.onSelectedLayoutIdChanged('new id');
+        expect(mockEditorApi.onSelectedLayoutIdChanged).toHaveBeenCalledWith('new id');
 
-        mockedSubscribers.onLayoutsChanged(
+        await mockedSubscriberController.onLayoutsChanged(
             '[{"layoutId":"0","layoutName":"Rectangle","layoutType":"top","parentLayoutId":null,"childLayouts":["2"]}]',
         );
-        expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(15);
-        expect(mockedSDK.config.onVariableListChanged).toHaveBeenCalledWith([
+        expect(mockEditorApi.onLayoutsChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onLayoutsChanged).toHaveBeenCalledWith([
             {
                 layoutId: '0',
                 layoutName: 'Rectangle',
@@ -106,14 +134,14 @@ describe('Subscriber methods', () => {
         ]);
 
         const connectorEvent = JSON.stringify({ id: 'id', type: ConnectorStateType.loaded });
-        mockedSubscribers.onConnectorEvent(connectorEvent);
-        expect(mockedSubscribers.onConnectorEvent).toHaveBeenCalledWith(connectorEvent);
+        await mockedSubscriberController.onConnectorEvent(connectorEvent);
+        expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledWith(JSON.parse(connectorEvent));
 
-        expect(mockedSDK.config.onLayoutsChanged).toHaveBeenCalledTimes(16);
+        expect(mockEditorApi.onLayoutsChanged).toHaveBeenCalledTimes(1);
 
-        mockedSubscribers.onZoomChanged(JSON.stringify(150));
-        expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledTimes(17);
-        expect(mockedSDK.config.onZoomChanged).toHaveBeenCalledWith(150);
+        await mockedSubscriberController.onZoomChanged(JSON.stringify(150));
+        expect(mockEditorApi.onZoomChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onZoomChanged).toHaveBeenCalledWith(150);
 
         const actions: DocumentAction[] = [
             {
@@ -123,24 +151,24 @@ describe('Subscriber methods', () => {
                 triggers: [{ triggers: ['1'], event: ActionEditorEvent.frameMoved }],
             },
         ];
-        mockedSubscribers.onActionsChanged(JSON.stringify(actions));
-        expect(mockedSDK.config.onActionsChanged).toHaveBeenCalledTimes(18);
-        expect(mockedSDK.config.onActionsChanged).toHaveBeenCalledWith(actions);
+        await mockedSubscriberController.onActionsChanged(JSON.stringify(actions));
+        expect(mockEditorApi.onActionsChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onActionsChanged).toHaveBeenCalledWith(actions);
 
         const pageSize: PageSize = { pageId: 'pageId', width: 123, height: 456 };
 
-        mockedSubscribers.onPageSizeChanged(JSON.stringify(pageSize));
-        expect(mockedSDK.config.onPageSizeChanged).toHaveBeenCalledWith(pageSize);
+        await mockedSubscriberController.onPageSizeChanged(JSON.stringify(pageSize));
+        expect(mockEditorApi.onPageSizeChanged).toHaveBeenCalledWith(pageSize);
     });
 
-    it('Should call trigger the SelectedToolChanged subscriber when triggered', () => {
-        mockedSubscribers.onSelectedToolChanged(ToolType.HAND);
-        expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalled();
-        expect(mockedSDK.config.onSelectedToolChanged).toHaveBeenCalledWith('hand');
+    it('Should call trigger the SelectedToolChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onSelectedToolChanged(ToolType.HAND);
+        expect(mockEditorApi.onSelectedToolChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onSelectedToolChanged).toHaveBeenCalledWith('hand');
     });
 
-    it('Should call trigger the UndoStateChanges subscriber when triggered', () => {
-        mockedSubscribers.onUndoStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
-        expect(mockedSDK.config.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
+    it('Should call trigger the UndoStateChanges subscriber when triggered', async () => {
+        await mockedSubscriberController.onUndoStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
+        expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 });
