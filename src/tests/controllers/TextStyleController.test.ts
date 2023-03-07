@@ -1,16 +1,19 @@
 import { TextStyleController } from '../../controllers/TextStyleController';
-import MockEditorAPI from '../__mocks__/MockEditorAPI';
-import mockConfig from '../__mocks__/config';
-import {SDK} from '../../index';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
+describe('TextStyleController', () => {
+    let mockedTextStyleController: TextStyleController;
 
-describe('TextProperties', () => {
-    let mockedSDK: SDK;
+    const mockEditorApi: EditorAPI = {
+        selectedTextStyleDeltaUpdate: async () => getEditorResponseData(castToEditorResponse(null)),
+        selectedTextStyleClean: async () => getEditorResponseData(castToEditorResponse(null)),
+    };
 
     beforeEach(() => {
-        mockedSDK = new SDK(mockConfig);
-        mockedSDK.editorAPI = MockEditorAPI;
-        mockedSDK.textSelection = new TextStyleController(MockEditorAPI);
+        mockedTextStyleController = new TextStyleController(mockEditorApi);
+        jest.spyOn(mockEditorApi, 'selectedTextStyleDeltaUpdate');
+        jest.spyOn(mockEditorApi, 'selectedTextStyleClean');
     });
 
     afterAll(() => {
@@ -18,12 +21,12 @@ describe('TextProperties', () => {
     });
 
     it('Should call selectedTextStyleDeltaUpdate of EditorAPI successfully', async () => {
-        await mockedSDK.textSelection.setTextStyleProperties({ FONT_SIZE: { value: 34 } });
-        expect(mockedSDK.editorAPI.selectedTextStyleDeltaUpdate).toHaveBeenCalledTimes(1);
+        await mockedTextStyleController.setTextStyleProperties({ FONT_SIZE: { value: 34 } });
+        expect(mockEditorApi.selectedTextStyleDeltaUpdate).toHaveBeenCalledTimes(1);
     });
 
     it('Should call selectedTextStyleClean of EditorAPI successfully', async () => {
-        await mockedSDK.textSelection.clearTextStyleProperties();
-        expect(mockedSDK.editorAPI.selectedTextStyleClean).toHaveBeenCalledTimes(1);
+        await mockedTextStyleController.clearTextStyleProperties();
+        expect(mockEditorApi.selectedTextStyleClean).toHaveBeenCalledTimes(1);
     });
 });

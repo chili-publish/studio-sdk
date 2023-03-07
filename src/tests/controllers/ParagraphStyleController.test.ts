@@ -94,7 +94,7 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
         value: true,
     },
 };
-describe('ParagraphStyle', () => {
+describe('ParagraphStyleController', () => {
     it('Should call the getParagraphStyles method', async () => {
         await mockedParagraphStyleController.getParagraphStyles();
         expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
