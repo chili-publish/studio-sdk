@@ -19,14 +19,14 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('ConfigurationController', () => {
-    it('Should call all of the configuration functions of child successfully', async () => {
-        const configKey = 'dam';
-        const configValue = 'm123';
-
+    const configKey = 'dam';
+    const configValue = 'm123';
+    it('Should call the setValue method', async () => {
         await mockedConfigurationController.setValue(configKey, configValue);
         expect(mockEditorApi.setConfigValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConfigValue).toHaveBeenCalledWith(configKey, configValue);
-
+    });
+    it('Should call the getValue method', async () => {
         await mockedConfigurationController.getValue(configKey);
         expect(mockEditorApi.getConfigValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getConfigValue).toHaveBeenCalledWith(configKey);

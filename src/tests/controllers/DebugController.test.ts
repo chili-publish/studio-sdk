@@ -23,13 +23,19 @@ afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('DebugProperties', () => {
-    it('Should call all of the Debug Functions of EditorAPI successfully', async () => {
+    it('Should be possible to retrieve the logs', async () => {
         await mockedDebugController.getLogs();
         expect(mockedEditorApi.getLogs).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to toggle the debug panel', async () => {
         await mockedDebugController.toggleDebugPanel();
         expect(mockedEditorApi.toggleDebugPanel).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to enable debugging', async () => {
         await mockedDebugController.enableDebug();
         expect(mockedEditorApi.enableDebug).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to disable debugging', async () => {
         await mockedDebugController.disableDebug();
         expect(mockedEditorApi.disableDebug).toHaveBeenCalledTimes(1);
     });

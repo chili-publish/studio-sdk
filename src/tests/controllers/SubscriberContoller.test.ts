@@ -74,51 +74,67 @@ beforeEach(() => {
 afterEach(() => {
     jest.restoreAllMocks();
 });
-describe('Subscriber methods', () => {
-    it('Should call all of the subscriber functions successfully', async () => {
+describe('SubscriberController', () => {
+    it('Should be possible to subscribe to onScrubberPositionChanged', async () => {
         await mockedSubscriberController.onAnimationChanged(JSON.stringify(mockedAnimation));
 
         await mockedSubscriberController.onAnimationPlaybackChanged(JSON.stringify('test'));
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
-
+    });
+    it('Should be possible to subscribe to onSelectedFrameLayoutChanged', async () => {
         await mockedSubscriberController.onSelectedFrameLayoutChanged('2');
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
-
+        expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledWith(2);
+    });
+    it('Should be possible to subscribe to onSelectedFrameContentChanged', async () => {
         await mockedSubscriberController.onSelectedFrameContentChanged('2');
         expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
-
+        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledWith(2);
+    });
+    it('Should be possible to subscribe to onSelectedLayoutPropertiesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutPropertiesChanged('5');
         expect(mockEditorApi.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(1);
-
+        expect(mockEditorApi.onSelectedLayoutPropertiesChanged).toHaveBeenCalledWith(5);
+    });
+    it('Should be possible to subscribe to onPageSelectionChanged', async () => {
         await mockedSubscriberController.onPageSelectionChanged();
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to subscribe to the onStateChanged', async () => {
         await mockedSubscriberController.onStateChanged();
         expect(mockEditorApi.onStateChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to subscribe to onVariableListChanged', async () => {
         await mockedSubscriberController.onVariableListChanged('[{"id":"1","type":"group"}]');
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalled();
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
-
+    });
+    it('Should be possible to subscribe to onSelectedLayoutFramesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutFramesChanged('5');
         expect(mockEditorApi.onSelectedLayoutFramesChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to subscribe to onColorsChanged', async () => {
         await mockedSubscriberController.onColorsChanged(JSON.stringify([]));
         expect(mockEditorApi.onColorsChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to subscribe to onParagraphStylesChanged', async () => {
         await mockedSubscriberController.onParagraphStylesChanged(JSON.stringify([{ id: 1, name: 'P1' }]));
         expect(mockEditorApi.onParagraphStylesChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to subscribe to onFontsChanged', async () => {
         await mockedSubscriberController.onFontsChanged(JSON.stringify([{ id: 1, name: 'F1', fontFamily: 'Arial' }]));
         expect(mockEditorApi.onFontsChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to onCharacterStylesChanged', async () => {
         await mockedSubscriberController.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
         expect(mockEditorApi.onCharacterStylesChanged).toHaveBeenCalledTimes(1);
-
+    });
+    it('Should be possible to subscribe to onSelectedLayoutIdChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutIdChanged('new id');
         expect(mockEditorApi.onSelectedLayoutIdChanged).toHaveBeenCalledWith('new id');
-
+    });
+    it('Should be possible to subscribe to onLayoutsChanged', async () => {
         await mockedSubscriberController.onLayoutsChanged(
             '[{"layoutId":"0","layoutName":"Rectangle","layoutType":"top","parentLayoutId":null,"childLayouts":["2"]}]',
         );
@@ -132,17 +148,19 @@ describe('Subscriber methods', () => {
                 childLayouts: ['2'],
             },
         ]);
-
+    });
+    it('Should be possible to subscribe to onConnectorEvent', async () => {
         const connectorEvent = JSON.stringify({ id: 'id', type: ConnectorStateType.loaded });
         await mockedSubscriberController.onConnectorEvent(connectorEvent);
         expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledWith(JSON.parse(connectorEvent));
-
-        expect(mockEditorApi.onLayoutsChanged).toHaveBeenCalledTimes(1);
-
+        expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to subscribe to onZoomChanged', async () => {
         await mockedSubscriberController.onZoomChanged(JSON.stringify(150));
         expect(mockEditorApi.onZoomChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onZoomChanged).toHaveBeenCalledWith(150);
-
+    });
+    it('Should be possible to subscribe to onActionsChanged', async () => {
         const actions: DocumentAction[] = [
             {
                 actionName: 'name',
@@ -154,7 +172,9 @@ describe('Subscriber methods', () => {
         await mockedSubscriberController.onActionsChanged(JSON.stringify(actions));
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledWith(actions);
+    });
 
+    it('should be possible to subscribe to onPageSizeChanged', async () => {
         const pageSize: PageSize = { pageId: 'pageId', width: 123, height: 456 };
 
         await mockedSubscriberController.onPageSizeChanged(JSON.stringify(pageSize));
