@@ -124,7 +124,6 @@ export {
     TextPosition,
     Case,
     Scripting,
-    BlendModes,
 } from '../types/TextStyleTypes';
 export { ColorType } from '../types/ColorStyleTypes';
 export * from '../types/MediaConnectorTypes';
