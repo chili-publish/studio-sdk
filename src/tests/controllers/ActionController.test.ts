@@ -1,19 +1,27 @@
-import { ActionEditorEvent, ActionTrigger, SDK } from '../../index';
-import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/MockEditorAPI';
+import { ActionEditorEvent, ActionTrigger } from '../../../types/ActionTypes';
+import { EditorAPI } from '../../../types/CommonTypes';
 import { ActionController } from '../../controllers/ActionController';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
-let mockedSDK: SDK;
+let mockedActionController: ActionController;
+
+const mockEditorApi: EditorAPI = {
+    createAction: async () => getEditorResponseData(castToEditorResponse(null)),
+    removeAction: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateActionScript: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateActionTriggers: async () => getEditorResponseData(castToEditorResponse(null)),
+};
 
 beforeEach(() => {
-    mockedSDK = new SDK(mockConfig);
-    mockedSDK.editorAPI = mockChild;
-    mockedSDK.action = new ActionController(mockChild);
+    mockedActionController = new ActionController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'createAction');
+    jest.spyOn(mockEditorApi, 'removeAction');
+    jest.spyOn(mockEditorApi, 'updateActionScript');
+    jest.spyOn(mockEditorApi, 'updateActionTriggers');
+});
 
-    jest.spyOn(mockedSDK.action, 'createAction');
-    jest.spyOn(mockedSDK.action, 'removeAction');
-    jest.spyOn(mockedSDK.action, 'updateActionScript');
-    jest.spyOn(mockedSDK.action, 'updateActionTriggers');
+afterAll(() => {
+    jest.restoreAllMocks();
 });
 
 afterAll(() => {
@@ -22,14 +30,14 @@ afterAll(() => {
 
 describe('Should call all of the ActionController functions of child successfully', () => {
     it('should call createAction function of EditorAPI with no params provided', async () => {
-        await mockedSDK.action.createAction();
-        expect(mockedSDK.editorAPI.createAction).toHaveBeenCalledTimes(1);
+        await mockedActionController.createAction();
+        expect(mockEditorApi.createAction).toHaveBeenCalledTimes(1);
     });
 
     it('should call removeAction function of EditorAPI', async () => {
-        await mockedSDK.action.removeAction('0');
-        expect(mockedSDK.editorAPI.removeAction).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.removeAction).toHaveBeenCalledWith('0');
+        await mockedActionController.removeAction('0');
+        expect(mockEditorApi.removeAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.removeAction).toHaveBeenCalledWith('0');
     });
 
     it('should call updateActionTriggers function of EditorAPI', async () => {
@@ -40,15 +48,15 @@ describe('Should call all of the ActionController functions of child successfull
             },
         ];
 
-        await mockedSDK.action.updateActionTriggers('0', triggers);
-        expect(mockedSDK.editorAPI.updateActionTriggers).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.updateActionTriggers).toHaveBeenCalledWith('0', JSON.stringify(triggers));
+        await mockedActionController.updateActionTriggers('0', triggers);
+        expect(mockEditorApi.updateActionTriggers).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateActionTriggers).toHaveBeenCalledWith('0', JSON.stringify(triggers));
     });
 
     it('should call updateActionScript function of EditorAPI', async () => {
         const script = 'let a = 1';
-        await mockedSDK.action.updateActionScript('0', script);
-        expect(mockedSDK.editorAPI.updateActionScript).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.updateActionScript).toHaveBeenCalledWith('0', script);
+        await mockedActionController.updateActionScript('0', script);
+        expect(mockEditorApi.updateActionScript).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateActionScript).toHaveBeenCalledWith('0', script);
     });
 });

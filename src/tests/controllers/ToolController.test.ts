@@ -1,14 +1,20 @@
-import mockConfig from '../__mocks__/config';
-import { SDK, ToolType } from '../../index';
+import { ToolType } from '../../index';
 import { ToolController } from '../../controllers/ToolController';
-import mockChild from '../__mocks__/MockEditorAPI';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-describe('Tool controller', () => {
-    let mockedSDK: SDK;
+describe('ToolController', () => {
+    let mockedToolController: ToolController;
+
+    const mockEditorApi: EditorAPI = {
+        getSelectedTool: async () => getEditorResponseData(castToEditorResponse(null)),
+        setTool: async () => getEditorResponseData(castToEditorResponse(null)),
+    };
+
     beforeEach(() => {
-        mockedSDK = new SDK(mockConfig);
-        mockedSDK.editorAPI = mockChild;
-        mockedSDK.tool = new ToolController(mockChild);
+        mockedToolController = new ToolController(mockEditorApi);
+        jest.spyOn(mockEditorApi, 'getSelectedTool');
+        jest.spyOn(mockEditorApi, 'setTool');
     });
 
     afterEach(() => {
@@ -16,54 +22,54 @@ describe('Tool controller', () => {
     });
 
     it('calls getSelectedTool', async () => {
-        await mockedSDK.tool.getSelectedTool();
-        expect(mockedSDK.editorAPI.getSelectedTool).toHaveBeenCalledTimes(1);
+        await mockedToolController.getSelectedTool();
+        expect(mockEditorApi.getSelectedTool).toHaveBeenCalledTimes(1);
     });
 
     it('sets the pointer tool', async () => {
-        await mockedSDK.tool.setSelectTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SELECT);
+        await mockedToolController.setSelectTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.SELECT);
     });
     it('sets the move tool', async () => {
-        await mockedSDK.tool.setHandTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.HAND);
+        await mockedToolController.setHandTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.HAND);
     });
 
     it('sets the zoom tool', async () => {
-        await mockedSDK.tool.setZoomTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(3);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.ZOOM);
+        await mockedToolController.setZoomTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.ZOOM);
     });
 
     it('sets the text  tool', async () => {
-        await mockedSDK.tool.setTextFrameTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(4);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.TEXT_FRAME);
+        await mockedToolController.setTextFrameTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.TEXT_FRAME);
     });
 
     it('sets the image tool', async () => {
-        await mockedSDK.tool.setImageFrameTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(5);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.IMAGE_FRAME);
+        await mockedToolController.setImageFrameTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.IMAGE_FRAME);
     });
 
     it('sets the shape rect tool', async () => {
-        await mockedSDK.tool.setShapeRectTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(6);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SHAPE_RECT);
+        await mockedToolController.setShapeRectTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.SHAPE_RECT);
     });
 
     it('sets the shape ellipse tool', async () => {
-        await mockedSDK.tool.setShapeEllipseTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(7);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SHAPE_ELLIPSE);
+        await mockedToolController.setShapeEllipseTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.SHAPE_ELLIPSE);
     });
 
     it('sets the shape polygon tool', async () => {
-        await mockedSDK.tool.setShapePolygonTool();
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledTimes(8);
-        expect(mockedSDK.editorAPI.setTool).toHaveBeenCalledWith(ToolType.SHAPE_POLYGON);
+        await mockedToolController.setShapePolygonTool();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.SHAPE_POLYGON);
     });
 });
