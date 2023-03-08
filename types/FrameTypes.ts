@@ -125,7 +125,7 @@ export enum BlendMode {
     clear = 'clear',
     src = 'src',
     dst = 'dst',
-    srcOver = 'srcOver',
+    normal = 'normal',
     dstOver = 'dstOver',
     srcIn = 'srcIn',
     dstIn = 'dstIn',
