@@ -22,7 +22,7 @@ beforeEach(() => {
 afterAll(() => {
     jest.restoreAllMocks();
 });
-describe('DebugProperties', () => {
+describe('DebugController', () => {
     it('Should be possible to retrieve the logs', async () => {
         await mockedDebugController.getLogs();
         expect(mockedEditorApi.getLogs).toHaveBeenCalledTimes(1);
