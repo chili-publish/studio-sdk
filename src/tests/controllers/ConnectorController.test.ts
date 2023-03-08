@@ -1,5 +1,3 @@
-import { SDK } from '../../index';
-import mockConfig from '../__mocks__/config';
 import { ConnectorController } from '../../controllers/ConnectorController';
 import {
     ConnectorMapping,
@@ -7,42 +5,56 @@ import {
     ConnectorMappingTarget,
     ConnectorRegistrationSource,
 } from '../../../types/ConnectorTypes';
-import mockChild from '../__mocks__/MockEditorAPI';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-let mockedSDK: SDK;
+let mockedConnectorController: ConnectorController;
+
+const mockEditorApi: EditorAPI = {
+    registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
+    connectorAuthenticationSetChiliToken: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
+    getConnectorState: async () => getEditorResponseData(castToEditorResponse(null)),
+    connectorAuthenticationSetHttpHeader: async () => getEditorResponseData(castToEditorResponse(null)),
+    setConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    setConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
+};
 
 beforeEach(() => {
-    mockedSDK = new SDK(mockConfig);
-    mockedSDK.editorAPI = mockChild;
-    mockedSDK.connector = new ConnectorController(mockChild);
-    jest.spyOn(mockedSDK.connector, 'registerConnector');
-    jest.spyOn(mockedSDK.connector, 'configure');
-    jest.spyOn(mockedSDK.connector, 'getState');
+    mockedConnectorController = new ConnectorController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'registerConnector');
+    jest.spyOn(mockEditorApi, 'connectorAuthenticationSetChiliToken');
+    jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
+    jest.spyOn(mockEditorApi, 'getConnectorState');
+    jest.spyOn(mockEditorApi, 'connectorAuthenticationSetHttpHeader');
+    jest.spyOn(mockEditorApi, 'setConnectorOptions');
+    jest.spyOn(mockEditorApi, 'setConnectorMappings');
 });
 
 afterEach(() => {
     jest.restoreAllMocks();
 });
-describe('Connector methods', () => {
-    it('Should call all of the connector functions of child successfully', async () => {
-        const registration = {
-            id: '',
-            source: ConnectorRegistrationSource.url,
-            url: '',
-        };
-        const connectorId = 'dam';
-        const token = 'myToken';
-        const headerName = 'headerName';
-        const headerValue = 'headerValue';
-
-        await mockedSDK.connector.getState(connectorId);
-        expect(mockedSDK.editorAPI.getConnectorState).toHaveBeenCalledTimes(1);
-
-        await mockedSDK.connector.registerConnector(registration);
-        expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
-
-        await mockedSDK.connector.configure(connectorId, async (configurator) => {
+describe('ConnectorController', () => {
+    const registration = {
+        id: '',
+        source: ConnectorRegistrationSource.url,
+        url: '',
+    };
+    const connectorId = 'dam';
+    const token = 'myToken';
+    const headerName = 'headerName';
+    const headerValue = 'headerValue';
+    it('Should call the getState method', async () => {
+        await mockedConnectorController.getState(connectorId);
+        expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to register a connector', async () => {
+        await mockedConnectorController.registerConnector(registration);
+        expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
+    });
+    it('Should be possible to configure a connector', async () => {
+        await mockedConnectorController.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);
             configurator.setMappings([
                 new ConnectorMapping(ConnectorMappingTarget.download, 'data', ConnectorMappingSource.variable, 'Var 1'),
@@ -51,26 +63,23 @@ describe('Connector methods', () => {
             configurator.setChiliToken(token);
         });
 
-        expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
-        expect(mockedSDK.editorAPI.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
+        expect(mockEditorApi.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
 
-        expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
+        expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
             connectorId,
             headerName,
             headerValue,
         );
 
-        expect(mockedSDK.editorAPI.setConnectorMappings).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
+        expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
             JSON.stringify({ name: 'download.data', value: 'var.Var 1' }),
         ]);
 
-        expect(mockedSDK.editorAPI.setConnectorOptions).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setConnectorOptions).toHaveBeenCalledWith(
-            connectorId,
-            JSON.stringify({ test: 'data' }),
-        );
+        expect(mockEditorApi.setConnectorOptions).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConnectorOptions).toHaveBeenCalledWith(connectorId, JSON.stringify({ test: 'data' }));
     });
 });

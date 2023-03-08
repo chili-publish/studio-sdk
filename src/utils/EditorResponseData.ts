@@ -11,3 +11,12 @@ export function getEditorResponseData<T>(response: EditorResponse<unknown>, pars
                 : null,
     };
 }
+
+export function castToEditorResponse(toCast: unknown): EditorResponse<unknown> {
+    return {
+        status: 200,
+        success: true,
+        parsedData: null,
+        data: JSON.stringify(toCast),
+    };
+}

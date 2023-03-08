@@ -1,21 +1,25 @@
 import { mockDocument } from '../__mocks__/mockDocument';
-
 import { DocumentController } from '../../controllers/DocumentController';
 import * as FetchHelper from '../../utils/getFetchUrl';
 import { DownloadFormats } from '../../utils/enums';
-import mockChild from '../__mocks__/MockEditorAPI';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-let document: DocumentController;
+let mockedDocumentController: DocumentController;
 let mockedFetURLGetter: jest.SpyInstance;
 let mockedLongPoll: jest.SpyInstance;
 const mockFetch = jest.fn();
 
+const mockedEditorApi: EditorAPI = {
+    getCurrentDocumentState: async () => getEditorResponseData(castToEditorResponse(null)),
+    loadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
+};
+
 beforeEach(() => {
-    document = new DocumentController(mockChild);
-    jest.spyOn(document, 'getCurrentDocumentState');
-    jest.spyOn(document, 'loadDocument');
-    jest.spyOn(document, 'getDownloadLink');
-    mockedLongPoll = jest.spyOn(document, 'startPollingOnEndpoint');
+    mockedDocumentController = new DocumentController(mockedEditorApi);
+    jest.spyOn(mockedEditorApi, 'getCurrentDocumentState');
+    jest.spyOn(mockedEditorApi, 'loadDocument');
+    mockedLongPoll = jest.spyOn(mockedDocumentController, 'startPollingOnEndpoint');
     mockedFetURLGetter = jest.spyOn(FetchHelper, 'getFetchURL');
     global.fetch = mockFetch;
     mockedFetURLGetter.mockReturnValue('test url');
@@ -28,15 +32,14 @@ afterEach(() => {
 describe('Document controller', () => {
     describe('document getters', () => {
         it('retrieve current document state', async () => {
-            await document.getCurrentDocumentState();
-            expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
-            expect(mockChild.getCurrentDocumentState).toHaveBeenCalledTimes(1);
+            await mockedDocumentController.getCurrentDocumentState();
+            expect(mockedEditorApi.getCurrentDocumentState).toHaveBeenCalledTimes(1);
         });
     });
 
     describe('api calls that is using current document', () => {
         beforeEach(() => {
-            document.getCurrentDocumentState = jest.fn().mockResolvedValue('{test: "hello"}');
+            mockedDocumentController.getCurrentDocumentState = jest.fn().mockResolvedValue('{test: "hello"}');
         });
         it('retrieve returns a download link from current document when there is no error', async () => {
             mockFetch.mockReturnValueOnce(
@@ -53,9 +56,7 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
-
-            expect(document.getCurrentDocumentState).toHaveBeenCalledTimes(1);
+            const downloadResponse = await mockedDocumentController.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
@@ -84,7 +85,7 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
+            const downloadResponse = await mockedDocumentController.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
@@ -116,7 +117,7 @@ describe('Document controller', () => {
 
             mockedLongPoll.mockResolvedValueOnce(new Promise((resolve) => resolve(true)));
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
+            const downloadResponse = await mockedDocumentController.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
@@ -161,7 +162,7 @@ describe('Document controller', () => {
                 ),
             );
 
-            const downloadResponse = await document.getDownloadLink(DownloadFormats.MP4, '1');
+            const downloadResponse = await mockedDocumentController.getDownloadLink(DownloadFormats.MP4, '1');
 
             expect(FetchHelper.getFetchURL).toHaveBeenCalledTimes(1);
 
@@ -181,7 +182,7 @@ describe('Document controller', () => {
     });
     describe('startPollingOnEndpoint', () => {
         it('calls fetch with given url', () => {
-            document.startPollingOnEndpoint('url');
+            mockedDocumentController.startPollingOnEndpoint('url');
             expect(mockFetch).toHaveBeenLastCalledWith('url');
         });
         jest.setTimeout(15000);
@@ -209,14 +210,13 @@ describe('Document controller', () => {
                     ),
                 );
 
-            await document.startPollingOnEndpoint('url');
+            await mockedDocumentController.startPollingOnEndpoint('url');
 
             expect(mockFetch).toHaveBeenCalledTimes(9);
         });
     });
 
     it('load provided document', async () => {
-        await document.loadDocument(JSON.parse(mockDocument));
-        expect(mockChild.loadDocument).toHaveBeenCalledTimes(1);
+        await mockedDocumentController.loadDocument(JSON.parse(mockDocument));
     });
 });

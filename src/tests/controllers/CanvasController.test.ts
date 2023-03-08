@@ -1,46 +1,49 @@
-import { SDK } from '../../index';
-import mockConfig from '../__mocks__/config';
-import mockChild from '../__mocks__/MockEditorAPI';
 import { CanvasController } from '../../controllers/CanvasController';
+import { EditorAPI } from '../../../types/CommonTypes';
+import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
-let mockedSDK: SDK;
+let mockedCanvasController: CanvasController;
 
+const mockEditorApi: EditorAPI = {
+    zoomToPage: async () => getEditorResponseData(castToEditorResponse(null)),
+    getZoomPercentage: async () => getEditorResponseData(castToEditorResponse(null)),
+    setZoomPercentage: async () => getEditorResponseData(castToEditorResponse(null)),
+};
 beforeEach(() => {
-    mockedSDK = new SDK(mockConfig);
-    mockedSDK.editorAPI = mockChild;
-    mockedSDK.canvas = new CanvasController(mockChild);
-
-    jest.spyOn(mockedSDK.canvas, 'zoomToPage');
+    mockedCanvasController = new CanvasController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'zoomToPage');
+    jest.spyOn(mockEditorApi, 'getZoomPercentage');
+    jest.spyOn(mockEditorApi, 'setZoomPercentage');
 });
 
 afterAll(() => {
     jest.restoreAllMocks();
 });
 
-describe('Should call all of the CanvasController functions of child successfully', () => {
+describe('CanvasController', () => {
     it('should call zoomToPage function of EditorAPI with no params provided', async () => {
-        await mockedSDK.canvas.zoomToPage();
-        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(1);
+        await mockedCanvasController.zoomToPage();
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledTimes(1);
 
-        await mockedSDK.canvas.zoomToPage(null, null, null, null, null);
-        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(2);
-        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledWith(null, null, null, null, null);
+        await mockedCanvasController.zoomToPage(null, null, null, null, null);
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledWith(null, null, null, null, null);
     });
 
     it('should call zoomToPage function of EditorAPI with params included', async () => {
-        await mockedSDK.canvas.zoomToPage('0', 300, 0, 700, 400);
-        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledTimes(3);
-        expect(mockedSDK.editorAPI.zoomToPage).toHaveBeenCalledWith('0', 300, 0, 700, 400);
+        await mockedCanvasController.zoomToPage('0', 300, 0, 700, 400);
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledTimes(3);
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledWith('0', 300, 0, 700, 400);
     });
 
     it('should call getZoomPercentage function of EditorAPI', async () => {
-        await mockedSDK.canvas.getZoomPercentage();
-        expect(mockedSDK.editorAPI.getZoomPercentage).toHaveBeenCalledTimes(1);
+        await mockedCanvasController.getZoomPercentage();
+        expect(mockEditorApi.getZoomPercentage).toHaveBeenCalledTimes(1);
     });
 
     it('should call setZoomPercentage function of EditorAPI', async () => {
-        await mockedSDK.canvas.setZoomPercentage(50);
-        expect(mockedSDK.editorAPI.setZoomPercentage).toHaveBeenCalledTimes(1);
-        expect(mockedSDK.editorAPI.setZoomPercentage).toHaveBeenCalledWith(50);
+        await mockedCanvasController.setZoomPercentage(50);
+        expect(mockEditorApi.setZoomPercentage).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setZoomPercentage).toHaveBeenCalledWith(50);
     });
 });
