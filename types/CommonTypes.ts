@@ -11,6 +11,7 @@ import { ParagraphStyle } from './ParagraphStyleTypes';
 import { DocumentFont } from './FontTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { ConnectorEvent } from './ConnectorTypes';
+import { PageSize } from './PageTypes';
 
 export type Id = string;
 
@@ -40,6 +41,7 @@ export type ConfigType = {
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onZoomChanged?: (scaleFactor: number) => void;
+    onPageSizeChanged?: (pageSize: PageSize) => void;
 };
 
 export interface EditorResponse<T> {

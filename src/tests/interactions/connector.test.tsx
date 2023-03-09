@@ -5,124 +5,7 @@ beforeEach(() => {
     jest.spyOn(ConnectorFunctions, 'validateEditorLink');
     jest.spyOn(ConnectorFunctions, 'setupFrame');
 });
-// TODO: fix testing
-describe.skip('Editor Link Validator', () => {
-    it('returns the valid link without modification', async () => {
-        ConnectorFunctions.default(
-            'https://chili-editor-dev.azurewebsites.net/',
-            {
-                onActionsChanged: () => null,
-                onStateChanged: () => null,
-                onSelectedFrameLayoutChanged: () => null,
-                onSelectedFrameContentChanged: () => null,
-                onSelectedLayoutPropertiesChanged: () => null,
-                onPageSelectionChanged: () => null,
-                onScrubberPositionChanged: () => null,
-                onFrameAnimationsChanged: () => null,
-                onVariableListChanged: () => null,
-                onSelectedToolChanged: () => null,
-                onUndoStateChanged: () => null,
-                onSelectedLayoutFramesChanged: () => null,
-                onSelectedTextStyleChanged: () => null,
-                onColorsChanged: () => null,
-                onParagraphStylesChanged: () => null,
-                onCharacterStylesChanged: () => null,
-                onFontsChanged: () => null,
-                onSelectedLayoutIdChanged: () => null,
-                onLayoutsChanged: () => null,
-                onConnectorEvent: () => null,
-                onZoomChanged: () => null,
-            },
-            () => null,
-        );
 
-        const iframe = document.getElementsByTagName('iframe')[0];
-        const iframeBody = iframe.contentWindow?.document.getElementsByTagName('body')[0];
-        expect(iframeBody?.getElementsByTagName('script')[0].src).toEqual(
-            'https://chili-editor-dev.azurewebsites.net/init.js',
-        );
-        expect(iframeBody?.getElementsByTagName('script')[2].src).toEqual(
-            'https://chili-editor-dev.azurewebsites.net/main.dart.js',
-        );
-    });
-
-    it('removes index.html if found at the end of the link', () => {
-        ConnectorFunctions.default(
-            'https://chili-editor-dev.azurewebsites.net/index.html',
-            {
-                onActionsChanged: () => null,
-                onStateChanged: () => null,
-                onSelectedFrameLayoutChanged: () => null,
-                onSelectedFrameContentChanged: () => null,
-                onSelectedLayoutPropertiesChanged: () => null,
-                onPageSelectionChanged: () => null,
-                onScrubberPositionChanged: () => null,
-                onFrameAnimationsChanged: () => null,
-                onVariableListChanged: () => null,
-                onSelectedToolChanged: () => null,
-                onUndoStateChanged: () => null,
-                onSelectedLayoutFramesChanged: () => null,
-                onSelectedTextStyleChanged: () => null,
-                onColorsChanged: () => null,
-                onParagraphStylesChanged: () => null,
-                onCharacterStylesChanged: () => null,
-                onFontsChanged: () => null,
-                onSelectedLayoutIdChanged: () => null,
-                onLayoutsChanged: () => null,
-                onConnectorEvent: () => null,
-                onZoomChanged: () => null,
-            },
-            () => null,
-        );
-
-        const iframe = document.getElementsByTagName('iframe')[0];
-        const iframeBody = iframe.contentWindow?.document.getElementsByTagName('body')[0];
-        expect(iframeBody?.getElementsByTagName('script')[0].src).toEqual(
-            'https://chili-editor-dev.azurewebsites.net/init.js',
-        );
-        expect(iframeBody?.getElementsByTagName('script')[2].src).toEqual(
-            'https://chili-editor-dev.azurewebsites.net/main.dart.js',
-        );
-    });
-    it('Adds / at the end if not found', () => {
-        ConnectorFunctions.default(
-            'https://chili-editor-dev.azurewebsites.net',
-            {
-                onActionsChanged: () => null,
-                onStateChanged: () => null,
-                onSelectedFrameLayoutChanged: () => null,
-                onSelectedFrameContentChanged: () => null,
-                onSelectedLayoutPropertiesChanged: () => null,
-                onPageSelectionChanged: () => null,
-                onScrubberPositionChanged: () => null,
-                onFrameAnimationsChanged: () => null,
-                onVariableListChanged: () => null,
-                onSelectedToolChanged: () => null,
-                onUndoStateChanged: () => null,
-                onSelectedLayoutFramesChanged: () => null,
-                onSelectedTextStyleChanged: () => null,
-                onColorsChanged: () => null,
-                onParagraphStylesChanged: () => null,
-                onCharacterStylesChanged: () => null,
-                onFontsChanged: () => null,
-                onSelectedLayoutIdChanged: () => null,
-                onLayoutsChanged: () => null,
-                onConnectorEvent: () => null,
-                onZoomChanged: () => null,
-            },
-            () => null,
-        );
-
-        const iframe = document.getElementsByTagName('iframe')[0];
-        const iframeBody = iframe.contentWindow?.document.getElementsByTagName('body')[0];
-        expect(iframeBody?.getElementsByTagName('script')[0].src).toEqual(
-            'https://chili-editor-dev.azurewebsites.net/init.js',
-        );
-        expect(iframeBody?.getElementsByTagName('script')[2].src).toEqual(
-            'https://chili-editor-dev.azurewebsites.net/main.dart.js',
-        );
-    });
-});
 describe('Connector helpers', () => {
     it('validates an editor link', () => {
         const validatedLink = ConnectorFunctions.validateEditorLink(editorLink);
@@ -137,7 +20,6 @@ describe('Connector helpers', () => {
         iframe.setAttribute('frameBorder', '0');
         iframe.setAttribute('referrerpolicy', 'origin');
         ConnectorFunctions.setupFrame(iframe, editorLink);
-        console.log(iframe.ownerDocument);
         expect(iframe.srcdoc).toEqual('test');
         expect(iframe.title).toEqual('Chili-Editor');
     });

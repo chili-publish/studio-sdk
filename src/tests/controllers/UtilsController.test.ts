@@ -1,15 +1,11 @@
-import mockConfig from '../__mocks__/config';
-import { SDK } from '../../index';
 import { UtilsController } from '../../controllers/UtilsController';
 import * as calculationUtils from '../../utils/getCalculatedValue';
-import mockChild from '../__mocks__/MockEditorAPI';
 
-describe('utils controller', () => {
-    let mockedSDK: SDK;
+describe('UtilsController', () => {
+    let mockedUtilsController: UtilsController;
+
     beforeEach(() => {
-        mockedSDK = new SDK(mockConfig);
-        mockedSDK.editorAPI = mockChild;
-        mockedSDK.utils = new UtilsController();
+        mockedUtilsController = new UtilsController();
         jest.spyOn(calculationUtils, 'getCalculatedValue');
         jest.spyOn(calculationUtils, 'round');
     });
@@ -19,13 +15,13 @@ describe('utils controller', () => {
     });
 
     it('Makes calculation within a string', async () => {
-        const calc = await mockedSDK.utils.calculateFromString('1 * 1', 1);
+        const calc = await mockedUtilsController.calculateFromString('1 * 1', 1);
         expect(calc.parsedData).toEqual(1);
         expect(calculationUtils.getCalculatedValue).toHaveBeenCalledWith('1 * 1', 1);
     });
 
     it('Makes round operation', async () => {
-        const calc = await mockedSDK.utils.round(15.123, 3);
+        const calc = await mockedUtilsController.round(15.123, 3);
         expect(calc.parsedData).toEqual(15.123);
         expect(calculationUtils.round).toHaveBeenCalledWith(15.123, 3);
     });

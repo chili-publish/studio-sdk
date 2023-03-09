@@ -63,6 +63,7 @@ interface ConfigParameterTypes {
     onLayoutsChanged: (layouts: string) => void;
     onConnectorEvent: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
+    onPageSizeChanged: (scaleFactor: string) => void;
 }
 
 const Connect = (
@@ -122,6 +123,7 @@ const Connect = (
                 layoutListChanged: params.onLayoutsChanged,
                 connectorEvent: params.onConnectorEvent,
                 zoomChanged: params.onZoomChanged,
+                pageSizeChanged: params.onPageSizeChanged,
             },
         }),
     );

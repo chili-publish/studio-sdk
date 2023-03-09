@@ -238,6 +238,7 @@ export class SDK {
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,
                 onZoomChanged: this.subscriber.onZoomChanged,
+                onPageSizeChanged: this.subscriber.onPageSizeChanged,
             },
             this.setConnection,
             this.config.editorId,
