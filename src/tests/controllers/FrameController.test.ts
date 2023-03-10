@@ -6,6 +6,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
     ImageSourceTypeEnum,
+    BlendMode,
 } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
@@ -68,6 +69,7 @@ const mockedEditorApi: EditorAPI = {
     resetShapeFrameEnableStroke: async () => getEditorResponseData(castToEditorResponse(null)),
     resetShapeFrameStrokeColor: async () => getEditorResponseData(castToEditorResponse(null)),
     resetShapeFrameStrokeWeight: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameBlendMode: async () => getEditorResponseData(castToEditorResponse(null)),
     renameFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -126,6 +128,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetShapeFrameEnableStroke');
     jest.spyOn(mockedEditorApi, 'resetShapeFrameStrokeColor');
     jest.spyOn(mockedEditorApi, 'resetShapeFrameStrokeWeight');
+    jest.spyOn(mockedEditorApi, 'setFrameBlendMode');
     jest.spyOn(mockedEditorApi, 'renameFrame');
     jest.spyOn(mockedEditorApi, 'setImageSource');
 
@@ -422,6 +425,11 @@ describe('FrameController', () => {
         await mockedFrameController.resetShapeFrameStrokeWeight(frameId);
         expect(mockedEditorApi.resetShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId);
+    });
+    it('Should be possible to add blend mode to a specific frame', async () => {
+        await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);
+        expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(frameId, BlendMode.darken);
     });
 });
 

@@ -13,6 +13,7 @@ import {
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
+    BlendMode,
 } from '../../types/FrameTypes';
 
 /**
@@ -455,7 +456,9 @@ export class FrameController {
      */
     setFrameConstrainProportions = async (frameId: Id, constrainProportions: boolean) => {
         const res = await this.#editorAPI;
-        return res.setFrameConstrainProportions(frameId, constrainProportions).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setFrameConstrainProportions(frameId, constrainProportions)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -672,5 +675,16 @@ export class FrameController {
     resetShapeFrameStrokeWeight = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetShapeFrameStrokeWeight(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the blend mode of a specified shape frame
+     * @param frameId The ID of a specific frame
+     * @param blendMode The blend mode
+     * @returns
+     */
+    setFrameBlendMode = async (frameId: Id, blendMode: BlendMode) => {
+        const res = await this.#editorAPI;
+        return res.setFrameBlendMode(frameId, blendMode).then((result) => getEditorResponseData<null>(result));
     };
 }
