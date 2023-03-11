@@ -1,5 +1,6 @@
 import { EditorAPI, Id } from '../../../types/CommonTypes';
 import {
+    BlendMode,
     FitMode,
     FrameTypeEnum,
     ImageSourceTypeEnum,
@@ -59,6 +60,7 @@ const mockedEditorApi: EditorAPI = {
     reorderFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameZIndex: async () => getEditorResponseData(castToEditorResponse(null)),
     setShapeProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameBlendMode: async () => getEditorResponseData(castToEditorResponse(null)),
     renameFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -107,6 +109,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'reorderFrames');
     jest.spyOn(mockedEditorApi, 'setFrameZIndex');
     jest.spyOn(mockedEditorApi, 'setShapeProperties');
+    jest.spyOn(mockedEditorApi, 'setFrameBlendMode');
     jest.spyOn(mockedEditorApi, 'renameFrame');
     jest.spyOn(mockedEditorApi, 'setImageSource');
 
@@ -378,6 +381,11 @@ describe('FrameController', () => {
         await mockedFrameController.setShapeFrameStrokeWeight(frameId, 10);
         expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(5);
         expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ strokeWeight: 10 }));
+    });
+    it('Should be possible to add blend mode to a specific frame', async () => {
+        await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);
+        expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(frameId, BlendMode.darken);
     });
 });
 

@@ -13,6 +13,7 @@ import {
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
+    BlendMode,
 } from '../../types/FrameTypes';
 import { ColorUsage } from '../../types/ColorStyleTypes';
 import { ShapeProperties } from '../../types/DocumentTypes';
@@ -617,5 +618,16 @@ export class FrameController {
     setShapeFrameStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
         const properties: ShapeProperties = { strokeWeight: strokeWeight };
         return this.setShapeProperties(shapeFrameId, properties);
+    };
+
+    /**
+     * This method will set the blend mode of a specified shape frame
+     * @param frameId The ID of a specific frame
+     * @param blendMode The blend mode
+     * @returns
+     */
+    setFrameBlendMode = async (frameId: Id, blendMode: BlendMode) => {
+        const res = await this.#editorAPI;
+        return res.setFrameBlendMode(frameId, blendMode).then((result) => getEditorResponseData<null>(result));
     };
 }

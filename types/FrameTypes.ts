@@ -122,20 +122,7 @@ export enum VerticalAlign {
 }
 
 export enum BlendMode {
-    clear = 'clear',
-    src = 'src',
-    dst = 'dst',
-    srcOver = 'srcOver',
-    dstOver = 'dstOver',
-    srcIn = 'srcIn',
-    dstIn = 'dstIn',
-    srcOut = 'srcOut',
-    dstOut = 'dstOut',
-    srcATop = 'srcATop',
-    dstATop = 'dstATop',
-    xor = 'xor',
-    plus = 'plus',
-    modulate = 'modulate',
+    normal = 'normal',
     screen = 'screen',
     overlay = 'overlay',
     darken = 'darken',

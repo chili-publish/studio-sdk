@@ -97,24 +97,6 @@ export enum SelectedTextStyles {
     BLEND_MODE = 'blendMode',
     OPACITY = 'opacity',
 }
-export enum BlendModes {
-    NORMAL = 'normal',
-    DARKEN = 'darken',
-    MULTIPLY = 'multiply',
-    COLOR_BURN = 'color burn',
-    LIGHT = 'light',
-    SCREEN = 'screen',
-    COLOR_DODGE = 'color dodge',
-    OVERLAY = 'overlay',
-    SOFT_LIGHT = 'soft light',
-    HARD_LIGHT = 'hard light',
-    DIFFERENCE = 'difference',
-    EXCLUSION = 'exclusion',
-    HUE = 'hue',
-    SATURATION = 'saturation',
-    COLOR = 'color',
-    LUMINOSITY = 'luminosity',
-}
 
 export interface UpdateStyleType {
     path: { value: number | string | Record<string, unknown> | null | boolean | undefined };
