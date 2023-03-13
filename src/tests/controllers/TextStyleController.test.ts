@@ -1,6 +1,6 @@
 import { TextStyleController } from '../../controllers/TextStyleController';
 import { EditorAPI } from '../../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 describe('TextStyleController', () => {
     let mockedTextStyleController: TextStyleController;

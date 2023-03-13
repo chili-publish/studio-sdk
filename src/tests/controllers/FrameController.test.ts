@@ -1,17 +1,18 @@
 import { EditorAPI, Id } from '../../../types/CommonTypes';
 import {
+    BlendMode,
     FitMode,
     FrameTypeEnum,
+    ImageSourceTypeEnum,
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
-    ImageSourceTypeEnum,
-    BlendMode,
 } from '../../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
 
 let frameId: Id;
 
@@ -58,17 +59,7 @@ const mockedEditorApi: EditorAPI = {
     resetEnableCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     reorderFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameZIndex: async () => getEditorResponseData(castToEditorResponse(null)),
-    setShapeFrameType: async () => getEditorResponseData(castToEditorResponse(null)),
-    setShapeFrameEnableFill: async () => getEditorResponseData(castToEditorResponse(null)),
-    setShapeFrameFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
-    setShapeFrameEnableStroke: async () => getEditorResponseData(castToEditorResponse(null)),
-    setShapeFrameStrokeColor: async () => getEditorResponseData(castToEditorResponse(null)),
-    setShapeFrameStrokeWeight: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetShapeFrameEnableFill: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetShapeFrameFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetShapeFrameEnableStroke: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetShapeFrameStrokeColor: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetShapeFrameStrokeWeight: async () => getEditorResponseData(castToEditorResponse(null)),
+    setShapeProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameBlendMode: async () => getEditorResponseData(castToEditorResponse(null)),
     renameFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -117,17 +108,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetEnableCopyfitting');
     jest.spyOn(mockedEditorApi, 'reorderFrames');
     jest.spyOn(mockedEditorApi, 'setFrameZIndex');
-    jest.spyOn(mockedEditorApi, 'setShapeFrameType');
-    jest.spyOn(mockedEditorApi, 'setShapeFrameEnableFill');
-    jest.spyOn(mockedEditorApi, 'setShapeFrameFillColor');
-    jest.spyOn(mockedEditorApi, 'setShapeFrameEnableStroke');
-    jest.spyOn(mockedEditorApi, 'setShapeFrameStrokeColor');
-    jest.spyOn(mockedEditorApi, 'setShapeFrameStrokeWeight');
-    jest.spyOn(mockedEditorApi, 'resetShapeFrameEnableFill');
-    jest.spyOn(mockedEditorApi, 'resetShapeFrameFillColor');
-    jest.spyOn(mockedEditorApi, 'resetShapeFrameEnableStroke');
-    jest.spyOn(mockedEditorApi, 'resetShapeFrameStrokeColor');
-    jest.spyOn(mockedEditorApi, 'resetShapeFrameStrokeWeight');
+    jest.spyOn(mockedEditorApi, 'setShapeProperties');
     jest.spyOn(mockedEditorApi, 'setFrameBlendMode');
     jest.spyOn(mockedEditorApi, 'renameFrame');
     jest.spyOn(mockedEditorApi, 'setImageSource');
@@ -371,60 +352,35 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(3);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, null);
     });
-    it('Should be possible to set the shape frame type', async () => {
-        await mockedFrameController.setShapeFrameType(frameId, ShapeType.polygon);
-        expect(mockedEditorApi.setShapeFrameType).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeFrameType).toHaveBeenCalledWith(frameId, ShapeType.polygon);
-    });
     it('Should be possible to set the shape frame enable fill', async () => {
         await mockedFrameController.setShapeFrameEnableFill(frameId, true);
-        expect(mockedEditorApi.setShapeFrameEnableFill).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeFrameEnableFill).toHaveBeenCalledWith(frameId, true);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ enableFill: true }));
     });
     it('Should be possible to set the shape frame fill color', async () => {
-        await mockedFrameController.setShapeFrameFillColor(frameId, 9000);
-        expect(mockedEditorApi.setShapeFrameFillColor).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeFrameFillColor).toHaveBeenCalledWith(frameId, 9000);
+        const color = { color: { colorType: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
+        await mockedFrameController.setShapeFrameFillColor(frameId, color);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ fillColor: color }));
     });
     it('Should be possible to set the stroke on a shapeFrame', async () => {
         await mockedFrameController.setShapeFrameEnableStroke(frameId, true);
-        expect(mockedEditorApi.setShapeFrameEnableStroke).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeFrameEnableStroke).toHaveBeenCalledWith(frameId, true);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
+            frameId,
+            JSON.stringify({ enableStroke: true }),
+        );
     });
     it('Should be possible to set the stroke color', async () => {
-        await mockedFrameController.setShapeFrameStrokeColor(frameId, 9000);
-        expect(mockedEditorApi.setShapeFrameStrokeColor).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeFrameStrokeColor).toHaveBeenCalledWith(frameId, 9000);
+        const color = { color: { colorType: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
+        await mockedFrameController.setShapeFrameStrokeColor(frameId, color);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(4);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ fillColor: color }));
     });
     it('Should be possible to set the strokeweight', async () => {
         await mockedFrameController.setShapeFrameStrokeWeight(frameId, 10);
-        expect(mockedEditorApi.setShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId, 10);
-    });
-    it('Should be possible to reset the shape enable fill', async () => {
-        await mockedFrameController.resetShapeFrameEnableFill(frameId);
-        expect(mockedEditorApi.resetShapeFrameEnableFill).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetShapeFrameEnableFill).toHaveBeenCalledWith(frameId);
-    });
-    it('Should be possible to reset the shape fill color', async () => {
-        await mockedFrameController.resetShapeFrameFillColor(frameId);
-        expect(mockedEditorApi.resetShapeFrameFillColor).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetShapeFrameFillColor).toHaveBeenCalledWith(frameId);
-    });
-    it('Should be possible to reset the stroke', async () => {
-        await mockedFrameController.resetShapeFrameEnableStroke(frameId);
-        expect(mockedEditorApi.resetShapeFrameEnableStroke).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetShapeFrameEnableStroke).toHaveBeenCalledWith(frameId);
-    });
-    it('Should be possible to reset the stroke color', async () => {
-        await mockedFrameController.resetShapeFrameStrokeColor(frameId);
-        expect(mockedEditorApi.resetShapeFrameStrokeColor).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetShapeFrameStrokeColor).toHaveBeenCalledWith(frameId);
-    });
-    it('Should be possible to reset the strokeweight', async () => {
-        await mockedFrameController.resetShapeFrameStrokeWeight(frameId);
-        expect(mockedEditorApi.resetShapeFrameStrokeWeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetShapeFrameStrokeWeight).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(5);
+        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ strokeWeight: 10 }));
     });
     it('Should be possible to add blend mode to a specific frame', async () => {
         await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);

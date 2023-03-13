@@ -8,13 +8,15 @@ import {
     FrameTypeEnum,
     ImageFrameConnectorSource,
     ImageFrameSource,
-    ImageSourceTypeEnum,
     ImageFrameUrlSource,
+    ImageSourceTypeEnum,
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
     BlendMode,
 } from '../../types/FrameTypes';
+import { ColorUsage } from '../../types/ColorStyleTypes';
+import { ShapeProperties } from '../../types/DocumentTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -447,7 +449,6 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
-
     /**
      * This method will set the constrainProportions property of a specified frame.
      * @param frameId The ID of the frame that needs to get updated.
@@ -552,14 +553,16 @@ export class FrameController {
     };
 
     /**
-     * This method will set the shapeType property of a specified shape frame.
+     * This method updates properties of the shape
      * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param shapeType The new shapeType that you want to set to the shapeFrame.
+     * @param properties A property to update
      * @returns
      */
-    setShapeFrameType = async (shapeFrameId: Id, shapeType: ShapeType) => {
+    private setShapeProperties = async (shapeFrameId: Id, properties: ShapeProperties) => {
         const res = await this.#editorAPI;
-        return res.setShapeFrameType(shapeFrameId, shapeType).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setShapeProperties(shapeFrameId, JSON.stringify(properties))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -569,10 +572,8 @@ export class FrameController {
      * @returns
      */
     setShapeFrameEnableFill = async (shapeFrameId: Id, enableFill: boolean) => {
-        const res = await this.#editorAPI;
-        return res
-            .setShapeFrameEnableFill(shapeFrameId, enableFill)
-            .then((result) => getEditorResponseData<null>(result));
+        const properties: ShapeProperties = { enableFill: enableFill };
+        return this.setShapeProperties(shapeFrameId, properties);
     };
 
     /**
@@ -581,11 +582,9 @@ export class FrameController {
      * @param fillColor The new shape fill color that you want to set to the shapeFrame.
      * @returns
      */
-    setShapeFrameFillColor = async (shapeFrameId: Id, fillColor: number) => {
-        const res = await this.#editorAPI;
-        return res
-            .setShapeFrameFillColor(shapeFrameId, fillColor)
-            .then((result) => getEditorResponseData<null>(result));
+    setShapeFrameFillColor = async (shapeFrameId: Id, fillColor: ColorUsage) => {
+        const properties: ShapeProperties = { fillColor: fillColor };
+        return this.setShapeProperties(shapeFrameId, properties);
     };
 
     /**
@@ -595,10 +594,8 @@ export class FrameController {
      * @returns
      */
     setShapeFrameEnableStroke = async (shapeFrameId: Id, enableStroke: boolean) => {
-        const res = await this.#editorAPI;
-        return res
-            .setShapeFrameEnableStroke(shapeFrameId, enableStroke)
-            .then((result) => getEditorResponseData<null>(result));
+        const properties: ShapeProperties = { enableStroke: enableStroke };
+        return this.setShapeProperties(shapeFrameId, properties);
     };
 
     /**
@@ -607,11 +604,9 @@ export class FrameController {
      * @param strokeColor The new shape stroke color that you want to set to the shapeFrame.
      * @returns
      */
-    setShapeFrameStrokeColor = async (shapeFrameId: Id, strokeColor: number) => {
-        const res = await this.#editorAPI;
-        return res
-            .setShapeFrameStrokeColor(shapeFrameId, strokeColor)
-            .then((result) => getEditorResponseData<null>(result));
+    setShapeFrameStrokeColor = async (shapeFrameId: Id, strokeColor: ColorUsage) => {
+        const properties: ShapeProperties = { strokeColor: strokeColor };
+        return this.setShapeProperties(shapeFrameId, properties);
     };
 
     /**
@@ -621,60 +616,8 @@ export class FrameController {
      * @returns
      */
     setShapeFrameStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
-        const res = await this.#editorAPI;
-        return res
-            .setShapeFrameStrokeWeight(shapeFrameId, strokeWeight)
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the shape fill visibility to the frame's original value
-     * @param frameId The ID of a specific frame
-     * @returns
-     */
-    resetShapeFrameEnableFill = async (frameId: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetShapeFrameEnableFill(frameId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the shape fill color to the frame's original value
-     * @param frameId The ID of a specific frame
-     * @returns
-     */
-    resetShapeFrameFillColor = async (frameId: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetShapeFrameFillColor(frameId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the shape stroke visibility to the frame's original value
-     * @param frameId The ID of a specific frame
-     * @returns
-     */
-    resetShapeFrameEnableStroke = async (frameId: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetShapeFrameEnableStroke(frameId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the frame stroke color to the frame's original value
-     * @param frameId The ID of a specific frame
-     * @returns
-     */
-    resetShapeFrameStrokeColor = async (frameId: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetShapeFrameStrokeColor(frameId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the frame stroke weight to the frame's original value
-     * @param frameId The ID of a specific frame
-     * @returns
-     */
-    resetShapeFrameStrokeWeight = async (frameId: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetShapeFrameStrokeWeight(frameId).then((result) => getEditorResponseData<null>(result));
+        const properties: ShapeProperties = { strokeWeight: strokeWeight };
+        return this.setShapeProperties(shapeFrameId, properties);
     };
 
     /**

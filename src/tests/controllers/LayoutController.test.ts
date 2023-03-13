@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
 
 let mockedFontController: LayoutController;
