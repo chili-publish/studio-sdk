@@ -1,5 +1,5 @@
-import {VerticalAlign} from "./FrameTypes";
-import {ColorUsage} from "./ColorStyleTypes";
+import { VerticalAlign } from "./FrameTypes";
+import { ColorUsage } from "./ColorStyleTypes";
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -69,6 +69,42 @@ export interface AppearanceProperties {
     strokeColor?: string;
     dropShadowColor?: string;
 }
+
+export interface SelectedTextStyle {
+    paragraphStyleId?: string;
+    characterStyleId?: string;
+    fontKey?: string;
+    fontSize: number;
+    typographicCase: Case;
+    kerningOn: boolean;
+    subSuperScript: Scripting;
+    trackingLeft: string;
+    trackingRight: string;
+    paragraphStartIndent: string;
+    paragraphEndIndent: string;
+    paragraphSpaceBefore: string;
+    paragraphSpaceAfter: string;
+    textIndent: string;
+    alignToBaseLine: boolean;
+    baselineShiftValue: string;
+    lineHeight: number;
+    verticalAlign: VerticalAlign;
+    copyfittingScale: number;
+    textAlign: HorizontalAlign;
+    textAlignLast: HorizontalAlign;
+    textOverprint: boolean;
+    color: DisplayColor;
+    underline: boolean;
+    lineThrough: boolean;
+}
+
+export enum HorizontalAlign {
+    left = 'left',
+    center = 'center',
+    right = 'right',
+    justify = 'justify',
+}
+
 export enum SelectedTextStyleSections {
     STYLE = 'textStyle',
     PROPERTIES = 'textProperties',
