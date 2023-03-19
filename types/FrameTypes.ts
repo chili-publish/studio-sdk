@@ -1,4 +1,5 @@
 // FramePropertiesDto
+import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 
 export type FrameLayoutType = {
@@ -66,6 +67,14 @@ export type ShapeFrame = {
     frameType: FrameTypeEnum.shape;
     blendMode: BlendMode;
     constrainProportions: boolean;
+    shapeProperties: {
+        enableFill: boolean;
+        fillColor: ColorUsage;
+        enableStroke: boolean;
+        strokeWeight: number;
+        strokeColor: ColorUsage;
+        src: { shapeTypes: ShapeType };
+    };
 };
 
 export type TextFrame = {
