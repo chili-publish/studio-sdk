@@ -74,7 +74,7 @@ export type ShapeFrame = {
         strokeWeight: number;
         strokeColor: ColorUsage;
     };
-    src: { shapeTypes: ShapeType };
+    src: { shapeType: ShapeType };
 };
 
 export type TextFrame = {
