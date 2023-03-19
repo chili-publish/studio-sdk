@@ -73,8 +73,8 @@ export type ShapeFrame = {
         enableStroke: boolean;
         strokeWeight: number;
         strokeColor: ColorUsage;
-        src: { shapeTypes: ShapeType };
     };
+    src: { shapeTypes: ShapeType };
 };
 
 export type TextFrame = {
