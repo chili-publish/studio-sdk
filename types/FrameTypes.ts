@@ -63,7 +63,6 @@ export type ImageFrame = {
 export type ShapeFrame = {
     frameId: Id;
     frameName: string;
-    shapeType: ShapeType;
     frameType: FrameTypeEnum.shape;
     blendMode: BlendMode;
     constrainProportions: boolean;
@@ -74,7 +73,9 @@ export type ShapeFrame = {
         strokeWeight: number;
         strokeColor: ColorUsage;
     };
-    src: { shapeType: ShapeType };
+    src: { 
+        shapeType: ShapeType 
+    };
 };
 
 export type TextFrame = {
