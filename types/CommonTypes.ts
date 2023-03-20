@@ -12,6 +12,7 @@ import { DocumentFont } from './FontTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
+import { SelectedTextStyle } from './TextStyleTypes';
 
 export type Id = string;
 
@@ -32,7 +33,7 @@ export type ConfigType = {
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
-    onSelectedTextStyleChanged?: (styles: any) => void;
+    onSelectedTextStyleChanged?: (styles: SelectedTextStyle) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
     onCharacterStylesChanged?: (characterStyles: CharacterStyle[]) => void;

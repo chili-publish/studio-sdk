@@ -1,5 +1,5 @@
 import { EditorAPI } from '../../types/CommonTypes';
-import { TextStyleUpdateType } from '../../types/TextStyleTypes';
+import { SelectedTextStyle, TextStyleUpdateType } from '../../types/TextStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -40,5 +40,16 @@ export class TextStyleController {
     clearTextStyleProperties = async () => {
         const res = await this.#editorAPI;
         return res.selectedTextStyleClean().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method gets a selected Text's style properties
+     * @returns
+    */
+    getSelectedTextStyle = async () => {
+        const res = await this.#editorAPI;
+        return res
+            .getSelectedTextStyle()
+            .then((result) => getEditorResponseData<SelectedTextStyle>(result));
     };
 }
