@@ -5,7 +5,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [14.17]
+                node-version: [18]
         steps:
             - uses: FranzDiebold/github-env-vars-action@v2
             - uses: actions/checkout@v1
