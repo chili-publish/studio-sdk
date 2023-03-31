@@ -1,8 +1,8 @@
-import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
+import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 import { ParagraphStyleController } from '../../controllers/ParagraphStyleController';
-import { ParagraphStyleUpdate } from '../../../types/ParagraphStyleTypes';
-import { Alignment, Case, Scripting } from '../../../types/TextStyleTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
+import { Alignment, Case, Scripting } from '../../types/TextStyleTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedParagraphStyleController: ParagraphStyleController;

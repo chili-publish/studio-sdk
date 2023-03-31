@@ -1,5 +1,5 @@
-import { EditorAPI } from '../../types/CommonTypes';
-import { Variable, VariableMoves, ImageVariableSource, VariableType } from '../../types/VariableTypes';
+import { EditorAPI } from '../types/CommonTypes';
+import { Variable, VariableMoves, ImageVariableSource, VariableType } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

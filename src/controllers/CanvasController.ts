@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

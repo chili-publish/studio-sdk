@@ -1,5 +1,5 @@
-import { EditorAPI } from '../../types/CommonTypes';
-import { SelectedTextStyle, TextStyleUpdateType } from '../../types/TextStyleTypes';
+import { EditorAPI } from '../types/CommonTypes';
+import { SelectedTextStyle, TextStyleUpdateType } from '../types/TextStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

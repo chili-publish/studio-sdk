@@ -1,6 +1,6 @@
 import { ToolType } from '../../index';
 import { ToolController } from '../../controllers/ToolController';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 describe('ToolController', () => {

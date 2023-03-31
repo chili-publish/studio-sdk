@@ -1,4 +1,4 @@
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { DebugController } from '../../controllers/DebugController';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 

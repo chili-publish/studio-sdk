@@ -2,13 +2,13 @@ import { ActionEditorEvent, DocumentAction, LayoutType } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
-import { FrameAnimationType } from '../../../types/AnimationTypes';
-import { VariableType } from '../../../types/VariableTypes';
+import { FrameAnimationType } from '../../types/AnimationTypes';
+import { VariableType } from '../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
-import { ConnectorStateType } from '../../../types/ConnectorTypes';
-import type { PageSize } from '../../../types/PageTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { ConnectorStateType } from '../../types/ConnectorTypes';
+import type { PageSize } from '../../types/PageTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedAnimation: FrameAnimationType;

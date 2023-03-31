@@ -1,5 +1,5 @@
 import { TextStyleController } from '../../controllers/TextStyleController';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 describe('TextStyleController', () => {

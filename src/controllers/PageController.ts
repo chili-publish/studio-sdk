@@ -1,6 +1,6 @@
-import { EditorAPI, Id } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Page } from '../../types/PageTypes';
+import { Page } from '../types/PageTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 /**

@@ -1,5 +1,5 @@
-import { EditorAPI, Id } from '../../types/CommonTypes';
-import type { ChiliDocument, DocumentError } from '../../types/DocumentTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
+import type { ChiliDocument, DocumentError } from '../types/DocumentTypes';
 import { renderURLs, DownloadFormats } from '../utils/enums';
 
 import { getFetchURL } from '../utils/getFetchUrl';

@@ -1,5 +1,5 @@
-import { EditorAPI, Id } from '../../types/CommonTypes';
-import { AddDocumentFont, DocumentFont } from '../../types/FontTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
+import { AddDocumentFont, DocumentFont } from '../types/FontTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

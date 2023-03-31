@@ -1,4 +1,4 @@
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 

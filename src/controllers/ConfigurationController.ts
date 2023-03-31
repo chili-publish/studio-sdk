@@ -1,6 +1,6 @@
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The ConfigurationController allows setting editor session data. This data is not stored in the document and

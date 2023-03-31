@@ -1,5 +1,5 @@
 import { ExperimentController } from '../../controllers/ExperimentController';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedExperimentController: ExperimentController;

@@ -1,5 +1,5 @@
 import { ConfigurationController } from '../../controllers/ConfigurationController';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedConfigurationController: ConfigurationController;

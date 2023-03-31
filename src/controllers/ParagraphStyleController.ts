@@ -1,5 +1,5 @@
-import { EditorAPI } from '../../types/CommonTypes';
-import { ParagraphStyle, ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
+import { EditorAPI } from '../types/CommonTypes';
+import { ParagraphStyle, ParagraphStyleUpdate } from '../types/ParagraphStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

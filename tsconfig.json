@@ -47,8 +47,8 @@
             "src/controllers/UndoManagerController.ts",
             "src/controllers/UtilsController.ts",
             "src/controllers/VariableController.ts",
-            "types/DocumentTypes.ts",
-            "types/MediaConnectorTypes.ts"
+            "src/types/DocumentTypes.ts",
+            "src/types/MediaConnectorTypes.ts"
         ],
         "out": "docs",
         "excludePrivate": true
