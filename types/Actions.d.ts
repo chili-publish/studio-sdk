@@ -106,9 +106,6 @@ declare module 'grafx-studio-actions' {
         type: "group";
     }
 
-    export function isTextVariable(variable: Variable): boolean;
-
-    export function getDisplayValue(variable: Variable): string;
 
     interface FramesController {
         moveFrame: (frameId: string, x: number, y: number) => void;
