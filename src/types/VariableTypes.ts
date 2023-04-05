@@ -32,7 +32,7 @@ export interface Variable {
     isHidden: boolean;
     isReadonly: boolean;
     isRequired: boolean;
-};
+}
 
 export interface ImageVariable extends Variable {
     occurrences: number;

@@ -4,7 +4,7 @@ declare module 'grafx-studio-actions' {
 
     export interface ActionEventData {
         type: EditorEventType;
-        source: FrameProperties|Variable|AlternateLayout;
+        source: FrameProperties | Variable | AlternateLayout;
     }
 
     /**
@@ -54,16 +54,31 @@ declare module 'grafx-studio-actions' {
         fit,
     }
 
-    interface AlternateLayout{
-          readonly layoutId: string,
-          readonly layoutName: string,
-          readonly width: number,
-          readonly height: number,
-          readonly animated: boolean,
+    interface AlternateLayout {
+        readonly layoutId: string,
+        readonly layoutName: string,
+        readonly width: number,
+        readonly height: number,
+        readonly animated: boolean,
     }
 
-    interface VariableSource {
+    enum VariableSourceType {
+        url = 'url',
+        mediaConnector = 'mediaConnector',
     }
+
+    interface UrlVariableSource {
+        url: string;
+        sourceType: VariableSourceType.url;
+    }
+    
+    interface MediaConnectorVariableSource {
+        connectorId: string;
+        assetId: string;
+        sourceType: VariableSourceType.mediaConnector;
+    }
+
+    type VariableSource = UrlVariableSource | MediaConnectorVariableSource;
 
     type Variable =
         | ShortTextVariable

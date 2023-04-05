@@ -1,5 +1,5 @@
-import { VerticalAlign } from "./FrameTypes";
-import { ColorUsage } from "./ColorStyleTypes";
+import { VerticalAlign } from './FrameTypes';
+import { ColorUsage } from './ColorStyleTypes';
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -31,7 +31,7 @@ export enum Scripting {
 
 export type DisplayColor = ColorUsage & {
     isApplied: boolean;
-}
+};
 export interface TextProperties {
     fontKey?: string;
     fontStyle?: FontWeights;

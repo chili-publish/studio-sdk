@@ -44,14 +44,18 @@ export type ConnectorRegistration = {
 
 export enum ConnectorRegistrationSource {
     url = 'url',
-};
+}
 
 export class ConnectorMapping {
-    
     name: string;
     value: string;
 
-    constructor(mapTo: ConnectorMappingTarget, contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string) {
+    constructor(
+        mapTo: ConnectorMappingTarget,
+        contextProperty: string,
+        mapFrom: ConnectorMappingSource,
+        sourceValue: string,
+    ) {
         this.name = `${mapTo}.${contextProperty}`;
         this.value = `${mapFrom}.${sourceValue}`;
     }
@@ -60,12 +64,12 @@ export class ConnectorMapping {
 export type ConnectorState = {
     id: string;
     type: ConnectorStateType;
-}
+};
 
 export type ConnectorEvent = {
     id: string;
     type: ConnectorEventType;
-}
+};
 
 export type QueryPage<T> = {
     nextPageToken?: string;
@@ -74,7 +78,7 @@ export type QueryPage<T> = {
 
 export enum ConnectorMappingTarget {
     query = 'query',
-    download = 'download'
+    download = 'download',
 }
 
 export enum ConnectorMappingSource {
@@ -94,7 +98,7 @@ export enum ConnectorStateType {
     loaded = 'loaded',
 
     /**
-     * Connector is running in QuickJS. 
+     * Connector is running in QuickJS.
      */
 
     running = 'running',
@@ -106,11 +110,11 @@ export enum ConnectorStateType {
     ready = 'ready',
 
     /**
-     * Something went wrong, the connector is in error state. 
+     * Something went wrong, the connector is in error state.
      * Check the error message for more information.
      */
     error = 'error',
-};
+}
 
 export enum ConnectorEventType {
     /**
@@ -136,8 +140,8 @@ export enum ConnectorEventType {
     reloadRequired = 'reloadRequired',
 
     /**
-     * Connector is unregistered and no longer exists inside the editor engine. 
-     * Don't use the 'connectorId' after receiving this event. 
+     * Connector is unregistered and no longer exists inside the editor engine.
+     * Don't use the 'connectorId' after receiving this event.
      */
     unloaded = 'unloaded',
-};
+}

@@ -1,5 +1,5 @@
 import { Alignment, Case, Scripting } from './TextStyleTypes';
-import {Color, ColorUpdate, ColorUsage, ColorUsageUpdate} from './ColorStyleTypes';
+import { Color, ColorUpdate, ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 
 export type ParagraphStyle = {
     id: string;

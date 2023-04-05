@@ -1,5 +1,5 @@
-import { Case, Scripting} from "./TextStyleTypes";
-import {ColorUsage, ColorUsageUpdate} from "./ColorStyleTypes";
+import { Case, Scripting } from './TextStyleTypes';
+import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 
 export type CharacterStyle = {
     id: string;
@@ -23,7 +23,7 @@ export type CharacterStyle = {
     fillColorApplied?: boolean | null;
     underline: boolean;
     lineThrough: boolean;
-}
+};
 
 export type CharacterStyleUpdate = {
     fontKey: {
