@@ -1,6 +1,3 @@
-import { ParagraphStyle } from './ParagraphStyleTypes';
-import { CharacterStyle } from './CharacterStyleTypes';
-
 export enum ColorType {
     rgb = 'rgb',
     cmyk = 'cmyk',
