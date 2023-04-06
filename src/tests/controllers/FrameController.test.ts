@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../../../types/CommonTypes';
+import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
     BlendMode,
     FitMode,
@@ -7,12 +7,12 @@ import {
     ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
-} from '../../../types/FrameTypes';
+} from '../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
+import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 let frameId: Id;
 

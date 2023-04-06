@@ -9,7 +9,7 @@ import { SubscriberController } from './controllers/SubscriberController';
 import { DocumentController } from './controllers/DocumentController';
 import { DebugController } from './controllers/DebugController';
 
-import type { ConfigType, EditorAPI } from '../types/CommonTypes';
+import type { ConfigType, EditorAPI } from './types/CommonTypes';
 import { VariableController } from './controllers/VariableController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
@@ -18,7 +18,7 @@ import { ColorStyleController } from './controllers/ColorStyleController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
 import { ConfigurationController } from './controllers/ConfigurationController';
 import { MediaConnectorController } from './controllers/MediaConnectorController';
-import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
 import { FontController } from './controllers/FontController';
@@ -27,7 +27,7 @@ import { FontConnectorController } from './controllers/FontConnectorController';
 import { ExperimentController } from './controllers/ExperimentController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { CanvasController } from './controllers/CanvasController';
-import { DocumentType } from '../types/DocumentTypes';
+import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
@@ -38,8 +38,8 @@ export {
     EaseTypes,
     TweenTypes,
     BasicAnimationsEmphasisStyles,
-} from '../types/AnimationTypes';
-export { LayoutType } from '../types/LayoutTypes';
+} from './types/AnimationTypes';
+export { LayoutType } from './types/LayoutTypes';
 export {
     BlendMode,
     FrameTypeEnum,
@@ -49,15 +49,15 @@ export {
     FitMode,
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
-} from '../types/FrameTypes';
-export { VariableType, ImageVariableSourceType } from '../types/VariableTypes';
+} from './types/FrameTypes';
+export { VariableType, ImageVariableSourceType } from './types/VariableTypes';
 
 export type {
     LayoutPropertiesType,
     FrameProperties,
     LayoutWithFrameProperties,
     LayoutListItemType,
-} from '../types/LayoutTypes';
+} from './types/LayoutTypes';
 export type {
     FrameLayoutType,
     FrameType,
@@ -69,7 +69,7 @@ export type {
     ShapeType,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
-} from '../types/FrameTypes';
+} from './types/FrameTypes';
 export type {
     Variable,
     GroupVariable,
@@ -80,17 +80,17 @@ export type {
     UrlImageVariableSource,
     MediaConnectorImageVariableSource,
     ImageVariableSource,
-} from '../types/VariableTypes';
-export type { Color, DocumentColor, ColorUpdate } from '../types/ColorStyleTypes';
+} from './types/VariableTypes';
+export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 
-export type { DocumentError } from '../types/DocumentTypes';
+export type { DocumentError } from './types/DocumentTypes';
 export type {
     FrameAnimationType,
     FrameAnimationPropertiesType,
     EaseTweenCombinationType,
     AnimationPlaybackType,
     BasicAnimationsType,
-} from '../types/AnimationTypes';
+} from './types/AnimationTypes';
 export type {
     ConfigType,
     InitialStateType,
@@ -99,7 +99,7 @@ export type {
     SelectedLayoutFrame,
     MetaData,
     Id,
-} from '../types/CommonTypes';
+} from './types/CommonTypes';
 
 export type {
     TextProperties,
@@ -108,13 +108,13 @@ export type {
     TextStyleUpdateType,
     UpdateStyleType,
     DisplayColor,
-} from '../types/TextStyleTypes';
+} from './types/TextStyleTypes';
 
-export type { ParagraphStyle, ParagraphStyleUpdate } from '../types/ParagraphStyleTypes';
-export type { CharacterStyle, CharacterStyleUpdate } from '../types/CharacterStyleTypes';
-export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from '../types/ColorStyleTypes';
+export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
+export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
+export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
 
-export type { DocumentFont, AddDocumentFont } from '../types/FontTypes';
+export type { DocumentFont, AddDocumentFont } from './types/FontTypes';
 
 export {
     SelectedTextStyleSections,
@@ -124,15 +124,15 @@ export {
     TextPosition,
     Case,
     Scripting,
-} from '../types/TextStyleTypes';
-export { ColorType } from '../types/ColorStyleTypes';
-export * from '../types/MediaConnectorTypes';
-export * from '../types/FontConnectorTypes';
-export * from '../types/ConnectorTypes';
+} from './types/TextStyleTypes';
+export { ColorType } from './types/ColorStyleTypes';
+export * from './types/MediaConnectorTypes';
+export * from './types/FontConnectorTypes';
+export * from './types/ConnectorTypes';
 
-export { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
-export * from '../types/ActionTypes';
+export * from './types/ActionTypes';
 
 let connection: Connection;
 

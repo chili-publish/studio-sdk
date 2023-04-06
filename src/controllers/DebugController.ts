@@ -1,6 +1,6 @@
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DebugData } from '../../types/DebugTypes';
+import { DebugData } from '../types/DebugTypes';
 
 /**
  * The DebugController is responsible for all communication regarding Debugging.

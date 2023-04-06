@@ -1,21 +1,25 @@
-enum CallStatus { loading= 'loading', success = 'success', error = 'error' }
-
-type DebugVar  = {
-    name: string;
-    type: string
+enum CallStatus {
+    loading = 'loading',
+    success = 'success',
+    error = 'error',
 }
+
+type DebugVar = {
+    name: string;
+    type: string;
+};
 type ApiResponse = {
-     status: number;
+    status: number;
     error: string;
     data: string;
     type: string;
-}
+};
 export type DebugData = {
     title: string;
     vars: DebugVar[];
-    response: ApiResponse
+    response: ApiResponse;
     startTime: Date;
     endTime: Date;
     incoming: boolean;
-    status:CallStatus
-}
+    status: CallStatus;
+};

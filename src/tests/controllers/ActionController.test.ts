@@ -1,5 +1,5 @@
-import { ActionEditorEvent, ActionTrigger } from '../../../types/ActionTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { ActionEditorEvent, ActionTrigger } from '../../types/ActionTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { ActionController } from '../../controllers/ActionController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 

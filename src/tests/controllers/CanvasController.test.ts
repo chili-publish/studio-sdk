@@ -1,5 +1,5 @@
 import { CanvasController } from '../../controllers/CanvasController';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedCanvasController: CanvasController;

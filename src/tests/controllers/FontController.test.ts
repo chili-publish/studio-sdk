@@ -1,6 +1,6 @@
 import { FontController } from '../../controllers/FontController';
-import { AddDocumentFont } from '../../../types/FontTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { AddDocumentFont } from '../../types/FontTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedFontController: FontController;

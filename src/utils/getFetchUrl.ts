@@ -1,4 +1,4 @@
-import { Id } from '../../types/CommonTypes';
+import { Id } from '../types/CommonTypes';
 import { renderURLs } from './enums';
 
 export const getFetchURL = (format: string, layoutId: Id) =>

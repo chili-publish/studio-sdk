@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../../../types/CommonTypes';
+import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';

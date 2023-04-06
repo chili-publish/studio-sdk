@@ -1,7 +1,7 @@
-import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../../types/CommonTypes';
+import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout } from '../../types/LayoutTypes';
+import { Layout } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 
 /**

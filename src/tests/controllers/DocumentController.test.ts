@@ -2,7 +2,7 @@ import { mockDocument } from '../__mocks__/mockDocument';
 import { DocumentController } from '../../controllers/DocumentController';
 import * as FetchHelper from '../../utils/getFetchUrl';
 import { DownloadFormats } from '../../utils/enums';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedDocumentController: DocumentController;

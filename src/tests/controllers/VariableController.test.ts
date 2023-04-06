@@ -1,6 +1,6 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariableSourceType, VariableType } from '../../../types/VariableTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { ImageVariableSourceType, VariableType } from '../../types/VariableTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 afterEach(() => {

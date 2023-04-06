@@ -1,6 +1,6 @@
 import { ColorStyleController } from '../../controllers/ColorStyleController';
-import { ColorType } from '../../../types/ColorStyleTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { ColorType } from '../../types/ColorStyleTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedColorStyleController: ColorStyleController;

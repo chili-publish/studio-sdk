@@ -1,5 +1,5 @@
-import { FrameAnimationPropertiesType } from '../../types/AnimationTypes';
-import { EditorAPI, Id } from '../../types/CommonTypes';
+import { FrameAnimationPropertiesType } from '../types/AnimationTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

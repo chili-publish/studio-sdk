@@ -1,6 +1,3 @@
-import {ParagraphStyle} from "./ParagraphStyleTypes";
-import {CharacterStyle} from "./CharacterStyleTypes";
-
 export enum ColorType {
     rgb = 'rgb',
     cmyk = 'cmyk',
@@ -18,21 +15,21 @@ export type ColorUpdate = {
     g: number;
     b: number;
     colorType: ColorType;
-}
+};
 
 export type Color = {
-    colorType:ColorType
+    colorType: ColorType;
     r: number;
     g: number;
     b: number;
     displayValue?: string;
-}
+};
 
 export type DocumentColor = {
     id: string;
     name: string;
     color: Color;
-}
+};
 
 export type ColorUsageUpdate = {
     /**

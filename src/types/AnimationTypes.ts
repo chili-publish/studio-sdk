@@ -1,4 +1,4 @@
-import { Id } from "./CommonTypes";
+import { Id } from './CommonTypes';
 
 export enum SlideDirections {
     top = 'top',

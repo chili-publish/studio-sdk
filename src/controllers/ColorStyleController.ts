@@ -1,5 +1,5 @@
-import { EditorAPI } from '../../types/CommonTypes';
-import { ColorUpdate, DocumentColor } from '../../types/ColorStyleTypes';
+import { EditorAPI } from '../types/CommonTypes';
+import { ColorUpdate, DocumentColor } from '../types/ColorStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

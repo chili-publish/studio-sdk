@@ -4,8 +4,8 @@ import {
     ConnectorMappingSource,
     ConnectorMappingTarget,
     ConnectorRegistrationSource,
-} from '../../../types/ConnectorTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+} from '../../types/ConnectorTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedConnectorController: ConnectorController;

@@ -1,4 +1,4 @@
-import { ConfigType } from '../../types/CommonTypes';
+import { ConfigType } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**

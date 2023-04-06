@@ -1,8 +1,8 @@
 import { CharacterStyleController } from '../../controllers/CharacterStyleController';
-import { Case, Scripting } from '../../../types/TextStyleTypes';
-import { ColorType, ColorUsageType } from '../../../types/ColorStyleTypes';
-import { CharacterStyleUpdate } from '../../../types/CharacterStyleTypes';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { Case, Scripting } from '../../types/TextStyleTypes';
+import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
+import { CharacterStyleUpdate } from '../../types/CharacterStyleTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedCharacterStyleController: CharacterStyleController;

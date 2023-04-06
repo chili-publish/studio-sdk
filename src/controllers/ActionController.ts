@@ -1,5 +1,5 @@
-import { ActionTrigger } from '../../types/ActionTypes';
-import { EditorAPI, Id } from '../../types/CommonTypes';
+import { ActionTrigger } from '../types/ActionTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

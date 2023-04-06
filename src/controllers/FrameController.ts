@@ -1,4 +1,4 @@
-import type { EditorAPI, Id } from '../../types/CommonTypes';
+import type { EditorAPI, Id } from '../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
@@ -14,9 +14,9 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
     BlendMode,
-} from '../../types/FrameTypes';
-import { ColorUsage } from '../../types/ColorStyleTypes';
-import { ShapeProperties } from '../../types/DocumentTypes';
+} from '../types/FrameTypes';
+import { ColorUsage } from '../types/ColorStyleTypes';
+import { ShapeProperties } from '../types/DocumentTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.

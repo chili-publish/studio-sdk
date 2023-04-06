@@ -1,4 +1,4 @@
-import { FrameAnimationType } from '../../../types/AnimationTypes';
+import { FrameAnimationType } from '../../types/AnimationTypes';
 
 export const mockFrameAnimation: FrameAnimationType = {
     animation: {

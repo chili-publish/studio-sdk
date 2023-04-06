@@ -4,7 +4,7 @@ import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties } f
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { DocumentAction, ToolType } from '../src';
+import { DocumentAction, ToolType } from '..';
 import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';

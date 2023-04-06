@@ -1,5 +1,5 @@
-import { ConfigType } from '../../../types/CommonTypes';
-import { DocumentType } from '../../../types/DocumentTypes';
+import { ConfigType } from '../../types/CommonTypes';
+import { DocumentType } from '../../types/DocumentTypes';
 
 export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, status: 0 });
 

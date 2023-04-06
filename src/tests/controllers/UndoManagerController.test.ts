@@ -1,5 +1,5 @@
 import { UndoManagerController } from '../../controllers/UndoManagerController';
-import { EditorAPI } from '../../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 describe('UndoManagerController', () => {

@@ -3,7 +3,7 @@ import {
     ImageSourceTypeEnum,
     ImageFrameUrlSource,
     ImageFrameVariableSource,
-} from '../../../types/FrameTypes';
+} from '../../types/FrameTypes';
 
 export const mockImageConnectorSource: ImageFrameConnectorSource = {
     assetId: 'asset-id',

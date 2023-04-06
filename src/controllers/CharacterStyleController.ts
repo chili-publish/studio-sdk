@@ -1,6 +1,6 @@
-import { EditorAPI, Id } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { CharacterStyle, CharacterStyleUpdate } from '../../types/CharacterStyleTypes';
+import { CharacterStyle, CharacterStyleUpdate } from '../types/CharacterStyleTypes';
 
 /**
  * The CharacterStyleController is responsible for all communication regarding character styles.

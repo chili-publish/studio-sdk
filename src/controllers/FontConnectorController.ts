@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../../types/CommonTypes';
+import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaType,
@@ -6,8 +6,8 @@ import {
     MediaType,
     QueryOptions,
     QueryPage,
-} from '../../types/ConnectorTypes';
-import { Font, FontDownloadType } from '../../types/FontConnectorTypes';
+} from '../types/ConnectorTypes';
+import { Font, FontDownloadType } from '../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
 
 /**
