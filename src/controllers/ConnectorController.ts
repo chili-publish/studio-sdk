@@ -1,10 +1,5 @@
 import { ConnectorOptions, EditorAPI, EditorResponse } from '../types/CommonTypes';
-import {
-    ConnectorState,
-    ConnectorStateType,
-    ConnectorMapping,
-    ConnectorRegistration,
-} from '../types/ConnectorTypes';
+import { ConnectorState, ConnectorStateType, ConnectorMapping, ConnectorRegistration } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

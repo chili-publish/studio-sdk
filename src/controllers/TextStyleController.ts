@@ -45,11 +45,9 @@ export class TextStyleController {
     /**
      * This method gets a selected Text's style properties
      * @returns
-    */
+     */
     getSelectedTextStyle = async () => {
         const res = await this.#editorAPI;
-        return res
-            .getSelectedTextStyle()
-            .then((result) => getEditorResponseData<SelectedTextStyle>(result));
+        return res.getSelectedTextStyle().then((result) => getEditorResponseData<SelectedTextStyle>(result));
     };
 }
