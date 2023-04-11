@@ -13,6 +13,7 @@ import { CharacterStyle } from './CharacterStyleTypes';
 import { ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
+import { CornerRadius } from './ShapeTypes';
 
 export type Id = string;
 
@@ -43,6 +44,7 @@ export type ConfigType = {
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onZoomChanged?: (scaleFactor: number) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
+    onShapeCornerRadiusChanged?: (cornerRadius: CornerRadius) => void;
 };
 
 export interface EditorResponse<T> {

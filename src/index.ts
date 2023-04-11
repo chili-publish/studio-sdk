@@ -29,6 +29,7 @@ import { CharacterStyleController } from './controllers/CharacterStyleController
 import { CanvasController } from './controllers/CanvasController';
 import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
+import { ShapeController } from './controllers/ShapeController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -66,7 +67,6 @@ export type {
     ImageFrame,
     ShapeFrame,
     ImageFrameSource,
-    ShapeType,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
 } from './types/FrameTypes';
@@ -150,6 +150,7 @@ export class SDK {
     action: ActionController;
     layout: LayoutController;
     frame: FrameController;
+    shape: ShapeController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
@@ -186,6 +187,7 @@ export class SDK {
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
+        this.shape = new ShapeController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
@@ -238,6 +240,7 @@ export class SDK {
                 onConnectorEvent: this.subscriber.onConnectorEvent,
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
+                onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -268,6 +271,7 @@ export class SDK {
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
+        this.shape = new ShapeController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks

@@ -64,6 +64,7 @@ interface ConfigParameterTypes {
     onConnectorEvent: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
+    onShapeCornerRadiusChanged: (cornerRadius: string) => void;
 }
 
 const Connect = (
@@ -124,6 +125,7 @@ const Connect = (
                 connectorEvent: params.onConnectorEvent,
                 zoomChanged: params.onZoomChanged,
                 pageSizeChanged: params.onPageSizeChanged,
+                shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
             },
         }),
     );

@@ -1,12 +1,13 @@
 import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsOutroType } from './AnimationTypes';
-import { ColorUsage, DocumentColor } from './ColorStyleTypes';
+import { DocumentColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
-import { BlendMode, FrameTypeEnum, ShapeType } from './FrameTypes';
+import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { DocumentAction } from './ActionTypes';
+import { ShapeProperties, ShapeType } from './ShapeTypes';
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
@@ -53,14 +54,6 @@ export interface ImageFrame extends DocumentFrame {
 export interface ShapeFrame extends DocumentFrame {
     shapeType: ShapeType;
     shapeProperties: ShapeProperties;
-}
-
-export interface ShapeProperties {
-    enableFill?: boolean;
-    fillColor?: ColorUsage;
-    enableStroke?: boolean;
-    strokeColor?: ColorUsage;
-    strokeWeight?: number;
 }
 
 export interface TextFrame extends DocumentFrame {
