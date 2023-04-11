@@ -100,7 +100,7 @@ export class ShapeController {
     };
 
     /**
-     * This method updates properties of the rectangle and polygon shapes
+     * This method updates radii of the rectangle and polygon shapes
      * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
      * @param radius A radius object to update a desired corner;
      * @returns
