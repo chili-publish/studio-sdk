@@ -15,6 +15,7 @@ export const validateEditorLink = (editorLink: string) => {
 
 export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     const link = validateEditorLink(editorLink);
+    
     const html = `<html>
     <head>
       <base href="/" />
@@ -23,8 +24,8 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
       <meta name="assetBase" content="${link}">
     </head>
     <body> 
-    <script async src="${link}init.js"></script>
-    <script async src="https://unpkg.com/penpal@6.1.0/dist/penpal.min.js"></script>
+    <script>${PENPAL_JS}</script>
+    <script>${INIT_JS}</script>
     <script async src="${link}main.dart.js"></script>     
     </body>
     </html>
