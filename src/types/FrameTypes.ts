@@ -1,6 +1,7 @@
 // FramePropertiesDto
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
+import { ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
     frameId: Id;
@@ -72,6 +73,7 @@ export type ShapeFrame = {
         enableStroke: boolean;
         strokeWeight: number;
         strokeColor: ColorUsage;
+        allCornersSame: boolean;
     };
     src: {
         shapeType: ShapeType;
@@ -160,10 +162,4 @@ export enum UpdateZIndexMethod {
     sendToBack = 'sendToBack',
     bringForward = 'bringForward',
     sendBackward = 'sendBackward',
-}
-
-export enum ShapeType {
-    ellipse = 'ellipse',
-    rectangle = 'rectangle',
-    polygon = 'polygon',
 }

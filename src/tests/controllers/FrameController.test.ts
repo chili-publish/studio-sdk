@@ -4,7 +4,6 @@ import {
     FitMode,
     FrameTypeEnum,
     ImageSourceTypeEnum,
-    ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -12,7 +11,7 @@ import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
+import { ShapeType } from '../../types/ShapeTypes';
 
 let frameId: Id;
 
@@ -351,36 +350,6 @@ describe('FrameController', () => {
         await mockedFrameController.removeImageSource(frameId);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(3);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, null);
-    });
-    it('Should be possible to set the shape frame enable fill', async () => {
-        await mockedFrameController.setShapeFrameEnableFill(frameId, true);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ enableFill: true }));
-    });
-    it('Should be possible to set the shape frame fill color', async () => {
-        const color = { color: { colorType: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
-        await mockedFrameController.setShapeFrameFillColor(frameId, color);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ fillColor: color }));
-    });
-    it('Should be possible to set the stroke on a shapeFrame', async () => {
-        await mockedFrameController.setShapeFrameEnableStroke(frameId, true);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(3);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
-            frameId,
-            JSON.stringify({ enableStroke: true }),
-        );
-    });
-    it('Should be possible to set the stroke color', async () => {
-        const color = { color: { colorType: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
-        await mockedFrameController.setShapeFrameStrokeColor(frameId, color);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(4);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ fillColor: color }));
-    });
-    it('Should be possible to set the strokeweight', async () => {
-        await mockedFrameController.setShapeFrameStrokeWeight(frameId, 10);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(5);
-        expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(frameId, JSON.stringify({ strokeWeight: 10 }));
     });
     it('Should be possible to add blend mode to a specific frame', async () => {
         await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);

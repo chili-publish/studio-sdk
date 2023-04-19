@@ -224,4 +224,13 @@ export class SubscriberController {
         const callBack = this.config.onPageSizeChanged;
         callBack && callBack(JSON.parse(pageSize));
     };
+
+    /**
+     * Listener on corner radii of rectangle and polygon shapes, this listener will get triggered when any corner radius is changed
+     * @param cornerRadius Stringified object of the CornerRadius
+     */
+    onShapeCornerRadiusChanged = (cornerRadius: string) => {
+        const callBack = this.config.onShapeCornerRadiusChanged;
+        callBack && callBack(JSON.parse(cornerRadius));
+    };
 }
