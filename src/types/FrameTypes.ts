@@ -15,6 +15,7 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
+    hasImageCrop: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
@@ -59,6 +60,7 @@ export type ImageFrame = {
     src?: ImageFrameSource;
     blendMode: BlendMode;
     constrainProportions: boolean;
+    crop?: CropSettings | NoCropSettings;
 };
 
 export type ShapeFrame = {
@@ -100,6 +102,19 @@ export type TextFrame = {
     hasClippingPath: boolean;
     blendMode: BlendMode;
     constrainProportions: boolean;
+};
+
+export type CropSettings = {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    rotationDegrees: number;
+    type: 'default';
+};
+
+export type NoCropSettings = {
+    type: 'noCrop';
 };
 
 export enum ImageSourceTypeEnum {

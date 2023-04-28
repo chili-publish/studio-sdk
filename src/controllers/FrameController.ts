@@ -618,4 +618,42 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setFrameBlendMode(frameId, blendMode).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will make the specified image frame go into cropping mode.
+     * @param frameId The ID of a specific image frame
+     * @returns
+     */
+    enterCropMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterCropMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit cropping mode while saving the applied crop.
+     * @returns
+     */
+    applyCropMode = async () => {
+        const res = await this.#editorAPI;
+        return res.applyCropMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the currently applied crop mode and apply the last selected fit mode again.
+     * @param frameId The ID of a specific image frame
+     * @returns
+     */
+    resetCropMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetCropMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit cropping mode without saving the applied crop.
+     * @returns
+     */
+    cancelCropMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
+    };
 }

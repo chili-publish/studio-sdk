@@ -62,6 +62,10 @@ const mockedEditorApi: EditorAPI = {
     setFrameBlendMode: async () => getEditorResponseData(castToEditorResponse(null)),
     renameFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
+    enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -111,6 +115,10 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameBlendMode');
     jest.spyOn(mockedEditorApi, 'renameFrame');
     jest.spyOn(mockedEditorApi, 'setImageSource');
+    jest.spyOn(mockedEditorApi, 'enterCropMode');
+    jest.spyOn(mockedEditorApi, 'applyCropMode');
+    jest.spyOn(mockedEditorApi, 'resetCropMode');
+    jest.spyOn(mockedEditorApi, 'cancelCropMode');
 
     frameId = mockSelectFrame.frameId;
 });
@@ -355,6 +363,28 @@ describe('FrameController', () => {
         await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(frameId, BlendMode.darken);
+    });
+
+    it('Should be possible to enter cropping mode on a specific frame', async () => {
+        await mockedFrameController.enterCropMode(frameId);
+        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(frameId);
+    });
+
+    it('Should be possible to apply the current image crop to the frame', async () => {
+        await mockedFrameController.applyCropMode();
+        expect(mockedEditorApi.applyCropMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to reset cropping mode on a specific frame', async () => {
+        await mockedFrameController.resetCropMode(frameId);
+        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledWith(frameId);
+    });
+
+    it('Should be possible to cancel the current image crop', async () => {
+        await mockedFrameController.cancelCropMode();
+        expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
     });
 });
 
