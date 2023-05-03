@@ -22,6 +22,7 @@ const mockEditorApi: EditorAPI = {
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutPropertiesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentLoaded: async () => getEditorResponseData(castToEditorResponse(null)),
     onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedToolChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAnimationPlaybackChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -53,6 +54,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutPropertiesChanged');
     jest.spyOn(mockEditorApi, 'onStateChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentLoaded');
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onSelectedToolChanged');
     jest.spyOn(mockEditorApi, 'onAnimationPlaybackChanged');
@@ -107,6 +109,10 @@ describe('SubscriberController', () => {
     it('Should be possible to subscribe to the onStateChanged', async () => {
         await mockedSubscriberController.onStateChanged();
         expect(mockEditorApi.onStateChanged).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to subscribe to the onDocumentLoaded', async () => {
+        await mockedSubscriberController.onDocumentLoaded();
+        expect(mockEditorApi.onDocumentLoaded).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onVariableListChanged', async () => {
         await mockedSubscriberController.onVariableListChanged('[{"id":"1","type":"group"}]');

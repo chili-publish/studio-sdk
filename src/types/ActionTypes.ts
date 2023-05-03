@@ -21,10 +21,10 @@ export enum ActionEditorEvent {
     pageSizeChanged = 'pageSizeChanged',
 
     /**
-     * Indicates the template is fully initialized, actions can safely be executed.
-     * Note: the other events will only be triggered after a template is fully initialized.
+     * Indicates the document is fully initialized, actions can safely be executed.
+     * Note: the other events will only be triggered after a document is fully initialized.
      */
-    templateInitialized = 'templateInitialized',
+    documentLoaded = 'documentLoaded',
 
     /**
      * Indicates the value of a variable changed.

@@ -220,6 +220,7 @@ export class SDK {
             {
                 onActionsChanged: this.subscriber.onActionsChanged,
                 onStateChanged: this.subscriber.onStateChanged,
+                onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
                 onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
