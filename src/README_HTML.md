@@ -5,7 +5,7 @@ Welcome to the SDK documentation, if you want to be absolutely 100% sure that yo
 So on these pages you'll find some very technical but super handy descriptions of all the functions available in the controllers, as well as the exported enums and other configuration params.
 
 ## Controllers
-controllers_AnimationController
+
 -   [Default methods (SDK)](classes/index.SDK.html)
 -   [ActionController](classes/controllers_ActionController.ActionController.html)
 -   [AnimationController](classes/controllers_AnimationController.AnimationController.html)
