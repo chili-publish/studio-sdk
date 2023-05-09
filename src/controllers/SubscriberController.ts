@@ -81,6 +81,15 @@ export class SubscriberController {
     };
 
     /**
+     * A listener on when the document is fully loaded.
+     */
+    onDocumentLoaded = () => {
+        const callBack = this.config.onDocumentLoaded;
+        callBack && callBack();
+    };
+
+
+    /**
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
     onPageSelectionChanged = () => {

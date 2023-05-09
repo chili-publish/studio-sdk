@@ -20,6 +20,7 @@ export type Id = string;
 export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
+    onDocumentLoaded?: () => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
     onSelectedFrameContentChanged?: (state: Frame) => void;
     editorLink?: string;
