@@ -44,6 +44,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
+    onDocumentLoaded: () => void;
     onSelectedFrameContentChanged: (state: string) => void;
     onSelectedFrameLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
@@ -105,6 +106,7 @@ const Connect = (
             methods: {
                 actionsChanged: params.onActionsChanged,
                 stateChanged: params.onStateChanged,
+                documentLoaded: params.onDocumentLoaded,
                 selectedFrameContent: params.onSelectedFrameContentChanged,
                 selectedFrameLayout: params.onSelectedFrameLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,

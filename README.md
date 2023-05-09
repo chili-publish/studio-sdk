@@ -1,6 +1,6 @@
 # editor-sdk
 
-![Coverage](https://img.shields.io/badge/coverage-96.44%25-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/coverage-96.45%25-brightgreen.svg)
 
 [![Build PR](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/editor-sdk/actions/workflows/publish-package.yml)
 
@@ -8,13 +8,13 @@ This is the Open Source CHILI publisher Editor SDK which will make your life eas
 
 The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/editor-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publis/editor-sdk/blob/develop/CONTRIBUTING.md) file to get started on your first contribution.
 
-## Early Access Program
+## Alpha Program
 
-To integrate and start using the SDK, you will need to be accepted to the Early Access program, reach out to your contact @chili to receive more information. Once accepted, you will receive the needed credentials to configure and setup the SDK.
+To integrate and start using the SDK, you need to be aware of our Alpha program, reach out to your contact @chili to receive more information. Once accepted, you will receive the needed credentials / way of authenticating to configure and setup the SDK on your integration.
 
 ## Documentation
 
-[Link to private zendesk](https://mysupport.chili-publish.com/hc/en-us/articles/4411254307868-E2-The-one-called-Editor-2)
+[Link to functional documentation and getting started](https://docs.chiligrafx.com)
 
 [Link to the official SDK documentation on GitHub](https://chili-publish.github.io/editor-sdk/)\*
 
