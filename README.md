@@ -12,6 +12,11 @@ The project is currently under active development, contributions are welcome in 
 
 To integrate and start using the SDK, you need to be aware of our Alpha program, reach out to your contact @chili to receive more information. Once accepted, you will receive the needed credentials / way of authenticating to configure and setup the SDK on your integration.
 
+## Deprecation of old NPM package
+
+Due to a rename of the project, to align more with the product suite that is being offered, the old NPM package (editor-sdk) will be deprecated and a fresh package will be created called @chili-publish/studio-sdk.
+To update your existing projects, just simply rename the package and do a fresh npm or yarn install.
+
 ## Documentation
 
 [Link to functional documentation and getting started](https://docs.chiligrafx.com)
