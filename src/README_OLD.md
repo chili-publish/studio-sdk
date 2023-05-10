@@ -1,4 +1,4 @@
-# EDITOR-SDK GETTING STARTED
+# STUDIO-SDK GETTING STARTED
 
 In this overview, we provide you with a small guide which should get you started on working / integrating with the SDK.
 After the getting started is working, you can look further at the documentation to search for methods and listers that you need.
@@ -41,13 +41,13 @@ There are 2 ways of including the SDK, you can use npm or yarn:
 The most easy approach would be installing it using a package manager like `npm` or `yarn` just do:
 
 ```bash
-npm install --save @chili-publish/editor-sdk
+npm install --save @chili-publish/studio-sdk
 ```
 
 or
 
 ```bash
-yarn add @chili-publish/editor-sdk
+yarn add @chili-publish/studio-sdk
 ```
 
 Then you can easily import the SDK in your JS and TS files, but also the typing is included with this approach.
@@ -56,15 +56,15 @@ Example in `integration.js`:
 
 ```typescript
 // TS example
-import EditorSDK from '@chili-publish/editor-sdk';
-import type { Variable } from '@chili-publish/editor-sdk';
+import EditorSDK from '@chili-publish/studio-sdk';
+import type { Variable } from '@chili-publish/studio-sdk';
 ```
 
 If you want to pin yourself to a certain version of the SDK you can add one of our tags at the end. f.e.
 
-`npm install --save @chili-publish/editor-sdk@v0.0.1`
+`npm install --save @chili-publish/studio-sdk@v0.0.1`
 
-To check our versions and tags, go to [our package on npmjs ](https://www.npmjs.com/package/@chili-publish/editor-sdk/v/0.47.1?activeTab=versions) or take [the title of our github release](https://github.com/chili-publish/editor-sdk/releases), this is always in sync with the tagname that is used.
+To check our versions and tags, go to [our package on npmjs ](https://www.npmjs.com/package/@chili-publish/studio-sdk/v/0.47.1?activeTab=versions) or take [the title of our github release](https://github.com/chili-publish/studio-sdk/releases), this is always in sync with the tagname that is used.
 
 <br>
 
