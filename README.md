@@ -6,7 +6,7 @@
 
 This is the Open Source CHILI publisher Editor SDK which will make your life easier when you’re working on and integrating the new CHILI publisher Editor.
 
-The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/studio-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publis/studio-sdk/blob/develop/CONTRIBUTING.md) file to get started on your first contribution.
+The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/studio-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publish/studio-sdk/blob/develop/CONTRIBUTING.md) file to get started on your first contribution.
 
 ## Alpha Program
 
@@ -86,4 +86,4 @@ If you have any feedback on the technical parts of the application, a feature re
 
 ## License
 
-This project is [MIT licensed](https://github.com/chili-publis/studio-sdk/blob/develop/LICENSE)
+This project is [MIT licensed](https://github.com/chili-publish/studio-sdk/blob/develop/LICENSE)
