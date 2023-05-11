@@ -64,7 +64,7 @@ declare module 'grafx-studio-actions' {
 
     enum VariableSourceType {
         url = 'url',
-        mediaConnector = 'mediaConnector',
+        connector = 'connector',
     }
 
     interface UrlVariableSource {
@@ -75,7 +75,7 @@ declare module 'grafx-studio-actions' {
     interface MediaConnectorVariableSource {
         connectorId: string;
         assetId: string;
-        sourceType: VariableSourceType.mediaConnector;
+        sourceType: VariableSourceType.connector;
     }
 
     type VariableSource = UrlVariableSource | MediaConnectorVariableSource;
