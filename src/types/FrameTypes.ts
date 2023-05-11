@@ -120,7 +120,7 @@ export type NoCropSettings = {
 export enum ImageSourceTypeEnum {
     url = 'url',
     variable = 'variable',
-    connector = 'assetProvider',
+    connector = 'connector',
 }
 
 export enum FrameTypeEnum {
