@@ -134,6 +134,8 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 export * from './types/ActionTypes';
 
+export * from './types/ShapeTypes';
+
 let connection: Connection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
