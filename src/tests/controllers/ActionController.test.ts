@@ -37,12 +37,12 @@ afterAll(() => {
 });
 
 describe('Should call all of the ActionController functions of child successfully', () => {
-    it('Should call the getCharacterStyles method', async () => {
+    it('Should call the getActions method', async () => {
         await mockedActionController.getActions();
         expect(mockEditorApi.getActions).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call the getCharacterStyleById method', async () => {
+    it('Should call the getActionById method', async () => {
         await mockedActionController.getActionById('5');
         expect(mockEditorApi.getActionById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getActionById).toHaveBeenCalledWith('5');
