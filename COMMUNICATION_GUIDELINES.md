@@ -24,7 +24,7 @@ Community members with prior contributions will be identified with a CONTRIBUTOR
 
 ### Enforcing to the code of conduct
 
-Our [CODE OF CONDUCT](https://github.com/chili-publis/editor-sdk/blob/main/CODE_OF_CONDUCT.md) outlines the behavior we expect from our community. Maintainers are responsible for enforcing violations they witness, or those that have been reported to coc@chili-publish.com.
+Our [CODE OF CONDUCT](https://github.com/chili-publish/studio-sdk/blob/main/CODE_OF_CONDUCT.md) outlines the behavior we expect from our community. Maintainers are responsible for enforcing violations they witness, or those that have been reported to coc@chili-publish.com.
 
 Violations are not tolerated, but there are always some gray areas.
 

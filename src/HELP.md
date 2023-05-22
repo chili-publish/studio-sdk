@@ -1,4 +1,4 @@
-# EDITOR-SDK GUIDELINES
+# STUDIO-SDK GUIDELINES
 
 This README includes guides about SDK development.
 

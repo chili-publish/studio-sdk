@@ -47,7 +47,6 @@ export type {
     ImageFrame,
     ShapeFrame,
     ImageFrameSource,
-    ShapeType,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
 } from './types/FrameTypes';

@@ -1,4 +1,4 @@
-import { ConfigType } from '../types/CommonTypes';
+import { ConfigType, Id } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -77,6 +77,14 @@ export class SubscriberController {
      */
     onStateChanged = () => {
         const callBack = this.config.onStateChanged;
+        callBack && callBack();
+    };
+
+    /**
+     * A listener on when the document is fully loaded.
+     */
+    onDocumentLoaded = () => {
+        const callBack = this.config.onDocumentLoaded;
         callBack && callBack();
     };
 
@@ -223,5 +231,23 @@ export class SubscriberController {
     onPageSizeChanged = (pageSize: string) => {
         const callBack = this.config.onPageSizeChanged;
         callBack && callBack(JSON.parse(pageSize));
+    };
+
+    /**
+     * Listener on corner radii of rectangle and polygon shapes, this listener will get triggered when any corner radius is changed
+     * @param cornerRadius Stringified object of the CornerRadius
+     */
+    onShapeCornerRadiusChanged = (cornerRadius: string) => {
+        const callBack = this.config.onShapeCornerRadiusChanged;
+        callBack && callBack(JSON.parse(cornerRadius));
+    };
+
+    /**
+     * Listener of editor entering / exiting the crop mode
+     * @param id frame id when entering / null when exiting
+     */
+    onCropActiveFrameIdChanged = (id?: Id) => {
+        const callBack = this.config.onCropActiveFrameIdChanged;
+        callBack && callBack(id);
     };
 }

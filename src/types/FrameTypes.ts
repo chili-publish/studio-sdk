@@ -1,6 +1,7 @@
 // FramePropertiesDto
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
+import { ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
     frameId: Id;
@@ -14,6 +15,7 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     included: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
+    hasImageCrop: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
@@ -58,6 +60,7 @@ export type ImageFrame = {
     src?: ImageFrameSource;
     blendMode: BlendMode;
     constrainProportions: boolean;
+    crop?: CropSettings | NoCropSettings;
 };
 
 export type ShapeFrame = {
@@ -72,6 +75,7 @@ export type ShapeFrame = {
         enableStroke: boolean;
         strokeWeight: number;
         strokeColor: ColorUsage;
+        allCornersSame: boolean;
     };
     src: {
         shapeType: ShapeType;
@@ -100,10 +104,23 @@ export type TextFrame = {
     constrainProportions: boolean;
 };
 
+export type CropSettings = {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    rotationDegrees: number;
+    type: 'default';
+};
+
+export type NoCropSettings = {
+    type: 'noCrop';
+};
+
 export enum ImageSourceTypeEnum {
     url = 'url',
     variable = 'variable',
-    connector = 'assetProvider',
+    connector = 'connector',
 }
 
 export enum FrameTypeEnum {
@@ -160,10 +177,4 @@ export enum UpdateZIndexMethod {
     sendToBack = 'sendToBack',
     bringForward = 'bringForward',
     sendBackward = 'sendBackward',
-}
-
-export enum ShapeType {
-    ellipse = 'ellipse',
-    rectangle = 'rectangle',
-    polygon = 'polygon',
 }

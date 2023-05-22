@@ -1,10 +1,10 @@
 {
-    "name": "@chili-publish/editor-sdk",
-    "version": "0.116.2",
+    "name": "@chili-publish/studio-sdk",
+    "version": "0.121.3",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
-        "url": "git://github.com/chili-publish/editor-sdk.git"
+        "url": "git://github.com/chili-publish/studio-sdk.git"
     },
     "license": "MIT",
     "dependencies": {
@@ -78,9 +78,9 @@
     ],
     "typings": "lib/src/",
     "bugs": {
-        "url": "https://github.com/chili-publish/editor-sdk/issues"
+        "url": "https://github.com/chili-publish/studio-sdk/issues"
     },
-    "homepage": "https://github.com/chili-publish/editor-sdk#readme",
+    "homepage": "https://github.com/chili-publish/studio-sdk#readme",
     "author": "chili-publish",
     "directories": {
         "doc": "docs",

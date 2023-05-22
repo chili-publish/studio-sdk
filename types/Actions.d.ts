@@ -1,10 +1,10 @@
 declare module 'grafx-studio-actions' {
 
-    export type EditorEventType = 'layoutChanged' | 'frameTransformChanged' | 'variableValueChanged' | 'frameVisibilityChanged';
+    export type EditorEventType = 'selectedLayoutChanged' | 'frameMoved' | 'variableValueChanged' | 'pageSizeChanged' | 'documentLoaded';
 
     export interface ActionEventData {
         type: EditorEventType;
-        source: FrameProperties | Variable | AlternateLayout;
+        source?: FrameProperties | Variable | AlternateLayout | PageProperties;
     }
 
     /**
@@ -64,7 +64,7 @@ declare module 'grafx-studio-actions' {
 
     enum VariableSourceType {
         url = 'url',
-        mediaConnector = 'mediaConnector',
+        connector = 'connector',
     }
 
     interface UrlVariableSource {
@@ -75,7 +75,7 @@ declare module 'grafx-studio-actions' {
     interface MediaConnectorVariableSource {
         connectorId: string;
         assetId: string;
-        sourceType: VariableSourceType.mediaConnector;
+        sourceType: VariableSourceType.connector;
     }
 
     type VariableSource = UrlVariableSource | MediaConnectorVariableSource;

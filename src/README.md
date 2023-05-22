@@ -1,6 +1,6 @@
-# SDK Documentation
+# STUDIO-SDK Documentation
 
-Welcome to the SDK documentation, if you want to be absolutely 100% sure that you have the latest and greatest SDK documentation at your hand, we could redirect you to the [Github Pages deployment of our SDK documentation](https://chili-publish.github.io/editor-sdk/index.html), but this one is great as well.
+Welcome to the SDK documentation, if you want to be absolutely 100% sure that you have the latest and greatest SDK documentation at your hand, we could redirect you to the [Github Pages deployment of our SDK documentation](https://chili-publish.github.io/studio-sdk/index.html), but this one is great as well.
 
 So on these pages you'll find some very technical but super handy descriptions of all the functions available in the controllers, as well as the exported enums and other configuration params.
 

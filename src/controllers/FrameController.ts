@@ -2,6 +2,7 @@ import type { EditorAPI, Id } from '../types/CommonTypes';
 import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
+    BlendMode,
     FitMode,
     FrameLayoutType,
     FrameType,
@@ -10,13 +11,12 @@ import {
     ImageFrameSource,
     ImageFrameUrlSource,
     ImageSourceTypeEnum,
-    ShapeType,
     UpdateZIndexMethod,
     VerticalAlign,
-    BlendMode,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
-import { ShapeProperties } from '../types/DocumentTypes';
+import { ShapeType } from '../types/ShapeTypes';
+import { ShapeController } from './ShapeController';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -33,8 +33,14 @@ export class FrameController {
      */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
+        this.shapeController = new ShapeController(this.#editorAPI);
     }
 
+    /**
+     * This variable helps to redirect shapes related methods to newly introduced ShapeController
+     * to avoid any breaking changes
+     */
+    private shapeController: ShapeController;
     /**
      * This method returns the list of frames
      * @returns
@@ -553,27 +559,13 @@ export class FrameController {
     };
 
     /**
-     * This method updates properties of the shape
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param properties A property to update
-     * @returns
-     */
-    private setShapeProperties = async (shapeFrameId: Id, properties: ShapeProperties) => {
-        const res = await this.#editorAPI;
-        return res
-            .setShapeProperties(shapeFrameId, JSON.stringify(properties))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * This method will set the visibility of the shape fill.
      * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
      * @param enableFill Whether the shape fill is visible.
      * @returns
      */
     setShapeFrameEnableFill = async (shapeFrameId: Id, enableFill: boolean) => {
-        const properties: ShapeProperties = { enableFill: enableFill };
-        return this.setShapeProperties(shapeFrameId, properties);
+        return this.shapeController.setEnableFill(shapeFrameId, enableFill);
     };
 
     /**
@@ -583,8 +575,7 @@ export class FrameController {
      * @returns
      */
     setShapeFrameFillColor = async (shapeFrameId: Id, fillColor: ColorUsage) => {
-        const properties: ShapeProperties = { fillColor: fillColor };
-        return this.setShapeProperties(shapeFrameId, properties);
+        return this.shapeController.setFillColor(shapeFrameId, fillColor);
     };
 
     /**
@@ -594,8 +585,7 @@ export class FrameController {
      * @returns
      */
     setShapeFrameEnableStroke = async (shapeFrameId: Id, enableStroke: boolean) => {
-        const properties: ShapeProperties = { enableStroke: enableStroke };
-        return this.setShapeProperties(shapeFrameId, properties);
+        return this.shapeController.setEnableStroke(shapeFrameId, enableStroke);
     };
 
     /**
@@ -605,8 +595,7 @@ export class FrameController {
      * @returns
      */
     setShapeFrameStrokeColor = async (shapeFrameId: Id, strokeColor: ColorUsage) => {
-        const properties: ShapeProperties = { strokeColor: strokeColor };
-        return this.setShapeProperties(shapeFrameId, properties);
+        return this.shapeController.setStrokeColor(shapeFrameId, strokeColor);
     };
 
     /**
@@ -616,8 +605,7 @@ export class FrameController {
      * @returns
      */
     setShapeFrameStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
-        const properties: ShapeProperties = { strokeWeight: strokeWeight };
-        return this.setShapeProperties(shapeFrameId, properties);
+        return this.shapeController.setStrokeWeight(shapeFrameId, strokeWeight);
     };
 
     /**
@@ -629,5 +617,43 @@ export class FrameController {
     setFrameBlendMode = async (frameId: Id, blendMode: BlendMode) => {
         const res = await this.#editorAPI;
         return res.setFrameBlendMode(frameId, blendMode).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will make the specified image frame go into cropping mode.
+     * @param frameId The ID of a specific image frame
+     * @returns
+     */
+    enterCropMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterCropMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit cropping mode while saving the applied crop.
+     * @returns
+     */
+    applyCropMode = async () => {
+        const res = await this.#editorAPI;
+        return res.applyCropMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the currently applied crop mode and apply the last selected fit mode again.
+     * @param frameId The ID of a specific image frame
+     * @returns
+     */
+    resetCropMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetCropMode(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit cropping mode without saving the applied crop.
+     * @returns
+     */
+    cancelCropMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
     };
 }

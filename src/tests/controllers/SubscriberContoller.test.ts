@@ -1,4 +1,4 @@
-import { ActionEditorEvent, DocumentAction, LayoutType } from '../../index';
+import { ActionEditorEvent, DocumentAction, Id, LayoutType } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -8,8 +8,9 @@ import { VariableType } from '../../types/VariableTypes';
 import { ToolType } from '../../utils/enums';
 import { ConnectorStateType } from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
+import { CornerRadius } from '../../types/ShapeTypes';
 import { EditorAPI } from '../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -21,6 +22,7 @@ const mockEditorApi: EditorAPI = {
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutPropertiesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentLoaded: async () => getEditorResponseData(castToEditorResponse(null)),
     onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedToolChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAnimationPlaybackChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -39,6 +41,8 @@ const mockEditorApi: EditorAPI = {
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -51,6 +55,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutPropertiesChanged');
     jest.spyOn(mockEditorApi, 'onStateChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentLoaded');
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onSelectedToolChanged');
     jest.spyOn(mockEditorApi, 'onAnimationPlaybackChanged');
@@ -69,6 +74,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
+    jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
+    jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
 });
 
 afterEach(() => {
@@ -104,6 +111,10 @@ describe('SubscriberController', () => {
     it('Should be possible to subscribe to the onStateChanged', async () => {
         await mockedSubscriberController.onStateChanged();
         expect(mockEditorApi.onStateChanged).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to subscribe to the onDocumentLoaded', async () => {
+        await mockedSubscriberController.onDocumentLoaded();
+        expect(mockEditorApi.onDocumentLoaded).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onVariableListChanged', async () => {
         await mockedSubscriberController.onVariableListChanged('[{"id":"1","type":"group"}]');
@@ -190,5 +201,21 @@ describe('SubscriberController', () => {
     it('Should call trigger the UndoStateChanges subscriber when triggered', async () => {
         await mockedSubscriberController.onUndoStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
         expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
+    });
+
+    it('should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
+        const cornerRadius: CornerRadius = { radiusAll: 5 };
+        await mockedSubscriberController.onShapeCornerRadiusChanged(JSON.stringify(cornerRadius));
+
+        expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledWith(cornerRadius);
+    });
+
+    it('should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
+        const id: Id = '1';
+        await mockedSubscriberController.onCropActiveFrameIdChanged(id);
+
+        expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledWith(id);
     });
 });

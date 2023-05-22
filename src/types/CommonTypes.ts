@@ -13,12 +13,14 @@ import { CharacterStyle } from './CharacterStyleTypes';
 import { ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
+import { CornerRadius } from './ShapeTypes';
 
 export type Id = string;
 
 export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
+    onDocumentLoaded?: () => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
     onSelectedFrameContentChanged?: (state: Frame) => void;
     editorLink?: string;
@@ -43,6 +45,8 @@ export type ConfigType = {
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onZoomChanged?: (scaleFactor: number) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
+    onShapeCornerRadiusChanged?: (cornerRadius: CornerRadius) => void;
+    onCropActiveFrameIdChanged?: (id?: Id) => void;
 };
 
 export interface EditorResponse<T> {
