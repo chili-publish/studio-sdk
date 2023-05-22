@@ -1,4 +1,4 @@
-import { ActionEditorEvent, DocumentAction, LayoutType } from '../../index';
+import { ActionEditorEvent, DocumentAction, Id, LayoutType } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -42,6 +42,7 @@ const mockEditorApi: EditorAPI = {
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -74,6 +75,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
+    jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
 });
 
 afterEach(() => {
@@ -207,5 +209,13 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledWith(cornerRadius);
+    });
+
+    it('should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
+        const id: Id = '1';
+        await mockedSubscriberController.onCropActiveFrameIdChanged(id);
+
+        expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledWith(id);
     });
 });

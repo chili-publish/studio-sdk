@@ -46,6 +46,7 @@ export type ConfigType = {
     onZoomChanged?: (scaleFactor: number) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadius) => void;
+    onCropActiveFrameIdChanged?: (id?: Id) => void;
 };
 
 export interface EditorResponse<T> {

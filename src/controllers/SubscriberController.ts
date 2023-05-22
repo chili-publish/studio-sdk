@@ -1,4 +1,4 @@
-import { ConfigType } from '../types/CommonTypes';
+import { ConfigType, Id } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -87,7 +87,6 @@ export class SubscriberController {
         const callBack = this.config.onDocumentLoaded;
         callBack && callBack();
     };
-
 
     /**
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
@@ -241,5 +240,14 @@ export class SubscriberController {
     onShapeCornerRadiusChanged = (cornerRadius: string) => {
         const callBack = this.config.onShapeCornerRadiusChanged;
         callBack && callBack(JSON.parse(cornerRadius));
+    };
+
+    /**
+     * Listener of editor entering / exiting the crop mode
+     * @param id frame id when entering / null when exiting
+     */
+    onCropActiveFrameIdChanged = (id?: Id) => {
+        const callBack = this.config.onCropActiveFrameIdChanged;
+        callBack && callBack(id);
     };
 }
