@@ -1,4 +1,5 @@
 import { Connection, connectToChild } from 'penpal';
+import { Id } from '../types/CommonTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -66,6 +67,7 @@ interface ConfigParameterTypes {
     onZoomChanged: (scaleFactor: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
+    onCropActiveFrameIdChanged: (id?: Id) => void;
 }
 
 const Connect = (
@@ -128,6 +130,7 @@ const Connect = (
                 zoomChanged: params.onZoomChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
+                cropActiveFrameIdChanged: params.onFrameAnimationsChanged,
             },
         }),
     );
