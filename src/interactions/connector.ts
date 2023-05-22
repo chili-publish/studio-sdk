@@ -19,14 +19,14 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     const html = `<html>
     <head>
       <base href="/" />
-      <meta charset="UTF-8"/>    
+      <meta charset="UTF-8"/>
       <!--  use this property to override the location of assets like 'default fonts' and demo document -->
       <meta name="assetBase" content="${link}">
     </head>
-    <body> 
+    <body>
     <script async src="${link}init.js"></script>
     <script async src="https://unpkg.com/penpal@6.1.0/dist/penpal.min.js"></script>
-    <script async src="${link}main.dart.js"></script>     
+    <script async src="${link}main.dart.js"></script>
     </body>
     </html>
     `;
@@ -130,7 +130,7 @@ const Connect = (
                 zoomChanged: params.onZoomChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
-                cropActiveFrameIdChanged: params.onFrameAnimationsChanged,
+                cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
             },
         }),
     );
