@@ -244,6 +244,7 @@ export class SDK {
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
+                onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
             },
             this.setConnection,
             this.config.editorId,
