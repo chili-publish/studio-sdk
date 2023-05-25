@@ -1,7 +1,7 @@
 // FramePropertiesDto
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
-import { ShapeType } from './ShapeTypes';
+import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
     frameId: Id;
@@ -79,6 +79,8 @@ export type ShapeFrame = {
     };
     src: {
         shapeType: ShapeType;
+        cornerRadius: CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
+        sides?: number;
     };
 };
 

@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
-import { CornerRadius, ShapeProperties } from '../types/ShapeTypes';
+import { CornerRadiusUpdateModel, ShapeProperties } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -105,7 +105,7 @@ export class ShapeController {
      * @param radius A radius object to update a desired corner;
      * @returns
      */
-    private setShapeCorners = async (shapeFrameId: Id, radius: CornerRadius) => {
+    private setShapeCorners = async (shapeFrameId: Id, radius: CornerRadiusUpdateModel) => {
         const res = await this.#editorAPI;
         return res
             .setShapeCorners(shapeFrameId, JSON.stringify(radius))
@@ -119,7 +119,7 @@ export class ShapeController {
      * @returns
      */
     setRadiusAll = async (shapeFrameId: Id, radius: number) => {
-        const cornerRadius: CornerRadius = { radiusAll: radius };
+        const cornerRadius: CornerRadiusUpdateModel = { radiusAll: radius };
         return this.setShapeCorners(shapeFrameId, cornerRadius);
     };
 
@@ -130,7 +130,7 @@ export class ShapeController {
      * @returns
      */
     setRadiusTopLeft = async (shapeFrameId: Id, radius: number) => {
-        const cornerRadius: CornerRadius = { topLeft: radius };
+        const cornerRadius: CornerRadiusUpdateModel = { topLeft: radius };
         return this.setShapeCorners(shapeFrameId, cornerRadius);
     };
 
@@ -141,7 +141,7 @@ export class ShapeController {
      * @returns
      */
     setRadiusBottomLeft = async (shapeFrameId: Id, radius: number) => {
-        const cornerRadius: CornerRadius = { bottomLeft: radius };
+        const cornerRadius: CornerRadiusUpdateModel = { bottomLeft: radius };
         return this.setShapeCorners(shapeFrameId, cornerRadius);
     };
 
@@ -152,7 +152,7 @@ export class ShapeController {
      * @returns
      */
     setRadiusTopRight = async (shapeFrameId: Id, radius: number) => {
-        const cornerRadius: CornerRadius = { topRight: radius };
+        const cornerRadius: CornerRadiusUpdateModel = { topRight: radius };
         return this.setShapeCorners(shapeFrameId, cornerRadius);
     };
 
@@ -163,7 +163,7 @@ export class ShapeController {
      * @returns
      */
     setRadiusBottomRight = async (shapeFrameId: Id, radius: number) => {
-        const cornerRadius: CornerRadius = { bottomRight: radius };
+        const cornerRadius: CornerRadiusUpdateModel = { bottomRight: radius };
         return this.setShapeCorners(shapeFrameId, cornerRadius);
     };
 }
