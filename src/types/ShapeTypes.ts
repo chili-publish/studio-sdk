@@ -15,12 +15,29 @@ export interface ShapeProperties {
     allCornersSame?: boolean;
 }
 
-export interface CornerRadius {
+export interface CornerRadiusUpdateModel {
     radiusAll?: number;
     topLeft?: number;
     bottomLeft?: number;
     topRight?: number;
     bottomRight?: number;
+}
+
+export interface CornerRadiusNone {
+    type: string;
+}
+
+export interface CornerRadiusAll {
+    type: string;
+    radius: number;
+}
+
+export interface CornerRadiusOnly {
+    type: string;
+    topLeft: number;
+    bottomLeft: number;
+    topRight: number;
+    bottomRight: number;
 }
 
 export enum CornerRadiusType {
