@@ -4,6 +4,8 @@ import {
     ConnectorStateType,
     ConnectorMapping,
     ConnectorRegistration,
+    ConnectorInstance,
+    ConnectorType,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -33,6 +35,15 @@ export class ConnectorController {
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
     }
+
+    /**
+     * Gets all available connectors of a 'ConnectorType'
+     * @param type type of connector you want to get
+     */
+    getConnectors = async (type: ConnectorType) => {
+        const res = await this.#editorAPI;
+        return res.getConnectors(type).then((result) => getEditorResponseData<ConnectorInstance[]>(result));
+    };
 
     /**
      * Registers a new connector in the SDK. After successful registration, depending
