@@ -69,7 +69,7 @@ const updateCharacterStyle: CharacterStyleUpdate = {
     color: {
         value: {
             color: {
-                colorType: ColorType.rgb,
+                type: ColorType.rgb,
                 r: 255,
                 g: 0,
                 b: 0,

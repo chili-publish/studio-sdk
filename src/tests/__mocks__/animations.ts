@@ -2,7 +2,7 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 
 export const mockFrameAnimation: FrameAnimationType = {
     animation: {
-        frameId: '1',
+        id: '1',
         from: 2,
         to: 3,
         basicAnimations: {},

@@ -61,7 +61,7 @@ describe('ColorStyleController', () => {
         expect(mockEditorApi.renameColor).toHaveBeenCalledWith('3', 'new color name');
     });
     it('Should call the updateColor method', async () => {
-        await mockedColorStyleController.updateColor('3', { r: 1, g: 1, b: 1, colorType: ColorType.rgb });
+        await mockedColorStyleController.updateColor('3', { r: 1, g: 1, b: 1, type: ColorType.rgb });
         expect(mockEditorApi.updateColor).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateColor).toHaveBeenCalledWith(
             '3',
@@ -69,7 +69,7 @@ describe('ColorStyleController', () => {
                 r: 1,
                 g: 1,
                 b: 1,
-                colorType: ColorType.rgb,
+                type: ColorType.rgb,
             }),
         );
     });

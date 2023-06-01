@@ -342,7 +342,7 @@ describe('FrameController', () => {
             JSON.stringify({
                 assetId: 'asset id',
                 connectorId: 'connector id',
-                sourceType: ImageSourceTypeEnum.connector,
+                type: ImageSourceTypeEnum.connector,
             }),
         );
     });
@@ -351,7 +351,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
             frameId,
-            JSON.stringify({ url: 'image url', sourceType: ImageSourceTypeEnum.url }),
+            JSON.stringify({ url: 'image url', type: ImageSourceTypeEnum.url }),
         );
     });
     it('Should be possible to remove an image source on a frame', async () => {

@@ -71,9 +71,9 @@ describe('VariableController', () => {
     });
 
     it('add a new variable', async () => {
-        await mockedVariableController.addVariable('2', VariableType.shorttext);
+        await mockedVariableController.addVariable('2', VariableType.shortText);
         expect(mockEditorApi.addVariable).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.addVariable).toHaveBeenCalledWith('2', VariableType.shorttext);
+        expect(mockEditorApi.addVariable).toHaveBeenCalledWith('2', VariableType.shortText);
     });
 
     it('remove a variable', async () => {
@@ -158,7 +158,7 @@ describe('VariableController', () => {
         const varId = '1';
         const src = {
             url: 'mocked url',
-            sourceType: ImageVariableSourceType.url,
+            type: ImageVariableSourceType.url,
         };
         const srcJson = JSON.stringify(src);
 

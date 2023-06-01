@@ -43,7 +43,7 @@ declare module 'grafx-studio-actions' {
     }
 
     interface PageProperties {
-        pageId: string;
+        id: string;
         layoutId: string;
         width: number;
         height: number;
@@ -55,8 +55,8 @@ declare module 'grafx-studio-actions' {
     }
 
     interface AlternateLayout {
-        readonly layoutId: string,
-        readonly layoutName: string,
+        readonly id: string,
+        readonly name: string,
         readonly width: number,
         readonly height: number,
         readonly animated: boolean,
@@ -69,13 +69,13 @@ declare module 'grafx-studio-actions' {
 
     interface UrlVariableSource {
         url: string;
-        sourceType: VariableSourceType.url;
+        type: VariableSourceType.url;
     }
-    
+
     interface MediaConnectorVariableSource {
         connectorId: string;
         assetId: string;
-        sourceType: VariableSourceType.connector;
+        type: VariableSourceType.connector;
     }
 
     type VariableSource = UrlVariableSource | MediaConnectorVariableSource;
@@ -98,17 +98,17 @@ declare module 'grafx-studio-actions' {
     }
 
     interface ShortTextVariable extends BaseVariable {
-        type: "shorttext";
+        type: "shortText";
         value: string;
     }
 
     interface LongTextVariable extends BaseVariable {
-        type: "longtext";
+        type: "longText";
         value: string;
     }
 
     interface FormattedTextVariable extends BaseVariable {
-        type: "formattedtext";
+        type: "formattedText";
         value: string;
     }
 

@@ -428,7 +428,7 @@ export class FrameController {
         const src: ImageFrameConnectorSource = {
             assetId: resourceId,
             connectorId: connectorId,
-            sourceType: ImageSourceTypeEnum.connector,
+            type: ImageSourceTypeEnum.connector,
         };
         return this.updateImageSource(imageFrameId, src);
     };
@@ -441,7 +441,7 @@ export class FrameController {
      * @returns
      */
     setImageFromUrl = async (imageFrameId: Id, url: string) => {
-        const src: ImageFrameUrlSource = { url: url, sourceType: ImageSourceTypeEnum.url };
+        const src: ImageFrameUrlSource = { url: url, type: ImageSourceTypeEnum.url };
         return this.updateImageSource(imageFrameId, src);
     };
 

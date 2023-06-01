@@ -29,7 +29,7 @@ export class ExperimentController {
      */
     insertImageVariableToFrame = async (imageFrameId: Id, variableId: string) => {
         const res = await this.#editorAPI;
-        const src: ImageFrameVariableSource = { variableId: variableId, sourceType: ImageSourceTypeEnum.variable };
+        const src: ImageFrameVariableSource = { variableId: variableId, type: ImageSourceTypeEnum.variable };
         return res
             .setImageSource(imageFrameId, JSON.stringify(src))
             .then((result) => getEditorResponseData<null>(result));

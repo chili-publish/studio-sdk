@@ -80,10 +80,10 @@ export interface SelectedTextStyle {
     subSuperScript: Scripting;
     trackingLeft: string;
     trackingRight: string;
-    paragraphStartIndent: string;
-    paragraphEndIndent: string;
-    paragraphSpaceBefore: string;
-    paragraphSpaceAfter: string;
+    startIndent: string;
+    endIndent: string;
+    spaceBefore: string;
+    spaceAfter: string;
     textIndent: string;
     alignToBaseLine: boolean;
     baselineShiftValue: string;

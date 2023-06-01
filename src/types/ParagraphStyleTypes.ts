@@ -13,10 +13,10 @@ export type ParagraphStyle = {
     // the following properties are unit properties
     trackingLeft: string;
     trackingRight: string;
-    paragraphStartIndent: string;
-    paragraphEndIndent: string;
-    paragraphSpaceBefore: string;
-    paragraphSpaceAfter: string;
+    startIndent: string;
+    endIndent: string;
+    spaceBefore: string;
+    spaceAfter: string;
     textIndent: string;
     // end of unit properties
     alignToBaseLine: boolean;
