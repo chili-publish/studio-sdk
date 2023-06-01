@@ -84,7 +84,7 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
             },
             opacity: 50,
             isApplied: true,
-            usageType: ColorUsageType.local,
+            type: ColorUsageType.local,
         },
     },
     underline: {

@@ -37,7 +37,7 @@ describe('ShapeController', () => {
             );
         });
         it('Should be possible to set the shape frame fill color', async () => {
-            const color = { color: { type: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
+            const color = { color: { type: ColorType.rgb, r: 51, g: 51, b: 51 }, type: ColorUsageType.local };
             await mockedShapeController.setFillColor(frameId, color);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(2);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
@@ -54,7 +54,7 @@ describe('ShapeController', () => {
             );
         });
         it('Should be possible to set the stroke color', async () => {
-            const color = { color: { type: ColorType.rgb, r: 51, g: 51, b: 51 }, usageType: ColorUsageType.local };
+            const color = { color: { type: ColorType.rgb, r: 51, g: 51, b: 51 }, type: ColorUsageType.local };
             await mockedShapeController.setStrokeColor(frameId, color);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(4);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(

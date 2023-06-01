@@ -35,12 +35,12 @@ export type ColorUsageUpdate = {
     /**
      * Reference to the stylekit color, can only be used if it is a stylekit color.
      */
-    colorId?: string;
+    id?: string;
     /**
      * The local color object, can only be used if it is a local color.
      */
     color?: ColorUpdate;
-    usageType: ColorUsageType;
+    type: ColorUsageType;
     /**
      * Opacity of the color (0-100) where 0 = fully transparent.
      */
