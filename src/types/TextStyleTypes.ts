@@ -80,8 +80,8 @@ export interface SelectedTextStyle {
     subSuperScript: Scripting;
     trackingLeft: string;
     trackingRight: string;
-    startIndent: string;
-    endIndent: string;
+    indentStart: string;
+    indentEnd: string;
     spaceBefore: string;
     spaceAfter: string;
     textIndent: string;
