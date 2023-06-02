@@ -120,7 +120,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
 
-    frameId = mockSelectFrame.frameId;
+    frameId = mockSelectFrame.id;
 });
 
 afterAll(() => {

@@ -19,7 +19,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setShapeProperties');
     jest.spyOn(mockedEditorApi, 'setShapeCorners');
 
-    frameId = mockSelectFrame.frameId;
+    frameId = mockSelectFrame.id;
 });
 
 afterAll(() => {
