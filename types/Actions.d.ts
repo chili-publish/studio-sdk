@@ -112,9 +112,9 @@ declare module 'grafx-studio-actions' {
     type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | GroupVariable;
 
     enum VariableType {
-        shorttext = 'shorttext',
-        longtext = 'longtext',
-        formattedtext = 'formattedtext',
+        shortText = 'shortText',
+        longText = 'longText',
+        formattedText = 'formattedText',
         image = 'image',
         group = 'group',
     }
@@ -139,17 +139,17 @@ declare module 'grafx-studio-actions' {
     }
 
     interface ShortTextVariable extends BaseVariable {
-        type: VariableType.shorttext;
+        type: VariableType.shortText;
         value: string;
     }
 
     interface LongTextVariable extends BaseVariable {
-        type: VariableType.longtext;
+        type: VariableType.longText;
         value: string;
     }
 
     interface FormattedTextVariable extends BaseVariable {
-        type: VariableType.formattedtext;
+        type: VariableType.formattedText;
         value: string;
     }
 
