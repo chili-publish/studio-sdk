@@ -24,7 +24,7 @@ declare module 'grafx-studio-actions' {
     }
 
     interface FrameProperties {
-        readonly frameId: string;
+        readonly id: string;
         readonly layoutId: string;
         readonly x: number;
         readonly y: number;

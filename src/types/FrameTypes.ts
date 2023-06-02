@@ -4,7 +4,7 @@ import { Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
-    frameId: Id;
+    id: Id;
     layoutId: Id;
     x: PropertyState<number>;
     y: PropertyState<number>;
