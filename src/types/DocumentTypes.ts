@@ -28,7 +28,7 @@ export interface ChiliDocument {
     properties?: TemplateDocumentProperties | ProjectDocumentProperties;
     pages: DocumentPage[];
     layouts: (ChildLayout | TopLayout)[];
-    styleKit: DocumentStyleKit;
+    stylekit: DocumentStylekit;
     variables: Variable[];
     actions: DocumentAction[];
 }
@@ -166,7 +166,7 @@ export interface BasicAnimations {
     outro?: BasicAnimationsOutroType;
 }
 
-export interface DocumentStyleKit {
+export interface DocumentStylekit {
     colors: DocumentColor[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
