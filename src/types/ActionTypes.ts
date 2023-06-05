@@ -60,15 +60,40 @@ export interface DocumentAction {
 /**
  * Trigger used to fire an action.
  */
-export interface ActionTrigger {
+export type ActionTrigger =
+    | SelectedLayoutChangedTrigger
+    | FrameMovedTrigger
+    | PageSizeChangedTrigger
+    | DocumentLoadedTrigger
+    | VariableValueChangedTrigger;
+
+export interface SelectedLayoutChangedTrigger {
+    event: ActionEditorEvent.selectedLayoutChanged;
+}
+
+export interface FrameMovedTrigger {
+    event: ActionEditorEvent.frameMoved;
     /**
-     * The event the action should react to.
+     * The frame ID's this trigger should react to.
+     * Leaving this `undefined`, will make this trigger react to any frame that moves in any direction (also rotation, resize and ).
      */
-    event: ActionEditorEvent;
+    triggers?: Id[];
+}
+
+export interface PageSizeChangedTrigger {
+    event: ActionEditorEvent.pageSizeChanged;
+}
+
+export interface DocumentLoadedTrigger {
+    event: ActionEditorEvent.documentLoaded;
+}
+
+export interface VariableValueChangedTrigger {
+    event: ActionEditorEvent.variableValueChanged;
 
     /**
-     * The entity ID's this trigger should react to.
-     * Leaving this `undefined`, will make this trigger react to all entities.
+     * The variable ID's this trigger should react to.
+     * Leaving this `undefined`, will make this trigger react to all variableValueChanges.
      */
     triggers?: Id[];
 }
