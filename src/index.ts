@@ -165,7 +165,7 @@ export class SDK {
     page: PageController;
     debug: DebugController;
     undoManager: UndoManagerController;
-    textSelection: TextStyleController;
+    textStyle: TextStyleController;
     paragraphStyle: ParagraphStyleController;
     characterStyle: CharacterStyleController;
     colorStyle: ColorStyleController;
@@ -203,7 +203,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextStyleController(this.editorAPI);
+        this.textStyle = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
@@ -265,7 +265,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextStyleController(this.editorAPI);
+        this.textStyle = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
