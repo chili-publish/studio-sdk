@@ -4,13 +4,15 @@ import {
     ConnectorMappingSource,
     ConnectorMappingTarget,
     ConnectorRegistrationSource,
+    ConnectorType,
 } from '../../types/ConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedConnectorController: ConnectorController;
 
 const mockEditorApi: EditorAPI = {
+    getConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     connectorAuthenticationSetChiliToken: async () => getEditorResponseData(castToEditorResponse(null)),
     updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -22,6 +24,7 @@ const mockEditorApi: EditorAPI = {
 
 beforeEach(() => {
     mockedConnectorController = new ConnectorController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
     jest.spyOn(mockEditorApi, 'connectorAuthenticationSetChiliToken');
     jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
@@ -44,6 +47,16 @@ describe('ConnectorController', () => {
     const token = 'myToken';
     const headerName = 'headerName';
     const headerValue = 'headerValue';
+
+    it('Should call the getConnectors method', async () => {
+        await mockedConnectorController.getConnectors(ConnectorType.media);
+        expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to retrieve all connectors of a certain type', async () => {
+        await mockedConnectorController.getConnectors(ConnectorType.media);
+        expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
+    });
     it('Should call the getState method', async () => {
         await mockedConnectorController.getState(connectorId);
         expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);

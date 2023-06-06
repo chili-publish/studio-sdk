@@ -1,5 +1,5 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariableSourceType, VariableType } from '../../types/VariableTypes';
+import { ImageVariableSourceType, MediaConnectorImageVariableSource, VariableType } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
@@ -156,16 +156,16 @@ describe('VariableController', () => {
 
     it('set variable source', async () => {
         const varId = '1';
-        const src = {
-            url: 'mocked url',
-            sourceType: ImageVariableSourceType.url,
+        const src: MediaConnectorImageVariableSource = {
+            assetId: 'asset id',
+            connectorId: 'connector id',
+            sourceType: ImageVariableSourceType.mediaConnector,
         };
-        const srcJson = JSON.stringify(src);
 
         await mockedVariableController.setVariableSource(varId, src);
 
-        expect(mockEditorApi.setVariableSource).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableSource).toHaveBeenCalledWith(varId, srcJson);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, src.assetId);
     });
 
     it('remove variable source', async () => {
@@ -173,7 +173,7 @@ describe('VariableController', () => {
 
         await mockedVariableController.removeVariableSource(varId);
 
-        expect(mockEditorApi.setVariableSource).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableSource).toHaveBeenCalledWith(varId, null);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, null);
     });
 });

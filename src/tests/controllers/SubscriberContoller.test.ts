@@ -8,7 +8,7 @@ import { VariableType } from '../../types/VariableTypes';
 import { ToolType } from '../../utils/enums';
 import { ConnectorStateType } from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
-import { CornerRadius } from '../../types/ShapeTypes';
+import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -204,7 +204,7 @@ describe('SubscriberController', () => {
     });
 
     it('should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
-        const cornerRadius: CornerRadius = { radiusAll: 5 };
+        const cornerRadius: CornerRadiusUpdateModel = { radiusAll: 5 };
         await mockedSubscriberController.onShapeCornerRadiusChanged(JSON.stringify(cornerRadius));
 
         expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledTimes(1);

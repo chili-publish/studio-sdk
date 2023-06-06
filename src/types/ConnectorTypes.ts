@@ -8,6 +8,11 @@ export enum MediaType {
     collection = 'collection',
 }
 
+export enum ConnectorType {
+    media = 'media',
+    fonts = 'fonts',
+}
+
 export enum SortBy {
     name = 'name',
     path = 'relativePath',
@@ -40,6 +45,12 @@ export type ConnectorRegistration = {
     id: string;
     source: ConnectorRegistrationSource;
     url: string;
+};
+
+export type ConnectorInstance = {
+    id: string;
+    name: string;
+    iconUrl: string;
 };
 
 export enum ConnectorRegistrationSource {

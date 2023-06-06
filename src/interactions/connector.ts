@@ -1,4 +1,5 @@
 import { Connection, connectToChild } from 'penpal';
+import { Id } from '../types/CommonTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -18,14 +19,14 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
     const html = `<html>
     <head>
       <base href="/" />
-      <meta charset="UTF-8"/>    
+      <meta charset="UTF-8"/>
       <!--  use this property to override the location of assets like 'default fonts' and demo document -->
       <meta name="assetBase" content="${link}">
     </head>
-    <body> 
+    <body>
     <script async src="${link}init.js"></script>
     <script async src="https://unpkg.com/penpal@6.1.0/dist/penpal.min.js"></script>
-    <script async src="${link}main.dart.js"></script>     
+    <script async src="${link}main.dart.js"></script>
     </body>
     </html>
     `;
@@ -66,6 +67,7 @@ interface ConfigParameterTypes {
     onZoomChanged: (scaleFactor: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
+    onCropActiveFrameIdChanged: (id?: Id) => void;
 }
 
 const Connect = (
@@ -128,6 +130,7 @@ const Connect = (
                 zoomChanged: params.onZoomChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
+                cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
             },
         }),
     );

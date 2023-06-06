@@ -6,16 +6,24 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 let mockedActionController: ActionController;
 
 const mockEditorApi: EditorAPI = {
+    getActions: async () => getEditorResponseData(castToEditorResponse(null)),
+    getActionById: async () => getEditorResponseData(castToEditorResponse(null)),
     createAction: async () => getEditorResponseData(castToEditorResponse(null)),
+    duplicateAction: async () => getEditorResponseData(castToEditorResponse(null)),
     removeAction: async () => getEditorResponseData(castToEditorResponse(null)),
+    renameAction: async () => getEditorResponseData(castToEditorResponse(null)),
     updateActionScript: async () => getEditorResponseData(castToEditorResponse(null)),
     updateActionTriggers: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     mockedActionController = new ActionController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'getActions');
+    jest.spyOn(mockEditorApi, 'getActionById');
     jest.spyOn(mockEditorApi, 'createAction');
+    jest.spyOn(mockEditorApi, 'duplicateAction');
     jest.spyOn(mockEditorApi, 'removeAction');
+    jest.spyOn(mockEditorApi, 'renameAction');
     jest.spyOn(mockEditorApi, 'updateActionScript');
     jest.spyOn(mockEditorApi, 'updateActionTriggers');
 });
@@ -29,9 +37,32 @@ afterAll(() => {
 });
 
 describe('Should call all of the ActionController functions of child successfully', () => {
+    it('Should call the getActions method', async () => {
+        await mockedActionController.getActions();
+        expect(mockEditorApi.getActions).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call the getActionById method', async () => {
+        await mockedActionController.getActionById('5');
+        expect(mockEditorApi.getActionById).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getActionById).toHaveBeenCalledWith('5');
+    });
+
     it('should call createAction function of EditorAPI with no params provided', async () => {
         await mockedActionController.createAction();
         expect(mockEditorApi.createAction).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call duplicateAction function of EditorAPI with the provided id', async () => {
+        await mockedActionController.duplicateAction('0');
+        expect(mockEditorApi.duplicateAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.duplicateAction).toHaveBeenCalledWith('0');
+    });
+
+    it('should call renameAction function of EditorAPI with the provided params', async () => {
+        await mockedActionController.renameAction('0', 'new name');
+        expect(mockEditorApi.renameAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.renameAction).toHaveBeenCalledWith('0', 'new name');
     });
 
     it('should call removeAction function of EditorAPI', async () => {
