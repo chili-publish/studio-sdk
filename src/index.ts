@@ -104,4 +104,5 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
+
 export default SDK;

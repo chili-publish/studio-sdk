@@ -30,6 +30,7 @@ import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
 import { UtilsController } from './controllers/UtilsController';
 import { VariableController } from './controllers/VariableController';
+import { ShapeController } from './controllers/ShapeController';
 
 let connection: Connection;
 
@@ -47,6 +48,7 @@ export class SDK {
     action: ActionController;
     layout: LayoutController;
     frame: FrameController;
+    shape: ShapeController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
@@ -83,6 +85,7 @@ export class SDK {
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
+        this.shape = new ShapeController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
@@ -115,6 +118,7 @@ export class SDK {
             {
                 onActionsChanged: this.subscriber.onActionsChanged,
                 onStateChanged: this.subscriber.onStateChanged,
+                onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
                 onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
@@ -135,6 +139,8 @@ export class SDK {
                 onConnectorEvent: this.subscriber.onConnectorEvent,
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
+                onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
+                onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -165,6 +171,7 @@ export class SDK {
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
+        this.shape = new ShapeController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
@@ -187,3 +194,5 @@ export class SDK {
         connection = newConnection;
     };
 }
+
+export default SDK;
