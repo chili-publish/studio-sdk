@@ -105,7 +105,7 @@ declare module 'grafx-studio-actions' {
      * Respresents a Layout inside Actions
      */
     interface Layout {
-        readonly layoutName: string;
+        readonly name: string;
     }
 
     /** Respresents a Variable inside Actions */
