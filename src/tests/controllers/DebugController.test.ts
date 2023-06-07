@@ -24,7 +24,7 @@ afterAll(() => {
 });
 describe('DebugController', () => {
     it('Should be possible to retrieve the logs', async () => {
-        await mockedDebugController.getLogs();
+        await mockedDebugController.getAllLogs();
         expect(mockedEditorApi.getLogs).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to toggle the debug panel', async () => {

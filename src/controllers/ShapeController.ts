@@ -22,7 +22,7 @@ export class ShapeController {
 
     /**
      * This method updates properties of the shape
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param properties A property to update
      * @returns
      */
@@ -35,7 +35,7 @@ export class ShapeController {
 
     /**
      * This method will set the visibility of the shape fill.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param enableFill Whether the shape fill is visible.
      * @returns
      */
@@ -46,8 +46,8 @@ export class ShapeController {
 
     /**
      * This method will set the shape fill color of a specified shape frame.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param fillColor The new shape fill color that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param fillColor the new shape fill color that you want to set to the shapeFrame.
      * @returns
      */
     setFillColor = async (shapeFrameId: Id, fillColor: ColorUsage) => {
@@ -57,7 +57,7 @@ export class ShapeController {
 
     /**
      * This method will set the visibility of the shape stroke.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param enableStroke Whether the shape stroke is visible.
      * @returns
      */
@@ -68,8 +68,8 @@ export class ShapeController {
 
     /**
      * This method will set the shape stroke color of a specified shape frame.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param strokeColor The new shape stroke color that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param strokeColor the new shape stroke color that you want to set to the shapeFrame.
      * @returns
      */
     setStrokeColor = async (shapeFrameId: Id, strokeColor: ColorUsage) => {
@@ -79,8 +79,8 @@ export class ShapeController {
 
     /**
      * This method will set the shape stroke weight of a specified shape frame.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param strokeWeight The new shape stroke weight that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param strokeWeight the new shape stroke weight that you want to set to the shapeFrame.
      * @returns
      */
     setStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
@@ -90,8 +90,8 @@ export class ShapeController {
 
     /**
      * This method will set the flag to change the way the rectangle shape corners will be changed: all at once or separately.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param allCornersSame The new flag that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param allCornersSame the new flag that you want to set to the shapeFrame.
      * @returns
      */
     setFlagAllCornersSame = async (shapeFrameId: Id, allCornersSame: boolean) => {
@@ -101,7 +101,7 @@ export class ShapeController {
 
     /**
      * This method updates radii of the rectangle and polygon shapes
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param radius A radius object to update a desired corner;
      * @returns
      */
@@ -114,7 +114,7 @@ export class ShapeController {
 
     /**
      * This method will set the radius for all corners of the rectangle and polygon shapes
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param radius A radius to update all corners at once;
      * @returns
      */
@@ -125,7 +125,7 @@ export class ShapeController {
 
     /**
      * This method will set the radius for the top left corner of the rectangle shape
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param radius A radius to update the top left corner;
      * @returns
      */
@@ -136,7 +136,7 @@ export class ShapeController {
 
     /**
      * This method will set the radius for the bottom left corner of the rectangle shape
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param radius A radius to update the bottom left corner;
      * @returns
      */
@@ -147,7 +147,7 @@ export class ShapeController {
 
     /**
      * This method will set the radius for the top right corner of the rectangle shape
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param radius A radius to update the top right corner;
      * @returns
      */
@@ -158,7 +158,7 @@ export class ShapeController {
 
     /**
      * This method will set the radius for the bottom right corner of the rectangle shape
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param radius A radius to update the bottom right corner;
      * @returns
      */

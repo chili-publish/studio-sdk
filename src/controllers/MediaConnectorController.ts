@@ -43,6 +43,7 @@ export class MediaConnectorController {
      * @param connectorId unique Id of the media connector
      * @param queryOptions stringified instance of `QueryOptions`
      * @param context stringified `Map<string, string>` of dynamic options
+     * @returns array of Media items
      */
     query = async (connectorId: string, queryOptions: QueryOptions, context: MetaData) => {
         const res = await this.#editorAPI;
@@ -57,6 +58,7 @@ export class MediaConnectorController {
      * The connector needs to list `detail` as a supported capability.
      * @param connectorId unique Id of the Media connector
      * @param mediaId unique id of the Media
+     * @returns Media item
      */
     detail = async (connectorId: string, mediaId: string) => {
         const res = await this.#editorAPI;
@@ -71,6 +73,7 @@ export class MediaConnectorController {
      * @param mediaId unique Id of the media to download
      * @param downloadType hint to the media connector about desired quality of the downloaded media
      * @param context dynamic map of additional options potentially used by the connector
+     * @returns
      */
     download = async (
         connectorId: string,
@@ -90,6 +93,7 @@ export class MediaConnectorController {
      * @param connectorId unique Id of the media connector
      * @param mediaId unique Id of the media to upload
      * @param blob byte array representation of the media to upload
+     * @returns
      */
     upload = async (connectorId: string, mediaId: string, blob: Uint8Array) => {
         const res = await this.#editorAPI;
@@ -102,6 +106,7 @@ export class MediaConnectorController {
      * Depending on the connector capabilities, removes media identified by `mediaId` from the connector's backend storage
      * @param connectorId unique Id of the media connector
      * @param mediaId unique Id of the media to download
+     * @returns
      */
     remove = async (connectorId: string, mediaId: string) => {
         const res = await this.#editorAPI;
@@ -114,6 +119,7 @@ export class MediaConnectorController {
      * @param connectorId unique Id of the media connector
      * @param mediaId unique Id of the media to download
      * @param newName name of the copied media on the connector's backend
+     * @returns
      */
     copy = async (connectorId: string, mediaId: string, newName: string) => {
         const res = await this.#editorAPI;
@@ -127,6 +133,7 @@ export class MediaConnectorController {
      * method allows you to discover what options are available for a given connector. If you want to use any of these
      * options, they need to be passed in the `context` parameter of the `query` api method.
      * @param connectorId unique Id of the media connector
+     * @returns query options
      */
     getQueryOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
@@ -140,6 +147,7 @@ export class MediaConnectorController {
      * method allows you to discover what options are available for a given connector. If you want to use any of these
      * options, they need to be passed in the `context` parameter of the `download` api method.
      * @param connectorId unique Id of the media connector
+     * @returns download options
      */
     getDownloadOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
@@ -152,6 +160,7 @@ export class MediaConnectorController {
      * This method returns what capabilities the selected connector has. It gives an indication what methods can
      * be used successfully for a certain connector.
      * @param connectorId unique Id of the media connector
+     * @returns connector capabilities
      */
     getCapabilities = async (connectorId: string) => {
         const res = await this.#editorAPI;
@@ -163,6 +172,7 @@ export class MediaConnectorController {
     /**
      * This method will parse the deprecatedMediaType to the new media type. This method will be removed once the deprecatedMediaType is out of use
      * @param deprecatedType is 0 or 1
+     * @returns connector capabilities
      */
     parseDeprecatedMediaType = (deprecatedType: DeprecatedMediaType) => {
         if (deprecatedType === DeprecatedMediaType.file) return MediaType.file;

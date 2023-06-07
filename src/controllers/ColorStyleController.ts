@@ -1,4 +1,4 @@
-import { EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { ColorUpdate, DocumentColor } from '../types/ColorStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -21,81 +21,81 @@ export class ColorStyleController {
 
     /**
      * This method returns the list of colors
-     * @returns
+     * @returns list of all colors
      */
-    getColors = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getColors().then((result) => getEditorResponseData<DocumentColor[]>(result));
     };
 
     /**
-     * This method returns a color by ID
-     * @param colorId The ID of a specific color
-     * @returns
+     * This method returns a color by id
+     * @param colorId the id of a specific color
+     * @returns color properties for given id
      */
-    getColor = async (colorId: string) => {
+    getById = async (colorId: string) => {
         const res = await this.#editorAPI;
         return res.getColorById(colorId).then((result) => getEditorResponseData<DocumentColor>(result));
     };
 
     /**
-     * This method adds a new color
-     * @returns the new added color ID
+     * This method creates a new color
+     * @returns the new created color id
      */
-    createColor = async () => {
+    create = async () => {
         const res = await this.#editorAPI;
-        return res.createColor().then((result) => getEditorResponseData<string>(result));
+        return res.createColor().then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
-     * This method duplicates a color by the ID
-     * @param colorId The ID of a specific color
-     * @returns the new color id
+     * This method duplicates a color by the id
+     * @param colorId the id of a specific color
+     * @returns id of the duplicated color
      */
-    duplicateColor = async (colorId: string) => {
+    duplicate = async (colorId: string) => {
         const res = await this.#editorAPI;
-        return res.duplicateColor(colorId).then((result) => getEditorResponseData<string>(result));
+        return res.duplicateColor(colorId).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method changes positions of colors
-     * @param order The position of the colors
-     * @param colorIds The list of color IDs
+     * @param order the position of the colors
+     * @param colorIds the list of color IDs
      * @returns
      */
-    moveColors = async (order: number, colorIds: string[]) => {
+    move = async (order: number, colorIds: string[]) => {
         const res = await this.#editorAPI;
         return res.moveColors(order, colorIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method renames a color
-     * @param colorId The ID of a specific color
-     * @param newColorName The new name of the color
+     * @param colorId the id of a specific color
+     * @param newColorName the new name of the color
      * @returns
      */
-    renameColor = async (colorId: string, newColorName: string) => {
+    rename = async (colorId: string, newColorName: string) => {
         const res = await this.#editorAPI;
         return res.renameColor(colorId, newColorName).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method updates a color
-     * @param colorId The ID of a specific color
-     * @param newColorProperties The new color properties
+     * @param colorId the id of a specific color
+     * @param newColorProperties the new color properties
      * @returns
      */
-    updateColor = async (colorId: string, newColorProperties: ColorUpdate) => {
+    update = async (colorId: string, newColorProperties: ColorUpdate) => {
         const res = await this.#editorAPI;
         return res.updateColor(colorId, JSON.stringify(newColorProperties)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method removes a color
-     * @param colorId The ID of a specific color
+     * @param colorId the id of a specific color
      * @returns
      */
-    removeColor = async (colorId: string) => {
+    remove = async (colorId: string) => {
         const res = await this.#editorAPI;
         return res.removeColor(colorId).then((result) => getEditorResponseData<null>(result));
     };

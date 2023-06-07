@@ -31,7 +31,7 @@ import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 import { ShapeController } from './controllers/ShapeController';
 
-export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
+export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats } from './utils/enums';
 
 export {
     SlideDirections,

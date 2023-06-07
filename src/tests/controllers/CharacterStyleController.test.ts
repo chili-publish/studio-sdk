@@ -89,40 +89,40 @@ const updateCharacterStyle: CharacterStyleUpdate = {
 
 describe('CharacterStyleController', () => {
     it('Should call the getCharacterStyles method', async () => {
-        await mockedCharacterStyleController.getCharacterStyles();
+        await mockedCharacterStyleController.getAll();
         expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
     });
 
     it('Should call the getCharacterStyle method', async () => {
-        await mockedCharacterStyleController.getCharacterStyle('5');
+        await mockedCharacterStyleController.getById('5');
         expect(mockEditorApi.getCharacterStyleById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getCharacterStyleById).toHaveBeenCalledWith('5');
     });
 
     it('Should call the createCharacterStyle method', async () => {
-        await mockedCharacterStyleController.createCharacterStyle();
+        await mockedCharacterStyleController.create();
         expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
     });
 
     it('Should call the updateCharacterStyle method', async () => {
-        await mockedCharacterStyleController.updateCharacterStyle('5', updateCharacterStyle);
+        await mockedCharacterStyleController.update('5', updateCharacterStyle);
         expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledTimes(1);
     });
 
     it('Should call the removeCharacterStyle method', async () => {
-        await mockedCharacterStyleController.removeCharacterStyle('5');
+        await mockedCharacterStyleController.remove('5');
         expect(mockEditorApi.removeCharacterStyle).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.removeCharacterStyle).toHaveBeenCalledWith('5');
     });
 
     it('Should call the duplicateCharacterStyle method', async () => {
-        await mockedCharacterStyleController.duplicateCharacterStyle('6');
+        await mockedCharacterStyleController.duplicate('6');
         expect(mockEditorApi.duplicateCharacterStyle).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.duplicateCharacterStyle).toHaveBeenCalledWith('6');
     });
 
     it('Should call the renameCharacterStyle method', async () => {
-        await mockedCharacterStyleController.renameCharacterStyle('5', 'name');
+        await mockedCharacterStyleController.rename('5', 'name');
         expect(mockEditorApi.renameCharacterStyle).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.renameCharacterStyle).toHaveBeenCalledWith('5', 'name');
     });

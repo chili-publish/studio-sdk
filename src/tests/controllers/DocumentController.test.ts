@@ -32,14 +32,14 @@ afterEach(() => {
 describe('Document controller', () => {
     describe('document getters', () => {
         it('retrieve current document state', async () => {
-            await mockedDocumentController.getCurrentDocumentState();
+            await mockedDocumentController.getCurrentState();
             expect(mockedEditorApi.getCurrentDocumentState).toHaveBeenCalledTimes(1);
         });
     });
 
     describe('api calls that is using current document', () => {
         beforeEach(() => {
-            mockedDocumentController.getCurrentDocumentState = jest.fn().mockResolvedValue('{test: "hello"}');
+            mockedDocumentController.getCurrentState = jest.fn().mockResolvedValue('{test: "hello"}');
         });
         it('retrieve returns a download link from current document when there is no error', async () => {
             mockFetch.mockReturnValueOnce(
@@ -76,7 +76,7 @@ describe('Document controller', () => {
             });
         });
 
-        it(' returns error when first api call fails', async () => {
+        it('returns error when first api call fails', async () => {
             mockFetch.mockRejectedValueOnce({
                 status: 400,
                 code: 400,
@@ -109,7 +109,7 @@ describe('Document controller', () => {
             });
         });
 
-        it(' returns error when first api call fails without a code', async () => {
+        it('returns error when first api call fails without a code', async () => {
             mockFetch.mockRejectedValueOnce({
                 status: 400,
                 Error: 'Not found',
@@ -141,7 +141,7 @@ describe('Document controller', () => {
             });
         });
 
-        it(' returns error when second api call fails', async () => {
+        it('returns error when second api call fails', async () => {
             mockFetch.mockResolvedValueOnce(
                 new Promise((resolve) =>
                     resolve({
@@ -217,6 +217,6 @@ describe('Document controller', () => {
     });
 
     it('load provided document', async () => {
-        await mockedDocumentController.loadDocument(JSON.parse(mockDocument));
+        await mockedDocumentController.load(JSON.parse(mockDocument));
     });
 });

@@ -124,7 +124,7 @@ export enum SelectedTextStyles {
     TYPOGRAPHIC_CASE = 'typographicCase',
     SUB_SUPER_SCRIPT = 'subSuperScript',
     UNDERLINE = 'underline',
-    LINETHROUGH = 'lineThrough',
+    LINE_THROUGH = 'lineThrough',
     FILL_COLOR = 'fillColor',
     COLOR = 'color',
     FILL_COLOR_APPLIED = 'fillColorApplied',

@@ -48,21 +48,21 @@ describe('ConnectorController', () => {
     const headerName = 'headerName';
     const headerValue = 'headerValue';
 
-    it('Should call the getConnectors method', async () => {
-        await mockedConnectorController.getConnectors(ConnectorType.media);
+    it('Should call the getAllByType method', async () => {
+        await mockedConnectorController.getAllByType(ConnectorType.media);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to retrieve all connectors of a certain type', async () => {
-        await mockedConnectorController.getConnectors(ConnectorType.media);
+        await mockedConnectorController.getAllByType(ConnectorType.media);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
     });
-    it('Should call the getState method', async () => {
-        await mockedConnectorController.getState(connectorId);
+    it('Should call the getById method', async () => {
+        await mockedConnectorController.getById(connectorId);
         expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to register a connector', async () => {
-        await mockedConnectorController.registerConnector(registration);
+        await mockedConnectorController.register(registration);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
     });

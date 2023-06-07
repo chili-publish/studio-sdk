@@ -74,7 +74,7 @@ export interface SelectedLayoutChangedTrigger {
 export interface FrameMovedTrigger {
     event: ActionEditorEvent.frameMoved;
     /**
-     * The frame ID's this trigger should react to.
+     * The frame id's this trigger should react to.
      * Leaving this `undefined`, will make this trigger react to any frame that moves in any direction (also rotation, resize and ).
      */
     triggers?: Id[];
@@ -92,7 +92,7 @@ export interface VariableValueChangedTrigger {
     event: ActionEditorEvent.variableValueChanged;
 
     /**
-     * The variable ID's this trigger should react to.
+     * The variable id's this trigger should react to.
      * Leaving this `undefined`, will make this trigger react to all variableValueChanges.
      */
     triggers?: Id[];

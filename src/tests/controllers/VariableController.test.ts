@@ -54,54 +54,54 @@ describe('VariableController', () => {
     });
 
     it('get variable by id', async () => {
-        await mockedVariableController.getVariable('2');
+        await mockedVariableController.getById('2');
         expect(mockEditorApi.getVariableById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariableById).toHaveBeenCalledWith('2');
     });
 
     it('get variable by name', async () => {
-        await mockedVariableController.getVariableByName('name');
+        await mockedVariableController.getByName('name');
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledWith('name');
     });
 
     it('get variable list', async () => {
-        await mockedVariableController.getVariables();
+        await mockedVariableController.getAll();
         expect(mockEditorApi.getVariables).toHaveBeenCalledTimes(1);
     });
 
     it('create a new variable', async () => {
-        await mockedVariableController.createVariable('2', VariableType.shorttext);
+        await mockedVariableController.create('2', VariableType.shorttext);
         expect(mockEditorApi.addVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.addVariable).toHaveBeenCalledWith('2', VariableType.shorttext);
     });
 
     it('remove a variable', async () => {
-        await mockedVariableController.removeVariables(['2']);
+        await mockedVariableController.remove(['2']);
         expect(mockEditorApi.removeVariables).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.removeVariables).toHaveBeenCalledWith(['2']);
     });
 
     it('set variable name', async () => {
-        await mockedVariableController.setVariableName('3', 'newName');
+        await mockedVariableController.rename('3', 'newName');
         expect(mockEditorApi.setVariableName).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableName).toHaveBeenCalledWith('3', 'newName');
     });
 
     it('set variable label', async () => {
-        await mockedVariableController.setVariableLabel('3', 'newLabel');
+        await mockedVariableController.setLabel('3', 'newLabel');
         expect(mockEditorApi.setVariableLabel).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableLabel).toHaveBeenCalledWith('3', 'newLabel');
     });
 
     it('set variable type', async () => {
-        await mockedVariableController.setVariableType('3', VariableType.group);
+        await mockedVariableController.setType('3', VariableType.group);
         expect(mockEditorApi.setVariableType).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableType).toHaveBeenCalledWith('3', VariableType.group);
     });
 
     it('set variable value', async () => {
-        await mockedVariableController.setVariableValue('3', 'value');
+        await mockedVariableController.setValue('3', 'value');
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith('3', 'value');
     });
@@ -113,13 +113,13 @@ describe('VariableController', () => {
     });
 
     it('duplicate variable', async () => {
-        await mockedVariableController.duplicateVariable('3');
+        await mockedVariableController.duplicate('3');
         expect(mockEditorApi.duplicateVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.duplicateVariable).toHaveBeenCalledWith('3');
     });
 
     it('moveVariable variable', async () => {
-        await mockedVariableController.moveVariable(0, '1', '6');
+        await mockedVariableController.move(0, '1', '6');
         expect(mockEditorApi.moveVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.moveVariable).toHaveBeenCalledWith('1', '6', 0);
     });
@@ -131,25 +131,25 @@ describe('VariableController', () => {
     });
 
     it('set isHidden', async () => {
-        await mockedVariableController.setVariableIsHidden('1', false);
+        await mockedVariableController.setIsHidden('1', false);
         expect(mockEditorApi.setVariableIsHidden).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableIsHidden).toHaveBeenCalledWith('1', false);
     });
 
     it('set isRequired', async () => {
-        await mockedVariableController.setVariableIsRequired('1', true);
+        await mockedVariableController.setIsRequired('1', true);
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledWith('1', true);
     });
 
     it('set isReadonly', async () => {
-        await mockedVariableController.setVariableIsReadonly('1', true);
+        await mockedVariableController.setIsReadonly('1', true);
         expect(mockEditorApi.setVariableIsReadonly).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableIsReadonly).toHaveBeenCalledWith('1', true);
     });
 
     it('ungroup variables', async () => {
-        await mockedVariableController.ungroupVariable('1');
+        await mockedVariableController.ungroupVariables('1');
         expect(mockEditorApi.ungroupVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.ungroupVariable).toHaveBeenCalledWith('1');
     });
@@ -162,7 +162,7 @@ describe('VariableController', () => {
             sourceType: ImageVariableSourceType.mediaConnector,
         };
 
-        await mockedVariableController.setVariableSource(varId, src);
+        await mockedVariableController.setSource(varId, src);
 
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, src.assetId);
@@ -171,7 +171,7 @@ describe('VariableController', () => {
     it('remove variable source', async () => {
         const varId = '1';
 
-        await mockedVariableController.removeVariableSource(varId);
+        await mockedVariableController.removeSource(varId);
 
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, null);

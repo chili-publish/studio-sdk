@@ -2,7 +2,7 @@ import { ConfigType, Id } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**
- * The SubscriberController is responsible for all listeners which can influence the aplication-state from outside.
+ * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
  * Callbacks inside this controller can be set by `window.SDK.subscriber.{method-name}`
  */
 export class SubscriberController {
@@ -73,7 +73,7 @@ export class SubscriberController {
     };
 
     /**
-     * A listener on the general state of the document, gets triggered everytime a change is done on the document.
+     * A listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
         const callBack = this.config.onStateChanged;
@@ -107,7 +107,7 @@ export class SubscriberController {
 
     /**
      * Listener on when the tool has changed by the canvas
-     * @param tool The string representation of a certain tool
+     * @param tool the string representation of a certain tool
      */
     onSelectedToolChanged = (tool: string) => {
         const callBack = this.config.onSelectedToolChanged;
@@ -188,10 +188,10 @@ export class SubscriberController {
 
     /**
      * Listener on layouts, this listener will get triggered when a (sub)layout is
-     * - added
+     * - created
      * - removed
      * - renamed
-     * - duplicted
+     * - duplicated
      * @param layouts Stringified object of layouts
      */
     onLayoutsChanged = (layouts: string) => {

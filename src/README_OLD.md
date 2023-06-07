@@ -64,7 +64,7 @@ If you want to pin yourself to a certain version of the SDK you can add one of o
 
 `npm install --save @chili-publish/studio-sdk@v0.0.1`
 
-To check our versions and tags, go to [our package on npmjs ](https://www.npmjs.com/package/@chili-publish/studio-sdk/v/0.47.1?activeTab=versions) or take [the title of our github release](https://github.com/chili-publish/studio-sdk/releases), this is always in sync with the tagname that is used.
+To check our versions and tags, go to [our package on npmjs ](https://www.npmjs.com/package/@chili-publish/studio-sdk/v/0.47.1?activeTab=versions) or take [the title of our github release](https://github.com/chili-publish/studio-sdk/releases), this is always in sync with the tag name that is used.
 
 <br>
 
@@ -190,7 +190,7 @@ window.SDK.tool.setHandTool();
 Or an example with a parameter:
 
 ```javascript
-// Add a new layout whom inherits from layout with ID 2
+// Add a new layout whom inherits from layout with id 2
 window.SDK.layout.addLayout(2);
 ```
 
@@ -198,6 +198,6 @@ window.SDK.layout.addLayout(2);
 
 ### Recap
 
-So to recap, you first need to initialise the SDK and Editor, then add an empty div with the ID that you want to pass through the SDK to inject the Editor in.
+So to recap, you first need to initialise the SDK and Editor, then add an empty div with the id that you want to pass through the SDK to inject the Editor in.
 Then you're ready to go, if you initialise some listeners with callbacks or use a getter you can easily retrieve data on change or on request.
 To send data you just call the sdk method, with or without parameters (depends on the method).

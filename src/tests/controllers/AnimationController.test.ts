@@ -40,18 +40,18 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('AnimationController', () => {
-    it('Should call the getAnimationsOnSelectedLayout method', async () => {
-        await mockedAnimationController.getAnimationsOnSelectedLayout();
+    it('Should call the getAllOnSelectedLayout method', async () => {
+        await mockedAnimationController.getAllOnSelectedLayout();
         expect(mockEditorApi.getAnimationsOnSelectedLayout).toHaveBeenCalledTimes(1);
     });
-    it('Should call the getAnimationByFrameId method', async () => {
-        await mockedAnimationController.getAnimationByFrameId('4', '8');
+    it('Should call the getByFrameId method', async () => {
+        await mockedAnimationController.getByFrameId('4', '8');
         expect(mockEditorApi.getAnimationByFrameId).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getAnimationByFrameId).toHaveBeenCalledWith('4', '8');
     });
 
-    it('Should call the getAnimationsByLayoutId method', async () => {
-        await mockedAnimationController.getAnimationsByLayoutId('4');
+    it('Should call the getByLayoutId method', async () => {
+        await mockedAnimationController.getByLayoutId('4');
         expect(mockEditorApi.getAnimationsByLayoutId).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getAnimationsByLayoutId).toHaveBeenCalledWith('4');
     });
@@ -60,13 +60,13 @@ describe('AnimationController', () => {
         expect(mockEditorApi.setFrameAnimation).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setFrameAnimation).toHaveBeenCalledWith(JSON.stringify(mockedAnimation.animation));
     });
-    it('Should call the playAnimation method', async () => {
-        await mockedAnimationController.playAnimation();
+    it('Should call the play method', async () => {
+        await mockedAnimationController.play();
         expect(mockEditorApi.playAnimation).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call the pauseAnimation method', async () => {
-        await mockedAnimationController.pauseAnimation();
+    it('Should call the pause method', async () => {
+        await mockedAnimationController.pause();
         expect(mockEditorApi.pauseAnimation).toHaveBeenCalledTimes(1);
     });
     it('Should call the setScrubberPosition method', async () => {
@@ -75,17 +75,17 @@ describe('AnimationController', () => {
         expect(mockEditorApi.setScrubberPosition).toHaveBeenLastCalledWith(5000);
     });
     it('Should call the setAnimationDuration method', async () => {
-        await mockedAnimationController.setAnimationDuration(8000);
+        await mockedAnimationController.setDuration(8000);
         expect(mockEditorApi.setAnimationDuration).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setAnimationDuration).toHaveBeenLastCalledWith(8000);
     });
 
-    it('Should vall the resetFrameAnimation method', async () => {
+    it('Should call the resetFrameAnimation method', async () => {
         await mockedAnimationController.resetFrameAnimation(mockFrameAnimation.animation.frameId);
         expect(mockEditorApi.resetFrameAnimation).toHaveBeenCalledTimes(1);
     });
     it('Should call the resetAnimation method', async () => {
-        await mockedAnimationController.resetAnimation();
+        await mockedAnimationController.reset();
         expect(mockEditorApi.resetAnimation).toHaveBeenCalledTimes(1);
     });
 });

@@ -43,57 +43,57 @@ export class FrameController {
     private shapeController: ShapeController;
     /**
      * This method returns the list of frames
-     * @returns
+     * @returns list of all frames
      */
-    getFrames = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getFrames().then((result) => getEditorResponseData<FrameType[]>(result));
     };
 
     /**
      * This method returns the list of selected frames
-     * @returns
+     * @returns list of all selected frames
      */
-    getSelectedFrames = async () => {
+    getSelected = async () => {
         const res = await this.#editorAPI;
         return res.getSelectedFrames().then((result) => getEditorResponseData<FrameType[]>(result));
     };
 
     /**
      * This method returns the list of frames by pageId
-     * @param pageId The ID of a specific page
-     * @returns
+     * @param pageId the id of a specific page
+     * @returns list of all frames by pageId
      */
-    getFramesByPageId = async (pageId: Id) => {
+    getAllByPageId = async (pageId: Id) => {
         const res = await this.#editorAPI;
         return res.getFramesByPageId(pageId).then((result) => getEditorResponseData<FrameType[]>(result));
     };
 
     /**
      * This method returns a frame by its name
-     * @param frameName The name of a specific frame
-     * @returns
+     * @param frameName the name of a specific frame
+     * @returns frame properties
      */
-    getFrameByName = async (frameName: string) => {
+    getByName = async (frameName: string) => {
         const res = await this.#editorAPI;
         return res.getFrameByName(frameName).then((result) => getEditorResponseData<FrameType>(result));
     };
 
     /**
      * This method returns a frame by its id
-     * @param frameId The ID of a specific frame
-     * @returns
+     * @param frameId the id of a specific frame
+     * @returns frame properties
      */
-    getFrame = async (frameId: Id) => {
+    getById = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.getFrameById(frameId).then((result) => getEditorResponseData<FrameType>(result));
     };
 
     /**
      * This method returns all frame properties on current layout
-     * @returns
+     * @returns all frame properties on current layout
      */
-    getFramePropertiesOnSelectedLayout = async () => {
+    getPropertiesOnSelectedLayout = async () => {
         const res = await this.#editorAPI;
         return res
             .getFramePropertiesOnSelectedLayout()
@@ -101,12 +101,12 @@ export class FrameController {
     };
 
     /**
-     * This method returns frame properties for a given frame and layout
-     * @param frameId The ID of a specific frame
-     * @param layoutId The ID of a specific layout
-     * @returns
+     * This method returns frame layout properties for a given frame and layout
+     * @param frameId the id of a specific frame
+     * @param layoutId the id of a specific layout
+     * @returns frame layout properties
      */
-    getFramePropertiesByFrameId = async (frameId: Id, layoutId?: Id) => {
+    getLayoutProperties = async (frameId: Id, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res
             .getFramePropertiesByFrameId(frameId, layoutId)
@@ -114,31 +114,31 @@ export class FrameController {
     };
 
     /**
-     * This method returns frame properties for a given layout
-     * @param layoutId The ID of a specific layout
-     * @returns
+     * This method returns a list of frame properties for a given layout
+     * @param layoutId the id of a specific layout
+     * @returns list of frame layout properties
      */
-    getFramesProperties = async (layoutId: Id) => {
+    getAllLayoutProperties = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res.getFramesProperties(layoutId).then((result) => getEditorResponseData<FrameLayoutType[]>(result));
     };
 
     /**
      * This method will reset the frame size (width and height) to the frame's original value
-     * @param frameId The ID of a specific frame
+     * @param frameId the id of a specific frame
      * @returns
      */
-    resetFrameSize = async (frameId: Id) => {
+    resetSize = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameSize(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will select a specific frame
-     * @param frameId The ID of a specific frame
+     * @param frameId the id of a specific frame
      * @returns
      */
-    selectFrame = async (frameId: Id) => {
+    select = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.selectFrames([frameId]).then((result) => getEditorResponseData<null>(result));
     };
@@ -148,42 +148,42 @@ export class FrameController {
      * @param frameIds An array of all IDs you want to select
      * @returns
      */
-    selectMultipleFrames = async (frameIds: Id[]) => {
+    selectMultiple = async (frameIds: Id[]) => {
         const res = await this.#editorAPI;
         return res.selectFrames(frameIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method changes the order of frames in the z-index list.
-     * @param orderIndex The index in the list to move to
-     * @param frameIdsToMove An array of all IDs you want to move to the given index
+     * @param order the index in the list to move to
+     * @param frameIds An array of all IDs you want to move to the given index
      * @returns
      */
-    reorderFrames = async (orderIndex: number, frameIdsToMove: Id[]) => {
+    reorderFrames = async (order: number, frameIds: Id[]) => {
         const res = await this.#editorAPI;
-        return res.reorderFrames(orderIndex, frameIdsToMove).then((result) => getEditorResponseData<null>(result));
+        return res.reorderFrames(order, frameIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will update the z-index of a frame.
-     * @param frameId The ID of the frame you want to change the z-index of
-     * @param method The z-index update method to perform
+     * @param frameId the id of the frame you want to change the z-index of
+     * @param method the z-index update method to perform
      * @returns
      */
-    setFrameZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
+    setZIndex = async (frameId: Id, method: UpdateZIndexMethod) => {
         const res = await this.#editorAPI;
         return res.setFrameZIndex(frameId, method).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the height of a specific frame
-     * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param frameId the id of a specific frame
+     * @param height the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameHeight = async (frameId: Id, value: string) => {
+    setHeight = async (frameId: Id, height: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(height);
         if (calc === null || calc === Infinity) {
             return null;
         }
@@ -195,13 +195,13 @@ export class FrameController {
 
     /**
      * This method will set the rotation angle of a specific frame
-     * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param frameId the id of a specific frame
+     * @param rotation the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameRotation = async (frameId: Id, value: string) => {
+    setRotation = async (frameId: Id, rotation: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(rotation);
         if (calc === null || calc === Infinity) {
             return null;
         }
@@ -213,13 +213,13 @@ export class FrameController {
 
     /**
      * This method will set the width of a specific frame
-     * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param frameId the id of a specific frame
+     * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameWidth = async (frameId: Id, value: string) => {
+    setWidth = async (frameId: Id, width: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(width);
         if (calc === null || calc === Infinity) {
             return null;
         }
@@ -231,13 +231,13 @@ export class FrameController {
 
     /**
      * This method will set the x value of a specific frame
-     * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param frameId the id of a specific frame
+     * @param XValue the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameX = async (frameId: Id, value: string) => {
+    setX = async (frameId: Id, XValue: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(XValue);
 
         if (calc === null || calc === Infinity) {
             return null;
@@ -249,13 +249,13 @@ export class FrameController {
 
     /**
      * This method will set the y value of a specific frame
-     * @param frameId The ID of a specific frame
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param frameId the id of a specific frame
+     * @param YValue the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setFrameY = async (frameId: Id, value: string) => {
+    setY = async (frameId: Id, YValue: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(YValue);
 
         if (calc === null || calc === Infinity) {
             return null;
@@ -268,77 +268,77 @@ export class FrameController {
 
     /**
      * This method will update the name of a specific frame
-     * @param frameId The ID of a specific frame
-     * @param frameName The new name that the frame should receive
+     * @param frameId the id of a specific frame
+     * @param frameName the new name that the frame should receive
      * @returns
      */
-    setFrameName = async (frameId: Id, frameName: string) => {
+    rename = async (frameId: Id, frameName: string) => {
         const res = await this.#editorAPI;
         return res.renameFrame(frameId, frameName).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset properties of a specific frame to their original values
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
-    resetFrame = async (frameId: Id) => {
+    reset = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
     /**
      * This method will reset the x value of a specific frame to its original value
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
-    resetFrameX = async (frameId: Id) => {
+    resetX = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameX(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the y value of a specific frame to its original value
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
-    resetFrameY = async (frameId: Id) => {
+    resetY = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameY(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the rotation value of a specific frame to its original value
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
-    resetFrameRotation = async (frameId: Id) => {
+    resetRotation = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameRotation(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the width of a specific frame to its original value
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
-    resetFrameWidth = async (frameId: Id) => {
+    resetWidth = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameWidth(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the height of a specific frame to its original value
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
-    resetFrameHeight = async (frameId: Id) => {
+    resetHeight = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameHeight(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the fitMode property of a specific frame to its original value
-     * @param frameId The ID of the frame that needs to get reset
+     * @param frameId the id of the frame that needs to get reset
      * @returns
      */
     resetImageFrameFitMode = async (frameId: Id) => {
@@ -348,21 +348,21 @@ export class FrameController {
 
     /**
      * This method will set the visibility property of a specified frame. If set to false the frame will be invisible and vice versa.
-     * @param frameId The ID of the frame that needs to get updated
+     * @param frameId the id of the frame that needs to get updated
      * @param value True means the frame gets visible, false means the frame gets invisible
      * @returns
      */
-    setFrameVisibility = async (frameId: Id, value: boolean) => {
+    setVisibility = async (frameId: Id, value: boolean) => {
         const res = await this.#editorAPI;
         return res.setFrameVisibility(frameId, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will remove a specific frame using the Id.
-     * @param frameId The ID of the frame that needs to be deleted
+     * @param frameId the id of the frame that needs to be deleted
      * @returns
      */
-    removeFrame = async (frameId: Id) => {
+    remove = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.removeFrame(frameId).then((result) => getEditorResponseData<null>(result));
     };
@@ -370,37 +370,37 @@ export class FrameController {
     /**
      * This method will create a new frame of 'frameType' to the template positioned on the requested
      * coordinates.
-     * @param frameType The type of frame to create
+     * @param frameType the type of frame to create
      * @param x X coordinate of the new frame within the template
      * @param y Y coordinate of the new frame within the template
      * @param width Width of the new frame within the template
      * @param height Height of the new frame within the template
-     * @returns The newly created frame's ID
+     * @returns the newly created frame's id
      */
-    createFrame = async (frameType: FrameTypeEnum, x: number, y: number, width: number, height: number) => {
+    create = async (frameType: FrameTypeEnum, x: number, y: number, width: number, height: number) => {
         const res = await this.#editorAPI;
-        return res.addFrame(frameType, x, y, width, height).then((result) => getEditorResponseData<string>(result));
+        return res.addFrame(frameType, x, y, width, height).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method will create a new frame of 'shapeType' type to the template positioned on the requested
      * coordinates.
-     * @param shapeType The type of frame to create
+     * @param shapeType the type of frame to create
      * @param x X coordinate of the new frame within the template
      * @param y Y coordinate of the new frame within the template
      * @param width Width of the new frame within the template
      * @param height Height of the new frame within the template
-     * @returns The newly created shape frame's ID
+     * @returns the newly created shape frame's id
      */
     createShapeFrame = async (shapeType: ShapeType, x: number, y: number, width: number, height: number) => {
         const res = await this.#editorAPI;
-        return res.addFrame(shapeType, x, y, width, height).then((result) => getEditorResponseData<string>(result));
+        return res.addFrame(shapeType, x, y, width, height).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method sets or removes the image source to the ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
-     * @param src A new image source
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
+     * @param newImageSource A new image source
      * @returns
      */
     private updateImageSource = async (imageFrameId: Id, src: ImageFrameSource | null) => {
@@ -411,7 +411,7 @@ export class FrameController {
 
     /**
      * This method removes the image source from the ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be removed from
+     * @param imageFrameId the id of the imageFrame where an image needs to be removed from
      */
     removeImageSource = async (imageFrameId: string) => {
         return this.updateImageSource(imageFrameId, null);
@@ -419,7 +419,7 @@ export class FrameController {
 
     /**
      * This method will assign an image from a mediaConnector to the correct ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
      * @param connectorId Unique Id of the media connector
      * @param resourceId Unique Id of the asset that you want to assign to the imageFrame
      * @returns
@@ -436,7 +436,7 @@ export class FrameController {
     /**
      * This method will assign an image from url to the correct ImageFrame
      * Make sure the url can be accessed by the editor.
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
      * @param url A valid image uri
      * @returns
      */
@@ -447,8 +447,8 @@ export class FrameController {
 
     /**
      * This method will set the fitMode property of a specified image frame.
-     * @param imageFrameId The ID of the imageFrame that needs to get updated.
-     * @param fitMode The new fitMode that you want to set to the imageFrame.
+     * @param imageFrameId the id of the imageFrame that needs to get updated.
+     * @param fitMode the new fitMode that you want to set to the imageFrame.
      * @returns
      */
     setImageFrameFitMode = async (imageFrameId: Id, fitMode: FitMode) => {
@@ -457,7 +457,7 @@ export class FrameController {
     };
     /**
      * This method will set the constrainProportions property of a specified frame.
-     * @param frameId The ID of the frame that needs to get updated.
+     * @param frameId the id of the frame that needs to get updated.
      * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
@@ -470,19 +470,19 @@ export class FrameController {
 
     /**
      * This method will set the vertical alignment property of a specified frame.
-     * @param frameId The ID of the frame that needs to get updated
-     * @param verticalAlign The new vertical alignment to be set to the frame.
+     * @param frameId the id of the frame that needs to get updated
+     * @param verticalAlign the new vertical alignment to be set to the frame.
      * @returns
      */
-    setVerticalAlignment = async (frameId: Id, verticalAlign: VerticalAlign) => {
+    setVerticalAlign = async (frameId: Id, verticalAlign: VerticalAlign) => {
         const res = await this.#editorAPI;
         return res.setVerticalAlignment(frameId, verticalAlign).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the min copyFitting property of a specified frame.
-     * @param frameId The ID of the frame that needs to get updated
-     * @param value The new min copyFitting value to be set to the frame.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value the new min copyFitting value to be set to the frame.
      * @returns
      */
     setMinCopyfitting = async (frameId: Id, value: string) => {
@@ -500,8 +500,8 @@ export class FrameController {
 
     /**
      * This method will set the max copyFitting property of a specified frame.
-     * @param frameId The ID of the frame that needs to get updated
-     * @param value The new max copyFitting value to be set to the frame.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value the new max copyFitting value to be set to the frame.
      * @returns
      */
     setMaxCopyfitting = async (frameId: Id, value: string) => {
@@ -519,8 +519,8 @@ export class FrameController {
 
     /**
      * This method will enable copyFitting on a specified frame.
-     * @param frameId The ID of the frame that needs to get updated
-     * @param value The new value to be set to the frame.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
      * @returns
      */
     setEnableCopyfitting = async (frameId: Id, value: boolean) => {
@@ -530,7 +530,7 @@ export class FrameController {
 
     /**
      * This method will reset the frame minCopyfitting to the frame's original value
-     * @param frameId The ID of a specific frame
+     * @param frameId the id of a specific frame
      * @returns
      */
     resetMinCopyfitting = async (frameId: Id) => {
@@ -540,7 +540,7 @@ export class FrameController {
 
     /**
      * This method will reset the frame maxCopyfitting to the frame's original value
-     * @param frameId The ID of a specific frame
+     * @param frameId the id of a specific frame
      * @returns
      */
     resetMaxCopyfitting = async (frameId: Id) => {
@@ -550,7 +550,7 @@ export class FrameController {
 
     /**
      * This method will reset the frame enableCopyfitting to the frame's original value
-     * @param frameId The ID of a specific frame
+     * @param frameId the id of a specific frame
      * @returns
      */
     resetEnableCopyfitting = async (frameId: Id) => {
@@ -560,7 +560,7 @@ export class FrameController {
 
     /**
      * This method will set the visibility of the shape fill.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param enableFill Whether the shape fill is visible.
      * @returns
      */
@@ -570,8 +570,8 @@ export class FrameController {
 
     /**
      * This method will set the shape fill color of a specified shape frame.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param fillColor The new shape fill color that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param fillColor the new shape fill color that you want to set to the shapeFrame.
      * @returns
      */
     setShapeFrameFillColor = async (shapeFrameId: Id, fillColor: ColorUsage) => {
@@ -580,7 +580,7 @@ export class FrameController {
 
     /**
      * This method will set the visibility of the shape stroke.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
      * @param enableStroke Whether the shape stroke is visible.
      * @returns
      */
@@ -590,8 +590,8 @@ export class FrameController {
 
     /**
      * This method will set the shape stroke color of a specified shape frame.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param strokeColor The new shape stroke color that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param strokeColor the new shape stroke color that you want to set to the shapeFrame.
      * @returns
      */
     setShapeFrameStrokeColor = async (shapeFrameId: Id, strokeColor: ColorUsage) => {
@@ -600,8 +600,8 @@ export class FrameController {
 
     /**
      * This method will set the shape stroke weight of a specified shape frame.
-     * @param shapeFrameId The ID of the shapeFrame that needs to get updated.
-     * @param strokeWeight The new shape stroke weight that you want to set to the shapeFrame.
+     * @param shapeFrameId the id of the shapeFrame that needs to get updated.
+     * @param strokeWeight the new shape stroke weight that you want to set to the shapeFrame.
      * @returns
      */
     setShapeFrameStrokeWeight = async (shapeFrameId: Id, strokeWeight: number) => {
@@ -610,18 +610,18 @@ export class FrameController {
 
     /**
      * This method will set the blend mode of a specified shape frame
-     * @param frameId The ID of a specific frame
-     * @param blendMode The blend mode
+     * @param frameId the id of a specific frame
+     * @param blendMode the blend mode
      * @returns
      */
-    setFrameBlendMode = async (frameId: Id, blendMode: BlendMode) => {
+    setBlendMode = async (frameId: Id, blendMode: BlendMode) => {
         const res = await this.#editorAPI;
         return res.setFrameBlendMode(frameId, blendMode).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will make the specified image frame go into cropping mode.
-     * @param frameId The ID of a specific image frame
+     * @param frameId the id of a specific image frame
      * @returns
      */
     enterCropMode = async (frameId: Id) => {
@@ -640,7 +640,7 @@ export class FrameController {
 
     /**
      * This method will reset the currently applied crop mode and apply the last selected fit mode again.
-     * @param frameId The ID of a specific image frame
+     * @param frameId the id of a specific image frame
      * @returns
      */
     resetCropMode = async (frameId: Id) => {
@@ -652,7 +652,7 @@ export class FrameController {
      * This method will exit cropping mode without saving the applied crop.
      * @returns
      */
-    cancelCropMode = async () => {
+    exitCropMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
     };

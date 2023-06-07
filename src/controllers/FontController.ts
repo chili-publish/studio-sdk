@@ -21,19 +21,19 @@ export class FontController {
 
     /**
      * This method returns the list of fonts
-     * @returns
+     * @returns list of all fonts
      */
-    getFonts = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getFonts().then((result) => getEditorResponseData<DocumentFont[]>(result));
     };
 
     /**
      * This method returns a font by id
-     * @param fontId The ID of a specific font
-     * @returns
+     * @param fontId the id of a specific font
+     * @returns font properties
      */
-    getFont = async (fontId: Id) => {
+    getById = async (fontId: Id) => {
         const res = await this.#editorAPI;
         return res.getFontById(fontId).then((result) => getEditorResponseData<DocumentFont>(result));
     };
@@ -42,19 +42,19 @@ export class FontController {
      * This method returns the default font.
      * Be aware that the default font will not change during the entire lifetime of the SDK session.
      * It is not necessary to call this more than once in an integration, this value can be safely stored during the lifetime of this SDK session.
-     * @returns
+     * @returns font properties
      */
-    getDefaultFont = async () => {
+    getDefault = async () => {
         const res = await this.#editorAPI;
         return res.getDefaultFont().then((result) => getEditorResponseData<DocumentFont>(result));
     };
 
     /**
      * This method removes a font
-     * @param fontId The ID of a specific font
+     * @param fontId the id of a specific font
      * @returns
      */
-    removeFont = async (fontId: Id) => {
+    remove = async (fontId: Id) => {
         const res = await this.#editorAPI;
         return res.removeFont(fontId).then((result) => getEditorResponseData<null>(result));
     };
@@ -62,20 +62,20 @@ export class FontController {
     /**
      * This method adds a font
      * @param connectorId unique Id of the font connector
-     * @param font The font object
+     * @param font the font object
      * @returns
      */
-    addFont = async (connectorId: Id, font: AddDocumentFont) => {
+    add = async (connectorId: Id, font: AddDocumentFont) => {
         const res = await this.#editorAPI;
         return res.addFont(connectorId, JSON.stringify(font)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Check if the font is used anywhere in the document
-     * @param fontId The ID of the font to check
-     * @returns Whether the font is used
+     * @param fontId the id of the font to check
+     * @returns whether the font is used
      */
-    isFontUsed = async (fontId: string) => {
+    isUsed = async (fontId: string) => {
         const res = await this.#editorAPI;
         return res.isFontUsed(fontId).then((result) => getEditorResponseData<boolean>(result));
     };

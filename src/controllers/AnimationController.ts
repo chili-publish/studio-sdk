@@ -21,9 +21,9 @@ export class AnimationController {
 
     /**
      * This method returns all animations on current layout
-     * @returns
+     * @returns list of all animation on current layout
      */
-    getAnimationsOnSelectedLayout = async () => {
+    getAllOnSelectedLayout = async () => {
         const res = await this.#editorAPI;
         return res
             .getAnimationsOnSelectedLayout()
@@ -32,11 +32,11 @@ export class AnimationController {
 
     /**
      * This method returns an animation for a given frame and layout IDs
-     * @param frameId The ID of a specific frame
-     * @param layoutId The ID of a specific layout
-     * @returns
+     * @param frameId the id of a specific frame
+     * @param layoutId the id of a specific layout
+     * @returns animation properties for a given frame and layout
      */
-    getAnimationByFrameId = async (frameId: Id, layoutId?: Id) => {
+    getByFrameId = async (frameId: Id, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res
             .getAnimationByFrameId<string>(frameId, layoutId)
@@ -44,11 +44,11 @@ export class AnimationController {
     };
 
     /**
-     * This method returns the animations for a given layout ID
-     * @param layoutId The ID of a specific layout
-     * @returns
+     * This method returns the animations for a given layout id
+     * @param layoutId the id of a specific layout
+     * @returns animation properties for a given layout
      */
-    getAnimationsByLayoutId = async (layoutId: Id) => {
+    getByLayoutId = async (layoutId: Id) => {
         const res = await this.#editorAPI;
         return res
             .getAnimationsByLayoutId(layoutId)
@@ -57,8 +57,8 @@ export class AnimationController {
 
     /**
      * This method sets the animation state for a certain Frame
-     * @param animation
-     * @returns
+     * @param animation animation properties
+     * @returns updated animation properties
      */
     setFrameAnimation = async (animation: FrameAnimationPropertiesType) => {
         const res = await this.#editorAPI;
@@ -73,7 +73,7 @@ export class AnimationController {
      * This method triggers the animation to play
      * @returns
      */
-    playAnimation = async () => {
+    play = async () => {
         const res = await this.#editorAPI;
         return res.playAnimation().then((result) => getEditorResponseData<null>(result));
     };
@@ -82,47 +82,47 @@ export class AnimationController {
      * This method triggers the animation to pause
      * @returns
      */
-    pauseAnimation = async () => {
+    pause = async () => {
         const res = await this.#editorAPI;
         return res.pauseAnimation().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method sets the animation time to a certain time, expressed in milliseconds
-     * @param timeInMS The time expressed in milliseconds
+     * @param timeInMS the time expressed in milliseconds
      * @returns
      */
     setScrubberPosition = async (timeInMS: number) => {
         const res = await this.#editorAPI;
-        return res.setScrubberPosition(timeInMS);
+        return res.setScrubberPosition(timeInMS).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method sets the total and maximum duration of the animation, expressed in milliseconds
-     * @param timeInMS The time expressed in milliseconds
+     * @param timeInMS the time expressed in milliseconds
      * @returns
      */
-    setAnimationDuration = async (timeInMS: number) => {
+    setDuration = async (timeInMS: number) => {
         const res = await this.#editorAPI;
         return res.setAnimationDuration(timeInMS).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method resets the animation to its initial state
-     * @param frameId The ID of a certain frame
+     * @param frameId the id of a certain frame
      * @returns
      */
     resetFrameAnimation = async (frameId: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameAnimation(frameId);
+        return res.resetFrameAnimation(frameId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method resets the layout's animations and animation duration to its initial state
      * @returns
      */
-    resetAnimation = async () => {
+    reset = async () => {
         const res = await this.#editorAPI;
-        return res.resetAnimation();
+        return res.resetAnimation().then((result) => getEditorResponseData<null>(result));
     };
 }

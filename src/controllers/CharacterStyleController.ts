@@ -21,19 +21,19 @@ export class CharacterStyleController {
 
     /**
      * This method returns the list of character styles
-     * @returns
+     * @returns list of all character styles
      */
-    getCharacterStyles = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getCharacterStyles().then((result) => getEditorResponseData<CharacterStyle[]>(result));
     };
 
     /**
-     * This method returns a character style by the ID
-     * @param characterStyleId The ID of a specific character style
-     * @returns
+     * This method returns a character style by the id
+     * @param characterStyleId the id of a specific character style
+     * @returns character style for given id
      */
-    getCharacterStyle = async (characterStyleId: Id) => {
+    getById = async (characterStyleId: Id) => {
         const res = await this.#editorAPI;
         return res
             .getCharacterStyleById(characterStyleId)
@@ -41,21 +41,21 @@ export class CharacterStyleController {
     };
 
     /**
-     * This method adds a new character style
-     * @returns the new added character style ID
+     * This method creates a new character style
+     * @returns the id of new character style
      */
-    createCharacterStyle = async () => {
+    create = async () => {
         const res = await this.#editorAPI;
-        return res.createCharacterStyle().then((result) => getEditorResponseData<string>(result));
+        return res.createCharacterStyle().then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
-     * This method updates a character style by the ID and provided properties
-     * @param characterStyleId The ID of a specific character style
-     * @param characterStyle The new character style properties
+     * This method updates a character style by the id and provided properties
+     * @param characterStyleId the id of a specific character style
+     * @param characterStyle the new character style properties
      * @returns
      */
-    updateCharacterStyle = async (characterStyleId: Id, characterStyle: CharacterStyleUpdate) => {
+    update = async (characterStyleId: Id, characterStyle: CharacterStyleUpdate) => {
         const res = await this.#editorAPI;
         return res
             .updateCharacterStyle(characterStyleId, JSON.stringify(characterStyle))
@@ -63,32 +63,32 @@ export class CharacterStyleController {
     };
 
     /**
-     * This method removes a character style by the ID
-     * @param characterStyleId The ID of a specific character style
+     * This method removes a character style by the id
+     * @param characterStyleId the id of a specific character style
      * @returns
      */
-    removeCharacterStyle = async (characterStyleId: Id) => {
+    remove = async (characterStyleId: Id) => {
         const res = await this.#editorAPI;
         return res.removeCharacterStyle(characterStyleId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method duplicates a character style by the ID
-     * @param characterStyleId The ID of a specific character style
-     * @returns
+     * This method duplicates a character style by the id
+     * @param characterStyleId the id of a specific character style
+     * @returns id of the duplicated character style
      */
-    duplicateCharacterStyle = async (characterStyleId: Id) => {
+    duplicate = async (characterStyleId: Id) => {
         const res = await this.#editorAPI;
-        return res.duplicateCharacterStyle(characterStyleId).then((result) => getEditorResponseData<string>(result));
+        return res.duplicateCharacterStyle(characterStyleId).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
-     * This method renames a character style by the ID
-     * @param characterStyleId The ID of a specific character style
-     * @param characterStyleName The new name of the character style
+     * This method renames a character style by the id
+     * @param characterStyleId the id of a specific character style
+     * @param characterStyleName the new name of the character style
      * @returns
      */
-    renameCharacterStyle = async (characterStyleId: Id, characterStyleName: string) => {
+    rename = async (characterStyleId: Id, characterStyleName: string) => {
         const res = await this.#editorAPI;
         return res.renameCharacterStyle(characterStyleId, characterStyleName).then((result) => getEditorResponseData<null>(result));
     };

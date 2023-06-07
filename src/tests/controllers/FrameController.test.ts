@@ -129,7 +129,7 @@ afterAll(() => {
 
 describe('FrameController', () => {
     it('Should be possible to create a frame', async () => {
-        await mockedFrameController.createFrame(FrameTypeEnum.image, 100, 100, 100, 100);
+        await mockedFrameController.create(FrameTypeEnum.image, 100, 100, 100, 100);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledWith(FrameTypeEnum.image, 100, 100, 100, 100);
     });
@@ -140,127 +140,127 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to get all frames', async () => {
-        await mockedFrameController.getFrames();
+        await mockedFrameController.getAll();
         expect(mockedEditorApi.getFrames).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to get the selected frames', async () => {
-        await mockedFrameController.getSelectedFrames();
+        await mockedFrameController.getSelected();
         expect(mockedEditorApi.getSelectedFrames).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to get frames by pageId', async () => {
-        await mockedFrameController.getFramesByPageId(frameId);
+    it('Should be possible to get all frames by pageId', async () => {
+        await mockedFrameController.getAllByPageId(frameId);
         expect(mockedEditorApi.getFramesByPageId).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFramesByPageId).toHaveBeenCalledWith(frameId);
     });
 
     it('Should be possible to get a frame by name', async () => {
-        await mockedFrameController.getFrameByName('frame');
+        await mockedFrameController.getByName('frame');
         expect(mockedEditorApi.getFrameByName).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFrameByName).toHaveBeenCalledWith('frame');
     });
 
     it('Should be possible to get a frame', async () => {
-        await mockedFrameController.getFrame(frameId);
+        await mockedFrameController.getById(frameId);
         expect(mockedEditorApi.getFrameById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFrameById).toHaveBeenCalledWith(frameId);
     });
 
     it('Should be possible to get frame properties on the selected layout', async () => {
-        await mockedFrameController.getFramePropertiesOnSelectedLayout();
+        await mockedFrameController.getPropertiesOnSelectedLayout();
         expect(mockedEditorApi.getFramePropertiesOnSelectedLayout).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to get frame properties by frame id', async () => {
-        await mockedFrameController.getFramePropertiesByFrameId('1', '2');
+        await mockedFrameController.getLayoutProperties('1', '2');
         expect(mockedEditorApi.getFramePropertiesByFrameId).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFramePropertiesByFrameId).toHaveBeenCalledWith('1', '2');
     });
 
     it('Should be possible to get frame properties by layout id', async () => {
-        await mockedFrameController.getFramesProperties(frameId);
+        await mockedFrameController.getAllLayoutProperties(frameId);
         expect(mockedEditorApi.getFramesProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFramesProperties).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to set the frame height', async () => {
-        await mockedFrameController.setFrameHeight(frameId, '300');
+        await mockedFrameController.setHeight(frameId, '300');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(frameId, 300);
     });
     it('Should be possible to set the frame rotation', async () => {
-        await mockedFrameController.setFrameRotation(frameId, '400');
+        await mockedFrameController.setRotation(frameId, '400');
         expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledWith(frameId, 400);
     });
     it('Should be possible to set the frame y property', async () => {
-        await mockedFrameController.setFrameY(frameId, '100');
+        await mockedFrameController.setY(frameId, '100');
         expect(mockedEditorApi.setFrameY).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameY).toHaveBeenCalledWith(frameId, 100);
     });
     it('Should be possible to set the frame x property', async () => {
-        await mockedFrameController.setFrameX(frameId, '400');
+        await mockedFrameController.setX(frameId, '400');
         expect(mockedEditorApi.setFrameX).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameX).toHaveBeenCalledWith(frameId, 400);
     });
 
     it('Should be possible to set the frame width', async () => {
-        await mockedFrameController.setFrameWidth(frameId, '332');
+        await mockedFrameController.setWidth(frameId, '332');
         expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledWith(frameId, 332);
     });
     it('Should be possible to set the frame height', async () => {
-        await mockedFrameController.setFrameHeight(frameId, '32');
+        await mockedFrameController.setHeight(frameId, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(frameId, 32);
     });
 
     it('Should be possible to set the name of the frame', async () => {
-        await mockedFrameController.setFrameName(frameId, 'TEST');
+        await mockedFrameController.rename(frameId, 'TEST');
         expect(mockedEditorApi.renameFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.renameFrame).toHaveBeenCalledWith(frameId, 'TEST');
     });
     it('Should be possible to set the frame visibility', async () => {
-        await mockedFrameController.setFrameVisibility(frameId, false);
+        await mockedFrameController.setVisibility(frameId, false);
         expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledWith(frameId, false);
     });
     it('Should be possible to remove a frame', async () => {
-        await mockedFrameController.removeFrame(frameId);
+        await mockedFrameController.remove(frameId);
         expect(mockedEditorApi.removeFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.removeFrame).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to reset a frame', async () => {
-        await mockedFrameController.resetFrame(frameId);
+        await mockedFrameController.reset(frameId);
         expect(mockedEditorApi.resetFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrame).toHaveBeenCalledWith(frameId);
     });
     it("Should be possible to reset a frame's x position", async () => {
-        await mockedFrameController.resetFrameX(frameId);
+        await mockedFrameController.resetX(frameId);
         expect(mockedEditorApi.resetFrameX).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameX).toHaveBeenCalledWith(frameId);
     });
     it("Should be possible to reset a frame's y position", async () => {
-        await mockedFrameController.resetFrameY(frameId);
+        await mockedFrameController.resetY(frameId);
         expect(mockedEditorApi.resetFrameY).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameY).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to reset the frame rotation', async () => {
-        await mockedFrameController.resetFrameRotation(frameId);
+        await mockedFrameController.resetRotation(frameId);
         expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to reset the frame height', async () => {
-        await mockedFrameController.resetFrameHeight(frameId);
+        await mockedFrameController.resetHeight(frameId);
         expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to reset the frame width', async () => {
-        await mockedFrameController.resetFrameWidth(frameId);
+        await mockedFrameController.resetWidth(frameId);
         expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to reset the frame size', async () => {
-        await mockedFrameController.resetFrameSize(frameId);
+        await mockedFrameController.resetSize(frameId);
         expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledWith(frameId);
     });
@@ -270,12 +270,12 @@ describe('FrameController', () => {
         expect(mockedEditorApi.resetImageFrameFitMode).toHaveBeenCalledWith(frameId);
     });
     it('Should be possible to select a frame', async () => {
-        await mockedFrameController.selectFrame(frameId);
+        await mockedFrameController.select(frameId);
         expect(mockedEditorApi.selectFrames).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.selectFrames).toHaveBeenCalledWith([frameId]);
     });
     it('Should be possible to select multiple frames at once', async () => {
-        await mockedFrameController.selectMultipleFrames([frameId]);
+        await mockedFrameController.selectMultiple([frameId]);
         expect(mockedEditorApi.selectFrames).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.selectFrames).toHaveBeenCalledWith([frameId]);
     });
@@ -290,7 +290,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(frameId, true);
     });
     it('Should be possible to set the vertical alignment of a frame', async () => {
-        await mockedFrameController.setVerticalAlignment(frameId, VerticalAlign.justify);
+        await mockedFrameController.setVerticalAlign(frameId, VerticalAlign.justify);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(frameId, VerticalAlign.justify);
     });
@@ -330,7 +330,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.reorderFrames).toHaveBeenCalledWith(1, [frameId]);
     });
     it('Should be possible to set the frame Z index', async () => {
-        await mockedFrameController.setFrameZIndex(frameId, UpdateZIndexMethod.sendBackward);
+        await mockedFrameController.setZIndex(frameId, UpdateZIndexMethod.sendBackward);
         expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledWith(frameId, UpdateZIndexMethod.sendBackward);
     });
@@ -360,7 +360,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, null);
     });
     it('Should be possible to set blend mode to a specific frame', async () => {
-        await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);
+        await mockedFrameController.setBlendMode(frameId, BlendMode.darken);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(frameId, BlendMode.darken);
     });
@@ -383,7 +383,7 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to cancel the current image crop', async () => {
-        await mockedFrameController.cancelCropMode();
+        await mockedFrameController.exitCropMode();
         expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
     });
 });
@@ -426,11 +426,11 @@ describe('ImageFrameSource manipulations', () => {
 
 describe('User inputs for Frame Properties', () => {
     it('Returns null when user input doesn\'t contain any number', async () => {
-        const responseX = await mockedFrameController.setFrameX(frameId, 'test');
-        const responseY = await mockedFrameController.setFrameY(frameId, 'test');
-        const responseWidth = await mockedFrameController.setFrameWidth(frameId, 'test');
-        const responseHeight = await mockedFrameController.setFrameHeight(frameId, 'test');
-        const responseRotation = await mockedFrameController.setFrameRotation(frameId, 'test');
+        const responseX = await mockedFrameController.setX(frameId, 'test');
+        const responseY = await mockedFrameController.setY(frameId, 'test');
+        const responseWidth = await mockedFrameController.setWidth(frameId, 'test');
+        const responseHeight = await mockedFrameController.setHeight(frameId, 'test');
+        const responseRotation = await mockedFrameController.setRotation(frameId, 'test');
         expect(responseX).toEqual(null);
         expect(responseY).toEqual(null);
         expect(responseWidth).toEqual(null);
@@ -439,7 +439,7 @@ describe('User inputs for Frame Properties', () => {
     });
 
     it('return null when the user input an infinite value', async () => {
-        const responseRotation = await mockedFrameController.setFrameRotation(frameId, '20/0');
+        const responseRotation = await mockedFrameController.setRotation(frameId, '20/0');
         expect(responseRotation).toBeNull();
     });
 });

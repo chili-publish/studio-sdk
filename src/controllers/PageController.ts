@@ -22,19 +22,19 @@ export class PageController {
 
     /**
      * This method returns the list of pages
-     * @returns
+     * @returns list of all pages
      */
-    getPages = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getPages().then((result) => getEditorResponseData<Page[]>(result));
     };
 
     /**
      * This method returns a page by its id
-     * @param pageId The ID of a specific page
-     * @returns
+     * @param pageId the id of a specific page
+     * @returns page properties
      */
-    getPage = async (pageId: Id) => {
+    getById = async (pageId: Id) => {
         const res = await this.#editorAPI;
         return res.getPageById(pageId).then((result) => getEditorResponseData<Page>(result));
     };
@@ -42,13 +42,13 @@ export class PageController {
     /**
      * This method will set the width of the page to a specific value.
      * This only works if the document is a project.
-     * @param pageId The ID of a specific page
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param pageId the id of a specific page
+     * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setPageWidth = async (pageId: Id, value: string) => {
+    setWidth = async (pageId: Id, width: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(width);
 
         if (calc === null || calc === Infinity) {
             return null;
@@ -62,13 +62,13 @@ export class PageController {
     /**
      * This method will set the height of the page to a specific value.
      * This only works if the document is a project.
-     * @param pageId The ID of a specific page
-     * @param value The string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param pageId the id of a specific page
+     * @param height the string value that will be calculated (f.e. 1+1 will result in 2). The notation is in pixels
      * @returns
      */
-    setPageHeight = async (pageId: Id, value: string) => {
+    setHeight = async (pageId: Id, height: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(value);
+        const calc = getCalculatedValue(height);
 
         if (calc === null || calc === Infinity) {
             return null;

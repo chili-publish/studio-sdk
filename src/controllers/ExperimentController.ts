@@ -23,8 +23,8 @@ export class ExperimentController {
 
     /**
      * This method will assign an image from a variable to the correct ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
-     * @param variableId The ID of the variable which contains the image
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
+     * @param variableId the id of the variable which contains the image
      * @returns
      */
     insertImageVariableToFrame = async (imageFrameId: Id, variableId: string) => {
@@ -38,7 +38,7 @@ export class ExperimentController {
     /**
      * This method will insert a text variable in the selected frame. Calling this method
      * requires that the selected frame is in text editing mode.
-     * @param variableId The ID of the variable to be inserted.
+     * @param variableId the id of the variable to be inserted.
      * @returns
      */
     insertTextVariable = async (variableId: Id) => {
@@ -48,7 +48,7 @@ export class ExperimentController {
 
     /**
      * This method will enter text editing mode on the provided frame.
-     * @param frameId The ID frame to enter text edit mode on.
+     * @param frameId the id frame to enter text edit mode on.
      * @returns
      */
     enterTextEditMode = async (frameId: Id) => {
