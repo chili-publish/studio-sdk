@@ -34,8 +34,8 @@ describe('TextStyleController', () => {
         expect(mockEditorApi.selectedTextStyleClean).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call removeSelected of EditorAPI successfully', async () => {
-        await mockedTextStyleController.removeSelected();
+    it('Should call getSelected of EditorAPI successfully', async () => {
+        await mockedTextStyleController.getSelected();
         expect(mockEditorApi.getSelectedTextStyle).toHaveBeenCalledTimes(1);
     });
 });
