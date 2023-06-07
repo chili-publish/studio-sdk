@@ -1,5 +1,6 @@
 import { Connection, connectToChild } from 'penpal';
 import { Id } from '../types/CommonTypes';
+import { StudioStyling } from '../types/ConfigurationTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -14,7 +15,7 @@ export const validateEditorLink = (editorLink: string) => {
     return link;
 };
 
-export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
+export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, styling?: StudioStyling) => {
     const link = validateEditorLink(editorLink);
     const html = `<html>
     <head>
@@ -22,11 +23,13 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string) => {
       <meta charset="UTF-8"/>
       <!--  use this property to override the location of assets like 'default fonts' and demo document -->
       <meta name="assetBase" content="${link}">
+       <script id="studio-styling" type="application/json">${JSON.stringify(styling)}</script>
     </head>
     <body>
     <script async src="${link}init.js"></script>
     <script async src="https://unpkg.com/penpal@6.1.0/dist/penpal.min.js"></script>
     <script async src="${link}main.dart.js"></script>
+   
     </body>
     </html>
     `;
@@ -75,6 +78,7 @@ const Connect = (
     params: ConfigParameterTypes,
     setConnection: (connection: Connection) => void,
     editorId = 'chili-editor',
+    styling?: StudioStyling,
 ) => {
     const editorSelectorId = `#${editorId}`;
     const iframe = document.createElement('iframe');
@@ -88,7 +92,7 @@ const Connect = (
         const iframeContainer = document.querySelector(editorSelectorId);
         if (iframeContainer) {
             iframeContainer?.appendChild(iframe);
-            setupFrame(iframe, editorLink);
+            setupFrame(iframe, editorLink, styling);
         }
     };
 

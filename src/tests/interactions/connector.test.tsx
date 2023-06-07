@@ -23,4 +23,14 @@ describe('Connector helpers', () => {
         expect(iframe.srcdoc).toEqual('test');
         expect(iframe.title).toEqual('Chili-Editor');
     });
+
+    it('sets the studioStyling script in iFrame head', () => {
+        const styling = { uiBackgroundColorHex: '000000' };
+
+        const iframe = document.createElement('iframe');
+        ConnectorFunctions.setupFrame(iframe, editorLink, styling);
+
+        const stylingScript = document.getElementById('studio-styling');
+        expect(stylingScript?.textContent).toEqual(JSON.stringify(styling));
+    });
 });
