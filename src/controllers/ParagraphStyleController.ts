@@ -44,7 +44,7 @@ export class ParagraphStyleController {
      * This method adds a new paragraph style
      * @returns the new added paragraph style id
      */
-    addParagraphStyle = async () => {
+    createParagraphStyle = async () => {
         const res = await this.#editorAPI;
         return res.createParagraphStyle().then((result) => getEditorResponseData<string>(result));
     };

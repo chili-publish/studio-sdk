@@ -44,7 +44,7 @@ export class CharacterStyleController {
      * This method adds a new character style
      * @returns the new added character style ID
      */
-    addCharacterStyle = async () => {
+    createCharacterStyle = async () => {
         const res = await this.#editorAPI;
         return res.createCharacterStyle().then((result) => getEditorResponseData<string>(result));
     };

@@ -70,8 +70,8 @@ describe('VariableController', () => {
         expect(mockEditorApi.getVariables).toHaveBeenCalledTimes(1);
     });
 
-    it('add a new variable', async () => {
-        await mockedVariableController.addVariable('2', VariableType.shorttext);
+    it('create a new variable', async () => {
+        await mockedVariableController.createVariable('2', VariableType.shorttext);
         expect(mockEditorApi.addVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.addVariable).toHaveBeenCalledWith('2', VariableType.shorttext);
     });

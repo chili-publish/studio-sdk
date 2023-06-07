@@ -60,7 +60,7 @@ export class VariableController {
      * @param variableType type of the created variable
      * @returns The new created variable ID
      */
-    addVariable = async (variableParentId: string, variableType: VariableType) => {
+    createVariable = async (variableParentId: string, variableType: VariableType) => {
         const res = await this.#editorAPI;
         return res.addVariable(variableParentId, variableType).then((result) => getEditorResponseData<string>(result));
     };

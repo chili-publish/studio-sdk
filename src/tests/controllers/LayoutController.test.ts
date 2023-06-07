@@ -77,8 +77,8 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledWith('1');
     });
-    it('Should be possible to add a layout', async () => {
-        await mockedFontController.addLayout('1');
+    it('Should be possible to create a layout', async () => {
+        await mockedFontController.createLayout('1');
         expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1');
     });

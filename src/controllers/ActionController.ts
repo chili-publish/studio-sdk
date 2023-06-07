@@ -42,7 +42,7 @@ export class ActionController {
      * This method adds a new action.
      * @returns The ID of the newly created action.
      */
-    addAction = async () => {
+    createAction = async () => {
         const res = await this.#editorAPI;
         return res.createAction().then((result) => getEditorResponseData<Id>(result));
     };

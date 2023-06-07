@@ -128,13 +128,13 @@ afterAll(() => {
 });
 
 describe('FrameController', () => {
-    it('Should be possible to add a frame', async () => {
-        await mockedFrameController.addFrame(FrameTypeEnum.image, 100, 100, 100, 100);
+    it('Should be possible to create a frame', async () => {
+        await mockedFrameController.createFrame(FrameTypeEnum.image, 100, 100, 100, 100);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledWith(FrameTypeEnum.image, 100, 100, 100, 100);
     });
-    it('Should be possible to add a ShapeFrame', async () => {
-        await mockedFrameController.addShapeFrame(ShapeType.ellipse, 100, 100, 100, 100);
+    it('Should be possible to create a ShapeFrame', async () => {
+        await mockedFrameController.createShapeFrame(ShapeType.ellipse, 100, 100, 100, 100);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledWith(ShapeType.ellipse, 100, 100, 100, 100);
     });
@@ -359,7 +359,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(3);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, null);
     });
-    it('Should be possible to add blend mode to a specific frame', async () => {
+    it('Should be possible to set blend mode to a specific frame', async () => {
         await mockedFrameController.setFrameBlendMode(frameId, BlendMode.darken);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(frameId, BlendMode.darken);

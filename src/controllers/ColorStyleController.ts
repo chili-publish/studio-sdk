@@ -42,7 +42,7 @@ export class ColorStyleController {
      * This method adds a new color
      * @returns the new added color ID
      */
-    addColor = async () => {
+    createColor = async () => {
         const res = await this.#editorAPI;
         return res.createColor().then((result) => getEditorResponseData<string>(result));
     };

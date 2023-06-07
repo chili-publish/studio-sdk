@@ -105,8 +105,8 @@ describe('ParagraphStyleController', () => {
         expect(mockEditorApi.getParagraphStyleById).toHaveBeenCalledWith('5');
     });
 
-    it('Should call the addParagraphStyle method', async () => {
-        await mockedParagraphStyleController.addParagraphStyle();
+    it('Should call the createParagraphStyle method', async () => {
+        await mockedParagraphStyleController.createParagraphStyle();
         expect(mockEditorApi.createParagraphStyle).toHaveBeenCalledTimes(1);
     });
 
