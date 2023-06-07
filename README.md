@@ -1,6 +1,6 @@
 # studio-sdk
 
-![Coverage](https://img.shields.io/badge/coverage-96.56%25-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/coverage-96.31%25-brightgreen.svg)
 
 [![Build PR](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml)
 
