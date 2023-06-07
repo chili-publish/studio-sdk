@@ -4,14 +4,14 @@ export enum ImageVariableSourceType {
 }
 
 export interface UrlImageVariableSource {
-    type: ImageVariableSourceType;
     url: string;
+    type: ImageVariableSourceType;
 }
 
 export interface MediaConnectorImageVariableSource {
-    type: ImageVariableSourceType;
-    connectorId: string;
+    id: string;
     assetId: string;
+    type: ImageVariableSourceType;
 }
 
 export type ImageVariableSource = UrlImageVariableSource | MediaConnectorImageVariableSource;
