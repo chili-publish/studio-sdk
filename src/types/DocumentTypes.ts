@@ -88,12 +88,12 @@ export interface UrlImageFrameSource extends ImageFrameSource {
 }
 
 export interface AssetProviderImageFrameSource extends ImageFrameSource {
-    providerId: string;
+    id: string;
     assetId: string;
 }
 
 export interface VariableImageFrameSource extends ImageFrameSource {
-    variableId: string;
+    id: string;
 }
 
 export interface Layout {
