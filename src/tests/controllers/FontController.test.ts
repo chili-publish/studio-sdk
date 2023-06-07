@@ -62,7 +62,7 @@ describe('FontController', () => {
         };
         const connectorId = 'connectorId';
 
-        await mockedFontController.createFont(connectorId, fontAddModel);
+        await mockedFontController.addFont(connectorId, fontAddModel);
 
         expect(mockedEditorApi.addFont).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addFont).toHaveBeenCalledWith(connectorId, JSON.stringify(fontAddModel));

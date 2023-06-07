@@ -41,7 +41,7 @@ describe('ColorStyleController', () => {
         expect(mockEditorApi.getColorById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getColorById).toHaveBeenCalledWith('5');
     });
-    it('Should call the addColor method', async () => {
+    it('Should call the createColor method', async () => {
         await mockedColorStyleController.createColor();
         expect(mockEditorApi.createColor).toHaveBeenCalledTimes(1);
     });
