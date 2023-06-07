@@ -73,12 +73,12 @@ export class LayoutController {
 
     /**
      * This method will create a new child layout (a new layout is always child of a root / parent)
-     * @param parentLayoutId the id of a specific layout, being the parent
+     * @param parentId the id of a specific layout, being the parent
      * @returns id of new layout
      */
-    create = async (parentLayoutId: Id) => {
+    create = async (parentId: Id) => {
         const res = await this.#editorAPI;
-        return res.addLayout(parentLayoutId).then((result) => getEditorResponseData<Id>(result));
+        return res.addLayout(parentId).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

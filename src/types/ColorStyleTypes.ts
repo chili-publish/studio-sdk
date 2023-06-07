@@ -14,11 +14,11 @@ export type ColorUpdate = {
     r: number;
     g: number;
     b: number;
-    colorType: ColorType;
+    type: ColorType;
 };
 
 export type Color = {
-    colorType: ColorType;
+    type: ColorType;
     r: number;
     g: number;
     b: number;
@@ -35,12 +35,12 @@ export type ColorUsageUpdate = {
     /**
      * Reference to the stylekit color, can only be used if it is a stylekit color.
      */
-    colorId?: string;
+    id?: string;
     /**
      * The local color object, can only be used if it is a local color.
      */
     color?: ColorUpdate;
-    usageType: ColorUsageType;
+    type: ColorUsageType;
     /**
      * Opacity of the color (0-100) where 0 = fully transparent.
      */
@@ -55,12 +55,12 @@ export type ColorUsage = {
     /**
      * Reference to the stylekit color, can only be used if it is a stylekit color.
      */
-    colorId?: string;
+    id?: string;
     /**
      * The local color object, can only be used if it is a local color.
      */
     color?: Color;
-    usageType: ColorUsageType;
+    type: ColorUsageType;
     /**
      * Opacity of the color (0-100) where 0 = fully transparent.
      */

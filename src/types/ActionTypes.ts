@@ -44,7 +44,7 @@ export interface DocumentAction {
     /**
      * Unique action name
      */
-    actionName: string;
+    name: string;
 
     /**
      * All the triggers this action will react to.

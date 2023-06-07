@@ -1,5 +1,5 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariableSourceType, MediaConnectorImageVariableSource, VariableType } from '../../types/VariableTypes';
+import { ImageVariableSourceType, MediaConnectorImageVariableSource, UrlImageVariableSource, VariableType } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
@@ -71,9 +71,9 @@ describe('VariableController', () => {
     });
 
     it('create a new variable', async () => {
-        await mockedVariableController.create('2', VariableType.shorttext);
+        await mockedVariableController.create('2', VariableType.shortText);
         expect(mockEditorApi.addVariable).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.addVariable).toHaveBeenCalledWith('2', VariableType.shorttext);
+        expect(mockEditorApi.addVariable).toHaveBeenCalledWith('2', VariableType.shortText);
     });
 
     it('remove a variable', async () => {
@@ -154,12 +154,25 @@ describe('VariableController', () => {
         expect(mockEditorApi.ungroupVariable).toHaveBeenCalledWith('1');
     });
 
-    it('set variable source', async () => {
+    it('set variable url source', async () => {
+        const varId = '1';
+        const src: UrlImageVariableSource = {
+            url: 'mocked url',
+            type: ImageVariableSourceType.url,
+        };
+
+        await mockedVariableController.setSource(varId, src);
+
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, null);
+    });
+
+    it('set variable media connector source', async () => {
         const varId = '1';
         const src: MediaConnectorImageVariableSource = {
             assetId: 'asset id',
             connectorId: 'connector id',
-            sourceType: ImageVariableSourceType.mediaConnector,
+            type: ImageVariableSourceType.mediaConnector,
         };
 
         await mockedVariableController.setSource(varId, src);

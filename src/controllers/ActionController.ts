@@ -70,12 +70,12 @@ export class ActionController {
     /**
      * This method renames an action by the id and provided name
      * @param actionId the id of a specific action
-     * @param actionName the new unique name for the action
+     * @param name the new unique name for the action
      * @returns
      */
-    rename = async (actionId: Id, actionName: string) => {
+    rename = async (actionId: Id, name: string) => {
         const res = await this.#editorAPI;
-        return res.renameAction(actionId, actionName).then((result) => getEditorResponseData<null>(result));
+        return res.renameAction(actionId, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

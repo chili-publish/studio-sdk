@@ -66,8 +66,8 @@ export interface EditorAPI extends CallSender {
 }
 
 export type PageType = {
-    pageId: Id;
-    pageNumber: number;
+    id: Id;
+    number: number;
     width: number | null;
     height: number | null;
     frames: FrameType[];
@@ -86,9 +86,9 @@ export interface PropertyState<T> {
 }
 
 export interface SelectedLayoutFrame {
-    frameId: Id;
-    frameName: string;
-    frameType: FrameTypeEnum;
+    id: Id;
+    name: string;
+    type: FrameTypeEnum;
     included: boolean;
 }
 

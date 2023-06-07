@@ -69,14 +69,14 @@ const updateCharacterStyle: CharacterStyleUpdate = {
     color: {
         value: {
             color: {
-                colorType: ColorType.rgb,
+                type: ColorType.rgb,
                 r: 255,
                 g: 0,
                 b: 0,
             },
             opacity: 50,
             isApplied: true,
-            usageType: ColorUsageType.local,
+            type: ColorUsageType.local,
         },
     },
     underline: {

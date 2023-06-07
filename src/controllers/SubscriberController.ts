@@ -244,10 +244,10 @@ export class SubscriberController {
 
     /**
      * Listener of editor entering / exiting the crop mode
-     * @param frameId frame id when entering / null when exiting
+     * @param id frame id when entering / null when exiting
      */
-    onCropActiveFrameIdChanged = (frameId?: Id) => {
+    onCropActiveFrameIdChanged = (id?: Id) => {
         const callBack = this.config.onCropActiveFrameIdChanged;
-        callBack && callBack(frameId);
+        callBack && callBack(id);
     };
 }

@@ -10,8 +10,8 @@ export type LayoutPropertiesType = {
 } | null;
 
 export type FrameProperties = {
-    frameId: Id;
-    framePropertiesType: string;
+    id: Id;
+    type: string;
     height: number | null;
     included: boolean | null;
     rotationDegrees: number | null;
@@ -23,14 +23,14 @@ export type FrameProperties = {
 };
 
 export type LayoutWithFrameProperties = {
-    layoutId: Id;
-    layoutName: string;
-    parentLayoutId?: Id;
+    id: Id;
+    name: string;
+    parentId?: Id;
     frameProperties: FrameProperties[];
     width: number | null;
     height: number | null;
     childLayouts: Id[];
-    layoutType: LayoutType;
+    type: LayoutType;
     timelineLengthMs?: number;
     children?: LayoutWithFrameProperties[];
 };
@@ -39,7 +39,7 @@ export type LayoutWithFrameProperties = {
 export type Layout = {
     layoutId: Id;
     layoutName: string;
-    parentLayoutId?: Id;
+    parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
     childLayouts: Id[];
@@ -48,10 +48,10 @@ export type Layout = {
 
 // used by onLayoutsChanged
 export type LayoutListItemType = {
-    layoutId: string;
-    layoutName: string;
-    layoutType: LayoutType;
-    parentLayoutId?: string | null;
+    id: string;
+    name: string;
+    type: LayoutType;
+    parentId?: string | null;
     childLayouts: string[];
 };
 

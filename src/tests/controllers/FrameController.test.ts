@@ -13,7 +13,7 @@ import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockI
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ShapeType } from '../../types/ShapeTypes';
 
-let frameId: Id;
+let id: Id;
 
 let mockedFrameController: FrameController;
 
@@ -120,7 +120,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
 
-    frameId = mockSelectFrame.frameId;
+    id = mockSelectFrame.id;
 });
 
 afterAll(() => {
@@ -148,10 +148,10 @@ describe('FrameController', () => {
         expect(mockedEditorApi.getSelectedFrames).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to get all frames by pageId', async () => {
-        await mockedFrameController.getAllByPageId(frameId);
+    it('Should be possible to get all frames by id', async () => {
+        await mockedFrameController.getAllByPageId(id);
         expect(mockedEditorApi.getFramesByPageId).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.getFramesByPageId).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.getFramesByPageId).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to get a frame by name', async () => {
@@ -161,9 +161,9 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to get a frame', async () => {
-        await mockedFrameController.getById(frameId);
+        await mockedFrameController.getById(id);
         expect(mockedEditorApi.getFrameById).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.getFrameById).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.getFrameById).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to get frame properties on the selected layout', async () => {
@@ -178,197 +178,197 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to get frame properties by layout id', async () => {
-        await mockedFrameController.getAllLayoutProperties(frameId);
+        await mockedFrameController.getAllLayoutProperties(id);
         expect(mockedEditorApi.getFramesProperties).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.getFramesProperties).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.getFramesProperties).toHaveBeenCalledWith(id);
     });
     it('Should be possible to set the frame height', async () => {
-        await mockedFrameController.setHeight(frameId, '300');
+        await mockedFrameController.setHeight(id, '300');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(frameId, 300);
+        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, 300);
     });
     it('Should be possible to set the frame rotation', async () => {
-        await mockedFrameController.setRotation(frameId, '400');
+        await mockedFrameController.setRotation(id, '400');
         expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledWith(frameId, 400);
+        expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledWith(id, 400);
     });
     it('Should be possible to set the frame y property', async () => {
-        await mockedFrameController.setY(frameId, '100');
+        await mockedFrameController.setY(id, '100');
         expect(mockedEditorApi.setFrameY).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameY).toHaveBeenCalledWith(frameId, 100);
+        expect(mockedEditorApi.setFrameY).toHaveBeenCalledWith(id, 100);
     });
     it('Should be possible to set the frame x property', async () => {
-        await mockedFrameController.setX(frameId, '400');
+        await mockedFrameController.setX(id, '400');
         expect(mockedEditorApi.setFrameX).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameX).toHaveBeenCalledWith(frameId, 400);
+        expect(mockedEditorApi.setFrameX).toHaveBeenCalledWith(id, 400);
     });
 
     it('Should be possible to set the frame width', async () => {
-        await mockedFrameController.setWidth(frameId, '332');
+        await mockedFrameController.setWidth(id, '332');
         expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledWith(frameId, 332);
+        expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledWith(id, 332);
     });
     it('Should be possible to set the frame height', async () => {
-        await mockedFrameController.setHeight(frameId, '32');
+        await mockedFrameController.setHeight(id, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(frameId, 32);
+        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, 32);
     });
 
     it('Should be possible to set the name of the frame', async () => {
-        await mockedFrameController.rename(frameId, 'TEST');
+        await mockedFrameController.rename(id, 'TEST');
         expect(mockedEditorApi.renameFrame).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.renameFrame).toHaveBeenCalledWith(frameId, 'TEST');
+        expect(mockedEditorApi.renameFrame).toHaveBeenCalledWith(id, 'TEST');
     });
     it('Should be possible to set the frame visibility', async () => {
-        await mockedFrameController.setVisibility(frameId, false);
+        await mockedFrameController.setVisibility(id, false);
         expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledWith(frameId, false);
+        expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledWith(id, false);
     });
     it('Should be possible to remove a frame', async () => {
-        await mockedFrameController.remove(frameId);
+        await mockedFrameController.remove(id);
         expect(mockedEditorApi.removeFrame).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.removeFrame).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.removeFrame).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset a frame', async () => {
-        await mockedFrameController.reset(frameId);
+        await mockedFrameController.reset(id);
         expect(mockedEditorApi.resetFrame).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrame).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrame).toHaveBeenCalledWith(id);
     });
     it("Should be possible to reset a frame's x position", async () => {
-        await mockedFrameController.resetX(frameId);
+        await mockedFrameController.resetX(id);
         expect(mockedEditorApi.resetFrameX).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameX).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrameX).toHaveBeenCalledWith(id);
     });
     it("Should be possible to reset a frame's y position", async () => {
-        await mockedFrameController.resetY(frameId);
+        await mockedFrameController.resetY(id);
         expect(mockedEditorApi.resetFrameY).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameY).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrameY).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the frame rotation', async () => {
-        await mockedFrameController.resetRotation(frameId);
+        await mockedFrameController.resetRotation(id);
         expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the frame height', async () => {
-        await mockedFrameController.resetHeight(frameId);
+        await mockedFrameController.resetHeight(id);
         expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the frame width', async () => {
-        await mockedFrameController.resetWidth(frameId);
+        await mockedFrameController.resetWidth(id);
         expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the frame size', async () => {
-        await mockedFrameController.resetSize(frameId);
+        await mockedFrameController.resetSize(id);
         expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the image frame fit mode', async () => {
-        await mockedFrameController.resetImageFrameFitMode(frameId);
+        await mockedFrameController.resetImageFrameFitMode(id);
         expect(mockedEditorApi.resetImageFrameFitMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetImageFrameFitMode).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetImageFrameFitMode).toHaveBeenCalledWith(id);
     });
     it('Should be possible to select a frame', async () => {
-        await mockedFrameController.select(frameId);
+        await mockedFrameController.select(id);
         expect(mockedEditorApi.selectFrames).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.selectFrames).toHaveBeenCalledWith([frameId]);
+        expect(mockedEditorApi.selectFrames).toHaveBeenCalledWith([id]);
     });
     it('Should be possible to select multiple frames at once', async () => {
-        await mockedFrameController.selectMultiple([frameId]);
+        await mockedFrameController.selectMultiple([id]);
         expect(mockedEditorApi.selectFrames).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.selectFrames).toHaveBeenCalledWith([frameId]);
+        expect(mockedEditorApi.selectFrames).toHaveBeenCalledWith([id]);
     });
     it('Should be possible to set the image frame fit mode', async () => {
-        await mockedFrameController.setImageFrameFitMode(frameId, FitMode.fit);
+        await mockedFrameController.setImageFrameFitMode(id, FitMode.fit);
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(frameId, FitMode.fit);
+        expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
     });
     it('Should be possible to set the frame to constrain proportions', async () => {
-        await mockedFrameController.setFrameConstrainProportions(frameId, true);
+        await mockedFrameController.setFrameConstrainProportions(id, true);
         expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(frameId, true);
+        expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(id, true);
     });
     it('Should be possible to set the vertical alignment of a frame', async () => {
-        await mockedFrameController.setVerticalAlign(frameId, VerticalAlign.justify);
+        await mockedFrameController.setVerticalAlign(id, VerticalAlign.justify);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(frameId, VerticalAlign.justify);
+        expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(id, VerticalAlign.justify);
     });
     it('Should be possible to set the min value for copyfitting', async () => {
-        await mockedFrameController.setMinCopyfitting(frameId, '0.5');
+        await mockedFrameController.setMinCopyfitting(id, '0.5');
         expect(mockedEditorApi.setMinCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setMinCopyfitting).toHaveBeenCalledWith(frameId, 0.5);
+        expect(mockedEditorApi.setMinCopyfitting).toHaveBeenCalledWith(id, 0.5);
     });
     it('Should be possible to set the max value for copyfitting', async () => {
-        await mockedFrameController.setMaxCopyfitting(frameId, '5.0');
+        await mockedFrameController.setMaxCopyfitting(id, '5.0');
         expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledWith(frameId, 5.0);
+        expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledWith(id, 5.0);
     });
     it('Should be possible to enable copyfitting with a boolean', async () => {
-        await mockedFrameController.setEnableCopyfitting(frameId, true);
+        await mockedFrameController.setEnableCopyfitting(id, true);
         expect(mockedEditorApi.setEnableCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setEnableCopyfitting).toHaveBeenCalledWith(frameId, true);
+        expect(mockedEditorApi.setEnableCopyfitting).toHaveBeenCalledWith(id, true);
     });
     it('Should be possible to reset the minvalue for copyfitting', async () => {
-        await mockedFrameController.resetMinCopyfitting(frameId);
+        await mockedFrameController.resetMinCopyfitting(id);
         expect(mockedEditorApi.resetMinCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetMinCopyfitting).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetMinCopyfitting).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the maxvalue for copyfitting', async () => {
-        await mockedFrameController.resetMaxCopyfitting(frameId);
+        await mockedFrameController.resetMaxCopyfitting(id);
         expect(mockedEditorApi.resetMaxCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetMaxCopyfitting).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetMaxCopyfitting).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reset the copyfitting toggle', async () => {
-        await mockedFrameController.resetEnableCopyfitting(frameId);
+        await mockedFrameController.resetEnableCopyfitting(id);
         expect(mockedEditorApi.resetEnableCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetEnableCopyfitting).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetEnableCopyfitting).toHaveBeenCalledWith(id);
     });
     it('Should be possible to reorder the frames', async () => {
-        await mockedFrameController.reorderFrames(1, [frameId]);
+        await mockedFrameController.reorderFrames(1, [id]);
         expect(mockedEditorApi.reorderFrames).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.reorderFrames).toHaveBeenCalledWith(1, [frameId]);
+        expect(mockedEditorApi.reorderFrames).toHaveBeenCalledWith(1, [id]);
     });
     it('Should be possible to set the frame Z index', async () => {
-        await mockedFrameController.setZIndex(frameId, UpdateZIndexMethod.sendBackward);
+        await mockedFrameController.setZIndex(id, UpdateZIndexMethod.sendBackward);
         expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledWith(frameId, UpdateZIndexMethod.sendBackward);
+        expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledWith(id, UpdateZIndexMethod.sendBackward);
     });
     it('Should be possible to set an image to the frame using a connector', async () => {
-        await mockedFrameController.setImageFromConnector(frameId, 'connector id', 'asset id');
+        await mockedFrameController.setImageFromConnector(id, 'connector id', 'asset id');
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
-            frameId,
+            id,
             JSON.stringify({
                 assetId: 'asset id',
                 connectorId: 'connector id',
-                sourceType: ImageSourceTypeEnum.connector,
+                type: ImageSourceTypeEnum.connector,
             }),
         );
     });
     it('Should be possible to set an image to the frame using a url', async () => {
-        await mockedFrameController.setImageFromUrl(frameId, 'image url');
+        await mockedFrameController.setImageFromUrl(id, 'image url');
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
-            frameId,
-            JSON.stringify({ url: 'image url', sourceType: ImageSourceTypeEnum.url }),
+            id,
+            JSON.stringify({ url: 'image url', type: ImageSourceTypeEnum.url }),
         );
     });
     it('Should be possible to remove an image source on a frame', async () => {
-        await mockedFrameController.removeImageSource(frameId);
+        await mockedFrameController.removeImageSource(id);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(3);
-        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, null);
+        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, null);
     });
     it('Should be possible to set blend mode to a specific frame', async () => {
-        await mockedFrameController.setBlendMode(frameId, BlendMode.darken);
+        await mockedFrameController.setBlendMode(id, BlendMode.darken);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(frameId, BlendMode.darken);
+        expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(id, BlendMode.darken);
     });
 
     it('Should be possible to enter cropping mode on a specific frame', async () => {
-        await mockedFrameController.enterCropMode(frameId);
+        await mockedFrameController.enterCropMode(id);
         expect(mockedEditorApi.enterCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to apply the current image crop to the frame', async () => {
@@ -377,9 +377,9 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to reset cropping mode on a specific frame', async () => {
-        await mockedFrameController.resetCropMode(frameId);
+        await mockedFrameController.resetCropMode(id);
         expect(mockedEditorApi.resetCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledWith(frameId);
+        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to cancel the current image crop', async () => {
@@ -401,36 +401,36 @@ describe('ImageFrameSource manipulations', () => {
         const connectorId = mockImageConnectorSource.connectorId;
         const assetId = mockImageConnectorSource.assetId;
 
-        await mockedFrameController.setImageFromConnector(frameId, connectorId, assetId);
+        await mockedFrameController.setImageFromConnector(id, connectorId, assetId);
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify(mockImageConnectorSource));
+        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, JSON.stringify(mockImageConnectorSource));
     });
 
     it('setImageFromUrl() redirects to EditorAPI.setImageSource() with ImageUrlSource param', async () => {
         const url = mockImageUrlSource.url;
 
-        await mockedFrameController.setImageFromUrl(frameId, url);
+        await mockedFrameController.setImageFromUrl(id, url);
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, JSON.stringify(mockImageUrlSource));
+        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, JSON.stringify(mockImageUrlSource));
     });
 
     it('removeImageSource() redirects to EditorAPI.setImageSource() with null param', async () => {
-        await mockedFrameController.removeImageSource(frameId);
+        await mockedFrameController.removeImageSource(id);
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(frameId, null);
+        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, null);
     });
 });
 
 describe('User inputs for Frame Properties', () => {
     it('Returns null when user input doesn\'t contain any number', async () => {
-        const responseX = await mockedFrameController.setX(frameId, 'test');
-        const responseY = await mockedFrameController.setY(frameId, 'test');
-        const responseWidth = await mockedFrameController.setWidth(frameId, 'test');
-        const responseHeight = await mockedFrameController.setHeight(frameId, 'test');
-        const responseRotation = await mockedFrameController.setRotation(frameId, 'test');
+        const responseX = await mockedFrameController.setX(id, 'test');
+        const responseY = await mockedFrameController.setY(id, 'test');
+        const responseWidth = await mockedFrameController.setWidth(id, 'test');
+        const responseHeight = await mockedFrameController.setHeight(id, 'test');
+        const responseRotation = await mockedFrameController.setRotation(id, 'test');
         expect(responseX).toEqual(null);
         expect(responseY).toEqual(null);
         expect(responseWidth).toEqual(null);
@@ -439,7 +439,7 @@ describe('User inputs for Frame Properties', () => {
     });
 
     it('return null when the user input an infinite value', async () => {
-        const responseRotation = await mockedFrameController.setRotation(frameId, '20/0');
+        const responseRotation = await mockedFrameController.setRotation(id, '20/0');
         expect(responseRotation).toBeNull();
     });
 });

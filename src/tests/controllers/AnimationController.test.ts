@@ -81,7 +81,7 @@ describe('AnimationController', () => {
     });
 
     it('Should call the resetFrameAnimation method', async () => {
-        await mockedAnimationController.resetFrameAnimation(mockFrameAnimation.animation.frameId);
+        await mockedAnimationController.resetFrameAnimation(mockFrameAnimation.animation.id);
         expect(mockEditorApi.resetFrameAnimation).toHaveBeenCalledTimes(1);
     });
     it('Should call the resetAnimation method', async () => {

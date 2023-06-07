@@ -4,7 +4,7 @@ import { Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
-    frameId: Id;
+    id: Id;
     layoutId: Id;
     x: PropertyState<number>;
     y: PropertyState<number>;
@@ -23,9 +23,9 @@ export type FrameLayoutType = {
 
 //Frame.image
 export type FrameType = {
-    frameId: Id;
-    frameName: string;
-    frameType: FrameTypeEnum;
+    id: Id;
+    name: string;
+    type: FrameTypeEnum;
     // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
@@ -35,28 +35,28 @@ export type FrameType = {
 export type Frame = TextFrame | ImageFrame | ShapeFrame;
 
 export type ImageFrameVariableSource = {
-    sourceType: ImageSourceTypeEnum.variable;
+    type: ImageSourceTypeEnum.variable;
     variableId: string;
 };
 
 export type ImageFrameUrlSource = {
-    sourceType: ImageSourceTypeEnum.url;
+    type: ImageSourceTypeEnum.url;
     url: string;
 };
 
 export type ImageFrameConnectorSource = {
     assetId: string;
     connectorId: string;
-    sourceType: ImageSourceTypeEnum.connector;
+    type: ImageSourceTypeEnum.connector;
 };
 
 export type ImageFrameSource = ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
 
 // used by new getter methods
 export type ImageFrame = {
-    frameId: Id;
-    frameName: string;
-    frameType: FrameTypeEnum.image;
+    id: Id;
+    name: string;
+    type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
     constrainProportions: boolean;
@@ -64,9 +64,9 @@ export type ImageFrame = {
 };
 
 export type ShapeFrame = {
-    frameId: Id;
-    frameName: string;
-    frameType: FrameTypeEnum.shape;
+    id: Id;
+    name: string;
+    type: FrameTypeEnum.shape;
     blendMode: BlendMode;
     constrainProportions: boolean;
     shapeProperties: {
@@ -78,16 +78,16 @@ export type ShapeFrame = {
         allCornersSame: boolean;
     };
     src: {
-        shapeType: ShapeType;
+        type: ShapeType;
         cornerRadius: CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
         sides?: number;
     };
 };
 
 export type TextFrame = {
-    frameId: Id;
-    frameName: string;
-    frameType: FrameTypeEnum.text;
+    id: Id;
+    name: string;
+    type: FrameTypeEnum.text;
     textContent: string;
     paddingLeft: number;
     paddingTop: number;

@@ -27,9 +27,9 @@ export class ExperimentController {
      * @param variableId the id of the variable which contains the image
      * @returns
      */
-    insertImageVariableToFrame = async (imageFrameId: Id, variableId: string) => {
+    insertImageVariableToFrame = async (imageFrameId: Id, variableId: Id) => {
         const res = await this.#editorAPI;
-        const src: ImageFrameVariableSource = { variableId: variableId, sourceType: ImageSourceTypeEnum.variable };
+        const src: ImageFrameVariableSource = { variableId: variableId, type: ImageSourceTypeEnum.variable };
         return res
             .setImageSource(imageFrameId, JSON.stringify(src))
             .then((result) => getEditorResponseData<null>(result));
@@ -48,12 +48,12 @@ export class ExperimentController {
 
     /**
      * This method will enter text editing mode on the provided frame.
-     * @param frameId the id frame to enter text edit mode on.
+     * @param id the id frame to enter text edit mode on.
      * @returns
      */
-    enterTextEditMode = async (frameId: Id) => {
+    enterTextEditMode = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.enterTextEditMode(frameId).then((result) => getEditorResponseData<null>(result));
+        return res.enterTextEditMode(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

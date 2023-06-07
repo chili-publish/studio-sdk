@@ -32,14 +32,14 @@ export class AnimationController {
 
     /**
      * This method returns an animation for a given frame and layout IDs
-     * @param frameId the id of a specific frame
+     * @param id the id of a specific frame
      * @param layoutId the id of a specific layout
      * @returns animation properties for a given frame and layout
      */
-    getByFrameId = async (frameId: Id, layoutId?: Id) => {
+    getByFrameId = async (id: Id, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res
-            .getAnimationByFrameId<string>(frameId, layoutId)
+            .getAnimationByFrameId<string>(id, layoutId)
             .then((result) => getEditorResponseData<FrameAnimationPropertiesType>(result));
     };
 
@@ -109,12 +109,12 @@ export class AnimationController {
 
     /**
      * This method resets the animation to its initial state
-     * @param frameId the id of a certain frame
+     * @param id the id of a certain frame
      * @returns
      */
-    resetFrameAnimation = async (frameId: Id) => {
+    resetFrameAnimation = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameAnimation(frameId).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameAnimation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

@@ -107,7 +107,7 @@ export type BasicAnimationsType = {
 };
 
 export type FrameAnimationPropertiesType = {
-    frameId: Id;
+    id: Id;
     from: number;
     to: number;
     basicAnimations: BasicAnimationsType;

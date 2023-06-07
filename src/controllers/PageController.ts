@@ -31,22 +31,22 @@ export class PageController {
 
     /**
      * This method returns a page by its id
-     * @param pageId the id of a specific page
+     * @param id the id of a specific page
      * @returns page properties
      */
-    getById = async (pageId: Id) => {
+    getById = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.getPageById(pageId).then((result) => getEditorResponseData<Page>(result));
+        return res.getPageById(id).then((result) => getEditorResponseData<Page>(result));
     };
 
     /**
      * This method will set the width of the page to a specific value.
      * This only works if the document is a project.
-     * @param pageId the id of a specific page
+     * @param id the id of a specific page
      * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setWidth = async (pageId: Id, width: string) => {
+    setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(width);
 
@@ -55,18 +55,18 @@ export class PageController {
         }
 
         return res
-            .setPageWidth(pageId, parseFloat(calc.toString()))
+            .setPageWidth(id, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the height of the page to a specific value.
      * This only works if the document is a project.
-     * @param pageId the id of a specific page
+     * @param id the id of a specific page
      * @param height the string value that will be calculated (f.e. 1+1 will result in 2). The notation is in pixels
      * @returns
      */
-    setHeight = async (pageId: Id, height: string) => {
+    setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(height);
 
@@ -75,7 +75,7 @@ export class PageController {
         }
 
         return res
-            .setPageHeight(pageId, parseFloat(calc.toString()))
+            .setPageHeight(id, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
