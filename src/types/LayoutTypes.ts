@@ -1,8 +1,7 @@
 import { Id, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
-    layoutId: Id;
-
+    id: Id;
     width: { value: number; isOverride: boolean };
     height: { value: number; isOverride: boolean };
     timelineLengthMs: { value: number; isOverride: boolean };
@@ -37,8 +36,8 @@ export type LayoutWithFrameProperties = {
 
 // used by new getter methods
 export type Layout = {
-    layoutId: Id;
-    layoutName: string;
+    id: Id;
+    name: string;
     parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;

@@ -1,3 +1,5 @@
+import { Id } from "./CommonTypes";
+
 export type DocumentFont = {
     id: string;
     name: string;

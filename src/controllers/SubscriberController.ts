@@ -179,11 +179,11 @@ export class SubscriberController {
 
     /**
      * Listener on selected layout id, this listener will get triggered when a different layout is selected.
-     * @param layoutId the currently selected layout id
+     * @param id the currently selected layout id
      */
-    onSelectedLayoutIdChanged = (layoutId: string) => {
+    onSelectedLayoutIdChanged = (id: Id) => {
         const callBack = this.config.onSelectedLayoutIdChanged;
-        callBack && callBack(layoutId);
+        callBack && callBack(id);
     };
 
     /**

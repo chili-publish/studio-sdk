@@ -30,13 +30,13 @@ export class ParagraphStyleController {
 
     /**
      * This method returns a paragraph style by id
-     * @param paragraphStyleId the id of a specific paragraph style
+     * @param id the id of a specific paragraph style
      * @returns
      */
-    getById = async (paragraphStyleId: string) => {
+    getById = async (id: Id) => {
         const res = await this.#editorAPI;
         return res
-            .getParagraphStyleById(paragraphStyleId)
+            .getParagraphStyleById(id)
             .then((result) => getEditorResponseData<ParagraphStyle>(result));
     };
 
@@ -51,56 +51,56 @@ export class ParagraphStyleController {
 
     /**
      * This method duplicates a paragraph style
-     * @param paragraphStyleId the id of a specific paragraph style
+     * @param id the id of a specific paragraph style
      * @returns the new paragraph style id
      */
-    duplicate = async (paragraphStyleId: string) => {
+    duplicate = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.duplicateParagraphStyle(paragraphStyleId).then((result) => getEditorResponseData<Id>(result));
+        return res.duplicateParagraphStyle(id).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method updates a paragraph style
-     * @param paragraphStyleId the id of a specific paragraph style
-     * @param paragraphStyleProperties The new paragraph style properties
+     * @param id the id of a specific paragraph style
+     * @param properties The new paragraph style properties
      * @returns
      */
-    update = async (paragraphStyleId: string, paragraphStyleProperties: ParagraphStyleUpdate) => {
+    update = async (id: Id, properties: ParagraphStyleUpdate) => {
         const res = await this.#editorAPI;
         return res
-            .updateParagraphStyle(paragraphStyleId, JSON.stringify(paragraphStyleProperties))
+            .updateParagraphStyle(id, JSON.stringify(properties))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method renames a paragraph style
-     * @param paragraphStyleId the id of a specific paragraph style
-     * @param paragraphName the new name of the paragraph style
+     * @param id the id of a specific paragraph style
+     * @param name the new name of the paragraph style
      * @returns
      */
-    rename = async (paragraphStyleId: string, paragraphName: string) => {
+    rename = async (id: Id, name: string) => {
         const res = await this.#editorAPI;
-        return res.renameParagraphStyle(paragraphStyleId, paragraphName).then((result) => getEditorResponseData<null>(result));
+        return res.renameParagraphStyle(id, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method removes a paragraph style
-     * @param paragraphStyleId the id of a specific paragraph style
+     * @param id the id of a specific paragraph style
      * @returns
      */
-    remove = async (paragraphStyleId: string) => {
+    remove = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.removeParagraphStyle(paragraphStyleId).then((result) => getEditorResponseData<null>(result));
+        return res.removeParagraphStyle(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method changes positions of paragraph styles
      * @param order the position of the paragraph styles
-     * @param paragraphStyleIds the list of paragraph styles ids
+     * @param ids the list of paragraph styles ids
      * @returns
      */
-    move = async (order: number, paragraphStyleIds: string[]) => {
+    move = async (order: number, ids: string[]) => {
         const res = await this.#editorAPI;
-        return res.moveParagraphStyles(order, paragraphStyleIds).then((result) => getEditorResponseData<null>(result));
+        return res.moveParagraphStyles(order, ids).then((result) => getEditorResponseData<null>(result));
     };
 }

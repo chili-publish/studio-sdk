@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
+import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaType,

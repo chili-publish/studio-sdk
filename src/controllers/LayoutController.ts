@@ -34,22 +34,22 @@ export class LayoutController {
 
     /**
      * This method returns a layout by its id
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns layout properties
      */
-    getById = async (layoutId: Id) => {
+    getById = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.getLayoutById(layoutId).then((result) => getEditorResponseData<Layout>(result));
+        return res.getLayoutById(id).then((result) => getEditorResponseData<Layout>(result));
     };
 
     /**
      * This method returns a layout by its name
-     * @param layoutName the name of a specific layout
+     * @param name the name of a specific layout
      * @returns layout properties
      */
-    getByName = async (layoutName: string) => {
+    getByName = async (name: string) => {
         const res = await this.#editorAPI;
-        return res.getLayoutByName(layoutName).then((result) => getEditorResponseData<Layout>(result));
+        return res.getLayoutByName(name).then((result) => getEditorResponseData<Layout>(result));
     };
 
     /**
@@ -63,12 +63,12 @@ export class LayoutController {
 
     /**
      * This method will remove a specific layout
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns
      */
-    remove = async (layoutId: Id) => {
+    remove = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.removeLayout(layoutId).then((result) => getEditorResponseData<null>(result));
+        return res.removeLayout(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -83,69 +83,69 @@ export class LayoutController {
 
     /**
      * This method will update the name of a specific layout
-     * @param layoutId the id of a specific layout
-     * @param layoutName the new name that the layout should receive
+     * @param id the id of a specific layout
+     * @param name the new name that the layout should receive
      * @returns
      */
-    rename = async (layoutId: Id, layoutName: string) => {
+    rename = async (id: Id, name: string) => {
         const res = await this.#editorAPI;
-        return res.renameLayout(layoutId, layoutName).then((result) => getEditorResponseData<null>(result));
+        return res.renameLayout(id, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will select a specific layout
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns
      */
-    select = async (layoutId: Id) => {
+    select = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.selectLayout(layoutId).then((result) => getEditorResponseData<null>(result));
+        return res.selectLayout(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will duplicate a specific layout
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns id of specific layout
      */
-    duplicate = async (layoutId: Id) => {
+    duplicate = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.duplicateLayout(layoutId).then((result) => getEditorResponseData<Id>(result));
+        return res.duplicateLayout(id).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method will reset a specific layout to its original value
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns
      */
-    reset = async (layoutId: Id) => {
+    reset = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetLayout(layoutId).then((result) => getEditorResponseData<null>(result));
+        return res.resetLayout(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the height of the layout to a specific value
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @param height the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setHeight = async (layoutId: Id, height: string) => {
+    setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(height);
         if (calc === null || calc === Infinity) {
             return null;
         }
         return res
-            .setLayoutHeight(layoutId, parseFloat(calc.toString()))
+            .setLayoutHeight(id, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the width of the layout to a specific value
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setWidth = async (layoutId: Id, width: string) => {
+    setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
         const calc = getCalculatedValue(width);
         if (calc === null || calc === Infinity) {
@@ -153,28 +153,28 @@ export class LayoutController {
         }
 
         return res
-            .setLayoutWidth(layoutId, parseFloat(calc.toString()))
+            .setLayoutWidth(id, parseFloat(calc.toString()))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the height of a specific layout to its original value
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns
      */
-    resetHeight = async (layoutId: Id) => {
+    resetHeight = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetLayoutHeight(layoutId).then((result) => getEditorResponseData<null>(result));
+        return res.resetLayoutHeight(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will reset the width of a specific layout to its original value
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns
      */
-    resetWidth = async (layoutId: Id) => {
+    resetWidth = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetLayoutWidth(layoutId).then((result) => getEditorResponseData<null>(result));
+        return res.resetLayoutWidth(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
