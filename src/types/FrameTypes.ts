@@ -35,7 +35,7 @@ export type FrameType = {
 export type Frame = TextFrame | ImageFrame | ShapeFrame;
 
 export type ImageFrameVariableSource = {
-    variableId: string;
+    id: string;
     type: ImageSourceTypeEnum.variable;
 };
 

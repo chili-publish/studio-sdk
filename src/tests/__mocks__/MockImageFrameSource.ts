@@ -17,6 +17,6 @@ export const mockImageUrlSource: ImageFrameUrlSource = {
 };
 
 export const mockImageVariableSource: ImageFrameVariableSource = {
-    variableId: 'variable-id',
+    id: 'variable-id',
     type: ImageSourceTypeEnum.variable,
 };
