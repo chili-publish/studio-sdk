@@ -45,7 +45,7 @@ export class MediaConnectorController {
      * @param context stringified `Map<string, string>` of dynamic options
      * @returns array of Media items
      */
-    query = async (connectorId: string, queryOptions: QueryOptions, context: MetaData) => {
+    query = async (connectorId: Id, queryOptions: QueryOptions, context: MetaData) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context))
@@ -60,7 +60,7 @@ export class MediaConnectorController {
      * @param mediaId unique id of the Media
      * @returns Media item
      */
-    detail = async (connectorId: string, mediaId: string) => {
+    detail = async (connectorId: Id, mediaId: string) => {
         const res = await this.#editorAPI;
         return res.mediaConnectorDetail(connectorId, mediaId).then((result) => getEditorResponseData<Media>(result));
     };
@@ -76,8 +76,8 @@ export class MediaConnectorController {
      * @returns
      */
     download = async (
-        connectorId: string,
-        mediaId: string,
+        connectorId: Id,
+        mediaId: Id,
         downloadType: MediaDownloadType,
         context: MetaData,
     ): Promise<Uint8Array> => {
@@ -95,7 +95,7 @@ export class MediaConnectorController {
      * @param blob byte array representation of the media to upload
      * @returns
      */
-    upload = async (connectorId: string, mediaId: string, blob: Uint8Array) => {
+    upload = async (connectorId: Id, mediaId: Id, blob: Uint8Array) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorUpload(connectorId, mediaId, blob)
@@ -108,7 +108,7 @@ export class MediaConnectorController {
      * @param mediaId unique Id of the media to download
      * @returns
      */
-    remove = async (connectorId: string, mediaId: string) => {
+    remove = async (connectorId: Id, mediaId: Id) => {
         const res = await this.#editorAPI;
         return res.mediaConnectorRemove(connectorId, mediaId).then((result) => getEditorResponseData<null>(result));
     };
@@ -121,7 +121,7 @@ export class MediaConnectorController {
      * @param newName name of the copied media on the connector's backend
      * @returns
      */
-    copy = async (connectorId: string, mediaId: string, newName: string) => {
+    copy = async (connectorId: Id, mediaId: Id, newName: string) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorCopy(connectorId, mediaId, newName)
@@ -135,7 +135,7 @@ export class MediaConnectorController {
      * @param connectorId unique Id of the media connector
      * @returns query options
      */
-    getQueryOptions = async (connectorId: string) => {
+    getQueryOptions = async (connectorId: Id) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorGetQueryOptions(connectorId)
@@ -149,7 +149,7 @@ export class MediaConnectorController {
      * @param connectorId unique Id of the media connector
      * @returns download options
      */
-    getDownloadOptions = async (connectorId: string) => {
+    getDownloadOptions = async (connectorId: Id) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorGetDownloadOptions(connectorId)
@@ -162,7 +162,7 @@ export class MediaConnectorController {
      * @param connectorId unique Id of the media connector
      * @returns connector capabilities
      */
-    getCapabilities = async (connectorId: string) => {
+    getCapabilities = async (connectorId: Id) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorGetCapabilities(connectorId)

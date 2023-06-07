@@ -3,7 +3,7 @@ import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 
 export type ParagraphStyle = {
-    id: string;
+    id: Id;
     name: string;
     fontKey: string;
     fontStyle: string;

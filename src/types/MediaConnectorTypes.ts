@@ -7,7 +7,7 @@ export enum MediaDownloadType {
 }
 
 export type Media = {
-    id: string;
+    id: Id;
     name: string;
     relativePath: string;
     type: MediaType;

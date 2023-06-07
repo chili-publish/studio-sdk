@@ -3,7 +3,7 @@ import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 
 export type CharacterStyle = {
-    id: string;
+    id: Id;
     name: string;
     fontKey?: string;
     fontSize?: number;
