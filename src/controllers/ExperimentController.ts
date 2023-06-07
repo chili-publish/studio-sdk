@@ -29,7 +29,7 @@ export class ExperimentController {
      */
     insertImageVariableToFrame = async (imageFrameId: Id, variableId: Id) => {
         const res = await this.#editorAPI;
-        const src: ImageFrameVariableSource = { variableId: variableId, type: ImageSourceTypeEnum.variable };
+        const src: ImageFrameVariableSource = { id: variableId, type: ImageSourceTypeEnum.variable };
         return res
             .setImageSource(imageFrameId, JSON.stringify(src))
             .then((result) => getEditorResponseData<null>(result));
@@ -38,12 +38,12 @@ export class ExperimentController {
     /**
      * This method will insert a text variable in the selected frame. Calling this method
      * requires that the selected frame is in text editing mode.
-     * @param variableId the id of the variable to be inserted.
+     * @param id the id of the variable to be inserted.
      * @returns
      */
-    insertTextVariable = async (variableId: Id) => {
+    insertTextVariable = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.insertTextVariable(variableId).then((result) => getEditorResponseData<null>(result));
+        return res.insertTextVariable(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

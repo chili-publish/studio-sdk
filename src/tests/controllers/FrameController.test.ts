@@ -335,13 +335,13 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledWith(id, UpdateZIndexMethod.sendBackward);
     });
     it('Should be possible to set an image to the frame using a connector', async () => {
-        await mockedFrameController.setImageFromConnector(id, 'connector id', 'asset id');
+        await mockedFrameController.setImageFromConnector('connector id', id, 'asset id');
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
             id,
             JSON.stringify({
+                id: 'connector id',
                 assetId: 'asset id',
-                connectorId: 'connector id',
                 type: ImageSourceTypeEnum.connector,
             }),
         );
@@ -398,10 +398,10 @@ describe('ImageFrameSource manipulations', () => {
     });
 
     it('setImageFromConnector() redirects to EditorAPI.setImageSource() with ImageConnectorSource param', async () => {
-        const connectorId = mockImageConnectorSource.connectorId;
+        const connectorId = mockImageConnectorSource.id;
         const assetId = mockImageConnectorSource.assetId;
 
-        await mockedFrameController.setImageFromConnector(id, connectorId, assetId);
+        await mockedFrameController.setImageFromConnector(connectorId, id, assetId);
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, JSON.stringify(mockImageConnectorSource));

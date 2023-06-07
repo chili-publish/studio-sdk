@@ -419,15 +419,15 @@ export class FrameController {
 
     /**
      * This method will assign an image from a mediaConnector to the correct ImageFrame
+     * @param id Unique Id of the media connector
      * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
-     * @param connectorId Unique Id of the media connector
      * @param resourceId Unique Id of the asset that you want to assign to the imageFrame
      * @returns
      */
-    setImageFromConnector = async (imageFrameId: Id, connectorId: string, resourceId: string) => {
+    setImageFromConnector = async (id: Id, imageFrameId: Id,resourceId: Id) => {
         const src: ImageFrameConnectorSource = {
+            id: id,
             assetId: resourceId,
-            connectorId: connectorId,
             type: ImageSourceTypeEnum.connector,
         };
         return this.updateImageSource(imageFrameId, src);

@@ -46,7 +46,7 @@ describe('ExperimentController', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
             'image-frame-id',
-            JSON.stringify({ variableId: 'variable-id', type: 'variable' }),
+            JSON.stringify({ id: 'variable-id', type: 'variable' }),
         );
         expect(mockedEditorApi.insertImageVariableToFrame).not.toHaveBeenCalled();
     });

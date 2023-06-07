@@ -171,7 +171,7 @@ describe('VariableController', () => {
         const varId = '1';
         const src: MediaConnectorImageVariableSource = {
             assetId: 'asset id',
-            connectorId: 'connector id',
+            id: 'connector id',
             type: ImageVariableSourceType.mediaConnector,
         };
 

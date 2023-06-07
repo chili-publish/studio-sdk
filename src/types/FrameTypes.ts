@@ -36,7 +36,7 @@ export type Frame = TextFrame | ImageFrame | ShapeFrame;
 
 export type ImageFrameVariableSource = {
     type: ImageSourceTypeEnum.variable;
-    variableId: string;
+    id: Id;
 };
 
 export type ImageFrameUrlSource = {
@@ -45,8 +45,8 @@ export type ImageFrameUrlSource = {
 };
 
 export type ImageFrameConnectorSource = {
-    assetId: string;
-    connectorId: string;
+    assetId: Id;
+    id: Id;
     type: ImageSourceTypeEnum.connector;
 };
 
