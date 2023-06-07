@@ -35,18 +35,18 @@ export type FrameType = {
 export type Frame = TextFrame | ImageFrame | ShapeFrame;
 
 export type ImageFrameVariableSource = {
-    type: ImageSourceTypeEnum.variable;
     variableId: string;
+    type: ImageSourceTypeEnum.variable;
 };
 
 export type ImageFrameUrlSource = {
-    type: ImageSourceTypeEnum.url;
     url: string;
+    type: ImageSourceTypeEnum.url;
 };
 
 export type ImageFrameConnectorSource = {
+    id: string;
     assetId: string;
-    connectorId: string;
     type: ImageSourceTypeEnum.connector;
 };
 

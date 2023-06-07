@@ -427,7 +427,7 @@ export class FrameController {
     setImageFromConnector = async (imageFrameId: Id, connectorId: string, resourceId: string) => {
         const src: ImageFrameConnectorSource = {
             assetId: resourceId,
-            connectorId: connectorId,
+            id: connectorId,
             type: ImageSourceTypeEnum.connector,
         };
         return this.updateImageSource(imageFrameId, src);

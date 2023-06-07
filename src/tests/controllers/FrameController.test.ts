@@ -341,7 +341,7 @@ describe('FrameController', () => {
             frameId,
             JSON.stringify({
                 assetId: 'asset id',
-                connectorId: 'connector id',
+                id: 'connector id',
                 type: ImageSourceTypeEnum.connector,
             }),
         );
@@ -398,7 +398,7 @@ describe('ImageFrameSource manipulations', () => {
     });
 
     it('setImageFromConnector() redirects to EditorAPI.setImageSource() with ImageConnectorSource param', async () => {
-        const connectorId = mockImageConnectorSource.connectorId;
+        const connectorId = mockImageConnectorSource.id;
         const assetId = mockImageConnectorSource.assetId;
 
         await mockedFrameController.setImageFromConnector(frameId, connectorId, assetId);

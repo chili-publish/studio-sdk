@@ -7,7 +7,7 @@ import {
 
 export const mockImageConnectorSource: ImageFrameConnectorSource = {
     assetId: 'asset-id',
-    connectorId: 'connector-id',
+    id: 'connector-id',
     type: ImageSourceTypeEnum.connector,
 };
 
