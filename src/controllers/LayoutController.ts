@@ -34,22 +34,22 @@ export class LayoutController {
 
     /**
      * This method returns a layout by its id
-     * @param id The ID of a specific layout
+     * @param layoutId The ID of a specific layout
      * @returns
      */
-    getLayoutById = async (id: Id) => {
+    getLayout = async (layoutId: Id) => {
         const res = await this.#editorAPI;
-        return res.getLayoutById(id).then((result) => getEditorResponseData<Layout>(result));
+        return res.getLayoutById(layoutId).then((result) => getEditorResponseData<Layout>(result));
     };
 
     /**
      * This method returns a layout by its name
-     * @param name The name of a specific layout
+     * @param layoutName The name of a specific layout
      * @returns
      */
-    getLayoutByName = async (name: string) => {
+    getLayoutByName = async (layoutName: string) => {
         const res = await this.#editorAPI;
-        return res.getLayoutByName(name).then((result) => getEditorResponseData<Layout>(result));
+        return res.getLayoutByName(layoutName).then((result) => getEditorResponseData<Layout>(result));
     };
 
     /**
@@ -72,13 +72,13 @@ export class LayoutController {
     };
 
     /**
-     * This method will add a new child layout (a new layout is always child of a root / parentlayout)
-     * @param parentId The ID of a specific layout, being the parent
+     * This method will add a new child layout (a new layout is always child of a root / parent)
+     * @param parentLayoutId The ID of a specific layout, being the parent
      * @returns
      */
-    addLayout = async (parentId: Id) => {
+    addLayout = async (parentLayoutId: Id) => {
         const res = await this.#editorAPI;
-        return res.addLayout(parentId).then((result) => getEditorResponseData<number>(result));
+        return res.addLayout(parentLayoutId).then((result) => getEditorResponseData<number>(result));
     };
 
     /**

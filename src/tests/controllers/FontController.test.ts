@@ -34,9 +34,9 @@ describe('FontController', () => {
         expect(mockedEditorApi.getFonts).toHaveBeenCalledTimes(1);
     });
 
-    it('calls getFontById', async () => {
+    it('calls getFont', async () => {
         const fontId = 'fontId';
-        await mockedFontController.getFontById(fontId);
+        await mockedFontController.getFont(fontId);
         expect(mockedEditorApi.getFontById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFontById).toHaveBeenCalledWith(fontId);
     });

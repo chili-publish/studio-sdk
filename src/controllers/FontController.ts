@@ -33,7 +33,7 @@ export class FontController {
      * @param fontId The ID of a specific font
      * @returns
      */
-    getFontById = async (fontId: Id) => {
+    getFont = async (fontId: Id) => {
         const res = await this.#editorAPI;
         return res.getFontById(fontId).then((result) => getEditorResponseData<DocumentFont>(result));
     };
@@ -51,12 +51,12 @@ export class FontController {
 
     /**
      * This method removes a font
-     * @param id The ID of a specific font
+     * @param fontId The ID of a specific font
      * @returns
      */
-    removeFont = async (id: Id) => {
+    removeFont = async (fontId: Id) => {
         const res = await this.#editorAPI;
-        return res.removeFont(id).then((result) => getEditorResponseData<null>(result));
+        return res.removeFont(fontId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -72,11 +72,11 @@ export class FontController {
 
     /**
      * Check if the font is used anywhere in the document
-     * @param fontKey The ID of the font to check
+     * @param fontId The ID of the font to check
      * @returns Whether the font is used
      */
-    isFontUsed = async (fontKey: string) => {
+    isFontUsed = async (fontId: string) => {
         const res = await this.#editorAPI;
-        return res.isFontUsed(fontKey).then((result) => getEditorResponseData<boolean>(result));
+        return res.isFontUsed(fontId).then((result) => getEditorResponseData<boolean>(result));
     };
 }

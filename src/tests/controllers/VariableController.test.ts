@@ -54,7 +54,7 @@ describe('VariableController', () => {
     });
 
     it('get variable by id', async () => {
-        await mockedVariableController.getVariableById('2');
+        await mockedVariableController.getVariable('2');
         expect(mockEditorApi.getVariableById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariableById).toHaveBeenCalledWith('2');
     });
@@ -119,13 +119,13 @@ describe('VariableController', () => {
     });
 
     it('moveVariable variable', async () => {
-        await mockedVariableController.moveVariable('1', '6', 0);
+        await mockedVariableController.moveVariable(0, '1', '6');
         expect(mockEditorApi.moveVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.moveVariable).toHaveBeenCalledWith('1', '6', 0);
     });
 
     it('moveVariables', async () => {
-        await mockedVariableController.moveVariables({ moves: ['1'], parent: '6', order: 0 });
+        await mockedVariableController.moveVariables(0, ['1'], '6');
         expect(mockEditorApi.moveVariables).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.moveVariables).toHaveBeenCalledWith(['1'], '6', 0);
     });

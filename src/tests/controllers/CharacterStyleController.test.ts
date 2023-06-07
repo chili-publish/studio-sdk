@@ -93,14 +93,14 @@ describe('CharacterStyleController', () => {
         expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call the getCharacterStyleById method', async () => {
-        await mockedCharacterStyleController.getCharacterStyleById('5');
+    it('Should call the getCharacterStyle method', async () => {
+        await mockedCharacterStyleController.getCharacterStyle('5');
         expect(mockEditorApi.getCharacterStyleById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getCharacterStyleById).toHaveBeenCalledWith('5');
     });
 
-    it('Should call the createCharacterStyle method', async () => {
-        await mockedCharacterStyleController.createCharacterStyle();
+    it('Should call the addCharacterStyle method', async () => {
+        await mockedCharacterStyleController.addCharacterStyle();
         expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
     });
 

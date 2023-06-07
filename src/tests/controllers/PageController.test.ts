@@ -27,8 +27,8 @@ describe('PageController', () => {
         await mockedPageProperties.getPages();
         expect(mockEditorApi.getPages).toHaveBeenCalledTimes(1);
     });
-    it('Should call the getPageById method', async () => {
-        await mockedPageProperties.getPageById('4');
+    it('Should call the getPage method', async () => {
+        await mockedPageProperties.getPage('4');
         expect(mockEditorApi.getPageById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getPageById).toHaveBeenCalledWith('4');
     });

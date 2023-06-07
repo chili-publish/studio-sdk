@@ -76,7 +76,6 @@ export type {
     ImageVariable,
     LongTextVariable,
     ShortTextVariable,
-    VariableMoves,
     UrlImageVariableSource,
     MediaConnectorImageVariableSource,
     ImageVariableSource,

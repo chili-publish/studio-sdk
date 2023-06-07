@@ -42,14 +42,14 @@ describe('Should call all of the ActionController functions of child successfull
         expect(mockEditorApi.getActions).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call the getActionById method', async () => {
-        await mockedActionController.getActionById('5');
+    it('Should call the getAction method', async () => {
+        await mockedActionController.getAction('5');
         expect(mockEditorApi.getActionById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getActionById).toHaveBeenCalledWith('5');
     });
 
-    it('should call createAction function of EditorAPI with no params provided', async () => {
-        await mockedActionController.createAction();
+    it('should call addAction function of EditorAPI with no params provided', async () => {
+        await mockedActionController.addAction();
         expect(mockEditorApi.createAction).toHaveBeenCalledTimes(1);
     });
 

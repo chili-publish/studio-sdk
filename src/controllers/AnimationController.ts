@@ -31,7 +31,7 @@ export class AnimationController {
     };
 
     /**
-     * This method returns an animation for a given frame and layout
+     * This method returns an animation for a given frame and layout IDs
      * @param frameId The ID of a specific frame
      * @param layoutId The ID of a specific layout
      * @returns
@@ -44,7 +44,7 @@ export class AnimationController {
     };
 
     /**
-     * This method returns the animations for a given layout
+     * This method returns the animations for a given layout ID
      * @param layoutId The ID of a specific layout
      * @returns
      */
@@ -88,8 +88,8 @@ export class AnimationController {
     };
 
     /**
-     * This method sets the animation time to a certain time, expressed in miliseconds
-     * @param timeInMS The time expressed in miliseconds
+     * This method sets the animation time to a certain time, expressed in milliseconds
+     * @param timeInMS The time expressed in milliseconds
      * @returns
      */
     setScrubberPosition = async (timeInMS: number) => {
@@ -98,8 +98,8 @@ export class AnimationController {
     };
 
     /**
-     * This method sets the total and maximum duration of the animation
-     * @param timeInMS The time expressed in miliseconds
+     * This method sets the total and maximum duration of the animation, expressed in milliseconds
+     * @param timeInMS The time expressed in milliseconds
      * @returns
      */
     setAnimationDuration = async (timeInMS: number) => {
@@ -109,7 +109,7 @@ export class AnimationController {
 
     /**
      * This method resets the animation to its initial state
-     * @param frameId The id of a certain frame
+     * @param frameId The ID of a certain frame
      * @returns
      */
     resetFrameAnimation = async (frameId: Id) => {

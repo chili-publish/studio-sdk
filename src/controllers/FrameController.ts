@@ -71,22 +71,22 @@ export class FrameController {
 
     /**
      * This method returns a frame by its name
-     * @param name The name of a specific frame
+     * @param frameName The name of a specific frame
      * @returns
      */
-    getFrameByName = async (name: string) => {
+    getFrameByName = async (frameName: string) => {
         const res = await this.#editorAPI;
-        return res.getFrameByName(name).then((result) => getEditorResponseData<FrameType>(result));
+        return res.getFrameByName(frameName).then((result) => getEditorResponseData<FrameType>(result));
     };
 
     /**
      * This method returns a frame by its id
-     * @param id The ID of a specific frame
+     * @param frameId The ID of a specific frame
      * @returns
      */
-    getFrameById = async (id: Id) => {
+    getFrame = async (frameId: Id) => {
         const res = await this.#editorAPI;
-        return res.getFrameById(id).then((result) => getEditorResponseData<FrameType>(result));
+        return res.getFrameById(frameId).then((result) => getEditorResponseData<FrameType>(result));
     };
 
     /**

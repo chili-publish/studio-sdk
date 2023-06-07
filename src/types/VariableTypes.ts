@@ -47,9 +47,3 @@ export interface ShortTextVariable extends Variable {
 export type LongTextVariable = ShortTextVariable;
 
 export type GroupVariable = Variable;
-
-export type VariableMoves = {
-    moves: string[];
-    order: number;
-    parent: string;
-};

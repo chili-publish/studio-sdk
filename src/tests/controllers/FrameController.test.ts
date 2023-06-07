@@ -160,13 +160,13 @@ describe('FrameController', () => {
         expect(mockedEditorApi.getFrameByName).toHaveBeenCalledWith('frame');
     });
 
-    it('Should be possible to get a frame by name', async () => {
-        await mockedFrameController.getFrameById(frameId);
+    it('Should be possible to get a frame', async () => {
+        await mockedFrameController.getFrame(frameId);
         expect(mockedEditorApi.getFrameById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFrameById).toHaveBeenCalledWith(frameId);
     });
 
-    it('Should be possible to get frame properties on the selected layour', async () => {
+    it('Should be possible to get frame properties on the selected layout', async () => {
         await mockedFrameController.getFramePropertiesOnSelectedLayout();
         expect(mockedEditorApi.getFramePropertiesOnSelectedLayout).toHaveBeenCalledTimes(1);
     });
@@ -208,7 +208,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledWith(frameId, 332);
     });
-    it('Should be possible to set the frame heignt', async () => {
+    it('Should be possible to set the frame height', async () => {
         await mockedFrameController.setFrameHeight(frameId, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(frameId, 32);
@@ -289,7 +289,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(frameId, true);
     });
-    it('Should be possible to set the verical allignment of a frame', async () => {
+    it('Should be possible to set the vertical alignment of a frame', async () => {
         await mockedFrameController.setVerticalAlignment(frameId, VerticalAlign.justify);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(frameId, VerticalAlign.justify);
@@ -304,7 +304,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledWith(frameId, 5.0);
     });
-    it('Should be possible to enable copyfittyng with a boolean', async () => {
+    it('Should be possible to enable copyfitting with a boolean', async () => {
         await mockedFrameController.setEnableCopyfitting(frameId, true);
         expect(mockedEditorApi.setEnableCopyfitting).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setEnableCopyfitting).toHaveBeenCalledWith(frameId, true);
@@ -425,12 +425,12 @@ describe('ImageFrameSource manipulations', () => {
 });
 
 describe('User inputs for Frame Properties', () => {
-    it('Returns null when user input doesnt contain any number', async () => {
-        const responseX = await mockedFrameController.setFrameX(frameId, 'dasdsa');
-        const responseY = await mockedFrameController.setFrameY(frameId, 'sdsadas');
-        const responseWidth = await mockedFrameController.setFrameWidth(frameId, 'sd');
-        const responseHeight = await mockedFrameController.setFrameHeight(frameId, 'dds');
-        const responseRotation = await mockedFrameController.setFrameRotation(frameId, 'dsdsd');
+    it('Returns null when user input doesn\'t contain any number', async () => {
+        const responseX = await mockedFrameController.setFrameX(frameId, 'test');
+        const responseY = await mockedFrameController.setFrameY(frameId, 'test');
+        const responseWidth = await mockedFrameController.setFrameWidth(frameId, 'test');
+        const responseHeight = await mockedFrameController.setFrameHeight(frameId, 'test');
+        const responseRotation = await mockedFrameController.setFrameRotation(frameId, 'test');
         expect(responseX).toEqual(null);
         expect(responseY).toEqual(null);
         expect(responseWidth).toEqual(null);

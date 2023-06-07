@@ -13,7 +13,7 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
  * document. Use it to add/remove connectors to a template, or set specific configuration.
  *
- * The way CHILI Studio handles different sources of resouces is called 'Connectors'. A Connectors is an
+ * The way CHILI Studio handles different sources of resources is called 'Connectors'. A Connectors is an
  * implementation of a set of capabilities we need to interact with a certain external resource management system.
  * In essence a connector is the combination of a Javascript snippet and some metadata. The Javascript snippet
  * is loaded in the studio engine using a sandboxed Javascript execution engine (QuickJs). This allows us to
@@ -91,7 +91,7 @@ export class ConnectorController {
      * Connectors are loaded asynchronously in the editor engine, this causes some challenges while configuring them. To make sure
      * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
      * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially
-     * usefull during startup of the SDK / rigth after the loadDocument call.
+     * useful during startup of the SDK / right after the loadDocument call.
      * @param connectorId Id of your registered connector you want to make sure it is loaded
      */
     waitForConnectorReady = async (connectorId: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
@@ -105,7 +105,7 @@ export class ConnectorController {
         let retries = 0;
 
         try {
-            // using while loop will prevent stackoverflow issues when using recursion
+            // using while loop will prevent stack overflow issues when using recursion
             // wait for maximum 2 seconds to fail
             while (retries * waitTime < timeout) {
                 const result = await this.getState(connectorId);
@@ -182,7 +182,7 @@ class ConnectorConfigurator {
 
     /**
      * Allows to map document data (variables, selectedFrame, etc) to connector context data.
-     * By defining the mappings, we can trigger redownload of assets (dynamic asset provider)
+     * By defining the mappings, we can trigger re-download of assets (dynamic asset provider)
      * or populate filters for the query endpoint. The mapped data will be available using
      * the context parameter in the connector implementation code.
      * @param mappings collection of mappings to set to this connector

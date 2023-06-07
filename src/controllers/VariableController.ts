@@ -1,7 +1,6 @@
 import { EditorAPI } from '../types/CommonTypes';
 import {
     Variable,
-    VariableMoves,
     ImageVariableSource,
     VariableType,
     ImageVariableSourceType,
@@ -40,7 +39,7 @@ export class VariableController {
      * @param variableId The ID of a specific variable
      * @returns
      */
-    getVariableById = async (variableId: string) => {
+    getVariable = async (variableId: string) => {
         const res = await this.#editorAPI;
         return res.getVariableById(variableId).then((result) => getEditorResponseData<Variable>(result));
     };
@@ -57,15 +56,18 @@ export class VariableController {
 
     /**
      * This method adds a new variable
-     * @returns The new created variable id
+     * @param variableParentId parent ID of the created variable
+     * @param variableType type of the created variable
+     * @returns The new created variable ID
      */
-    addVariable = async (parentId: string, variableType: VariableType) => {
+    addVariable = async (variableParentId: string, variableType: VariableType) => {
         const res = await this.#editorAPI;
-        return res.addVariable(parentId, variableType).then((result) => getEditorResponseData<string>(result));
+        return res.addVariable(variableParentId, variableType).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
      * This method removes a list of variables
+     * @param variableIds list of the variables to be removed
      * @returns
      */
     removeVariables = async (variableIds: string[]) => {
@@ -75,41 +77,47 @@ export class VariableController {
 
     /**
      * This method sets a new name for a variable
+     * @param variableId ID of the variable
+     * @param variableName name of the variable
      * @returns
      */
-    setVariableName = async (variableId: string, name: string) => {
+    setVariableName = async (variableId: string, variableName: string) => {
         const res = await this.#editorAPI;
-        return res.setVariableName(variableId, name).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableName(variableId, variableName).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method sets a new label for a variable
+     * @param variableId ID of the variable
+     * @param variableLabel label of the variable
      * @returns
      */
-    setVariableLabel = async (variableId: string, label: string) => {
+    setVariableLabel = async (variableId: string, variableLabel: string) => {
         const res = await this.#editorAPI;
-        return res.setVariableLabel(variableId, label).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableLabel(variableId, variableLabel).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method sets a new type for a variable
+     * @param variableId ID of the variable
+     * @param variableType type of the variable
      * @returns
      */
-    setVariableType = async (variableId: string, type: VariableType) => {
+    setVariableType = async (variableId: string, variableType: VariableType) => {
         const res = await this.#editorAPI;
-        return res.setVariableType(variableId, type).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableType(variableId, variableType).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method sets a new value for a variable
      *
      * @param variableId the id of the variable
-     * @param value the new value of the variable
+     * @param variableValue the new value of the variable
      * @returns
      */
-    setVariableValue = async (variableId: string, value: string | null) => {
+    setVariableValue = async (variableId: string, variableValue: string | null) => {
         const res = await this.#editorAPI;
-        return res.setVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableValue(variableId, variableValue).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -123,6 +131,8 @@ export class VariableController {
 
     /**
      * This method aggregates the provided variables into a new group
+     * @param groupName name of the new group
+     * @param variableIds list of variable ids to group together
      * @returns
      */
     groupVariables = async (groupName: string, variableIds: string[]) => {
@@ -132,30 +142,37 @@ export class VariableController {
 
     /**
      * This method dissolves the specified group
+     * @param variableGroupId ID of the variable group
      * @returns
      */
-    ungroupVariable = async (groupId: string) => {
+    ungroupVariable = async (variableGroupId: string) => {
         const res = await this.#editorAPI;
-        return res.ungroupVariable(groupId).then((result) => getEditorResponseData<null>(result));
+        return res.ungroupVariable(variableGroupId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method moves a variable's position
+     * @param order new order of variable
+     * @param variableId ID of the variable
+     * @param variableParentId parent ID of the created variable
      * @returns
      */
-    moveVariable = async (variableId: string, parentId: string, orderIndex: number) => {
+    moveVariable = async (order: number, variableId: string, variableParentId: string) => {
         const res = await this.#editorAPI;
-        return res.moveVariable(variableId, parentId, orderIndex).then((result) => getEditorResponseData<null>(result));
+        return res.moveVariable(variableId, variableParentId, order).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method changes positions of variables
+     * @param order new order of variable
+     * @param variablesIds Array of the variable IDs
+     * @param variablesParentId parent ID of the variables
      * @returns
      */
-    moveVariables = async (movedVariables: VariableMoves) => {
+    moveVariables = async (order: number, variableIds: string[], variablesParentId: string) => {
         const res = await this.#editorAPI;
         return res
-            .moveVariables(movedVariables.moves, movedVariables.parent, movedVariables.order)
+            .moveVariables(variableIds, variablesParentId, order)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -191,12 +208,12 @@ export class VariableController {
      *
      * This method sets the variable source
      * @param variableId The ID of the variable to update
-     * @param src The new variable source
+     * @param variableSource The new variable source
      */
-    setVariableSource = async (variableId: string, src?: ImageVariableSource) => {
+    setVariableSource = async (variableId: string, variableSource?: ImageVariableSource) => {
         const value =
-            src && src.sourceType === ImageVariableSourceType.mediaConnector
-                ? (src as MediaConnectorImageVariableSource).assetId
+            variableSource && variableSource.sourceType === ImageVariableSourceType.mediaConnector
+                ? (variableSource as MediaConnectorImageVariableSource).assetId
                 : null;
 
         return this.setVariableValue(variableId, value);

@@ -59,7 +59,7 @@ describe('LayoutController', () => {
     });
 
     it("Should be possible to get a layout by it's ID", async () => {
-        await mockedFontController.getLayoutById('1');
+        await mockedFontController.getLayout('1');
         expect(mockedEditorApi.getLayoutById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getLayoutById).toHaveBeenCalledWith('1');
     });

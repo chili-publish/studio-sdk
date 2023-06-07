@@ -99,14 +99,14 @@ describe('ParagraphStyleController', () => {
         await mockedParagraphStyleController.getParagraphStyles();
         expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
     });
-    it('Should call the getParagraphStyleById method', async () => {
-        await mockedParagraphStyleController.getParagraphStyleById('5');
+    it('Should call the getParagraphStyle method', async () => {
+        await mockedParagraphStyleController.getParagraphStyle('5');
         expect(mockEditorApi.getParagraphStyleById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getParagraphStyleById).toHaveBeenCalledWith('5');
     });
 
-    it('Should call the createParagraphStyle method', async () => {
-        await mockedParagraphStyleController.createParagraphStyle();
+    it('Should call the addParagraphStyle method', async () => {
+        await mockedParagraphStyleController.addParagraphStyle();
         expect(mockEditorApi.createParagraphStyle).toHaveBeenCalledTimes(1);
     });
 

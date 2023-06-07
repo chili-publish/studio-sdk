@@ -34,7 +34,7 @@ export class PageController {
      * @param pageId The ID of a specific page
      * @returns
      */
-    getPageById = async (pageId: Id) => {
+    getPage = async (pageId: Id) => {
         const res = await this.#editorAPI;
         return res.getPageById(pageId).then((result) => getEditorResponseData<Page>(result));
     };

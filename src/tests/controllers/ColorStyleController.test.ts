@@ -36,13 +36,13 @@ describe('ColorStyleController', () => {
         await mockedColorStyleController.getColors();
         expect(mockEditorApi.getColors).toHaveBeenCalledTimes(1);
     });
-    it('Should call the getColorById method', async () => {
-        await mockedColorStyleController.getColorById('5');
+    it('Should call the getColor method', async () => {
+        await mockedColorStyleController.getColor('5');
         expect(mockEditorApi.getColorById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getColorById).toHaveBeenCalledWith('5');
     });
-    it('Should call the createColor method', async () => {
-        await mockedColorStyleController.createColor();
+    it('Should call the addColor method', async () => {
+        await mockedColorStyleController.addColor();
         expect(mockEditorApi.createColor).toHaveBeenCalledTimes(1);
     });
     it('Should call the duplicateColor method', async () => {
