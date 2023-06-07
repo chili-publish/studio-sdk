@@ -1,3 +1,5 @@
+import { Id } from "./CommonTypes";
+
 export enum DeprecatedMediaType {
     file = 0,
     collection = 1,

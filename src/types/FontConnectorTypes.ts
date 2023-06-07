@@ -1,3 +1,4 @@
+import { Id } from './CommonTypes';
 import { MediaType } from './ConnectorTypes';
 
 export enum FontDownloadType {

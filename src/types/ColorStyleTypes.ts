@@ -1,3 +1,5 @@
+import { Id } from "./CommonTypes";
+
 export enum ColorType {
     rgb = 'rgb',
     cmyk = 'cmyk',
@@ -35,7 +37,7 @@ export type ColorUsageUpdate = {
     /**
      * Reference to the stylekit color, can only be used if it is a stylekit color.
      */
-    id?: string;
+    id?: Id;
     /**
      * The local color object, can only be used if it is a local color.
      */
@@ -55,7 +57,7 @@ export type ColorUsage = {
     /**
      * Reference to the stylekit color, can only be used if it is a stylekit color.
      */
-    id?: string;
+    id?: Id;
     /**
      * The local color object, can only be used if it is a local color.
      */
