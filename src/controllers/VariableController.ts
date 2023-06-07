@@ -1,5 +1,12 @@
 import { EditorAPI } from '../types/CommonTypes';
-import { Variable, VariableMoves, ImageVariableSource, VariableType } from '../types/VariableTypes';
+import {
+    Variable,
+    VariableMoves,
+    ImageVariableSource,
+    VariableType,
+    ImageVariableSourceType,
+    MediaConnectorImageVariableSource,
+} from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -95,9 +102,12 @@ export class VariableController {
 
     /**
      * This method sets a new value for a variable
+     *
+     * @param variableId the id of the variable
+     * @param value the new value of the variable
      * @returns
      */
-    setVariableValue = async (variableId: string, value: string) => {
+    setVariableValue = async (variableId: string, value: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(variableId, value).then((result) => getEditorResponseData<null>(result));
     };
@@ -177,30 +187,40 @@ export class VariableController {
     };
 
     /**
-     * This method sets or removes the variable source
-     * @param variableId The ID of the variable to update
-     * @param src The new variable source
-     */
-    private updateVariableSource = async (variableId: string, src: ImageVariableSource | null) => {
-        const res = await this.#editorAPI;
-        const srcJson = src !== null ? JSON.stringify(src) : null;
-        return res.setVariableSource(variableId, srcJson).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
+     * @deprecated Use `setVariableValue` and `setImageVariableConnector` instead.
+     *
      * This method sets the variable source
      * @param variableId The ID of the variable to update
      * @param src The new variable source
      */
-    setVariableSource = async (variableId: string, src: ImageVariableSource) => {
-        return this.updateVariableSource(variableId, src);
+    setVariableSource = async (variableId: string, src?: ImageVariableSource) => {
+        const value =
+            src && src.type === ImageVariableSourceType.mediaConnector
+                ? (src as MediaConnectorImageVariableSource).assetId
+                : null;
+
+        return this.setVariableValue(variableId, value);
     };
 
     /**
+     * This method sets the image variable connector. Setting a connector will
+     * automatically remove the assetId linked to the connector if present.
+     * @param variableId The ID of the image variable to update
+     * @param connectorId The new ID of the connector
+     * @returns
+     */
+    setImageVariableConnector = async (variableId: string, connectorId: string) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableConnector(variableId, connectorId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @deprecated use `setVariableValue` instead and pass `null` as the value argument.
+     *
      * This method removes the variable source
      * @param variableId The ID of the variable to update
      */
     removeVariableSource = async (variableId: string) => {
-        return this.updateVariableSource(variableId, null);
+        return this.setVariableValue(variableId, null);
     };
 }
