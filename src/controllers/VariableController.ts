@@ -201,7 +201,7 @@ export class VariableController {
     };
 
     /**
-     * @deprecated Use `setVariableValue` instead.
+     * @deprecated Use `setVariableValue` and `setImageVariableConnector` instead.
      *
      * This method sets the variable source
      * @param variableId The ID of the variable to update
@@ -214,6 +214,18 @@ export class VariableController {
                 : null;
 
         return this.setVariableValue(variableId, value);
+    };
+
+    /**
+     * This method sets the image variable connector. Setting a connector will
+     * automatically remove the assetId linked to the connector if present.
+     * @param variableId The ID of the image variable to update
+     * @param connectorId The new ID of the connector
+     * @returns
+     */
+    setImageVariableConnector = async (variableId: string, connectorId: string) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableConnector(variableId, connectorId).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

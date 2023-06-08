@@ -30,6 +30,7 @@ describe('VariableController', () => {
         ungroupVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableName: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableSource: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -53,6 +54,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'ungroupVariable');
         jest.spyOn(mockEditorApi, 'setVariableName');
         jest.spyOn(mockEditorApi, 'setVariableSource');
+        jest.spyOn(mockEditorApi, 'setImageVariableConnector');
     });
 
     it('get variable by id', async () => {
@@ -174,6 +176,16 @@ describe('VariableController', () => {
 
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, src.assetId);
+    });
+
+    it('set image variable connector', async () => {
+        const varId = '1';
+        const connectorId = 'connectorId';
+
+        await mockedVariableController.setImageVariableConnector(varId, connectorId);
+
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(varId, connectorId);
     });
 
     it('remove variable source', async () => {
