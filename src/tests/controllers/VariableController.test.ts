@@ -18,6 +18,7 @@ describe('VariableController', () => {
         removeVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableLabel: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
+        setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableValue: async () => getEditorResponseData(castToEditorResponse(null)),
         groupVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         duplicateVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -40,6 +41,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'removeVariables');
         jest.spyOn(mockEditorApi, 'setVariableLabel');
         jest.spyOn(mockEditorApi, 'setVariableType');
+        jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setVariableValue');
         jest.spyOn(mockEditorApi, 'groupVariables');
         jest.spyOn(mockEditorApi, 'duplicateVariable');
@@ -98,6 +100,12 @@ describe('VariableController', () => {
         await mockedVariableController.setVariableType('3', VariableType.group);
         expect(mockEditorApi.setVariableType).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableType).toHaveBeenCalledWith('3', VariableType.group);
+    });
+
+    it('sets the variable list items', async () => {
+        await mockedVariableController.setListVariableItems('listId', ['a', 'b', 'c']);
+        expect(mockEditorApi.setListVariableItems).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setListVariableItems).toHaveBeenCalledWith('listId', ['a', 'b', 'c']);
     });
 
     it('set variable value', async () => {
