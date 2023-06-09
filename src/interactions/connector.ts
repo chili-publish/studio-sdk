@@ -24,6 +24,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
       <meta charset="UTF-8"/>
       <!--  use this property to override the location of assets like 'default fonts' and demo document -->
       <meta name="assetBase" content="${link}">
+      <!--  use this property to pass the StudioStyling to the engine -->
       <meta name="studio-styling" content=${stylingJson}>
     </head>
     <body>
