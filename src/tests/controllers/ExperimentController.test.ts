@@ -29,7 +29,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setTextByFrameId');
     jest.spyOn(mockedEditorApi, 'selectTextByFrameId');
 
-    frameId = mockSelectFrame.frameId;
+    frameId = mockSelectFrame.id;
 });
 
 afterAll(() => {
