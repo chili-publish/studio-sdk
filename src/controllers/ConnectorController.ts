@@ -63,7 +63,7 @@ export class ConnectorController {
     /**
      * Configures a registered connector. A configurator helper is passed as an argument
      * of the callback for you to setup your connector.
-     * @param id Id of your registered connector
+     * @param id the id of your registered connector
      * @param configurationCallback callback to setup the connector
      * @returns
      */
@@ -83,7 +83,7 @@ export class ConnectorController {
     /**
      * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitForConnectorReady'
      * method in this controller.
-     * @param id Id of your registered connector you want to make sure it is loaded
+     * @param id the id of your registered connector you want to make sure it is loaded
      * @returns connector state
      */
     getById = async (id: string) => {
@@ -96,7 +96,7 @@ export class ConnectorController {
      * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
      * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially
      * useful during startup of the SDK / right after the loadDocument call.
-     * @param id Id of your registered connector you want to make sure it is loaded
+     * @param id the id of your registered connector you want to make sure it is loaded
      * @returns
      */
     waitToBeReady = async (id: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
