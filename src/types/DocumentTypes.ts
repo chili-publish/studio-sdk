@@ -48,7 +48,7 @@ export interface DocumentFrame {
 }
 
 export interface ImageFrame extends DocumentFrame {
-    src: VariableImageFrameSource | ConnectorImageFrameSource | UrlImageFrameSource;
+    src: ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
 }
 
 export interface ShapeFrame extends DocumentFrame {
@@ -83,16 +83,16 @@ export interface ImageFrameSource {
     type: ImageFrameSourceType;
 }
 
-export interface UrlImageFrameSource extends ImageFrameSource {
+export interface ImageFrameUrlSource extends ImageFrameSource {
     url: string;
 }
 
-export interface ConnectorImageFrameSource extends ImageFrameSource {
+export interface ImageFrameConnectorSource extends ImageFrameSource {
     id: string;
     assetId: string;
 }
 
-export interface VariableImageFrameSource extends ImageFrameSource {
+export interface ImageFrameVariableSource extends ImageFrameSource {
     id: string;
 }
 
