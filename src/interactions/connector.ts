@@ -17,13 +17,14 @@ export const validateEditorLink = (editorLink: string) => {
 
 export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, styling?: StudioStyling) => {
     const link = validateEditorLink(editorLink);
+    const stylingJson = JSON.stringify(styling);
     const html = `<html>
     <head>
       <base href="/" />
       <meta charset="UTF-8"/>
       <!--  use this property to override the location of assets like 'default fonts' and demo document -->
       <meta name="assetBase" content="${link}">
-       <script id="studio-styling" type="application/json">${JSON.stringify(styling)}</script>
+       <meta name="studio-styling" content="${stylingJson}">
     </head>
     <body>
     <script async src="${link}init.js"></script>
