@@ -1,8 +1,11 @@
 import { ExperimentController } from '../../controllers/ExperimentController';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, Id } from '../../types/CommonTypes';
+import { TextType } from '../../types/TextTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { mockSelectFrame } from '../__mocks__/FrameProperties';
 
 let mockedExperimentController: ExperimentController;
+let frameId: Id;
 
 const mockedEditorApi: EditorAPI = {
     insertTextVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -10,7 +13,11 @@ const mockedEditorApi: EditorAPI = {
     exitTextEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
     insertImageVariableToFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
+    getTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
+    setTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
+    selectTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
 };
+
 beforeEach(() => {
     mockedExperimentController = new ExperimentController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'insertTextVariable');
@@ -18,6 +25,11 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'exitTextEditMode');
     jest.spyOn(mockedEditorApi, 'insertImageVariableToFrame');
     jest.spyOn(mockedEditorApi, 'setImageSource');
+    jest.spyOn(mockedEditorApi, 'getTextByFrameId');
+    jest.spyOn(mockedEditorApi, 'setTextByFrameId');
+    jest.spyOn(mockedEditorApi, 'selectTextByFrameId');
+
+    frameId = mockSelectFrame.frameId;
 });
 
 afterAll(() => {
@@ -41,6 +53,7 @@ describe('ExperimentController', () => {
         await mockedExperimentController.exitTextEditMode();
         expect(mockedEditorApi.exitTextEditMode).toHaveBeenCalledTimes(1);
     });
+
     it('Should call insertImageVariable correctly and set the imageSource as side effect', async () => {
         await mockedExperimentController.insertImageVariableToFrame('image-frame-id', 'variable-id');
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
@@ -49,5 +62,29 @@ describe('ExperimentController', () => {
             JSON.stringify({ variableId: 'variable-id', sourceType: 'variable' }),
         );
         expect(mockedEditorApi.insertImageVariableToFrame).not.toHaveBeenCalled();
+    });
+
+    it('Should call getTextByFrameId of EditorAPI successfully', async () => {
+        await mockedExperimentController.getText(frameId, TextType.formatted);
+        expect(mockedEditorApi.getTextByFrameId).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getTextByFrameId).toHaveBeenCalledWith(frameId, TextType.formatted);
+    });
+
+    it('Should call setTextByFrameId of EditorAPI successfully', async () => {
+        const text = 'myText';
+
+        await mockedExperimentController.setText(frameId, text);
+        expect(mockedEditorApi.setTextByFrameId).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setTextByFrameId).toHaveBeenCalledWith(frameId, text);
+    });
+
+    it('Should call selectTextByFrameId of EditorAPI successfully', async () => {
+        const startIndex = 2;
+        const length = 3;
+
+        await mockedExperimentController.selectText(frameId, startIndex, length);
+        expect(mockedEditorApi.selectTextByFrameId).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.selectTextByFrameId).toHaveBeenCalledWith(frameId, startIndex, length);
+
     });
 });
