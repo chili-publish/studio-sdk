@@ -61,7 +61,7 @@ interface ConfigParameterTypes {
     onParagraphStylesChanged: (paragraphStyles: string) => void;
     onCharacterStylesChanged: (characterStyles: string) => void;
     onFontsChanged: (fonts: string) => void;
-    onSelectedLayoutIdChanged: (layoutId: string) => void;
+    onSelectedLayoutIdChanged: (id: string) => void;
     onLayoutsChanged: (layouts: string) => void;
     onConnectorEvent: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;

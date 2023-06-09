@@ -30,12 +30,12 @@ export class FontController {
 
     /**
      * This method returns a font by id
-     * @param fontId the id of a specific font
+     * @param id the id of a specific font
      * @returns font properties
      */
-    getById = async (fontId: Id) => {
+    getById = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.getFontById(fontId).then((result) => getEditorResponseData<DocumentFont>(result));
+        return res.getFontById(id).then((result) => getEditorResponseData<DocumentFont>(result));
     };
 
     /**
@@ -51,32 +51,32 @@ export class FontController {
 
     /**
      * This method removes a font
-     * @param fontId the id of a specific font
+     * @param id the id of a specific font
      * @returns
      */
-    remove = async (fontId: Id) => {
+    remove = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.removeFont(fontId).then((result) => getEditorResponseData<null>(result));
+        return res.removeFont(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method adds a font
-     * @param connectorId unique Id of the font connector
+     * @param id unique id of the font connector
      * @param font the font object
      * @returns
      */
-    add = async (connectorId: Id, font: AddDocumentFont) => {
+    add = async (id: Id, font: AddDocumentFont) => {
         const res = await this.#editorAPI;
-        return res.addFont(connectorId, JSON.stringify(font)).then((result) => getEditorResponseData<null>(result));
+        return res.addFont(id, JSON.stringify(font)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Check if the font is used anywhere in the document
-     * @param fontId the id of the font to check
+     * @param id the id of the font to check
      * @returns whether the font is used
      */
-    isUsed = async (fontId: string) => {
+    isUsed = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.isFontUsed(fontId).then((result) => getEditorResponseData<boolean>(result));
+        return res.isFontUsed(id).then((result) => getEditorResponseData<boolean>(result));
     };
 }

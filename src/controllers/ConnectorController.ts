@@ -63,32 +63,32 @@ export class ConnectorController {
     /**
      * Configures a registered connector. A configurator helper is passed as an argument
      * of the callback for you to setup your connector.
-     * @param connectorId Id of your registered connector
+     * @param id Id of your registered connector
      * @param configurationCallback callback to setup the connector
      * @returns
      */
     configure = async (
-        connectorId: string,
+        id: string,
         configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>,
     ) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
-        await this.waitToBeReady(connectorId);
+        await this.waitToBeReady(id);
         // execute callback
-        await configurationCallback(new ConnectorConfigurator(connectorId, res));
+        await configurationCallback(new ConnectorConfigurator(id, res));
         // invalidate connector in engine
-        return res.updateConnectorConfiguration(connectorId).then((result) => getEditorResponseData<null>(result));
+        return res.updateConnectorConfiguration(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitForConnectorReady'
      * method in this controller.
-     * @param connectorId Id of your registered connector you want to make sure it is loaded
+     * @param id Id of your registered connector you want to make sure it is loaded
      * @returns connector state
      */
-    getById = async (connectorId: string) => {
+    getById = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.getConnectorState(connectorId).then((result) => getEditorResponseData<ConnectorState>(result));
+        return res.getConnectorState(id).then((result) => getEditorResponseData<ConnectorState>(result));
     };
 
     /**
@@ -96,10 +96,10 @@ export class ConnectorController {
      * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
      * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially
      * useful during startup of the SDK / right after the loadDocument call.
-     * @param connectorId Id of your registered connector you want to make sure it is loaded
+     * @param id Id of your registered connector you want to make sure it is loaded
      * @returns
      */
-    waitToBeReady = async (connectorId: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
+    waitToBeReady = async (id: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
         // minimum timeout is 500ms
         let timeout = Math.max(timeoutMilliseconds, 500);
 
@@ -113,7 +113,7 @@ export class ConnectorController {
             // using while loop will prevent stack overflow issues when using recursion
             // wait for maximum 2 seconds to fail
             while (retries * waitTime < timeout) {
-                const result = await this.getById(connectorId);
+                const result = await this.getById(id);
 
                 if (
                     result.success &&
@@ -169,8 +169,8 @@ class ConnectorConfigurator {
     /**
      * @ignore
      */
-    constructor(connectorId: string, res: EditorAPI) {
-        this.#connectorId = connectorId;
+    constructor(id: string, res: EditorAPI) {
+        this.#connectorId = id;
         this.#res = res;
     }
 

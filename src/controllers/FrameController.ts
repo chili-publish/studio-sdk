@@ -115,12 +115,12 @@ export class FrameController {
 
     /**
      * This method returns a list of frame properties for a given layout
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns list of frame layout properties
      */
-    getAllLayoutProperties = async (layoutId: Id) => {
+    getAllLayoutProperties = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.getFramesProperties(layoutId).then((result) => getEditorResponseData<FrameLayoutType[]>(result));
+        return res.getFramesProperties(id).then((result) => getEditorResponseData<FrameLayoutType[]>(result));
     };
 
     /**
@@ -156,12 +156,12 @@ export class FrameController {
     /**
      * This method changes the order of frames in the z-index list.
      * @param order the index in the list to move to
-     * @param frameIds An array of all IDs you want to move to the given index
+     * @param ids An array of all IDs you want to move to the given index
      * @returns
      */
-    reorderFrames = async (order: number, frameIds: Id[]) => {
+    reorderFrames = async (order: number, ids: Id[]) => {
         const res = await this.#editorAPI;
-        return res.reorderFrames(order, frameIds).then((result) => getEditorResponseData<null>(result));
+        return res.reorderFrames(order, ids).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

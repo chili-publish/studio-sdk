@@ -45,13 +45,13 @@ export class AnimationController {
 
     /**
      * This method returns the animations for a given layout id
-     * @param layoutId the id of a specific layout
+     * @param id the id of a specific layout
      * @returns animation properties for a given layout
      */
-    getByLayoutId = async (layoutId: Id) => {
+    getByLayoutId = async (id: Id) => {
         const res = await this.#editorAPI;
         return res
-            .getAnimationsByLayoutId(layoutId)
+            .getAnimationsByLayoutId(id)
             .then((result) => getEditorResponseData<FrameAnimationPropertiesType>(result));
     };
 
