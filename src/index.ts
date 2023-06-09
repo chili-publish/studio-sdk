@@ -30,7 +30,6 @@ import { CanvasController } from './controllers/CanvasController';
 import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 import { ShapeController } from './controllers/ShapeController';
-import { TextController } from './controllers/TextController';
 
 export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
 
@@ -173,7 +172,6 @@ export class SDK {
     font: FontController;
     experiment: ExperimentController;
     canvas: CanvasController;
-    text: TextController;
 
     private subscriber: SubscriberController;
 
@@ -213,7 +211,6 @@ export class SDK {
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
-        this.text = new TextController(this.editorAPI);
     }
 
     /**
@@ -280,7 +277,6 @@ export class SDK {
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
-        this.text = new TextController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
