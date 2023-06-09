@@ -67,7 +67,9 @@ export class ExperimentController {
     };
 
     /**
-     * This method gets the text content of a text frame
+     * This method gets the text content of a text frame.
+     * The variables contained in the text will return their values only if you
+     * are in text editing mode.
      * @param frameId The ID of a text frame
      * @param textType The type of the text
      * @returns the text content
