@@ -17,7 +17,7 @@ export const validateEditorLink = (editorLink: string) => {
 
 export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, styling?: StudioStyling) => {
     const link = validateEditorLink(editorLink);
-    const stylingJson = JSON.stringify(styling);
+    const stylingJson = JSON.stringify(styling || {});
     const html = `<html>
     <head>
       <base href="/" />

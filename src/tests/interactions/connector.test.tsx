@@ -29,8 +29,16 @@ describe('Connector helpers', () => {
 
         const iframe = document.createElement('iframe');
         ConnectorFunctions.setupFrame(iframe, editorLink, styling);
+        const doc = iframe.ownerDocument;
 
-        const stylingScript = document.getElementById('studio-styling');
-        expect(stylingScript?.textContent).toEqual(JSON.stringify(styling));
+        const metas = doc.head.getElementsByTagName('meta');
+
+        for (let i = 0; i < metas.length; i++) {
+            const meta = metas[i];
+            if (meta.getAttribute('name') === 'studio-styling') {
+                const content = meta.getAttribute('content');
+                expect(content).toEqual(JSON.stringify(styling));
+            }
+        }
     });
 });
