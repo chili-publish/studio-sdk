@@ -52,7 +52,6 @@ export interface ImageFrame extends DocumentFrame {
 }
 
 export interface ShapeFrame extends DocumentFrame {
-    type: FrameTypeEnum;
     shapeProperties: ShapeProperties;
 }
 
@@ -113,7 +112,6 @@ export interface TopLayout extends Layout {
     frameAnimations: FrameAnimation[];
     timelineLengthMs: number;
     animated: boolean;
-    parentId: Id;
     width: number;
     height: number;
 }
