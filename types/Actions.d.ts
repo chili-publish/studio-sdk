@@ -106,6 +106,8 @@ declare module 'grafx-studio-actions' {
      */
     interface Layout {
         readonly name: string;
+        readonly width: number;
+        readonly height: number;
     }
 
     /** Respresents a Variable inside Actions */
@@ -324,6 +326,11 @@ declare module 'grafx-studio-actions' {
          * @returns
          */
         select(layoutName: string): void;
+
+        /**
+         * Returns all layouts in the document.
+         */
+        all(): Layout[];
     }
 
     /**
