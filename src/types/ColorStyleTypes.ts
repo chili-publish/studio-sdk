@@ -6,7 +6,7 @@ export enum ColorType {
     lab = 'lab',
     gray = 'gray',
     xyz = 'xyz',
-    hls = 'hls',
+    hsl = 'hsl',
     spotCmyk = 'spotCmyk',
     spotRgb = 'spotRgb',
     custom = 'custom',
