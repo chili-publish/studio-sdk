@@ -74,7 +74,7 @@ const updateCharacterStyle: CharacterStyleUpdate = {
                 g: 0,
                 b: 0,
             },
-            opacity: 50,
+            opacity: 0.50,
             isApplied: true,
             usageType: ColorUsageType.local,
         },
