@@ -1,4 +1,4 @@
-import { EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import {
     Variable,
     VariableMoves,
@@ -109,7 +109,7 @@ export class VariableController {
      * @param items the items of the list
      * @returns
      */
-    setListVariable = async (id: string, items: string[]) => {
+    setListVariable = async (id: Id, items: string[]) => {
         const res = await this.#editorAPI;
         return res.setListVariableItems(id, items).then((result) => getEditorResponseData<null>(result));
     };
