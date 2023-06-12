@@ -105,7 +105,7 @@ describe('VariableController', () => {
     });
 
     it('sets the variable list items', async () => {
-        await mockedVariableController.setListVariableItems('listId', ['a', 'b', 'c']);
+        await mockedVariableController.setListVariable('listId', ['a', 'b', 'c']);
         expect(mockEditorApi.setListVariableItems).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setListVariableItems).toHaveBeenCalledWith('listId', ['a', 'b', 'c']);
     });
