@@ -180,7 +180,7 @@ declare module 'grafx-studio-actions' {
          * @param y the frame y position
          * @returns
          */
-        move: (name: string, x: number, y: number) => void;
+        move(name: string, x: number, y: number): void;
 
         /**
          * Resizes a frame to a specified size
@@ -189,7 +189,7 @@ declare module 'grafx-studio-actions' {
          * @param height the frame height
          * @returns
          */
-        resize: (name: string, width: number, height: number) => void;
+        resize(name: string, width: number, height: number): void;
 
         /**
          * Moves a frame to a specified X position
@@ -197,7 +197,7 @@ declare module 'grafx-studio-actions' {
          * @param x the frame x position
          * @returns
          */
-        setX: (name: string, x: number) => void;
+        setX(name: string, x: number): void;
 
         /**
          * Moves a frame to a specified Y position
@@ -205,7 +205,7 @@ declare module 'grafx-studio-actions' {
          * @param y the frame y position
          * @returns
          */
-        setY: (name: string, y: number) => void;
+        setY(name: string, y: number): void;
 
         /**
          * Resizes a frame to a specified width
@@ -213,7 +213,7 @@ declare module 'grafx-studio-actions' {
          * @param width the frame width
          * @returns
          */
-        setWidth: (name: string, width: number) => void;
+        setWidth(name: string, width: number): void;
 
         /**
          * Resizes a frame to a specified height
@@ -221,7 +221,7 @@ declare module 'grafx-studio-actions' {
          * @param height the frame height
          * @returns
          */
-        setHeight: (name: string, height: number) => void;
+        setHeight(name: string, height: number): void;
 
         /**
          * Rotates a frame to a specified degree
@@ -229,7 +229,7 @@ declare module 'grafx-studio-actions' {
          * @param rotation the frame rotation in degrees
          * @returns
          */
-        setRotation: (name: string, rotation: number) => void;
+        setRotation(name: string, rotation: number): void;
 
         /**
          * Toggles the frame visibility
@@ -237,27 +237,27 @@ declare module 'grafx-studio-actions' {
          * @param include whether the frame is included or not
          * @returns
          */
-        include: (name: string, include: boolean) => void;
+        include(name: string, include: boolean): void;
 
         /**
          * Returns a list of all Frames
          * @returns
          */
-        all: () => Frame[];
+        all(): Frame[];
 
         /**
          * Returns a specific frame by name
          * @param name the frame name
          * @returns
          */
-        byName: (name: string) => Frame;
+        byName(name: string): Frame;
 
         /**
          * Assigns the specified image variable to the specified image frame
          * @param variableName the image variable name to assign
          * @param frameName the image frame name to assign to
          */
-        assignVariable: (variableName: string, frameName: string) => void;
+        assignVariable(variableName: string, frameName: string): void;
     }
 
     /**
@@ -269,13 +269,13 @@ declare module 'grafx-studio-actions' {
          * @param name the variable name
          * @returns
          */
-        byName: (name: string) => Variable;
+        byName(name: string): Variable;
 
         /**
          * Returns a list of all variables
          * @returns
          */
-        all: () => Variable[];
+        all(): Variable[];
 
         /**
          * Sets the value of a variable
@@ -283,12 +283,12 @@ declare module 'grafx-studio-actions' {
          * @param value the value
          * @returns
          */
-        setValue: (name: string, value?: VariableValue) => void;
+        setValue(name: string, value?: VariableValue): void;
 
         /**
          * Gets the value of a variable
          */
-        getValue: (name: string) => VariableValue;
+        getValue(name: string): VariableValue;
 
         /**
          * Set the readonly state of a variable
@@ -296,7 +296,7 @@ declare module 'grafx-studio-actions' {
          * @param value whether the variable is readonly
          * @returns
          */
-        setReadonly: (name: string, value: boolean) => void;
+        setReadonly(name: string, value: boolean): void;
 
         /**
          * Set the required state of a variable
@@ -304,7 +304,7 @@ declare module 'grafx-studio-actions' {
          * @param value whether the variable is required
          * @returns
          */
-        setRequired: (name: string, value: boolean) => void;
+        setRequired(name: string, value: boolean): void;
 
         /**
          * Set the visible state of a variable
@@ -312,7 +312,7 @@ declare module 'grafx-studio-actions' {
          * @param value whether the variable is visible
          * @returns
          */
-        setVisible: (name: string, value: boolean) => void;
+        setVisible(name: string, value: boolean): void;
     }
 
     /**
@@ -323,14 +323,14 @@ declare module 'grafx-studio-actions' {
          * Returns the selected layout
          * @returns
          */
-        selected: () => Layout;
+        selected(): Layout;
 
         /**
          * Selects a layout by name
          * @param layoutName the layout name to select
          * @returns
          */
-        select: (layoutName: string) => void;
+        select(layoutName: string): void;
     }
 
     /**
@@ -341,7 +341,7 @@ declare module 'grafx-studio-actions' {
          * Gets the size of the page
          * @returns the page size
          */
-        getSize: () => Page;
+        getSize(): Page;
 
         /**
          * Sets the size of the page
@@ -349,7 +349,7 @@ declare module 'grafx-studio-actions' {
          * @param height the page height
          * @returns
          */
-        setSize: (width: number, height: number) => void;
+        setSize(width: number, height: number): void;
     }
 
     /**
@@ -382,7 +382,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the color to copy it to
          * @returns
          */
-        copy: (fromName: string, toName: string) => void;
+        copy(fromName: string, toName: string): void;
     }
 
     /**
@@ -395,7 +395,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the paragraph style to copy it to
          * @returns
          */
-        copy: (fromName: string, toName: string) => void;
+        copy(fromName: string, toName: string): void;
     }
 
     /**
@@ -408,6 +408,6 @@ declare module 'grafx-studio-actions' {
          * @param toName the character style to copy it to
          * @returns
          */
-        copy: (fromName: string, toName: string) => void;
+        copy(fromName: string, toName: string): void;
     }
 }
