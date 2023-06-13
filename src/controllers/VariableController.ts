@@ -1,4 +1,4 @@
-import { EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import {
     Variable,
     VariableMoves,
@@ -98,6 +98,20 @@ export class VariableController {
     setVariableType = async (variableId: string, type: VariableType) => {
         const res = await this.#editorAPI;
         return res.setVariableType(variableId, type).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the items of the list variable
+     *
+     * The items need to be unique and are not case sensitive.
+     *
+     * @param id the id of the list variable
+     * @param items the items of the list
+     * @returns
+     */
+    setListVariable = async (id: Id, items: string[]) => {
+        const res = await this.#editorAPI;
+        return res.setListVariableItems(id, items).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -211,7 +225,9 @@ export class VariableController {
      */
     setImageVariableConnector = async (variableId: string, connectorId: string) => {
         const res = await this.#editorAPI;
-        return res.setImageVariableConnector(variableId, connectorId).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setImageVariableConnector(variableId, connectorId)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
