@@ -249,6 +249,7 @@ export class SDK {
             },
             this.setConnection,
             this.config.editorId,
+            this.config.studioStyling,
         );
         this.editorAPI = connection?.promise.then((editorAPI) => {
             return editorAPI;
