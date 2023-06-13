@@ -4,3 +4,7 @@ export enum WellKnownConfigurationKeys {
     GraFxStudioDocumentType = 'DOCUMENT_TYPE',
     GraFxStudioTemplateId = 'TEMPLATE_ID',
 }
+
+export type StudioStyling = {
+    uiBackgroundColorHex?: string;
+};

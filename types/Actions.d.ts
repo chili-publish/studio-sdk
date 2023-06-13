@@ -111,13 +111,14 @@ declare module 'grafx-studio-actions' {
     }
 
     /** Respresents a Variable inside Actions */
-    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | GroupVariable;
+    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | ListVariable | GroupVariable;
 
     enum VariableType {
         shortText = 'shortText',
         longText = 'longText',
         formattedText = 'formattedText',
         image = 'image',
+        list = 'list',
         group = 'group',
     }
 
@@ -158,6 +159,12 @@ declare module 'grafx-studio-actions' {
     interface ImageVariable extends BaseVariable {
         type: VariableType.image;
         assetId?: string;
+    }
+
+    export interface ListVariable extends BaseVariable {
+        type: VariableType.list;
+        items: string[];
+        selected?: string;
     }
 
     interface GroupVariable extends BaseVariable {
