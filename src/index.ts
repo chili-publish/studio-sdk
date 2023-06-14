@@ -52,6 +52,7 @@ export {
     ImageSourceTypeEnum,
 } from './types/FrameTypes';
 export { VariableType, ImageVariableSourceType } from './types/VariableTypes';
+export { DocumentType } from './types/DocumentTypes';
 
 export type {
     LayoutPropertiesType,
