@@ -14,6 +14,7 @@ import { ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
+import { StudioStyling } from './ConfigurationTypes';
 
 export type Id = string;
 
@@ -27,6 +28,7 @@ export type ConfigType = {
     editorId?: string;
     chiliEnvironmentUrl?: string;
     documentType?: DocumentType;
+    studioStyling?: StudioStyling;
     onPageSelectionChanged?: () => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;

@@ -20,6 +20,7 @@ export enum VariableType {
     shortText = 'shortText',
     longText = 'longText',
     image = 'image',
+    list = 'list',
     group = 'group',
 }
 
@@ -37,6 +38,12 @@ export interface Variable {
 export interface ImageVariable extends Variable {
     occurrences: number;
     src?: ImageVariableSource;
+}
+
+export interface ListVariable extends Variable {
+    occurrences: number;
+    items: string[];
+    selected?: string;
 }
 
 export interface ShortTextVariable extends Variable {

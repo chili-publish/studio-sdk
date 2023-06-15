@@ -109,6 +109,20 @@ export class VariableController {
     };
 
     /**
+     * This method sets the items of the list variable
+     *
+     * The items need to be unique and are not case sensitive.
+     *
+     * @param id the id of the list variable
+     * @param items the items of the list
+     * @returns
+     */
+    setListVariable = async (id: Id, items: string[]) => {
+        const res = await this.#editorAPI;
+        return res.setListVariableItems(id, items).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method sets a new value for a variable
      *
      * @param id the id of the variable
