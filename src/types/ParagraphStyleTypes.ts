@@ -1,8 +1,9 @@
 import { Alignment, Case, Scripting } from './TextStyleTypes';
 import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
+import { Id } from './CommonTypes';
 
 export type ParagraphStyle = {
-    id: string;
+    id: Id;
     name: string;
     fontKey: string;
     fontStyle: string;
@@ -13,10 +14,10 @@ export type ParagraphStyle = {
     // the following properties are unit properties
     trackingLeft: string;
     trackingRight: string;
-    paragraphStartIndent: string;
-    paragraphEndIndent: string;
-    paragraphSpaceBefore: string;
-    paragraphSpaceAfter: string;
+    startIndent: string;
+    endIndent: string;
+    spaceBefore: string;
+    spaceAfter: string;
     textIndent: string;
     // end of unit properties
     alignToBaseLine: boolean;

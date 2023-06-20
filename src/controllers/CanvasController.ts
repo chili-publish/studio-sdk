@@ -22,7 +22,7 @@ export class CanvasController {
      * This method fits the page to the given rectangle or the viewport available
      * Optional parameters `left`, `top`, `width` and `height` are needed to define the rectangle to fit the page to
      * If any or all of them aren't provided the page will fit the whole viewport available
-     * @param pageId The ID of a specific page
+     * @param id the id of a specific page
      * @param left
      * @param top
      * @param width
@@ -30,14 +30,14 @@ export class CanvasController {
      * @returns
      */
     zoomToPage = async (
-        pageId?: Id | null,
+        id?: Id | null,
         left?: number | null,
         top?: number | null,
         width?: number | null,
         height?: number | null,
     ) => {
         const res = await this.#editorAPI;
-        return res.zoomToPage(pageId, left, top, width, height).then((result) => getEditorResponseData<null>(result));
+        return res.zoomToPage(id, left, top, width, height).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -52,6 +52,7 @@ export class CanvasController {
     /**
      * This method sets the scale factor to the canvas and re-centers the page
      * @param scaleFactor scale factor in percents
+     * @returns
      */
     setZoomPercentage = async (scaleFactor: number) => {
         const res = await this.#editorAPI;

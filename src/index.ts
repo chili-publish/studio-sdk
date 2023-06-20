@@ -31,7 +31,7 @@ import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 import { ShapeController } from './controllers/ShapeController';
 
-export { FrameProperyNames, LayoutProperyNames, ToolType, DownloadFormats } from './utils/enums';
+export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats } from './utils/enums';
 
 export {
     SlideDirections,
@@ -76,7 +76,6 @@ export type {
     ImageVariable,
     LongTextVariable,
     ShortTextVariable,
-    VariableMoves,
     UrlImageVariableSource,
     MediaConnectorImageVariableSource,
     ImageVariableSource,
@@ -165,7 +164,7 @@ export class SDK {
     page: PageController;
     debug: DebugController;
     undoManager: UndoManagerController;
-    textSelection: TextStyleController;
+    textStyle: TextStyleController;
     paragraphStyle: ParagraphStyleController;
     characterStyle: CharacterStyleController;
     colorStyle: ColorStyleController;
@@ -203,8 +202,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        // To be renamed textSelection > textStyle
-        this.textSelection = new TextStyleController(this.editorAPI);
+        this.textStyle = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
@@ -267,7 +265,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
-        this.textSelection = new TextStyleController(this.editorAPI);
+        this.textStyle = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);

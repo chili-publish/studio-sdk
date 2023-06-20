@@ -23,7 +23,7 @@ export class TextStyleController {
      * This method updates a selected Text's style properties
      * @returns
      */
-    setTextStyleProperties = async (style: TextStyleUpdateType) => {
+    set = async (style: TextStyleUpdateType) => {
         const res = await this.#editorAPI;
         return res
             .selectedTextStyleDeltaUpdate(JSON.stringify(style))
@@ -31,13 +31,13 @@ export class TextStyleController {
     };
 
     /**
-     * This method clears a selected Text's style properties
-     * If the text is selected, then the inline style properties will be cleared
-     * If the text is not selected and user tried to change any style property, the temporary style will be cleared
-     * if there is no text selection and there is no temporary style, the inline paragraph properties will be cleared
+     * This method removes a selected Text's style properties
+     * If the text is selected, then the inline style properties will be removed
+     * If the text is not selected and user tried to change any style property, the temporary style will be removed
+     * if there is no text selection and there is no temporary style, the inline paragraph properties will be removed
      * @returns
      */
-    clearTextStyleProperties = async () => {
+    removeSelected = async () => {
         const res = await this.#editorAPI;
         return res.selectedTextStyleClean().then((result) => getEditorResponseData<null>(result));
     };
@@ -46,7 +46,7 @@ export class TextStyleController {
      * This method gets a selected Text's style properties
      * @returns
      */
-    getSelectedTextStyle = async () => {
+    getSelected = async () => {
         const res = await this.#editorAPI;
         return res.getSelectedTextStyle().then((result) => getEditorResponseData<SelectedTextStyle>(result));
     };

@@ -24,19 +24,19 @@ export class DocumentController {
 
     /**
      * This method retrieves the current document state from the editor
-     * @returns The JSON document in the form of a string
+     * @returns the JSON document in the form of a string
      */
-    getCurrentDocumentState = async () => {
+    getCurrentState = async () => {
         const res = await this.#editorAPI;
         return res.getCurrentDocumentState().then((result) => getEditorResponseData<ChiliDocument>(result));
     };
 
     /**
      * This method will load a provided document in the ChiliDocument format
-     * @param doc The document to load in
-     * @returns The document loaded inside of the canvas
+     * @param doc the document to load in
+     * @returns the document loaded inside of the canvas
      */
-    loadDocument = async (doc: ChiliDocument | string) => {
+    load = async (doc: ChiliDocument | string) => {
         const res = await this.#editorAPI;
         if (typeof doc === 'string') return res.loadDocument(doc);
         return res.loadDocument(JSON.stringify(doc)).then((result) => getEditorResponseData<null>(result));
@@ -46,7 +46,7 @@ export class DocumentController {
      * This method will call an external api to create a download url
      * The video will be generated in the dimensions (and resolution) of the layout.
      * This means that any upscaling (e.g. playing the video full screen on a 4k monitor) will result in interpolation (= quality loss).
-     * @param format The format of a downloadable url
+     * @param format the format of a downloadable url
      * @param layoutId id of layout to be downloaded
      * @returns the download link
      */
@@ -55,7 +55,7 @@ export class DocumentController {
         let PREPARE_DOWNLOAD_URL: string | null = null;
         let DOWNLOAD_URL = '';
 
-        const documentResponse = await this.getCurrentDocumentState();
+        const documentResponse = await this.getCurrentState();
         const FETCH_URL = getFetchURL(format, layoutId);
         try {
             const response = await fetch(FETCH_URL, {

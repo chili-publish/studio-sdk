@@ -1,4 +1,4 @@
-import { EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import { ParagraphStyle, ParagraphStyleUpdate } from '../types/ParagraphStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -23,84 +23,84 @@ export class ParagraphStyleController {
      * This method returns the list of paragraph styles
      * @returns
      */
-    getParagraphStyles = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getParagraphStyles().then((result) => getEditorResponseData<ParagraphStyle[]>(result));
     };
 
     /**
      * This method returns a paragraph style by id
-     * @param paragraphStyleId The ID of a specific paragraph style
+     * @param id the id of a specific paragraph style
      * @returns
      */
-    getParagraphStyleById = async (paragraphStyleId: string) => {
+    getById = async (id: Id) => {
         const res = await this.#editorAPI;
         return res
-            .getParagraphStyleById(paragraphStyleId)
+            .getParagraphStyleById(id)
             .then((result) => getEditorResponseData<ParagraphStyle>(result));
     };
 
     /**
-     * This method create a new paragraph style
-     * @returns the new created paragraph style id
+     * This method creates a new paragraph style
+     * @returns the id of new paragraph style
      */
-    createParagraphStyle = async () => {
+    create = async () => {
         const res = await this.#editorAPI;
-        return res.createParagraphStyle().then((result) => getEditorResponseData<string>(result));
+        return res.createParagraphStyle().then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method duplicates a paragraph style
-     * @param paragraphStyleId The ID of a specific paragraph style
+     * @param id the id of a specific paragraph style
      * @returns the new paragraph style id
      */
-    duplicateParagraphStyle = async (paragraphStyleId: string) => {
+    duplicate = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.duplicateParagraphStyle(paragraphStyleId).then((result) => getEditorResponseData<string>(result));
+        return res.duplicateParagraphStyle(id).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method updates a paragraph style
-     * @param id The ID of a specific paragraph style
-     * @param paragraphStyle The new paragraph style properties
+     * @param id the id of a specific paragraph style
+     * @param properties The new paragraph style properties
      * @returns
      */
-    updateParagraphStyle = async (id: string, paragraphStyle: ParagraphStyleUpdate) => {
+    update = async (id: Id, properties: ParagraphStyleUpdate) => {
         const res = await this.#editorAPI;
         return res
-            .updateParagraphStyle(id, JSON.stringify(paragraphStyle))
+            .updateParagraphStyle(id, JSON.stringify(properties))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method renames a paragraph style
-     * @param id The ID of a specific paragraph style
-     * @param name The new name of the paragraph style
+     * @param id the id of a specific paragraph style
+     * @param name the new name of the paragraph style
      * @returns
      */
-    renameParagraphStyle = async (id: string, name: string) => {
+    rename = async (id: Id, name: string) => {
         const res = await this.#editorAPI;
         return res.renameParagraphStyle(id, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method removes a paragraph style
-     * @param id The ID of a specific paragraph style
+     * @param id the id of a specific paragraph style
      * @returns
      */
-    removeParagraphStyle = async (id: string) => {
+    remove = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.removeParagraphStyle(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method changes positions of paragraph styles
-     * @param order The position of the paragraph styles
-     * @param paragraphStyleIds The list of paragraph styles ids
+     * @param order the position of the paragraph styles
+     * @param ids the list of paragraph styles ids
      * @returns
      */
-    moveParagraphStyles = async (order: number, paragraphStyleIds: string[]) => {
+    move = async (order: number, ids: string[]) => {
         const res = await this.#editorAPI;
-        return res.moveParagraphStyles(order, paragraphStyleIds).then((result) => getEditorResponseData<null>(result));
+        return res.moveParagraphStyles(order, ids).then((result) => getEditorResponseData<null>(result));
     };
 }

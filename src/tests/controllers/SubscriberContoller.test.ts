@@ -147,15 +147,15 @@ describe('SubscriberController', () => {
     });
     it('Should be possible to subscribe to onLayoutsChanged', async () => {
         await mockedSubscriberController.onLayoutsChanged(
-            '[{"layoutId":"0","layoutName":"Rectangle","layoutType":"top","parentLayoutId":null,"childLayouts":["2"]}]',
+            '[{"id":"0","name":"Rectangle","type":"top","parentId":null,"childLayouts":["2"]}]',
         );
         expect(mockEditorApi.onLayoutsChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onLayoutsChanged).toHaveBeenCalledWith([
             {
-                layoutId: '0',
-                layoutName: 'Rectangle',
-                layoutType: LayoutType.top,
-                parentLayoutId: null,
+                id: '0',
+                name: 'Rectangle',
+                type: LayoutType.top,
+                parentId: null,
                 childLayouts: ['2'],
             },
         ]);
@@ -174,7 +174,7 @@ describe('SubscriberController', () => {
     it('Should be possible to subscribe to onActionsChanged', async () => {
         const actions: DocumentAction[] = [
             {
-                actionName: 'name',
+                name: 'name',
                 id: 'id',
                 script: 'script',
                 triggers: [{ triggers: ['1'], event: ActionEditorEvent.frameMoved }],
@@ -186,7 +186,7 @@ describe('SubscriberController', () => {
     });
 
     it('should be possible to subscribe to onPageSizeChanged', async () => {
-        const pageSize: PageSize = { pageId: 'pageId', width: 123, height: 456 };
+        const pageSize: PageSize = { id: 'id', width: 123, height: 456 };
 
         await mockedSubscriberController.onPageSizeChanged(JSON.stringify(pageSize));
         expect(mockEditorApi.onPageSizeChanged).toHaveBeenCalledWith(pageSize);

@@ -31,5 +31,5 @@ If a method requires different names from these names,It must be descriptive.For
 
 ### Adding a new controller
 
-When a new contoller required,a new contoller must be added to src/contollers folder.Name of the file must be descriptive.The new contoller must be initialized at index.ts file so that this controller and its methods will be available from the SDK.
-After new controller created and initialized at index.ts file,test cases of this new contoller and its methods must be added too.
+When a new controller required, a new controller must be added to src/controllers folder. Name of the file must be descriptive.The new controller must be initialized at index.ts file so that this controller and its methods will be available from the SDK.
+After new controller created and initialized at index.ts file,test cases of this new controller and its methods must be added too.

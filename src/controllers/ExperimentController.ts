@@ -24,13 +24,13 @@ export class ExperimentController {
 
     /**
      * This method will assign an image from a variable to the correct ImageFrame
-     * @param imageFrameId The ID of the imageFrame where an image needs to be assigned to
-     * @param variableId The ID of the variable which contains the image
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
+     * @param variableId the id of the variable which contains the image
      * @returns
      */
-    insertImageVariableToFrame = async (imageFrameId: Id, variableId: string) => {
+    insertImageVariableToFrame = async (imageFrameId: Id, variableId: Id) => {
         const res = await this.#editorAPI;
-        const src: ImageFrameVariableSource = { variableId: variableId, sourceType: ImageSourceTypeEnum.variable };
+        const src: ImageFrameVariableSource = { id: variableId, type: ImageSourceTypeEnum.variable };
         return res
             .setImageSource(imageFrameId, JSON.stringify(src))
             .then((result) => getEditorResponseData<null>(result));
@@ -39,22 +39,22 @@ export class ExperimentController {
     /**
      * This method will insert a text variable in the selected frame. Calling this method
      * requires that the selected frame is in text editing mode.
-     * @param variableId The ID of the variable to be inserted.
+     * @param id the id of the variable to be inserted.
      * @returns
      */
-    insertTextVariable = async (variableId: Id) => {
+    insertTextVariable = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.insertTextVariable(variableId).then((result) => getEditorResponseData<null>(result));
+        return res.insertTextVariable(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will enter text editing mode on the provided frame.
-     * @param frameId The ID frame to enter text edit mode on.
+     * @param id the id frame to enter text edit mode on.
      * @returns
      */
-    enterTextEditMode = async (frameId: Id) => {
+    enterTextEditMode = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.enterTextEditMode(frameId).then((result) => getEditorResponseData<null>(result));
+        return res.enterTextEditMode(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

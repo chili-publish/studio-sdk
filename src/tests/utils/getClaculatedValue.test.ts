@@ -5,7 +5,7 @@ describe('getCalculatedValue', () => {
         const value = getCalculatedValue('1 + 1');
         expect(value).toBe(2);
     });
-    it('calculates the correct value from a string with a substract operation', () => {
+    it('calculates the correct value from a string with a subtract operation', () => {
         let value = getCalculatedValue('1 - 1');
         expect(value).toBe(0);
 
@@ -89,7 +89,7 @@ describe('getCalculatedValue', () => {
         expect(value).toBe(-5);
     });
 
-    it('can handle negative and substraction', () => {
+    it('can handle negative and subtraction', () => {
         const value = getCalculatedValue('-10-3');
         expect(value).toBe(-13);
     });
