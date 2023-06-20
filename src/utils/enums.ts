@@ -29,3 +29,8 @@ export enum DownloadFormats {
     PNG = 'png',
     JPG = 'jpg',
 }
+
+export enum EnvironmentType {
+    SANDBOX = 'sandbox',
+    PRODUCTION = 'online',
+}

@@ -1,5 +1,6 @@
 import { getCalculatedValue, round } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+import { EnvironmentType } from '../utils/enums';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier
@@ -33,9 +34,10 @@ export class UtilsController {
             status: 200,
             parsedData: null,
         });
-    
-    createEnvironmentBaseURL = ({type="sandbox", environment="ft-nostress"} = {type: str = "sandbox", environment: "ft-nostress"}, version='1') => {
-        const host = (type=="sandbox") ? "chili-publish-sandbox" : "chili-publish"
-            return `https://${environment}.${host}.online/grafx/api/${version}/environment/${environment}`;
-        }
+
+    createEnvironmentBaseURL = (parameters: { type?: EnvironmentType; environment?: string; version?: string }) => {
+        const { type = EnvironmentType.SANDBOX, environment = 'ft-nostress', version = '1' } = parameters;
+        const host = type == EnvironmentType.SANDBOX ? 'chili-publish-sandbox' : 'chili-publish';
+        return `https://${environment}.${host}.online/grafx/api/v${version}/environment/${environment}`;
+    };
 }
