@@ -77,11 +77,13 @@ export type {
     ImageVariable,
     LongTextVariable,
     ShortTextVariable,
+    ListVariable,
     VariableMoves,
     UrlImageVariableSource,
     MediaConnectorImageVariableSource,
     ImageVariableSource,
 } from './types/VariableTypes';
+
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 
 export type { DocumentError } from './types/DocumentTypes';
