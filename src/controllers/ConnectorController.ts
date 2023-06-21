@@ -205,7 +205,9 @@ class ConnectorConfigurator {
     };
 
     /**
-     * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
+     * @deprecated define the GraFx Studio Auth Token in the `SDK.Configuration.setValue`
+     * 
+     * This method sets the GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
      * The CHILI Token will be used to authenticate every grafx connector http call.
      * @param token token for the CHILI authentication
      * @returns
