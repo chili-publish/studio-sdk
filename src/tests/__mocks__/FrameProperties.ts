@@ -1,5 +1,5 @@
 export const mockSelectFrame = {
-    frameId: '300',
+    id: '300',
     layoutId: '1',
     x: { value: 100, isOverride: false },
     y: { value: 20, isOverride: true },
@@ -12,7 +12,7 @@ export const mockSelectFrame = {
 };
 
 export const mockSelectPage = {
-    frameId: '300',
+    id: '300',
     layoutId: '1',
     width: { value: 100, isOverride: false },
     height: { value: 20, isOverride: true },

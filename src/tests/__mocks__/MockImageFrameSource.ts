@@ -6,17 +6,17 @@ import {
 } from '../../types/FrameTypes';
 
 export const mockImageConnectorSource: ImageFrameConnectorSource = {
+    id: 'connector-id',
     assetId: 'asset-id',
-    connectorId: 'connector-id',
-    sourceType: ImageSourceTypeEnum.connector,
+    type: ImageSourceTypeEnum.connector,
 };
 
 export const mockImageUrlSource: ImageFrameUrlSource = {
     url: 'https://image.url',
-    sourceType: ImageSourceTypeEnum.url,
+    type: ImageSourceTypeEnum.url,
 };
 
 export const mockImageVariableSource: ImageFrameVariableSource = {
-    variableId: 'variable-id',
-    sourceType: ImageSourceTypeEnum.variable,
+    id: 'variable-id',
+    type: ImageSourceTypeEnum.variable,
 };

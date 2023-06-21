@@ -1,3 +1,4 @@
+import { Id } from './CommonTypes';
 import { MediaType } from './ConnectorTypes';
 
 export enum MediaDownloadType {
@@ -6,7 +7,7 @@ export enum MediaDownloadType {
 }
 
 export type Media = {
-    id: string;
+    id: Id;
     name: string;
     relativePath: string;
     type: MediaType;

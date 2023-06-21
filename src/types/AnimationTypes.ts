@@ -52,7 +52,7 @@ export type EaseTweenCombinationType = `${EaseTypes}${TweenTypes}` | 'noEase';
 
 export type BasicAnimationsIntroOutroStylesType = {
     slide?: {
-        slideDirection: SlideDirections;
+        direction: SlideDirections;
         offsetPercent: number;
     };
     rotation?: {
@@ -82,7 +82,7 @@ export type BasicAnimationsEmphasisType = {
         pulse?: boolean;
         rubberBand?: boolean;
         shake?: {
-            shakeDirection: ShakeDirections;
+            direction: ShakeDirections;
         };
         vertical?: boolean;
         horizontal?: boolean;
@@ -107,7 +107,7 @@ export type BasicAnimationsType = {
 };
 
 export type FrameAnimationPropertiesType = {
-    frameId: Id;
+    id: Id;
     from: number;
     to: number;
     basicAnimations: BasicAnimationsType;

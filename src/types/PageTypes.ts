@@ -1,14 +1,14 @@
 import { Id } from './CommonTypes';
 
 export type Page = {
-    pageId: Id;
-    pageNumber: number;
+    id: Id;
+    number: number;
     width?: number;
     height?: number;
 };
 
 export type PageSize = {
-    pageId: Id;
+    id: Id;
     width: number;
     height: number;
 };

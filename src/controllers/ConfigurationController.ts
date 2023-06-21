@@ -24,7 +24,7 @@ export class ConfigurationController {
     /**
      * This method returns the value for a given configuration key. If a value was not found in the configuration store
      * this method returns an error. The key cannot be null.
-     * @returns
+     * @returns value for a given configuration key
      */
     getValue = async (key: WellKnownConfigurationKeys | string) => {
         const res = await this.#editorAPI;
