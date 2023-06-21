@@ -31,7 +31,7 @@ export class ToolController {
     /**
      * This method returns selected tool
      */
-    getSelectedTool = async () => {
+    getSelected = async () => {
         const res = await this.#editorAPI;
         return res.getSelectedTool().then((result) => getEditorResponseData<ToolType>(result));
     };
@@ -39,56 +39,56 @@ export class ToolController {
     /**
      * This method sets the used tool to a Pointer tool
      */
-    setSelectTool = async () => {
+    setPointer = async () => {
         return this.setTool(ToolType.SELECT);
     };
 
     /**
      * This method sets the used tool to a Move tool
      */
-    setHandTool = async () => {
+    setHand = async () => {
         return this.setTool(ToolType.HAND);
     };
 
     /**
      * This method sets the used tool to a Zoom tool
      */
-    setZoomTool = async () => {
+    setZoom = async () => {
         await this.setTool(ToolType.ZOOM);
     };
 
     /**
      * This method sets the used tool to a TextFrame tool
      */
-    setTextFrameTool = async () => {
+    setTextFrame = async () => {
         return this.setTool(ToolType.TEXT_FRAME);
     };
 
     /**
      * This method sets the used tool to a ImageFrame tool
      */
-    setImageFrameTool = async () => {
+    setImageFrame = async () => {
         return this.setTool(ToolType.IMAGE_FRAME);
     };
 
     /**
      * This method sets the used tool to a ShapeRectangle tool
      */
-    setShapeRectTool = async () => {
+    setShapeRect = async () => {
         return this.setTool(ToolType.SHAPE_RECT);
     };
 
     /**
      * This method sets the used tool to a ShapeEllipse tool
      */
-    setShapeEllipseTool = async () => {
+    setShapeEllipse = async () => {
         return this.setTool(ToolType.SHAPE_ELLIPSE);
     };
 
     /**
      * This method sets the used tool to a ShapePolygon tool
      */
-    setShapePolygonTool = async () => {
+    setShapePolygon = async () => {
         return this.setTool(ToolType.SHAPE_POLYGON);
     };
 }

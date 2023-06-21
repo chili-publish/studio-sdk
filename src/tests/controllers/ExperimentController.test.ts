@@ -29,7 +29,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setTextByFrameId');
     jest.spyOn(mockedEditorApi, 'selectTextByFrameId');
 
-    frameId = mockSelectFrame.frameId;
+    frameId = mockSelectFrame.id;
 });
 
 afterAll(() => {
@@ -59,7 +59,7 @@ describe('ExperimentController', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
             'image-frame-id',
-            JSON.stringify({ variableId: 'variable-id', sourceType: 'variable' }),
+            JSON.stringify({ id: 'variable-id', type: 'variable' }),
         );
         expect(mockedEditorApi.insertImageVariableToFrame).not.toHaveBeenCalled();
     });

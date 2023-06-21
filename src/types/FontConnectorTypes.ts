@@ -1,3 +1,4 @@
+import { Id } from './CommonTypes';
 import { MediaType } from './ConnectorTypes';
 
 export enum FontDownloadType {
@@ -6,7 +7,7 @@ export enum FontDownloadType {
 }
 
 export type Font = {
-    id: string;
+    id: Id;
     name: string;
     family: string | null;
     style: string | null;

@@ -59,7 +59,7 @@ describe('MediaConnectorController', () => {
         expect(mockedEditorApi.mediaConnectorCopy).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.mediaConnectorCopy).toHaveBeenCalledWith(connectorId, mediaId, 'newName');
     });
-    it('Should call the query methog', async () => {
+    it('Should call the query method', async () => {
         await mockedMediaConnectorController.query(connectorId, queryOptions1, context);
         expect(mockedEditorApi.mediaConnectorQuery).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.mediaConnectorQuery).toHaveBeenCalledWith(
