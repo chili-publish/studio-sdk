@@ -1,4 +1,4 @@
-import { Id } from "./CommonTypes";
+import { Id } from './CommonTypes';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -47,7 +47,7 @@ export type ConnectorRegistration = ConnectorUrlRegistration | ConnectorGrafxReg
 
 export interface ConnectorUrlRegistration {
     id: Id;
-    source: ConnectorRegistrationSource.url,
+    source: ConnectorRegistrationSource.url;
     /**
      * Url to a public connector definition JSON
      */
@@ -56,10 +56,10 @@ export interface ConnectorUrlRegistration {
 
 export interface ConnectorGrafxRegistration {
     /**
-     * Connector Id on GraFx Environment API. 
+     * Connector Id on GraFx Environment API.
      */
     id: Id;
-    source: ConnectorRegistrationSource.grafx,
+    source: ConnectorRegistrationSource.grafx;
 }
 
 export type ConnectorInstance = {

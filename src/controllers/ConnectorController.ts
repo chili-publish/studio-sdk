@@ -51,7 +51,7 @@ export class ConnectorController {
      * on the connector type, the connector can be configured and used in the template
      * Remember to add custom authentication information after registering the connector
      * @param registration registration object containing all details about the connector
-     * @returns the Id of the newly created connector, this Id should be used going forward. 
+     * @returns the Id of the newly created connector, this Id should be used going forward.
      */
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
@@ -206,7 +206,7 @@ class ConnectorConfigurator {
 
     /**
      * @deprecated define the GraFx Studio Auth Token in the `SDK.Configuration.setValue`
-     * 
+     *
      * This method sets the GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
      * The CHILI Token will be used to authenticate every grafx connector http call.
      * @param token token for the CHILI authentication
