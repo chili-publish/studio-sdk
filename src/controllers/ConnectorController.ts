@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorResponse } from '../types/CommonTypes';
+import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorState,
     ConnectorStateType,
@@ -51,13 +51,13 @@ export class ConnectorController {
      * on the connector type, the connector can be configured and used in the template
      * Remember to add custom authentication information after registering the connector
      * @param registration registration object containing all details about the connector
-     * @returns
+     * @returns the Id of the newly created connector, this Id should be used going forward. 
      */
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
         return res
             .registerConnector(JSON.stringify(registration))
-            .then((result) => getEditorResponseData<null>(result));
+            .then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
