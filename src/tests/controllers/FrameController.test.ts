@@ -335,7 +335,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setFrameZIndex).toHaveBeenCalledWith(id, UpdateZIndexMethod.sendBackward);
     });
     it('Should be possible to set an image to the frame using a connector', async () => {
-        await mockedFrameController.setImageFromConnector('connector id', id, 'asset id');
+        await mockedFrameController.setImageFromConnector(id, 'connector id', 'asset id');
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
             id,
@@ -401,7 +401,7 @@ describe('ImageFrameSource manipulations', () => {
         const connectorId = mockImageConnectorSource.id;
         const assetId = mockImageConnectorSource.assetId;
 
-        await mockedFrameController.setImageFromConnector(connectorId, id, assetId);
+        await mockedFrameController.setImageFromConnector(id, connectorId, assetId);
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, JSON.stringify(mockImageConnectorSource));
@@ -425,7 +425,7 @@ describe('ImageFrameSource manipulations', () => {
 });
 
 describe('User inputs for Frame Properties', () => {
-    it('Returns null when user input doesn\'t contain any number', async () => {
+    it("Returns null when user input doesn't contain any number", async () => {
         const responseX = await mockedFrameController.setX(id, 'test');
         const responseY = await mockedFrameController.setY(id, 'test');
         const responseWidth = await mockedFrameController.setWidth(id, 'test');
