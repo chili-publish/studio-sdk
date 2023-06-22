@@ -23,7 +23,7 @@ export class ToolController {
      * This method sets the currently used tool
      * @param tool
      */
-    private setTool = async (tool: ToolType) => {
+    setTool = async (tool: ToolType) => {
         const res = await this.#editorAPI;
         return res.setTool(tool).then((result) => getEditorResponseData<null>(result));
     };
