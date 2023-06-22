@@ -52,6 +52,7 @@ export {
     ImageSourceTypeEnum,
 } from './types/FrameTypes';
 export { VariableType, ImageVariableSourceType } from './types/VariableTypes';
+export { DocumentType } from './types/DocumentTypes';
 
 export type {
     LayoutPropertiesType,
@@ -76,10 +77,12 @@ export type {
     ImageVariable,
     LongTextVariable,
     ShortTextVariable,
+    ListVariable,
     UrlImageVariableSource,
     MediaConnectorImageVariableSource,
     ImageVariableSource,
 } from './types/VariableTypes';
+
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 
 export type { DocumentError } from './types/DocumentTypes';
