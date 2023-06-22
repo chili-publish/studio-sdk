@@ -424,9 +424,9 @@ export class FrameController {
      * @param assetId Unique id of the asset that you want to assign to the imageFrame
      * @returns
      */
-    setImageFromConnector = async (id: Id, imageFrameId: Id, assetId: Id) => {
+    setImageFromConnector = async (imageFrameId: Id, connectorId: Id, assetId: Id) => {
         const src: ImageFrameConnectorSource = {
-            id,
+            id: connectorId,
             assetId,
             type: ImageSourceTypeEnum.connector,
         };

@@ -30,7 +30,7 @@ export interface Variable {
     parentId?: string;
     name: string;
     label: string;
-    isHidden: boolean;
+    isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
 }
