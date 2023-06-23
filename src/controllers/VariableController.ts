@@ -191,12 +191,23 @@ export class VariableController {
     };
 
     /**
+     * This method sets isVisible flag for a variable
+     * @returns
+     */
+    setIsVisible = async (id: string, isVisible: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setVariableIsVisible(id, isVisible).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @deprecated Use `setIsVisible` instead.
+     * 
      * This method sets isHidden flag for a variable
      * @returns
      */
     setIsHidden = async (id: string, isHidden: boolean) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsHidden(id, isHidden).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableIsVisible(id, !isHidden).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

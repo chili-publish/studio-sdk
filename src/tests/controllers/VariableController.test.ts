@@ -24,7 +24,7 @@ describe('VariableController', () => {
         duplicateVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariables: async () => getEditorResponseData(castToEditorResponse(null)),
-        setVariableIsHidden: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsRequired: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsReadonly: async () => getEditorResponseData(castToEditorResponse(null)),
         ungroupVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -48,7 +48,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'duplicateVariable');
         jest.spyOn(mockEditorApi, 'moveVariable');
         jest.spyOn(mockEditorApi, 'moveVariables');
-        jest.spyOn(mockEditorApi, 'setVariableIsHidden');
+        jest.spyOn(mockEditorApi, 'setVariableIsVisible');
         jest.spyOn(mockEditorApi, 'setVariableIsRequired');
         jest.spyOn(mockEditorApi, 'setVariableIsReadonly');
         jest.spyOn(mockEditorApi, 'ungroupVariable');
@@ -140,10 +140,16 @@ describe('VariableController', () => {
         expect(mockEditorApi.moveVariables).toHaveBeenCalledWith(['1'], '6', 0);
     });
 
+    it('set isVisible', async () => {
+        await mockedVariableController.setIsVisible('1', false);
+        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledWith('1', false);
+    });
+
     it('set isHidden', async () => {
         await mockedVariableController.setIsHidden('1', false);
-        expect(mockEditorApi.setVariableIsHidden).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableIsHidden).toHaveBeenCalledWith('1', false);
+        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledWith('1', true);
     });
 
     it('set isRequired', async () => {
