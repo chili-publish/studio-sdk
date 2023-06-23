@@ -43,7 +43,7 @@ export class ActionController {
      * @returns the id of the newly created action.
      */
     create = async () => {
-        const res = await this.#editorAPI
+        const res = await this.#editorAPI;
         return res.createAction().then((result) => getEditorResponseData<Id>(result));
     };
 
@@ -100,5 +100,16 @@ export class ActionController {
         return res
             .updateActionTriggers(id, JSON.stringify(triggers))
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method changes positions of actions
+     * @param order the position of actions
+     * @param ids the list of action IDs
+     * @returns
+     */
+    move = async (order: number, ids: string[]) => {
+        const res = await this.#editorAPI;
+        return res.moveActions(order, ids).then((result) => getEditorResponseData<null>(result));
     };
 }
