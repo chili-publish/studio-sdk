@@ -76,9 +76,7 @@ export class ExperimentController {
      */
     getText = async (frameId: string, textType: TextType) => {
         const res = await this.#editorAPI;
-        return res
-            .getTextByFrameId(frameId, textType)
-            .then((result) => getEditorResponseData<string>(result));
+        return res.getTextByFrameId(frameId, textType).then((result) => getEditorResponseData<string>(result));
     };
 
     /**
@@ -89,9 +87,7 @@ export class ExperimentController {
      */
     setText = async (frameId: string, text: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setTextByFrameId(frameId, text)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setTextByFrameId(frameId, text).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -103,8 +99,6 @@ export class ExperimentController {
      */
     selectText = async (frameId: string, startIndex: number, length: number) => {
         const res = await this.#editorAPI;
-        return res
-            .selectTextByFrameId(frameId, startIndex, length)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.selectTextById(frameId, startIndex, length).then((result) => getEditorResponseData<null>(result));
     };
 }
