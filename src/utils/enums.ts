@@ -28,5 +28,5 @@ export enum DownloadFormats {
     GIF = 'gif',
     PNG = 'png',
     JPG = 'jpg',
-    PDF = 'pdf',
+    EXPERIMENTAL_PDF = 'pdf',
 }
