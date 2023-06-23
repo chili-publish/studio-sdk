@@ -15,7 +15,7 @@ const mockedEditorApi: EditorAPI = {
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
     getTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
     setTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
-    selectTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
+    selectTextById: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -27,7 +27,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setImageSource');
     jest.spyOn(mockedEditorApi, 'getTextByFrameId');
     jest.spyOn(mockedEditorApi, 'setTextByFrameId');
-    jest.spyOn(mockedEditorApi, 'selectTextByFrameId');
+    jest.spyOn(mockedEditorApi, 'selectTextById');
 
     frameId = mockSelectFrame.id;
 });
@@ -83,8 +83,7 @@ describe('ExperimentController', () => {
         const length = 3;
 
         await mockedExperimentController.selectText(frameId, startIndex, length);
-        expect(mockedEditorApi.selectTextByFrameId).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.selectTextByFrameId).toHaveBeenCalledWith(frameId, startIndex, length);
-
+        expect(mockedEditorApi.selectTextById).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.selectTextById).toHaveBeenCalledWith(frameId, startIndex, length);
     });
 });
