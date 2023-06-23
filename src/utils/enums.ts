@@ -30,3 +30,8 @@ export enum DownloadFormats {
     JPG = 'jpg',
     EXPERIMENTAL_PDF = 'pdf',
 }
+
+export enum EnvironmentType {
+    SANDBOX = 'sandbox',
+    PRODUCTION = 'online',
+}
