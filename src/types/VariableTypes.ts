@@ -33,21 +33,23 @@ export interface Variable {
     isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
+    occurrences: number;
 }
 
 export interface ImageVariable extends Variable {
-    occurrences: number;
     src?: ImageVariableSource;
 }
 
 export interface ListVariable extends Variable {
-    occurrences: number;
     items: string[];
     selected?: string;
 }
 
+export interface BooleanVariable extends Variable {
+    value: boolean;
+}
+
 export interface ShortTextVariable extends Variable {
-    occurrences: number;
     value: string;
 }
 
