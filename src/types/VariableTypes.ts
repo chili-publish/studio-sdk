@@ -21,6 +21,7 @@ export enum VariableType {
     longText = 'longText',
     image = 'image',
     list = 'list',
+    boolean = 'boolean',
     group = 'group',
 }
 
