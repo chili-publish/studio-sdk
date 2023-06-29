@@ -111,7 +111,7 @@ declare module 'grafx-studio-actions' {
     }
 
     /** Respresents a Variable inside Actions */
-    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | ListVariable | GroupVariable;
+    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | ListVariable | BooleanVariable | GroupVariable;
 
     enum VariableType {
         shortText = 'shortText',
@@ -119,6 +119,7 @@ declare module 'grafx-studio-actions' {
         formattedText = 'formattedText',
         image = 'image',
         list = 'list',
+        boolean = 'boolean',
         group = 'group',
     }
 
@@ -165,6 +166,11 @@ declare module 'grafx-studio-actions' {
         type: VariableType.list;
         items: string[];
         selected?: string;
+    }
+
+    export interface BooleanVariable extends BaseVariable {
+        type: VariableType.boolean;
+        value: boolean;
     }
 
     interface GroupVariable extends BaseVariable {

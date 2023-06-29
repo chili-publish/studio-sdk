@@ -110,10 +110,16 @@ describe('VariableController', () => {
         expect(mockEditorApi.setListVariableItems).toHaveBeenCalledWith('listId', ['a', 'b', 'c']);
     });
 
-    it('set variable value', async () => {
+    it('set variable string value', async () => {
         await mockedVariableController.setValue('3', 'value');
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith('3', 'value');
+    });
+
+    it('set variable bool value', async () => {
+        await mockedVariableController.setValue('3', true);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith('3', true);
     });
 
     it('group variables', async () => {

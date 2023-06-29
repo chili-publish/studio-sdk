@@ -78,6 +78,7 @@ export type {
     LongTextVariable,
     ShortTextVariable,
     ListVariable,
+    BooleanVariable,
     UrlImageVariableSource,
     MediaConnectorImageVariableSource,
     ImageVariableSource,

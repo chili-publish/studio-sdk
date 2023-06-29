@@ -129,7 +129,7 @@ export class VariableController {
      * @param value the new value of the variable
      * @returns
      */
-    setValue = async (id: Id, value: string | null) => {
+    setValue = async (id: Id, value: string | boolean | null) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
     };
