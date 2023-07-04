@@ -55,9 +55,17 @@ export class ConnectorController {
      */
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-        return res
-            .registerConnector(JSON.stringify(registration))
-            .then((result) => getEditorResponseData<Id>(result));
+        return res.registerConnector(JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * Unregisters a connector from the document.
+     * @param id the id of the connector to unregister
+     * @returns
+     */
+    unregister = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.unregisterConnector(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -67,10 +75,7 @@ export class ConnectorController {
      * @param configurationCallback callback to setup the connector
      * @returns
      */
-    configure = async (
-        id: string,
-        configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>,
-    ) => {
+    configure = async (id: string, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
         await this.waitToBeReady(id);
