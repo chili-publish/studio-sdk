@@ -51,7 +51,6 @@ export {
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
 } from './types/FrameTypes';
-export { VariableType, ImageVariableSourceType } from './types/VariableTypes';
 export { DocumentType } from './types/DocumentTypes';
 
 export type {
@@ -79,9 +78,7 @@ export type {
     ShortTextVariable,
     ListVariable,
     BooleanVariable,
-    UrlImageVariableSource,
-    MediaConnectorImageVariableSource,
-    ImageVariableSource,
+    ConnectorImageVariableSource,
 } from './types/VariableTypes';
 
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';

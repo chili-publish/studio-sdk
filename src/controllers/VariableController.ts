@@ -1,10 +1,8 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import {
     Variable,
-    ImageVariableSource,
     VariableType,
-    ImageVariableSourceType,
-    MediaConnectorImageVariableSource,
+    ConnectorImageVariableSource,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -235,10 +233,10 @@ export class VariableController {
      * @param id the id of the variable to update
      * @param source the new variable source
      */
-    setSource = async (id: string, source?: ImageVariableSource) => {
+    setSource = async (id: string, source?: ConnectorImageVariableSource) => {
         const value =
-            source && source.type === ImageVariableSourceType.mediaConnector
-                ? (source as MediaConnectorImageVariableSource).assetId
+            source
+                ? source.assetId
                 : null;
 
         return this.setValue(id, value);
