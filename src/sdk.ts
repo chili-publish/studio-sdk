@@ -99,6 +99,7 @@ export class SDK {
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI);
+        // To be renamed textSelection > textStyle
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
@@ -144,6 +145,7 @@ export class SDK {
             },
             this.setConnection,
             this.config.editorId,
+            this.config.studioStyling,
         );
         this.editorAPI = connection?.promise.then((editorAPI) => {
             return editorAPI;
