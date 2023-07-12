@@ -1,8 +1,7 @@
 import { Id, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
-    layoutId: Id;
-
+    id: Id;
     width: { value: number; isOverride: boolean };
     height: { value: number; isOverride: boolean };
     timelineLengthMs: { value: number; isOverride: boolean };
@@ -10,8 +9,8 @@ export type LayoutPropertiesType = {
 } | null;
 
 export type FrameProperties = {
-    frameId: Id;
-    framePropertiesType: string;
+    id: Id;
+    type: string;
     height: number | null;
     included: boolean | null;
     rotationDegrees: number | null;
@@ -23,23 +22,23 @@ export type FrameProperties = {
 };
 
 export type LayoutWithFrameProperties = {
-    layoutId: Id;
-    layoutName: string;
-    parentLayoutId?: Id;
+    id: Id;
+    name: string;
+    parentId?: Id;
     frameProperties: FrameProperties[];
     width: number | null;
     height: number | null;
     childLayouts: Id[];
-    layoutType: LayoutType;
+    type: LayoutType;
     timelineLengthMs?: number;
     children?: LayoutWithFrameProperties[];
 };
 
 // used by new getter methods
 export type Layout = {
-    layoutId: Id;
-    layoutName: string;
-    parentLayoutId?: Id;
+    id: Id;
+    name: string;
+    parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
     childLayouts: Id[];
@@ -48,10 +47,10 @@ export type Layout = {
 
 // used by onLayoutsChanged
 export type LayoutListItemType = {
-    layoutId: string;
-    layoutName: string;
-    layoutType: LayoutType;
-    parentLayoutId?: string | null;
+    id: string;
+    name: string;
+    type: LayoutType;
+    parentId?: string | null;
     childLayouts: string[];
 };
 

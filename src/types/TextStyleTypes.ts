@@ -80,10 +80,10 @@ export interface SelectedTextStyle {
     subSuperScript: Scripting;
     trackingLeft: string;
     trackingRight: string;
-    paragraphStartIndent: string;
-    paragraphEndIndent: string;
-    paragraphSpaceBefore: string;
-    paragraphSpaceAfter: string;
+    startIndent: string;
+    endIndent: string;
+    spaceBefore: string;
+    spaceAfter: string;
     textIndent: string;
     alignToBaseLine: boolean;
     baselineShiftValue: string;
@@ -124,7 +124,7 @@ export enum SelectedTextStyles {
     TYPOGRAPHIC_CASE = 'typographicCase',
     SUB_SUPER_SCRIPT = 'subSuperScript',
     UNDERLINE = 'underline',
-    LINETHROUGH = 'lineThrough',
+    LINE_THROUGH = 'lineThrough',
     FILL_COLOR = 'fillColor',
     COLOR = 'color',
     FILL_COLOR_APPLIED = 'fillColorApplied',

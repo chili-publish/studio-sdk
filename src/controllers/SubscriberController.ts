@@ -2,7 +2,7 @@ import { ConfigType, Id } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**
- * The SubscriberController is responsible for all listeners which can influence the aplication-state from outside.
+ * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
  * Callbacks inside this controller can be set by `window.SDK.subscriber.{method-name}`
  */
 export class SubscriberController {
@@ -37,7 +37,7 @@ export class SubscriberController {
     };
 
     /**
-     * Listener on the playbackstate of the animation, it contains the current time of the playback (in miliseconds) and a flag that describes if the animation is currently playing
+     * Listener on the playback state of the animation, it contains the current time of the playback (in milliseconds) and a flag that describes if the animation is currently playing
      * @param animationPlaybackState Stringified array of AnimationPlaybackType
      */
     onAnimationPlaybackChanged = (animationPlaybackState: string) => {
@@ -47,33 +47,33 @@ export class SubscriberController {
 
     /**
      * Listener on the state of the currently selected layout, if its properties are changed, this listener will get triggered with the new properties
-     * @param properties Stringified object of LayoutPropertiesType
+     * @param layoutProperties Stringified object of LayoutPropertiesType
      */
-    onSelectedLayoutPropertiesChanged = (properties: string) => {
+    onSelectedLayoutPropertiesChanged = (layoutProperties: string) => {
         const callBack = this.config.onSelectedLayoutPropertiesChanged;
-        callBack && callBack(JSON.parse(properties));
+        callBack && callBack(JSON.parse(layoutProperties));
     };
 
     /**
      * Listener on the state of the currently selected frame, if this changes, this listener will get triggered with the updates
-     * @param layout Stringified object of FrameLayoutType
+     * @param frameLayout Stringified object of FrameLayoutType
      */
-    onSelectedFrameLayoutChanged = (frame: string) => {
+    onSelectedFrameLayoutChanged = (frameLayout: string) => {
         const callBack = this.config.onSelectedFrameLayoutChanged;
-        callBack && callBack(JSON.parse(frame));
+        callBack && callBack(JSON.parse(frameLayout));
     };
 
     /**
      * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
-     * @param layout Stringified object of FrameType
+     * @param frameContent Stringified object of FrameType
      */
-    onSelectedFrameContentChanged = (frame: string) => {
+    onSelectedFrameContentChanged = (frameContent: string) => {
         const callBack = this.config.onSelectedFrameContentChanged;
-        callBack && callBack(JSON.parse(frame));
+        callBack && callBack(JSON.parse(frameContent));
     };
 
     /**
-     * A listener on the general state of the document, gets triggered everytime a change is done on the document.
+     * A listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
         const callBack = this.config.onStateChanged;
@@ -107,7 +107,7 @@ export class SubscriberController {
 
     /**
      * Listener on when the tool has changed by the canvas
-     * @param tool The string representation of a certain tool
+     * @param tool the string representation of a certain tool
      */
     onSelectedToolChanged = (tool: string) => {
         const callBack = this.config.onSelectedToolChanged;
@@ -125,11 +125,11 @@ export class SubscriberController {
 
     /**
      * Listener on the state of the currently selected layout's frames, if this changes, this listener will get triggered with the updates
-     * @param frames Stringified object of Frames
+     * @param layoutFrames Stringified object of Frames
      */
-    onSelectedLayoutFramesChanged = (frames: string) => {
+    onSelectedLayoutFramesChanged = (layoutFrames: string) => {
         const callBack = this.config.onSelectedLayoutFramesChanged;
-        callBack && callBack(JSON.parse(frames));
+        callBack && callBack(JSON.parse(layoutFrames));
     };
 
     /**
@@ -179,19 +179,19 @@ export class SubscriberController {
 
     /**
      * Listener on selected layout id, this listener will get triggered when a different layout is selected.
-     * @param layoutId the currently selected layout id
+     * @param id the currently selected layout id
      */
-    onSelectedLayoutIdChanged = (layoutId: string) => {
+    onSelectedLayoutIdChanged = (id: Id) => {
         const callBack = this.config.onSelectedLayoutIdChanged;
-        callBack && callBack(layoutId);
+        callBack && callBack(id);
     };
 
     /**
      * Listener on layouts, this listener will get triggered when a (sub)layout is
-     * - added
+     * - created
      * - removed
      * - renamed
-     * - duplicted
+     * - duplicated
      * @param layouts Stringified object of layouts
      */
     onLayoutsChanged = (layouts: string) => {
@@ -201,11 +201,11 @@ export class SubscriberController {
 
     /**
      * Listener on scale factor of the canvas, this listener will get triggered when a zoom is applied to the canvas
-     * @param zoomEvent Stringified scale factor
+     * @param zoom Stringified scale factor
      */
-    onZoomChanged = (zoomEvent: string) => {
+    onZoomChanged = (zoom: string) => {
         const callBack = this.config.onZoomChanged;
-        callBack && callBack(JSON.parse(zoomEvent));
+        callBack && callBack(JSON.parse(zoom));
     };
 
     /**

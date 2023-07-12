@@ -25,12 +25,12 @@ afterEach(() => {
 describe('Document controller', () => {
     describe('document getters', () => {
         it('retrieve current document state', async () => {
-            await mockedDocumentController.getCurrentDocumentState();
+            await mockedDocumentController.getCurrentState();
             expect(mockedEditorApi.getCurrentDocumentState).toHaveBeenCalledTimes(1);
         });
     });
 
     it('load provided document', async () => {
-        await mockedDocumentController.loadDocument(JSON.parse(mockDocument));
+        await mockedDocumentController.load(JSON.parse(mockDocument));
     });
 });

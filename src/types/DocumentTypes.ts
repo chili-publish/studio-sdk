@@ -7,7 +7,7 @@ import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { DocumentAction } from './ActionTypes';
-import { ShapeProperties, ShapeType } from './ShapeTypes';
+import { ShapeProperties } from './ShapeTypes';
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
@@ -28,31 +28,30 @@ export interface ChiliDocument {
     properties?: TemplateDocumentProperties | ProjectDocumentProperties;
     pages: DocumentPage[];
     layouts: (ChildLayout | TopLayout)[];
-    styleKit: DocumentStyleKit;
+    stylekit: DocumentStylekit;
     variables: Variable[];
     actions: DocumentAction[];
 }
 
 export interface DocumentPage {
-    pageId: string;
-    pageNumber: number;
+    id: string;
+    number: number;
     frames: (ImageFrame | TextFrame | ShapeFrame)[];
 }
 
 export interface DocumentFrame {
-    frameId: string;
-    frameName: string;
-    frameType: FrameTypeEnum;
+    id: string;
+    name: string;
+    type: FrameTypeEnum;
     blendMode: BlendMode;
     constrainProportions: boolean;
 }
 
 export interface ImageFrame extends DocumentFrame {
-    src: VariableImageFrameSource | AssetProviderImageFrameSource | UrlImageFrameSource;
+    src: ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
 }
 
 export interface ShapeFrame extends DocumentFrame {
-    shapeType: ShapeType;
     shapeProperties: ShapeProperties;
 }
 
@@ -80,30 +79,30 @@ export enum ImageFrameSourceType {
 }
 
 export interface ImageFrameSource {
-    sourceType: ImageFrameSourceType;
+    type: ImageFrameSourceType;
 }
 
-export interface UrlImageFrameSource extends ImageFrameSource {
+export interface ImageFrameUrlSource extends ImageFrameSource {
     url: string;
 }
 
-export interface AssetProviderImageFrameSource extends ImageFrameSource {
-    providerId: string;
+export interface ImageFrameConnectorSource extends ImageFrameSource {
+    id: string;
     assetId: string;
 }
 
-export interface VariableImageFrameSource extends ImageFrameSource {
-    variableId: string;
+export interface ImageFrameVariableSource extends ImageFrameSource {
+    id: string;
 }
 
 export interface Layout {
-    layoutId: string;
-    layoutName: string;
+    id: string;
+    name: string;
     frameProperties: (ChildFrameProperty | TopFrameProperty)[];
     width?: number;
     height?: number;
     childLayouts: string[];
-    layoutType: LayoutType;
+    type: LayoutType;
     frameAnimations?: FrameAnimation[];
     timelineLengthMs?: number;
     animated?: boolean;
@@ -113,13 +112,12 @@ export interface TopLayout extends Layout {
     frameAnimations: FrameAnimation[];
     timelineLengthMs: number;
     animated: boolean;
-    parentLayoutId: Id;
     width: number;
     height: number;
 }
 
 export interface ChildLayout extends Layout {
-    parentLayoutId: Id;
+    parentId: Id;
 }
 
 export enum FramePropertiesType {
@@ -127,7 +125,7 @@ export enum FramePropertiesType {
     child = 'child',
 }
 export interface FrameProperty {
-    frameId: Id;
+    id: Id;
     x?: number;
     y?: number;
     width?: number;
@@ -137,7 +135,7 @@ export interface FrameProperty {
     scaleX?: number;
     scaleY?: number;
     included?: boolean;
-    framePropertiesType: FramePropertiesType;
+    type: FramePropertiesType;
 }
 
 export type ChildFrameProperty = FrameProperty;
@@ -154,7 +152,7 @@ export interface TopFrameProperty extends FrameProperty {
 }
 
 export interface FrameAnimation {
-    frameId: Id;
+    id: Id;
     from: number;
     to: number;
     basicAnimations: BasicAnimations;
@@ -166,7 +164,7 @@ export interface BasicAnimations {
     outro?: BasicAnimationsOutroType;
 }
 
-export interface DocumentStyleKit {
+export interface DocumentStylekit {
     colors: DocumentColor[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
@@ -179,7 +177,7 @@ export interface DocumentVariable extends Variable {
     parentId: Id;
     name: string;
     label: string;
-    isHidden: boolean;
+    isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
     value: string;

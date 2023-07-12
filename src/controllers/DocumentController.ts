@@ -22,19 +22,19 @@ export class DocumentController {
 
     /**
      * This method retrieves the current document state from the editor
-     * @returns The JSON document in the form of a string
+     * @returns the JSON document in the form of a string
      */
-    getCurrentDocumentState = async () => {
+    getCurrentState = async () => {
         const res = await this.#editorAPI;
         return res.getCurrentDocumentState().then((result) => getEditorResponseData<ChiliDocument>(result));
     };
 
     /**
      * This method will load a provided document in the ChiliDocument format
-     * @param doc The document to load in
-     * @returns The document loaded inside of the canvas
+     * @param doc the document to load in
+     * @returns the document loaded inside of the canvas
      */
-    loadDocument = async (doc: ChiliDocument | string) => {
+    load = async (doc: ChiliDocument | string) => {
         const res = await this.#editorAPI;
         if (typeof doc === 'string') return res.loadDocument(doc);
         return res.loadDocument(JSON.stringify(doc)).then((result) => getEditorResponseData<null>(result));

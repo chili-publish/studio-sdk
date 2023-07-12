@@ -1,11 +1,11 @@
-export enum FrameProperyNames {
+export enum FramePropertyNames {
     FRAME_X = 'frameX',
     FRAME_Y = 'frameY',
     WIDTH = 'width',
     HEIGHT = 'height',
     FRAME_ROTATION = 'frameRotation',
 }
-export enum LayoutProperyNames {
+export enum LayoutPropertyNames {
     LAYOUT_HEIGHT = 'layoutHeight',
     LAYOUT_WIDTH = 'layoutWidth',
 }
@@ -25,4 +25,10 @@ export enum DownloadFormats {
     GIF = 'gif',
     PNG = 'png',
     JPG = 'jpg',
+    EXPERIMENTAL_PDF = 'pdf',
+}
+
+export enum EnvironmentType {
+    SANDBOX = 'sandbox',
+    PRODUCTION = 'online',
 }

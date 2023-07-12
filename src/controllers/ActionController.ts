@@ -21,83 +21,95 @@ export class ActionController {
 
     /**
      * This method returns the list of all actions.
-     * @returns
+     * @returns list of all actions
      */
-    getActions = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getActions().then((result) => getEditorResponseData<DocumentAction[]>(result));
     };
 
     /**
-     * This method returns an action by id
-     * @param actionId The ID of a specific action
-     * @returns
+     * This method returns an action by the id
+     * @param id the id of a specific action
+     * @returns action details
      */
-    getActionById = async (actionId: Id) => {
+    getById = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.getActionById(actionId).then((result) => getEditorResponseData<DocumentAction>(result));
+        return res.getActionById(id).then((result) => getEditorResponseData<DocumentAction>(result));
     };
 
     /**
      * This method creates a new action.
-     * @returns The ID of the newly created action.
+     * @returns the id of the newly created action.
      */
-    createAction = async () => {
+    create = async () => {
         const res = await this.#editorAPI;
         return res.createAction().then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
-     * This method duplicates an existing action.
-     * @returns The ID of the duplicated action.
+     * This method duplicates an existing action by the id
+     * @param id the id of a specific action
+     * @returns the id of the duplicated action.
      */
-    duplicateAction = async (actionId: Id) => {
+    duplicate = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.duplicateAction(actionId).then((result) => getEditorResponseData<Id>(result));
+        return res.duplicateAction(id).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
-     * This method removes the action.
-     * @param actionId The ID of a specific action
+     * This method removes the action by the id
+     * @param id the id of a specific action
      * @returns
      */
-    removeAction = async (actionId: Id) => {
+    remove = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.removeAction(actionId).then((result) => getEditorResponseData<null>(result));
+        return res.removeAction(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method renames an action.
-     * @param actionId The ID of a specific action
-     * @param name The new unique name for the action
+     * This method renames an action by the id and provided name
+     * @param id the id of a specific action
+     * @param name the new unique name for the action
      * @returns
      */
-    renameAction = async (actionId: Id, name: string) => {
+    rename = async (id: Id, name: string) => {
         const res = await this.#editorAPI;
-        return res.renameAction(actionId, name).then((result) => getEditorResponseData<null>(result));
+        return res.renameAction(id, name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method updates the script the action uses.
-     * @param actionId The ID of a specific action
-     * @param script The JavaScript based action script
+     * This method updates the script the action uses by the id and provided script
+     * @param id the id of a specific action
+     * @param actionScript the JavaScript based action script
      * @returns
      */
-    updateActionScript = async (actionId: Id, script: string) => {
+    updateScript = async (id: Id, actionScript: string) => {
         const res = await this.#editorAPI;
-        return res.updateActionScript(actionId, script).then((result) => getEditorResponseData<null>(result));
+        return res.updateActionScript(id, actionScript).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method updates the triggers on which the action will react.
-     * @param actionId The ID of a specific action
-     * @param triggers The triggers this action should react on.
+     * @param id the id of a specific action
+     * @param triggers the triggers this action should react on.
      * @returns
      */
-    updateActionTriggers = async (actionId: Id, triggers: ActionTrigger[]) => {
+    updateTriggers = async (id: Id, triggers: ActionTrigger[]) => {
         const res = await this.#editorAPI;
         return res
-            .updateActionTriggers(actionId, JSON.stringify(triggers))
+            .updateActionTriggers(id, JSON.stringify(triggers))
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method changes positions of actions
+     * @param order the position of actions
+     * @param ids the list of action IDs
+     * @returns
+     */
+    move = async (order: number, ids: string[]) => {
+        const res = await this.#editorAPI;
+        return res.moveActions(order, ids).then((result) => getEditorResponseData<null>(result));
     };
 }

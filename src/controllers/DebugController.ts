@@ -21,9 +21,9 @@ export class DebugController {
 
     /**
      * This method returns all debug logs
-     * @returns
+     * @returns list of all debug logs
      */
-    getLogs = async () => {
+    getAllLogs = async () => {
         const res = await this.#editorAPI;
         return res.getLogs().then((result) => getEditorResponseData<DebugData[]>(result));
     };

@@ -4,22 +4,24 @@ export enum ImageVariableSourceType {
 }
 
 export interface UrlImageVariableSource {
-    sourceType: ImageVariableSourceType;
+    type: ImageVariableSourceType.url;
     url: string;
 }
 
 export interface MediaConnectorImageVariableSource {
-    sourceType: ImageVariableSourceType;
-    connectorId: string;
+    type: ImageVariableSourceType.mediaConnector;
+    id: string;
     assetId: string;
 }
 
 export type ImageVariableSource = UrlImageVariableSource | MediaConnectorImageVariableSource;
 
 export enum VariableType {
-    shorttext = 'shorttext',
-    longtext = 'longtext',
+    shortText = 'shortText',
+    longText = 'longText',
     image = 'image',
+    list = 'list',
+    boolean = 'boolean',
     group = 'group',
 }
 
@@ -29,27 +31,29 @@ export interface Variable {
     parentId?: string;
     name: string;
     label: string;
-    isHidden: boolean;
+    isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
+    occurrences: number;
 }
 
 export interface ImageVariable extends Variable {
-    occurrences: number;
     src?: ImageVariableSource;
 }
 
+export interface ListVariable extends Variable {
+    items: string[];
+    selected?: string;
+}
+
+export interface BooleanVariable extends Variable {
+    value: boolean;
+}
+
 export interface ShortTextVariable extends Variable {
-    occurrences: number;
     value: string;
 }
 
 export type LongTextVariable = ShortTextVariable;
 
 export type GroupVariable = Variable;
-
-export type VariableMoves = {
-    moves: string[];
-    order: number;
-    parent: string;
-};

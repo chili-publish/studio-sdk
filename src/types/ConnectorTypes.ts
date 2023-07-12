@@ -1,3 +1,5 @@
+import { Id } from "./CommonTypes";
+
 export enum DeprecatedMediaType {
     file = 0,
     collection = 1,
@@ -42,13 +44,13 @@ export type ConnectorCapabilities = {
 };
 
 export type ConnectorRegistration = {
-    id: string;
+    id: Id;
     source: ConnectorRegistrationSource;
     url: string;
 };
 
 export type ConnectorInstance = {
-    id: string;
+    id: Id;
     name: string;
     iconUrl: string;
 };
@@ -73,12 +75,12 @@ export class ConnectorMapping {
 }
 
 export type ConnectorState = {
-    id: string;
+    id: Id;
     type: ConnectorStateType;
 };
 
 export type ConnectorEvent = {
-    id: string;
+    id: Id;
     type: ConnectorEventType;
 };
 

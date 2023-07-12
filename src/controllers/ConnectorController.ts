@@ -13,7 +13,7 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
  * document. Use it to add/remove connectors to a template, or set specific configuration.
  *
- * The way CHILI Studio handles different sources of resouces is called 'Connectors'. A Connectors is an
+ * The way CHILI Studio handles different sources of resources is called 'Connectors'. A Connectors is an
  * implementation of a set of capabilities we need to interact with a certain external resource management system.
  * In essence a connector is the combination of a Javascript snippet and some metadata. The Javascript snippet
  * is loaded in the studio engine using a sandboxed Javascript execution engine (QuickJs). This allows us to
@@ -39,8 +39,9 @@ export class ConnectorController {
     /**
      * Gets all available connectors of a 'ConnectorType'
      * @param type type of connector you want to get
+     * @returns list of all available connectors of a 'ConnectorType'
      */
-    getConnectors = async (type: ConnectorType) => {
+    getAllByType = async (type: ConnectorType) => {
         const res = await this.#editorAPI;
         return res.getConnectors(type).then((result) => getEditorResponseData<ConnectorInstance[]>(result));
     };
@@ -50,8 +51,9 @@ export class ConnectorController {
      * on the connector type, the connector can be configured and used in the template
      * Remember to add custom authentication information after registering the connector
      * @param registration registration object containing all details about the connector
+     * @returns
      */
-    registerConnector = async (registration: ConnectorRegistration) => {
+    register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
         return res
             .registerConnector(JSON.stringify(registration))
@@ -61,40 +63,43 @@ export class ConnectorController {
     /**
      * Configures a registered connector. A configurator helper is passed as an argument
      * of the callback for you to setup your connector.
-     * @param connectorId Id of your registered connector
+     * @param id the id of your registered connector
      * @param configurationCallback callback to setup the connector
+     * @returns
      */
     configure = async (
-        connectorId: string,
+        id: string,
         configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>,
     ) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
-        await this.waitForConnectorReady(connectorId);
+        await this.waitToBeReady(id);
         // execute callback
-        await configurationCallback(new ConnectorConfigurator(connectorId, res));
+        await configurationCallback(new ConnectorConfigurator(id, res));
         // invalidate connector in engine
-        return res.updateConnectorConfiguration(connectorId).then((result) => getEditorResponseData<null>(result));
+        return res.updateConnectorConfiguration(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitForConnectorReady'
      * method in this controller.
-     * @param connectorId Id of your registered connector you want to make sure it is loaded
+     * @param id the id of your registered connector you want to make sure it is loaded
+     * @returns connector state
      */
-    getState = async (connectorId: string) => {
+    getById = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.getConnectorState(connectorId).then((result) => getEditorResponseData<ConnectorState>(result));
+        return res.getConnectorState(id).then((result) => getEditorResponseData<ConnectorState>(result));
     };
 
     /**
      * Connectors are loaded asynchronously in the editor engine, this causes some challenges while configuring them. To make sure
      * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
      * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially
-     * usefull during startup of the SDK / rigth after the loadDocument call.
-     * @param connectorId Id of your registered connector you want to make sure it is loaded
+     * useful during startup of the SDK / right after the loadDocument call.
+     * @param id the id of your registered connector you want to make sure it is loaded
+     * @returns
      */
-    waitForConnectorReady = async (connectorId: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
+    waitToBeReady = async (id: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
         // minimum timeout is 500ms
         let timeout = Math.max(timeoutMilliseconds, 500);
 
@@ -105,10 +110,10 @@ export class ConnectorController {
         let retries = 0;
 
         try {
-            // using while loop will prevent stackoverflow issues when using recursion
+            // using while loop will prevent stack overflow issues when using recursion
             // wait for maximum 2 seconds to fail
             while (retries * waitTime < timeout) {
-                const result = await this.getState(connectorId);
+                const result = await this.getById(id);
 
                 if (
                     result.success &&
@@ -164,8 +169,8 @@ class ConnectorConfigurator {
     /**
      * @ignore
      */
-    constructor(connectorId: string, res: EditorAPI) {
-        this.#connectorId = connectorId;
+    constructor(id: string, res: EditorAPI) {
+        this.#connectorId = id;
         this.#res = res;
     }
 
@@ -173,6 +178,7 @@ class ConnectorConfigurator {
      * Allows to customize the context data a connector can work with. The options data
      * will be available using the context parameter in the connector implementation code.
      * @param options object containing key value data to pass to connector context
+     * @returns
      */
     setOptions = async (options: ConnectorOptions) => {
         return this.#res
@@ -182,10 +188,11 @@ class ConnectorConfigurator {
 
     /**
      * Allows to map document data (variables, selectedFrame, etc) to connector context data.
-     * By defining the mappings, we can trigger redownload of assets (dynamic asset provider)
+     * By defining the mappings, we can trigger re-download of assets (dynamic asset provider)
      * or populate filters for the query endpoint. The mapped data will be available using
      * the context parameter in the connector implementation code.
      * @param mappings collection of mappings to set to this connector
+     * @returns
      */
     setMappings = async (mappings: ConnectorMapping[]) => {
         const result = await this.#res.setConnectorMappings(
@@ -201,6 +208,7 @@ class ConnectorConfigurator {
      * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
      * The CHILI Token will be used to authenticate every grafx connector http call.
      * @param token token for the CHILI authentication
+     * @returns
      */
     setChiliToken = async (token: string) => {
         return this.#res
@@ -214,6 +222,7 @@ class ConnectorConfigurator {
      * Can only be used after a connector has been registered. (if you are using a grafx connector no registration is needed)
      * @param headerName name of the header
      * @param headerValue value of the header
+     * @returns
      */
     setHttpHeader = async (headerName: string, headerValue: string) => {
         return this.#res

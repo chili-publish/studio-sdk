@@ -37,7 +37,7 @@ afterEach(() => {
 
 describe('FontConnectorController', () => {
     const connectorId = 'dam';
-    const FontId = 'm123';
+    const fontId = 'm123';
     const queryOptions1 = {
         filter: ['test'],
         pageSize: 1,
@@ -56,9 +56,9 @@ describe('FontConnectorController', () => {
     const blob = new Uint8Array([1, 2, 3]);
 
     it('Should call the copy method', async () => {
-        await mockedFontConnectorController.copy(connectorId, FontId, 'newName');
+        await mockedFontConnectorController.copy(connectorId, fontId, 'newName');
         expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledWith(connectorId, FontId, 'newName');
+        expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledWith(connectorId, fontId, 'newName');
     });
 
     it('Should call the query method', async () => {
@@ -80,26 +80,26 @@ describe('FontConnectorController', () => {
     });
 
     it('Should call the download method', async () => {
-        await mockedFontConnectorController.download(connectorId, FontId, FontDownloadType.Preview, context);
+        await mockedFontConnectorController.download(connectorId, fontId, FontDownloadType.Preview, context);
         expect(mockedEditorApi.fontConnectorDownload).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.fontConnectorDownload).toHaveBeenCalledWith(
             connectorId,
-            FontId,
+            fontId,
             FontDownloadType.Preview,
             JSON.stringify(context),
         );
     });
 
     it('Should call the remove method', async () => {
-        await mockedFontConnectorController.remove(connectorId, FontId);
+        await mockedFontConnectorController.remove(connectorId, fontId);
         expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledWith(connectorId, FontId);
+        expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledWith(connectorId, fontId);
     });
 
     it('Should call the upload method', async () => {
-        await mockedFontConnectorController.upload(connectorId, FontId, blob);
+        await mockedFontConnectorController.upload(connectorId, fontId, blob);
         expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledWith(connectorId, FontId, blob);
+        expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledWith(connectorId, fontId, blob);
     });
 
     it('Should call the getCapabilities method', async () => {
@@ -119,8 +119,8 @@ describe('FontConnectorController', () => {
         expect(mockedEditorApi.fontConnectorGetDownloadOptions).toHaveBeenLastCalledWith(connectorId);
     });
     it('Should call the detail method', async () => {
-        await mockedFontConnectorController.detail(connectorId, FontId);
+        await mockedFontConnectorController.detail(connectorId, fontId);
         expect(mockedEditorApi.fontConnectorDetail).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorDetail).toHaveBeenLastCalledWith(connectorId, FontId);
+        expect(mockedEditorApi.fontConnectorDetail).toHaveBeenLastCalledWith(connectorId, fontId);
     });
 });

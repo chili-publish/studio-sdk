@@ -106,16 +106,20 @@ declare module 'grafx-studio-actions' {
      */
     interface Layout {
         readonly name: string;
+        readonly width: number;
+        readonly height: number;
     }
 
     /** Respresents a Variable inside Actions */
-    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | GroupVariable;
+    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | ListVariable | BooleanVariable | GroupVariable;
 
     enum VariableType {
         shortText = 'shortText',
         longText = 'longText',
         formattedText = 'formattedText',
         image = 'image',
+        list = 'list',
+        boolean = 'boolean',
         group = 'group',
     }
 
@@ -156,6 +160,17 @@ declare module 'grafx-studio-actions' {
     interface ImageVariable extends BaseVariable {
         type: VariableType.image;
         assetId?: string;
+    }
+
+    export interface ListVariable extends BaseVariable {
+        type: VariableType.list;
+        items: string[];
+        selected?: string;
+    }
+
+    export interface BooleanVariable extends BaseVariable {
+        type: VariableType.boolean;
+        value: boolean;
     }
 
     interface GroupVariable extends BaseVariable {
@@ -324,6 +339,11 @@ declare module 'grafx-studio-actions' {
          * @returns
          */
         select(layoutName: string): void;
+
+        /**
+         * Returns all layouts in the document.
+         */
+        all(): Layout[];
     }
 
     /**
