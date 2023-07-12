@@ -1,6 +1,6 @@
 import { QueryOptions, Dictionary, ArrayBufferPointer, DownloadType } from "./Connector.Shared";
 
-interface MediaConnector {
+export interface MediaConnector {
     query(options: QueryOptions, context: Dictionary): Promise<MediaPage>;
     detail(id: string): Promise<MediaDetail>;
     download(id: string, previewType: DownloadType, context: Dictionary): Promise<ArrayBufferPointer>
@@ -12,7 +12,7 @@ interface MediaConnector {
     getCapabilities(): MediaConnectorCapabilities;
 }
 
-type MediaConnectorCapabilities = {
+export type MediaConnectorCapabilities = {
     filtering: boolean;
     upload: boolean;
     query: boolean;
@@ -21,7 +21,7 @@ type MediaConnectorCapabilities = {
     copy: boolean;
 }
 
-interface MediaPage {
+export interface MediaPage {
     pageSize: number;
     data: Media[];
     links: {
@@ -29,7 +29,7 @@ interface MediaPage {
     };
 }
 
-interface Media {
+export interface Media {
     id: String;
     name: String;
     relativePath: String;
@@ -37,7 +37,7 @@ interface Media {
     metaData: Dictionary;
 }
 
-interface MediaDetail extends Media {
+export interface MediaDetail extends Media {
     width?: number;
     height?: number;
     extension?: string;
