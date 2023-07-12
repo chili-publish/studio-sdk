@@ -30,9 +30,9 @@ export interface MediaPage {
 }
 
 export interface Media {
-    id: String;
-    name: String;
-    relativePath: String;
+    id: string;
+    name: string;
+    relativePath: string;
     type: number;
     metaData: Dictionary;
 }
