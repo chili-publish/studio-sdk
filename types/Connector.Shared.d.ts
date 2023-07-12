@@ -10,7 +10,7 @@ export enum ChiliPlatform {
 
 export interface ConnectorRuntimeContext {
     options: Dictionary;
-    fetch(url: String, init: ChiliRequestInit): Promise<ChiliResponse>;
+    fetch(url: string, init: ChiliRequestInit): Promise<ChiliResponse>;
     logError(msg: string): void;
     platform: ChiliPlatform;
     sdkVersion: string;
