@@ -10,9 +10,6 @@ export enum LayoutPropertyNames {
     LAYOUT_WIDTH = 'layoutWidth',
 }
 
-export enum renderURLs {
-    BASE_URL = 'https://rendering.chili-publish-sandbox.online',
-}
 export enum ToolType {
     SELECT = 'select',
     ZOOM = 'zoom',
