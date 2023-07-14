@@ -2,7 +2,6 @@ import { EditorAPI, Id } from '../types/CommonTypes';
 import {
     Variable,
     VariableType,
-    ConnectorImageVariableSource,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -224,22 +223,6 @@ export class VariableController {
     setIsReadonly = async (id: string, isReadonly: boolean) => {
         const res = await this.#editorAPI;
         return res.setVariableIsReadonly(id, isReadonly).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * @deprecated Use `setValue` and `setImageVariableConnector` instead.
-     *
-     * This method sets the variable source
-     * @param id the id of the variable to update
-     * @param source the new variable source
-     */
-    setSource = async (id: string, source?: ConnectorImageVariableSource) => {
-        const value =
-            source
-                ? source.assetId
-                : null;
-
-        return this.setValue(id, value);
     };
 
     /**

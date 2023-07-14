@@ -1,5 +1,5 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ConnectorImageVariableSource, VariableType } from '../../types/VariableTypes';
+import { VariableType } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
@@ -174,19 +174,6 @@ describe('VariableController', () => {
         await mockedVariableController.ungroupVariables('1');
         expect(mockEditorApi.ungroupVariable).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.ungroupVariable).toHaveBeenCalledWith('1');
-    });
-
-    it('set variable media connector source', async () => {
-        const varId = '1';
-        const src: ConnectorImageVariableSource = {
-            assetId: 'asset id',
-            connectorId: 'connector id',
-        };
-
-        await mockedVariableController.setSource(varId, src);
-
-        expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, src.assetId);
     });
 
     it('set image variable connector', async () => {
