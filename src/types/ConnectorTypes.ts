@@ -43,7 +43,21 @@ export type ConnectorCapabilities = {
     copy?: boolean;
 };
 
-export type ConnectorRegistration = ConnectorUrlRegistration | ConnectorGrafxRegistration;
+export type ConnectorRegistration = {
+    /**
+     * Url to the connector. 
+     * 
+     * - If source is `url`, this must be a publicly available url.
+     * 
+     * - If source is `grafx`, this must be the full url to the connector GET endpoint on GraFx Environment API.
+     */
+    url: string;
+
+    /**
+     * Connector source type.
+     */
+    source: ConnectorRegistrationSource;
+}
 
 export interface ConnectorUrlRegistration {
     id: Id;
@@ -69,7 +83,14 @@ export type ConnectorInstance = {
 };
 
 export enum ConnectorRegistrationSource {
+    /**
+     * Connector is hosted on a publicly available link.
+     */
     url = 'url',
+
+    /**
+     * Connector is hosted on GraFx Environment API.
+     */
     grafx = 'grafx',
 }
 
