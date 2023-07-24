@@ -39,7 +39,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     `;
 
     // eslint-disable-next-line no-param-reassign
-    iframe.srcdoc = 'test';
+    iframe.srcdoc = 'placeholder';
 
     let iframeDoc: Document = iframe.ownerDocument;
     if (iframe.contentWindow) {
