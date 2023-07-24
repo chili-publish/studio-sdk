@@ -26,7 +26,8 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
       <meta name="studio-styling" content=${stylingJson}>
     </head>
     <body>
-    <script src="${link}init.js"></script>
+    <script src="${link}init.js" async></script>
+    <script src="${link}init_engine.js"></script>
     <script>
         initializeStudioEngine({
             assetBase: '${link}',

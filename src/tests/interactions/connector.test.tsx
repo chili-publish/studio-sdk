@@ -13,6 +13,9 @@ describe('Connector helpers', () => {
     });
 
     it('setups an Iframe from a link', () => {
+        const fakeScript = document.createElement('script');
+        fakeScript.text = 'function initializeStudioEngine(params) {}';
+
         const iframe = document.createElement('iframe');
         iframe.setAttribute('srcdoc', ' ');
         iframe.setAttribute('title', 'Chili-Editor');
@@ -25,6 +28,9 @@ describe('Connector helpers', () => {
     });
 
     it('sets the studioStyling script in iFrame head', () => {
+        const fakeScript = document.createElement('script');
+        fakeScript.text = 'function initializeStudioEngine(params) {}';
+
         const styling = { uiBackgroundColorHex: '000000' };
 
         const iframe = document.createElement('iframe');
