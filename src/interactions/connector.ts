@@ -22,22 +22,24 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     <head>
       <base href="/" />
       <meta charset="UTF-8"/>
-      <!--  use this property to override the location of assets like 'default fonts' and demo document -->
-      <meta name="assetBase" content="${link}">
       <!--  use this property to pass the StudioStyling to the engine -->
       <meta name="studio-styling" content=${stylingJson}>
     </head>
     <body>
-    <script async src="${link}init.js"></script>
-    <script async src="https://unpkg.com/penpal@6.1.0/dist/penpal.min.js"></script>
-    <script async src="${link}main.dart.js"></script>
-   
+    <script src="${link}init.js" async></script>
+    <script src="${link}init_engine.js"></script>
+    <script>
+        initializeStudioEngine({
+            assetBase: '${link}',
+            entryPointUrl: '${link}main.dart.js',
+        });
+    </script>
     </body>
     </html>
     `;
 
     // eslint-disable-next-line no-param-reassign
-    iframe.srcdoc = 'test';
+    iframe.srcdoc = 'placeholder';
 
     let iframeDoc: Document = iframe.ownerDocument;
     if (iframe.contentWindow) {

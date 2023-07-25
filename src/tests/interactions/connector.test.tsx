@@ -4,6 +4,12 @@ const editorLink = 'https://test.test.net/';
 beforeEach(() => {
     jest.spyOn(ConnectorFunctions, 'validateEditorLink');
     jest.spyOn(ConnectorFunctions, 'setupFrame');
+    Object.defineProperty(window, 'initializeStudioEngine', {
+        configurable: true,
+        enumerable: true,
+        value: jest.fn(),
+        writable: true,
+    });
 });
 
 describe('Connector helpers', () => {
@@ -20,7 +26,7 @@ describe('Connector helpers', () => {
         iframe.setAttribute('frameBorder', '0');
         iframe.setAttribute('referrerpolicy', 'origin');
         ConnectorFunctions.setupFrame(iframe, editorLink);
-        expect(iframe.srcdoc).toEqual('test');
+        expect(iframe.srcdoc).toEqual('placeholder');
         expect(iframe.title).toEqual('Chili-Editor');
     });
 
