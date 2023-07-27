@@ -14,6 +14,7 @@ let mockedConnectorController: ConnectorController;
 const mockEditorApi: EditorAPI = {
     getConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
+    unregisterConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     connectorAuthenticationSetChiliToken: async () => getEditorResponseData(castToEditorResponse(null)),
     updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorState: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -26,6 +27,7 @@ beforeEach(() => {
     mockedConnectorController = new ConnectorController(mockEditorApi);
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
+    jest.spyOn(mockEditorApi, 'unregisterConnector');
     jest.spyOn(mockEditorApi, 'connectorAuthenticationSetChiliToken');
     jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
     jest.spyOn(mockEditorApi, 'getConnectorState');
@@ -65,6 +67,11 @@ describe('ConnectorController', () => {
         await mockedConnectorController.register(registration);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
+    });
+    it('Should be possible to unregister a connector', async () => {
+        await mockedConnectorController.unregister(connectorId);
+        expect(mockEditorApi.unregisterConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.unregisterConnector).toHaveBeenCalledWith(connectorId);
     });
     it('Should be possible to configure a connector', async () => {
         await mockedConnectorController.configure(connectorId, async (configurator) => {
