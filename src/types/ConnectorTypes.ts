@@ -41,6 +41,7 @@ export type ConnectorCapabilities = {
     query?: boolean;
     remove?: boolean;
     copy?: boolean;
+    detail?: boolean;
 };
 
 export type ConnectorRegistration = {
