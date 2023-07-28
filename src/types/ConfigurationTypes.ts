@@ -57,3 +57,20 @@ export type ShortcutOption = {
     /** Whether the shortcut is enabled. */
     enabled: boolean;
 };
+
+/**
+ * Default studio options with all shortcuts disabled.
+ */
+export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
+    shortcutOptions: {
+        debugPanel: { enabled: false },
+        ellipse: { enabled: false },
+        hand: { enabled: false },
+        image: { enabled: false },
+        polygon: { enabled: false },
+        rectangle: { enabled: false },
+        select: { enabled: false },
+        text: { enabled: false },
+        zoom: { enabled: false },
+    },
+};

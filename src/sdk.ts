@@ -1,6 +1,6 @@
 import { Connection } from 'penpal';
 import Connect from './interactions/connector';
-import { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
+import { WellKnownConfigurationKeys, defaultStudioOptions } from './types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
 
@@ -190,6 +190,9 @@ export class SDK {
             WellKnownConfigurationKeys.GraFxStudioDocumentType,
             this.config.documentType || DocumentType.template,
         );
+
+        // Update the engine with the specified options from the config or fall back to the defaults.
+        this.configuration.setStudioOptions(this.config.studioOptions || defaultStudioOptions);
     };
 
     setConnection = (newConnection: Connection) => {
