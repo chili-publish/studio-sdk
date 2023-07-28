@@ -45,8 +45,8 @@ export class ConfigurationController {
      * This method updates the studio options. Only defined options are updated, null values are ignored.
      * @returns
      */
-    setStudioOptions = async (options: StudioOptionsDeltaUpdate) => {
+    updateStudioOptions = async (options: StudioOptionsDeltaUpdate) => {
         const res = await this.#editorAPI;
-        return res.setStudioOptions(JSON.stringify(options)).then((result) => getEditorResponseData<null>(result));
+        return res.updateStudioOptions(JSON.stringify(options)).then((result) => getEditorResponseData<null>(result));
     };
 }

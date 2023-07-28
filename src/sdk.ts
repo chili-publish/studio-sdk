@@ -192,7 +192,7 @@ export class SDK {
         );
 
         // Update the engine with the specified options from the config or fall back to the defaults.
-        this.configuration.setStudioOptions(this.config.studioOptions || defaultStudioOptions);
+        this.configuration.updateStudioOptions(this.config.studioOptions || defaultStudioOptions);
     };
 
     setConnection = (newConnection: Connection) => {
