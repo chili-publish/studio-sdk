@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorResponse } from '../types/CommonTypes';
+import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorState,
     ConnectorStateType,
@@ -51,13 +51,21 @@ export class ConnectorController {
      * on the connector type, the connector can be configured and used in the template
      * Remember to add custom authentication information after registering the connector
      * @param registration registration object containing all details about the connector
-     * @returns
+     * @returns the Id of the newly created connector, this Id should be used going forward.
      */
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-        return res
-            .registerConnector(JSON.stringify(registration))
-            .then((result) => getEditorResponseData<null>(result));
+        return res.registerConnector(JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * Unregisters a connector from the document.
+     * @param id the id of the connector to unregister
+     * @returns
+     */
+    unregister = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.unregisterConnector(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -67,10 +75,7 @@ export class ConnectorController {
      * @param configurationCallback callback to setup the connector
      * @returns
      */
-    configure = async (
-        id: string,
-        configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>,
-    ) => {
+    configure = async (id: string, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
         await this.waitToBeReady(id);
@@ -205,7 +210,9 @@ class ConnectorConfigurator {
     };
 
     /**
-     * This method sets the CHILI GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
+     * @deprecated define the GraFx Studio Auth Token in the `SDK.Configuration.setValue`
+     *
+     * This method sets the GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
      * The CHILI Token will be used to authenticate every grafx connector http call.
      * @param token token for the CHILI authentication
      * @returns

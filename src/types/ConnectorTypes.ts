@@ -1,4 +1,4 @@
-import { Id } from "./CommonTypes";
+import { Id } from './CommonTypes';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -41,13 +41,41 @@ export type ConnectorCapabilities = {
     query?: boolean;
     remove?: boolean;
     copy?: boolean;
+    detail?: boolean;
 };
 
 export type ConnectorRegistration = {
-    id: Id;
-    source: ConnectorRegistrationSource;
+    /**
+     * Url to the connector.
+     *
+     * - If source is `url`, this must be a publicly available url.
+     *
+     * - If source is `grafx`, this must be the full url to the connector GET endpoint on GraFx Environment API.
+     */
     url: string;
+
+    /**
+     * Connector source type.
+     */
+    source: ConnectorRegistrationSource;
 };
+
+export interface ConnectorUrlRegistration {
+    id: Id;
+    source: ConnectorRegistrationSource.url;
+    /**
+     * Url to a public connector definition JSON
+     */
+    url: string;
+}
+
+export interface ConnectorGrafxRegistration {
+    /**
+     * Connector Id on GraFx Environment API.
+     */
+    id: Id;
+    source: ConnectorRegistrationSource.grafx;
+}
 
 export type ConnectorInstance = {
     id: Id;
@@ -56,7 +84,15 @@ export type ConnectorInstance = {
 };
 
 export enum ConnectorRegistrationSource {
+    /**
+     * Connector is hosted on a publicly available link.
+     */
     url = 'url',
+
+    /**
+     * Connector is hosted on GraFx Environment API.
+     */
+    grafx = 'grafx',
 }
 
 export class ConnectorMapping {
