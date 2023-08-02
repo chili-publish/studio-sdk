@@ -42,7 +42,6 @@ export class DocumentController {
      * @returns the document loaded inside of the canvas
      */
     load = async (doc: ChiliDocument | string, keepConnectors = false) => {
-        console.log('plop');
         const res = await this.#editorAPI;
         if (typeof doc === 'string') return res.loadDocument(doc, keepConnectors);
         return res.loadDocument(JSON.stringify(doc), keepConnectors).then((result) => getEditorResponseData<null>(result));
