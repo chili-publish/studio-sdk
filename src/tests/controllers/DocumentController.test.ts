@@ -31,6 +31,12 @@ describe('Document controller', () => {
     });
 
     it('load provided document', async () => {
-        await mockedDocumentController.load(JSON.parse(mockDocument));
+        await mockedDocumentController.load(mockDocument);
+        expect(mockedEditorApi.loadDocument).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(mockDocument, false);
+
+        await mockedDocumentController.load(mockDocument, true);
+        expect(mockedEditorApi.loadDocument).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(mockDocument, true);
     });
 });
