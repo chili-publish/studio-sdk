@@ -46,7 +46,7 @@ describe('Document controller', () => {
         });
 
         it('it calls loadDocumentKeepConnectors', async () => {
-            await mockedDocumentController.load(mockDocument, true);
+            await mockedDocumentController.load(mockDocument, { keepConnectors: true });
             expect(mockedEditorApi.loadDocumentKeepConnectors).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.loadDocumentKeepConnectors).toHaveBeenCalledWith(mockDocument);
         });

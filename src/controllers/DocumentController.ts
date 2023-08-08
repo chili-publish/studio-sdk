@@ -1,5 +1,5 @@
 import { EditorAPI } from '../types/CommonTypes';
-import type { ChiliDocument } from '../types/DocumentTypes';
+import type { ChiliDocument, DocumentLoadOptions } from '../types/DocumentTypes';
 
 import { getEditorResponseData } from '../utils/EditorResponseData';
 /**
@@ -32,22 +32,22 @@ export class DocumentController {
     /**
      * This method will load a provided document in the ChiliDocument format and
      * clean old document states.
-     * If you set `keepConnectors` to true, `load` will keep your old connectors
-     * states e.g. options, authentication..
+     * If you set `DocumentLoadOptions.keepConnectors` to true, `load` will keep
+     * your old connectors states e.g. options, authentication..
      * By default `keepConnectors` is false and your connectors states are reset.
-     * In this case, you would need to configure your connectors appropariately
+     * In this case, you would need to configure your connectors appropriately
      * beforehand.
      * @param doc the document to load in
-     * @param keepConnectors whether you want to keep previous connectors states
+     * @param options the options object for setting up the document load
      * @returns the document loaded inside of the canvas
      */
-    load = async (doc: ChiliDocument | string, keepConnectors = false) => {
+    load = async (doc: ChiliDocument | string, options: DocumentLoadOptions = { keepConnectors: false }) => {
         const res = await this.#editorAPI;
 
         // Note: loadDocumentKeepConnectors is a temporary engine call to make the
         // merging smoother, it will be removed when all projects will point to
         // this SDK version but the SDK API won't change. -> [EDT-1107]
-        const loadDocumentRedirection = keepConnectors ? res.loadDocumentKeepConnectors : res.loadDocument;
+        const loadDocumentRedirection = options.keepConnectors ? res.loadDocumentKeepConnectors : res.loadDocument;
         const parsedDoc = typeof doc !== 'string' ? JSON.stringify(doc) : doc;
 
         return loadDocumentRedirection(parsedDoc).then((result) => getEditorResponseData<null>(result));
