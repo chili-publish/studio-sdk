@@ -13,7 +13,7 @@ export type FrameLayoutType = {
     rotationDegrees: PropertyState<number>;
     scaleX: PropertyState<number>;
     scaleY: PropertyState<number>;
-    included: PropertyState<boolean>;
+    isVisible: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
     hasImageCrop: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;

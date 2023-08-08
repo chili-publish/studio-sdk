@@ -91,7 +91,7 @@ export interface SelectedLayoutFrame {
     id: Id;
     name: string;
     type: FrameTypeEnum;
-    included: boolean;
+    isVisible: boolean;
 }
 
 export interface MetaData {

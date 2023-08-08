@@ -347,6 +347,8 @@ export class FrameController {
     };
 
     /**
+     * @deprecated Use `setIsVisible` instead.
+     * 
      * This method will set the visibility property of a specified frame. If set to false the frame will be invisible and vice versa.
      * @param id the id of the frame that needs to get updated
      * @param value True means the frame gets visible, false means the frame gets invisible
@@ -354,7 +356,18 @@ export class FrameController {
      */
     setVisibility = async (id: Id, value: boolean) => {
         const res = await this.#editorAPI;
-        return res.setFrameVisibility(id, value).then((result) => getEditorResponseData<null>(result));
+        return res.setFrameIsVisible(id, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the isVisible property of a specified frame. If set to false the frame will be invisible and vice versa.
+     * @param id the id of the frame that needs to get updated
+     * @param value True means the frame gets visible, false means the frame gets invisible
+     * @returns
+     */
+    setIsVisible = async (id: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setFrameIsVisible(id, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
