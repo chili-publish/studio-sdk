@@ -200,5 +200,5 @@ export interface ProjectDocumentProperties extends DocumentProperties {
 }
 
 export type DocumentLoadOptions = {
-    keepConnectors: boolean;
+    keepConnectors?: boolean;
 };
