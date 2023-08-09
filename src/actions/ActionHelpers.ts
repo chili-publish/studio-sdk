@@ -15,7 +15,7 @@ export function isVariableTriggered(variable?: string | Variable): boolean {
 
     let variableName = variable;
 
-    if ((variable as Variable).name) {
+    if (variable && (variable as Variable).name) {
         variableName = (variable as Variable).name;
     }
 
@@ -27,7 +27,7 @@ export function isVariableTriggered(variable?: string | Variable): boolean {
 }
 
 /**
- * Get the triggered variable
+ * Gets the triggered variable
  */
 export function getTriggeredVariable(): Variable {
     const variable = triggers.changedVariable;
@@ -47,7 +47,7 @@ export function getTriggeredVariable(): Variable {
 }
 
 /**
- * Get the variable
+ * Gets the variable by name
  *
  * @param variableName name of the variable
  */
@@ -55,6 +55,7 @@ export function getVariable(variableName: string): Variable {
     try {
         return studio.variables.byName(variableName);
     } catch (error) {
+        // ignore engine error and wrap in user friendly error
         throw new VariableNotFoundError(variableName);
     }
 }
@@ -110,6 +111,11 @@ export function copyVariableValue(from: string | Variable, to: string | Variable
     setVariableValue(to, getVariableValue(from));
 }
 
+/**
+ * Gets all items from the list variable
+ * @param variable name of the variable
+ * @returns 
+ */
 export function getAllOptionsFromList(variable: string | Variable): string[]{
     let variableName = variable;
 
@@ -130,6 +136,11 @@ export function getAllOptionsFromList(variable: string | Variable): string[]{
     return list.items;
 }
 
+/**
+ * Gets the selected item from a list variable
+ * @param variable name of the variable
+ * @returns selected item
+ */
 export function getSelectedFromList(variable: string | Variable){
     let variableName = variable;
 
@@ -150,6 +161,11 @@ export function getSelectedFromList(variable: string | Variable){
     return list.selected;
 }
 
+/**
+ * Set selected list variable item. The same as setVariableValue but with extra runtime checks.
+ * @param variable variable name or variable object
+ * @param item item to select, undefined to deselect, or text based variable are also allowed
+ */
 export function setSelectedFromList(variable: string | Variable, item?: string | VariableValue) {
     let variableName = variable;
 
@@ -214,51 +230,133 @@ export function getFrame(name: string | Frame | VariableValue): Frame {
     }
 }
 
-export function setFrameX(name: string | Frame | VariableValue, x: number) {
+/**
+ * Sets the frame X position
+ * @param name name of the frame, or frame object
+ * @param x x position
+ */
+export function setFrameX(name: string | Frame, x: number | VariableValue) {
     updateFrame(name, { x: x });
 }
 
-export function setFrameY(name: string | Frame | VariableValue, y: number) {
+/**
+ * Sets the frame Y position
+ * @param name name of the frame, or frame object
+ * @param y y position
+ */
+export function setFrameY(name: string | Frame, y: number | VariableValue ) {
     updateFrame(name, { y: y });
 }
 
-export function setFrameWidth(name: string | Frame | VariableValue, width: number) {
+/**
+ * Sets the width of the frame
+ * @param name name of the frame, or frame object
+ * @param width frame width
+ */
+export function setFrameWidth(name: string | Frame, width: number | VariableValue ) {
     updateFrame(name, { width: width });
 }
 
-export function setFrameHeight(name: string | Frame | VariableValue, height: number) {
+/**
+ * Sets the height of the frame
+ * @param name name of the frame, or frame object
+ * @param height frame height
+ */
+export function setFrameHeight(name: string | Frame, height: number | VariableValue ) {
     updateFrame(name, { height: height });
 }
 
-export function setFrameRotation(name: string | Frame | VariableValue, rotation: number) {
+/**
+ * Sets the rotation of the frame
+ * @param name name of the frame, or frame object
+ * @param rotation rotation of the frame
+ */
+export function setFrameRotation(name: string | Frame, rotation: number | VariableValue ) {
     updateFrame(name, { rotation: rotation });
 }
 
-export function setFrameVisible(name: string | Frame | VariableValue, visibility: boolean) {
+/**
+ * Sets the visibility of the frame
+ * @param name name of the frame, or frame object
+ * @param visibility whether the frame is visible
+ */
+export function setFrameVisible(name: string | Frame, visibility: boolean | VariableValue ) {
     updateFrame(name, { visibility: visibility });
 }
 
+/**
+ * General purpose frame property updater
+ * @param name frame name or frame object
+ * @param update object to define which properties should be updated
+ */
 export function updateFrame(
-    name: string | Frame | VariableValue, 
-    update: { x?: number, y?: number, width?: number, height?: number, rotation?: number, visibility?: boolean },
+    name: string | Frame, 
+    update: { 
+        x?: number | VariableValue, 
+        y?: number | VariableValue, 
+        width?: number | VariableValue, 
+        height?: number | VariableValue, 
+        rotation?: number | VariableValue, 
+        visibility?: boolean | VariableValue 
+    },
 ) {
+    // Makes sure the frame exists + allows to use the shorthand syntax
     const frame = getFrame(name);
 
-    if (update.x){
+    if (update.x) {
+        if (typeof update.x !== 'number') {
+            throw new WrongTypeError('x', typeof update.x, 'number');
+        }
+
         frame.setX(update.x);
-    } else if (update.y){
+    } 
+    
+    if (update.y) {
+        if (typeof update.y !== 'number') {
+            throw new WrongTypeError('y', typeof update.y, 'number');
+        }
+
         frame.setY(update.y);
-    } else if (update.width){
+    } 
+    
+    if (update.width) {
+        if (typeof update.width !== 'number') {
+            throw new WrongTypeError('width', typeof update.width, 'number');
+        }
+
         frame.setWidth(update.width);
-    } else if (update.height){
+    }
+    
+    if (update.height) {
+        if (typeof update.height !== 'number') {
+            throw new WrongTypeError('height', typeof update.height, 'number');
+        }
+        
         frame.setHeight(update.height);
-    } else if(update.rotation){
+    }
+    
+    if (update.rotation) {
+        if (typeof update.rotation !== 'number') {
+            throw new WrongTypeError('rotation', typeof update.rotation, 'number');
+        }
+
         frame.setRotation(update.rotation);
-    } else if(update.visibility){
+    }
+    
+    if(update.visibility) {
+        if (typeof update.visibility !== 'boolean') {
+            throw new WrongTypeError('visibility', typeof update.visibility, 'boolean');
+        }
+        
         frame.setVisible(update.visibility);
     }
 }
 
+/**
+ * Assign image variable to frame
+ * @param variable variable name
+ * @param frame frame name
+ */
 export function assignImageVariableToFrame(variable: string | Variable, frame: string | Frame) {
     let variableName = variable;
     let frameName = frame;
@@ -422,7 +520,14 @@ export class LayoutNotFoundError extends Error {
 export class FrameNotFoundError extends Error {
     constructor(name: string) {
         const names = studio.layouts.all().map((layout) => layout.name).join(', ');
-        super('Layout with name ' + name +' was not found.\nThis function expects any of the following values:\n'+names);
+        super('Frame with name ' + name +' was not found.\nThis function expects any of the following values:\n'+names);
+        this.name = this.constructor.name;
+    }
+}
+
+export class WrongTypeError extends Error {
+    constructor(arg: string, type: string, expectedType: string) {
+        super('"' + arg + '" expects to be of type ' + expectedType + ' but got one of type ' + type);
         this.name = this.constructor.name;
     }
 }
