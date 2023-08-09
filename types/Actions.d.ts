@@ -79,11 +79,14 @@ declare module 'grafx-studio-actions' {
         stylekit: Stylekit;
     }
 
+    export interface IHasName {
+        readonly name: string;
+    }
+
     /**
      * Represents a Frame inside Actions
      */
-    interface Frame {
-        readonly name: string;
+    interface Frame extends IHasName {
         readonly x: number;
         readonly y: number;
         readonly width: number;
@@ -91,6 +94,14 @@ declare module 'grafx-studio-actions' {
         readonly rotation: number;
         readonly included: boolean;
         readonly type: FrameType;
+
+        setX(x: number): void;
+        setY(y: number): void;
+        setWidth(width: number): void;
+        setHeight(height: number): void;
+        setRotation(degrees: number): void;
+        setVisible(visibility: boolean): void;
+
     }
 
     /**
@@ -104,16 +115,22 @@ declare module 'grafx-studio-actions' {
     /**
      * Respresents a Layout inside Actions
      */
-    interface Layout {
-        readonly name: string;
+    interface Layout extends IHasName{
         readonly width: number;
         readonly height: number;
     }
 
     /** Respresents a Variable inside Actions */
-    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | ListVariable | BooleanVariable | GroupVariable;
+    export type Variable =
+        | ShortTextVariable
+        | LongTextVariable
+        | FormattedTextVariable
+        | ImageVariable
+        | ListVariable
+        | BooleanVariable
+        | GroupVariable;
 
-    enum VariableType {
+    export enum VariableType {
         shortText = 'shortText',
         longText = 'longText',
         formattedText = 'formattedText',
@@ -123,7 +140,7 @@ declare module 'grafx-studio-actions' {
         group = 'group',
     }
 
-    enum FrameType {
+    export enum FrameType {
         text = 'text',
         shape = 'shape',
         image = 'image',
@@ -134,12 +151,14 @@ declare module 'grafx-studio-actions' {
      */
     type VariableValue = string | boolean | number;
 
-    interface BaseVariable {
-        name: string;
+    interface BaseVariable extends IHasName {
         isVisible: boolean;
         isReadonly: boolean;
         isRequired: boolean;
         type: VariableType;
+
+        readonly value?: VariableValue;
+        setValue(value?: VariableValue): void;
     }
 
     interface ShortTextVariable extends BaseVariable {
