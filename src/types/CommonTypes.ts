@@ -14,7 +14,7 @@ import { ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
-import { StudioStyling } from './ConfigurationTypes';
+import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 
 export type Id = string;
 
@@ -29,6 +29,7 @@ export type ConfigType = {
     chiliEnvironmentUrl?: string;
     documentType?: DocumentType;
     studioStyling?: StudioStyling;
+    studioOptions?: StudioOptionsDeltaUpdate;
     onPageSelectionChanged?: () => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
