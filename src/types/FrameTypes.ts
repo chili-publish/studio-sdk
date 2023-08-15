@@ -47,17 +47,16 @@ export type ImageFrameUrlSource = {
 export type ImageFrameConnectorSource = {
     assetId: Id;
     id: Id;
-    type: ImageSourceTypeEnum.connector;
 };
 
-export type ImageFrameSource = ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
+export type ImageFrameSource = ImageFrameConnectorSource | ImageFrameVariableSource;
 
 // used by new getter methods
 export type ImageFrame = {
     id: Id;
     name: string;
     type: FrameTypeEnum.image;
-    src?: ImageFrameSource;
+    value?: ImageFrameSource;
     blendMode: BlendMode;
     constrainProportions: boolean;
     crop?: CropSettings | NoCropSettings;
