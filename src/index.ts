@@ -49,6 +49,7 @@ export type {
     BooleanVariable,
     ConnectorImageVariableSource,
 } from './types/VariableTypes';
+export { VariableType } from './types/VariableTypes';
 
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 
