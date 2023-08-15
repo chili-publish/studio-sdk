@@ -198,3 +198,7 @@ export type TemplateDocumentProperties = DocumentProperties;
 export interface ProjectDocumentProperties extends DocumentProperties {
     templateId: string;
 }
+
+export type DocumentLoadOptions = {
+    keepConnectors?: boolean;
+};
