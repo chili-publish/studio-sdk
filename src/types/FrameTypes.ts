@@ -57,7 +57,7 @@ export type ImageFrame = {
     id: Id;
     name: string;
     type: FrameTypeEnum.image;
-    value?: ImageFrameSource;
+    src?: ImageFrameSource;
     blendMode: BlendMode;
     constrainProportions: boolean;
     crop?: CropSettings | NoCropSettings;
