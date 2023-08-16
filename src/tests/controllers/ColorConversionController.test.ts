@@ -1,7 +1,7 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { ColorConversionController } from '../../controllers/ColorConversionController';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
-import { Color, CMYKColor, ColorType } from '../../types/ColorStyleTypes';
+import { ColorType } from '../../types/ColorStyleTypes';
 
 let mockedColorConversionController: ColorConversionController;
 
