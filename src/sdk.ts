@@ -12,6 +12,7 @@ import { AnimationController } from './controllers/AnimationController';
 import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
+import { ColorConversionController } from './controllers/ColorConversionController';
 import { ConfigurationController } from './controllers/ConfigurationController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { DebugController } from './controllers/DebugController';
@@ -68,6 +69,7 @@ export class SDK {
     font: FontController;
     experiment: ExperimentController;
     canvas: CanvasController;
+    colorConversion: ColorConversionController;
 
     private subscriber: SubscriberController;
 
@@ -107,6 +109,7 @@ export class SDK {
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
+        this.colorConversion = new ColorConversionController(this.editorAPI);
     }
 
     /**
