@@ -92,7 +92,7 @@ declare module 'grafx-studio-actions' {
         readonly width: number;
         readonly height: number;
         readonly rotation: number;
-        readonly included: boolean;
+        readonly visible: boolean;
         readonly type: FrameType;
 
         setX(x: number): void;

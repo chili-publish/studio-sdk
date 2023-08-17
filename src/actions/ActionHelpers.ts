@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { Frame, IHasName, Layout, ListVariable, Page, StylekitChacterStylesController, StylekitColorsController, StylekitParagraphStylesController, Variable, VariableValue } from 'grafx-studio-actions';
+import { Frame, FrameType, IHasName, Layout, ListVariable, Page, StylekitChacterStylesController, StylekitColorsController, StylekitParagraphStylesController, Variable, VariableValue } from 'grafx-studio-actions';
 
 /**
  * Whether the variable is the trigger for this action
@@ -228,6 +228,70 @@ export function getFrame(name: string | Frame | VariableValue): Frame {
     } catch (error) {
         throw new FrameNotFoundError(frameName);    
     }
+}
+
+/**
+ * Get the frame X position
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameX(name: string | Frame | VariableValue): number {
+    return getFrame(name).x;
+}
+
+/**
+ * Get the frame Y position
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameY(name: string | Frame | VariableValue): number {
+    return getFrame(name).y;
+}
+
+/**
+ * Get the frame width
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameWidth(name: string | Frame | VariableValue): number {
+    return getFrame(name).width;
+}
+
+/**
+ * Get the frame height
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameHeight(name: string | Frame | VariableValue): number {
+    return getFrame(name).height;
+}
+
+/**
+ * Get the frame height
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameRotation(name: string | Frame | VariableValue): number {
+    return getFrame(name).rotation;
+}
+
+/**
+ * Get the frame visibility
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameVisibility(name: string | Frame | VariableValue): boolean {
+    return getFrame(name).visible;
+}
+
+/**
+ * Get the frame type
+ * @param name frame name
+ * @returns 
+ */
+export function getFrameType(name: string | Frame | VariableValue): FrameType {
+    // TBD: Do we need this?
+    return getFrame(name).type;
 }
 
 /**
