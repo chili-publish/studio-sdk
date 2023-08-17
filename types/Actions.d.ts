@@ -149,7 +149,7 @@ declare module 'grafx-studio-actions' {
     /**
      * The different values a Variable can have depending on the Variable Type.
      */
-    type VariableValue = string | boolean | number;
+    type VariableValue = string | boolean | number| null;
 
     interface BaseVariable extends IHasName {
         isVisible: boolean;
@@ -157,8 +157,8 @@ declare module 'grafx-studio-actions' {
         isRequired: boolean;
         type: VariableType;
 
-        readonly value?: VariableValue;
-        setValue(value?: VariableValue): void;
+        readonly value: VariableValue;
+        setValue(value: VariableValue): void;
     }
 
     interface ShortTextVariable extends BaseVariable {
@@ -310,7 +310,7 @@ declare module 'grafx-studio-actions' {
          * @param value the value
          * @returns
          */
-        setValue(name: string, value?: VariableValue): void;
+        setValue(name: string, value: VariableValue): void;
 
         /**
          * Gets the value of a variable

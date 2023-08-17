@@ -47,6 +47,22 @@ export function getTriggeredVariable(): Variable {
 }
 
 /**
+ * Get the triggered variable name
+ * @returns 
+ */
+export function getTriggeredVariableName(): string {
+    return getTriggeredVariable().name;
+}
+
+/**
+ * Get the triggered variable value
+ * @returns 
+ */
+export function getTriggeredVariableValue(): VariableValue {
+    return getVariableValue(getTriggeredVariable());
+}
+
+/**
  * Gets the variable by name
  *
  * @param name name of the variable
@@ -88,7 +104,7 @@ export function getVariableValue(name: string | Variable): VariableValue {
  * @param name the variable to update
  * @param value the new variable value
  */
-export function setVariableValue(name: string | Variable, value?: VariableValue) {
+export function setVariableValue(name: string | Variable, value: VariableValue) {
     let variableName = name;
 
     if ((name as Variable).name) {
@@ -166,7 +182,7 @@ export function getSelectedFromList(variable: string | Variable){
  * @param name variable name or variable object
  * @param item item to select, undefined to deselect, or text based variable are also allowed
  */
-export function setSelectedFromList(name: string | Variable, item?: string | VariableValue) {
+export function setSelectedFromList(name: string | Variable, item: string | VariableValue) {
     let variableName = name;
 
     if ((name as Variable).name) {
