@@ -363,6 +363,13 @@ declare module 'grafx-studio-actions' {
          * Returns all layouts in the document.
          */
         all(): Layout[];
+
+        /**
+         * Returns a specific layout by name
+         * @param name the layout name
+         * @returns
+         */
+        byName(name: string): Layout;
     }
 
     /**

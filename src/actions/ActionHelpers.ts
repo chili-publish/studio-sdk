@@ -224,6 +224,13 @@ export function getTriggeredFrame(): Frame {
 }
 
 /**
+ * Get the triggered frame
+ */
+export function getTriggeredFrameName(): string {
+    return getTriggeredFrame().name;
+}
+
+/**
  * Get the frame
  *
  * @param name name of the variable
@@ -475,12 +482,42 @@ export function getTriggeredLayout(): Layout {
 }
 
 /**
+ * Get the triggered layout name
+ */
+export function getTriggeredLayoutName(): string {
+    return getTriggeredLayout().name;
+}
+
+/**
  * Get selected layout
  */
 export function getSelectedLayout(): Layout {
     return studio.layouts.selected();
 }
 
+/**
+ * Get selected layout name
+ */
+export function getSelectedLayoutName(): string {
+    return getSelectedLayout().name;
+}
+
+/**
+ * Get a layout by name
+ * @param name layout name
+ * @returns 
+ */
+export function getLayout(name: string | VariableValue): Layout {
+    if (typeof name !== 'string') {
+        throw new WrongTypeError('name', typeof name, 'string');
+    }
+
+    try {
+        return studio.layouts.byName(name);
+    } catch (error) {
+        throw new LayoutNotFoundError(name);
+    }
+}
 
 /**
  * Selects a layout
@@ -533,6 +570,20 @@ export function getTriggeredPage(): Page {
  */
 export function getPageSize(): Page {
     return studio.pages.getSize();
+}
+
+/**
+ * Get the page width
+ */
+export function getPageWidth(): number {
+    return getPageSize().width;
+}
+
+/**
+ * Get the page height
+ */
+export function getPageHeight(): number {
+    return getPageSize().height;
 }
 
  /**
