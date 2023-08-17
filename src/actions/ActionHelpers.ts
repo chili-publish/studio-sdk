@@ -3,20 +3,20 @@ import { Frame, IHasName, Layout, ListVariable, Page, StylekitChacterStylesContr
 
 /**
  * Whether the variable is the trigger for this action
- * @param variable optional variable name
+ * @param name optional variable name
  * @returns true if it was the trigger, otherwise false
  */
-export function isVariableTriggered(variable?: string | Variable): boolean {
+export function isVariableTriggered(name?: string | Variable): boolean {
     const changedVariable = triggers.changedVariable;
 
     if (!changedVariable){
         return false;
     }
 
-    let variableName = variable;
+    let variableName = name;
 
-    if (variable && (variable as Variable).name) {
-        variableName = (variable as Variable).name;
+    if (name && (name as Variable).name) {
+        variableName = (name as Variable).name;
     }
 
     if (typeof variableName !== 'string') {
@@ -49,27 +49,27 @@ export function getTriggeredVariable(): Variable {
 /**
  * Gets the variable by name
  *
- * @param variableName name of the variable
+ * @param name name of the variable
  */
-export function getVariable(variableName: string): Variable {
+export function getVariable(name: string): Variable {
     try {
-        return studio.variables.byName(variableName);
+        return studio.variables.byName(name);
     } catch (error) {
         // ignore engine error and wrap in user friendly error
-        throw new VariableNotFoundError(variableName);
+        throw new VariableNotFoundError(name);
     }
 }
 
 /**
  * Get the value of a variable
  *
- * @param variable layout name, layout object or string variable
+ * @param name variable name or variable object
  */
-export function getVariableValue(variable: string | Variable): VariableValue {
-    let variableName = variable;
+export function getVariableValue(name: string | Variable): VariableValue {
+    let variableName = name;
 
-    if ((variable as Variable).name) {
-        variableName = (variable as Variable).name;
+    if ((name as Variable).name) {
+        variableName = (name as Variable).name;
     }
 
     if (typeof variableName !== 'string') {
@@ -85,14 +85,14 @@ export function getVariableValue(variable: string | Variable): VariableValue {
 
 /**
  * sets the value of a variable
- * @param variable the variable to update
+ * @param name the variable to update
  * @param value the new variable value
  */
-export function setVariableValue(variable: string | Variable, value?: VariableValue) {
-    let variableName = variable;
+export function setVariableValue(name: string | Variable, value?: VariableValue) {
+    let variableName = name;
 
-    if ((variable as Variable).name) {
-        variableName = (variable as Variable).name;
+    if ((name as Variable).name) {
+        variableName = (name as Variable).name;
     }
 
     if (typeof variableName !== 'string') {
@@ -104,23 +104,23 @@ export function setVariableValue(variable: string | Variable, value?: VariableVa
 
 /**
  * Copies a variable value from one variable to another
- * @param from variable to copy the value from
- * @param to variable to copy the value to
+ * @param fromName variable to copy the value from
+ * @param toName variable to copy the value to
  */
-export function copyVariableValue(from: string | Variable, to: string | Variable) {
-    setVariableValue(to, getVariableValue(from));
+export function copyVariableValue(fromName: string | Variable, toName: string | Variable) {
+    setVariableValue(toName, getVariableValue(fromName));
 }
 
 /**
  * Gets all items from the list variable
- * @param variable name of the variable
+ * @param name name of the variable
  * @returns 
  */
-export function getAllOptionsFromList(variable: string | Variable): string[]{
-    let variableName = variable;
+export function getAllOptionsFromList(name: string | Variable): string[]{
+    let variableName = name;
 
-    if ((variable as Variable).name) {
-        variableName = (variable as Variable).name;
+    if ((name as Variable).name) {
+        variableName = (name as Variable).name;
     }
 
     if (typeof variableName !== 'string') {
@@ -163,14 +163,14 @@ export function getSelectedFromList(variable: string | Variable){
 
 /**
  * Set selected list variable item. The same as setVariableValue but with extra runtime checks.
- * @param variable variable name or variable object
+ * @param name variable name or variable object
  * @param item item to select, undefined to deselect, or text based variable are also allowed
  */
-export function setSelectedFromList(variable: string | Variable, item?: string | VariableValue) {
-    let variableName = variable;
+export function setSelectedFromList(name: string | Variable, item?: string | VariableValue) {
+    let variableName = name;
 
-    if ((variable as Variable).name) {
-        variableName = (variable as Variable).name;
+    if ((name as Variable).name) {
+        variableName = (name as Variable).name;
     }
 
     if (typeof variableName !== 'string') {
@@ -354,30 +354,30 @@ export function updateFrame(
 
 /**
  * Assign image variable to frame
- * @param variable variable name
- * @param frame frame name
+ * @param variableName variable name
+ * @param frameName frame name
  */
-export function assignImageVariableToFrame(variable: string | Variable, frame: string | Frame) {
-    let variableName = variable;
-    let frameName = frame;
+export function assignImageVariableToFrame(variableName: string | Variable, frameName: string | Frame) {
+    let variableOrName = variableName;
+    let frameOrName = frameName;
 
-    if ((variable as Variable).name) {
-        variableName = (variable as Variable).name;
+    if ((variableName as Variable).name) {
+        variableOrName = (variableName as Variable).name;
     }
 
-    if ((frame as Frame).name) {
-        frameName = (frame as Frame).name;
+    if ((frameName as Frame).name) {
+        frameOrName = (frameName as Frame).name;
     }
 
-    if (typeof variableName !== 'string') {
+    if (typeof variableOrName !== 'string') {
         throw new Error('from should be of type string');
     }
 
-    if (typeof frameName !== 'string') {
+    if (typeof frameOrName !== 'string') {
         throw new Error('to should be of type string');
     }
 
-    studio.frames.assignVariable(variableName, frameName);
+    studio.frames.assignVariable(variableOrName, frameOrName);
 }
 
 
@@ -408,13 +408,13 @@ export function getSelectedLayout(): Layout {
  * VariableValue is allowed to allow the use case to select the layout from the changed variable trigger.
  * This will throw an error at runtime when the argument was not able to be resolved to a string.
  *
- * @param layout layout name, layout object or string variable
+ * @param name layout name, layout object or string variable
  */
-export function selectLayout(layout: string | Layout | VariableValue) {
-    let layoutName = layout;
+export function selectLayout(name: string | Layout | VariableValue) {
+    let layoutName = name;
 
-    if ((layout as Layout).name) {
-        layoutName = (layout as Layout).name;
+    if ((name as Layout).name) {
+        layoutName = (name as Layout).name;
     }
 
     if (typeof layoutName !== 'string') {
