@@ -50,7 +50,7 @@ export type ImageFrameConnectorSource = {
     type: ImageSourceTypeEnum.connector;
 };
 
-export type ImageFrameSource = ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
+export type ImageFrameSource = ImageFrameConnectorSource | ImageFrameVariableSource | ImageFrameUrlSource;
 
 // used by new getter methods
 export type ImageFrame = {
