@@ -111,7 +111,14 @@ declare module 'grafx-studio-actions' {
     }
 
     /** Respresents a Variable inside Actions */
-    type Variable = ShortTextVariable | LongTextVariable | FormattedTextVariable | ImageVariable | ListVariable | BooleanVariable | GroupVariable;
+    type Variable =
+        | ShortTextVariable
+        | LongTextVariable
+        | FormattedTextVariable
+        | ImageVariable
+        | ListVariable
+        | BooleanVariable
+        | GroupVariable;
 
     enum VariableType {
         shortText = 'shortText',
@@ -344,6 +351,13 @@ declare module 'grafx-studio-actions' {
          * Returns all layouts in the document.
          */
         all(): Layout[];
+
+        /**
+         * Returns a specific layout by name
+         * @param name the layout name
+         * @returns
+         */
+        byName(name: string): Layout;
     }
 
     /**
