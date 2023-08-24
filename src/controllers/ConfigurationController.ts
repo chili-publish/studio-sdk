@@ -1,6 +1,6 @@
 import { EditorAPI } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import { StudioOptionsDeltaUpdate, WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The ConfigurationController allows setting editor session data. This data is not stored in the document and
@@ -39,5 +39,14 @@ export class ConfigurationController {
     setValue = async (key: WellKnownConfigurationKeys | string, value: string) => {
         const res = await this.#editorAPI;
         return res.setConfigValue(key, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method updates the studio options. Only defined options are updated, null values are ignored.
+     * @returns
+     */
+    updateStudioOptions = async (options: StudioOptionsDeltaUpdate) => {
+        const res = await this.#editorAPI;
+        return res.updateStudioOptions(JSON.stringify(options)).then((result) => getEditorResponseData<null>(result));
     };
 }
