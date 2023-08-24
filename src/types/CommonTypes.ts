@@ -50,6 +50,7 @@ export type ConfigType = {
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;
+    onAsyncError?: (asyncError: AsyncError) => void;
 };
 
 export interface EditorResponse<T> {
@@ -101,4 +102,12 @@ export interface MetaData {
 
 export interface ConnectorOptions {
     [key: string]: string;
+}
+
+export interface AsyncError {
+    message: string;
+}
+
+export interface ActionAsyncError extends AsyncError {
+    actionId: string;
 }
