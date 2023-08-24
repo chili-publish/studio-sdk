@@ -105,7 +105,6 @@ declare module 'grafx-studio-actions' {
     export interface FrameMethods {
         /**
          * Moves a frame to a specified position
-         * @param name the frame name to move
          * @param x the frame x position
          * @param y the frame y position
          * @returns
@@ -114,7 +113,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Resizes a frame to a specified size
-         * @param name the frame name to resize
          * @param width the frame width
          * @param height the frame height
          * @returns
@@ -123,7 +121,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Moves a frame to a specified X position
-         * @param name the frame name to move
          * @param x the frame x position
          * @returns
          */
@@ -131,7 +128,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Moves a frame to a specified Y position
-         * @param name the frame name to move
          * @param y the frame y position
          * @returns
          */
@@ -139,7 +135,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Resizes a frame to a specified width
-         * @param name the frame name to resize
          * @param width the frame width
          * @returns
          */
@@ -147,7 +142,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Resizes a frame to a specified height
-         * @param name the frame name to resize
          * @param height the frame height
          * @returns
          */
@@ -155,7 +149,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Rotates a frame to a specified degree
-         * @param name the frame name to rotate
          * @param rotation the frame rotation in degrees
          * @returns
          */
@@ -163,29 +156,14 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Toggles the frame visibility
-         * @param name the frame name to include/exclude
          * @param include whether the frame is included or not
          * @returns
          */
         include(include: boolean | VariableValue): void;
 
         /**
-         * Returns a list of all Frames
-         * @returns
-         */
-        all(): FrameWithMethods[];
-
-        /**
-         * Returns a specific frame by name
-         * @param name the frame name
-         * @returns
-         */
-        byName(name: string | Frame): FrameWithMethods;
-
-        /**
          * Assigns the specified image variable to the specified image frame
          * @param variableName the image variable name to assign
-         * @param frameName the image frame name to assign to
          */
         assignVariable(variableName: string | Variable): void;
     }
@@ -230,7 +208,7 @@ declare module 'grafx-studio-actions' {
 
     export interface LayoutMethods {
         /**
-         * Selects a layout by name
+         * Selects this layout
          * @returns
          */
         select(): void;
@@ -257,7 +235,6 @@ declare module 'grafx-studio-actions' {
     export interface VariableMethods {
         /**
          * Sets the value of a variable
-         * @param name the variable name
          * @param value the value
          * @returns
          */
@@ -265,7 +242,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Set the readonly state of a variable
-         * @param name the variable name
          * @param value whether the variable is readonly
          * @returns
          */
@@ -273,7 +249,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Set the required state of a variable
-         * @param name the variable name
          * @param value whether the variable is required
          * @returns
          */
@@ -281,7 +256,6 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Set the visible state of a variable
-         * @param name the variable name
          * @param value whether the variable is visible
          * @returns
          */
@@ -320,6 +294,9 @@ declare module 'grafx-studio-actions' {
         readonly isReadonly: boolean;
         readonly isRequired: boolean;
         readonly type: VariableType;
+        /**
+         * The value of the current variable
+         */
         readonly value: VariableValue;
     }
 
