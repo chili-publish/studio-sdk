@@ -254,7 +254,13 @@ export class SubscriberController {
     /**
      * Listener on async errors.
      * Async errors are thrown at times not directly tied to SDK calls.
-     * This can for example catch an action error triggered after a late event.
+     * e.g. Getting an action error triggered after a late event.
+     * 
+     * If this is an `ActionAsyncError`:
+     * - `id` refers to the action id
+     * - `event` refers to the event that triggered the action
+     * - `eventChain` refers the chain of events that lead to the action, first
+     * item being the closest parent.
      * @param asyncError error triggered asynchronously
      */
     onAsyncError = (asyncError: AsyncError) => {
