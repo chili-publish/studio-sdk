@@ -160,12 +160,6 @@ declare module 'grafx-studio-actions' {
          * @returns
          */
         include(include: boolean | VariableValue): void;
-
-        /**
-         * Assigns the specified image variable to the specified image frame
-         * @param variableName the image variable name to assign
-         */
-        assignVariable(variableName: string | Variable): void;
     }
 
     /**
@@ -412,13 +406,6 @@ declare module 'grafx-studio-actions' {
          * @returns
          */
         byName(name: string | Frame): FrameWithMethods;
-
-        /**
-         * Assigns the specified image variable to the specified image frame
-         * @param variableName the image variable name to assign
-         * @param frameName the image frame name to assign to
-         */
-        assignVariable(variableName: string | Variable, frameName: string | Frame): void;
     }
 
     /**
