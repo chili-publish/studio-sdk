@@ -4,7 +4,7 @@ import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties } f
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { DocumentAction, ToolType } from '..';
+import { ActionEditorEvent, DocumentAction, ToolType } from '..';
 import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -50,6 +50,7 @@ export type ConfigType = {
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;
+    onAsyncError?: (asyncError: AsyncError) => void;
 };
 
 export interface EditorResponse<T> {
@@ -102,3 +103,22 @@ export interface MetaData {
 export interface ConnectorOptions {
     [key: string]: string;
 }
+
+export interface ActionEventErrorData {
+    event: ActionEditorEvent;
+    actionIds: Id[];
+}
+
+interface AsyncErrorBase {
+    message: string;
+}
+
+export interface ActionAsyncError extends AsyncErrorBase {
+    id?: string;
+    event?: ActionEditorEvent;
+    eventChain?: ActionEventErrorData[];
+}
+
+export type AsyncError = ActionAsyncError;
+
+

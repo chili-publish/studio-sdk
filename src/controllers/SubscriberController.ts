@@ -1,4 +1,4 @@
-import { ConfigType, Id } from '../types/CommonTypes';
+import { AsyncError, ConfigType, Id } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -249,5 +249,22 @@ export class SubscriberController {
     onCropActiveFrameIdChanged = (id?: Id) => {
         const callBack = this.config.onCropActiveFrameIdChanged;
         callBack && callBack(id);
+    };
+
+    /**
+     * Listener on async errors.
+     * Async errors are thrown at times not directly tied to SDK calls.
+     * e.g. Getting an action error triggered after a late event.
+     * 
+     * If this is an `ActionAsyncError`:
+     * - `id` refers to the action id
+     * - `event` refers to the event that triggered the action
+     * - `eventChain` refers the chain of events that lead to the action, first
+     * item being the closest parent.
+     * @param asyncError error triggered asynchronously
+     */
+    onAsyncError = (asyncError: AsyncError) => {
+        const callBack = this.config.onAsyncError;
+        callBack && callBack(asyncError);
     };
 }
