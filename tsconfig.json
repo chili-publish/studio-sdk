@@ -18,7 +18,7 @@
         "declaration": true,
         "sourceMap": true
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "types/**/*"],
     "exclude": ["node_modules", "build"], // *** The files to not type check ***
     "typedocOptions": {
         "entryPoints": [
@@ -47,9 +47,11 @@
             "src/controllers/UndoManagerController.ts",
             "src/controllers/UtilsController.ts",
             "src/controllers/VariableController.ts",
+            "types/Actions.d.ts",
             "src/types/DocumentTypes.ts",
             "src/types/MediaConnectorTypes.ts"
         ],
+        
         "out": "docs",
         "excludePrivate": true
     }
