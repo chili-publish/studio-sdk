@@ -1,5 +1,5 @@
 import { Connection, connectToChild } from 'penpal';
-import { AsyncError, Id } from '../types/CommonTypes';
+import { Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
 
 export const validateEditorLink = (editorLink: string) => {
@@ -75,7 +75,7 @@ interface ConfigParameterTypes {
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
-    onAsyncError: (asyncError: AsyncError) => void;
+    onAsyncError: (asyncError: string) => void;
 }
 
 const Connect = (
@@ -140,7 +140,7 @@ const Connect = (
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
-                onAsyncError: params.onAsyncError,
+                asyncError: params.onAsyncError,
             },
         }),
     );

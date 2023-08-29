@@ -1,4 +1,4 @@
-import { AsyncError, ConfigType, Id } from '../types/CommonTypes';
+import { ConfigType, Id } from '../types/CommonTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -263,8 +263,8 @@ export class SubscriberController {
      * item being the closest parent.
      * @param asyncError error triggered asynchronously
      */
-    onAsyncError = (asyncError: AsyncError) => {
+    onAsyncError = (asyncError: string) => {
         const callBack = this.config.onAsyncError;
-        callBack && callBack(asyncError);
+        callBack && callBack(JSON.parse(asyncError));
     };
 }
