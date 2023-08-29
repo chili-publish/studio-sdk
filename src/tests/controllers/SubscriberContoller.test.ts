@@ -223,7 +223,7 @@ describe('SubscriberController', () => {
 
     it('should be possible to subscribe to onAsyncError', async () => {
         const asyncError: AsyncError = { message: 'hello' };
-        await mockedSubscriberController.onAsyncError(asyncError);
+        await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
 
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
