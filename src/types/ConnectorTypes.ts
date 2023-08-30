@@ -78,6 +78,7 @@ export type ConnectorInstance = {
     id: Id;
     name: string;
     iconUrl: string;
+    source: ConnectorRegistration;
 };
 
 export enum ConnectorRegistrationSource {
