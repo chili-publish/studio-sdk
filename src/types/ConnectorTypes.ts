@@ -44,7 +44,7 @@ export type ConnectorCapabilities = {
     detail?: boolean;
 };
 
-export type ConnectorRegistration = {
+interface ConnectorRegistrationBase {
     /**
      * Url to the connector.
      *
@@ -60,22 +60,19 @@ export type ConnectorRegistration = {
     source: ConnectorRegistrationSource;
 };
 
-export interface ConnectorUrlRegistration {
-    id: Id;
+export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.url;
-    /**
-     * Url to a public connector definition JSON
-     */
-    url: string;
 }
 
-export interface ConnectorGrafxRegistration {
-    /**
-     * Connector Id on GraFx Environment API.
-     */
-    id: Id;
+export interface ConnectorGrafxRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.grafx;
 }
+
+export interface ConnectorLocalRegistration extends ConnectorRegistrationBase {
+    source: ConnectorRegistrationSource.local;
+}
+
+export type ConnectorRegistration = ConnectorUrlRegistration | ConnectorGrafxRegistration;
 
 export type ConnectorInstance = {
     id: Id;
@@ -93,6 +90,12 @@ export enum ConnectorRegistrationSource {
      * Connector is hosted on GraFx Environment API.
      */
     grafx = 'grafx',
+
+    /**
+     * Connector is embedded in the document.
+     * Note: This is a temporary type; only to be used internally.
+     */
+    local = 'local',
 }
 
 export class ConnectorMapping {
