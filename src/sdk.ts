@@ -145,6 +145,7 @@ export class SDK {
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
+                onAsyncError: this.subscriber.onAsyncError,
             },
             this.setConnection,
             this.config.editorId,
