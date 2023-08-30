@@ -2,6 +2,11 @@ name: Publish package
 on:
     release:
         types: [released]
+
+defaults:
+  run:
+    working-directory: packages/sdk
+
 jobs:
     build:
         runs-on: ubuntu-latest

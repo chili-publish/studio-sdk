@@ -1,0 +1,20 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": "> 5%, not dead",
+                "modules": false
+            }
+        ],
+        "@babel/preset-typescript"
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "regenerator": true
+            }
+        ]
+    ]
+}
