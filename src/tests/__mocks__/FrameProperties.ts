@@ -8,7 +8,7 @@ export const mockSelectFrame = {
     rotationDegrees: { value: 22, isOverride: false },
     scaleX: { value: 322, isOverride: false },
     scaleY: { value: 873, isOverride: false },
-    included: { value: false, isOverride: false },
+    isVisible: { value: false, isOverride: false },
 };
 
 export const mockSelectPage = {
