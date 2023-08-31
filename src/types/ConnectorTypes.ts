@@ -72,7 +72,7 @@ export interface ConnectorLocalRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.local;
 }
 
-export type ConnectorRegistration = ConnectorUrlRegistration | ConnectorGrafxRegistration;
+export type ConnectorRegistration = ConnectorUrlRegistration | ConnectorGrafxRegistration | ConnectorLocalRegistration;
 
 export type ConnectorInstance = {
     id: Id;
@@ -197,4 +197,12 @@ export enum ConnectorEventType {
      * Don't use the 'connectorId' after receiving this event.
      */
     unloaded = 'unloaded',
+}
+
+/**
+ * Hardcoded grafx media connector until we get it from the environment.
+ */
+export const grafxMediaConnectorRegistration: ConnectorLocalRegistration = {
+    url: 'grafx-media.json',
+    source: ConnectorRegistrationSource.local,
 }
