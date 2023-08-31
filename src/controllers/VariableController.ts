@@ -262,16 +262,18 @@ export class VariableController {
 
         const variableSource = (variable as ImageVariable).value;
 
+        // Registers a new connector
+        // Note: Make sure registering is done before unregistering as it prevents
+        // losing the old connector in case of the unregistering failing
+        const newConnectorIdResponse = await this.#connector.register(connectorRegistration);
+        if (!newConnectorIdResponse.success || !newConnectorIdResponse.parsedData) return newConnectorIdResponse;
+
         // Unregisters the old connector if it exists
         if (variableSource != null && variableSource.connectorId != null) {
             const unregisterResponse = await this.#connector.unregister(variableSource.connectorId);
 
             if (!unregisterResponse.success) return unregisterResponse;
         }
-
-        // Registers a new connector
-        const newConnectorIdResponse = await this.#connector.register(connectorRegistration);
-        if (!newConnectorIdResponse.success || !newConnectorIdResponse.parsedData) return newConnectorIdResponse;
 
         const newConnectorId = newConnectorIdResponse.parsedData;
 
