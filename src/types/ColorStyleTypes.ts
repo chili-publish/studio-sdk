@@ -2,30 +2,57 @@ import { Id } from "./CommonTypes";
 
 export enum ColorType {
     rgb = 'rgb',
+    hex = 'hex',
     cmyk = 'cmyk',
-    lab = 'lab',
     gray = 'gray',
-    xyz = 'xyz',
     hsl = 'hsl',
-    spotCmyk = 'spotCmyk',
-    spotRgb = 'spotRgb',
-    custom = 'custom',
+    spot = 'spot',
 }
 
-export type ColorUpdate = {
+export type RGBColor = {
     r: number;
     g: number;
     b: number;
     type: ColorType;
 };
 
-export type Color = {
+export type CMYKColor = {
+    c: number;
+    m: number;
+    y: number;
+    k: number;
     type: ColorType;
-    r: number;
-    g: number;
-    b: number;
-    displayValue?: string;
 };
+
+export type HSLColor = {
+    h: number;
+    s: number;
+    l: number;
+    type: ColorType;
+};
+
+export type GrayColor = {
+    g: number;
+    type: ColorType;
+};
+
+export type SpotColor = {
+    spotName: string;
+    c: number;
+    m: number;
+    y: number;
+    k: number;
+    type: ColorType;
+};
+
+export type HexColor = {
+    value: string;
+    type: ColorType;
+};
+
+export type Color = RGBColor | CMYKColor | HSLColor | GrayColor | SpotColor | HexColor;
+
+export type ColorUpdate = Color;
 
 export type DocumentColor = {
     id: string;
