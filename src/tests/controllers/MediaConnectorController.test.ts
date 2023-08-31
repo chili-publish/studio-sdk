@@ -14,8 +14,7 @@ const mockedEditorApi: EditorAPI = {
     mediaConnectorRemove: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorCopy: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorGetQueryOptions: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorGetDownloadOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    mediaConnectorGetMappingConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -27,8 +26,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'mediaConnectorRemove');
     jest.spyOn(mockedEditorApi, 'mediaConnectorCopy');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetCapabilities');
-    jest.spyOn(mockedEditorApi, 'mediaConnectorGetQueryOptions');
-    jest.spyOn(mockedEditorApi, 'mediaConnectorGetDownloadOptions');
+    jest.spyOn(mockedEditorApi, 'mediaConnectorGetMappingConfiguration');
 });
 
 afterEach(() => {
@@ -110,16 +108,10 @@ describe('MediaConnectorController', () => {
         expect(mockedEditorApi.mediaConnectorGetCapabilities).toHaveBeenLastCalledWith(connectorId);
     });
 
-    it('Should call the getQueryOptions method', async () => {
-        await mockedMediaConnectorController.getQueryOptions(connectorId);
-        expect(mockedEditorApi.mediaConnectorGetQueryOptions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.mediaConnectorGetQueryOptions).toHaveBeenLastCalledWith(connectorId);
-    });
-
-    it('Should call the getDownloadOptions method', async () => {
-        await mockedMediaConnectorController.getDownloadOptions(connectorId);
-        expect(mockedEditorApi.mediaConnectorGetDownloadOptions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.mediaConnectorGetDownloadOptions).toHaveBeenLastCalledWith(connectorId);
+    it('Should call the getMappingConfigurations method', async () => {
+        await mockedMediaConnectorController.getMappingConfigurations(connectorId);
+        expect(mockedEditorApi.mediaConnectorGetMappingConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.mediaConnectorGetMappingConfiguration).toHaveBeenLastCalledWith(connectorId);
     });
 
     it('Should call the detail method', async () => {

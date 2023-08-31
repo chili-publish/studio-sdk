@@ -104,6 +104,19 @@ export interface ConnectorOptions {
     [key: string]: string;
 }
 
+export enum ConnectorMappingType {
+    text = 'text',
+    boolean = 'boolean',
+}
+
+export interface ConnectorMappingValue {
+    readonly name: string;
+    readonly displayName: string;
+    readonly type: ConnectorMappingType;
+}
+
+export type ConnectorMappings = ConnectorMappingValue[];
+
 export interface ActionEventErrorData {
     event: ActionEditorEvent;
     actionIds: Id[];
@@ -120,5 +133,3 @@ export interface ActionAsyncError extends AsyncErrorBase {
 }
 
 export type AsyncError = ActionAsyncError;
-
-

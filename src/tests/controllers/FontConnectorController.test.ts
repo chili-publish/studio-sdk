@@ -14,8 +14,7 @@ const mockedEditorApi: EditorAPI = {
     fontConnectorRemove: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
-    fontConnectorGetQueryOptions: async () => getEditorResponseData(castToEditorResponse(null)),
-    fontConnectorGetDownloadOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    fontConnectorGetMappingConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -27,8 +26,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'fontConnectorUpload');
     jest.spyOn(mockedEditorApi, 'fontConnectorDetail');
     jest.spyOn(mockedEditorApi, 'fontConnectorGetCapabilities');
-    jest.spyOn(mockedEditorApi, 'fontConnectorGetQueryOptions');
-    jest.spyOn(mockedEditorApi, 'fontConnectorGetDownloadOptions');
+    jest.spyOn(mockedEditorApi, 'fontConnectorGetMappingConfiguration');
 });
 
 afterEach(() => {
@@ -108,16 +106,12 @@ describe('FontConnectorController', () => {
         expect(mockedEditorApi.fontConnectorGetCapabilities).toHaveBeenLastCalledWith(connectorId);
     });
 
-    it('Should call the getQueryOptions method', async () => {
-        await mockedFontConnectorController.getQueryOptions(connectorId);
-        expect(mockedEditorApi.fontConnectorGetQueryOptions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorGetQueryOptions).toHaveBeenLastCalledWith(connectorId);
+    it('Should call the getMappingConfigurations method', async () => {
+        await mockedFontConnectorController.getMappingConfigurations(connectorId);
+        expect(mockedEditorApi.fontConnectorGetMappingConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.fontConnectorGetMappingConfiguration).toHaveBeenLastCalledWith(connectorId);
     });
-    it('Should call the getDownloadOptions method', async () => {
-        await mockedFontConnectorController.getDownloadOptions(connectorId);
-        expect(mockedEditorApi.fontConnectorGetDownloadOptions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorGetDownloadOptions).toHaveBeenLastCalledWith(connectorId);
-    });
+
     it('Should call the detail method', async () => {
         await mockedFontConnectorController.detail(connectorId, fontId);
         expect(mockedEditorApi.fontConnectorDetail).toHaveBeenCalledTimes(1);

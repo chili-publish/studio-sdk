@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
+import { ConnectorMappings, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaType,
@@ -125,31 +125,17 @@ export class FontConnectorController {
     };
 
     /**
-     * All connectors have a certain set of queryOptions they allow to be passed in the query context. This
-     * method allows you to discover what options are available for a given connector. If you want to use any of these
-     * options, they need to be passed in the `context` parameter of the `query` api method.
-     * @param id unique id of the Font connector
-     * @returns query options
+     * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
+     * method allows you to discover which mappings are available for a given connector. If you want to use any of these
+     * mappings, they will be available in the `context` parameter of any connector method.
+     * @param id unique id of the media connector
+     * @returns connector mappings
      */
-    getQueryOptions = async (id: string) => {
+    getMappingConfigurations = async (id: string) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorGetQueryOptions(id)
-            .then((result) => getEditorResponseData<ConnectorOptions>(result));
-    };
-
-    /**
-     * All connectors have a certain set of downloadOptions they allow to be passed in the download context. This
-     * method allows you to discover what options are available for a given connector. If you want to use any of these
-     * options, they need to be passed in the `context` parameter of the `download` api method.
-     * @param id unique id of the Font connector
-     * @returns download options
-     */
-    getDownloadOptions = async (id: string) => {
-        const res = await this.#editorAPI;
-        return res
-            .fontConnectorGetDownloadOptions(id)
-            .then((result) => getEditorResponseData<ConnectorOptions>(result));
+            .fontConnectorGetMappingConfiguration(id)
+            .then((result) => getEditorResponseData<ConnectorMappings>(result));
     };
 
     /**
