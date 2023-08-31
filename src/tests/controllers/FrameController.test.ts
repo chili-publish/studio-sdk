@@ -33,7 +33,7 @@ const mockedEditorApi: EditorAPI = {
     setFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameY: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameRotation: async () => getEditorResponseData(castToEditorResponse(null)),
-    setFrameVisibility: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
     removeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -86,7 +86,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameX');
     jest.spyOn(mockedEditorApi, 'setFrameY');
     jest.spyOn(mockedEditorApi, 'setFrameRotation');
-    jest.spyOn(mockedEditorApi, 'setFrameVisibility');
+    jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
     jest.spyOn(mockedEditorApi, 'removeFrame');
     jest.spyOn(mockedEditorApi, 'resetFrame');
     jest.spyOn(mockedEditorApi, 'resetFrameX');
@@ -219,10 +219,15 @@ describe('FrameController', () => {
         expect(mockedEditorApi.renameFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.renameFrame).toHaveBeenCalledWith(id, 'TEST');
     });
-    it('Should be possible to set the frame visibility', async () => {
+    it('Should be possible to set the frame visibility (deprecated)', async () => {
         await mockedFrameController.setVisibility(id, false);
-        expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameVisibility).toHaveBeenCalledWith(id, false);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledWith(id, false);
+    });
+    it('Should be possible to set the frame visibility', async () => {
+        await mockedFrameController.setIsVisible(id, false);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledWith(id, false);
     });
     it('Should be possible to remove a frame', async () => {
         await mockedFrameController.remove(id);
