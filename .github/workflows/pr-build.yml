@@ -1,9 +1,5 @@
-name: Build and deploy PR
+name: Build and deploy PR - SDK
 on: [pull_request]
-
-defaults:
-  run:
-    working-directory: packages/sdk
 
 jobs:
     build:
@@ -43,10 +39,11 @@ jobs:
               uses: EnricoMi/publish-unit-test-result-action@v1
               if: always()
               with:
-                  files: coverage/**/*.xml
+                  files: packages/sdk/coverage/**/*.xml
             - name: build code
               run: yarn build
             - name: copy file branch
+              working-directory: packages/sdk
               run: |
                   path=upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R coverage/lcov-report/index.html coverage/lcov-report/coverage.html &&
                   cp -R coverage/lcov-report/src coverage/lcov-report/coverage.html coverage/lcov-report/base.css coverage/lcov-report/prettify.css ${path%"/merge"}

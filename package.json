@@ -1,0 +1,23 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/actions",
+    "packages/sdk",
+    "packages/connectors"
+  ],
+  "scripts": {
+    "clean": "yarn workspaces run clean",
+    "build": "yarn clean && yarn workspaces run build",
+    "test": "yarn workspaces run test",
+    "ci-lint": "yarn workspaces run ci-lint",
+    "cover": "yarn workspaces run cover",
+    "make-badges": "yarn --cwd packages/sdk make-badges",
+    "validate-licenses": "node validate_licenses.js",
+    "format": "yarn workspaces run format",
+    "format-staged": "yarn workspaces run format-staged"
+  },
+  "devDependencies": {    
+    "glob": "10.3.4"
+  }
+}

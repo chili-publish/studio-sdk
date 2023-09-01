@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es2020"
+        ],
+        "noEmitHelpers": false,
+        "outDir": "dist",
+        "module": "es2020",
+        "moduleResolution": "Node",
+        "declarationDir": "dist",
+        "declaration": true,
+        "skipLibCheck": true,
+    },
+    "include": [
+        "./src/**/*",
+        "./types/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "../../node_modules/**/*",
+    ]
+}

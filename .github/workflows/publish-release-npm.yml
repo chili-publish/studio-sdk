@@ -3,10 +3,6 @@ on:
     release:
         types: [released]
 
-defaults:
-  run:
-    working-directory: packages/sdk
-
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -41,13 +37,16 @@ jobs:
             - name: build code
               run: yarn build
             - name: publish build
+              working-directory: packages/sdk
               run: yarn publish --tag ${{ github.event.release.name }} --tag latest
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
             - name: get new npm version
               id: package-version
+              working-directory: packages/sdk
               uses: martinbeentjes/npm-get-version-action@master
             - name: copy file branch
+              working-directory: packages/sdk
               run: |
                   path=upload/latest
                   versionpath=upload/${{ github.event.release.name }}
