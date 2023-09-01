@@ -1,0 +1,25 @@
+{
+    "name": "studio-sdk dev container",
+    
+    "build": {
+        "dockerfile": "node:latest",
+        "args": {
+            "NODE_VERSION": "18"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.eslint": true
+                },
+                "terminal.integrated.shell.linux": "/bin/bash"
+            }
+        }
+    }
+}
