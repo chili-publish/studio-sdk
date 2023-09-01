@@ -78,3 +78,16 @@ export interface ChiliResponse extends ChiliBody {
     readonly type: "basic" | "cors" | "default" | "error" | "opaque" | "opaqueredirect";
     readonly url: string;
 }
+
+export enum ConnectorMappingType {
+    text = 'text',
+    boolean = 'boolean',
+}
+
+export interface ConnectorMappingValue {
+    readonly name: string;
+    readonly displayName: string;
+    readonly type: ConnectorMappingType;
+}
+
+export type ConnectorMappings = ConnectorMappingValue[];

@@ -1,12 +1,11 @@
-import { QueryOptions, Dictionary, ArrayBufferPointer, DownloadType } from "./Connector.Shared";
+import { QueryOptions, Dictionary, ArrayBufferPointer, DownloadType, ConnectorMappings } from "./Connector.Shared";
 
 declare module "grafx-studio-fontconnector" {
     interface GrafxFontConnector {
-        detail(id): Font;
+        detail(id, context: Dictionary): Font;
         query(options: QueryOptions, context: Dictionary): Promise<FontPage>;
         download(id: string, previewType: DownloadType, context: Dictionary): Promise<ArrayBufferPointer>
-        getQueryOptions(): string[] | null;
-        getDownloadOptions(): string[] | null;
+        getMappingConfigurations(): ConnectorMappings | null;
         getCapabilities(): FontConnectorCapabilities;
     }
 
