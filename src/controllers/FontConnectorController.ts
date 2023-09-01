@@ -41,8 +41,8 @@ export class FontConnectorController {
      * Query a specific FontConnector for data using both standardized queryOptions and the dynamic
      * context as parameters. This call returns an array of Font items.
      * @param id unique id of the Font connector
-     * @param queryOptions stringified instance of `QueryOptions`
-     * @param context stringified `Map<string, string>` of dynamic options
+     * @param queryOptions query options
+     * @param context context that will be available in the connector script.
      * @returns array of font items
      */
     query = async (id: string, queryOptions: QueryOptions, context: MetaData) => {
@@ -56,11 +56,14 @@ export class FontConnectorController {
      * Returns a single font using a specific FontConnector. The connector needs to list `detail` as a supported capability.
      * @param id unique id of the Font connector
      * @param fontId unique id of the Font
+     * @param context context that will be available in the connector script.
      * @returns font details
      */
-    detail = async (id: string, fontId: string) => {
+    detail = async (id: string, fontId: string, context: MetaData) => {
         const res = await this.#editorAPI;
-        return res.fontConnectorDetail(id, fontId).then((result) => getEditorResponseData<Font>(result));
+        return res
+            .fontConnectorDetail(id, fontId, JSON.stringify(context))
+            .then((result) => getEditorResponseData<Font>(result));
     };
 
     /**
@@ -70,7 +73,7 @@ export class FontConnectorController {
      * @param id unique id of the Font connector
      * @param fontId unique id of the Font to download
      * @param downloadType hint to the Font connector about desired quality of the downloaded Font
-     * @param context dynamic map of additional options potentially used by the connector
+     * @param context context that will be available in the connector script.
      * @returns
      */
     download = async (
@@ -91,22 +94,28 @@ export class FontConnectorController {
      * @param id unique id of the Font connector
      * @param fontId unique id of the Font to upload
      * @param blob byte array representation of the Font to upload
+     * @param context context that will be available in the connector script.
      * @returns
      */
-    upload = async (id: string, fontId: string, blob: Uint8Array) => {
+    upload = async (id: string, fontId: string, blob: Uint8Array, context: MetaData) => {
         const res = await this.#editorAPI;
-        return res.fontConnectorUpload(id, fontId, blob).then((result) => getEditorResponseData<null>(result));
+        return res
+            .fontConnectorUpload(id, fontId, blob, JSON.stringify(context))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Depending on the connector capabilities, removes Font identified by `fontId` from the connector's backend storage
      * @param id unique id of the Font connector
      * @param fontId unique id of the Font to download
+     * @param context context that will be available in the connector script.
      * @returns
      */
-    remove = async (id: string, fontId: string) => {
+    remove = async (id: string, fontId: string, context: MetaData) => {
         const res = await this.#editorAPI;
-        return res.fontConnectorRemove(id, fontId).then((result) => getEditorResponseData<null>(result));
+        return res
+            .fontConnectorRemove(id, fontId, JSON.stringify(context))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -115,12 +124,13 @@ export class FontConnectorController {
      * @param id unique id of the Font connector
      * @param fontId unique id of the Font to download
      * @param newName name of the copied Font on the connector's backend
+     * @param context context that will be available in the connector script.
      * @returns
      */
-    copy = async (id: string, fontId: string, newName: string) => {
+    copy = async (id: string, fontId: string, newName: string, context: MetaData) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorCopy(id, fontId, newName)
+            .fontConnectorCopy(id, fontId, newName, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 

@@ -54,9 +54,14 @@ describe('FontConnectorController', () => {
     const blob = new Uint8Array([1, 2, 3]);
 
     it('Should call the copy method', async () => {
-        await mockedFontConnectorController.copy(connectorId, fontId, 'newName');
+        await mockedFontConnectorController.copy(connectorId, fontId, 'newName', context);
         expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledWith(connectorId, fontId, 'newName');
+        expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledWith(
+            connectorId,
+            fontId,
+            'newName',
+            JSON.stringify(context),
+        );
     });
 
     it('Should call the query method', async () => {
@@ -89,15 +94,20 @@ describe('FontConnectorController', () => {
     });
 
     it('Should call the remove method', async () => {
-        await mockedFontConnectorController.remove(connectorId, fontId);
+        await mockedFontConnectorController.remove(connectorId, fontId, context);
         expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledWith(connectorId, fontId);
+        expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledWith(connectorId, fontId, JSON.stringify(context));
     });
 
     it('Should call the upload method', async () => {
-        await mockedFontConnectorController.upload(connectorId, fontId, blob);
+        await mockedFontConnectorController.upload(connectorId, fontId, blob, context);
         expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledWith(connectorId, fontId, blob);
+        expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledWith(
+            connectorId,
+            fontId,
+            blob,
+            JSON.stringify(context),
+        );
     });
 
     it('Should call the getCapabilities method', async () => {
@@ -113,8 +123,12 @@ describe('FontConnectorController', () => {
     });
 
     it('Should call the detail method', async () => {
-        await mockedFontConnectorController.detail(connectorId, fontId);
+        await mockedFontConnectorController.detail(connectorId, fontId, context);
         expect(mockedEditorApi.fontConnectorDetail).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorDetail).toHaveBeenLastCalledWith(connectorId, fontId);
+        expect(mockedEditorApi.fontConnectorDetail).toHaveBeenLastCalledWith(
+            connectorId,
+            fontId,
+            JSON.stringify(context),
+        );
     });
 });
