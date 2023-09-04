@@ -471,7 +471,7 @@ declare module 'grafx-studio-actions' {
          * Returns the selected layout
          * @returns
          */
-        selected(): LayoutWithMethods;
+        getSelected(): LayoutWithMethods;
 
         /**
          * Selects a layout by name
