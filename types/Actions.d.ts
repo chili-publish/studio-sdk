@@ -156,10 +156,10 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Toggles the frame visibility
-         * @param include whether the frame is included or not
+         * @param isVisible whether the frame is visible or not
          * @returns
          */
-        include(include: boolean | VariableValue): void;
+        setVisible(isVisible: boolean | VariableValue): void;
     }
 
     /**
@@ -250,10 +250,10 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Set the visible state of a variable
-         * @param value whether the variable is visible
+         * @param isVisible whether the variable is visible
          * @returns
          */
-        setVisible(value: boolean | VariableValue): void;
+        setVisible(isVisible: boolean | VariableValue): void;
     }
 
     /**
@@ -457,10 +457,10 @@ declare module 'grafx-studio-actions' {
         /**
          * Set the visible state of a variable
          * @param name the variable name
-         * @param value whether the variable is visible
+         * @param isVisible whether the variable is visible
          * @returns
          */
-        setVisible(name: string | Variable, value: boolean | VariableValue): void;
+        setVisible(name: string | Variable, isVisible: boolean | VariableValue): void;
     }
 
     /**
