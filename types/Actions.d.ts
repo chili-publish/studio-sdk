@@ -98,7 +98,7 @@ declare module 'grafx-studio-actions' {
         readonly width: number;
         readonly height: number;
         readonly rotation: number;
-        readonly included: boolean;
+        readonly isVisible: boolean;
         readonly type: FrameType;
     }
 
@@ -388,11 +388,11 @@ declare module 'grafx-studio-actions' {
 
         /**
          * Toggles the frame visibility
-         * @param name the frame name to include/exclude
-         * @param include whether the frame is included or not
+         * @param name the frame name to show/hide
+         * @param isVisible whether the frame is visible or not
          * @returns
          */
-        include(name: string | Frame, include: boolean | VariableValue): void;
+        setVisible(name: string | Frame, isVisible: boolean | VariableValue): void;
 
         /**
          * Returns a list of all Frames

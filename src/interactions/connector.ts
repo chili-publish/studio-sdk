@@ -75,6 +75,7 @@ interface ConfigParameterTypes {
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
+    onAsyncError: (asyncError: string) => void;
 }
 
 const Connect = (
@@ -139,6 +140,7 @@ const Connect = (
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
+                asyncError: params.onAsyncError,
             },
         }),
     );
