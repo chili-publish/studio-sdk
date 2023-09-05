@@ -1,12 +1,10 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
-    ImageVariable,
     Variable,
     VariableType,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { ConnectorController } from './ConnectorController';
 
 /**
  * The VariableController is responsible for all communication regarding the variables.
@@ -17,14 +15,12 @@ export class VariableController {
      * @ignore
      */
     #editorAPI: EditorAPI;
-    #connector: ConnectorController;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, connector: ConnectorController) {
+    constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
-        this.#connector = connector;
     }
 
     /**
@@ -68,7 +64,9 @@ export class VariableController {
     };
 
     /**
-     * This method removes a list of variables
+     * This method removes a list of variables.
+     * 
+     * All connectors linked to the variables will be unregistered.
      * @param ids list of the variables to be removed
      * @returns
      */
@@ -233,53 +231,14 @@ export class VariableController {
     /**
      * This method sets the image variable connector. Setting a connector will
      * automatically remove the assetId linked to the connector if present.
+     * If a connector was the source of the variable, it will be unregistered.
      * @param id The ID of the image variable to update
      * @param connectorRegistration registration object containing all details about the connector
      * @returns
      */
     setImageVariableConnector = async (id: string, connectorRegistration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-
-        // Gets the variable
-        const variableResponse = await this.getById(id);
-        if (!variableResponse.success || !variableResponse.parsedData) return variableResponse;
-
-        const variable = variableResponse.parsedData;
-
-        // Checks if this is an image variable
-        if (variable.type != VariableType.image) {
-            return getEditorResponseData<null>(
-                {
-                    data: null,
-                    success: false,
-                    error: `Variable type should be 'image' but is '${variable.type}'`,
-                    status: 50000,
-                    parsedData: undefined,
-                },
-                false,
-            );
-        }
-
-        const variableSource = (variable as ImageVariable).value;
-
-        // Registers a new connector
-        // Note: Make sure registering is done before unregistering as it prevents
-        // losing the old connector in case of the registration failing
-        const newConnectorIdResponse = await this.#connector.register(connectorRegistration);
-        if (!newConnectorIdResponse.success || !newConnectorIdResponse.parsedData) return newConnectorIdResponse;
-        const newConnectorId = newConnectorIdResponse.parsedData;
-
-        // Unregisters the old connector if it exists
-        if (variableSource != null && variableSource.connectorId != null) {
-            const unregisterResponse = await this.#connector.unregister(variableSource.connectorId);
-
-            if (!unregisterResponse.success) return unregisterResponse;
-        }
-
-
-        // Sets the new connector to the variable
-        return res.setImageVariableConnector(id, newConnectorId);
-
+        return res.setImageVariableConnector(id, connectorRegistration);
     };
 
     /**
