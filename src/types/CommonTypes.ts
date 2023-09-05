@@ -104,18 +104,18 @@ export interface ConnectorOptions {
     [key: string]: string;
 }
 
-export enum ConnectorMappingType {
+export enum ConnectorConfigValueType {
     text = 'text',
     boolean = 'boolean',
 }
 
-export interface ConnectorMappingValue {
+export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
-    readonly type: ConnectorMappingType;
+    readonly type: ConnectorConfigValueType;
 }
 
-export type ConnectorMappings = ConnectorMappingValue[];
+export type ConnectorConfigOptions = ConnectorConfigValue[];
 
 export interface ActionEventErrorData {
     event: ActionEditorEvent;

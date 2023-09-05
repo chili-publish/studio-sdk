@@ -5,7 +5,7 @@ declare module "grafx-studio-fontconnector" {
         detail(id, context: Dictionary): Font;
         query(options: QueryOptions, context: Dictionary): Promise<FontPage>;
         download(id: string, previewType: DownloadType, context: Dictionary): Promise<ArrayBufferPointer>
-        getMappingConfigurations(): ConnectorMappings | null;
+        getConfigurationOptionss(): ConnectorMappings | null;
         getCapabilities(): FontConnectorCapabilities;
     }
 

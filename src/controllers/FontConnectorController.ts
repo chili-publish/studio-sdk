@@ -1,4 +1,4 @@
-import { ConnectorMappings, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
+import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaType,
@@ -141,11 +141,11 @@ export class FontConnectorController {
      * @param id unique id of the media connector
      * @returns connector mappings
      */
-    getMappingConfigurations = async (id: string) => {
+    getConfigurationOptions = async (id: string) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorGetMappingConfiguration(id)
-            .then((result) => getEditorResponseData<ConnectorMappings>(result));
+            .fontConnectorGetConfigurationOptions(id)
+            .then((result) => getEditorResponseData<ConnectorConfigOptions>(result));
     };
 
     /**

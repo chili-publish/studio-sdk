@@ -7,7 +7,7 @@ export interface MediaConnector {
     upload(name: string, blob: ArrayBufferPointer, context: Dictionary): Promise<Media>
     remove(id: string, context: Dictionary): Promise<boolean>
     copy(id: string, newName: string, context: Dictionary): Promise<Media>
-    getMappingConfigurations(): ConnectorMappings | null;
+    getConfigurationOptionss(): ConnectorMappings | null;
     getCapabilities(): MediaConnectorCapabilities;
 }
 
