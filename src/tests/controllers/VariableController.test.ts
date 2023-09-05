@@ -12,7 +12,6 @@ describe('VariableController', () => {
     let mockedVariableController: VariableController;
 
     const connectorId = 'connectorId';
-    const newConnectorId = 'newConnectorId';
     const variableId = 'variableId';
 
     const variable: ImageVariable = {
@@ -200,15 +199,15 @@ describe('VariableController', () => {
     });
 
     it('set image variable connector', async () => {
-        const connectorRegistration: ConnectorRegistration = {
+        const registration: ConnectorRegistration = {
             url: 'test://test.test',
             source: ConnectorRegistrationSource.url
         };
 
-        await mockedVariableController.setImageVariableConnector(variableId, connectorRegistration);
+        await mockedVariableController.setImageVariableConnector(variableId, registration);
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, connectorRegistration);
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
 
     });
 
