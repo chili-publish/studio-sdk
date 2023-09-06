@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { Frame, FrameType, IHasName, Layout, ListVariable, Page, StylekitChacterStylesController, StylekitColorsController, StylekitParagraphStylesController, Variable, VariableValue } from 'grafx-studio-actions';
+import { Frame, FrameType, FrameWithMethods, HasName, Layout, ListVariable, Page, StylekitChacterStylesController, StylekitColorsController, StylekitParagraphStylesController, Variable, VariableValue } from 'grafx-studio-actions';
 
 /**
  * Whether the variable is the trigger for this action
@@ -235,7 +235,7 @@ export function getTriggeredFrameName(): string {
  *
  * @param name name of the variable
  */
-export function getFrame(name: string | Frame | VariableValue): Frame {
+export function getFrame(name: string | Frame | VariableValue): FrameWithMethods {
     let frameName = name;
 
     if ((name as Frame).name) {
@@ -304,7 +304,7 @@ export function getFrameRotation(name: string | Frame | VariableValue): number {
  * @returns 
  */
 export function getFrameVisibility(name: string | Frame | VariableValue): boolean {
-    return getFrame(name).visible;
+    return getFrame(name).isVisible;
 }
 
 /**
@@ -440,35 +440,6 @@ export function updateFrame(
 }
 
 /**
- * Assign image variable to frame
- * @param variableName variable name
- * @param frameName frame name
- */
-export function assignImageVariableToFrame(variableName: string | Variable, frameName: string | Frame) {
-    let variableOrName = variableName;
-    let frameOrName = frameName;
-
-    if ((variableName as Variable).name) {
-        variableOrName = (variableName as Variable).name;
-    }
-
-    if ((frameName as Frame).name) {
-        frameOrName = (frameName as Frame).name;
-    }
-
-    if (typeof variableOrName !== 'string') {
-        throw new Error('from should be of type string');
-    }
-
-    if (typeof frameOrName !== 'string') {
-        throw new Error('to should be of type string');
-    }
-
-    studio.frames.assignVariable(variableOrName, frameOrName);
-}
-
-
-/**
  * Get the triggered layout
  */
 export function getTriggeredLayout(): Layout {
@@ -492,7 +463,7 @@ export function getTriggeredLayoutName(): string {
  * Get selected layout
  */
 export function getSelectedLayout(): Layout {
-    return studio.layouts.selected();
+    return studio.layouts.getSelected();
 }
 
 /**
@@ -597,28 +568,28 @@ export function setPageSize(width: number | VariableValue, height: number | Vari
     studio.pages.setSize(width, height);
  }
 
-export function copyColorFromTo(from: string | IHasName, to: string | IHasName) {
+export function copyColorFromTo(from: string | HasName, to: string | HasName) {
     copyStylekitItem(studio.stylekit.colors, from, to);
 }
 
-export function copyParagraphStyleFromTo(from: string | IHasName, to: string | IHasName) {
+export function copyParagraphStyleFromTo(from: string | HasName, to: string | HasName) {
     copyStylekitItem(studio.stylekit.paragraphStyles, from, to);
 }
 
-export function copyCharacterStyleFromTo(from: string | IHasName, to: string | IHasName) {
+export function copyCharacterStyleFromTo(from: string | HasName, to: string | HasName) {
     copyStylekitItem(studio.stylekit.characterStyles, from, to);
 }
 
-export function copyStylekitItem(stylekit: StylekitChacterStylesController | StylekitParagraphStylesController | StylekitColorsController, from: string | IHasName, to: string | IHasName) {
+export function copyStylekitItem(stylekit: StylekitChacterStylesController | StylekitParagraphStylesController | StylekitColorsController, from: string | HasName, to: string | HasName) {
     let fromName = from;
     let toName = to;
 
-    if ((from as IHasName).name) {
-        fromName = (from as IHasName).name;
+    if ((from as HasName).name) {
+        fromName = (from as HasName).name;
     }
 
-    if ((to as IHasName).name) {
-        toName = (to as IHasName).name;
+    if ((to as HasName).name) {
+        toName = (to as HasName).name;
     }
 
     if (typeof fromName !== 'string') {
