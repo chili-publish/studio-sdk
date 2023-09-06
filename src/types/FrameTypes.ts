@@ -13,7 +13,7 @@ export type FrameLayoutType = {
     rotationDegrees: PropertyState<number>;
     scaleX: PropertyState<number>;
     scaleY: PropertyState<number>;
-    included: PropertyState<boolean>;
+    isVisible: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
     hasImageCrop: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
@@ -50,7 +50,7 @@ export type ImageFrameConnectorSource = {
     type: ImageSourceTypeEnum.connector;
 };
 
-export type ImageFrameSource = ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
+export type ImageFrameSource = ImageFrameConnectorSource | ImageFrameVariableSource | ImageFrameUrlSource;
 
 // used by new getter methods
 export type ImageFrame = {

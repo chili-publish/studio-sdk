@@ -9,7 +9,7 @@ import { ToolType } from '../../utils/enums';
 import { ConnectorStateType } from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedAnimation: FrameAnimationType;
@@ -43,6 +43,7 @@ const mockEditorApi: EditorAPI = {
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -76,6 +77,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
+    jest.spyOn(mockEditorApi, 'onAsyncError');
 });
 
 afterEach(() => {
@@ -217,5 +219,13 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledWith(id);
+    });
+
+    it('should be possible to subscribe to onAsyncError', async () => {
+        const asyncError: AsyncError = { message: 'hello' };
+        await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
+
+        expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
     });
 });

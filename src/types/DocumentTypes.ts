@@ -134,7 +134,7 @@ export interface FrameProperty {
     rotationOriginY?: number;
     scaleX?: number;
     scaleY?: number;
-    included?: boolean;
+    isVisible?: boolean;
     type: FramePropertiesType;
 }
 
@@ -148,7 +148,7 @@ export interface TopFrameProperty extends FrameProperty {
     rotationOriginY: number;
     scaleX: number;
     scaleY: number;
-    included: boolean;
+    isVisible: boolean;
 }
 
 export interface FrameAnimation {
@@ -198,3 +198,7 @@ export type TemplateDocumentProperties = DocumentProperties;
 export interface ProjectDocumentProperties extends DocumentProperties {
     templateId: string;
 }
+
+export type DocumentLoadOptions = {
+    keepConnectors?: boolean;
+};
