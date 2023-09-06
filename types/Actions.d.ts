@@ -102,6 +102,66 @@ declare module 'grafx-studio-actions' {
         readonly type: FrameType;
     }
 
+    export interface FrameMethods {
+        /**
+         * Moves a frame to a specified position
+         * @param x the frame x position
+         * @param y the frame y position
+         * @returns
+         */
+        move(x: number | VariableValue, y: number | VariableValue): void;
+
+        /**
+         * Resizes a frame to a specified size
+         * @param width the frame width
+         * @param height the frame height
+         * @returns
+         */
+        resize(width: number | VariableValue, height: number | VariableValue): void;
+
+        /**
+         * Moves a frame to a specified X position
+         * @param x the frame x position
+         * @returns
+         */
+        setX(x: number | VariableValue): void;
+
+        /**
+         * Moves a frame to a specified Y position
+         * @param y the frame y position
+         * @returns
+         */
+        setY(y: number | VariableValue): void;
+
+        /**
+         * Resizes a frame to a specified width
+         * @param width the frame width
+         * @returns
+         */
+        setWidth(width: number | VariableValue): void;
+
+        /**
+         * Resizes a frame to a specified height
+         * @param height the frame height
+         * @returns
+         */
+        setHeight(height: number | VariableValue): void;
+
+        /**
+         * Rotates a frame to a specified degree
+         * @param rotation the frame rotation in degrees
+         * @returns
+         */
+        setRotation(rotation: number | VariableValue): void;
+
+        /**
+         * Toggles the frame visibility
+         * @param isVisible whether the frame is visible or not
+         * @returns
+         */
+        setVisible(isVisible: boolean | VariableValue): void;
+    }
+
     /**
      * Represents a Frame inside Actions
      * Contains frame methods that can be executed on this instance.
@@ -371,7 +431,7 @@ declare module 'grafx-studio-actions' {
          * @param value the value
          * @returns
          */
-        setValue(name: string | Variable, value?: VariableValue): void;
+        setValue(name: string | Variable, value: VariableValue): void;
 
         /**
          * Gets the value of a variable
@@ -411,7 +471,7 @@ declare module 'grafx-studio-actions' {
          * Returns the selected layout
          * @returns
          */
-        getSelected(): LayoutWithMethods;
+        getSelected(): Layout;
 
         /**
          * Selects a layout by name
@@ -482,7 +542,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the color to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue, toName: string | VariableValue): void;
+        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
     }
 
     /**
@@ -495,7 +555,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the paragraph style to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue, toName: string | VariableValue): void;
+        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
     }
 
     /**
@@ -508,6 +568,6 @@ declare module 'grafx-studio-actions' {
          * @param toName the character style to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue, toName: string | VariableValue): void;
+        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
     }
 }
