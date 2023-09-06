@@ -1,4 +1,4 @@
-import { QueryOptions, Dictionary, ArrayBufferPointer, DownloadType, ConnectorMappings } from "./Connector.Shared";
+import { QueryOptions, Dictionary, ArrayBufferPointer, DownloadType, ConnectorConfigOptions } from "./Connector.Shared";
 
 export interface MediaConnector {
     query(options: QueryOptions, context: Dictionary): Promise<MediaPage>;
@@ -7,7 +7,7 @@ export interface MediaConnector {
     upload(name: string, blob: ArrayBufferPointer, context: Dictionary): Promise<Media>
     remove(id: string, context: Dictionary): Promise<boolean>
     copy(id: string, newName: string, context: Dictionary): Promise<Media>
-    getConfigurationOptionss(): ConnectorMappings | null;
+    getConfigurationOptions(): ConnectorConfigOptions | null;
     getCapabilities(): MediaConnectorCapabilities;
 }
 

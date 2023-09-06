@@ -79,15 +79,15 @@ export interface ChiliResponse extends ChiliBody {
     readonly url: string;
 }
 
-export enum ConnectorMappingType {
+export enum ConnectorConfigValueType {
     text = 'text',
     boolean = 'boolean',
 }
 
-export interface ConnectorMappingValue {
+export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
-    readonly type: ConnectorMappingType;
+    readonly type: ConnectorConfigValueType;
 }
 
-export type ConnectorMappings = ConnectorMappingValue[];
+export type ConnectorConfigOptions = ConnectorConfigValue[];
