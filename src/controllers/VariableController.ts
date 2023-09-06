@@ -1,4 +1,5 @@
-import { EditorAPI, Id } from '../types/CommonTypes';
+import { ConnectorOptions, EditorAPI, Id } from '../types/CommonTypes';
+import { ConnectorMapping } from '../types/ConnectorTypes';
 import {
     Variable,
     VariableType,
@@ -235,6 +236,30 @@ export class VariableController {
     setImageVariableConnector = async (id: string, connectorId: string) => {
         const res = await this.#editorAPI;
         return res.setImageVariableConnector(id, connectorId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    setImageVariableConnectorOptions = async (id: string, connectorOptions: ConnectorOptions) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableConnectorOptions(id, JSON.stringify(connectorOptions)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    setImageVariableConnectorMappings = async (id: string, connectorMappings: ConnectorMapping[]) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableConnectorMappings(id,
+            connectorMappings.map(function (m) {
+                return JSON.stringify(m);
+            }),
+        ).then((result) => getEditorResponseData<null>(result));
+    };
+
+    getImageVariableConnectorOptions = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getImageVariableConnectorOptions(id).then((result) => getEditorResponseData<ConnectorOptions>(result));
+    };
+
+    getImageVariableConnectorMappings = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getImageVariableConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMapping[]>(result));
     };
 
     /**
