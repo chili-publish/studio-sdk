@@ -1,13 +1,13 @@
 import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
-    DeprecatedMediaType,
     ConnectorCapabilities,
+    DeprecatedMediaType,
     MediaType,
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
-import { Font, FontDownloadType } from '../types/FontConnectorTypes';
+import { FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -49,7 +49,7 @@ export class FontConnectorController {
         const res = await this.#editorAPI;
         return res
             .fontConnectorQuery(id, JSON.stringify(queryOptions), JSON.stringify(context))
-            .then((result) => getEditorResponseData<QueryPage<Font>>(result));
+            .then((result) => getEditorResponseData<QueryPage<FontFamily>>(result));
     };
 
     /**
@@ -60,7 +60,7 @@ export class FontConnectorController {
      */
     detail = async (id: string, fontId: string) => {
         const res = await this.#editorAPI;
-        return res.fontConnectorDetail(id, fontId).then((result) => getEditorResponseData<Font>(result));
+        return res.fontConnectorDetail(id, fontId).then((result) => getEditorResponseData<FontStyle>(result));
     };
 
     /**
@@ -69,19 +69,35 @@ export class FontConnectorController {
      * Font connector instance running in the editor engine.
      * @param id unique id of the Font connector
      * @param fontId unique id of the Font to download
-     * @param downloadType hint to the Font connector about desired quality of the downloaded Font
      * @param context dynamic map of additional options potentially used by the connector
      * @returns
      */
-    download = async (
+    download = async (id: string, fontId: string, context: MetaData): Promise<Uint8Array> => {
+        const res = await this.#blobAPI;
+        return res
+            .fontConnectorDownload(id, fontId, JSON.stringify(context))
+            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+    };
+
+    /**
+     * The combination of a `connectorId` and `fontId` is typically enough for a Font connector to
+     * perform the preview of this asset. The `preview` endpoint is capable of relaying this information to the
+     * Font connector instance running in the editor engine.
+     * @param id unique id of the Font connector
+     * @param fontId unique id of the Font to download
+     * @param previewFormat hint to the Font connector about desired format of the downloaded Font
+     * @param context dynamic map of additional options potentially used by the connector
+     * @returns
+     */
+    preview = async (
         id: string,
         fontId: string,
-        downloadType: FontDownloadType,
+        previewFormat: FontPreviewFormat,
         context: MetaData,
     ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
-            .fontConnectorDownload(id, fontId, downloadType, JSON.stringify(context))
+            .fontConnectorPreview(id, fontId, previewFormat, JSON.stringify(context))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
@@ -119,9 +135,7 @@ export class FontConnectorController {
      */
     copy = async (id: string, fontId: string, newName: string) => {
         const res = await this.#editorAPI;
-        return res
-            .fontConnectorCopy(id, fontId, newName)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.fontConnectorCopy(id, fontId, newName).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -133,9 +147,7 @@ export class FontConnectorController {
      */
     getQueryOptions = async (id: string) => {
         const res = await this.#editorAPI;
-        return res
-            .fontConnectorGetQueryOptions(id)
-            .then((result) => getEditorResponseData<ConnectorOptions>(result));
+        return res.fontConnectorGetQueryOptions(id).then((result) => getEditorResponseData<ConnectorOptions>(result));
     };
 
     /**
