@@ -13,8 +13,7 @@ export class InfoController {
     currentEngineVersion = engineInfo.current;
 
     /**
-     * This property returns the current engine version.
-     * @returns current engine version
+     * @returns The currently applicable SDK version
      */
     currentSDKVersion = sdkInfo.version;
 }
