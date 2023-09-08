@@ -86,7 +86,7 @@ export class ConnectorController {
     };
 
     /**
-     * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitToBeReady'
+     * Gets the current state a connector is in, to wait until a connector is ready to be used, use the 'waitForConnectorReady'
      * method in this controller.
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns connector state
