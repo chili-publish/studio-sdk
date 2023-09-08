@@ -3,6 +3,7 @@ import {
     ConnectorMapping,
     ConnectorMappingSource,
     ConnectorMappingTarget,
+    ConnectorRegistration,
     ConnectorRegistrationSource,
     ConnectorType,
 } from '../../types/ConnectorTypes';
@@ -40,8 +41,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('ConnectorController', () => {
-    const registration = {
-        id: '',
+    const registration: ConnectorRegistration = {
         source: ConnectorRegistrationSource.url,
         url: '',
     };
