@@ -112,7 +112,7 @@ export class SDK {
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.colorConversion = new ColorConversionController(this.editorAPI);
-        this.engine = new InfoController();
+        this.info = new InfoController();
     }
 
     /**
@@ -181,7 +181,7 @@ export class SDK {
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
-        this.engine = new InfoController();
+        this.info = new InfoController();
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
