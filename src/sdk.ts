@@ -71,7 +71,7 @@ export class SDK {
     experiment: ExperimentController;
     canvas: CanvasController;
     colorConversion: ColorConversionController;
-    engine: InfoController;
+    info: InfoController;
 
     private subscriber: SubscriberController;
 
