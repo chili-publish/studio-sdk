@@ -1,4 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
+import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
     Variable,
     VariableType,
@@ -63,7 +64,9 @@ export class VariableController {
     };
 
     /**
-     * This method removes a list of variables
+     * This method removes a list of variables.
+     * 
+     * All connectors linked to the variables will be unregistered.
      * @param ids list of the variables to be removed
      * @returns
      */
@@ -228,13 +231,14 @@ export class VariableController {
     /**
      * This method sets the image variable connector. Setting a connector will
      * automatically remove the assetId linked to the connector if present.
+     * If a connector was the source of the variable, it will be unregistered.
      * @param id The ID of the image variable to update
-     * @param connectorId The new ID of the connector
+     * @param registration registration object containing all details about the connector
      * @returns
      */
-    setImageVariableConnector = async (id: string, connectorId: string) => {
+    setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-        return res.setImageVariableConnector(id, connectorId).then((result) => getEditorResponseData<null>(result));
+        return res.setImageVariableConnector(id, JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

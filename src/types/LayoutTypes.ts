@@ -12,7 +12,7 @@ export type FrameProperties = {
     id: Id;
     type: string;
     height: number | null;
-    included: boolean | null;
+    isVisible: boolean | null;
     rotationDegrees: number | null;
     scaleX: number | null;
     scaleY: number | null;
