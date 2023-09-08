@@ -60,7 +60,7 @@ export class FontConnectorController {
      */
     detail = async (id: string, fontId: string) => {
         const res = await this.#editorAPI;
-        return res.fontConnectorDetail(id, fontId).then((result) => getEditorResponseData<FontStyle>(result));
+        return res.fontConnectorDetail(id, fontId).then((result) => getEditorResponseData<FontStyle[]>(result));
     };
 
     /**
