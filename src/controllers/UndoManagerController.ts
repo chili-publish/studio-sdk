@@ -47,7 +47,6 @@ export class UndoManagerController {
      * Even if you throw an exception inside the record scope it will still end it properly. 
      * @returns
      */
-    // TODO(Laurent): Do we really need to pass sdk?
     record = async (operationName: string, undoOperationCallback: (sdk: SDK) => void) => {
         try {
             await this.#advanced.begin(operationName);
