@@ -2,7 +2,6 @@ import { ConnectorController } from '../../controllers/ConnectorController';
 import {
     ConnectorMapping,
     ConnectorMappingSource,
-    ConnectorRegistration,
     ConnectorRegistrationSource,
     ConnectorType,
 } from '../../types/ConnectorTypes';
