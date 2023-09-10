@@ -44,7 +44,7 @@ export type ConnectorCapabilities = {
     detail?: boolean;
 };
 
-interface ConnectorRegistrationBase {
+export type ConnectorRegistration = {
     /**
      * Url to the connector.
      *
@@ -60,25 +60,27 @@ interface ConnectorRegistrationBase {
     source: ConnectorRegistrationSource;
 };
 
-export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
+export interface ConnectorUrlRegistration {
+    id: Id;
     source: ConnectorRegistrationSource.url;
+    /**
+     * Url to a public connector definition JSON
+     */
+    url: string;
 }
 
-export interface ConnectorGrafxRegistration extends ConnectorRegistrationBase {
+export interface ConnectorGrafxRegistration {
+    /**
+     * Connector Id on GraFx Environment API.
+     */
+    id: Id;
     source: ConnectorRegistrationSource.grafx;
 }
-
-export interface ConnectorLocalRegistration extends ConnectorRegistrationBase {
-    source: ConnectorRegistrationSource.local;
-}
-
-export type ConnectorRegistration = ConnectorUrlRegistration | ConnectorGrafxRegistration | ConnectorLocalRegistration;
 
 export type ConnectorInstance = {
     id: Id;
     name: string;
     iconUrl: string;
-    source: ConnectorRegistration;
 };
 
 export enum ConnectorRegistrationSource {
@@ -91,12 +93,6 @@ export enum ConnectorRegistrationSource {
      * Connector is hosted on GraFx Environment API.
      */
     grafx = 'grafx',
-
-    /**
-     * Connector is embedded in the document.
-     * Note: This is a temporary type; only to be used internally.
-     */
-    local = 'local',
 }
 
 export class ConnectorMapping {
@@ -193,12 +189,4 @@ export enum ConnectorEventType {
      * Don't use the 'connectorId' after receiving this event.
      */
     unloaded = 'unloaded',
-}
-
-/**
- * Hardcoded grafx media connector until we get it from the environment.
- */
-export const grafxMediaConnectorRegistration: ConnectorLocalRegistration = {
-    url: 'grafx-media.json',
-    source: ConnectorRegistrationSource.local,
 }

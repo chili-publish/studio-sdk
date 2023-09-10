@@ -40,7 +40,8 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('ConnectorController', () => {
-    const registration: ConnectorRegistration = {
+    const registration = {
+        id: '',
         source: ConnectorRegistrationSource.url,
         url: '',
     };

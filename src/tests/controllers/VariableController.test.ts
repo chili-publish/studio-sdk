@@ -1,8 +1,7 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariable, VariableType } from '../../types/VariableTypes';
+import { VariableType } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
-import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 
 afterEach(() => {
     jest.restoreAllMocks();
@@ -11,26 +10,8 @@ afterEach(() => {
 describe('VariableController', () => {
     let mockedVariableController: VariableController;
 
-    const connectorId = 'connectorId';
-    const variableId = 'variableId';
-
-    const variable: ImageVariable = {
-        id: variableId,
-        type: VariableType.image,
-        name: '',
-        label: '',
-        isVisible: true,
-        isReadonly: false,
-        isRequired: false,
-        occurrences: 0,
-        value: {
-            connectorId: connectorId,
-            assetId: 'assetId',
-        },
-    };
-
     const mockEditorApi: EditorAPI = {
-        getVariableById: async () => getEditorResponseData(castToEditorResponse(variable)),
+        getVariableById: async () => getEditorResponseData(castToEditorResponse(null)),
         getVariableByName: async () => getEditorResponseData(castToEditorResponse(null)),
         getVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         addVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -74,10 +55,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableName');
         jest.spyOn(mockEditorApi, 'setVariableSource');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
-
     });
-
-
 
     it('get variable by id', async () => {
         await mockedVariableController.getById('2');
@@ -199,16 +177,13 @@ describe('VariableController', () => {
     });
 
     it('set image variable connector', async () => {
-        const registration: ConnectorRegistration = {
-            url: 'test://test.test',
-            source: ConnectorRegistrationSource.url
-        };
+        const varId = '1';
+        const connectorId = 'connectorId';
 
-        await mockedVariableController.setImageVariableConnector(variableId, registration);
+        await mockedVariableController.setImageVariableConnector(varId, connectorId);
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
-
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(varId, connectorId);
     });
 
     it('remove variable source', async () => {
