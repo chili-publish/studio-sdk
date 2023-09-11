@@ -45,7 +45,7 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns array of Media items
      */
-    query = async (id: Id, queryOptions: QueryOptions, context: MetaData) => {
+    query = async (id: Id, queryOptions: QueryOptions, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorQuery(id, JSON.stringify(queryOptions), JSON.stringify(context))
@@ -61,7 +61,7 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns Media item
      */
-    detail = async (id: Id, mediaId: string, context: MetaData) => {
+    detail = async (id: Id, mediaId: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorDetail(id, mediaId, JSON.stringify(context))
@@ -78,7 +78,12 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    download = async (id: Id, mediaId: Id, downloadType: MediaDownloadType, context: MetaData): Promise<Uint8Array> => {
+    download = async (
+        id: Id,
+        mediaId: Id,
+        downloadType: MediaDownloadType,
+        context: MetaData = {},
+    ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
             .mediaConnectorDownload(id, mediaId, downloadType, JSON.stringify(context))
@@ -94,7 +99,7 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    upload = async (id: Id, mediaId: Id, blob: Uint8Array, context: MetaData) => {
+    upload = async (id: Id, mediaId: Id, blob: Uint8Array, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorUpload(id, mediaId, blob, JSON.stringify(context))
@@ -108,7 +113,7 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    remove = async (id: Id, mediaId: Id, context: MetaData) => {
+    remove = async (id: Id, mediaId: Id, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorRemove(id, mediaId, JSON.stringify(context))
@@ -124,7 +129,7 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    copy = async (id: Id, mediaId: Id, newName: string, context: MetaData) => {
+    copy = async (id: Id, mediaId: Id, newName: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorCopy(id, mediaId, newName, JSON.stringify(context))

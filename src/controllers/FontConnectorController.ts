@@ -45,7 +45,7 @@ export class FontConnectorController {
      * @param context context that will be available in the connector script.
      * @returns array of font items
      */
-    query = async (id: string, queryOptions: QueryOptions, context: MetaData) => {
+    query = async (id: string, queryOptions: QueryOptions, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .fontConnectorQuery(id, JSON.stringify(queryOptions), JSON.stringify(context))
@@ -59,7 +59,7 @@ export class FontConnectorController {
      * @param context context that will be available in the connector script.
      * @returns font details
      */
-    detail = async (id: string, fontId: string, context: MetaData) => {
+    detail = async (id: string, fontId: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .fontConnectorDetail(id, fontId, JSON.stringify(context))
@@ -80,7 +80,7 @@ export class FontConnectorController {
         id: string,
         fontId: string,
         downloadType: FontDownloadType,
-        context: MetaData,
+        context: MetaData = {},
     ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
@@ -97,7 +97,7 @@ export class FontConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    upload = async (id: string, fontId: string, blob: Uint8Array, context: MetaData) => {
+    upload = async (id: string, fontId: string, blob: Uint8Array, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .fontConnectorUpload(id, fontId, blob, JSON.stringify(context))
@@ -111,7 +111,7 @@ export class FontConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    remove = async (id: string, fontId: string, context: MetaData) => {
+    remove = async (id: string, fontId: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .fontConnectorRemove(id, fontId, JSON.stringify(context))
@@ -127,7 +127,7 @@ export class FontConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    copy = async (id: string, fontId: string, newName: string, context: MetaData) => {
+    copy = async (id: string, fontId: string, newName: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .fontConnectorCopy(id, fontId, newName, JSON.stringify(context))
