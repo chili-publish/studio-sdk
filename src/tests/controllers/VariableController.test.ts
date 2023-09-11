@@ -30,7 +30,7 @@ describe('VariableController', () => {
         ungroupVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableName: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableSource: async () => getEditorResponseData(castToEditorResponse(null)),
-        setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
     };
 
     beforeEach(() => {
@@ -180,10 +180,11 @@ describe('VariableController', () => {
         const varId = '1';
         const connectorId = 'connectorId';
 
-        await mockedVariableController.setImageVariableConnector(varId, connectorId);
+        const response = await mockedVariableController.setImageVariableConnector(varId, connectorId);
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(varId, connectorId);
+        expect(response?.parsedData).toBe('newConnectorId');
     });
 
     it('remove variable source', async () => {

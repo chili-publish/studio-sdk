@@ -230,11 +230,11 @@ export class VariableController {
      * automatically remove the assetId linked to the connector if present.
      * @param id The id of the image variable to update
      * @param connectorId The new id of the connector
-     * @returns
+     * @returns The new id of the connector
      */
     setImageVariableConnector = async (id: string, connectorId: string) => {
         const res = await this.#editorAPI;
-        return res.setImageVariableConnector(id, connectorId).then((result) => getEditorResponseData<null>(result));
+        return res.setImageVariableConnector(id, connectorId).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
