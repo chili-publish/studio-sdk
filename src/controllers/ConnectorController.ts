@@ -97,6 +97,26 @@ export class ConnectorController {
     };
 
     /**
+     * Gets the options from the connector.
+     * @param id the id of your registered connector
+     * @returns mappings
+     */
+    getMappings = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMapping[]>(result));
+    };
+
+    /**
+    * Gets the mapped data from connector.
+    * @param id the id of your registered connector
+    * @returns mappings
+    */
+    getOptions = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorOptions(id).then((result) => getEditorResponseData<ConnectorOptions>(result));
+    };
+
+    /**
      * Connectors are loaded asynchronously in the editor engine, this causes some challenges while configuring them. To make sure
      * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
      * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially
