@@ -313,7 +313,7 @@ declare module 'grafx-studio-actions' {
     export interface ListVariable extends BaseVariable {
         readonly type: VariableType.list;
         readonly items: string[];
-        readonly selected?: string;
+        readonly selected: string | null;
     }
 
     export interface BooleanVariable extends BaseVariable {
