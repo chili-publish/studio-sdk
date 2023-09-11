@@ -1,5 +1,4 @@
-import { ConnectorOptions, EditorAPI, Id } from '../types/CommonTypes';
-import { ConnectorMapping } from '../types/ConnectorTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import {
     Variable,
     VariableType,
@@ -236,58 +235,6 @@ export class VariableController {
     setImageVariableConnector = async (id: string, connectorId: string) => {
         const res = await this.#editorAPI;
         return res.setImageVariableConnector(id, connectorId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Allows to customize the context data a variable connector can work with.
-     * The options data will be available using the context parameter in the connector
-     * implementation code.
-     * @param id The id of the image variable to update
-     * @param options object containing key value data to pass to connector context
-     * @returns
-     */
-    setImageVariableConnectorOptions = async (id: string, connectorOptions: ConnectorOptions) => {
-        const res = await this.#editorAPI;
-        return res.setImageVariableConnectorOptions(id, JSON.stringify(connectorOptions)).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Allows to map document data (variables, selectedFrame, etc) to variable
-     * connector context data.
-     * By defining the mappings, we can trigger re-download of assets (dynamic asset provider)
-     * or populate filters for the query endpoint. The mapped data will be available using
-     * the context parameter in the connector implementation code.
-     * @param id The id of the image variable to update
-     * @param mappings collection of mappings to set to this connector
-     * @returns
-     */
-    setImageVariableConnectorMappings = async (id: string, connectorMappings: ConnectorMapping[]) => {
-        const res = await this.#editorAPI;
-        return res.setImageVariableConnectorMappings(id,
-            connectorMappings.map(function (m) {
-                return JSON.stringify(m);
-            }),
-        ).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Gets the options from the image variable connector linked to this variable.
-     * @param id The id of the image variable
-     * @returns
-     */
-    getImageVariableConnectorOptions = async (id: string) => {
-        const res = await this.#editorAPI;
-        return res.getImageVariableConnectorOptions(id).then((result) => getEditorResponseData<ConnectorOptions>(result));
-    };
-
-    /**
-     * Gets the mapped data from the image variable connector linked to this variable.
-     * @param id The id of the image variable
-     * @returns
-     */
-    getImageVariableConnectorMappings = async (id: string) => {
-        const res = await this.#editorAPI;
-        return res.getImageVariableConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMapping[]>(result));
     };
 
     /**
