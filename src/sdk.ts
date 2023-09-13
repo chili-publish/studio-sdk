@@ -90,6 +90,7 @@ export class SDK {
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
+        this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
@@ -102,7 +103,6 @@ export class SDK {
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
-        this.undoManager = new UndoManagerController(this.editorAPI);
         // To be renamed textSelection > textStyle
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
@@ -164,12 +164,11 @@ export class SDK {
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new ConfigurationController(this.editorAPI);
-        this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
-        this.undoManager = new UndoManagerController(this.editorAPI);
+        this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
@@ -177,6 +176,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
