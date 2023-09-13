@@ -97,7 +97,7 @@ export class ConnectorController {
     };
 
     /**
-     * Gets the options from the connector.
+     * Gets the mapped data from connector.
      * @param id the id of your registered connector
      * @returns mappings
      */
@@ -107,9 +107,9 @@ export class ConnectorController {
     };
 
     /**
-    * Gets the mapped data from connector.
+    * Gets the options from the connector.
     * @param id the id of your registered connector
-    * @returns mappings
+    * @returns options
     */
     getOptions = async (id: string) => {
         const res = await this.#editorAPI;
