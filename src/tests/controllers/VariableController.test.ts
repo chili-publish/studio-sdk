@@ -220,7 +220,6 @@ describe('VariableController', () => {
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
-
         expect(response?.parsedData).toBe('newConnectorId');
     });
 
