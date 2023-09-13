@@ -2,7 +2,6 @@ import { ConnectorController } from '../../controllers/ConnectorController';
 import {
     ConnectorMapping,
     ConnectorMappingSource,
-    ConnectorMappingTarget,
     ConnectorRegistration,
     ConnectorRegistrationSource,
     ConnectorType,
@@ -77,7 +76,8 @@ describe('ConnectorController', () => {
         await mockedConnectorController.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);
             configurator.setMappings([
-                new ConnectorMapping(ConnectorMappingTarget.download, 'data', ConnectorMappingSource.variable, 'Var 1'),
+                new ConnectorMapping('data', ConnectorMappingSource.variable, 'Var 1'),
+                new ConnectorMapping('plain', ConnectorMappingSource.value, 'plain value'),
             ]);
             configurator.setOptions({ test: 'data' });
             configurator.setChiliToken(token);
@@ -96,7 +96,8 @@ describe('ConnectorController', () => {
 
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
-            JSON.stringify({ name: 'download.data', value: 'var.Var 1' }),
+            JSON.stringify({ name: 'data', value: 'var.Var 1' }),
+            JSON.stringify({ name: 'plain', value: 'plain value' }),
         ]);
 
         expect(mockEditorApi.setConnectorOptions).toHaveBeenCalledTimes(1);

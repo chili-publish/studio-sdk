@@ -103,14 +103,14 @@ export class ConnectorMapping {
     name: string;
     value: string;
 
-    constructor(
-        mapTo: ConnectorMappingTarget,
-        contextProperty: string,
-        mapFrom: ConnectorMappingSource,
-        sourceValue: string,
-    ) {
-        this.name = `${mapTo}.${contextProperty}`;
-        this.value = `${mapFrom}.${sourceValue}`;
+    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string) {
+        this.name = contextProperty;
+
+        if (mapFrom === ConnectorMappingSource.variable) {
+            this.value = `${mapFrom}.${sourceValue}`;
+        } else {
+            this.value = sourceValue;
+        }
     }
 }
 
@@ -129,13 +129,9 @@ export type QueryPage<T> = {
     data: T[];
 };
 
-export enum ConnectorMappingTarget {
-    query = 'query',
-    download = 'download',
-}
-
 export enum ConnectorMappingSource {
     variable = 'var',
+    value = 'value',
 }
 
 export enum ConnectorStateType {

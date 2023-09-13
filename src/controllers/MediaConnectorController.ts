@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
+import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaType,
@@ -42,10 +42,10 @@ export class MediaConnectorController {
      * context as parameters. This call returns an array of Media items.
      * @param id unique id of the media connector
      * @param queryOptions stringified instance of `QueryOptions`
-     * @param context stringified `Map<string, string>` of dynamic options
+     * @param context context that will be available in the connector script.
      * @returns array of Media items
      */
-    query = async (id: Id, queryOptions: QueryOptions, context: MetaData) => {
+    query = async (id: Id, queryOptions: QueryOptions, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorQuery(id, JSON.stringify(queryOptions), JSON.stringify(context))
@@ -58,11 +58,14 @@ export class MediaConnectorController {
      * The connector needs to list `detail` as a supported capability.
      * @param id unique id of the Media connector
      * @param mediaId unique id of the Media
+     * @param context context that will be available in the connector script.
      * @returns Media item
      */
-    detail = async (id: Id, mediaId: string) => {
+    detail = async (id: Id, mediaId: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorDetail(id, mediaId).then((result) => getEditorResponseData<Media>(result));
+        return res
+            .mediaConnectorDetail(id, mediaId, JSON.stringify(context))
+            .then((result) => getEditorResponseData<Media>(result));
     };
 
     /**
@@ -72,14 +75,14 @@ export class MediaConnectorController {
      * @param id unique id of the media connector
      * @param mediaId unique id of the media to download
      * @param downloadType hint to the media connector about desired quality of the downloaded media
-     * @param context dynamic map of additional options potentially used by the connector
+     * @param context context that will be available in the connector script.
      * @returns
      */
     download = async (
         id: Id,
         mediaId: Id,
         downloadType: MediaDownloadType,
-        context: MetaData,
+        context: MetaData = {},
     ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
@@ -93,12 +96,13 @@ export class MediaConnectorController {
      * @param id unique id of the media connector
      * @param mediaId unique id of the media to upload
      * @param blob byte array representation of the media to upload
+     * @param context context that will be available in the connector script.
      * @returns
      */
-    upload = async (id: Id, mediaId: Id, blob: Uint8Array) => {
+    upload = async (id: Id, mediaId: Id, blob: Uint8Array, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .mediaConnectorUpload(id, mediaId, blob)
+            .mediaConnectorUpload(id, mediaId, blob, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -106,11 +110,14 @@ export class MediaConnectorController {
      * Depending on the connector capabilities, removes media identified by `mediaId` from the connector's backend storage
      * @param id unique id of the media connector
      * @param mediaId unique id of the media to download
+     * @param context context that will be available in the connector script.
      * @returns
      */
-    remove = async (id: Id, mediaId: Id) => {
+    remove = async (id: Id, mediaId: Id, context: MetaData = {}) => {
         const res = await this.#editorAPI;
-        return res.mediaConnectorRemove(id, mediaId).then((result) => getEditorResponseData<null>(result));
+        return res
+            .mediaConnectorRemove(id, mediaId, JSON.stringify(context))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -119,41 +126,28 @@ export class MediaConnectorController {
      * @param id unique id of the media connector
      * @param mediaId unique id of the media to download
      * @param newName name of the copied media on the connector's backend
+     * @param context context that will be available in the connector script.
      * @returns
      */
-    copy = async (id: Id, mediaId: Id, newName: string) => {
+    copy = async (id: Id, mediaId: Id, newName: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .mediaConnectorCopy(id, mediaId, newName)
+            .mediaConnectorCopy(id, mediaId, newName, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * All connectors have a certain set of queryOptions they allow to be passed in the query context. This
-     * method allows you to discover what options are available for a given connector. If you want to use any of these
-     * options, they need to be passed in the `context` parameter of the `query` api method.
+     * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
+     * method allows you to discover which mappings are available for a given connector. If you want to use any of these
+     * mappings, they will be available in the `context` parameter of any connector method.
      * @param id unique id of the media connector
-     * @returns query options
+     * @returns connector mappings
      */
-    getQueryOptions = async (id: Id) => {
+    getConfigurationOptions = async (id: Id) => {
         const res = await this.#editorAPI;
         return res
-            .mediaConnectorGetQueryOptions(id)
-            .then((result) => getEditorResponseData<ConnectorOptions>(result));
-    };
-
-    /**
-     * All connectors have a certain set of downloadOptions they allow to be passed in the download context. This
-     * method allows you to discover what options are available for a given connector. If you want to use any of these
-     * options, they need to be passed in the `context` parameter of the `download` api method.
-     * @param id unique id of the media connector
-     * @returns download options
-     */
-    getDownloadOptions = async (id: Id) => {
-        const res = await this.#editorAPI;
-        return res
-            .mediaConnectorGetDownloadOptions(id)
-            .then((result) => getEditorResponseData<ConnectorOptions>(result));
+            .mediaConnectorGetConfigurationOptions(id)
+            .then((result) => getEditorResponseData<ConnectorConfigOptions>(result));
     };
 
     /**
