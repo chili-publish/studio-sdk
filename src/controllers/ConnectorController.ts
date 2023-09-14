@@ -91,7 +91,7 @@ export class ConnectorController {
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns connector state
      */
-    getById = async (id: string) => {
+    getStateById = async (id: string) => {
         const res = await this.#editorAPI;
         return res.getConnectorState(id).then((result) => getEditorResponseData<ConnectorState>(result));
     };
@@ -118,7 +118,7 @@ export class ConnectorController {
             // using while loop will prevent stack overflow issues when using recursion
             // wait for maximum 2 seconds to fail
             while (retries * waitTime < timeout) {
-                const result = await this.getById(id);
+                const result = await this.getStateById(id);
 
                 if (
                     result.success &&

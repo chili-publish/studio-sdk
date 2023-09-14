@@ -58,8 +58,8 @@ describe('ConnectorController', () => {
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
     });
-    it('Should call the getById method', async () => {
-        await mockedConnectorController.getById(connectorId);
+    it('Should call the getStateById method', async () => {
+        await mockedConnectorController.getStateById(connectorId);
         expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to register a connector', async () => {
