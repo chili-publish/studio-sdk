@@ -85,7 +85,7 @@ export class ConnectorController {
      * @param configurationCallback callback to setup the connector
      * @returns
      */
-    configure = async (id: string, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
+    configure = async (id: Id, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
         await this.waitToBeReady(id);
@@ -101,7 +101,7 @@ export class ConnectorController {
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns connector state
      */
-    getState = async (id: string) => {
+    getState = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getConnectorState(id).then((result) => getEditorResponseData<ConnectorState>(result));
     };
@@ -114,7 +114,7 @@ export class ConnectorController {
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns
      */
-    waitToBeReady = async (id: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
+    waitToBeReady = async (id: Id, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
         // minimum timeout is 500ms
         let timeout = Math.max(timeoutMilliseconds, 500);
 
@@ -178,13 +178,13 @@ class ConnectorConfigurator {
     /**
      * @ignore
      */
-    #connectorId: string;
+    #connectorId: Id;
     #res: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(id: string, res: EditorAPI) {
+    constructor(id: Id, res: EditorAPI) {
         this.#connectorId = id;
         this.#res = res;
     }
