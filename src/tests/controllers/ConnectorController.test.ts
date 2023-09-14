@@ -72,8 +72,8 @@ describe('ConnectorController', () => {
         expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
     });
 
-    it('Should call the getStateById method', async () => {
-        await mockedConnectorController.getStateById(connectorId);
+    it('Should call the getState method', async () => {
+        await mockedConnectorController.getState(connectorId);
         expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);
     });
 
