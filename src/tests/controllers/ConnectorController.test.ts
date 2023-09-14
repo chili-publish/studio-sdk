@@ -12,6 +12,7 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 let mockedConnectorController: ConnectorController;
 
 const mockEditorApi: EditorAPI = {
+    getConnectorById: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     unregisterConnector: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -25,6 +26,7 @@ const mockEditorApi: EditorAPI = {
 
 beforeEach(() => {
     mockedConnectorController = new ConnectorController(mockEditorApi);
+    jest.spyOn(mockEditorApi, 'getConnectorById');
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
     jest.spyOn(mockEditorApi, 'unregisterConnector');
@@ -49,29 +51,44 @@ describe('ConnectorController', () => {
     const headerName = 'headerName';
     const headerValue = 'headerValue';
 
+    it('Should call the getById method', async () => {
+        await mockedConnectorController.getById(connectorId);
+        expect(mockEditorApi.getConnectorById).toHaveBeenCalledTimes(1);
+    });
+
     it('Should call the getAllByType method', async () => {
         await mockedConnectorController.getAllByType(ConnectorType.media);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
     });
+
+    it('Should call the getAllByType method', async () => {
+        await mockedConnectorController.getAllByType(ConnectorType.media);
+        expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
+    });
+
     it('Should be possible to retrieve all connectors of a certain type', async () => {
         await mockedConnectorController.getAllByType(ConnectorType.media);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
     });
+
     it('Should call the getStateById method', async () => {
         await mockedConnectorController.getStateById(connectorId);
         expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);
     });
+
     it('Should be possible to register a connector', async () => {
         await mockedConnectorController.register(registration);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
     });
+
     it('Should be possible to unregister a connector', async () => {
         await mockedConnectorController.unregister(connectorId);
         expect(mockEditorApi.unregisterConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.unregisterConnector).toHaveBeenCalledWith(connectorId);
     });
+
     it('Should be possible to configure a connector', async () => {
         await mockedConnectorController.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);

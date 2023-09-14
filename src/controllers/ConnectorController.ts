@@ -37,6 +37,16 @@ export class ConnectorController {
     }
 
     /**
+     * Gets a connector by its id
+     * @param id the id of the connector
+     * @returns connector
+     */
+    getById = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorById(id).then((result) => getEditorResponseData<ConnectorInstance>(result));
+    };
+
+    /**
      * Gets all available connectors of a 'ConnectorType'
      * @param type type of connector you want to get
      * @returns list of all available connectors of a 'ConnectorType'
