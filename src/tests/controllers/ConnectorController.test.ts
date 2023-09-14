@@ -61,11 +61,6 @@ describe('ConnectorController', () => {
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call the getAllByType method', async () => {
-        await mockedConnectorController.getAllByType(ConnectorType.media);
-        expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
-    });
-
     it('Should be possible to retrieve all connectors of a certain type', async () => {
         await mockedConnectorController.getAllByType(ConnectorType.media);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
