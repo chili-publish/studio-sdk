@@ -17,7 +17,7 @@ jobs:
               id: cache
               uses: actions/cache@v1
               with:
-                  path: node_modules
+                  path: packages/sdk/node_modules
                   key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
                   restore-keys: |
                       ${{ runner.os }}-node-
@@ -56,14 +56,14 @@ jobs:
               uses: martinbeentjes/npm-get-version-action@master
             - name: copy file branch
               run: |
-                  path=upload/latest
-                  versionpath=upload/${{ steps.package-version.outputs.current-version}}
+                  path=packages/sdk/upload/latest
+                  versionpath=packages/sdk/upload/${{ steps.package-version.outputs.current-version}}
                   mkdir -p ${path%"/merge"}
-                  cp -R _bundles/* ${path%"/merge"}
+                  cp -R packages/sdk/_bundles/* ${path%"/merge"}
                   mkdir -p ${versionpath%"/merge"}
-                  cp -R _bundles/* ${versionpath%"/merge"}
+                  cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
             - name: Copy to Azure Blob Storage
               uses: azure/CLI@v1
               with:
                   inlineScript: |
-                      az storage blob upload-batch -d sdk -s upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+                      az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
