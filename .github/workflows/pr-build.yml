@@ -43,16 +43,8 @@ jobs:
               run: yarn build
             - name: copy file branch
               run: |
-                COVERAGE_PATH=packages/sdk/coverage/lcov-report
-                CI_PATH=packages/sdk/upload/coverage/$CI_REF_NAME
-                DEST_PATH=${CI_PATH%"/merge"}
-                FILES="index.html coverage.html src base.css prettify.css"
-
-                mkdir -p $DEST_PATH
-
-                for file in $FILES; do
-                    cp -R $COVERAGE_PATH/$file $DEST_PATH
-                done
+                  path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
+                  cp -R packages/sdk/coverage/lcov-report/src packages/sdk/coverage/lcov-report/coverage.html packages/sdk/coverage/lcov-report/base.css packages/sdk/coverage/lcov-report/prettify.css ${path%"/merge"}
             - name: Copy to Azure Blob Storage
               uses: azure/CLI@v1
               with:
