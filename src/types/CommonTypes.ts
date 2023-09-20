@@ -4,11 +4,10 @@ import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties } f
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ActionEditorEvent, DocumentAction, ToolType } from '..';
+import { ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType } from '..';
 import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
-import { DocumentFont } from './FontTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
@@ -42,7 +41,7 @@ export type ConfigType = {
     onColorsChanged?: (colors: DocumentColor[]) => void;
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
     onCharacterStylesChanged?: (characterStyles: CharacterStyle[]) => void;
-    onFontsChanged?: (fonts: DocumentFont[]) => void;
+    onFontFamiliesChanged?: (fonts: DocumentFontFamily[]) => void;
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
     onConnectorEvent?: (event: ConnectorEvent) => void;

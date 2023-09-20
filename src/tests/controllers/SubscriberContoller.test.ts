@@ -32,7 +32,7 @@ const mockEditorApi: EditorAPI = {
     onColorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onParagraphStylesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCharacterStylesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onFontsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onFontFamiliesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onLayoutsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onConnectorEvent: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -66,7 +66,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onColorsChanged');
     jest.spyOn(mockEditorApi, 'onParagraphStylesChanged');
     jest.spyOn(mockEditorApi, 'onCharacterStylesChanged');
-    jest.spyOn(mockEditorApi, 'onFontsChanged');
+    jest.spyOn(mockEditorApi, 'onFontFamiliesChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockEditorApi, 'onLayoutsChanged');
     jest.spyOn(mockEditorApi, 'onConnectorEvent');
@@ -135,9 +135,11 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onParagraphStylesChanged(JSON.stringify([{ id: 1, name: 'P1' }]));
         expect(mockEditorApi.onParagraphStylesChanged).toHaveBeenCalledTimes(1);
     });
-    it('Should be possible to subscribe to onFontsChanged', async () => {
-        await mockedSubscriberController.onFontsChanged(JSON.stringify([{ id: 1, name: 'F1', fontFamily: 'Arial' }]));
-        expect(mockEditorApi.onFontsChanged).toHaveBeenCalledTimes(1);
+    it('Should be possible to subscribe to onFontFamiliesChanged', async () => {
+        await mockedSubscriberController.onFontFamiliesChanged(
+            JSON.stringify([{ id: 'id', name: 'name', fontFamilyId: 'fontFamilyId', connectorId: 'id' }]),
+        );
+        expect(mockEditorApi.onFontFamiliesChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to onCharacterStylesChanged', async () => {
         await mockedSubscriberController.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
