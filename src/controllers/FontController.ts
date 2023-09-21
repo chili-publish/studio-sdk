@@ -33,7 +33,7 @@ export class FontController {
     };
 
     /**
-     * This method removes a font style
+     * This method removes a font family
      * @param id the id of a specific font family
      * @returns
      */
