@@ -19,10 +19,10 @@ export type DocumentFontFamily = {
 export type AddDocumentFontStyle = {
     name: string;
     fontStyleId: Id;
+    fontFamilyId: Id;
 };
 
 export type AddDocumentFontFamily = {
     name: string;
     fontFamilyId: Id;
-    fontStyleId: Id;
 };

@@ -46,7 +46,6 @@ describe('FontController', () => {
         const fontFamily: AddDocumentFontFamily = {
             name: 'name',
             fontFamilyId: 'id',
-            fontStyleId: 'id',
         };
 
         await mockedFontController.addFontFamily(connectorId, fontFamily);
@@ -67,6 +66,7 @@ describe('FontController', () => {
         const fontStyle: AddDocumentFontStyle = {
             name: 'name',
             fontStyleId: 'id',
+            fontFamilyId: 'id',
         };
 
         await mockedFontController.addFontStyle(connectorId, fontStyle);
