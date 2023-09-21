@@ -45,13 +45,13 @@ export class FontController {
     /**
      * This method adds a font style
      * @param connectorId unique id of the font connector
-     * @param font the font object
+     * @param fontStyle the font object
      * @returns id generated on the engine side `CONNECTOR_ID::FONT_FAMILY_ID::FONT_STYLE_ID`
      */
-    addFontStyle = async (connectorId: Id, font: AddDocumentFontStyle) => {
+    addFontStyle = async (connectorId: Id, fontStyle: AddDocumentFontStyle) => {
         const res = await this.#editorAPI;
         return res
-            .addFontStyle(connectorId, JSON.stringify(font))
+            .addFontStyle(connectorId, JSON.stringify(fontStyle))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -76,6 +76,7 @@ export class FontController {
 
     /**
      * This method returns the list of font styles for a specific family
+     * @param id the id of a specific font style
      * @returns DocumentFontStyle[]
      */
     getFontStyles = async (id: Id) => {
@@ -85,7 +86,7 @@ export class FontController {
 
     /**
      * This method returns a font family by id
-     * @param id the id of a specific font
+     * @param id the id of a specific font family
      * @returns DocumentFontFamily properties
      */
     getFontFamilyById = async (id: Id) => {
