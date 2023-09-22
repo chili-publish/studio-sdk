@@ -243,7 +243,7 @@ export class VariableController {
      * automatically remove the assetId linked to the connector if present.
      * If a connector was the source of the variable, it will be unregistered.
      * @param id The id of the image variable to update
-     * @param connectorId The new id of the connector
+     * @param registration registration object containing all details about the connector
      * @returns The new id of the connector
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
