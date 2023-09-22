@@ -229,12 +229,22 @@ export class VariableController {
     };
 
     /**
+     * This method gets the image variable connector id.
+     * @param id The id of the image variable
+     * @returns The id of the connector
+     */
+    getImageVariableConnectorId = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getImageVariableConnectorId(id).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
      * This method sets the image variable connector. Setting a connector will
      * automatically remove the assetId linked to the connector if present.
      * If a connector was the source of the variable, it will be unregistered.
-     * @param id The ID of the image variable to update
+     * @param id The id of the image variable to update
      * @param registration registration object containing all details about the connector
-     * @returns
+     * @returns The new id of the connector
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
