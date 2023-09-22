@@ -15,3 +15,4 @@ lib-esm/
 _bundles/
 coverage/
 docs/
+packages/actions/.env
