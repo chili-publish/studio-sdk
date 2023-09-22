@@ -557,7 +557,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the color to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
+        copy(fromName: string, toName: string): void;
     }
 
     /**
@@ -570,7 +570,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the paragraph style to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
+        copy(fromName: string, toName: string): void;
     }
 
     /**
@@ -583,6 +583,6 @@ declare module 'grafx-studio-actions' {
          * @param toName the character style to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
+        copy(fromName: string, toName: string): void;
     }
 }

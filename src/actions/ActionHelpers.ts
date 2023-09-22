@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { Frame, HasName, Layout, Variable, VariableValue } from 'grafx-studio-actions';
+import { Frame, Layout, Variable, VariableValue } from 'grafx-studio-actions';
 
 
 /**
@@ -469,7 +469,7 @@ export function setPageSize(width: number | VariableValue, height: number | Vari
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyColorFromTo(from: string | HasName, to: string | HasName) {
+export function copyColorFromTo(from: string, to: string) {
     studio.stylekit.colors.copy(from, to);
 }
 
@@ -479,7 +479,7 @@ export function copyColorFromTo(from: string | HasName, to: string | HasName) {
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyParagraphStyleFromTo(from: string | HasName, to: string | HasName) {
+export function copyParagraphStyleFromTo(from: string, to: string) {
     studio.stylekit.paragraphStyles.copy(from, to);
 }
 
@@ -489,6 +489,6 @@ export function copyParagraphStyleFromTo(from: string | HasName, to: string | Ha
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyCharacterStyleFromTo(from: string | HasName, to: string | HasName) {
+export function copyCharacterStyleFromTo(from: string, to: string) {
     studio.stylekit.characterStyles.copy(from, to);
 }
