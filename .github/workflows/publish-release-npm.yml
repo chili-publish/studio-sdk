@@ -35,15 +35,13 @@ jobs:
               run: yarn make-badges
             - name: build code
               run: yarn build
-            - name: publish build
+            - name: publish sdk build
               run: node cicd.js sdk yarn publish --tag ${{ github.event.release.name }} --tag latest
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
             - name: get new npm version
               id: package-version
               uses: martinbeentjes/npm-get-version-action@master
-              with:
-                path: packages/sdk
             - name: copy file branch
               run: |
                   path=packages/sdk/upload/latest

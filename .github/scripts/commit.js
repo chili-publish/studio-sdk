@@ -20,11 +20,13 @@ function runCommand(command, args) {
 // use default node to spawn a git command
 console.info(`Adding all package.json files to git commit`);
 runCommand('git', ['add', '**/**/package.json']);
+
 console.info(`Adding root package.json file to git commit`);
 runCommand('git', ['add', 'package.json']);
 
 // commit
 console.info(`Committing changes to git`);
 runCommand('git', ['commit', '-m', `CI: bumps version to ${version} [skip ci]`]);
+
 console.info(`Pushing changes to git`);
 runCommand('git', ['push']);
