@@ -1,4 +1,4 @@
-name: Publish package
+name: Monorepo-Test
 on:
     push:
 
@@ -20,7 +20,10 @@ jobs:
               with:
                   minor-wording: 'Feature,FEATURE'
                   major-wording: 'Breaking,BREAKING'
-                  patch-wording: 'Fix,FIX'
+                  patch-wording: 'Fix,FIX' 
+                  skip-commit:  'true'
+                  skip-tag: 'true'
+
             # execute local js script
             - name: execute local js script
               run: node ./.github/scripts/replicate-version.js
