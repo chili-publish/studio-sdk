@@ -4,18 +4,9 @@
 
 [![Build PR](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml)
 
-This is the Open Source CHILI publisher Editor SDK which will make your life easier when you’re working on and integrating the new CHILI publisher Editor.
+This is the Open Source GraFx Studio SDK which will make your life easier when you’re working on and integrating GraFx Studio.
 
 The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/studio-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publish/studio-sdk/blob/develop/CONTRIBUTING.md) file to get started on your first contribution.
-
-## Alpha Program
-
-To integrate and start using the SDK, you need to be aware of our Alpha program, reach out to your contact @chili to receive more information. Once accepted, you will receive the needed credentials / way of authenticating to configure and setup the SDK on your integration.
-
-## Deprecation of old NPM package
-
-Due to a rename of the project, to align more with the product suite that is being offered, the old NPM package (editor-sdk) will be deprecated and a fresh package will be created called @chili-publish/studio-sdk.
-To update your existing projects, just simply rename the package and do a fresh npm or yarn install.
 
 ## Documentation
 
@@ -27,13 +18,17 @@ To update your existing projects, just simply rename the package and do a fresh 
 
 ## Overview
 
-This repository includes the studio-sdk, the SDK is used to plugin to the CHILI publisher API and will handle the communication between integrations (workspace, etc) and editor engine.
+Welcome to our repository, which houses the Studio-SDK, a critical component designed to seamlessly integrate with GraFx Studio. This SDK plays a pivotal role in facilitating communication between various integrations such as workspaces and the core editor engine.
 
-The goal for the SDK is to be as lightweight as possible. We don’t want to store state in here, that would be hard to maintain and keep in sync with the engine. In general the SDK is an abstraction layer for the editor engine, providing a fixed API for the integrators, and flexibility for the engine to evolve.
+Our primary objective with this SDK is to maintain its lightweight nature. We are committed to avoiding state storage within the SDK, as it can complicate maintenance and synchronization with the engine. Essentially, the SDK serves as an abstraction layer for the editor engine. It delivers a consistent API for integrators while providing the engine with the flexibility to grow and adapt.
 
-Conceptually you can think of the SDK - Editor Engine relation as a client - server relation. The SDK will issue requests to the engine and expects a certain result. The other way around the analogy with WebSockets could be used to define how data flows from the engine to the SDK (and eventually consumers of the SDK).
+To better understand the relationship between the SDK and the Studio Engine, consider it analogous to a client-server relationship. The SDK makes requests to the engine and anticipates specific results. Conversely, the data flow from the engine to the SDK (and ultimately, to the SDK consumers) can be likened to the operation of WebSockets.
+
+Please refer to the architecture diagram below for a visual representation of this interaction:
 
 ![architecture diagram](https://user-images.githubusercontent.com/956362/155481965-1d2fe57b-11ec-4327-bbc3-5b4e03a01f28.png)
+
+We warmly invite developers to explore, utilize, and contribute to this project. Your involvement will help us to continually refine and enhance our SDK, ensuring it remains a robust, reliable, and efficient tool for all GraFx Studio integrations.
 
 ## Getting started
 
@@ -72,13 +67,9 @@ The other way would be to include the sdk using the script tag just before the c
 To really get started, there is a nice guide on [the official documentation page](https://chili-publish.github.io/studio-sdk/).
 And you can find basic integration examples in [one of our other repositories](https://github.com/chili-publish/studio-sdk-integration-examples).
 
-## Build documentation
+## Contribute?
 
-After installing all dependencies, you're able to build the typedoc documentation. You only need to run the following command
-
-```bash
-npx typedoc --hideBreadcrumbs
-```
+See [CONTRIBUTING.md](https://github.com/chili-publish/studio-sdk/blob/main/CONTRIBUTING.md) for more information on how to contribute to this project.
 
 ## Feedback?
 
@@ -86,4 +77,4 @@ If you have any feedback on the technical parts of the application, a feature re
 
 ## License
 
-This project is [MIT licensed](https://github.com/chili-publish/studio-sdk/blob/develop/LICENSE)
+This project is [MIT licensed](https://github.com/chili-publish/studio-sdk/blob/main/LICENSE)
