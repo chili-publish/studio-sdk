@@ -288,10 +288,25 @@ declare module 'grafx-studio-actions' {
         readonly isReadonly: boolean;
         readonly isRequired: boolean;
         readonly type: VariableType;
+
         /**
          * The value of the current variable
          */
         readonly value: VariableValue;
+
+        /**
+         * The value of the current variable
+         * 
+         * Make sure this variable is a StringVariable
+         */
+        readonly stringValue: string;
+
+        /**
+         * The value of the current variable
+         * 
+         * Make sure this variable is a BooleanVariable
+         */
+        readonly booleanValue: boolean;
     }
 
     export interface ShortTextVariable extends BaseVariable {

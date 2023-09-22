@@ -48,12 +48,96 @@ export function getVariableValue(variableName: string | Variable): VariableValue
 }
 
 /**
+ * Retrieves the value of a text variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {string} The value of the variable as a string.
+ */
+export function getTextVariableValue(variableName: string | Variable): string {
+    return studio.variables.byName(variableName).stringValue;
+}
+
+/**
+ * Retrieves the value of a boolean variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {boolean} The value of the variable as a boolean.
+ */
+export function getBooleanVariableValue(variableName: string | Variable): boolean {
+    return studio.variables.byName(variableName).booleanValue;
+}
+
+/**
+ * Retrieves the value of a list variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {string} The value of the variable as a string.
+ */
+export function getListVariableValue(variableName: string | Variable): string {
+    return studio.variables.byName(variableName).stringValue;
+}
+
+/**
+ * Retrieves the value of an image variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {string} The value of the variable as a string.
+ */
+export function getImageVariableValue(variableName: string | Variable): string {
+    return studio.variables.byName(variableName).stringValue;
+}
+
+/**
  * Sets the value of a variable by its name or variable object.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {VariableValue} value - The new variable value (ensure correct types are used). Text variables should get a string value, Boolean variables should get a boolean value, List variables should get the item to select as a string.
  */
 export function setVariableValue(variableName: string | Variable, value: VariableValue) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a text variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string} value - The new text variable value.
+ */
+export function setTextVariableValue(variableName: string | Variable, value: string) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a boolean variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {boolean} value - The new boolean variable value.
+ */
+export function setBooleanVariableValue(variableName: string | Variable, value: boolean) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the selected value of a list variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string} value - The new list variable selected value.
+ */
+export function setListVariableValue(variableName: string | Variable, value: string) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of an image variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string} value - The new image variable value.
+ */
+export function setImageVariableValue(variableName: string | Variable, value: string) {
     studio.variables.setValue(variableName, value);
 }
 
