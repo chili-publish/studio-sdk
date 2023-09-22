@@ -24,6 +24,9 @@ jobs:
                   skip-commit:  'true'
                   skip-tag: 'true'
 
+            # execute yarn install
+            - name: execute yarn install
+              run: yarn install
             # execute local js script
             - name: execute local js script
               run: node ./.github/scripts/replicate-version.js
