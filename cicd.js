@@ -1,79 +1,55 @@
-/**
- * cicd.js
- * 
- * This script is used to execute commands in a specific directory using yarn.
- * 
- * Examples:
- *
- * 1. To clean the project in the sdk directory:
- *    node cicd.js sdk yarn clean
- *
- * 2. To build the project in the actions directory:
- *    node cicd.js actions yarn build
- *
- * 3. To build the project for development in the connectors directory:
- *    node cicd.js connectors yarn build:dev
- */
+// Import required modules
 const fs = require('fs');
-const { spawn } = require('child_process');
-const process = require('process');
 const path = require('path');
-
-function executeCommandInDirectory(directory, command, callback) {
-    // Check if directory starts with './packages/' or 'packages/', if not prepend it
-    if (!directory.startsWith('./packages/') && !directory.startsWith('packages/')) {
-        directory = path.join('./packages/', directory);
-    }
-
-    // Check if the directory exists
-    if (!fs.existsSync(directory)) {
-        return callback(new Error('Directory does not exist'));
-    }
-
-    // Get the current working directory
-    const originalDirectory = process.cwd();
-
-    try {
-        // Change to the target directory
-        process.chdir(directory);
-
-        // Split command into base command and arguments
-        const [baseCommand, ...commandArgs] = command.split(' ');
-
-        // Execute the command
-        const child = spawn(baseCommand, commandArgs, { stdio: 'inherit' });
-
-        child.on('exit', (code) => {
-            // Change back to the original directory
-            process.chdir(originalDirectory);
-
-            if (code !== 0) {
-                return callback(new Error(`Command exited with code ${code}`));
-            }
-
-            callback(null);
-        });
-    } catch (err) {
-        // If an error occurred while changing directories or executing the command,
-        // change back to the original directory and pass the error to the callback
-        process.chdir(originalDirectory);
-        callback(err);
-    }
-}
+const { execSync, spawnSync } = require('child_process');
 
 // Get arguments from command line
-const args = process.argv.slice(2); // first two args are "node" and script path
+const args = process.argv.slice(2);
+
+// Check if arguments are provided
 if (args.length < 2) {
-    console.error('Please provide a directory and a command');
+    console.error("Invalid arguments. Please provide two arguments: a comma-separated list of subfolders and a command to execute.");
+    console.error("Example: node cicd.js sdk,actions yarn build");
     process.exit(1);
 }
 
-const [directory, ...commandParts] = args;
-const command = commandParts.join(' ');
+// Split the first argument into an array of subfolders
+const subfolders = args[0].split(',');
 
-// Usage
-executeCommandInDirectory(directory, command, (err) => {
-    if (err) {
-        console.error(err);
+// The command to execute
+const command = args[1];
+
+// arguments to pass to the command
+const commandArgs = args.slice(2);
+
+// Iterate over subfolders
+for (let subfolder of subfolders) {
+    // Construct the full path to the subfolder
+    const folderPath = path.join(__dirname, 'packages', subfolder.trim());
+
+    // Check if the subfolder exists
+    if (!fs.existsSync(folderPath)) {
+        console.error(`The folder ${folderPath} does not exist.`);
+        process.exit(1);
     }
-});
+
+    console.log(`Executing command '${command}' in folder ${folderPath}`);
+
+    try {
+        // Execute the command synchronously
+        const output = spawnSync(command, commandArgs, {
+            cwd: folderPath,
+            stdio: 'inherit'  // Show command output in console in real-time
+        });
+
+        if (output.status != 0){
+            console.error(`Command execution failed in folder ${folderPath}`);
+            process.exit(1);
+        }
+    } catch (error) {
+        // If the command fails, stop the entire script execution
+        console.error(`Command execution failed in folder ${folderPath}`);
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
+    }
+}

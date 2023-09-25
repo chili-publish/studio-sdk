@@ -232,7 +232,7 @@ declare module 'grafx-studio-actions' {
          * @param value the value
          * @returns
          */
-        setValue(value?: VariableValue): void;
+        setValue(value: VariableValue): void;
 
         /**
          * Set the readonly state of a variable
@@ -281,7 +281,7 @@ declare module 'grafx-studio-actions' {
     /**
      * The different values a Variable can have depending on the Variable Type.
      */
-    export type VariableValue = string | boolean | number;
+    export type VariableValue = string | boolean | number| null;
 
     export interface BaseVariable extends HasName {
         readonly isVisible: boolean;
@@ -313,7 +313,7 @@ declare module 'grafx-studio-actions' {
     export interface ListVariable extends BaseVariable {
         readonly type: VariableType.list;
         readonly items: string[];
-        readonly selected?: string;
+        readonly selected: string | null;
     }
 
     export interface BooleanVariable extends BaseVariable {
@@ -431,7 +431,7 @@ declare module 'grafx-studio-actions' {
          * @param value the value
          * @returns
          */
-        setValue(name: string | Variable, value?: VariableValue): void;
+        setValue(name: string | Variable, value: VariableValue): void;
 
         /**
          * Gets the value of a variable
@@ -471,7 +471,7 @@ declare module 'grafx-studio-actions' {
          * Returns the selected layout
          * @returns
          */
-        getSelected(): LayoutWithMethods;
+        getSelected(): Layout;
 
         /**
          * Selects a layout by name
@@ -542,7 +542,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the color to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue, toName: string | VariableValue): void;
+        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
     }
 
     /**
@@ -555,7 +555,7 @@ declare module 'grafx-studio-actions' {
          * @param toName the paragraph style to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue, toName: string | VariableValue): void;
+        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
     }
 
     /**
@@ -568,6 +568,6 @@ declare module 'grafx-studio-actions' {
          * @param toName the character style to copy it to
          * @returns
          */
-        copy(fromName: string | VariableValue, toName: string | VariableValue): void;
+        copy(fromName: string | VariableValue | HasName, toName: string | VariableValue | HasName): void;
     }
 }

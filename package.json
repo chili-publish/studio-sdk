@@ -5,7 +5,7 @@
     "scripts": {
         "install": "node cicd.js sdk yarn install",
         "clean": "node cicd.js sdk yarn clean",
-        "build": "node cicd.js sdk yarn build",
+        "build": "node cicd.js actions,sdk yarn build",
         "build:dev": "node cicd.js sdk yarn build:dev",
         "lint": "node cicd.js sdk yarn lint",
         "testw": "node cicd.js sdk yarn testw",
