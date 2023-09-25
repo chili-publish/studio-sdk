@@ -16,48 +16,38 @@ declare module 'grafx-studio-actions' {
     }
 
     /**
-     * The event types that can trigger an Action to be executed.
-     */
-    export enum TriggerEventType {
-        selectedLayoutChanged = 'selectedLayoutChanged',
-        frameMoved = 'frameMoved',
-        variableValueChanged = 'variableValueChanged',
-        pageSizeChanged = 'pageSizeChanged',
-        documentLoaded = 'documentLoaded',
-    }
-
-    /**
      * An interface representing the trigger for executing this action.
      */
     export interface Triggers {
         /**
-         * The event type that fired this trigger.
-         */
-        readonly type: TriggerEventType;
-
-        /**
          * If the event was 'variableValueChanged', this will contain the
          * variable that caused the trigger to fire.
          */
-        readonly changedVariable?: Variable;
+        readonly variableValueChanged?: Variable;
 
         /**
          * If the event was 'selectedLayoutChanged', this will contain the
          * layout that caused the trigger to fire.
          */
-        readonly changedLayout?: Layout;
+        readonly selectedLayoutChanged?: Layout;
 
         /**
          * If the event was 'frameMoved', this will contain the
          * frame that caused the trigger to fire.
          */
-        readonly changedFrame?: Frame;
+        readonly frameMoved?: Frame;
 
         /**
          * If the event was 'pageSizeChanged', this will contain the
          * page that caused the trigger to fire.
          */
-        readonly changedPage?: Page;
+        readonly pageSizeChanged?: Page;
+
+        /**
+         * If the event was 'documentLoaded', this will return true.
+         * otherwise it will return false.
+         */
+        readonly documentLoaded: boolean; 
     }
 
     export interface Console {

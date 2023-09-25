@@ -10,7 +10,7 @@ import { Frame, Layout, Variable, VariableValue } from 'grafx-studio-actions';
  * @returns {string} The name of the triggered variable.
  */
 export function getTriggeredVariableName(): string {
-    const variable = triggers.changedVariable;
+    const variable = triggers.variableValueChanged;
     
     if (!variable) {
         throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
@@ -27,7 +27,7 @@ export function getTriggeredVariableName(): string {
  * @returns {VariableValue} The value of the triggered variable.
  */
 export function getTriggeredVariableValue(): VariableValue {
-    const variable = triggers.changedVariable;
+    const variable = triggers.variableValueChanged;
 
     if (!variable) {
         throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
@@ -241,7 +241,7 @@ export function setSelectedItemFromListVariable(variableName: string | Variable,
  * @throws {Error} Throws an error if the action was not triggered by a frame moved.
  */
 export function getTriggeredFrameName(): string {
-    const frame = triggers.changedFrame;
+    const frame = triggers.frameMoved;
     
     if (!frame) {
         throw new Error('This action was not triggered by a frame moved trigger. Make sure the trigger for this action is set to frame moved.');
@@ -408,7 +408,7 @@ export function setFrameVisible(name: string | Frame, visibility: boolean | Vari
  * @throws {Error} Throws an error if the action was not triggered by a selected layout change.
  */
 export function getTriggeredLayoutName(): string {
-    const layout = triggers.changedLayout;
+    const layout = triggers.selectedLayoutChanged;
     
     if (!layout) {
         throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to selected layout changed.');
