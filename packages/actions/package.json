@@ -7,9 +7,6 @@
     "build": "yarn tsc && yarn tsc -p tsconfig.types.json && cp types/Actions.d.ts out/Actions.d.ts && node scripts/compress.mjs"
   },
   "devDependencies": {
-    "openai": "^4.8.0"
-  },
-  "dependencies": {
     "dotenv": "^16.3.1",
     "find-root": "^1.1.0",
     "fs-extra": "^11.1.1",

@@ -57,7 +57,7 @@ jobs:
                       az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
             - name: prepare for actions upload
               run: |
-                node cicd.js actions node scripts/prepare-release.mjs
+                node cicd.js actions yarn && node scripts/prepare-release.mjs
               working-directory: packages/actions
             - name: Copy to Azure Blob Storage (Actions)
               uses: azure/CLI@v1
