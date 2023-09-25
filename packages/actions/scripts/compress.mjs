@@ -1,71 +1,117 @@
-import OpenAI from 'openai';
-import * as fs from 'fs';
-import * as dotenv from 'dotenv';
+import ts from "typescript";
+import fs from "fs";
 
-dotenv.config();
+function visit(root, node, output) {
+    if (node == null)
+        return;
+    if (ts.isFunctionDeclaration(node)) {
+        const functionInfo = {
+            n: node.name.escapedText,
+            p: node.parameters.map(p => ({ name: p.name.escapedText, type: getType(root, p.type) })),
+            r: getType(root, node.type),
+        };
+        if (functionInfo.p.length == 0)
+            delete functionInfo.p;
 
-const openAiApiKey = process.env["OPENAI_API_KEY"];
+        output.functions.push(functionInfo);
+    } else if (ts.isClassDeclaration(node) || ts.isInterfaceDeclaration(node)) {
+        const classInfo = {
+            n: getType(root, node.name.escapedText),
+            m: [],
+            p: [],
+        };
+        for (const member of node.members) {
+            if (ts.isMethodDeclaration(member)) {
+                const methodInfo = {
+                    n: member.name.escapedText,
+                    p: member.parameters.map(p => ({ name: p.name.escapedText, type: getType(root, p.type) })),
+                    r: getType(root, member.type),
+                };
+                classInfo.m.push(methodInfo);
+            } else if (ts.isMethodSignature(member)) {
+                const methodInfo = {
+                    n: member.name.escapedText,
+                    p: member.parameters.map(p => ({ name: p.name.escapedText, type: getType(p.type.getText(root)) })),
+                    r: getType(root, member.type),
+                };
+                classInfo.m.push(methodInfo);
+            } else if (ts.isPropertySignature(member)) {
+                const methodInfo = {
+                    n: member.name.escapedText,
+                    r: getType(root, member.type),
+                };
+                classInfo.p.push(methodInfo);
+            }
+        }
 
-// if no openai api key is set, log a warning and copy all .d.ts files to .min.d.ts files
-if (!openAiApiKey) {
-  console.warn("No OPENAI_API_KEY environment variable set, skipping compression.");
-  // copy all d.ts files in ./out dir to ./out/*.min.d.ts
-  const files = fs.readdirSync('out').filter(file => file.endsWith('.d.ts')).map(file => 'out/' + file);
-  files.forEach(file => {
-    // get the filename without d.ts, by replacing
-    const filename = file.replace('.d.ts', '.min.d.ts');
-    console.log("copying " + file + " to " + filename);
-    fs.copyFileSync(file, filename);
-  });
-  process.exit(0);
+        if (classInfo.m.length == 0)
+            delete classInfo.m;
+        if (classInfo.p.length == 0)
+            delete classInfo.p;
+
+        output.classes.push(classInfo);
+    } else if (ts.isEnumDeclaration(node)) {
+        const enumInfo = {
+            n: getType(root, node.name.escapedText),
+            v: node.members.map(m => m.name.escapedText),
+        };
+        output.enums.push(enumInfo);
+    } else if (ts.isModuleDeclaration(node)) {
+
+        const moduleInfo = {
+            n: node.name.escapedText,
+            f: []
+        };
+
+        for (const member of node.body.statements) {
+
+            if (ts.isFunctionDeclaration(member)) {
+            } else if (ts.isVariableStatement(member)) {
+                for (const declaration of member.declarationList.declarations) {
+                    if (ts.isIdentifier(declaration.name)) {
+                        moduleInfo.f.push({
+                            n: declaration.name.escapedText,
+                            t: getType(root, declaration.type),
+                        });
+                    }
+                }
+            }
+        }
+
+        if (moduleInfo.f.length > 0)
+            output.modules.push(moduleInfo);
+    }
+
+    ts.forEachChild(node, (child) => visit(root, child, output));
 }
 
-const openai = new OpenAI({
-  apiKey: openAiApiKey,
-});
+function getType(root, type) {
+    if (type == null)
+        return null;
 
-async function main() {
+    if (typeof type == "string")
+        return type;
 
-  // read and filter all d.ts files in ./out dir
-  const files = fs.readdirSync('out').filter(file => file.endsWith('.d.ts')).map(file => 'out/' + file);
-
-  // minify each file
-  files.forEach(async file => {
-    console.log(file);
-
-    // read types/Actions.d.ts
-    await fs.readFile(file, 'utf8', async function (err, data) {
-      
-      var content = 'This is a partial d.ts file, please generate a structured json model describing it so that you (GPT-3.5 Turbo) can reconstruct it as close as possible to the original. This is for yourself. Do not make it human readable. Aggressively compress it, while still keeping ALL the information to fully reconstruct it. Also use the fewest token possible, your text should be way smaller than the one I give you.\n\nTO COMPRESS: ```<<ACTION_API>>``` ';
-      content = content.replace('<<ACTION_API>>', data);
-      const completion = //'test';
-      await openai.chat.completions.create({
-        messages: [
-          { role: 'system', content: 'Hello, I am GPT-3.5 Turbo, I will help you compress your d.ts file.' },
-          // { role: 'user', content: `declare module 'grafx-studio-actions' {\\n    global {\\n        /**\\n         * Studio root object is globally available inside actions\\n         */\\n        const studio: ActionApi;\\n\\n        // eslint-disable-next-line @typescript-eslint/ban-ts-comment\\n        // @ts-ignore\\n        const console: Console;\\n    }\\n\\n    export interface Console {\\n        log(...data: unknown[]): void;\\n    }\\n\\n    /**\\n     * An interface representing the API for working with actions.\\n     * Provides access to objects for manipulating frames, variables,\\n     * layouts, page and stylekit properties.\\n     */\\n    export interface ActionApi {\\n        /** An object for manipulating frames */\\n        frames: FramesController;\\n    }\\n\\n    /**\\n     * All Studio objects that have a name will implement this interface.\\n     */\\n    export interface HasName {\\n        readonly name: string;\\n    }\\n\\n    /**\\n     * Represents a Frame inside Actions\\n     */\\n    export interface Frame extends HasName {\\n        readonly x: number;\\n        readonly y: number;\\n        readonly width: number;\\n        readonly height: number;\\n        readonly rotation: number;\\n        readonly isVisible: boolean;\\n        readonly type: FrameType;\\n    }\\n\\n    export interface FrameMethods {\\n        /**\\n         * Moves a frame to a specified position\\n         * @param x the frame x position\\n         * @param y the frame y position\\n         * @returns\\n         */\\n        move(x: number | VariableValue, y: number | VariableValue): void;\\n    }\\n\\n    /**\\n     * Represents a Frame inside Actions\\n     * Contains frame methods that can be executed on this instance.\\n     */\\n    export type FrameWithMethods = Frame & FrameMethods;\\n\\n\\n\\n    export enum FrameType {\\n        text = 'text',\\n        shape = 'shape',\\n        image = 'image',\\n    }\\n\\n\\n    /**\\n     * Controller responsible for manipulating frames using Actions.\\n     */\\n    export interface FramesController {\\n        /**\\n         * Moves a frame to a specified position\\n         * @param name the frame name to move\\n         * @param x the frame x position\\n         * @param y the frame y position\\n         * @returns\\n         */\\n        move(name: string | Frame, x: number | VariableValue, y: number | VariableValue): void;\\n    }\\n\\n\\n}\\n` },
-          // { role: 'assistant', content: `{"m":[{"n":"'grafx-studio-actions'","g":[{"n":"studio","t":"ActionApi"},{"n":"console","t":"Console","i":true}],"i":[{"n":"Console","m":[{"n":"log","p":[{"t":"unknown[]","r":false}],"t":"void"}]},{"n":"ActionApi","p":[{"n":"frames","t":"FramesController"}]},{"n":"HasName","p":[{"n":"name","t":"string","r":true}]},{"n":"Frame","b":"HasName","p":[{"n":"x","t":"number","r":true},{"n":"y","t":"number","r":true},{"n":"width","t":"number","r":true},{"n":"height","t":"number","r":true},{"n":"rotation","t":"number","r":true},{"n":"isVisible","t":"boolean","r":true},{"n":"type","t":"FrameType","r":true}]},{"n":"FrameMethods","m":[{"n":"move","p":[{"t":"number | VariableValue"},{"t":"number | VariableValue"}],"t":"void"}]},{"n":"FrameType","e":["text","shape","image"]},{"n":"FramesController","m":[{"n":"move","p":[{"t":"string | Frame"},{"t":"number | VariableValue"},{"t":"number | VariableValue"}],"t":"void"}]}],"a":[{"n":"FrameWithMethods","t":"Frame & FrameMethods"}]}}` },
-          { role: 'user', content: content }],
-        model: 'gpt-3.5-turbo-16k',
-      });
-
-      // write completion to a .min.d.ts file
-      // get the filename without d.ts, by replacing
-      const filename = file.replace('.d.ts', '.min.d.ts');      
-
-      console.log("minified source " + file + " to " + filename);
-
-      // write completeion to types/Actions.d.min.ts
-      await fs.writeFile(filename, completion.choices[0].message.content, function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-      });
-    });
-  });
-  // compress it
-
-  // create finetuned model
-
-
+    return type.getText(root);
 }
 
-main();
+function parseFile(fileName) {
+    const program = ts.createProgram([fileName], { allowJs: true });
+    const sourceFile = program.getSourceFile(fileName);
+
+    const output = {
+        functions: [],
+        classes: [],
+        enums: [],
+        modules: [],
+    };
+
+    visit(sourceFile, sourceFile, output);
+
+    const outFileName = fileName.replace(".d.ts", ".json");
+
+    fs.writeFileSync(outFileName, JSON.stringify(output, null, 0));
+}
+
+parseFile("./out/Actions.d.ts");
+parseFile("./out/ActionHelpers.d.ts");

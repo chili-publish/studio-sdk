@@ -12,7 +12,7 @@
         ],
         "esModuleInterop": false,
         "removeComments": true,
-        "declaration": false,        
+        "declaration": false        
     },
     "include": [
         "src/ActionHelpers.ts"
