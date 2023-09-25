@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-sdk",
-    "version": "0.150.0",
+    "version": "0.152.0",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
@@ -64,7 +64,7 @@
         "make-badges": "node createCoverageBadge",
         "validate-licenses": "node validate_licenses.js",
         "build-docs-md": "npx typedoc --hideBreadcrumbs --out ./docs/md",
-        "build-docs-html" : "npx typedoc --out ./docs/html --plugin none --readme ./src/README_HTML.md"
+        "build-docs-html": "npx typedoc --out ./docs/html --plugin none --readme ./src/README_HTML.md"
     },
     "husky": {
         "hooks": {

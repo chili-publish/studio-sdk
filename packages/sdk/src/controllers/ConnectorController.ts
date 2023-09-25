@@ -37,6 +37,16 @@ export class ConnectorController {
     }
 
     /**
+     * Gets a connector by its id
+     * @param id the id of the connector
+     * @returns connector
+     */
+    getById = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorById(id).then((result) => getEditorResponseData<ConnectorInstance>(result));
+    };
+
+    /**
      * Gets all available connectors of a 'ConnectorType'
      * @param type type of connector you want to get
      * @returns list of all available connectors of a 'ConnectorType'
@@ -75,7 +85,7 @@ export class ConnectorController {
      * @param configurationCallback callback to setup the connector
      * @returns
      */
-    configure = async (id: string, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
+    configure = async (id: Id, configurationCallback: (configurator: ConnectorConfigurator) => Promise<void>) => {
         const res = await this.#editorAPI;
         // wait for connector to be ready
         await this.waitToBeReady(id);
@@ -91,9 +101,29 @@ export class ConnectorController {
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns connector state
      */
-    getById = async (id: string) => {
+    getState = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getConnectorState(id).then((result) => getEditorResponseData<ConnectorState>(result));
+    };
+
+    /**
+     * Gets the mapped data from connector.
+     * @param id the id of your registered connector
+     * @returns mappings
+     */
+    getMappings = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMapping[]>(result));
+    };
+
+    /**
+    * Gets the options from the connector.
+    * @param id the id of your registered connector
+    * @returns options
+    */
+    getOptions = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorOptions(id).then((result) => getEditorResponseData<ConnectorOptions>(result));
     };
 
     /**
@@ -104,7 +134,7 @@ export class ConnectorController {
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns
      */
-    waitToBeReady = async (id: string, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
+    waitToBeReady = async (id: Id, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
         // minimum timeout is 500ms
         let timeout = Math.max(timeoutMilliseconds, 500);
 
@@ -118,7 +148,7 @@ export class ConnectorController {
             // using while loop will prevent stack overflow issues when using recursion
             // wait for maximum 2 seconds to fail
             while (retries * waitTime < timeout) {
-                const result = await this.getById(id);
+                const result = await this.getState(id);
 
                 if (
                     result.success &&
@@ -168,13 +198,13 @@ class ConnectorConfigurator {
     /**
      * @ignore
      */
-    #connectorId: string;
+    #connectorId: Id;
     #res: EditorAPI;
 
     /**
      * @ignore
      */
-    constructor(id: string, res: EditorAPI) {
+    constructor(id: Id, res: EditorAPI) {
         this.#connectorId = id;
         this.#res = res;
     }
