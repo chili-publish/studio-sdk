@@ -83,12 +83,39 @@ declare module 'grafx-studio-actions' {
      * Represents a Frame inside Actions
      */
     export interface Frame extends HasName {
+        /**
+         * the frame x position
+         */
         readonly x: number;
+
+        /**
+         * The frame y position
+         */
         readonly y: number;
+
+        /**
+         * The frame width
+         */
         readonly width: number;
+
+        /**
+         * The frame height
+         */
         readonly height: number;
+
+        /**
+         * The frame rotation (in degrees)
+         */
         readonly rotation: number;
+
+        /**
+         * Whether the frame is visible
+         */
         readonly isVisible: boolean;
+
+        /**
+         * The type of the frame (text, shape, image)
+         */
         readonly type: FrameType;
     }
 
@@ -274,9 +301,24 @@ declare module 'grafx-studio-actions' {
     export type VariableValue = string | boolean | number| null;
 
     export interface BaseVariable extends HasName {
+       /**
+        * Whether the variable is visible
+        */
         readonly isVisible: boolean;
+
+        /**
+         * Whether the variable is read-only
+         */
         readonly isReadonly: boolean;
+
+        /**
+         * Whether the variable is required
+         */
         readonly isRequired: boolean;
+
+        /**
+         * The type of the variable.
+         */
         readonly type: VariableType;
 
         /**
