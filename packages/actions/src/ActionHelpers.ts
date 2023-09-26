@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-unresolved
-import { Frame, HasName, Layout, Variable, VariableValue } from 'grafx-studio-actions';
 
 /**
  * Retrieves the name of the variable that triggered this action.
@@ -9,7 +8,7 @@ import { Frame, HasName, Layout, Variable, VariableValue } from 'grafx-studio-ac
  * @returns {string} The name of the triggered variable.
  */
 export function getTriggeredVariableName(): string {
-    const variable = triggers.changedVariable;
+    const variable = triggers.variableValueChanged;
     
     if (!variable) {
         throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
@@ -26,7 +25,7 @@ export function getTriggeredVariableName(): string {
  * @returns {VariableValue} The value of the triggered variable.
  */
 export function getTriggeredVariableValue(): VariableValue {
-    const variable = triggers.changedVariable;
+    const variable = triggers.variableValueChanged;
 
     if (!variable) {
         throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
@@ -47,12 +46,96 @@ export function getVariableValue(variableName: string | Variable): VariableValue
 }
 
 /**
+ * Retrieves the value of a text variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {string} The value of the variable as a string.
+ */
+export function getTextVariableValue(variableName: string | Variable): string {
+    return studio.variables.byName(variableName).stringValue;
+}
+
+/**
+ * Retrieves the value of a boolean variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {boolean} The value of the variable as a boolean.
+ */
+export function getBooleanVariableValue(variableName: string | Variable): boolean {
+    return studio.variables.byName(variableName).booleanValue;
+}
+
+/**
+ * Retrieves the value of a list variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {string} The value of the variable as a string.
+ */
+export function getListVariableValue(variableName: string | Variable): string {
+    return studio.variables.byName(variableName).stringValue;
+}
+
+/**
+ * Retrieves the value of an image variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns {string} The value of the variable as a string.
+ */
+export function getImageVariableValue(variableName: string | Variable): string {
+    return studio.variables.byName(variableName).stringValue;
+}
+
+/**
  * Sets the value of a variable by its name or variable object.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {VariableValue} value - The new variable value (ensure correct types are used). Text variables should get a string value, Boolean variables should get a boolean value, List variables should get the item to select as a string.
  */
 export function setVariableValue(variableName: string | Variable, value: VariableValue) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a text variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string} value - The new text variable value.
+ */
+export function setTextVariableValue(variableName: string | Variable, value: string) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a boolean variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {boolean} value - The new boolean variable value.
+ */
+export function setBooleanVariableValue(variableName: string | Variable, value: boolean) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the selected value of a list variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string} value - The new list variable selected value.
+ */
+export function setListVariableValue(variableName: string | Variable, value: string) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of an image variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string} value - The new image variable value.
+ */
+export function setImageVariableValue(variableName: string | Variable, value: string) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -156,7 +239,7 @@ export function setSelectedItemFromListVariable(variableName: string | Variable,
  * @throws {Error} Throws an error if the action was not triggered by a frame moved.
  */
 export function getTriggeredFrameName(): string {
-    const frame = triggers.changedFrame;
+    const frame = triggers.frameMoved;
     
     if (!frame) {
         throw new Error('This action was not triggered by a frame moved trigger. Make sure the trigger for this action is set to frame moved.');
@@ -323,7 +406,7 @@ export function setFrameVisible(name: string | Frame, visibility: boolean | Vari
  * @throws {Error} Throws an error if the action was not triggered by a selected layout change.
  */
 export function getTriggeredLayoutName(): string {
-    const layout = triggers.changedLayout;
+    const layout = triggers.selectedLayoutChanged;
     
     if (!layout) {
         throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to selected layout changed.');
@@ -384,7 +467,7 @@ export function setPageSize(width: number | VariableValue, height: number | Vari
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyColorFromTo(from: string | HasName, to: string | HasName) {
+export function copyColorFromTo(from: string, to: string) {
     studio.stylekit.colors.copy(from, to);
 }
 
@@ -394,7 +477,7 @@ export function copyColorFromTo(from: string | HasName, to: string | HasName) {
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyParagraphStyleFromTo(from: string | HasName, to: string | HasName) {
+export function copyParagraphStyleFromTo(from: string, to: string) {
     studio.stylekit.paragraphStyles.copy(from, to);
 }
 
@@ -404,6 +487,6 @@ export function copyParagraphStyleFromTo(from: string | HasName, to: string | Ha
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyCharacterStyleFromTo(from: string | HasName, to: string | HasName) {
+export function copyCharacterStyleFromTo(from: string, to: string) {
     studio.stylekit.characterStyles.copy(from, to);
 }
