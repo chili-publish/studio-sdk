@@ -404,6 +404,6 @@ export function copyParagraphStyleFromTo(from: string | HasName, to: string | Ha
  * @param {string | HasName} from - The name of the source character style.
  * @param {string | HasName} to - The name of the target character style.
  */
-export function copyCharacterStyleFromTo(from: string | HasName, to: string | HasName) {
+globalThis.copyCharacterStyleFromTo = (from: string | HasName, to: string | HasName) => {
     studio.stylekit.characterStyles.copy(from, to);
 }
