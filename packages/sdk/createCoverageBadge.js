@@ -28,7 +28,7 @@ if (parsedCoverageResults) {
     const sum = (totalPercentage / 3).toFixed(2);
     const coverageColor = getCoverageColor(sum);
     const badge = createCoverageBadgeURL(sum, coverageColor);
-    const readMeFile = fs.readFileSync('README.md', 'utf8');
+    const readMeFile = fs.readFileSync('../../README.md', 'utf8');
 
     let lineToChange;
 
@@ -38,5 +38,5 @@ if (parsedCoverageResults) {
         }
     });
     const updatedReadMeFile = readMeFile.replace(lineToChange, `![Coverage](${badge})`);
-    fs.writeFileSync('README.md', updatedReadMeFile);
+    fs.writeFileSync('../../README.md', updatedReadMeFile);
 }
