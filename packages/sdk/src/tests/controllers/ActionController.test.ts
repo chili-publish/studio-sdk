@@ -15,6 +15,7 @@ const mockEditorApi: EditorAPI = {
     updateActionScript: async () => getEditorResponseData(castToEditorResponse(null)),
     updateActionTriggers: async () => getEditorResponseData(castToEditorResponse(null)),
     moveActions: async () => getEditorResponseData(castToEditorResponse(null)),
+    setActionTypeError: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -28,6 +29,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'updateActionScript');
     jest.spyOn(mockEditorApi, 'updateActionTriggers');
     jest.spyOn(mockEditorApi, 'moveActions');
+    jest.spyOn(mockEditorApi, 'setActionTypeError');
 });
 
 afterAll(() => {
@@ -99,5 +101,11 @@ describe('Should call all of the ActionController functions of child successfull
         await mockedActionController.move(order, ids);
         expect(mockEditorApi.moveActions).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.moveActions).toHaveBeenCalledWith(order, ids);
+    });
+
+    it('should call removeAction function of EditorAPI', async () => {
+        await mockedActionController.setTypeError('0', true);
+        expect(mockEditorApi.setActionTypeError).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setActionTypeError).toHaveBeenCalledWith('0', true);
     });
 });
