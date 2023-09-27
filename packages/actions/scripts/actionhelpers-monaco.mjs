@@ -59,7 +59,6 @@ function parseFile(fileName) {
 
     var template = `
 
-import { Frame, HasName, Layout, Variable, VariableValue } from 'grafx-studio-actions';
 declare module 'grafx-studio-actions-helper' {
     global {
         <<GLOBALS>>
