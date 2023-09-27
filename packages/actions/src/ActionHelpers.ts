@@ -464,8 +464,8 @@ export function setPageSize(width: number | VariableValue, height: number | Vari
 /**
  * Copy a stylekit color.
  *
- * @param {string | HasName} from - The name of the source character style.
- * @param {string | HasName} to - The name of the target character style.
+ * @param {string} from - The name of the source character style.
+ * @param {string} to - The name of the target character style.
  */
 export function copyColorFromTo(from: string, to: string) {
     studio.stylekit.colors.copy(from, to);
@@ -474,8 +474,8 @@ export function copyColorFromTo(from: string, to: string) {
 /**
  * Copy a stylekit paragraph style.
  *
- * @param {string | HasName} from - The name of the source character style.
- * @param {string | HasName} to - The name of the target character style.
+ * @param {string} from - The name of the source character style.
+ * @param {string} to - The name of the target character style.
  */
 export function copyParagraphStyleFromTo(from: string, to: string) {
     studio.stylekit.paragraphStyles.copy(from, to);
@@ -484,8 +484,8 @@ export function copyParagraphStyleFromTo(from: string, to: string) {
 /**
  * Copy a stylekit character style.
  *
- * @param {string | HasName} from - The name of the source character style.
- * @param {string | HasName} to - The name of the target character style.
+ * @param {string} from - The name of the source character style.
+ * @param {string} to - The name of the target character style.
  */
 export function copyCharacterStyleFromTo(from: string, to: string) {
     studio.stylekit.characterStyles.copy(from, to);

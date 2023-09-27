@@ -302,8 +302,8 @@ declare module 'grafx-studio-actions' {
 
         export interface BaseVariable extends HasName {
             /**
-             * Whether the variable is visible
-             */
+            * Whether the variable is visible
+            */
             readonly isVisible: boolean;
 
             /**
@@ -484,6 +484,16 @@ declare module 'grafx-studio-actions' {
              * Gets the value of a variable
              */
             getValue(name: string | Variable): VariableValue;
+
+            /**
+             * Gets the string value of a variable
+             */
+            getStringValue(name: string | Variable): string;
+
+            /**
+             * Gets the boolean value of a variable
+             */
+            getBooleanValue(name: string | Variable): boolean;
 
             /**
              * Set the readonly state of a variable
