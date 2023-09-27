@@ -7,7 +7,7 @@
  *
  * @returns {string} The name of the triggered variable.
  */
-export function getTriggeredVariableName(): string {
+function getTriggeredVariableName(): string {
     const variable = triggers.variableValueChanged;
     
     if (!variable) {
@@ -24,7 +24,7 @@ export function getTriggeredVariableName(): string {
  *
  * @returns {VariableValue} The value of the triggered variable.
  */
-export function getTriggeredVariableValue(): VariableValue {
+function getTriggeredVariableValue(): VariableValue {
     const variable = triggers.variableValueChanged;
 
     if (!variable) {
@@ -41,7 +41,7 @@ export function getTriggeredVariableValue(): VariableValue {
  *
  * @returns {VariableValue} The value of the variable.
  */
-export function getVariableValue(variableName: string | Variable): VariableValue {
+function getVariableValue(variableName: string | Variable): VariableValue {
     return studio.variables.getValue(variableName);
 }
 
@@ -52,7 +52,7 @@ export function getVariableValue(variableName: string | Variable): VariableValue
  *
  * @returns {string} The value of the variable as a string.
  */
-export function getTextVariableValue(variableName: string | Variable): string {
+function getTextVariableValue(variableName: string | Variable): string {
     return studio.variables.byName(variableName).stringValue;
 }
 
@@ -63,7 +63,7 @@ export function getTextVariableValue(variableName: string | Variable): string {
  *
  * @returns {boolean} The value of the variable as a boolean.
  */
-export function getBooleanVariableValue(variableName: string | Variable): boolean {
+function getBooleanVariableValue(variableName: string | Variable): boolean {
     return studio.variables.byName(variableName).booleanValue;
 }
 
@@ -74,7 +74,7 @@ export function getBooleanVariableValue(variableName: string | Variable): boolea
  *
  * @returns {string} The value of the variable as a string.
  */
-export function getListVariableValue(variableName: string | Variable): string {
+function getListVariableValue(variableName: string | Variable): string {
     return studio.variables.byName(variableName).stringValue;
 }
 
@@ -85,7 +85,7 @@ export function getListVariableValue(variableName: string | Variable): string {
  *
  * @returns {string} The value of the variable as a string.
  */
-export function getImageVariableValue(variableName: string | Variable): string {
+function getImageVariableValue(variableName: string | Variable): string {
     return studio.variables.byName(variableName).stringValue;
 }
 
@@ -95,7 +95,7 @@ export function getImageVariableValue(variableName: string | Variable): string {
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {VariableValue} value - The new variable value (ensure correct types are used). Text variables should get a string value, Boolean variables should get a boolean value, List variables should get the item to select as a string.
  */
-export function setVariableValue(variableName: string | Variable, value: VariableValue) {
+function setVariableValue(variableName: string | Variable, value: VariableValue) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -105,7 +105,7 @@ export function setVariableValue(variableName: string | Variable, value: Variabl
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {string} value - The new text variable value.
  */
-export function setTextVariableValue(variableName: string | Variable, value: string) {
+function setTextVariableValue(variableName: string | Variable, value: string) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -115,7 +115,7 @@ export function setTextVariableValue(variableName: string | Variable, value: str
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {boolean} value - The new boolean variable value.
  */
-export function setBooleanVariableValue(variableName: string | Variable, value: boolean) {
+function setBooleanVariableValue(variableName: string | Variable, value: boolean) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -125,7 +125,7 @@ export function setBooleanVariableValue(variableName: string | Variable, value: 
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {string} value - The new list variable selected value.
  */
-export function setListVariableValue(variableName: string | Variable, value: string) {
+function setListVariableValue(variableName: string | Variable, value: string) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -135,7 +135,7 @@ export function setListVariableValue(variableName: string | Variable, value: str
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {string} value - The new image variable value.
  */
-export function setImageVariableValue(variableName: string | Variable, value: string) {
+function setImageVariableValue(variableName: string | Variable, value: string) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -146,7 +146,7 @@ export function setImageVariableValue(variableName: string | Variable, value: st
  *
  * @returns {boolean} `true` if the variable is visible, `false` otherwise.
  */
-export function getVariableIsVisible(name: string | Variable): boolean {
+function getVariableIsVisible(name: string | Variable): boolean {
     return studio.variables.byName(name).isVisible;
 }
 
@@ -156,7 +156,7 @@ export function getVariableIsVisible(name: string | Variable): boolean {
  * @param {string | Variable} name - The name of the variable to update or a variable object.
  * @param {boolean} visibility - `true` to make the variable visible, `false` to hide it.
  */
-export function setVariableVisible(name: string | Variable, visibility: VariableValue) {
+function setVariableVisible(name: string | Variable, visibility: VariableValue) {
     studio.variables.setVisible(name, visibility);
 }
 
@@ -166,7 +166,7 @@ export function setVariableVisible(name: string | Variable, visibility: Variable
  * @param {string | Variable} fromName - The name of the variable or a variable object to copy from.
  * @param {string | Variable} toName - The name of the variable or a variable object to copy to.
  */
-export function copyVariableValueFromTo(fromName: string | Variable, toName: string | Variable) {
+function copyVariableValueFromTo(fromName: string | Variable, toName: string | Variable) {
     setVariableValue(toName, getVariableValue(fromName));
 }
 
@@ -179,7 +179,7 @@ export function copyVariableValueFromTo(fromName: string | Variable, toName: str
  *
  * @throws {Error} Throws an error if the variable is not a list variable.
  */
-export function getAllItemsFromListVariable(variableName: string | Variable): string[] {
+function getAllItemsFromListVariable(variableName: string | Variable): string[] {
     const list = studio.variables.byName(variableName);
 
     if (list.type !== 'list') {
@@ -198,7 +198,7 @@ export function getAllItemsFromListVariable(variableName: string | Variable): st
  *
  * @throws {Error} Throws an error if the variable is not of type 'list'.
  */
-export function getSelectedItemFromListVariable(variableName: string | Variable) {
+function getSelectedItemFromListVariable(variableName: string | Variable) {
     const list = studio.variables.byName(variableName);
 
     if (list.type !== 'list') {
@@ -217,7 +217,7 @@ export function getSelectedItemFromListVariable(variableName: string | Variable)
  * 
  * @throws {Error} If the variable is not of type 'list' or if the selected item is not a string or undefined.
  */
-export function setSelectedItemFromListVariable(variableName: string | Variable, item: string | VariableValue) {
+function setSelectedItemFromListVariable(variableName: string | Variable, item: string | VariableValue) {
     const list = studio.variables.byName(variableName);
 
     if (list.type !== 'list') {
@@ -238,7 +238,7 @@ export function setSelectedItemFromListVariable(variableName: string | Variable,
  *
  * @throws {Error} Throws an error if the action was not triggered by a frame moved.
  */
-export function getTriggeredFrameName(): string {
+function getTriggeredFrameName(): string {
     const frame = triggers.frameMoved;
     
     if (!frame) {
@@ -257,7 +257,7 @@ export function getTriggeredFrameName(): string {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function getFrameX(name: string | Frame): number {
+function getFrameX(name: string | Frame): number {
     return studio.frames.byName(name).x;
 }
 
@@ -270,7 +270,7 @@ export function getFrameX(name: string | Frame): number {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function getFrameY(name: string | Frame): number {
+function getFrameY(name: string | Frame): number {
     return studio.frames.byName(name).y;
 }
 
@@ -283,7 +283,7 @@ export function getFrameY(name: string | Frame): number {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function getFrameWidth(name: string | Frame): number {
+function getFrameWidth(name: string | Frame): number {
     return studio.frames.byName(name).width;
 }
 
@@ -296,7 +296,7 @@ export function getFrameWidth(name: string | Frame): number {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function getFrameHeight(name: string | Frame): number {
+function getFrameHeight(name: string | Frame): number {
     return studio.frames.byName(name).height;
 }
 
@@ -309,7 +309,7 @@ export function getFrameHeight(name: string | Frame): number {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function getFrameRotation(name: string | Frame): number {
+function getFrameRotation(name: string | Frame): number {
     return studio.frames.byName(name).rotation;
 }
 
@@ -322,7 +322,7 @@ export function getFrameRotation(name: string | Frame): number {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function getFrameVisible(name: string | Frame): boolean {
+function getFrameVisible(name: string | Frame): boolean {
     return studio.frames.byName(name).isVisible;
 }
 
@@ -334,7 +334,7 @@ export function getFrameVisible(name: string | Frame): boolean {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function setFrameX(name: string | Frame, x: number | VariableValue) {
+function setFrameX(name: string | Frame, x: number | VariableValue) {
     studio.frames.byName(name).setX(x);
 }
 
@@ -346,7 +346,7 @@ export function setFrameX(name: string | Frame, x: number | VariableValue) {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function setFrameY(name: string | Frame, y: number | VariableValue) {
+function setFrameY(name: string | Frame, y: number | VariableValue) {
     studio.frames.byName(name).setY(y);
 }
 
@@ -358,7 +358,7 @@ export function setFrameY(name: string | Frame, y: number | VariableValue) {
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function setFrameWidth(name: string | Frame, width: number | VariableValue) {
+function setFrameWidth(name: string | Frame, width: number | VariableValue) {
     studio.frames.byName(name).setWidth(width);
 }
 
@@ -370,7 +370,7 @@ export function setFrameWidth(name: string | Frame, width: number | VariableValu
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function setFrameHeight(name: string | Frame, height: number | VariableValue) {
+function setFrameHeight(name: string | Frame, height: number | VariableValue) {
     studio.frames.byName(name).setHeight(height);
 }
 
@@ -382,7 +382,7 @@ export function setFrameHeight(name: string | Frame, height: number | VariableVa
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function setFrameRotation(name: string | Frame, rotation: number | VariableValue) {
+function setFrameRotation(name: string | Frame, rotation: number | VariableValue) {
     studio.frames.byName(name).setRotation(rotation);
 }
 
@@ -394,7 +394,7 @@ export function setFrameRotation(name: string | Frame, rotation: number | Variab
  *
  * @throws {Error} Throws an error if the specified frame does not exist.
  */
-export function setFrameVisible(name: string | Frame, visibility: boolean | VariableValue) {
+function setFrameVisible(name: string | Frame, visibility: boolean | VariableValue) {
     studio.frames.byName(name).setVisible(visibility);
 }
 
@@ -405,7 +405,7 @@ export function setFrameVisible(name: string | Frame, visibility: boolean | Vari
  *
  * @throws {Error} Throws an error if the action was not triggered by a selected layout change.
  */
-export function getTriggeredLayoutName(): string {
+function getTriggeredLayoutName(): string {
     const layout = triggers.selectedLayoutChanged;
     
     if (!layout) {
@@ -420,7 +420,7 @@ export function getTriggeredLayoutName(): string {
  *
  * @returns {string} The name of the selected layout.
  */
-export function getSelectedLayoutName(): string {
+function getSelectedLayoutName(): string {
     return studio.layouts.getSelected().name;
 }
 
@@ -429,7 +429,7 @@ export function getSelectedLayoutName(): string {
  *
  * @param {string | Layout | VariableValue} layoutName - The name of the layout or a variable value holding the layout name or a layout object to select.
  */
-export function selectLayout(layoutName: string | Layout | VariableValue) {
+function selectLayout(layoutName: string | Layout | VariableValue) {
     studio.layouts.select(layoutName);
 }
 
@@ -438,7 +438,7 @@ export function selectLayout(layoutName: string | Layout | VariableValue) {
  *
  * @returns {number} The width of the page in pixels.
  */
-export function getPageWidth(): number {
+function getPageWidth(): number {
     return studio.pages.getSize().width;
 }
 
@@ -447,7 +447,7 @@ export function getPageWidth(): number {
  *
  * @returns {number} The width of the page in pixels.
  */
-export function getPageHeight(): number {
+function getPageHeight(): number {
     return studio.pages.getSize().height;
 }
 
@@ -457,7 +457,7 @@ export function getPageHeight(): number {
  * @param {number | VariableValue} width - The new width of the page.
  * @param {number | VariableValue} height - The new height of the page.
  */
-export function setPageSize(width: number | VariableValue, height: number | VariableValue) {
+function setPageSize(width: number | VariableValue, height: number | VariableValue) {
     studio.pages.setSize(width, height);
  }
 
@@ -467,7 +467,7 @@ export function setPageSize(width: number | VariableValue, height: number | Vari
  * @param {string} from - The name of the source character style.
  * @param {string} to - The name of the target character style.
  */
-export function copyColorFromTo(from: string, to: string) {
+function copyColorFromTo(from: string, to: string) {
     studio.stylekit.colors.copy(from, to);
 }
 
@@ -477,7 +477,7 @@ export function copyColorFromTo(from: string, to: string) {
  * @param {string} from - The name of the source character style.
  * @param {string} to - The name of the target character style.
  */
-export function copyParagraphStyleFromTo(from: string, to: string) {
+function copyParagraphStyleFromTo(from: string, to: string) {
     studio.stylekit.paragraphStyles.copy(from, to);
 }
 
@@ -487,6 +487,6 @@ export function copyParagraphStyleFromTo(from: string, to: string) {
  * @param {string} from - The name of the source character style.
  * @param {string} to - The name of the target character style.
  */
-export function copyCharacterStyleFromTo(from: string, to: string) {
+function copyCharacterStyleFromTo(from: string, to: string) {
     studio.stylekit.characterStyles.copy(from, to);
 }
