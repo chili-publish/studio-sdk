@@ -83,24 +83,24 @@ export class FontConnectorController {
     };
 
     /**
-     * The combination of a `connectorId` and `fontId` is typically enough for a Font connector to
+     * The combination of a `connectorId` and `fontFamilyId` is typically enough for a Font connector to
      * perform the preview of this asset. The `preview` endpoint is capable of relaying this information to the
      * Font connector instance running in the editor engine.
      * @param connectorId unique id of the Font connector
-     * @param fontStyleId unique id of the Font style to download
+     * @param fontFamilyId unique id of the Font family to download
      * @param previewFormat hint to the Font connector about desired format of the Font preview
      * @param context dynamic map of additional options potentially used by the connector
      * @returns
      */
     preview = async (
         connectorId: string,
-        fontStyleId: string,
+        fontFamilyId: string,
         previewFormat: FontPreviewFormat,
         context: MetaData = {},
     ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
-            .fontConnectorPreview(connectorId, fontStyleId, previewFormat, JSON.stringify(context))
+            .fontConnectorPreview(connectorId, fontFamilyId, previewFormat, JSON.stringify(context))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
