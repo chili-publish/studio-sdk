@@ -67,7 +67,7 @@ interface ConfigParameterTypes {
     onColorsChanged: (colors: string) => void;
     onParagraphStylesChanged: (paragraphStyles: string) => void;
     onCharacterStylesChanged: (characterStyles: string) => void;
-    onFontsChanged: (fonts: string) => void;
+    onFontFamiliesChanged: (fonts: string) => void;
     onSelectedLayoutIdChanged: (id: string) => void;
     onLayoutsChanged: (layouts: string) => void;
     onConnectorEvent: (state: string) => void;
@@ -132,7 +132,7 @@ const Connect = (
                 colorsChanged: params.onColorsChanged,
                 paragraphStylesChanged: params.onParagraphStylesChanged,
                 characterStylesChanged: params.onCharacterStylesChanged,
-                fontsChanged: params.onFontsChanged,
+                fontFamiliesChanged: params.onFontFamiliesChanged,
                 selectedLayoutId: params.onSelectedLayoutIdChanged,
                 layoutListChanged: params.onLayoutsChanged,
                 connectorEvent: params.onConnectorEvent,
