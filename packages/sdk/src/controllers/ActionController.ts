@@ -112,4 +112,18 @@ export class ActionController {
         const res = await this.#editorAPI;
         return res.moveActions(order, ids).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method stores the state of action type errors to the document
+     * 
+     * Those errors states can be read back from the usual getters or the
+     * `onActionsChanged` stream
+     * @param id the id of a specific action
+     * @param hasTypeErrors whether there is an action type error
+     * @returns
+     */
+    setTypeError = async (id: string, hasTypeErrors: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setActionTypeError(id, hasTypeErrors).then((result) => getEditorResponseData<null>(result));
+    };
 }
