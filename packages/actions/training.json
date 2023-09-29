@@ -1,0 +1,18 @@
+[
+    {
+        "query": "set variable water to 123",
+        "response": "studio.variables.setValue(\"water\", \"123\");"
+    },
+    {
+        "query": "set water to 123",
+        "response": "studio.variables.setValue(\"water\", \"123\");"
+    },
+    {
+        "query": "set position of img2 to (100,100)",
+        "response": "studio.frames.move(\"img2\", 100,100);"
+    },
+    {
+        "query": "set position of img2 to (100,100) and img3 to (200,200)",
+        "response": "studio.frames.move(\"img2\", 100,100);\n\nstudio.frames.move(\"img3\", 200,200);"
+    }
+]
