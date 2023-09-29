@@ -170,10 +170,10 @@ export class SubscriberController {
 
     /**
      * Listener on fonts, if this changes, this listener will get triggered with the updates
-     * @param fonts Stringified object of fonts
+     * @param fonts Stringified object of font families
      */
-    onFontsChanged = (fonts: string) => {
-        const callBack = this.config.onFontsChanged;
+    onFontFamiliesChanged = (fonts: string) => {
+        const callBack = this.config.onFontFamiliesChanged;
         callBack && callBack(JSON.parse(fonts));
     };
 
@@ -255,7 +255,7 @@ export class SubscriberController {
      * Listener on async errors.
      * Async errors are thrown at times not directly tied to SDK calls.
      * e.g. Getting an action error triggered after a late event.
-     * 
+     *
      * If this is an `ActionAsyncError`:
      * - `id` refers to the action id
      * - `event` refers to the event that triggered the action

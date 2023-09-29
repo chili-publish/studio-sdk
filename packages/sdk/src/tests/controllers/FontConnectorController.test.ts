@@ -1,8 +1,8 @@
 import { FontConnectorController } from '../../controllers/FontConnectorController';
 import { SortBy, SortOrder } from '../../types/ConnectorTypes';
-import { FontDownloadType } from '../../types/FontConnectorTypes';
+import { FontPreviewFormat } from '../../types/FontConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedFontConnectorController: FontConnectorController;
 
@@ -10,6 +10,7 @@ const mockedEditorApi: EditorAPI = {
     fontConnectorCopy: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorDownload: async () => getEditorResponseData(castToEditorResponse(null)),
+    fontConnectorPreview: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorRemove: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -22,6 +23,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'fontConnectorQuery');
     jest.spyOn(mockedEditorApi, 'fontConnectorCopy');
     jest.spyOn(mockedEditorApi, 'fontConnectorDownload');
+    jest.spyOn(mockedEditorApi, 'fontConnectorPreview');
     jest.spyOn(mockedEditorApi, 'fontConnectorRemove');
     jest.spyOn(mockedEditorApi, 'fontConnectorUpload');
     jest.spyOn(mockedEditorApi, 'fontConnectorDetail');
@@ -83,12 +85,22 @@ describe('FontConnectorController', () => {
     });
 
     it('Should call the download method', async () => {
-        await mockedFontConnectorController.download(connectorId, fontId, FontDownloadType.Preview, context);
+        await mockedFontConnectorController.download(connectorId, fontId, context);
         expect(mockedEditorApi.fontConnectorDownload).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.fontConnectorDownload).toHaveBeenCalledWith(
             connectorId,
             fontId,
-            FontDownloadType.Preview,
+            JSON.stringify(context),
+        );
+    });
+
+    it('Should call the preview method', async () => {
+        await mockedFontConnectorController.preview(connectorId, fontId, FontPreviewFormat.Square, context);
+        expect(mockedEditorApi.fontConnectorPreview).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.fontConnectorPreview).toHaveBeenCalledWith(
+            connectorId,
+            fontId,
+            FontPreviewFormat.Square,
             JSON.stringify(context),
         );
     });
