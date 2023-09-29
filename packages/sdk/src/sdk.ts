@@ -1,6 +1,6 @@
 import { Connection } from 'penpal';
 import Connect from './interactions/connector';
-import { WellKnownConfigurationKeys, defaultStudioOptions } from './types/ConfigurationTypes';
+import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
 
@@ -140,7 +140,7 @@ export class SDK {
                 onColorsChanged: this.subscriber.onColorsChanged,
                 onParagraphStylesChanged: this.subscriber.onParagraphStylesChanged,
                 onCharacterStylesChanged: this.subscriber.onCharacterStylesChanged,
-                onFontsChanged: this.subscriber.onFontsChanged,
+                onFontFamiliesChanged: this.subscriber.onFontFamiliesChanged,
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,

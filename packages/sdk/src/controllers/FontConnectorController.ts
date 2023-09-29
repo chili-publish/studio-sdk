@@ -1,13 +1,13 @@
 import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
-    DeprecatedMediaType,
     ConnectorCapabilities,
+    DeprecatedMediaType,
     MediaType,
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
-import { Font, FontDownloadType } from '../types/FontConnectorTypes';
+import { FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -39,98 +39,114 @@ export class FontConnectorController {
 
     /**
      * Query a specific FontConnector for data using both standardized queryOptions and the dynamic
-     * context as parameters. This call returns an array of Font items.
-     * @param id unique id of the Font connector
+     * context as parameters.
+     * @param connectorId unique id of the Font connector
      * @param queryOptions query options
      * @param context context that will be available in the connector script.
-     * @returns array of font items
+     * @returns array of font families
      */
-    query = async (id: string, queryOptions: QueryOptions, context: MetaData = {}) => {
+    query = async (connectorId: string, queryOptions: QueryOptions, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorQuery(id, JSON.stringify(queryOptions), JSON.stringify(context))
-            .then((result) => getEditorResponseData<QueryPage<Font>>(result));
+            .fontConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context))
+            .then((result) => getEditorResponseData<QueryPage<FontFamily>>(result));
     };
 
     /**
-     * Returns a single font using a specific FontConnector. The connector needs to list `detail` as a supported capability.
-     * @param id unique id of the Font connector
-     * @param fontId unique id of the Font
+     * Returns all font styles for a family using a specific FontConnector. The connector needs to list `detail` as a supported capability.
+     * @param connectorId unique id of the Font connector
+     * @param fontFamilyId unique id of the Font family
      * @param context context that will be available in the connector script.
-     * @returns font details
+     * @returns array of font styles
      */
-    detail = async (id: string, fontId: string, context: MetaData = {}) => {
+    detail = async (connectorId: string, fontFamilyId: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorDetail(id, fontId, JSON.stringify(context))
-            .then((result) => getEditorResponseData<Font>(result));
+            .fontConnectorDetail(connectorId, fontFamilyId, JSON.stringify(context))
+            .then((result) => getEditorResponseData<FontStyle[]>(result));
     };
 
     /**
      * The combination of a `connectorId` and `fontId` is typically enough for a Font connector to
      * perform the download of this asset. The `download` endpoint is capable of relaying this information to the
      * Font connector instance running in the editor engine.
-     * @param id unique id of the Font connector
-     * @param fontId unique id of the Font to download
-     * @param downloadType hint to the Font connector about desired quality of the downloaded Font
+     * @param connectorId unique id of the Font connector
+     * @param fontStyleId unique id of the Font style to download
      * @param context context that will be available in the connector script.
      * @returns
      */
-    download = async (
-        id: string,
-        fontId: string,
-        downloadType: FontDownloadType,
+    download = async (connectorId: string, fontStyleId: string, context: MetaData = {}): Promise<Uint8Array> => {
+        const res = await this.#blobAPI;
+        return res
+            .fontConnectorDownload(connectorId, fontStyleId, JSON.stringify(context))
+            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+    };
+
+    /**
+     * The combination of a `connectorId` and `fontFamilyId` is typically enough for a Font connector to
+     * perform the preview of this asset. The `preview` endpoint is capable of relaying this information to the
+     * Font connector instance running in the editor engine.
+     * @param connectorId unique id of the Font connector
+     * @param fontFamilyId unique id of the Font family to download
+     * @param previewFormat hint to the Font connector about desired format of the Font preview
+     * @param context dynamic map of additional options potentially used by the connector
+     * @returns
+     */
+    preview = async (
+        connectorId: string,
+        fontFamilyId: string,
+        previewFormat: FontPreviewFormat,
         context: MetaData = {},
     ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
-            .fontConnectorDownload(id, fontId, downloadType, JSON.stringify(context))
+            .fontConnectorPreview(connectorId, fontFamilyId, previewFormat, JSON.stringify(context))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
     /**
      * Depending on the connector capabilities, this api method allows you to upload new Font to the
      * connector's backend.
-     * @param id unique id of the Font connector
-     * @param fontId unique id of the Font to upload
+     * @param connectorId unique id of the Font connector
+     * @param fontStyleId unique id of the Font style to upload
      * @param blob byte array representation of the Font to upload
      * @param context context that will be available in the connector script.
      * @returns
      */
-    upload = async (id: string, fontId: string, blob: Uint8Array, context: MetaData = {}) => {
+    upload = async (connectorId: string, fontStyleId: string, blob: Uint8Array, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorUpload(id, fontId, blob, JSON.stringify(context))
+            .fontConnectorUpload(connectorId, fontStyleId, blob, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Depending on the connector capabilities, removes Font identified by `fontId` from the connector's backend storage
-     * @param id unique id of the Font connector
-     * @param fontId unique id of the Font to download
+     * @param connectorId unique id of the Font connector
+     * @param fontStyleId unique id of the Font style to remove
      * @param context context that will be available in the connector script.
      * @returns
      */
-    remove = async (id: string, fontId: string, context: MetaData = {}) => {
+    remove = async (connectorId: string, fontStyleId: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorRemove(id, fontId, JSON.stringify(context))
+            .fontConnectorRemove(connectorId, fontStyleId, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * Depending on the connector capabilities, copies Font identified by `fontId` to a new Font item on the
      * connector's backend
-     * @param id unique id of the Font connector
-     * @param fontId unique id of the Font to download
+     * @param connectorId unique id of the Font connector
+     * @param fontStyleId unique id of the Font to download
      * @param newName name of the copied Font on the connector's backend
      * @param context context that will be available in the connector script.
      * @returns
      */
-    copy = async (id: string, fontId: string, newName: string, context: MetaData = {}) => {
+    copy = async (connectorId: string, fontStyleId: string, newName: string, context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorCopy(id, fontId, newName, JSON.stringify(context))
+            .fontConnectorCopy(connectorId, fontStyleId, newName, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -138,26 +154,26 @@ export class FontConnectorController {
      * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
      * method allows you to discover which mappings are available for a given connector. If you want to use any of these
      * mappings, they will be available in the `context` parameter of any connector method.
-     * @param id unique id of the media connector
+     * @param connectorId unique id of the media connector
      * @returns connector mappings
      */
-    getConfigurationOptions = async (id: string) => {
+    getConfigurationOptions = async (connectorId: string) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorGetConfigurationOptions(id)
+            .fontConnectorGetConfigurationOptions(connectorId)
             .then((result) => getEditorResponseData<ConnectorConfigOptions>(result));
     };
 
     /**
      * This method returns what capabilities the selected connector has. It gives an indication what methods can
      * be used successfully for a certain connector.
-     * @param id unique id of the Font connector
+     * @param connectorId unique id of the Font connector
      * @returns connector capabilities
      */
-    getCapabilities = async (id: string) => {
+    getCapabilities = async (connectorId: string) => {
         const res = await this.#editorAPI;
         return res
-            .fontConnectorGetCapabilities(id)
+            .fontConnectorGetCapabilities(connectorId)
             .then((result) => getEditorResponseData<ConnectorCapabilities>(result));
     };
 

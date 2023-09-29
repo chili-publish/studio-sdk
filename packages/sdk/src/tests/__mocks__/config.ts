@@ -23,7 +23,7 @@ const mockConfig: ConfigType = {
     onColorsChanged: defaultMockReturn,
     onParagraphStylesChanged: defaultMockReturn,
     onCharacterStylesChanged: defaultMockReturn,
-    onFontsChanged: defaultMockReturn,
+    onFontFamiliesChanged: defaultMockReturn,
     onSelectedLayoutIdChanged: defaultMockReturn,
     onLayoutsChanged: defaultMockReturn,
     onConnectorEvent: defaultMockReturn,

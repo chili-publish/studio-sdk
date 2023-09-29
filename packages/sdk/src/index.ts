@@ -84,7 +84,12 @@ export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyl
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
 export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
 
-export type { DocumentFont, AddDocumentFont } from './types/FontTypes';
+export type {
+    DocumentFontStyle,
+    DocumentFontFamily,
+    AddDocumentFontStyle,
+    AddDocumentFontFamily,
+} from './types/FontTypes';
 
 export {
     SelectedTextStyleSections,
