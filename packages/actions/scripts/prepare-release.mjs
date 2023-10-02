@@ -27,11 +27,13 @@ async function main() {
     const apiDestDir = path.join('cdn', 'actions', 'api', apiVersion);
     const sdkDestDir = path.join('cdn', 'actions', 'sdk', sdkVersion);
     const engineDestDir = path.join('cdn', 'actions', 'engine', engineVersion);
+    const latestDestDir = path.join('cdn', 'actions', 'latest');
 
     // Copy all the files in packages/actions/out/ to the destination directories
     await fs.copy('out', apiDestDir);
     await fs.copy('out', sdkDestDir);
     await fs.copy('out', engineDestDir);
+    await fs.copy('out', latest);
 
     console.log('Files copied successfully');
 }
