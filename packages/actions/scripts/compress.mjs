@@ -86,6 +86,9 @@ function getType(root, type) {
 }
 
 function parseFile(fileName) {
+    // copy the file, appending .genie to the name
+    fs.copyFileSync(fileName, fileName.replace(".d.ts", ".genie.d.ts"));
+    
     const program = ts.createProgram([fileName], {
         allowJs: true
     });
