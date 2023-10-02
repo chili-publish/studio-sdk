@@ -3,7 +3,12 @@ import type { EditorResponse } from '../types/CommonTypes';
 export function getEditorResponseData<T>(response: EditorResponse<unknown>, parse = true): EditorResponse<T> {
     try {
         if (!response.success) {
-            throw new Error(response.error ?? 'Yikes, something went wrong');
+            throw new Error(response.error ?? 'Yikes, something went wrong', {
+                cause: {
+                    name: String(response.status),
+                    message: response.error ?? 'Yikes, something went wrong',
+                },
+            });
         }
         const dataShouldBeParsed = response.data && parse;
         return {
