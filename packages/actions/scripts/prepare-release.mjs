@@ -33,9 +33,9 @@ async function main() {
     await fs.copy('out', apiDestDir);
     await fs.copy('out', sdkDestDir);
     await fs.copy('out', engineDestDir);
-    await fs.copy('out', latest);
+    await fs.copy('out', latestDestDir);
 
     console.log('Files copied successfully');
 }
 
-main().catch(console.error);
+main();
