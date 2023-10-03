@@ -52,11 +52,13 @@ export type ConfigType = {
     onAsyncError?: (asyncError: AsyncError) => void;
 };
 
+export type EditorResponseError = string;
+
 export interface EditorResponse<T> {
     success: boolean;
     status: number;
     data?: string | null;
-    error?: string | { code: number; error: Record<string, unknown> } | null;
+    error?: EditorResponseError | null;
     parsedData: T | null;
 }
 
