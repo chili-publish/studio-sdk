@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "ES2020"
+        ],
+        "noEmitHelpers": true,
+        "module": "ES2020",
+        "outDir": "out",
+        "target": "ES2020",
+        "types": [
+            "./types/Actions.d.ts"
+        ],
+        "esModuleInterop": false,
+        "removeComments": true,
+        "declaration": false        
+    },
+    "include": [
+        "src/ActionHelpers.ts"
+    ],
+    "exclude": [
+        "node_modules"]
+}

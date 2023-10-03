@@ -70,8 +70,19 @@ jobs:
                   cp -R packages/sdk/_bundles/* ${path%"/merge"}
                   mkdir -p ${versionpath%"/merge"}
                   cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
-            - name: Copy to Azure Blob Storage
+            - name: Copy to Azure Blob Storage (SDK)
               uses: azure/CLI@v1
               with:
                   inlineScript: |
                       az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            - name: prepare for actions upload
+              run: |
+                node cicd.js actions yarn && node scripts/prepare-release.mjs
+              working-directory: packages/actions
+            - name: Copy to Azure Blob Storage (Actions)
+              uses: azure/CLI@v1
+              with:
+                  inlineScript: |
+                      az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+              
+              
