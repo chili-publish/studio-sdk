@@ -1,17 +1,29 @@
-import { EditorResponse } from '../types/CommonTypes';
+import type { EditorResponse } from '../types/CommonTypes';
 
 export function getEditorResponseData<T>(response: EditorResponse<unknown>, parse = true): EditorResponse<T> {
-    return {
-        ...response,
-        parsedData:
-            response.success && response.data
-                ? parse
-                    ? (JSON.parse(response.data as string) as T)
-                    : (response.data as unknown as T)
-                : null,
-    };
+    try {
+        if (!response.success) {
+            throw new Error(response.error ?? 'Yikes, something went wrong', {
+                cause: {
+                    name: String(response.status),
+                    message: response.error ?? 'Yikes, something went wrong',
+                },
+            });
+        }
+        const dataShouldBeParsed = response.data && parse;
+        return {
+            ...response,
+            parsedData: dataShouldBeParsed
+                ? (JSON.parse(response.data as string) as T)
+                : (response.data as unknown as T),
+        };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
+// For testing purposes only
 export function castToEditorResponse(toCast: unknown): EditorResponse<unknown> {
     return {
         status: 200,
