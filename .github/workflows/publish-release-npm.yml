@@ -58,7 +58,6 @@ jobs:
             - name: prepare for actions upload
               run: |
                 node cicd.js actions node scripts/prepare-release.mjs
-              working-directory: packages/actions
             - name: Copy to Azure Blob Storage (Actions)
               uses: azure/CLI@v1
               with:
