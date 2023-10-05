@@ -8,7 +8,7 @@ import {
     QueryPage,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
-import { Media, MediaDownloadType } from '../types/MediaConnectorTypes';
+import { Media, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -65,7 +65,7 @@ export class MediaConnectorController {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorDetail(id, mediaId, JSON.stringify(context))
-            .then((result) => getEditorResponseData<Media>(result));
+            .then((result) => getEditorResponseData<MediaDetail>(result));
     };
 
     /**
