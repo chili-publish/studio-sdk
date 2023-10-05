@@ -1,6 +1,6 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout } from '../types/LayoutTypes';
+import { Layout, MeasurementUnit } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -148,6 +148,20 @@ export class LayoutController {
     };
 
     /**
+     * This method will set the unit of the layout to a specific value
+     * 
+     * @param id The id of a specific layout
+     * @param unit the unit that will be used for the layout. All values in this layout will now be reported in this unit
+     * @returns 
+     */
+    setUnit = async (id: Id, unit: MeasurementUnit) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutUnit(id, unit)
+            .then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
      * This method will reset the height of a specific layout to its original value
      * @param id the id of a specific layout
      * @returns
@@ -165,6 +179,16 @@ export class LayoutController {
     resetWidth = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutWidth(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the unit of a specific layout to its original (inherited) value
+     * @param id the id of a specific layout
+     * @returns
+     */
+    resetUnit = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayoutUnit(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

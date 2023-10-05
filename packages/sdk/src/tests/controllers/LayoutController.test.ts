@@ -2,6 +2,7 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
+import { MeasurementUnit } from '../../types/LayoutTypes';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;
@@ -19,8 +20,10 @@ const mockedEditorApi: EditorAPI = {
     resetLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutHeight: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutWidth: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutUnit: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutHeight: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutWidth: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayoutUnit: async () => getEditorResponseData(castToEditorResponse(null)),
     getPageSnapshot: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -38,8 +41,10 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetLayout');
     jest.spyOn(mockedEditorApi, 'setLayoutHeight');
     jest.spyOn(mockedEditorApi, 'setLayoutWidth');
+    jest.spyOn(mockedEditorApi, 'setLayoutUnit');
     jest.spyOn(mockedEditorApi, 'resetLayoutHeight');
     jest.spyOn(mockedEditorApi, 'resetLayoutWidth');
+    jest.spyOn(mockedEditorApi, 'resetLayoutUnit');
     jest.spyOn(mockedEditorApi, 'getPageSnapshot');
 
     mockId = mockSelectPage.layoutId;
@@ -109,6 +114,11 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledWith('1', '34');
     });
+    it('Should be possible to set the layout unit', async () => {
+        await mockedLayoutController.setUnit(mockId, MeasurementUnit.cm);
+        expect(mockedEditorApi.setLayoutUnit).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutUnit).toHaveBeenCalledWith('1', MeasurementUnit.cm);
+    });
     it('Should be possible to reset the layout height', async () => {
         await mockedLayoutController.resetHeight('1');
         expect(mockedEditorApi.resetLayoutHeight).toHaveBeenCalledTimes(1);
@@ -116,6 +126,10 @@ describe('LayoutController', () => {
     it('Should be possible to reset the layout width', async () => {
         await mockedLayoutController.resetWidth('1');
         expect(mockedEditorApi.resetLayoutWidth).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to reset the layout unit', async () => {
+        await mockedLayoutController.resetUnit('1');
+        expect(mockedEditorApi.resetLayoutUnit).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to get the selected layout snapshot', async () => {
         await mockedLayoutController.getSelectedSnapshot();
