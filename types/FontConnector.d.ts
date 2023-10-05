@@ -10,12 +10,12 @@ declare module "grafx-studio-fontconnector" {
         getCapabilities(): ConnectorCapabilities;
     }
 
-    export enum FontPreviewFormat {
+    enum FontPreviewFormat {
         Square = 'square',
         Line = 'line',
     }
 
-    export interface FontFamilyPage {
+    interface FontFamilyPage {
         pageSize: number;
         data: FontFamily[];
         links: {
