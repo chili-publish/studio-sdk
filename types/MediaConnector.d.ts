@@ -12,8 +12,8 @@ export interface MediaConnector {
 }
 
 export enum DownloadType {
-    lowres_web = 'lowresweb',
-    highres_web = 'highresweb',
+    lowresWeb = 'lowresWeb',
+    highresWeb = 'highresWeb',
     outputVideo = 'outputVideo',
     outputPdf = 'outputPdf'
 }
