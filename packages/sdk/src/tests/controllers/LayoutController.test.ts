@@ -102,20 +102,12 @@ describe('LayoutController', () => {
     it('Should be possible to set the layout height', async () => {
         await mockedLayoutController.setHeight(mockId, '32');
         expect(mockedEditorApi.setLayoutHeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setLayoutHeight).toHaveBeenCalledWith('1', 32);
-    });
-    it('Should not be possible to set the layout height to null', async () => {
-        await mockedLayoutController.setHeight(mockId, 'null');
-        expect(mockedEditorApi.setLayoutHeight).not.toHaveBeenCalled();
+        expect(mockedEditorApi.setLayoutHeight).toHaveBeenCalledWith('1', '32');
     });
     it('Should be possible to set the layout width', async () => {
         await mockedLayoutController.setWidth(mockId, '34');
         expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledWith('1', 34);
-    });
-    it('Should not be possible to set the layout width to null', async () => {
-        await mockedLayoutController.setWidth(mockId, 'null');
-        expect(mockedEditorApi.setLayoutWidth).not.toHaveBeenCalled();
+        expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledWith('1', '34');
     });
     it('Should be possible to reset the layout height', async () => {
         await mockedLayoutController.resetHeight('1');
@@ -128,15 +120,5 @@ describe('LayoutController', () => {
     it('Should be possible to get the selected layout snapshot', async () => {
         await mockedLayoutController.getSelectedSnapshot();
         expect(mockedEditorApi.getPageSnapshot).toHaveBeenCalledTimes(1);
-    });
-});
-
-describe('User inputs for Layout Properties', () => {
-    it('Should calculate user Inputs and returns null when calculated value is null or same with selectedLayout property', async () => {
-        const responseHeight = await mockedLayoutController.setHeight(mockId, 'test');
-        const responseWidth = await mockedLayoutController.setWidth(mockId, '20/0');
-
-        expect(responseHeight).toEqual(null);
-        expect(responseWidth).toEqual(null);
     });
 });

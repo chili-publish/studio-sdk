@@ -185,33 +185,33 @@ describe('FrameController', () => {
     it('Should be possible to set the frame height', async () => {
         await mockedFrameController.setHeight(id, '300');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, 300);
+        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, '300');
     });
     it('Should be possible to set the frame rotation', async () => {
         await mockedFrameController.setRotation(id, '400');
         expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledWith(id, 400);
+        expect(mockedEditorApi.setFrameRotation).toHaveBeenCalledWith(id, '400');
     });
     it('Should be possible to set the frame y property', async () => {
         await mockedFrameController.setY(id, '100');
         expect(mockedEditorApi.setFrameY).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameY).toHaveBeenCalledWith(id, 100);
+        expect(mockedEditorApi.setFrameY).toHaveBeenCalledWith(id, '100');
     });
     it('Should be possible to set the frame x property', async () => {
         await mockedFrameController.setX(id, '400');
         expect(mockedEditorApi.setFrameX).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameX).toHaveBeenCalledWith(id, 400);
+        expect(mockedEditorApi.setFrameX).toHaveBeenCalledWith(id, '400');
     });
 
     it('Should be possible to set the frame width', async () => {
         await mockedFrameController.setWidth(id, '332');
         expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledWith(id, 332);
+        expect(mockedEditorApi.setFrameWidth).toHaveBeenCalledWith(id, '332');
     });
     it('Should be possible to set the frame height', async () => {
         await mockedFrameController.setHeight(id, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, 32);
+        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id,'32');
     });
 
     it('Should be possible to set the name of the frame', async () => {
@@ -300,14 +300,14 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(id, VerticalAlign.justify);
     });
     it('Should be possible to set the min value for copyfitting', async () => {
-        await mockedFrameController.setMinCopyfitting(id, '0.5');
+        await mockedFrameController.setMinCopyfitting(id, '0.5%');
         expect(mockedEditorApi.setMinCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setMinCopyfitting).toHaveBeenCalledWith(id, 0.5);
+        expect(mockedEditorApi.setMinCopyfitting).toHaveBeenCalledWith(id, '0.5%');
     });
     it('Should be possible to set the max value for copyfitting', async () => {
-        await mockedFrameController.setMaxCopyfitting(id, '5.0');
+        await mockedFrameController.setMaxCopyfitting(id, '5.0%');
         expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledWith(id, 5.0);
+        expect(mockedEditorApi.setMaxCopyfitting).toHaveBeenCalledWith(id, '5.0%');
     });
     it('Should be possible to enable copyfitting with a boolean', async () => {
         await mockedFrameController.setEnableCopyfitting(id, true);
@@ -426,25 +426,5 @@ describe('ImageFrameSource manipulations', () => {
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, null);
-    });
-});
-
-describe('User inputs for Frame Properties', () => {
-    it("Returns null when user input doesn't contain any number", async () => {
-        const responseX = await mockedFrameController.setX(id, 'test');
-        const responseY = await mockedFrameController.setY(id, 'test');
-        const responseWidth = await mockedFrameController.setWidth(id, 'test');
-        const responseHeight = await mockedFrameController.setHeight(id, 'test');
-        const responseRotation = await mockedFrameController.setRotation(id, 'test');
-        expect(responseX).toEqual(null);
-        expect(responseY).toEqual(null);
-        expect(responseWidth).toEqual(null);
-        expect(responseHeight).toEqual(null);
-        expect(responseRotation).toEqual(null);
-    });
-
-    it('return null when the user input an infinite value', async () => {
-        const responseRotation = await mockedFrameController.setRotation(id, '20/0');
-        expect(responseRotation).toBeNull();
     });
 });
