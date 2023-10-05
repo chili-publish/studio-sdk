@@ -1,5 +1,4 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
-import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Layout } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
@@ -130,12 +129,8 @@ export class LayoutController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(height);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
         return res
-            .setLayoutHeight(id, parseFloat(calc.toString()))
+            .setLayoutHeight(id, height)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -147,13 +142,8 @@ export class LayoutController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(width);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setLayoutWidth(id, parseFloat(calc.toString()))
+            .setLayoutWidth(id, width)
             .then((result) => getEditorResponseData<null>(result));
     };
 
