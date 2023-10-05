@@ -16,11 +16,14 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
-export enum DownloadType {
-    lowres_web = 'lowresweb',
-    highres_web = 'highresweb',
-    outputVideo = 'outputVideo',
-    outputPdf = 'outputPdf'
+
+export type ConnectorCapabilities = {
+    filtering: boolean;
+    upload: boolean;
+    query: boolean;
+    detail: boolean;
+    remove: boolean;
+    copy: boolean;
 }
 
 export type QueryOptions = {

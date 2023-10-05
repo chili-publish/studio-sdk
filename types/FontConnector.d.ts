@@ -1,36 +1,39 @@
-import { QueryOptions, Dictionary, ArrayBufferPointer, DownloadType, ConnectorConfigOptions } from "./Connector.Shared";
+import { QueryOptions, Dictionary, ArrayBufferPointer, ConnectorConfigOptions, ConnectorCapabilities } from "./Connector.Shared";
 
 declare module "grafx-studio-fontconnector" {
     interface GrafxFontConnector {
-        detail(id, context: Dictionary): Font;
-        query(options: QueryOptions, context: Dictionary): Promise<FontPage>;
-        download(id: string, previewType: DownloadType, context: Dictionary): Promise<ArrayBufferPointer>
+        detail(familyId, context: Dictionary): FontStyle;
+        query(options: QueryOptions, context: Dictionary): Promise<FontFamilyPage>;
+        download(styleId: string, context: Dictionary): Promise<ArrayBufferPointer>
+        preview(familyId: string, previewFormat: FontPreviewFormat, context: Dictionary): Promise<ArrayBufferPointer>
         getConfigurationOptions(): ConnectorConfigOptions | null;
-        getCapabilities(): FontConnectorCapabilities;
+        getCapabilities(): ConnectorCapabilities;
     }
 
-    type FontConnectorCapabilities = {
-        filtering: boolean;
-        query: boolean;
-        detail: boolean;
+    export enum FontPreviewFormat {
+        Square = 'square',
+        Line = 'line',
     }
 
-    interface FontPage {
+    export interface FontFamilyPage {
         pageSize: number;
-        data: Font[];
+        data: FontFamily[];
         links: {
             nextPage: string;
         };
     }
-    
-    interface Font {
-        id: string,
-        name: string,
-        relativePath: string,
-        extension: string,
-        type: number,
-        family: string,
-        style: string,
-        metaData: Dictionary;
+
+    interface FontFamily {
+        id: string;
+        name: string;
+        fontStylesCount: number;
+        extensions: string[];
+    }
+
+    interface FontStyle {
+        id: string;
+        name: string;
+        familyId: string;
+        familyName: string;
     }
 }

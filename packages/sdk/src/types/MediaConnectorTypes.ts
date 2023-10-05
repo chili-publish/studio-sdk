@@ -22,8 +22,3 @@ export interface MediaDetail extends Media {
     height?: number;
 };
 
-export type MediaPage = {
-    pageSize: number;
-    nextPageToken?: string;
-    data: Media[];
-};
