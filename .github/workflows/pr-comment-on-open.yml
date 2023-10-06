@@ -17,5 +17,5 @@ jobs:
                         const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
                         const fs = require('fs');
                         const template = fs.readFileSync('.github/pull_request_comment_template.md', 'utf8');
-                        const comment = template.replace('<<ISSUE_NUMBER>>', issue_number);
+                        const comment = template.replaceAll('<<ISSUE_NUMBER>>', issue_number);
                         github.issues.createComment({ issue_number, owner, repo, body: comment });
