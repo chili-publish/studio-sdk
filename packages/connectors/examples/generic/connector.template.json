@@ -1,0 +1,13 @@
+{
+  "id": "sitecore-demo",
+  "name": "Sitecore Demo",
+  "type": "media",
+  "version": "1.0.0",
+  "supportedAuth": [
+    "staticKey"
+  ],
+  "options": {
+    "SITECORE_API_BASE": "https://replace.com/api"
+  },
+  "script": "[[will be replaced at build time]]"
+}

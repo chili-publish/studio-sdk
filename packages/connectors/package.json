@@ -1,0 +1,12 @@
+{
+  "name": "connectors",
+  "version": "1.0.0",
+  "types": "dist/types.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "mkdir out/ && cp types/* out/ && yarn --cwd examples/generic/ build"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "sitecore-connector",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "node helpers/pre_build.js && yarn tsc -p tsconfig.build.json && node helpers/post_build.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "connector"
+  }
+}
