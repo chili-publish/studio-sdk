@@ -12,8 +12,9 @@ export type DocumentFontStyle = {
 export type DocumentFontFamily = {
     id: Id;
     name: string;
-    fontFamilyId: string;
     connectorId: Id;
+    fontFamilyId: string;
+    fontStyles: DocumentFontStyle[];
 };
 
 export type AddDocumentFontStyle = {
