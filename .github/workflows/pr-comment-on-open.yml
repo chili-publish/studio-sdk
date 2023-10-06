@@ -1,7 +1,7 @@
 name: Comment deploy URL on PR open
 on:
     pull_request:
-        types: [opened]
+        types: [opened, synchronize]
 jobs:
     comment:
         runs-on: ubuntu-latest
@@ -9,13 +9,13 @@ jobs:
             - uses: FranzDiebold/github-env-vars-action@v2
             - uses: actions/checkout@v1
             - name: 'Comment on PR'
-                uses: actions/github-script@0.3.0
-                if: github.event_name == 'pull_request'
-                with:
-                        github-token: ${{ secrets.GITHUB_TOKEN }}
-                        script: |
-                                const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-                                const fs = require('fs');
-                                const template = fs.readFileSync('.github/pull_request_comment_template.md', 'utf8');
-                                const comment = template.replace('<<ISSUE_NUMBER>>', issue_number);
-                                github.issues.createComment({ issue_number, owner, repo, body: comment });
+              uses: actions/github-script@0.3.0
+              if: github.event_name == 'pull_request'
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                        const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+                        const fs = require('fs');
+                        const template = fs.readFileSync('.github/pull_request_comment_template.md', 'utf8');
+                        const comment = template.replace('<<ISSUE_NUMBER>>', issue_number);
+                        github.issues.createComment({ issue_number, owner, repo, body: comment });
