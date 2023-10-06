@@ -42,9 +42,9 @@ jobs:
             - name: build code
               run: yarn build
             - name: ensure packages/sdk/upload exists
-              run: node cicd.js sdk mkdir -p upload
+              run: node cicd.js sdk mkdir -p upload/dev-packages/$CI_REF_NAME
             - name: pack sdk build
-              run: node cicd.js sdk yarn pack -f upload/studio-sdk.tgz
+              run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_REF_NAME/studio-sdk.tgz
             - name: copy file branch
               run: |
                   path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
