@@ -1,7 +1,7 @@
 name: Comment deploy URL on PR open
 on:
     pull_request:
-        types: [opened, synchronize]
+        types: [opened]
 jobs:
     comment:
         runs-on: ubuntu-latest
