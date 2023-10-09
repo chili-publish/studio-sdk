@@ -125,6 +125,7 @@ export type ConnectorEvent = {
 };
 
 export type QueryPage<T> = {
+    pageSize: number;
     nextPageToken?: string;
     data: T[];
 };

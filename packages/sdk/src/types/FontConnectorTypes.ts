@@ -18,9 +18,3 @@ export type FontStyle = {
     familyId: string;
     familyName: string;
 };
-
-export type FontPage = {
-    pageSize: number;
-    nextPageToken?: string;
-    data: FontFamily[];
-};
