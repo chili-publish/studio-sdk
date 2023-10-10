@@ -14,5 +14,9 @@
     {
         "query": "set x position of img2 to y position of img3",
         "response": "setFrameX(\"img2\", getFrameY(\"img3\"));"
-    }
+    },
+    {
+        "query": "Write a function that moves all frames to a random location",
+        "response": "function moveFramesToRandomLocation(){ \n  // Get all frames\n  const allFrames = studio.frames.all();\n\n  // Move each frame to a random position\n  allFrames.forEach(frame => {\n    const randomX = Math.random() * getPageWidth();\n    const randomY = Math.random() * getPageHeight();\n    frame.move(randomX, randomY);\n  });\nmoveFramesToRandomLocation();"
+    },
 ]
