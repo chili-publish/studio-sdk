@@ -303,6 +303,12 @@ export class SubscriberController {
      *
      * stateChanged - this event will be triggered by connector states: loading, loaded, running, ready, error
      * @param connectorEvent Stringified object of ConnectorEvent
+     * 
+     * **Eventual Consistency**
+     *
+     * Because of the nature of an async stream, be aware that some behaviors such
+     * as undo & redo might create scenarios where you're reacting on an event tied
+     * to a connector that has an old state.
      */
     onConnectorEvent = (connectorEvent: string) => {
         const callBack = this.config.onConnectorEvent;
