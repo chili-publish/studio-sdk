@@ -15,6 +15,7 @@ const mockedEditorApi: EditorAPI = {
     getFontFamilyById: async () => getEditorResponseData(castToEditorResponse(null)),
     getFontStyleById: async () => getEditorResponseData(castToEditorResponse(null)),
     getDefaultFontStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    getDefaultFontFamily: async () => getEditorResponseData(castToEditorResponse(null)),
     isFontFamilyUsed: async () => getEditorResponseData(castToEditorResponse(null)),
     isFontStyleUsed: async () => getEditorResponseData(castToEditorResponse(null)),
     moveFontFamilies: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -31,6 +32,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getFontFamilyById');
     jest.spyOn(mockedEditorApi, 'getFontStyleById');
     jest.spyOn(mockedEditorApi, 'getDefaultFontStyle');
+    jest.spyOn(mockedEditorApi, 'getDefaultFontFamily');
     jest.spyOn(mockedEditorApi, 'isFontFamilyUsed');
     jest.spyOn(mockedEditorApi, 'isFontStyleUsed');
     jest.spyOn(mockedEditorApi, 'moveFontFamilies');
@@ -114,6 +116,11 @@ describe('FontController', () => {
     it('calls getDefaultFontStyle method', async () => {
         await mockedFontController.getDefaultFontStyle();
         expect(mockedEditorApi.getDefaultFontStyle).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls getDefaultFontFamily method', async () => {
+        await mockedFontController.getDefaultFontFamily();
+        expect(mockedEditorApi.getDefaultFontFamily).toHaveBeenCalledTimes(1);
     });
 
     it('calls isFontFamilyUsed method', async () => {

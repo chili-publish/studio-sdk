@@ -49,7 +49,7 @@ export class UndoManagerController {
      */
     record = async (operationName: string, undoOperationCallback: (sdk: SDK) => void) => {
         try {
-            await this.#advanced.begin(operationName);
+            await this.#advanced.beginIfNoneActive(operationName);
 
             await undoOperationCallback(this.#sdk);
         } catch (error) {

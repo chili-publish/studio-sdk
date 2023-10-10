@@ -17,8 +17,8 @@ export type Media = {
     };
 };
 
-export type MediaPage = {
-    pageSize: number;
-    nextPageToken?: string;
-    data: Media[];
+export interface MediaDetail extends Media {
+    width?: number;
+    height?: number;
 };
+
