@@ -226,6 +226,9 @@ class ConnectorConfigurator {
      * By defining the mappings, we can trigger re-download of assets (dynamic asset provider)
      * or populate filters for the query endpoint. The mapped data will be available using
      * the context parameter in the connector implementation code.
+     *
+     * for variables is should follow the format "var.[variable id]". e.g. var.6B29FC40-CA47-1067-B31D-00DD010662DA
+     *
      * @param mappings collection of mappings to set to this connector
      * @returns
      */
