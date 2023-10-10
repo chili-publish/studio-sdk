@@ -51,7 +51,7 @@ describe('UndoManagerController', () => {
             dummy = true;
         });
 
-        expect(mockEditorApi.begin).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.beginIfNoneActive).toHaveBeenCalledTimes(1);
         expect(dummy).toBe(true);
         expect(mockEditorApi.end).toHaveBeenCalledTimes(1);
     });
