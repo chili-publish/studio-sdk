@@ -1,6 +1,6 @@
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
 import { SortBy, SortOrder } from '../../types/ConnectorTypes';
-import { MediaDownloadType } from '../../types/MediaConnectorTypes';
+import { MediaAllowedResourceType, MediaDownloadType } from '../../types/MediaConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
@@ -84,14 +84,15 @@ describe('MediaConnectorController', () => {
         await mockedMediaConnectorController.download(
             connectorId,
             mediaId,
-            MediaDownloadType.LowResolutionWeb,
+            MediaDownloadType.thumbnail,
             context,
         );
         expect(mockedEditorApi.mediaConnectorDownload).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.mediaConnectorDownload).toHaveBeenCalledWith(
             connectorId,
             mediaId,
-            MediaDownloadType.LowResolutionWeb,
+            MediaDownloadType.thumbnail,
+            JSON.stringify([MediaAllowedResourceType.image]),
             JSON.stringify(context),
         );
     });
