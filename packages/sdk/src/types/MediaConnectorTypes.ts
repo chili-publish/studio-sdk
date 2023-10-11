@@ -2,8 +2,13 @@ import { Id } from './CommonTypes';
 import { MediaType } from './ConnectorTypes';
 
 export enum MediaDownloadType {
-    LowResolutionWeb = 'lowresWeb',
-    HighResolutionWeb = 'highresWeb',
+    thumbnail = 'thumbnail',
+    web = 'web',
+    original = 'original'
+}
+
+export enum MediaAllowedResourceType {
+    image = 'image'
 }
 
 export type Media = {

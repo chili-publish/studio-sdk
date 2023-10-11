@@ -3,7 +3,7 @@ import { QueryOptions, Dictionary, ArrayBufferPointer, ConnectorConfigOptions, C
 export interface MediaConnector {
     detail(id: string, context: Dictionary): Promise<MediaDetail>;
     query(options: QueryOptions, context: Dictionary): Promise<MediaPage>;
-    download(id: string, previewType: DownloadType, context: Dictionary): Promise<ArrayBufferPointer>
+    download(id: string, previewType: DownloadType, allowedResourceTypes: MediaAllowedResourceType[], context: Dictionary): Promise<ArrayBufferPointer>
     upload(name: string, blob: ArrayBufferPointer, context: Dictionary): Promise<Media>
     remove(id: string, context: Dictionary): Promise<boolean>
     copy(id: string, newName: string, context: Dictionary): Promise<Media>
@@ -11,11 +11,16 @@ export interface MediaConnector {
     getCapabilities(): ConnectorCapabilities;
 }
 
+export enum MediaAllowedResourceType {
+    image = 'image',
+    vector = 'vector',
+}
+
 export enum DownloadType {
-    lowresWeb = 'lowresWeb',
-    highresWeb = 'highresWeb',
-    outputVideo = 'outputVideo',
-    outputPdf = 'outputPdf'
+    thumbnail = 'thumbnail',
+    web = 'web',
+    highres = 'highres',
+    original = 'original',
 }
 
 export interface MediaPage {
