@@ -222,12 +222,12 @@ class ConnectorConfigurator {
     };
 
     /**
-     * Allows to map document data (variables, selectedFrame, etc) to connector context data.
+     * Allows to map variables or strings to connector context data.
      * By defining the mappings, we can trigger re-download of assets (dynamic asset provider)
      * or populate filters for the query endpoint. The mapped data will be available using
      * the context parameter in the connector implementation code.
      *
-     * for variables is should follow the format "var.[variable id]". e.g. var.6B29FC40-CA47-1067-B31D-00DD010662DA
+     * For the variables the mapping should follow the format "var.[variable id]". e.g. var.6B29FC40-CA47-1067-B31D-00DD010662DA
      *
      * @param mappings collection of mappings to set to this connector
      * @returns
