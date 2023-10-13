@@ -7,12 +7,9 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 let mockedFontConnectorController: FontConnectorController;
 
 const mockedEditorApi: EditorAPI = {
-    fontConnectorCopy: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorDownload: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorPreview: async () => getEditorResponseData(castToEditorResponse(null)),
-    fontConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
-    fontConnectorRemove: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     fontConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -21,11 +18,8 @@ const mockedEditorApi: EditorAPI = {
 beforeEach(() => {
     mockedFontConnectorController = new FontConnectorController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'fontConnectorQuery');
-    jest.spyOn(mockedEditorApi, 'fontConnectorCopy');
     jest.spyOn(mockedEditorApi, 'fontConnectorDownload');
     jest.spyOn(mockedEditorApi, 'fontConnectorPreview');
-    jest.spyOn(mockedEditorApi, 'fontConnectorRemove');
-    jest.spyOn(mockedEditorApi, 'fontConnectorUpload');
     jest.spyOn(mockedEditorApi, 'fontConnectorDetail');
     jest.spyOn(mockedEditorApi, 'fontConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'fontConnectorGetConfigurationOptions');
@@ -54,17 +48,6 @@ describe('FontConnectorController', () => {
     };
     const context = { debug: 'true' };
     const blob = new Uint8Array([1, 2, 3]);
-
-    it('Should call the copy method', async () => {
-        await mockedFontConnectorController.copy(connectorId, fontId, 'newName', context);
-        expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorCopy).toHaveBeenCalledWith(
-            connectorId,
-            fontId,
-            'newName',
-            JSON.stringify(context),
-        );
-    });
 
     it('Should call the query method', async () => {
         await mockedFontConnectorController.query(connectorId, queryOptions1, context);
@@ -101,23 +84,6 @@ describe('FontConnectorController', () => {
             connectorId,
             fontId,
             FontPreviewFormat.Square,
-            JSON.stringify(context),
-        );
-    });
-
-    it('Should call the remove method', async () => {
-        await mockedFontConnectorController.remove(connectorId, fontId, context);
-        expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorRemove).toHaveBeenCalledWith(connectorId, fontId, JSON.stringify(context));
-    });
-
-    it('Should call the upload method', async () => {
-        await mockedFontConnectorController.upload(connectorId, fontId, blob, context);
-        expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.fontConnectorUpload).toHaveBeenCalledWith(
-            connectorId,
-            fontId,
-            blob,
             JSON.stringify(context),
         );
     });

@@ -2,7 +2,7 @@ import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, Me
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaType,
-    ConnectorCapabilities,
+    MediaConnectorCapabilities,
     MediaType,
     QueryOptions,
     QueryPage,
@@ -91,52 +91,6 @@ export class MediaConnectorController {
     };
 
     /**
-     * Depending on the connector capabilities, this api method allows you to upload new media to the
-     * connector's backend.
-     * @param id unique id of the media connector
-     * @param mediaId unique id of the media to upload
-     * @param blob byte array representation of the media to upload
-     * @param context context that will be available in the connector script.
-     * @returns
-     */
-    upload = async (id: Id, mediaId: Id, blob: Uint8Array, context: MetaData = {}) => {
-        const res = await this.#editorAPI;
-        return res
-            .mediaConnectorUpload(id, mediaId, blob, JSON.stringify(context))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Depending on the connector capabilities, removes media identified by `mediaId` from the connector's backend storage
-     * @param id unique id of the media connector
-     * @param mediaId unique id of the media to download
-     * @param context context that will be available in the connector script.
-     * @returns
-     */
-    remove = async (id: Id, mediaId: Id, context: MetaData = {}) => {
-        const res = await this.#editorAPI;
-        return res
-            .mediaConnectorRemove(id, mediaId, JSON.stringify(context))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Depending on the connector capabilities, copies media identified by `mediaId` to a new media item on the
-     * connector's backend
-     * @param id unique id of the media connector
-     * @param mediaId unique id of the media to download
-     * @param newName name of the copied media on the connector's backend
-     * @param context context that will be available in the connector script.
-     * @returns
-     */
-    copy = async (id: Id, mediaId: Id, newName: string, context: MetaData = {}) => {
-        const res = await this.#editorAPI;
-        return res
-            .mediaConnectorCopy(id, mediaId, newName, JSON.stringify(context))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
      * method allows you to discover which mappings are available for a given connector. If you want to use any of these
      * mappings, they will be available in the `context` parameter of any connector method.
@@ -154,13 +108,13 @@ export class MediaConnectorController {
      * This method returns what capabilities the selected connector has. It gives an indication what methods can
      * be used successfully for a certain connector.
      * @param id unique id of the media connector
-     * @returns connector capabilities
+     * @returns MediaConnectorCapabilities
      */
     getCapabilities = async (id: Id) => {
         const res = await this.#editorAPI;
         return res
             .mediaConnectorGetCapabilities(id)
-            .then((result) => getEditorResponseData<ConnectorCapabilities>(result));
+            .then((result) => getEditorResponseData<MediaConnectorCapabilities>(result));
     };
 
     /**
