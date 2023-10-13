@@ -15,17 +15,6 @@ export interface ConnectorRuntimeContext {
   sdkVersion: string;
 }
 
-export type FontConnectorCapabilities = {
-  query: boolean;
-  detail: boolean;
-  preview: boolean;
-};
-
-export type MediaConnectorCapabilities = {
-  query: boolean;
-  detail: boolean;
-};
-
 export type QueryOptions = {
   sortOrder: string | null;
   collection: string | null;

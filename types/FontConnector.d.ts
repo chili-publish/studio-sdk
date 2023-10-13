@@ -2,7 +2,6 @@ import {
   ArrayBufferPointer,
   ConnectorConfigOptions,
   Dictionary,
-  FontConnectorCapabilities,
   QueryOptions,
 } from "./Connector.Shared";
 
@@ -54,4 +53,10 @@ declare module "grafx-studio-fontconnector" {
     familyId: string;
     familyName: string;
   }
+
+  export type FontConnectorCapabilities = {
+    query: boolean;
+    detail: boolean;
+    preview: boolean;
+  };
 }

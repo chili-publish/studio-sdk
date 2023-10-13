@@ -2,7 +2,6 @@ import {
   ArrayBufferPointer,
   ConnectorConfigOptions,
   Dictionary,
-  MediaConnectorCapabilities,
   QueryOptions,
 } from "./Connector.Shared";
 
@@ -46,3 +45,8 @@ export interface MediaDetail extends Media {
   width?: number;
   height?: number;
 }
+
+export type MediaConnectorCapabilities = {
+  query: boolean;
+  detail: boolean;
+};
