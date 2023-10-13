@@ -36,14 +36,14 @@ export type QueryOptions = {
 };
 
 export type FontConnectorCapabilities = {
-    query?: boolean;
-    detail?: boolean;
-    preview?: boolean;
+    query: boolean;
+    detail: boolean;
+    preview: boolean;
 };
 
 export type MediaConnectorCapabilities = {
-    query?: boolean;
-    detail?: boolean;
+    query: boolean;
+    detail: boolean;
 };
 
 interface ConnectorRegistrationBase {
