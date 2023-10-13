@@ -47,7 +47,6 @@ describe('FontConnectorController', () => {
         sortOrder: SortOrder.descending,
     };
     const context = { debug: 'true' };
-    const blob = new Uint8Array([1, 2, 3]);
 
     it('Should call the query method', async () => {
         await mockedFontConnectorController.query(connectorId, queryOptions1, context);
