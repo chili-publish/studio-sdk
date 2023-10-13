@@ -36,17 +36,14 @@ export type QueryOptions = {
 };
 
 export type FontConnectorCapabilities = {
-    type: ConnectorType;
-    query?: boolean;
-    detail?: boolean;
-};
-
-export type MediaConnectorCapabilities = {
-    type: ConnectorType;
-    filtering?: boolean;
     query?: boolean;
     detail?: boolean;
     preview?: boolean;
+};
+
+export type MediaConnectorCapabilities = {
+    query?: boolean;
+    detail?: boolean;
 };
 
 interface ConnectorRegistrationBase {
