@@ -1,9 +1,4 @@
-import {
-  ArrayBufferPointer,
-  ConnectorConfigOptions,
-  Dictionary,
-  QueryOptions,
-} from "./Connector.Shared";
+import {ArrayBufferPointer, ConnectorConfigOptions, Dictionary, QueryOptions,} from "./Connector.Shared";
 
 export interface MediaConnector {
   detail(id: string, context: Dictionary): Promise<MediaDetail>;
@@ -49,4 +44,5 @@ export interface MediaDetail extends Media {
 export type MediaConnectorCapabilities = {
   query: boolean;
   detail: boolean;
+  filtering: boolean;
 };

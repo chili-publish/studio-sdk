@@ -1,4 +1,4 @@
-import { Id } from './CommonTypes';
+import {Id} from './CommonTypes';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -39,11 +39,13 @@ export type FontConnectorCapabilities = {
     query: boolean;
     detail: boolean;
     preview: boolean;
+    filtering: boolean;
 };
 
 export type MediaConnectorCapabilities = {
     query: boolean;
     detail: boolean;
+    filtering: boolean;
 };
 
 interface ConnectorRegistrationBase {
