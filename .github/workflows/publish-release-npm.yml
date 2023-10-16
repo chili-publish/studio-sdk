@@ -1,4 +1,4 @@
-name: Publish package
+name: Publish Release
 on:
     release:
         types: [released]
@@ -36,7 +36,7 @@ jobs:
             - name: build code
               run: yarn build
             - name: publish sdk build
-              run: node cicd.js sdk yarn publish --tag ${{ github.event.release.name }} --tag latest
+              run: node cicd.js sdk,connectors yarn publish --tag ${{ github.event.release.name }} --tag latest
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
             - name: get new npm version

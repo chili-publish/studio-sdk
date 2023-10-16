@@ -1,4 +1,4 @@
-name: Build and deploy PR
+name: PR Build
 on: [pull_request]
 jobs:
     build:
@@ -45,6 +45,11 @@ jobs:
               run: node cicd.js sdk mkdir -p upload/dev-packages/$CI_PR_ID
             - name: pack sdk build
               run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_PR_ID/studio-sdk.tgz
+            - name: pack connector build
+              run: node cicd.js connectors yarn pack
+            - name: prepare for connectors upload
+              run: |
+                node cicd.js connectors mv *.tgz upload/dev-packages/$CI_PR_ID
             - name: copy file branch
               run: |
                   path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&

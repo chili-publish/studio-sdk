@@ -1,4 +1,4 @@
-import { QueryOptions, Dictionary, ArrayBufferPointer, ConnectorConfigOptions, ConnectorCapabilities } from "./Connector.Shared";
+import { QueryOptions, Dictionary, ArrayBufferPointer, ConnectorCapabilities, ConnectorConfigValue } from "./Connector.Shared";
 
 export interface MediaConnector {
     detail(id: string, context: Dictionary): Promise<MediaDetail>;
@@ -7,16 +7,11 @@ export interface MediaConnector {
     upload(name: string, blob: ArrayBufferPointer, context: Dictionary): Promise<Media>
     remove(id: string, context: Dictionary): Promise<boolean>
     copy(id: string, newName: string, context: Dictionary): Promise<Media>
-    getConfigurationOptions(): ConnectorConfigOptions | null;
+    getConfigurationOptions(): ConnectorConfigValue[] | null;
     getCapabilities(): ConnectorCapabilities;
 }
 
-export enum DownloadType {
-    lowresWeb = 'lowresWeb',
-    highresWeb = 'highresWeb',
-    outputVideo = 'outputVideo',
-    outputPdf = 'outputPdf'
-}
+export type DownloadType = 'lowresWeb' | 'highresWeb' | 'outputVideo' | 'outputPdf';
 
 export interface MediaPage {
     pageSize: number;

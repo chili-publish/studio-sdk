@@ -1,0 +1,13 @@
+{
+  "name": "@chili-publish/studio-connectors",
+  "version": "0.0.1",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}

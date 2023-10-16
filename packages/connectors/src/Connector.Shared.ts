@@ -3,10 +3,7 @@ export interface Dictionary {
     [Key: string]: string;
 }
 
-export enum ChiliPlatform {
-    web,
-    server
-}
+export type ChiliPlatform = 'web' | 'server';
 
 export interface ConnectorRuntimeContext {
     options: Dictionary;
@@ -15,7 +12,6 @@ export interface ConnectorRuntimeContext {
     platform: ChiliPlatform;
     sdkVersion: string;
 }
-
 
 export type ConnectorCapabilities = {
     filtering: boolean;
@@ -82,15 +78,10 @@ export interface ChiliResponse extends ChiliBody {
     readonly url: string;
 }
 
-export enum ConnectorConfigValueType {
-    text = 'text',
-    boolean = 'boolean',
-}
+export type ConnectorConfigValueType = 'text' | 'boolean';
 
 export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
     readonly type: ConnectorConfigValueType;
 }
-
-export type ConnectorConfigOptions = ConnectorConfigValue[];
