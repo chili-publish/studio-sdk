@@ -45,11 +45,8 @@ jobs:
               run: node cicd.js sdk mkdir -p upload/dev-packages/$CI_PR_ID
             - name: pack sdk build
               run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_PR_ID/studio-sdk.tgz
-            - name: pack connector build
-              run: node cicd.js connectors yarn pack
             - name: prepare for connectors upload
-              run: |
-                node cicd.js connectors mv *.tgz upload/dev-packages/$CI_PR_ID
+              run: node cicd.js connectors yarn prepare-upload
             - name: copy file branch
               run: |
                   path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
@@ -59,6 +56,11 @@ jobs:
               with:
                   inlineScript: |
                       az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            - name: Copy to Azure Blob Storage (Connectors)
+              uses: azure/CLI@v1
+              with:
+                  inlineScript: |
+                      az storage blob upload-batch -d sdk -s packages/connectors/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
             - name: prepare for actions upload
               run: |
                 node cicd.js actions node scripts/prepare-release.mjs

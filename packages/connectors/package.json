@@ -11,6 +11,7 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepare-upload": "yarn build && yarn pack && mkdir ./upload/connectors/ -p && cp *.tgz ./upload/connectors/"
   }
 }
