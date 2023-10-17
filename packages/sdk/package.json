@@ -76,7 +76,8 @@
     "browser": "./_bundles/main.js",
     "files": [
         "lib/",
-        "_bundles/"
+        "_bundles/",
+        "README.md"
     ],
     "typings": "lib/src/",
     "bugs": {
