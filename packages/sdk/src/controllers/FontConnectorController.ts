@@ -1,8 +1,8 @@
 import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
-    ConnectorCapabilities,
     DeprecatedMediaType,
+    FontConnectorCapabilities,
     MediaType,
     QueryOptions,
     QueryPage,
@@ -105,52 +105,6 @@ export class FontConnectorController {
     };
 
     /**
-     * Depending on the connector capabilities, this api method allows you to upload new Font to the
-     * connector's backend.
-     * @param connectorId unique id of the Font connector
-     * @param fontStyleId unique id of the Font style to upload
-     * @param blob byte array representation of the Font to upload
-     * @param context context that will be available in the connector script.
-     * @returns
-     */
-    upload = async (connectorId: string, fontStyleId: string, blob: Uint8Array, context: MetaData = {}) => {
-        const res = await this.#editorAPI;
-        return res
-            .fontConnectorUpload(connectorId, fontStyleId, blob, JSON.stringify(context))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Depending on the connector capabilities, removes Font identified by `fontId` from the connector's backend storage
-     * @param connectorId unique id of the Font connector
-     * @param fontStyleId unique id of the Font style to remove
-     * @param context context that will be available in the connector script.
-     * @returns
-     */
-    remove = async (connectorId: string, fontStyleId: string, context: MetaData = {}) => {
-        const res = await this.#editorAPI;
-        return res
-            .fontConnectorRemove(connectorId, fontStyleId, JSON.stringify(context))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Depending on the connector capabilities, copies Font identified by `fontId` to a new Font item on the
-     * connector's backend
-     * @param connectorId unique id of the Font connector
-     * @param fontStyleId unique id of the Font to download
-     * @param newName name of the copied Font on the connector's backend
-     * @param context context that will be available in the connector script.
-     * @returns
-     */
-    copy = async (connectorId: string, fontStyleId: string, newName: string, context: MetaData = {}) => {
-        const res = await this.#editorAPI;
-        return res
-            .fontConnectorCopy(connectorId, fontStyleId, newName, JSON.stringify(context))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
      * method allows you to discover which mappings are available for a given connector. If you want to use any of these
      * mappings, they will be available in the `context` parameter of any connector method.
@@ -168,13 +122,13 @@ export class FontConnectorController {
      * This method returns what capabilities the selected connector has. It gives an indication what methods can
      * be used successfully for a certain connector.
      * @param connectorId unique id of the Font connector
-     * @returns connector capabilities
+     * @returns FontConnectorCapabilities
      */
     getCapabilities = async (connectorId: string) => {
         const res = await this.#editorAPI;
         return res
             .fontConnectorGetCapabilities(connectorId)
-            .then((result) => getEditorResponseData<ConnectorCapabilities>(result));
+            .then((result) => getEditorResponseData<FontConnectorCapabilities>(result));
     };
 
     /**
