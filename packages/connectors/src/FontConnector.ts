@@ -1,12 +1,12 @@
-import { QueryOptions, Dictionary, ArrayBufferPointer, ConnectorCapabilities, ConnectorConfigValue } from "./Connector.Shared";
+import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, QueryOptions } from './Connector.Shared';
 
 export interface GrafxFontConnector {
-    detail(familyId, context: Dictionary): FontStyle;
-    query(options: QueryOptions, context: Dictionary): Promise<FontFamilyPage>;
-    download(styleId: string, context: Dictionary): Promise<ArrayBufferPointer>
-    preview(familyId: string, previewFormat: FontPreviewFormat, context: Dictionary): Promise<ArrayBufferPointer>
+    detail(connectorId: string, fontFamilyId: string, context: Dictionary): Promise<FontStyle[]>;
+    query(connectorId: string, queryOptions: QueryOptions, context: Dictionary): Promise<FontFamilyPage>;
+    download(styleId: string, context: Dictionary): Promise<ArrayBufferPointer>;
+    preview(familyId: string, previewFormat: FontPreviewFormat, context: Dictionary): Promise<ArrayBufferPointer>;
     getConfigurationOptions(): ConnectorConfigValue[] | null;
-    getCapabilities(): ConnectorCapabilities;
+    getCapabilities(): FontConnectorCapabilities;
 }
 
 export type FontPreviewFormat = 'square' | 'line';
@@ -32,3 +32,10 @@ export interface FontStyle {
     familyId: string;
     familyName: string;
 }
+
+export type FontConnectorCapabilities = {
+    query: boolean;
+    detail: boolean;
+    preview: boolean;
+    filtering: boolean;
+};
