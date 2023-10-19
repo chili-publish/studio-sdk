@@ -2,7 +2,7 @@ import { MediaConnectorController } from '../../controllers/MediaConnectorContro
 import { SortBy, SortOrder } from '../../types/ConnectorTypes';
 import { MediaAllowedResourceType, MediaDownloadType } from '../../types/MediaConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedMediaConnectorController: MediaConnectorController;
 
@@ -10,9 +10,6 @@ const mockedEditorApi: EditorAPI = {
     mediaConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorDownload: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorRemove: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorCopy: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -22,9 +19,6 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'mediaConnectorQuery');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDetail');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDownload');
-    jest.spyOn(mockedEditorApi, 'mediaConnectorUpload');
-    jest.spyOn(mockedEditorApi, 'mediaConnectorRemove');
-    jest.spyOn(mockedEditorApi, 'mediaConnectorCopy');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetConfigurationOptions');
 });
@@ -50,18 +44,7 @@ describe('MediaConnectorController', () => {
         sortOrder: SortOrder.descending,
     };
     const context = { debug: 'true' };
-    const blob = new Uint8Array([1, 2, 3]);
 
-    it('Should call the copy method', async () => {
-        await mockedMediaConnectorController.copy(connectorId, mediaId, 'newName', context);
-        expect(mockedEditorApi.mediaConnectorCopy).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.mediaConnectorCopy).toHaveBeenCalledWith(
-            connectorId,
-            mediaId,
-            'newName',
-            JSON.stringify(context),
-        );
-    });
     it('Should call the query method', async () => {
         await mockedMediaConnectorController.query(connectorId, queryOptions1, context);
         expect(mockedEditorApi.mediaConnectorQuery).toHaveBeenCalledTimes(1);
@@ -93,26 +76,6 @@ describe('MediaConnectorController', () => {
             mediaId,
             MediaDownloadType.thumbnail,
             JSON.stringify([MediaAllowedResourceType.image]),
-            JSON.stringify(context),
-        );
-    });
-    it('Should call the remove method', async () => {
-        await mockedMediaConnectorController.remove(connectorId, mediaId, context);
-        expect(mockedEditorApi.mediaConnectorRemove).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.mediaConnectorRemove).toHaveBeenCalledWith(
-            connectorId,
-            mediaId,
-            JSON.stringify(context),
-        );
-    });
-
-    it('Should call the upload method', async () => {
-        await mockedMediaConnectorController.upload(connectorId, mediaId, blob, context);
-        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledWith(
-            connectorId,
-            mediaId,
-            blob,
             JSON.stringify(context),
         );
     });

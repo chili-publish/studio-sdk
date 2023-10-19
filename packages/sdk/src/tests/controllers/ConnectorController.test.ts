@@ -104,7 +104,7 @@ describe('ConnectorController', () => {
         await mockedConnectorController.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);
             configurator.setMappings([
-                new ConnectorMapping('data', ConnectorMappingSource.variable, 'Var 1'),
+                new ConnectorMapping('data', ConnectorMappingSource.variable, '6B29FC40-CA47-1067-B31D-00DD010662DA'),
                 new ConnectorMapping('plain', ConnectorMappingSource.value, 'plain value'),
             ]);
             configurator.setOptions({ test: 'data' });
@@ -124,7 +124,7 @@ describe('ConnectorController', () => {
 
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
-            JSON.stringify({ name: 'data', value: 'var.Var 1' }),
+            JSON.stringify({ name: 'data', value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA' }),
             JSON.stringify({ name: 'plain', value: 'plain value' }),
         ]);
 

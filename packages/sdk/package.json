@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-sdk",
-    "version": "0.157.2",
+    "version": "1.1.1",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
@@ -76,7 +76,8 @@
     "browser": "./_bundles/main.js",
     "files": [
         "lib/",
-        "_bundles/"
+        "_bundles/",
+        "README.md"
     ],
     "typings": "lib/src/",
     "bugs": {
