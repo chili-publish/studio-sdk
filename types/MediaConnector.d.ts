@@ -21,8 +21,9 @@ export enum DownloadIntent {
 
 export enum DownloadType {
     thumbnail = 'thumbnail',
-    web = 'web',
+    mediumres = 'mediumres',
     highres = 'highres',
+    fullres = 'fullres',
     original = 'original',
 }
 
