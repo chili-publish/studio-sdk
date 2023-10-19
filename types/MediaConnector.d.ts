@@ -6,15 +6,17 @@ export interface MediaConnector {
   download(
     id: string,
     previewType: DownloadType,
+    intent: DownloadIntent,
     context: Dictionary
   ): Promise<ArrayBufferPointer>;
   getConfigurationOptions(): ConnectorConfigOptions | null;
   getCapabilities(): MediaConnectorCapabilities;
 }
 
-export enum MediaAllowedResourceType {
-    image = 'image',
-    vector = 'vector',
+export enum DownloadIntent {
+    web = 'web',
+    print = 'print',
+    animation = 'animation',
 }
 
 export enum DownloadType {

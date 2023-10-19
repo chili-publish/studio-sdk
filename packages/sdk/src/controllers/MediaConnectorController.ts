@@ -8,7 +8,7 @@ import {
     QueryPage,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
-import { Media, MediaAllowedResourceType, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
+import { Media, MediaDownloadIntent, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -86,7 +86,7 @@ export class MediaConnectorController {
     ): Promise<Uint8Array> => {
         const res = await this.#blobAPI;
         return res
-            .mediaConnectorDownload(id, mediaId, downloadType, JSON.stringify([MediaAllowedResourceType.image]), JSON.stringify(context))
+            .mediaConnectorDownload(id, mediaId, downloadType, MediaDownloadIntent.web, JSON.stringify(context))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 

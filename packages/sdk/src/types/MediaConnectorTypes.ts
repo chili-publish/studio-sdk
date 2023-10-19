@@ -7,8 +7,8 @@ export enum MediaDownloadType {
     original = 'original'
 }
 
-export enum MediaAllowedResourceType {
-    image = 'image'
+export enum MediaDownloadIntent {
+    web = 'web'
 }
 
 export type Media = {

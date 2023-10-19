@@ -1,6 +1,6 @@
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
 import { SortBy, SortOrder } from '../../types/ConnectorTypes';
-import { MediaAllowedResourceType, MediaDownloadType } from '../../types/MediaConnectorTypes';
+import { MediaDownloadIntent, MediaDownloadType } from '../../types/MediaConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -75,7 +75,7 @@ describe('MediaConnectorController', () => {
             connectorId,
             mediaId,
             MediaDownloadType.thumbnail,
-            JSON.stringify([MediaAllowedResourceType.image]),
+            MediaDownloadIntent.web,
             JSON.stringify(context),
         );
     });
