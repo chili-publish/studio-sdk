@@ -1,4 +1,4 @@
-import { Id } from './CommonTypes';
+import {Id} from './CommonTypes';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -35,13 +35,17 @@ export type QueryOptions = {
     sortOrder?: SortOrder | null;
 };
 
-export type ConnectorCapabilities = {
-    filtering?: boolean;
-    upload?: boolean;
-    query?: boolean;
-    remove?: boolean;
-    copy?: boolean;
-    detail?: boolean;
+export type FontConnectorCapabilities = {
+    query: boolean;
+    detail: boolean;
+    preview: boolean;
+    filtering: boolean;
+};
+
+export type MediaConnectorCapabilities = {
+    query: boolean;
+    detail: boolean;
+    filtering: boolean;
 };
 
 interface ConnectorRegistrationBase {
@@ -58,7 +62,7 @@ interface ConnectorRegistrationBase {
      * Connector source type.
      */
     source: ConnectorRegistrationSource;
-};
+}
 
 export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.url;
@@ -202,4 +206,4 @@ export enum ConnectorEventType {
 export const grafxMediaConnectorRegistration: ConnectorLocalRegistration = {
     url: 'grafx-media.json',
     source: ConnectorRegistrationSource.local,
-}
+};
