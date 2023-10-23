@@ -80,10 +80,10 @@ export interface SelectedTextStyle {
     subSuperScript: Scripting;
     trackingLeft: string;
     trackingRight: string;
-    startIndent: string;
-    endIndent: string;
-    spaceBefore: string;
-    spaceAfter: string;
+    paragraphIndentStart: string;
+    paragraphIndentEnd: string;
+    paragraphSpaceBefore: string;
+    paragraphSpaceAfter: string;
     textIndent: string;
     alignToBaseLine: boolean;
     baselineShiftValue: string;
@@ -96,6 +96,7 @@ export interface SelectedTextStyle {
     color: DisplayColor;
     underline: boolean;
     lineThrough: boolean;
+    hasLocalFormatting: boolean;
 }
 
 export enum HorizontalAlign {
