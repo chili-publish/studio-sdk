@@ -117,10 +117,10 @@ export class ConnectorController {
     };
 
     /**
-    * Gets the options from the connector.
-    * @param id the id of your registered connector
-    * @returns options
-    */
+     * Gets the options from the connector.
+     * @param id the id of your registered connector
+     * @returns options
+     */
     getOptions = async (id: string) => {
         const res = await this.#editorAPI;
         return res.getConnectorOptions(id).then((result) => getEditorResponseData<ConnectorOptions>(result));

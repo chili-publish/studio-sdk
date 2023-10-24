@@ -1,10 +1,7 @@
-
-
 export interface ConnectorImageVariableSource {
     connectorId: string;
     assetId: string;
 }
-
 
 export enum VariableType {
     shortText = 'shortText',

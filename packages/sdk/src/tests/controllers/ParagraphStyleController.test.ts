@@ -82,7 +82,7 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
                 g: 0,
                 b: 0,
             },
-            opacity: 0.50,
+            opacity: 0.5,
             isApplied: true,
             type: ColorUsageType.local,
         },

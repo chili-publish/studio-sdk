@@ -20,5 +20,4 @@ export type Media = {
 export interface MediaDetail extends Media {
     width?: number;
     height?: number;
-};
-
+}

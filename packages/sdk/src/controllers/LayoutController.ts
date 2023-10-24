@@ -129,9 +129,7 @@ export class LayoutController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setLayoutHeight(id, height)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setLayoutHeight(id, height).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -142,24 +140,20 @@ export class LayoutController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setLayoutWidth(id, width)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setLayoutWidth(id, width).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the unit of the layout to a specific value
-     * 
+     *
      * @param id The id of a specific layout
      * @param unit the unit that will be used for the layout. All values in this layout will now be reported in this unit
-     * @returns 
+     * @returns
      */
     setUnit = async (id: Id, unit: MeasurementUnit) => {
         const res = await this.#editorAPI;
-        return res
-            .setLayoutUnit(id, unit)
-            .then((result) => getEditorResponseData<null>(result));
-    }
+        return res.setLayoutUnit(id, unit).then((result) => getEditorResponseData<null>(result));
+    };
 
     /**
      * This method will reset the height of a specific layout to its original value

@@ -18,7 +18,6 @@ describe('UndoManagerController', () => {
         end: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
-
     beforeEach(() => {
         mockedUndoManagerController = new UndoManagerController(mockEditorApi, mockSDK);
         mockedAdvancedUndoManagerController = new AdvancedUndoManagerController(mockEditorApi);
