@@ -74,6 +74,7 @@ export type {
 
 export type {
     TextProperties,
+    SelectedTextStyle,
     TextStyle,
     AppearanceProperties,
     TextStyleUpdateType,
