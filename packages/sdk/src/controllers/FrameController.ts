@@ -1,5 +1,4 @@
 import type { EditorAPI, Id } from '../types/CommonTypes';
-import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     BlendMode,
@@ -183,13 +182,8 @@ export class FrameController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(height);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setFrameHeight(id, parseFloat(calc.toString()))
+            .setFrameHeight(id, height)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -201,13 +195,8 @@ export class FrameController {
      */
     setRotation = async (id: Id, rotation: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(rotation);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setFrameRotation(id, parseFloat(calc.toString()))
+            .setFrameRotation(id, rotation)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -219,13 +208,8 @@ export class FrameController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(width);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setFrameWidth(id, parseFloat(calc.toString()))
+            .setFrameWidth(id, width)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -237,13 +221,8 @@ export class FrameController {
      */
     setX = async (id: Id, XValue: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(XValue);
-
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
         return res
-            .setFrameX(id, parseFloat(calc.toString()))
+            .setFrameX(id, XValue)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -255,14 +234,8 @@ export class FrameController {
      */
     setY = async (id: Id, YValue: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(YValue);
-
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setFrameY(id, parseFloat(calc.toString()))
+            .setFrameY(id, YValue)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -500,14 +473,8 @@ export class FrameController {
      */
     setMinCopyfitting = async (id: Id, value: string) => {
         const res = await this.#editorAPI;
-
-        const calc = getCalculatedValue(value);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setMinCopyfitting(id, parseFloat(calc.toString()))
+            .setMinCopyfitting(id, value)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -519,14 +486,8 @@ export class FrameController {
      */
     setMaxCopyfitting = async (id: Id, value: string) => {
         const res = await this.#editorAPI;
-
-        const calc = getCalculatedValue(value);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setMaxCopyfitting(id, parseFloat(calc.toString()))
+            .setMaxCopyfitting(id, value)
             .then((result) => getEditorResponseData<null>(result));
     };
 

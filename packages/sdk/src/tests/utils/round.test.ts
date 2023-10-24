@@ -1,4 +1,4 @@
-import { round } from '../../utils/getCalculatedValue';
+import { round } from '../../utils/MathUtils';
 
 describe('Round', () => {
     it('rounds to precision of 2 by default', () => {

@@ -32,24 +32,24 @@ describe('PageController', () => {
         expect(mockEditorApi.getPageById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getPageById).toHaveBeenCalledWith('4');
     });
-    it('Should call the setWidth method and transform string to number', async () => {
+    it('Should call the setWidth method', async () => {
         await mockedPageController.setWidth('id', '4');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', 4);
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4');
     });
-    it('Should call the setHeight method and transform string to number', async () => {
+    it('Should call the setHeight method', async () => {
         await mockedPageController.setHeight('id', '4');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', 4);
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4');
     });
 
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
         await mockedPageController.setHeight('id', '4+2');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', 6);
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4+2');
 
         await mockedPageController.setWidth('id', '4*3');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', 12);
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4*3');
     });
 });
