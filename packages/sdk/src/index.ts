@@ -27,6 +27,7 @@ export type {
     FrameProperties,
     LayoutWithFrameProperties,
     LayoutListItemType,
+    Layout,
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
