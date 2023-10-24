@@ -9,7 +9,7 @@ export {
     TweenTypes,
     BasicAnimationsEmphasisStyles,
 } from './types/AnimationTypes';
-export { LayoutType } from './types/LayoutTypes';
+export { LayoutType, MeasurementUnit } from './types/LayoutTypes';
 export {
     BlendMode,
     FrameTypeEnum,

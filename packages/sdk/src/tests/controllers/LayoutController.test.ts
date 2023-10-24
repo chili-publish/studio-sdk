@@ -2,6 +2,7 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
+import { MeasurementUnit } from '../../types/LayoutTypes';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;
@@ -19,8 +20,10 @@ const mockedEditorApi: EditorAPI = {
     resetLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutHeight: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutWidth: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutUnit: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutHeight: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutWidth: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayoutUnit: async () => getEditorResponseData(castToEditorResponse(null)),
     getPageSnapshot: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -38,8 +41,10 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetLayout');
     jest.spyOn(mockedEditorApi, 'setLayoutHeight');
     jest.spyOn(mockedEditorApi, 'setLayoutWidth');
+    jest.spyOn(mockedEditorApi, 'setLayoutUnit');
     jest.spyOn(mockedEditorApi, 'resetLayoutHeight');
     jest.spyOn(mockedEditorApi, 'resetLayoutWidth');
+    jest.spyOn(mockedEditorApi, 'resetLayoutUnit');
     jest.spyOn(mockedEditorApi, 'getPageSnapshot');
 
     mockId = mockSelectPage.layoutId;
@@ -102,20 +107,17 @@ describe('LayoutController', () => {
     it('Should be possible to set the layout height', async () => {
         await mockedLayoutController.setHeight(mockId, '32');
         expect(mockedEditorApi.setLayoutHeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setLayoutHeight).toHaveBeenCalledWith('1', 32);
-    });
-    it('Should not be possible to set the layout height to null', async () => {
-        await mockedLayoutController.setHeight(mockId, 'null');
-        expect(mockedEditorApi.setLayoutHeight).not.toHaveBeenCalled();
+        expect(mockedEditorApi.setLayoutHeight).toHaveBeenCalledWith('1', '32');
     });
     it('Should be possible to set the layout width', async () => {
         await mockedLayoutController.setWidth(mockId, '34');
         expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledWith('1', 34);
+        expect(mockedEditorApi.setLayoutWidth).toHaveBeenCalledWith('1', '34');
     });
-    it('Should not be possible to set the layout width to null', async () => {
-        await mockedLayoutController.setWidth(mockId, 'null');
-        expect(mockedEditorApi.setLayoutWidth).not.toHaveBeenCalled();
+    it('Should be possible to set the layout unit', async () => {
+        await mockedLayoutController.setUnit(mockId, MeasurementUnit.cm);
+        expect(mockedEditorApi.setLayoutUnit).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutUnit).toHaveBeenCalledWith('1', MeasurementUnit.cm);
     });
     it('Should be possible to reset the layout height', async () => {
         await mockedLayoutController.resetHeight('1');
@@ -125,18 +127,12 @@ describe('LayoutController', () => {
         await mockedLayoutController.resetWidth('1');
         expect(mockedEditorApi.resetLayoutWidth).toHaveBeenCalledTimes(1);
     });
+    it('Should be possible to reset the layout unit', async () => {
+        await mockedLayoutController.resetUnit('1');
+        expect(mockedEditorApi.resetLayoutUnit).toHaveBeenCalledTimes(1);
+    });
     it('Should be possible to get the selected layout snapshot', async () => {
         await mockedLayoutController.getSelectedSnapshot();
         expect(mockedEditorApi.getPageSnapshot).toHaveBeenCalledTimes(1);
-    });
-});
-
-describe('User inputs for Layout Properties', () => {
-    it('Should calculate user Inputs and returns null when calculated value is null or same with selectedLayout property', async () => {
-        const responseHeight = await mockedLayoutController.setHeight(mockId, 'test');
-        const responseWidth = await mockedLayoutController.setWidth(mockId, '20/0');
-
-        expect(responseHeight).toEqual(null);
-        expect(responseWidth).toEqual(null);
     });
 });
