@@ -85,12 +85,12 @@ export class MediaConnectorController {
         downloadType: MediaDownloadType,
         context: MetaData = {},
     ): Promise<Uint8Array> => {
-        downloadType = this.parseDeprecatedMediaDownloadType(
+        const compatibleDownloadType = this.parseDeprecatedMediaDownloadType(
             downloadType as unknown as DeprecatedMediaConnectorDownloadType,
         ) as MediaDownloadType;
         const res = await this.#blobAPI;
         return res
-            .mediaConnectorDownload(id, mediaId, downloadType, MediaDownloadIntent.web, JSON.stringify(context))
+            .mediaConnectorDownload(id, mediaId, compatibleDownloadType, MediaDownloadIntent.web, JSON.stringify(context))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
