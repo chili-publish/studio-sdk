@@ -9,7 +9,7 @@ export {
     TweenTypes,
     BasicAnimationsEmphasisStyles,
 } from './types/AnimationTypes';
-export { LayoutType } from './types/LayoutTypes';
+export { LayoutType, MeasurementUnit } from './types/LayoutTypes';
 export {
     BlendMode,
     FrameTypeEnum,
@@ -27,6 +27,7 @@ export type {
     FrameProperties,
     LayoutWithFrameProperties,
     LayoutListItemType,
+    Layout,
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
@@ -73,6 +74,7 @@ export type {
 
 export type {
     TextProperties,
+    SelectedTextStyle,
     TextStyle,
     AppearanceProperties,
     TextStyleUpdateType,
