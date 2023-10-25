@@ -1,6 +1,7 @@
 import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
+    DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
     MediaConnectorCapabilities,
     MediaType,
@@ -84,6 +85,9 @@ export class MediaConnectorController {
         downloadType: MediaDownloadType,
         context: MetaData = {},
     ): Promise<Uint8Array> => {
+        downloadType = this.parseDeprecatedMediaDownloadType(
+            downloadType as unknown as DeprecatedMediaConnectorDownloadType,
+        ) as MediaDownloadType;
         const res = await this.#blobAPI;
         return res
             .mediaConnectorDownload(id, mediaId, downloadType, MediaDownloadIntent.web, JSON.stringify(context))
@@ -126,4 +130,23 @@ export class MediaConnectorController {
         if (deprecatedType === DeprecatedMediaType.file) return MediaType.file;
         if (deprecatedType === DeprecatedMediaType.collection) return MediaType.collection;
     };
+
+    /**
+     * This method will parse the deprecatedMediaDownloadType to the new media download type.
+     * This method will be removed once the deprecatedMediaDownloadType is out of use
+     * @param deprecatedMediaDownloadType legacy download type
+     * @returns MediaDownloadType
+     */
+    parseDeprecatedMediaDownloadType(
+        deprecatedMediaDownloadType: DeprecatedMediaConnectorDownloadType,
+    ): MediaDownloadType {
+        switch (deprecatedMediaDownloadType) {
+            case DeprecatedMediaConnectorDownloadType.HighResolutionWeb:
+                return MediaDownloadType.highres;
+            case DeprecatedMediaConnectorDownloadType.LowResolutionWeb:
+                return MediaDownloadType.thumbnail;
+            default:
+                return deprecatedMediaDownloadType as unknown as MediaDownloadType;
+        }
+    }
 }

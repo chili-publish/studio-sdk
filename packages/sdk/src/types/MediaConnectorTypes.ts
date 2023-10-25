@@ -3,12 +3,13 @@ import { MediaType } from './ConnectorTypes';
 
 export enum MediaDownloadType {
     thumbnail = 'thumbnail',
-    web = 'web',
-    original = 'original'
+    mediumres = 'mediumres',
+    highres = 'highres',
+    original = 'original',
 }
 
 export enum MediaDownloadIntent {
-    web = 'web'
+    web = 'web',
 }
 
 export type Media = {
@@ -25,5 +26,4 @@ export type Media = {
 export interface MediaDetail extends Media {
     width?: number;
     height?: number;
-};
-
+}

@@ -1,5 +1,5 @@
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
-import { SortBy, SortOrder } from '../../types/ConnectorTypes';
+import { DeprecatedMediaConnectorDownloadType, SortBy, SortOrder } from '../../types/ConnectorTypes';
 import { MediaDownloadIntent, MediaDownloadType } from '../../types/MediaConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -64,10 +64,21 @@ describe('MediaConnectorController', () => {
     });
 
     it('Should call the download method', async () => {
-        await mockedMediaConnectorController.download(
+        await mockedMediaConnectorController.download(connectorId, mediaId, MediaDownloadType.thumbnail, context);
+        expect(mockedEditorApi.mediaConnectorDownload).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.mediaConnectorDownload).toHaveBeenCalledWith(
             connectorId,
             mediaId,
             MediaDownloadType.thumbnail,
+            MediaDownloadIntent.web,
+            JSON.stringify(context),
+        );
+    });
+    it('Should convert legacy values to new ones in the download method', async () => {
+        await mockedMediaConnectorController.download(
+            connectorId,
+            mediaId,
+            DeprecatedMediaConnectorDownloadType.LowResolutionWeb as unknown as MediaDownloadType,
             context,
         );
         expect(mockedEditorApi.mediaConnectorDownload).toHaveBeenCalledTimes(1);
