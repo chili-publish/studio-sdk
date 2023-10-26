@@ -41,9 +41,9 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
               with:
-                  minor-wording: 'Breaking,BREAKING'
-                  major-wording: 'MAJOR'
-                  patch-wording: 'Fix,FIX,Feature,FEATURE'
+                  minor-wording: '[Breaking],[BREAKING]'
+                  major-wording: '[MAJOR],[major]'
+                  patch-wording: '[Fix],[FIX],[Feature],[FEATURE]'
                   skip-commit:  'true'
 
             # execute local js script
