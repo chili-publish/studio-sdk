@@ -1,6 +1,7 @@
 import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
+    DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
     MediaConnectorCapabilities,
     MediaType,
@@ -8,7 +9,7 @@ import {
     QueryPage,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
-import { Media, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
+import { Media, MediaDownloadIntent, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -84,9 +85,12 @@ export class MediaConnectorController {
         downloadType: MediaDownloadType,
         context: MetaData = {},
     ): Promise<Uint8Array> => {
+        const compatibleDownloadType = this.parseDeprecatedMediaDownloadType(
+            downloadType as unknown as DeprecatedMediaConnectorDownloadType,
+        ) as MediaDownloadType;
         const res = await this.#blobAPI;
         return res
-            .mediaConnectorDownload(id, mediaId, downloadType, JSON.stringify(context))
+            .mediaConnectorDownload(id, mediaId, compatibleDownloadType, MediaDownloadIntent.web, JSON.stringify(context))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
@@ -126,4 +130,23 @@ export class MediaConnectorController {
         if (deprecatedType === DeprecatedMediaType.file) return MediaType.file;
         if (deprecatedType === DeprecatedMediaType.collection) return MediaType.collection;
     };
+
+    /**
+     * This method will parse the deprecatedMediaDownloadType to the new media download type.
+     * This method will be removed once the deprecatedMediaDownloadType is out of use
+     * @param deprecatedMediaDownloadType legacy download type
+     * @returns MediaDownloadType
+     */
+    parseDeprecatedMediaDownloadType(
+        deprecatedMediaDownloadType: DeprecatedMediaConnectorDownloadType,
+    ): MediaDownloadType {
+        switch (deprecatedMediaDownloadType) {
+            case DeprecatedMediaConnectorDownloadType.HighResolutionWeb:
+                return MediaDownloadType.highres;
+            case DeprecatedMediaConnectorDownloadType.LowResolutionWeb:
+                return MediaDownloadType.thumbnail;
+            default:
+                return deprecatedMediaDownloadType as unknown as MediaDownloadType;
+        }
+    }
 }

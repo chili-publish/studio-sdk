@@ -6,17 +6,25 @@ export interface MediaConnector {
   download(
     id: string,
     previewType: DownloadType,
+    intent: DownloadIntent,
     context: Dictionary
   ): Promise<ArrayBufferPointer>;
   getConfigurationOptions(): ConnectorConfigOptions | null;
   getCapabilities(): MediaConnectorCapabilities;
 }
 
+export enum DownloadIntent {
+    web = 'web',
+    print = 'print',
+    animation = 'animation',
+}
+
 export enum DownloadType {
-  lowresWeb = "lowresWeb",
-  highresWeb = "highresWeb",
-  outputVideo = "outputVideo",
-  outputPdf = "outputPdf",
+    thumbnail = 'thumbnail',
+    mediumres = 'mediumres',
+    highres = 'highres',
+    fullres = 'fullres',
+    original = 'original',
 }
 
 export interface MediaPage {
