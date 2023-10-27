@@ -1,4 +1,4 @@
-import { VerticalAlign } from './FrameTypes';
+import { HorizontalAlign, VerticalAlign } from '../utils/enums';
 import { ColorUsage } from './ColorStyleTypes';
 
 export enum FontWeights {
@@ -6,18 +6,13 @@ export enum FontWeights {
     ITALIC = 'Italic',
     REGULAR = 'Regular',
 }
-export enum Alignment {
-    LEFT = 'left',
-    CENTER = 'center',
-    RIGHT = 'right',
-    JUSTIFY = 'justify',
-}
 
 export enum TextPosition {
     TOP = 'top',
     CENTER = 'center',
     BOTTOM = 'bottom',
 }
+
 export enum Case {
     TO_LOWER_CASE = 'lowercase',
     TO_UPPER_CASE = 'uppercase',
@@ -36,7 +31,7 @@ export interface TextProperties {
     fontKey?: string;
     fontStyle?: FontWeights;
     fontSize?: number;
-    textAlign?: Alignment;
+    textAlign?: HorizontalAlign;
     verticalAlign?: VerticalAlign;
     underline?: boolean;
     lineThrough?: boolean;
@@ -97,13 +92,6 @@ export interface SelectedTextStyle {
     underline?: boolean;
     lineThrough?: boolean;
     hasLocalFormatting: boolean;
-}
-
-export enum HorizontalAlign {
-    left = 'left',
-    center = 'center',
-    right = 'right',
-    justify = 'justify',
 }
 
 export enum SelectedTextStyleSections {

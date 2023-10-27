@@ -11,11 +11,11 @@ import {
     ImageFrameUrlSource,
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
-    VerticalAlign,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
 import { ShapeController } from './ShapeController';
+import { VerticalAlign } from '../utils/enums';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.

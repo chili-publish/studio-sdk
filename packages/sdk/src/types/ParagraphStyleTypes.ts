@@ -1,6 +1,7 @@
-import { Alignment, Case, Scripting } from './TextStyleTypes';
+import { Case, Scripting } from './TextStyleTypes';
 import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
+import { HorizontalAlign } from '../utils/enums';
 
 export type ParagraphStyle = {
     id: Id;
@@ -23,8 +24,8 @@ export type ParagraphStyle = {
     alignToBaseLine: boolean;
     baselineShiftValue: string;
     lineHeight: number;
-    textAlign: Alignment;
-    textAlignLast: Alignment;
+    textAlign: HorizontalAlign;
+    textAlignLast: HorizontalAlign;
     textOverprint: boolean;
     color: ColorUsage;
     fillColorApplied: boolean;
@@ -64,10 +65,10 @@ export type ParagraphStyleUpdate = {
         value: number;
     };
     textAlign: {
-        value: Alignment;
+        value: HorizontalAlign;
     };
     textAlignLast: {
-        value: Alignment;
+        value: HorizontalAlign;
     };
     textOverprint: {
         value: boolean;
