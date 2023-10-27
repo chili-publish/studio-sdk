@@ -42,7 +42,8 @@ export type Layout = {
     width: PropertyState<number>;
     height: PropertyState<number>;
     childLayouts: Id[];
-    timelineLengthMs?: number;
+    timelineLengthMs: PropertyState<number>;
+    unit: PropertyState<MeasurementUnit>;
 };
 
 // used by onLayoutsChanged
@@ -50,11 +51,19 @@ export type LayoutListItemType = {
     id: string;
     name: string;
     type: LayoutType;
-    parentId?: string | null;
-    childLayouts: string[];
+    parentId?: Id | null;
+    childLayouts: Id[];
 };
 
 export enum LayoutType {
     top = 'top',
     child = 'child',
+}
+
+export enum MeasurementUnit {
+    px = 'px',
+    mm = 'mm',
+    cm = 'cm',
+    inch = 'inch',
+    pt = 'pt',
 }

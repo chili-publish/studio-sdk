@@ -1,7 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Page } from '../types/PageTypes';
-import { getCalculatedValue } from '../utils/getCalculatedValue';
 
 /**
  * The PageController is responsible for all communication regarding Pages.
@@ -48,14 +47,8 @@ export class PageController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(width);
-
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setPageWidth(id, parseFloat(calc.toString()))
+            .setPageWidth(id, width)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -68,14 +61,8 @@ export class PageController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(height);
-
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setPageHeight(id, parseFloat(calc.toString()))
+            .setPageHeight(id, height)
             .then((result) => getEditorResponseData<null>(result));
     };
 }

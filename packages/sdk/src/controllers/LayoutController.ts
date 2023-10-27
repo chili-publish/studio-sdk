@@ -1,7 +1,6 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
-import { getCalculatedValue } from '../utils/getCalculatedValue';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout } from '../types/LayoutTypes';
+import { Layout, MeasurementUnit } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -130,12 +129,8 @@ export class LayoutController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(height);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
         return res
-            .setLayoutHeight(id, parseFloat(calc.toString()))
+            .setLayoutHeight(id, height)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -147,15 +142,24 @@ export class LayoutController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        const calc = getCalculatedValue(width);
-        if (calc === null || calc === Infinity) {
-            return null;
-        }
-
         return res
-            .setLayoutWidth(id, parseFloat(calc.toString()))
+            .setLayoutWidth(id, width)
             .then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will set the unit of the layout to a specific value
+     * 
+     * @param id The id of a specific layout
+     * @param unit the unit that will be used for the layout. All values in this layout will now be reported in this unit
+     * @returns 
+     */
+    setUnit = async (id: Id, unit: MeasurementUnit) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutUnit(id, unit)
+            .then((result) => getEditorResponseData<null>(result));
+    }
 
     /**
      * This method will reset the height of a specific layout to its original value
@@ -175,6 +179,16 @@ export class LayoutController {
     resetWidth = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutWidth(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the unit of a specific layout to its original (inherited) value
+     * @param id the id of a specific layout
+     * @returns
+     */
+    resetUnit = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayoutUnit(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

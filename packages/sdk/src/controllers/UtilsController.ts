@@ -1,4 +1,4 @@
-import { getCalculatedValue, round } from '../utils/getCalculatedValue';
+import { round } from '../utils/MathUtils';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/enums';
 
@@ -7,19 +7,6 @@ import { EnvironmentType } from '../utils/enums';
  * Methods inside this controller can be called by `window.SDK.utils.{method-name}`
  */
 export class UtilsController {
-    /**
-     * This method can calculate what's inside a string that represents a calculation (f.e. "1 + 5 - 2" will result in 4)
-     * @param val the string value that needs to be calculated
-     * @param precision the precision that the calculation should round to (f.e. if the return value is 5.012 and precision is 2, the end result should be 5.01) 2 is also the default
-     * @returns the calculated value or null in case that it can't be calculated
-     */
-    calculateFromString = (val: string, precision?: number) =>
-        getEditorResponseData<number>({
-            data: String(getCalculatedValue(val, precision)),
-            success: true,
-            status: 200,
-            parsedData: null,
-        });
 
     /**
      * This method can round a value to a certain precision, default is 2

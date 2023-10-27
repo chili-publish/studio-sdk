@@ -2,8 +2,14 @@ import { Id } from './CommonTypes';
 import { MediaType } from './ConnectorTypes';
 
 export enum MediaDownloadType {
-    LowResolutionWeb = 'lowresWeb',
-    HighResolutionWeb = 'highresWeb',
+    thumbnail = 'thumbnail',
+    mediumres = 'mediumres',
+    highres = 'highres',
+    original = 'original',
+}
+
+export enum MediaDownloadIntent {
+    web = 'web',
 }
 
 export type Media = {
@@ -20,5 +26,4 @@ export type Media = {
 export interface MediaDetail extends Media {
     width?: number;
     height?: number;
-};
-
+}
