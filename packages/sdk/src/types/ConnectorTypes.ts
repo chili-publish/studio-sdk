@@ -1,8 +1,13 @@
-import {Id} from './CommonTypes';
+import { Id } from './CommonTypes';
 
 export enum DeprecatedMediaType {
     file = 0,
     collection = 1,
+}
+
+export enum DeprecatedMediaConnectorDownloadType {
+    LowResolutionWeb = 'lowresWeb',
+    HighResolutionWeb = 'highresWeb',
 }
 
 export enum MediaType {
