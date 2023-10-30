@@ -60,20 +60,7 @@ export type DocumentColor = {
     color: Color;
 };
 
-export type ColorUsageUpdate = {
-    /**
-     * Reference to the stylekit color, can only be used if it is a stylekit color.
-     */
-    id?: Id;
-    /**
-     * The local color object, can only be used if it is a local color.
-     */
-    color?: ColorUpdate;
-    type: ColorUsageType;
-    /**
-     * Opacity of the color (0-100) where 0 = fully transparent.
-     */
-    opacity?: number;
+export type ColorUsageUpdate = ColorUsage & {
     /**
      * Indicates if the color will be applied or not.
      */

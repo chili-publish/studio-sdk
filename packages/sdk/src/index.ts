@@ -80,13 +80,11 @@ export type {
 } from './types/CommonTypes';
 
 export type {
-  TextProperties,
   SelectedTextStyle,
   TextStyle,
   AppearanceProperties,
   TextStyleUpdateType,
   UpdateStyleType,
-  DisplayColor,
 } from './types/TextStyleTypes';
 
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';

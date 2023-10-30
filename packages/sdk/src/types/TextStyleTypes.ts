@@ -1,10 +1,15 @@
 import { HorizontalAlign, VerticalAlign } from '../utils/enums';
-import { ColorUsage } from './ColorStyleTypes';
+import { ColorUsageUpdate } from './ColorStyleTypes';
 
 export enum FontWeights {
     BOLD = 'Bold',
     ITALIC = 'Italic',
     REGULAR = 'Regular',
+}
+
+export enum TextType {
+    TEXT = 'text',
+    FORMATTED = 'formatted',
 }
 
 export enum TextPosition {
@@ -18,29 +23,11 @@ export enum Case {
     TO_UPPER_CASE = 'uppercase',
     NORMAL = 'normal',
 }
+
 export enum Scripting {
     SUPERSCRIPT = 'superscript',
     SUBSCRIPT = 'subscript',
     NORMAL = 'normal',
-}
-
-export type DisplayColor = ColorUsage & {
-    isApplied: boolean;
-};
-export interface TextProperties {
-    fontKey?: string;
-    fontStyle?: FontWeights;
-    fontSize?: number;
-    textAlign?: HorizontalAlign;
-    verticalAlign?: VerticalAlign;
-    underline?: boolean;
-    lineThrough?: boolean;
-    letterSpacing?: string;
-    lineHeight?: number;
-    SUB_SUPER_SCRIPT?: Scripting;
-    typographicCase?: Case;
-    color?: DisplayColor;
-    [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
 
 export interface TextStyle {
@@ -48,6 +35,7 @@ export interface TextStyle {
     character?: string;
     [key: string]: number | string | Record<string, unknown> | null | boolean | undefined;
 }
+
 export type TextStyleUpdateType = {
     [key in keyof typeof SelectedTextStyles]?: {
         value: number | string | boolean;
@@ -56,42 +44,42 @@ export type TextStyleUpdateType = {
 
 export interface AppearanceProperties {
     blendMode?: string;
+    dropShadowColor?: string;
+    fillColor?: string;
     opacity?: string;
+    strokeColor?: string;
+    useDropShadow?: boolean;
     useFill?: boolean;
     useStroke?: boolean;
-    useDropShadow?: boolean;
-    fillColor?: string;
-    strokeColor?: string;
-    dropShadowColor?: string;
 }
 
 export interface SelectedTextStyle {
-    paragraphStyleId?: string;
-    characterStyleId?: string;
-    fontKey?: string;
-    fontSize?: number;
-    typographicCase?: Case;
-    kerningOn?: boolean;
-    subSuperScript?: Scripting;
-    trackingLeft?: string;
-    trackingRight?: string;
-    paragraphIndentStart?: string;
-    paragraphIndentEnd?: string;
-    paragraphSpaceBefore?: string;
-    paragraphSpaceAfter?: string;
-    textIndent?: string;
     alignToBaseLine?: boolean;
     baselineShiftValue?: string;
-    lineHeight?: number;
-    verticalAlign?: VerticalAlign;
+    characterStyleId?: string;
+    color?: ColorUsageUpdate;
     copyfittingScale?: number;
+    fontKey?: string;
+    fontSize?: number;
+    hasLocalFormatting: boolean;
+    kerningOn?: boolean;
+    lineHeight?: number;
+    lineThrough?: boolean;
+    paragraphIndentEnd?: string;
+    paragraphIndentStart?: string;
+    paragraphSpaceAfter?: string;
+    paragraphSpaceBefore?: string;
+    paragraphStyleId?: string;
+    subSuperScript?: Scripting;
     textAlign?: HorizontalAlign;
     textAlignLast?: HorizontalAlign;
+    textIndent?: string;
     textOverprint?: boolean;
-    color?: DisplayColor;
+    trackingLeft?: string;
+    trackingRight?: string;
+    typographicCase?: Case;
     underline?: boolean;
-    lineThrough?: boolean;
-    hasLocalFormatting: boolean;
+    verticalAlign?: VerticalAlign;
 }
 
 export enum SelectedTextStyleSections {
@@ -101,26 +89,26 @@ export enum SelectedTextStyleSections {
 }
 
 export enum SelectedTextStyles {
-    PARAGRAPH = 'paragraphStyleId',
+    BLEND_MODE = 'blendMode',
     CHARACTER = 'characterStyleId',
+    COLOR = 'color',
+    DROP_SHADOW_COLOR = 'dropShadowColor',
+    FILL_COLOR = 'fillColor',
+    FILL_COLOR_APPLIED = 'fillColorApplied',
     FONT_FAMILY = 'fontKey',
-    FONT_STYLE = 'fontStyle',
     FONT_SIZE = 'fontSize',
+    FONT_STYLE = 'fontStyle',
     LETTER_SPACING = 'letterSpacing',
     LINE_HEIGHT = 'lineHeight',
-    TEXT_ALIGN = 'textAlign',
-    VERTICAL_ALIGN = 'verticalAlign',
-    TYPOGRAPHIC_CASE = 'typographicCase',
-    SUB_SUPER_SCRIPT = 'subSuperScript',
-    UNDERLINE = 'underline',
     LINE_THROUGH = 'lineThrough',
-    FILL_COLOR = 'fillColor',
-    COLOR = 'color',
-    FILL_COLOR_APPLIED = 'fillColorApplied',
-    STROKE_COLOR = 'strokeColor',
-    DROP_SHADOW_COLOR = 'dropShadowColor',
-    BLEND_MODE = 'blendMode',
     OPACITY = 'opacity',
+    PARAGRAPH = 'paragraphStyleId',
+    STROKE_COLOR = 'strokeColor',
+    SUB_SUPER_SCRIPT = 'subSuperScript',
+    TEXT_ALIGN = 'textAlign',
+    TYPOGRAPHIC_CASE = 'typographicCase',
+    UNDERLINE = 'underline',
+    VERTICAL_ALIGN = 'verticalAlign',
 }
 
 export interface UpdateStyleType {

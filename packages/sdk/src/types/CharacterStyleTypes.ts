@@ -1,30 +1,17 @@
-import { Case, Scripting } from './TextStyleTypes';
-import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
+import { Case, Scripting, SelectedTextStyle } from './TextStyleTypes';
+import { ColorUsageUpdate } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 
-export type CharacterStyle = {
+
+export type CharacterStyle = Omit<SelectedTextStyle, 'hasLocalFormatting'> & {
     id: Id;
     name: string;
-    fontKey?: string;
-    fontSize?: number;
-    typographicCase?: Case;
-    kerningOn: boolean;
-    subSuperScript?: Scripting;
+    fillColorApplied?: boolean
+    underline?: boolean | null
+    lineThrough?: boolean | null
+    color: ColorUsageUpdate
+}
 
-    // the following properties are unit properties
-    trackingLeft?: string;
-    trackingRight?: string;
-    textIndent?: string;
-    // end of unit properties
-
-    baselineShiftValue?: string;
-    lineHeight?: number;
-    textOverprint?: boolean;
-    color: ColorUsage;
-    fillColorApplied?: boolean | null;
-    underline: boolean;
-    lineThrough: boolean;
-};
 
 export type CharacterStyleUpdate = {
     fontKey: {

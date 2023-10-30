@@ -1,7 +1,7 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ImageSourceTypeEnum, ImageFrameVariableSource } from '../types/FrameTypes';
-import { TextType } from '../types/TextTypes';
+import { TextType } from '../types/TextStyleTypes';
 
 /**
  * The ExperimentController contains all SDK functions that are considered for addition,

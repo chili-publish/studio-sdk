@@ -1,6 +1,6 @@
 import { ExperimentController } from '../../controllers/ExperimentController';
 import { EditorAPI, Id } from '../../types/CommonTypes';
-import { TextType } from '../../types/TextTypes';
+import { TextType } from '../../types/TextStyleTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 
@@ -65,9 +65,9 @@ describe('ExperimentController', () => {
     });
 
     it('Should call getTextByFrameId of EditorAPI successfully', async () => {
-        await mockedExperimentController.getText(frameId, TextType.formatted);
+        await mockedExperimentController.getText(frameId, TextType.FORMATTED);
         expect(mockedEditorApi.getTextByFrameId).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.getTextByFrameId).toHaveBeenCalledWith(frameId, TextType.formatted);
+        expect(mockedEditorApi.getTextByFrameId).toHaveBeenCalledWith(frameId, TextType.FORMATTED);
     });
 
     it('Should call setTextByFrameId of EditorAPI successfully', async () => {
