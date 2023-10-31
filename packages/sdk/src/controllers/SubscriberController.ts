@@ -1,4 +1,5 @@
 import { ConfigType, Id } from '../types/CommonTypes';
+import { MeasurementUnit } from '../types/LayoutTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -53,6 +54,11 @@ export class SubscriberController {
         const callBack = this.config.onSelectedLayoutPropertiesChanged;
         callBack && callBack(JSON.parse(layoutProperties));
     };
+
+    onSelectedLayoutUnitChanged = (unit: string) => {
+        const callBack = this.config.onSelectedLayoutUnitChanged;
+        callBack && callBack(unit as MeasurementUnit);
+    }
 
     /**
      * Listener on the state of the currently selected frame, if this changes, this listener will get triggered with the updates
