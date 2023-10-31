@@ -55,6 +55,12 @@ export class SubscriberController {
         callBack && callBack(JSON.parse(layoutProperties));
     };
 
+    /**
+     * Listener on the unit of the currently active layout. If you switch between layouts with different units, this listener will get triggered with the new unit
+     * If you switch the unit of a layout this listener will get triggered with the new unit
+     * 
+     * @param unit Stringified object of MeasurementUnit
+     */
     onSelectedLayoutUnitChanged = (unit: string) => {
         const callBack = this.config.onSelectedLayoutUnitChanged;
         callBack && callBack(unit as MeasurementUnit);
