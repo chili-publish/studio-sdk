@@ -1,6 +1,6 @@
 import { CallSender } from 'penpal';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties } from './LayoutTypes';
+import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
@@ -31,6 +31,7 @@ export type ConfigType = {
     studioOptions?: StudioOptionsDeltaUpdate;
     onPageSelectionChanged?: () => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
+    onSelectedLayoutUnitChanged?: (unit: MeasurementUnit) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
     onFrameAnimationsChanged?: (animationState: FrameAnimationType[]) => void;
     onVariableListChanged?: (variableList: Variable[]) => void;
