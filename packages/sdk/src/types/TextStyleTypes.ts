@@ -1,5 +1,5 @@
 import { HorizontalAlign, VerticalAlign } from '../utils/enums';
-import { ColorUsageUpdate } from './ColorStyleTypes';
+import { ColorUsage, DisplayColor } from './ColorStyleTypes';
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -53,15 +53,14 @@ export interface AppearanceProperties {
     useStroke?: boolean;
 }
 
-export interface SelectedTextStyle {
+export type BaseTextStyle = {
     alignToBaseLine?: boolean;
     baselineShiftValue?: string;
     characterStyleId?: string;
-    color?: ColorUsageUpdate;
+    color?: ColorUsage;
     copyfittingScale?: number;
     fontKey?: string;
     fontSize?: number;
-    hasLocalFormatting: boolean;
     kerningOn?: boolean;
     lineHeight?: number;
     lineThrough?: boolean;
@@ -80,6 +79,11 @@ export interface SelectedTextStyle {
     typographicCase?: Case;
     underline?: boolean;
     verticalAlign?: VerticalAlign;
+}
+
+export type SelectedTextStyle = BaseTextStyle & {
+    hasLocalFormatting: boolean;
+    color: DisplayColor;
 }
 
 export enum SelectedTextStyleSections {

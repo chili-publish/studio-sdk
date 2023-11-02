@@ -60,7 +60,7 @@ export type DocumentColor = {
     color: Color;
 };
 
-export type ColorUsageUpdate = ColorUsage & {
+export type DisplayColor = ColorUsage & {
     /**
      * Indicates if the color will be applied or not.
      */

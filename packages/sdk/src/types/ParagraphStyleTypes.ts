@@ -1,11 +1,11 @@
-import { Case, Scripting, SelectedTextStyle } from './TextStyleTypes';
-import { ColorUsageUpdate } from './ColorStyleTypes';
+import { BaseTextStyle, Case, Scripting } from './TextStyleTypes';
+import { ColorUsage } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 import { HorizontalAlign } from '../utils/enums';
 
-export type ParagraphStyle = Required<Omit<SelectedTextStyle, 'hasLocalFormatting'>> & {
-    id: Id
-    name: string
+export type ParagraphStyle = Required<BaseTextStyle> & {
+    id: Id;
+    name: string;
 }
 
 export type ParagraphStyleUpdate = {
@@ -49,7 +49,7 @@ export type ParagraphStyleUpdate = {
         value: boolean;
     };
     color: {
-        value: ColorUsageUpdate;
+        value: ColorUsage;
     };
     underline: {
         value: boolean;

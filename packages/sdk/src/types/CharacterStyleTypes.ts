@@ -1,15 +1,15 @@
-import { Case, Scripting, SelectedTextStyle } from './TextStyleTypes';
-import { ColorUsageUpdate } from './ColorStyleTypes';
+import { BaseTextStyle, Case, Scripting } from './TextStyleTypes';
+import { ColorUsage } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 
 
-export type CharacterStyle = Omit<SelectedTextStyle, 'hasLocalFormatting'> & {
+export type CharacterStyle = BaseTextStyle & {
     id: Id;
     name: string;
-    fillColorApplied?: boolean
-    underline?: boolean | null
-    lineThrough?: boolean | null
-    color: ColorUsageUpdate
+    fillColorApplied?: boolean;
+    underline?: boolean | null;
+    lineThrough?: boolean | null;
+    color: ColorUsage;
 }
 
 
@@ -48,7 +48,7 @@ export type CharacterStyleUpdate = {
         value: boolean;
     };
     color: {
-        value: ColorUsageUpdate;
+        value: ColorUsage;
     };
     underline: {
         value: boolean;
