@@ -1,5 +1,5 @@
 import { BaseTextStyle, Case, Scripting } from './TextStyleTypes';
-import { ColorUsage } from './ColorStyleTypes';
+import { DisplayColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 import { HorizontalAlign } from '../utils/enums';
 
@@ -49,7 +49,7 @@ export type ParagraphStyleUpdate = {
         value: boolean;
     };
     color: {
-        value: ColorUsage;
+        value: DisplayColor;
     };
     underline: {
         value: boolean;

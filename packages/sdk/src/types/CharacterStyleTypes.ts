@@ -1,5 +1,5 @@
 import { BaseTextStyle, Case, Scripting } from './TextStyleTypes';
-import { ColorUsage } from './ColorStyleTypes';
+import { DisplayColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 
 
@@ -9,7 +9,6 @@ export type CharacterStyle = BaseTextStyle & {
     fillColorApplied?: boolean;
     underline?: boolean | null;
     lineThrough?: boolean | null;
-    color: ColorUsage;
 }
 
 
@@ -48,7 +47,7 @@ export type CharacterStyleUpdate = {
         value: boolean;
     };
     color: {
-        value: ColorUsage;
+        value: DisplayColor;
     };
     underline: {
         value: boolean;
