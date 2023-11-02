@@ -56,6 +56,7 @@ interface ConfigParameterTypes {
     onSelectedFrameContentChanged: (state: string) => void;
     onSelectedFrameLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
+    onSelectedLayoutUnitChanged: (state: string) => void;
     onPageSelectionChanged: () => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
@@ -122,6 +123,7 @@ const Connect = (
                 selectedFrameLayout: params.onSelectedFrameLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
                 openLayoutPropertiesPanel: params.onPageSelectionChanged,
+                selectedLayoutUnit: params.onSelectedLayoutUnitChanged,
                 scrubberPositionChanged: params.onScrubberPositionChanged,
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
                 selectedToolChanged: params.onSelectedToolChanged,

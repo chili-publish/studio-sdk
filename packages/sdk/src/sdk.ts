@@ -129,6 +129,7 @@ export class SDK {
                 onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
                 onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
+                onSelectedLayoutUnitChanged: this.subscriber.onSelectedLayoutUnitChanged,
                 onPageSelectionChanged: this.subscriber.onPageSelectionChanged,
                 onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
