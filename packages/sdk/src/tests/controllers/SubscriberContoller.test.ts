@@ -1,4 +1,4 @@
-import { ActionEditorEvent, DocumentAction, Id, LayoutType } from '../../index';
+import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -21,6 +21,7 @@ const mockEditorApi: EditorAPI = {
     onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutPropertiesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayoutUnitChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentLoaded: async () => getEditorResponseData(castToEditorResponse(null)),
     onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -55,6 +56,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutPropertiesChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayoutUnitChanged');
     jest.spyOn(mockEditorApi, 'onStateChanged');
     jest.spyOn(mockEditorApi, 'onDocumentLoaded');
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
@@ -105,6 +107,11 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onSelectedLayoutPropertiesChanged('5');
         expect(mockEditorApi.onSelectedLayoutPropertiesChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onSelectedLayoutPropertiesChanged).toHaveBeenCalledWith(5);
+    });
+    it('Should be possible to subscribe to onSelectedLayoutUnitChanged', async () => {
+        await mockedSubscriberController.onSelectedLayoutUnitChanged('mm');
+        expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
         await mockedSubscriberController.onPageSelectionChanged();
