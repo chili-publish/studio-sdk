@@ -41,10 +41,13 @@ We hope these instructions make your setup process smooth and straightforward. H
 2. Create a new branch: `git checkout -b my-branch-name` \*
 3. Make your change and remember to add tests
 4. Build the project locally and run local tests
-5. Push to your fork and [submit a pull request](https://github.com/chili-publish/studio-sdk/compare)
+5. Push to your fork and [submit a pull request](https://github.com/chili-publish/studio-sdk/compare) \*\*
 6. Pat yourself on the back and wait for your pull request to be reviewed and get merged.
 
 \*replace my-branch-name with something specific. We use the prefixes fix and feature in our branches to indicate what they represent. An example for a branch that fixes a bug in playAnimation f.e. could be `fix/play-animation-fixdescription`
+
+\*\*Pull request titles determine the automatic version behavior. Please use the following diagram to determine the correct title prefix: 
+![Title Prefix Flow](images/pr_flow.svg)
 
 ## Acceptance criteria
 
