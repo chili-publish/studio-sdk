@@ -29,7 +29,7 @@ export interface ChiliRequestInit {
     /**
      * A Headers object, an object literal, or an array of two-item arrays to set request's headers.
      */
-    headers?: string[][];
+    headers?: Dictionary;
     /**
      * A cryptographic hash of the resource to be fetched by request. Sets request's integrity.
      */
@@ -59,7 +59,7 @@ export type ArrayBufferPointer = {
 };
 
 export interface ChiliResponse extends ChiliBody {
-    readonly headers: string[][];
+    readonly headers: Dictionary;
     readonly ok: boolean;
     readonly redirected: boolean;
     readonly status: number;
