@@ -1,6 +1,6 @@
-import { ConfigType, Id } from '../types/CommonTypes';
-import { MeasurementUnit } from '../types/LayoutTypes';
-import { ToolType } from '../utils/enums';
+import {ConfigType, Id} from '../types/CommonTypes';
+import {MeasurementUnit} from '../types/LayoutTypes';
+import {ToolType} from '../utils/enums';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
@@ -66,21 +66,44 @@ export class SubscriberController {
         callBack && callBack(unit as MeasurementUnit);
     }
 
+
     /**
-     * Listener on the state of the currently selected frame, if this changes, this listener will get triggered with the updates
-     * @param frameLayout Stringified object of FrameLayoutType
+     * @deprecated use `onSelectedFramesLayoutChanged` instead
+     * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
+     * @param frameLayout Stringified array of FrameLayoutType objects
      */
     onSelectedFrameLayoutChanged = (frameLayout: string) => {
-        const callBack = this.config.onSelectedFrameLayoutChanged;
+        const callBack = this.config.onSelectedFramesLayoutChanged;
+        const frames = JSON.parse(frameLayout);
+        callBack && callBack(frames[0]);
+    };
+
+    /**
+     * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
+     * @param frameLayout Stringified array of FrameLayoutType objects
+     */
+    onSelectedFramesLayoutChanged = (frameLayout: string) => {
+        const callBack = this.config.onSelectedFramesLayoutChanged;
         callBack && callBack(JSON.parse(frameLayout));
     };
 
     /**
+     * @deprecated use `onSelectedFramesContentChanged` instead
      * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
-     * @param frameContent Stringified object of FrameType
+     * @param frameContent Stringified array of Frame objects
      */
     onSelectedFrameContentChanged = (frameContent: string) => {
-        const callBack = this.config.onSelectedFrameContentChanged;
+        const callBack = this.config.onSelectedFramesContentChanged;
+        const frames = JSON.parse(frameContent);
+        callBack && callBack(frames[0]);
+    };
+
+    /**
+     * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
+     * @param frameContent Stringified array of Frame objects
+     */
+    onSelectedFramesContentChanged = (frameContent: string) => {
+        const callBack = this.config.onSelectedFramesContentChanged;
         callBack && callBack(JSON.parse(frameContent));
     };
 

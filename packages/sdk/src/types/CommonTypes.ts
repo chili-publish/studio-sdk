@@ -1,19 +1,19 @@
-import { CallSender } from 'penpal';
-import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
-import type { FrameType } from './FrameTypes';
-import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
-import { Variable } from './VariableTypes';
-import { ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType } from '..';
-import { DocumentType, UndoState } from './DocumentTypes';
-import { DocumentColor } from './ColorStyleTypes';
-import { ParagraphStyle } from './ParagraphStyleTypes';
-import { CharacterStyle } from './CharacterStyleTypes';
-import { ConnectorEvent } from './ConnectorTypes';
-import { PageSize } from './PageTypes';
-import { SelectedTextStyle } from './TextStyleTypes';
-import { CornerRadiusUpdateModel } from './ShapeTypes';
-import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
+import {CallSender} from 'penpal';
+import {AnimationPlaybackType, FrameAnimationType} from './AnimationTypes';
+import {LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit} from './LayoutTypes';
+import type {FrameType} from './FrameTypes';
+import {Frame, FrameLayoutType, FrameTypeEnum} from './FrameTypes';
+import {Variable} from './VariableTypes';
+import {ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType} from '..';
+import {DocumentType, UndoState} from './DocumentTypes';
+import {DocumentColor} from './ColorStyleTypes';
+import {ParagraphStyle} from './ParagraphStyleTypes';
+import {CharacterStyle} from './CharacterStyleTypes';
+import {ConnectorEvent} from './ConnectorTypes';
+import {PageSize} from './PageTypes';
+import {SelectedTextStyle} from './TextStyleTypes';
+import {CornerRadiusUpdateModel} from './ShapeTypes';
+import {StudioOptionsDeltaUpdate, StudioStyling} from './ConfigurationTypes';
 
 export type Id = string;
 
@@ -22,7 +22,9 @@ export type ConfigType = {
     onStateChanged?: () => void;
     onDocumentLoaded?: () => void;
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
+    onSelectedFramesLayoutChanged?: (state: FrameLayoutType[]) => void;
     onSelectedFrameContentChanged?: (state: Frame) => void;
+    onSelectedFramesContentChanged?: (state: Frame[]) => void;
     editorLink?: string;
     editorId?: string;
     chiliEnvironmentUrl?: string;

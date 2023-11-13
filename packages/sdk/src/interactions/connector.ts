@@ -1,6 +1,6 @@
-import { Connection, connectToChild } from 'penpal';
-import { Id } from '../types/CommonTypes';
-import { StudioStyling } from '../types/ConfigurationTypes';
+import {Connection, connectToChild} from 'penpal';
+import {Id} from '../types/CommonTypes';
+import {StudioStyling} from '../types/ConfigurationTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -54,7 +54,9 @@ interface ConfigParameterTypes {
     onStateChanged: (state: string) => void;
     onDocumentLoaded: () => void;
     onSelectedFrameContentChanged: (state: string) => void;
+    onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFrameLayoutChanged: (state: string) => void;
+    onSelectedFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
     onPageSelectionChanged: () => void;
@@ -120,7 +122,9 @@ const Connect = (
                 stateChanged: params.onStateChanged,
                 documentLoaded: params.onDocumentLoaded,
                 selectedFrameContent: params.onSelectedFrameContentChanged,
+                selectedFramesContent: params.onSelectedFramesContentChanged,
                 selectedFrameLayout: params.onSelectedFrameLayoutChanged,
+                selectedFramesLayout: params.onSelectedFramesLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
                 openLayoutPropertiesPanel: params.onPageSelectionChanged,
                 selectedLayoutUnit: params.onSelectedLayoutUnitChanged,

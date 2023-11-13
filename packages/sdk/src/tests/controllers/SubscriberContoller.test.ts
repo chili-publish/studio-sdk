@@ -1,16 +1,16 @@
-import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit } from '../../index';
-import { SubscriberController } from '../../controllers/SubscriberController';
-import { mockFrameAnimation } from '../__mocks__/animations';
+import {ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit} from '../../index';
+import {SubscriberController} from '../../controllers/SubscriberController';
+import {mockFrameAnimation} from '../__mocks__/animations';
 
-import { FrameAnimationType } from '../../types/AnimationTypes';
-import { VariableType } from '../../types/VariableTypes';
+import {FrameAnimationType} from '../../types/AnimationTypes';
+import {VariableType} from '../../types/VariableTypes';
 
-import { ToolType } from '../../utils/enums';
-import { ConnectorStateType } from '../../types/ConnectorTypes';
-import type { PageSize } from '../../types/PageTypes';
-import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
-import { AsyncError, EditorAPI } from '../../types/CommonTypes';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import {ToolType} from '../../utils/enums';
+import {ConnectorStateType} from '../../types/ConnectorTypes';
+import type {PageSize} from '../../types/PageTypes';
+import {CornerRadiusUpdateModel} from '../../types/ShapeTypes';
+import {AsyncError, EditorAPI} from '../../types/CommonTypes';
+import {castToEditorResponse, getEditorResponseData} from '../../utils/EditorResponseData';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -18,7 +18,9 @@ let mockedSubscriberController: SubscriberController;
 const mockEditorApi: EditorAPI = {
     onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedFramesContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutPropertiesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutUnitChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -53,7 +55,9 @@ beforeEach(() => {
 
     jest.spyOn(mockEditorApi, 'onAnimationChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedFramesContentChanged');
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutPropertiesChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutUnitChanged');
@@ -93,15 +97,15 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
     });
-    it('Should be possible to subscribe to onSelectedFrameLayoutChanged', async () => {
-        await mockedSubscriberController.onSelectedFrameLayoutChanged('2');
-        expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledWith(2);
+    it('Should be possible to subscribe to onSelectedFramesLayoutChanged', async () => {
+        await mockedSubscriberController.onSelectedFramesLayoutChanged('[2]');
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledWith([2]);
     });
-    it('Should be possible to subscribe to onSelectedFrameContentChanged', async () => {
-        await mockedSubscriberController.onSelectedFrameContentChanged('2');
-        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledWith(2);
+    it('Should be possible to subscribe to onSelectedFramesContentChanged', async () => {
+        await mockedSubscriberController.onSelectedFramesContentChanged('[2]');
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledWith([2]);
     });
     it('Should be possible to subscribe to onSelectedLayoutPropertiesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutPropertiesChanged('5');
