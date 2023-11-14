@@ -97,10 +97,20 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
     });
+    it('Should be possible to subscribe to onSelectedFrameLayoutChanged', async () => {
+        await mockedSubscriberController.onSelectedFrameLayoutChanged('[1, 2]');
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledWith(1);
+    });
     it('Should be possible to subscribe to onSelectedFramesLayoutChanged', async () => {
         await mockedSubscriberController.onSelectedFramesLayoutChanged('[2]');
         expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledWith([2]);
+    });
+    it('Should be possible to subscribe to onSelectedFrameContentChanged', async () => {
+        await mockedSubscriberController.onSelectedFrameContentChanged('[1, 2]');
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledWith(1);
     });
     it('Should be possible to subscribe to onSelectedFramesContentChanged', async () => {
         await mockedSubscriberController.onSelectedFramesContentChanged('[2]');

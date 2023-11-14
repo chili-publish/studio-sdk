@@ -69,8 +69,9 @@ export class SubscriberController {
 
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead
-     * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
-     * @param frameLayout Stringified array of FrameLayoutType objects
+     * Listener on the state of the currently selected frames
+     * Whenever multiple frames are selected, it always will be the first selected `FrameLayoutType`
+     * @param frameLayout Stringified array of `FrameLayoutType` objects
      */
     onSelectedFrameLayoutChanged = (frameLayout: string) => {
         const callBack = this.config.onSelectedFramesLayoutChanged;
@@ -80,16 +81,17 @@ export class SubscriberController {
 
     /**
      * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
-     * @param frameLayout Stringified array of FrameLayoutType objects
+     * @param framesLayout Stringified array of FrameLayoutType objects
      */
-    onSelectedFramesLayoutChanged = (frameLayout: string) => {
+    onSelectedFramesLayoutChanged = (framesLayout: string) => {
         const callBack = this.config.onSelectedFramesLayoutChanged;
-        callBack && callBack(JSON.parse(frameLayout));
+        callBack && callBack(JSON.parse(framesLayout));
     };
 
     /**
      * @deprecated use `onSelectedFramesContentChanged` instead
      * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
+     * Whenever multiple frames are selected, it always will be the first selected `Frame`
      * @param frameContent Stringified array of Frame objects
      */
     onSelectedFrameContentChanged = (frameContent: string) => {
@@ -100,11 +102,11 @@ export class SubscriberController {
 
     /**
      * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
-     * @param frameContent Stringified array of Frame objects
+     * @param framesContent Stringified array of Frame objects
      */
-    onSelectedFramesContentChanged = (frameContent: string) => {
+    onSelectedFramesContentChanged = (framesContent: string) => {
         const callBack = this.config.onSelectedFramesContentChanged;
-        callBack && callBack(JSON.parse(frameContent));
+        callBack && callBack(JSON.parse(framesContent));
     };
 
     /**
