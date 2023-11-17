@@ -1,0 +1,67 @@
+import { EditorAPI, Id } from '../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+
+/**
+ * The ClipboardController is responsible for all communication regarding clipboard.
+ * Methods inside this controller can be called by `window.SDK.clipboard.{method-name}`
+ */
+export class ClipboardController {
+    /**
+     * @ignore
+     */
+    #editorAPI: EditorAPI;
+
+    /**
+     * @ignore
+     */
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * This method will copy the frames to the OS clipboard as a json frame
+     * @param ids An array of all frame ids you want to copy
+     * @returns
+     */
+    copyFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        const frameData = await res.copyFrames(ids);
+
+        if (frameData.data) {
+            await navigator.clipboard.writeText(frameData.data);
+        }
+
+        return getEditorResponseData<null>(frameData);
+    };
+
+    /**
+     * This method will cut the frames to the OS clipboard as a json frame
+     * @param ids An array of all frame ids you want to cut
+     * @returns
+     */
+    cutFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        const frameData = await res.cutFrames(ids);
+
+        if (frameData.data) {
+            await navigator.clipboard.writeText(frameData.data);
+        }
+
+        return getEditorResponseData<null>(frameData);
+    };
+
+    /**
+     * This method will paste the OS clipboard content to the editor as frames
+     * @returns
+     */
+    pasteFrames = async () => {
+        const res = await this.#editorAPI;
+
+        const clipboardData = await navigator.clipboard.readText();
+        const result = await res.pasteFrames(clipboardData);
+
+        return getEditorResponseData<null>(result);
+    }
+}
+
+

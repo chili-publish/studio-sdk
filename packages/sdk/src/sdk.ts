@@ -33,7 +33,7 @@ import { UtilsController } from './controllers/UtilsController';
 import { VariableController } from './controllers/VariableController';
 import { ShapeController } from './controllers/ShapeController';
 import { InfoController } from './controllers/InfoController';
-import { SelectionController } from './controllers/SelectionController';
+import { ClipboardController } from './controllers/ClipboardController';
 
 let connection: Connection;
 
@@ -73,7 +73,7 @@ export class SDK {
     canvas: CanvasController;
     colorConversion: ColorConversionController;
     info: InfoController;
-    selection: SelectionController;
+    clipboard: ClipboardController;
 
     private subscriber: SubscriberController;
 
@@ -115,7 +115,7 @@ export class SDK {
         this.canvas = new CanvasController(this.editorAPI);
         this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
-        this.selection = new SelectionController(this.editorAPI);
+        this.clipboard = new ClipboardController(this.editorAPI);
     }
 
     /**
@@ -186,7 +186,7 @@ export class SDK {
         this.canvas = new CanvasController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
         this.info = new InfoController();
-        this.selection = new SelectionController(this.editorAPI);
+        this.clipboard = new ClipboardController(this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
