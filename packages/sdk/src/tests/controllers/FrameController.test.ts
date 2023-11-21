@@ -5,13 +5,13 @@ import {
     FrameTypeEnum,
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
-    VerticalAlign,
 } from '../../types/FrameTypes';
 import { FrameController } from '../../controllers/FrameController';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ShapeType } from '../../types/ShapeTypes';
+import { VerticalAlign } from '../../utils/enums';
 
 let id: Id;
 
@@ -295,9 +295,9 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(id, true);
     });
     it('Should be possible to set the vertical alignment of a frame', async () => {
-        await mockedFrameController.setVerticalAlign(id, VerticalAlign.justify);
+        await mockedFrameController.setVerticalAlign(id, VerticalAlign.JUSTIFY);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(id, VerticalAlign.justify);
+        expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(id, VerticalAlign.JUSTIFY);
     });
     it('Should be possible to set the min value for copyfitting', async () => {
         await mockedFrameController.setMinCopyfitting(id, '0.5%');

@@ -1,36 +1,12 @@
-import { Alignment, Case, Scripting } from './TextStyleTypes';
-import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
+import { BaseTextStyle, Case, Scripting } from './TextStyleTypes';
+import { DisplayColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
+import { HorizontalAlign } from '../utils/enums';
 
-export type ParagraphStyle = {
+export type ParagraphStyle = Required<BaseTextStyle> & {
     id: Id;
     name: string;
-    fontKey: string;
-    fontStyle: string;
-    fontSize: number;
-    typographicCase: Case;
-    kerningOn: boolean;
-    subSuperScript: Scripting;
-    // the following properties are unit properties
-    trackingLeft: string;
-    trackingRight: string;
-    startIndent: string;
-    endIndent: string;
-    spaceBefore: string;
-    spaceAfter: string;
-    textIndent: string;
-    // end of unit properties
-    alignToBaseLine: boolean;
-    baselineShiftValue: string;
-    lineHeight: number;
-    textAlign: Alignment;
-    textAlignLast: Alignment;
-    textOverprint: boolean;
-    color: ColorUsage;
-    fillColorApplied: boolean;
-    underline: boolean;
-    lineThrough: boolean;
-};
+}
 
 export type ParagraphStyleUpdate = {
     fontSize: {
@@ -64,16 +40,16 @@ export type ParagraphStyleUpdate = {
         value: number;
     };
     textAlign: {
-        value: Alignment;
+        value: HorizontalAlign;
     };
     textAlignLast: {
-        value: Alignment;
+        value: HorizontalAlign;
     };
     textOverprint: {
         value: boolean;
     };
     color: {
-        value: ColorUsageUpdate;
+        value: DisplayColor;
     };
     underline: {
         value: boolean;

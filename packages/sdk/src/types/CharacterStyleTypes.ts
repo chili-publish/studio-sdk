@@ -1,30 +1,16 @@
-import { Case, Scripting } from './TextStyleTypes';
-import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
+import { BaseTextStyle, Case, Scripting } from './TextStyleTypes';
+import { DisplayColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 
-export type CharacterStyle = {
+
+export type CharacterStyle = BaseTextStyle & {
     id: Id;
     name: string;
-    fontKey?: string;
-    fontSize?: number;
-    typographicCase?: Case;
-    kerningOn: boolean;
-    subSuperScript?: Scripting;
+    fillColorApplied?: boolean;
+    underline?: boolean | null;
+    lineThrough?: boolean | null;
+}
 
-    // the following properties are unit properties
-    trackingLeft?: string;
-    trackingRight?: string;
-    textIndent?: string;
-    // end of unit properties
-
-    baselineShiftValue?: string;
-    lineHeight?: number;
-    textOverprint?: boolean;
-    color: ColorUsage;
-    fillColorApplied?: boolean | null;
-    underline: boolean;
-    lineThrough: boolean;
-};
 
 export type CharacterStyleUpdate = {
     fontKey: {
@@ -61,7 +47,7 @@ export type CharacterStyleUpdate = {
         value: boolean;
     };
     color: {
-        value: ColorUsageUpdate;
+        value: DisplayColor;
     };
     underline: {
         value: boolean;

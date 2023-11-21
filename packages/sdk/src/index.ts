@@ -1,6 +1,14 @@
 import { SDK } from './sdk';
 
-export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats, EnvironmentType } from './utils/enums';
+export {
+    FramePropertyNames,
+    LayoutPropertyNames,
+    ToolType,
+    DownloadFormats,
+    EnvironmentType,
+    VerticalAlign,
+    HorizontalAlign,
+} from './utils/enums';
 
 export {
     SlideDirections,
@@ -13,7 +21,6 @@ export { LayoutType, MeasurementUnit } from './types/LayoutTypes';
 export {
     BlendMode,
     FrameTypeEnum,
-    VerticalAlign,
     TextDirection,
     FlowDirection,
     FitMode,
@@ -73,18 +80,16 @@ export type {
 } from './types/CommonTypes';
 
 export type {
-    TextProperties,
     SelectedTextStyle,
     TextStyle,
     AppearanceProperties,
     TextStyleUpdateType,
     UpdateStyleType,
-    DisplayColor,
 } from './types/TextStyleTypes';
 
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
-export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
+export type { ColorUsage, DisplayColor, ColorUsageType } from './types/ColorStyleTypes';
 
 export type {
     DocumentFontStyle,
@@ -97,7 +102,6 @@ export {
     SelectedTextStyleSections,
     SelectedTextStyles,
     FontWeights,
-    Alignment,
     TextPosition,
     Case,
     Scripting,

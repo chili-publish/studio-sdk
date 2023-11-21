@@ -1,9 +1,10 @@
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 import { ParagraphStyleController } from '../../controllers/ParagraphStyleController';
 import { ParagraphStyleUpdate } from '../../types/ParagraphStyleTypes';
-import { Alignment, Case, Scripting } from '../../types/TextStyleTypes';
+import { Case, Scripting } from '../../types/TextStyleTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { HorizontalAlign } from '../../utils/enums';
 
 let mockedParagraphStyleController: ParagraphStyleController;
 
@@ -66,10 +67,10 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
         value: 100.0,
     },
     textAlign: {
-        value: Alignment.LEFT,
+        value: HorizontalAlign.LEFT,
     },
     textAlignLast: {
-        value: Alignment.LEFT,
+        value: HorizontalAlign.LEFT,
     },
     textOverprint: {
         value: false,

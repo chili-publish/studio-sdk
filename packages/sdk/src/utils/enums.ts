@@ -32,3 +32,17 @@ export enum EnvironmentType {
     SANDBOX = 'sandbox',
     PRODUCTION = 'online',
 }
+
+export enum HorizontalAlign {
+  LEFT = 'left',
+  CENTER = 'center',
+  RIGHT = 'right',
+  JUSTIFY = 'justify',
+}
+
+export enum VerticalAlign {
+  TOP = 'top',
+  BOTTOM = 'bottom',
+  MIDDLE = 'middle',
+  JUSTIFY = 'justify',
+}

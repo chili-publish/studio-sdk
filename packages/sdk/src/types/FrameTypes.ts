@@ -1,4 +1,5 @@
 // FramePropertiesDto
+import { VerticalAlign } from '../utils/enums';
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
@@ -141,13 +142,6 @@ export enum FlowDirection {
     horizontal = 'horizontal',
     vertical = 'vertical',
     onPath = 'onPath',
-}
-
-export enum VerticalAlign {
-    top = 'top',
-    bottom = 'bottom',
-    middle = 'middle',
-    justify = 'justify',
 }
 
 export enum BlendMode {
