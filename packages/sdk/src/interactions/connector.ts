@@ -1,6 +1,6 @@
-import {Connection, connectToChild} from 'penpal';
-import {Id} from '../types/CommonTypes';
-import {StudioStyling} from '../types/ConfigurationTypes';
+import { Connection, connectToChild } from 'penpal';
+import { Id } from '../types/CommonTypes';
+import { StudioStyling } from '../types/ConfigurationTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);

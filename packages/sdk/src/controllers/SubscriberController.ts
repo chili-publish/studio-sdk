@@ -1,6 +1,6 @@
-import {ConfigType, Id} from '../types/CommonTypes';
-import {MeasurementUnit} from '../types/LayoutTypes';
-import {ToolType} from '../utils/enums';
+import { ConfigType, Id } from '../types/CommonTypes';
+import { MeasurementUnit } from '../types/LayoutTypes';
+import { ToolType } from '../utils/enums';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
@@ -58,14 +58,13 @@ export class SubscriberController {
     /**
      * Listener on the unit of the currently active layout. If you switch between layouts with different units, this listener will get triggered with the new unit
      * If you switch the unit of a layout this listener will get triggered with the new unit
-     * 
+     *
      * @param unit Stringified object of MeasurementUnit
      */
     onSelectedLayoutUnitChanged = (unit: string) => {
         const callBack = this.config.onSelectedLayoutUnitChanged;
         callBack && callBack(unit as MeasurementUnit);
-    }
-
+    };
 
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead

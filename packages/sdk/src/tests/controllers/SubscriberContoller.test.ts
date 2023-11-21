@@ -1,16 +1,16 @@
-import {ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit} from '../../index';
-import {SubscriberController} from '../../controllers/SubscriberController';
-import {mockFrameAnimation} from '../__mocks__/animations';
+import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit } from '../../index';
+import { SubscriberController } from '../../controllers/SubscriberController';
+import { mockFrameAnimation } from '../__mocks__/animations';
 
-import {FrameAnimationType} from '../../types/AnimationTypes';
-import {VariableType} from '../../types/VariableTypes';
+import { FrameAnimationType } from '../../types/AnimationTypes';
+import { VariableType } from '../../types/VariableTypes';
 
-import {ToolType} from '../../utils/enums';
-import {ConnectorStateType} from '../../types/ConnectorTypes';
-import type {PageSize} from '../../types/PageTypes';
-import {CornerRadiusUpdateModel} from '../../types/ShapeTypes';
-import {AsyncError, EditorAPI} from '../../types/CommonTypes';
-import {castToEditorResponse, getEditorResponseData} from '../../utils/EditorResponseData';
+import { ToolType } from '../../utils/enums';
+import { ConnectorStateType } from '../../types/ConnectorTypes';
+import type { PageSize } from '../../types/PageTypes';
+import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
+import { AsyncError, EditorAPI } from '../../types/CommonTypes';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
