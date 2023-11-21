@@ -1,3 +1,4 @@
+import { ClipboardContentType } from '../types/ClipboardTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -35,7 +36,8 @@ export class ClipboardController {
     };
 
     /**
-     * This method will cut the frames to the OS clipboard as a json frame
+     * This method will remove the frames and store them to the OS clipboard as
+     * a json frame
      * @param ids An array of all frame ids you want to cut
      * @returns
      */
@@ -61,6 +63,19 @@ export class ClipboardController {
         const result = await res.pasteFrames(clipboardData);
 
         return getEditorResponseData<null>(result);
+    }
+
+    /**
+     * This method will get the content type of the OS clipboard
+     * @returns content type
+     */
+    getContentType = async () => {
+        const res = await this.#editorAPI;
+
+        const clipboardData = await navigator.clipboard.readText();
+        const result = await res.getClipboardContentType(clipboardData);
+
+        return getEditorResponseData<ClipboardContentType>(result);
     }
 }
 

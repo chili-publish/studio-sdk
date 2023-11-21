@@ -20,6 +20,7 @@ describe('ClipboardController', () => {
         copyFrames: async () => getEditorResponseData(castToEditorResponse(null)),
         cutFrames: async () => getEditorResponseData(castToEditorResponse(null)),
         pasteFrames: async () => getEditorResponseData(castToEditorResponse(null)),
+        getClipboardContentType: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
 
@@ -28,6 +29,7 @@ describe('ClipboardController', () => {
         jest.spyOn(mockEditorApi, 'copyFrames');
         jest.spyOn(mockEditorApi, 'cutFrames');
         jest.spyOn(mockEditorApi, 'pasteFrames');
+        jest.spyOn(mockEditorApi, 'getClipboardContentType');
     });
 
     afterEach(() => {
@@ -53,5 +55,12 @@ describe('ClipboardController', () => {
         expect(readText).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.pasteFrames).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.pasteFrames).toHaveBeenCalledWith(clipboardValue);
+    });
+
+    it('calls getClipboardContentType', async () => {
+        await mockedClipboardController.getContentType();
+        expect(readText).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.getClipboardContentType).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getClipboardContentType).toHaveBeenCalledWith(clipboardValue);
     });
 });
