@@ -120,7 +120,6 @@ export class SDK {
      * It will generate an iframe in the document
      */
     loadEditor = () => {
-        console.log('THIS IS UPDATED SDK UPD');
         Connect(
             this.config.editorLink || FIXED_EDITOR_LINK,
             {
