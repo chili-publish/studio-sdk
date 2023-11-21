@@ -67,36 +67,16 @@ export class SubscriberController {
     };
 
     /**
-     * @deprecated use `onSelectedFramesLayoutChanged` instead
-     * Listener on the state of the currently selected frames
-     * Whenever multiple frames are selected, it always will be the first selected `FrameLayoutType`
-     * @param frameLayout Stringified array of `FrameLayoutType` objects
-     */
-    onSelectedFrameLayoutChanged = (frameLayout: string) => {
-        const callBack = this.config.onSelectedFramesLayoutChanged;
-        const frames = JSON.parse(frameLayout);
-        callBack && callBack(frames[0]);
-    };
-
-    /**
      * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
      * @param framesLayout Stringified array of FrameLayoutType objects
      */
     onSelectedFramesLayoutChanged = (framesLayout: string) => {
-        const callBack = this.config.onSelectedFramesLayoutChanged;
-        callBack && callBack(JSON.parse(framesLayout));
-    };
+        const frames = JSON.parse(framesLayout);
+        const multiFrameCallBack = this.config.onSelectedFramesLayoutChanged;
+        multiFrameCallBack && multiFrameCallBack(frames);
 
-    /**
-     * @deprecated use `onSelectedFramesContentChanged` instead
-     * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
-     * Whenever multiple frames are selected, it always will be the first selected `Frame`
-     * @param frameContent Stringified array of Frame objects
-     */
-    onSelectedFrameContentChanged = (frameContent: string) => {
-        const callBack = this.config.onSelectedFramesContentChanged;
-        const frames = JSON.parse(frameContent);
-        callBack && callBack(frames[0]);
+        const singleFrameCallBack = this.config.onSelectedFrameLayoutChanged;
+        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
     };
 
     /**
@@ -104,8 +84,13 @@ export class SubscriberController {
      * @param framesContent Stringified array of Frame objects
      */
     onSelectedFramesContentChanged = (framesContent: string) => {
-        const callBack = this.config.onSelectedFramesContentChanged;
-        callBack && callBack(JSON.parse(framesContent));
+        const frames = JSON.parse(framesContent);
+        const multiFrameCallBack = this.config.onSelectedFramesContentChanged;
+        multiFrameCallBack && multiFrameCallBack(frames);
+
+        const singleFrameCallBack = this.config.onSelectedFrameContentChanged;
+        // add length check and return undefined
+        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
     };
 
     /**

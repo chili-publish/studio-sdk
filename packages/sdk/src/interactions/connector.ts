@@ -53,9 +53,7 @@ interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
     onDocumentLoaded: () => void;
-    onSelectedFrameContentChanged: (state: string) => void;
     onSelectedFramesContentChanged: (state: string) => void;
-    onSelectedFrameLayoutChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
@@ -121,9 +119,7 @@ const Connect = (
                 actionsChanged: params.onActionsChanged,
                 stateChanged: params.onStateChanged,
                 documentLoaded: params.onDocumentLoaded,
-                selectedFrameContent: params.onSelectedFrameContentChanged,
                 selectedFramesContent: params.onSelectedFramesContentChanged,
-                selectedFrameLayout: params.onSelectedFrameLayoutChanged,
                 selectedFramesLayout: params.onSelectedFramesLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
                 openLayoutPropertiesPanel: params.onPageSelectionChanged,

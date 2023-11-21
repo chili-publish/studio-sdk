@@ -120,15 +120,14 @@ export class SDK {
      * It will generate an iframe in the document
      */
     loadEditor = () => {
+        console.log('THIS IS UPDATED SDK UPD');
         Connect(
             this.config.editorLink || FIXED_EDITOR_LINK,
             {
                 onActionsChanged: this.subscriber.onActionsChanged,
                 onStateChanged: this.subscriber.onStateChanged,
                 onDocumentLoaded: this.subscriber.onDocumentLoaded,
-                onSelectedFrameContentChanged: this.subscriber.onSelectedFrameContentChanged,
                 onSelectedFramesContentChanged: this.subscriber.onSelectedFramesContentChanged,
-                onSelectedFrameLayoutChanged: this.subscriber.onSelectedFrameLayoutChanged,
                 onSelectedFramesLayoutChanged: this.subscriber.onSelectedFramesLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
                 onSelectedLayoutUnitChanged: this.subscriber.onSelectedLayoutUnitChanged,
