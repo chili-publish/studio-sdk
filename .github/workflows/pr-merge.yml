@@ -1,4 +1,4 @@
-name: Publish package
+name: PR Merge
 on:
     push:
         branches:
@@ -56,7 +56,7 @@ jobs:
             - name: build code
               run: yarn build
             - name: publish sdk build
-              run: node cicd.js sdk yarn publish 
+              run: node cicd.js sdk,connectors yarn publish 
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
             - name: get new npm version
