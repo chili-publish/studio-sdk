@@ -6,7 +6,7 @@ So on these pages you'll find some very technical but super handy descriptions o
 
 ## Controllers
 
--   [Default methods (SDK)](classes/index.SDK.html)
+-   [Default methods (SDK)](modules/index.html)
 -   [ActionController](classes/controllers_ActionController.ActionController.html)
 -   [AnimationController](classes/controllers_AnimationController.AnimationController.html)
 -   [CanvasController](classes/controllers_CanvasController.CanvasController.html)
