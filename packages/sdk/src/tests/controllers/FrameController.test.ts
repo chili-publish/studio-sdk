@@ -35,6 +35,7 @@ const mockedEditorApi: EditorAPI = {
     setFrameRotation: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
     removeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
+    removeFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrameY: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -88,6 +89,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameRotation');
     jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
     jest.spyOn(mockedEditorApi, 'removeFrame');
+    jest.spyOn(mockedEditorApi, 'removeFrames');
     jest.spyOn(mockedEditorApi, 'resetFrame');
     jest.spyOn(mockedEditorApi, 'resetFrameX');
     jest.spyOn(mockedEditorApi, 'resetFrameY');
@@ -211,7 +213,7 @@ describe('FrameController', () => {
     it('Should be possible to set the frame height', async () => {
         await mockedFrameController.setHeight(id, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id,'32');
+        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, '32');
     });
 
     it('Should be possible to set the name of the frame', async () => {
@@ -233,6 +235,11 @@ describe('FrameController', () => {
         await mockedFrameController.remove(id);
         expect(mockedEditorApi.removeFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.removeFrame).toHaveBeenCalledWith(id);
+    });
+    it('Should be possible to remove frames', async () => {
+        await mockedFrameController.removeFrames([id]);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledWith([id]);
     });
     it('Should be possible to reset a frame', async () => {
         await mockedFrameController.reset(id);

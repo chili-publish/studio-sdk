@@ -354,6 +354,16 @@ export class FrameController {
     };
 
     /**
+     * This method will remove frames with the given ids.
+     * @param ids an array of ids of the frames to be removed.
+     * @returns
+     */
+    removeFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.removeFrames(ids).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will create a new frame of 'type' to the template positioned on the requested
      * coordinates.
      * @param type the type of frame to create
