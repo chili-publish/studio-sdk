@@ -129,7 +129,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledWith([1, 2]);
 
         expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledWith(undefined);
+        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledWith(null);
     });
     it('Should be possible to subscribe to onSelectedLayoutPropertiesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutPropertiesChanged('5');

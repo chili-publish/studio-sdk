@@ -211,7 +211,7 @@ describe('FrameController', () => {
     it('Should be possible to set the frame height', async () => {
         await mockedFrameController.setHeight(id, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id,'32');
+        expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, '32');
     });
 
     it('Should be possible to set the name of the frame', async () => {

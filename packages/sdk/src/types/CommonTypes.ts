@@ -30,7 +30,7 @@ export type ConfigType = {
     /**
      * @deprecated use `onSelectedFramesContentChanged` instead
      */
-    onSelectedFrameContentChanged?: (state: Frame) => void;
+    onSelectedFrameContentChanged?: (state: Frame | null) => void;
     onSelectedFramesContentChanged?: (state: Frame[]) => void;
     editorLink?: string;
     editorId?: string;

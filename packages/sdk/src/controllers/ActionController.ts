@@ -115,7 +115,7 @@ export class ActionController {
 
     /**
      * This method stores the state of action type errors to the document
-     * 
+     *
      * Those errors states can be read back from the usual getters or the
      * `onActionsChanged` stream
      * @param id the id of a specific action

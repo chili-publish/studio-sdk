@@ -107,9 +107,7 @@ export class ShapeController {
      */
     private setShapeCorners = async (id: Id, radius: CornerRadiusUpdateModel) => {
         const res = await this.#editorAPI;
-        return res
-            .setShapeCorners(id, JSON.stringify(radius))
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setShapeCorners(id, JSON.stringify(radius)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
