@@ -31,44 +31,29 @@ describe('ShapeController', () => {
         it('Should be possible to enable fill', async () => {
             await mockedShapeController.setEnableFill(id, true);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
-                id,
-                JSON.stringify({ enableFill: true }),
-            );
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(id, JSON.stringify({ enableFill: true }));
         });
         it('Should be possible to set the shape frame fill color', async () => {
             const color = { color: { type: ColorType.rgb, r: 51, g: 51, b: 51 }, type: ColorUsageType.local };
             await mockedShapeController.setFillColor(id, color);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(2);
-            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
-                id,
-                JSON.stringify({ fillColor: color }),
-            );
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(id, JSON.stringify({ fillColor: color }));
         });
         it('Should be possible to enable stroke', async () => {
             await mockedShapeController.setEnableStroke(id, true);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(3);
-            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
-                id,
-                JSON.stringify({ enableStroke: true }),
-            );
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(id, JSON.stringify({ enableStroke: true }));
         });
         it('Should be possible to set the stroke color', async () => {
             const color = { color: { type: ColorType.rgb, r: 51, g: 51, b: 51 }, type: ColorUsageType.local };
             await mockedShapeController.setStrokeColor(id, color);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(4);
-            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
-                id,
-                JSON.stringify({ fillColor: color }),
-            );
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(id, JSON.stringify({ fillColor: color }));
         });
         it('Should be possible to set the stroke weight', async () => {
             await mockedShapeController.setStrokeWeight(id, 10);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(5);
-            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
-                id,
-                JSON.stringify({ strokeWeight: 10 }),
-            );
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(id, JSON.stringify({ strokeWeight: 10 }));
         });
 
         it('Should be possible to set the flag allCornersSame', async () => {

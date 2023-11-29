@@ -43,8 +43,8 @@ export class UndoManagerController {
 
     /**
      * Record any operations in the current scope. This will automatically begin
-     * the undo operation. Once you leave the record scope, it will end the undo operation. 
-     * Even if you throw an exception inside the record scope it will still end it properly. 
+     * the undo operation. Once you leave the record scope, it will end the undo operation.
+     * Even if you throw an exception inside the record scope it will still end it properly.
      * @returns
      */
     record = async (operationName: string, undoOperationCallback: (sdk: SDK) => void) => {
@@ -54,8 +54,7 @@ export class UndoManagerController {
             await undoOperationCallback(this.#sdk);
         } catch (error) {
             throw error;
-        }
-        finally {
+        } finally {
             await this.#advanced.end();
         }
     };
@@ -75,7 +74,7 @@ export class AdvancedUndoManagerController {
     }
 
     /**
-     * This will start a new undo operation. 
+     * This will start a new undo operation.
      * This will throw an exception when there is already an undo operation recording.
      * @returns
      */
@@ -85,8 +84,8 @@ export class AdvancedUndoManagerController {
     };
 
     /**
-     * This will start a new undo operation if there is no other undo operation recording. 
-     * This does not throw. 
+     * This will start a new undo operation if there is no other undo operation recording.
+     * This does not throw.
      * @returns
      */
     beginIfNoneActive = async (operationName: string) => {
@@ -94,16 +93,13 @@ export class AdvancedUndoManagerController {
         return res.beginIfNoneActive(operationName).then((result) => getEditorResponseData<null>(result));
     };
 
-
     /**
-     * Ends the currently active recording operation. 
-     * If there is no recording operation currently running this will throw an exception. 
+     * Ends the currently active recording operation.
+     * If there is no recording operation currently running this will throw an exception.
      * @returns
      */
     end = async () => {
         const res = await this.#editorAPI;
         return res.end().then((result) => getEditorResponseData<null>(result));
     };
-
 }
-

@@ -7,7 +7,6 @@ import { EnvironmentType } from '../utils/enums';
  * Methods inside this controller can be called by `window.SDK.utils.{method-name}`
  */
 export class UtilsController {
-
     /**
      * This method can round a value to a certain precision, default is 2
      * @param val the value that needs to be rounded

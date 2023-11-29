@@ -90,7 +90,13 @@ export class MediaConnectorController {
         ) as MediaDownloadType;
         const res = await this.#blobAPI;
         return res
-            .mediaConnectorDownload(id, mediaId, compatibleDownloadType, MediaDownloadIntent.web, JSON.stringify(context))
+            .mediaConnectorDownload(
+                id,
+                mediaId,
+                compatibleDownloadType,
+                MediaDownloadIntent.web,
+                JSON.stringify(context),
+            )
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 

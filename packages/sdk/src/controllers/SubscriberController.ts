@@ -89,7 +89,7 @@ export class SubscriberController {
         multiFrameCallBack && multiFrameCallBack(frames);
 
         const singleFrameCallBack = this.config.onSelectedFrameContentChanged;
-        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
+        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? null : frames[0]);
     };
 
     /**
