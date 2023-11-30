@@ -93,7 +93,7 @@ export class SubscriberController {
     };
 
     /**
-     * A listener on the general state of the document, gets triggered every time a change is done on the document.
+     * Listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
         const callBack = this.config.onStateChanged;
@@ -101,7 +101,21 @@ export class SubscriberController {
     };
 
     /**
-     * A listener on when the document is fully loaded.
+     * Listener on grafx token expiration.
+     * The callback should be the new string token. If the listener is not defined
+     * the http requests from the connectors will return 403 with no refetch
+     * of assets.
+     *
+     * Only grafx tokens are supported for now.
+     */
+    onTokenExpired = () => {
+        const callBack = this.config.onTokenExpired;
+
+        return callBack ? callBack() : new Promise<string | null>((resolve) => resolve(null));
+    };
+
+    /**
+     * Listener on when the document is fully loaded.
      */
     onDocumentLoaded = () => {
         const callBack = this.config.onDocumentLoaded;

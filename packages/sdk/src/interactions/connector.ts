@@ -52,6 +52,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
+    onTokenExpired: () => Promise<string | null>;
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;
@@ -119,6 +120,7 @@ const Connect = (
                 actionsChanged: params.onActionsChanged,
                 stateChanged: params.onStateChanged,
                 documentLoaded: params.onDocumentLoaded,
+                tokenExpired: params.onTokenExpired,
                 selectedFramesContent: params.onSelectedFramesContentChanged,
                 selectedFramesLayout: params.onSelectedFramesLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,

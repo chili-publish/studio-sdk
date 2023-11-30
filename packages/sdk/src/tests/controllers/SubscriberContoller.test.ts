@@ -265,4 +265,32 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
     });
+
+    describe('onTokenExpired', () => {
+        it('returns the token defined by the callback', async () => {
+            const refreshedToken = 'newToken';
+
+            const mockConfig = {
+                onTokenExpired() {
+                    return new Promise<string | null>((resolve) => resolve(refreshedToken));
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onTokenExpired');
+
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const result = await mockedSubscriberController.onTokenExpired();
+
+            expect(result).toBe(refreshedToken);
+            expect(mockConfig.onTokenExpired).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns a null token if the listener is not defined', async () => {
+            const mockedSubscriberController = new SubscriberController({});
+
+            const result = await mockedSubscriberController.onTokenExpired();
+            expect(result).toBe(null);
+        });
+    });
 });
