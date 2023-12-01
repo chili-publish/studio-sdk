@@ -90,6 +90,8 @@ export class CharacterStyleController {
      */
     rename = async (characterStyleId: Id, characterStyleName: string) => {
         const res = await this.#editorAPI;
-        return res.renameCharacterStyle(characterStyleId, characterStyleName).then((result) => getEditorResponseData<null>(result));
+        return res
+            .renameCharacterStyle(characterStyleId, characterStyleName)
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

@@ -1,11 +1,11 @@
 {
-    "version": "1.3.2",
+    "version": "1.4.1",
     "name": "studio-sdk-monorepo",
     "description": "The umbrella project of grafx studio sdk",
     "scripts": {
         "install": "node cicd.js sdk,actions yarn install",
         "clean": "node cicd.js sdk yarn clean",
-        "build": "node cicd.js sdk,actions yarn build",
+        "build": "node cicd.js sdk,actions,connectors yarn build",
         "build:dev": "node cicd.js sdk yarn build:dev",
         "lint": "node cicd.js sdk yarn lint",
         "testw": "node cicd.js sdk yarn testw",

@@ -21,8 +21,17 @@ export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
     onDocumentLoaded?: () => void;
+    /**
+     * @deprecated use `onSelectedFramesLayoutChanged` instead
+     *
+     */
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
-    onSelectedFrameContentChanged?: (state: Frame) => void;
+    onSelectedFramesLayoutChanged?: (state: FrameLayoutType[]) => void;
+    /**
+     * @deprecated use `onSelectedFramesContentChanged` instead
+     */
+    onSelectedFrameContentChanged?: (state: Frame | null) => void;
+    onSelectedFramesContentChanged?: (state: Frame[]) => void;
     editorLink?: string;
     editorId?: string;
     chiliEnvironmentUrl?: string;

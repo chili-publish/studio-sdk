@@ -47,9 +47,7 @@ export class PageController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setPageWidth(id, width)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setPageWidth(id, width).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -61,8 +59,6 @@ export class PageController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setPageHeight(id, height)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setPageHeight(id, height).then((result) => getEditorResponseData<null>(result));
     };
 }

@@ -35,9 +35,7 @@ export class ParagraphStyleController {
      */
     getById = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res
-            .getParagraphStyleById(id)
-            .then((result) => getEditorResponseData<ParagraphStyle>(result));
+        return res.getParagraphStyleById(id).then((result) => getEditorResponseData<ParagraphStyle>(result));
     };
 
     /**

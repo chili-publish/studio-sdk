@@ -33,7 +33,7 @@ for (let subfolder of subfolders) {
         process.exit(1);
     }
 
-    console.log(`Executing command '${command}' in folder ${folderPath}`);
+    console.log(`Executing command '${command}' with arguments '${commandArgs}' in folder ${folderPath}`);
 
     try {
         // Execute the command synchronously
