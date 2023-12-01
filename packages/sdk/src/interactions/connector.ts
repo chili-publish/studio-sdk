@@ -52,7 +52,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
-    onAuthExpired: () => Promise<string | null>;
+    onAuthExpired: (connectorId: string) => Promise<string | null>;
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;

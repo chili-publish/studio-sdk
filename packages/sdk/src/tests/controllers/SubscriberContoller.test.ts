@@ -267,6 +267,8 @@ describe('SubscriberController', () => {
     });
 
     describe('onAuthExpired', () => {
+        const connectorId = 'connectorId';
+
         it('returns the token defined by the callback', async () => {
             const refreshedToken = 'newToken';
 
@@ -277,19 +279,20 @@ describe('SubscriberController', () => {
             };
 
             jest.spyOn(mockConfig, 'onAuthExpired');
-
             const mockedSubscriberController = new SubscriberController(mockConfig);
 
-            const result = await mockedSubscriberController.onAuthExpired();
+            const result = await mockedSubscriberController.onAuthExpired(connectorId);
 
             expect(result).toBe(refreshedToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', async () => {
             const mockedSubscriberController = new SubscriberController({});
 
-            const result = await mockedSubscriberController.onAuthExpired();
+            const result = await mockedSubscriberController.onAuthExpired(connectorId);
+
             expect(result).toBe(null);
         });
     });

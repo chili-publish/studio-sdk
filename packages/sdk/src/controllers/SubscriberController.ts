@@ -102,16 +102,18 @@ export class SubscriberController {
 
     /**
      * Listener on authentication expiration.
-     * The callback should be the new string token. If the listener is not defined
-     * the http requests from the connectors will return 403 with no refetch
-     * of assets.
+     * The callback should resolve to the refreshed authentication. If the
+     * listener is not defined, the http requests from the connector will return
+     * 403 with no refetch of assets.
      *
      * Only grafx tokens are supported for now.
+     *
+     * @param connectorId connector id
      */
-    onAuthExpired = () => {
+    onAuthExpired = (connectorId: string) => {
         const callBack = this.config.onAuthExpired;
 
-        return callBack ? callBack() : new Promise<string | null>((resolve) => resolve(null));
+        return callBack ? callBack(connectorId) : new Promise<string | null>((resolve) => resolve(null));
     };
 
     /**
