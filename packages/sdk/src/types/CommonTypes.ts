@@ -20,7 +20,7 @@ export type Id = string;
 export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
-    onTokenExpired?: () => Promise<string | null>;
+    onAuthExpired?: () => Promise<string | null>;
     onDocumentLoaded?: () => void;
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead

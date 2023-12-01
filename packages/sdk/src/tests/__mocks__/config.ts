@@ -6,7 +6,7 @@ export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, st
 const mockConfig: ConfigType = {
     onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
-    onTokenExpired: defaultMockReturn,
+    onAuthExpired: defaultMockReturn,
     onDocumentLoaded: defaultMockReturn,
     onSelectedFrameLayoutChanged: defaultMockReturn,
     onSelectedFramesLayoutChanged: defaultMockReturn,

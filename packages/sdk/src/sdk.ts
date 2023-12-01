@@ -125,7 +125,7 @@ export class SDK {
             {
                 onActionsChanged: this.subscriber.onActionsChanged,
                 onStateChanged: this.subscriber.onStateChanged,
-                onTokenExpired: this.subscriber.onTokenExpired,
+                onAuthExpired: this.subscriber.onAuthExpired,
                 onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFramesContentChanged: this.subscriber.onSelectedFramesContentChanged,
                 onSelectedFramesLayoutChanged: this.subscriber.onSelectedFramesLayoutChanged,
