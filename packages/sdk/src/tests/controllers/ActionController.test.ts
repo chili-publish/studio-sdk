@@ -1,4 +1,4 @@
-import { ActionEditorEvent, ActionTrigger } from '../../types/ActionTypes';
+import { ActionDeltaUpdate, ActionEditorEvent, ActionTrigger } from '../../types/ActionTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { ActionController } from '../../controllers/ActionController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -12,6 +12,7 @@ const mockEditorApi: EditorAPI = {
     duplicateAction: async () => getEditorResponseData(castToEditorResponse(null)),
     removeAction: async () => getEditorResponseData(castToEditorResponse(null)),
     renameAction: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateAction: async () => getEditorResponseData(castToEditorResponse(null)),
     updateActionScript: async () => getEditorResponseData(castToEditorResponse(null)),
     updateActionTriggers: async () => getEditorResponseData(castToEditorResponse(null)),
     moveActions: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -26,10 +27,15 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'duplicateAction');
     jest.spyOn(mockEditorApi, 'removeAction');
     jest.spyOn(mockEditorApi, 'renameAction');
+    jest.spyOn(mockEditorApi, 'updateAction');
     jest.spyOn(mockEditorApi, 'updateActionScript');
     jest.spyOn(mockEditorApi, 'updateActionTriggers');
     jest.spyOn(mockEditorApi, 'moveActions');
     jest.spyOn(mockEditorApi, 'setActionTypeError');
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
 });
 
 afterAll(() => {
@@ -64,15 +70,37 @@ describe('Should call all of the ActionController functions of child successfull
     });
 
     it('should call renameAction function of EditorAPI with the provided params', async () => {
-        await mockedActionController.rename('0', 'new name');
-        expect(mockEditorApi.renameAction).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.renameAction).toHaveBeenCalledWith('0', 'new name');
+        const name = 'new name';
+        const update: ActionDeltaUpdate = {
+            name: name,
+        };
+        await mockedActionController.rename('0', name);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
     });
 
     it('should call removeAction function of EditorAPI', async () => {
         await mockedActionController.remove('0');
         expect(mockEditorApi.removeAction).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.removeAction).toHaveBeenCalledWith('0');
+    });
+
+    it('should call updateAction function of EditorAPI', async () => {
+        const update: ActionDeltaUpdate = {
+            script: '',
+            name: '',
+            hasTypeError: true,
+            triggers: [
+                {
+                    event: ActionEditorEvent.frameMoved,
+                    triggers: ['1', '2'],
+                },
+            ],
+        };
+
+        await mockedActionController.update('0', update);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
     });
 
     it('should call updateActionTriggers function of EditorAPI', async () => {
@@ -82,17 +110,23 @@ describe('Should call all of the ActionController functions of child successfull
                 triggers: ['1', '2'],
             },
         ];
+        const update: ActionDeltaUpdate = {
+            triggers: triggers,
+        };
 
         await mockedActionController.updateTriggers('0', triggers);
-        expect(mockEditorApi.updateActionTriggers).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.updateActionTriggers).toHaveBeenCalledWith('0', JSON.stringify(triggers));
+        expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
     });
 
-    it('should call updateActionScript function of EditorAPI', async () => {
+    it('should call updateAction function of EditorAPI', async () => {
         const script = 'let a = 1';
+        const update: ActionDeltaUpdate = {
+            script: script,
+        };
         await mockedActionController.updateScript('0', script);
-        expect(mockEditorApi.updateActionScript).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.updateActionScript).toHaveBeenCalledWith('0', script);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
     });
 
     it('should call moveActions function of EditorAPI', async () => {
@@ -103,9 +137,12 @@ describe('Should call all of the ActionController functions of child successfull
         expect(mockEditorApi.moveActions).toHaveBeenCalledWith(order, ids);
     });
 
-    it('should call removeAction function of EditorAPI', async () => {
+    it('should call updateAction function of EditorAPI', async () => {
+        const update: ActionDeltaUpdate = {
+            hasTypeError: true,
+        };
         await mockedActionController.setTypeError('0', true);
-        expect(mockEditorApi.setActionTypeError).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setActionTypeError).toHaveBeenCalledWith('0', true);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
     });
 });

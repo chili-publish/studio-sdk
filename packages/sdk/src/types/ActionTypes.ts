@@ -71,6 +71,31 @@ export interface SelectedLayoutChangedTrigger {
     event: ActionEditorEvent.selectedLayoutChanged;
 }
 
+/**
+ * Model to update an Action.
+ */
+export type ActionDeltaUpdate = {
+    /**
+     * The new Action JS script.
+     */
+    script?: string;
+
+    /**
+     * The new name of the Action.
+     */
+    name?: string;
+
+    /**
+     * Whether the Action has any typing errors.
+     */
+    hasTypeError?: boolean;
+
+    /**
+     * The new list of triggers.
+     */
+    triggers?: ActionTrigger[];
+};
+
 export interface FrameMovedTrigger {
     event: ActionEditorEvent.frameMoved;
     /**
