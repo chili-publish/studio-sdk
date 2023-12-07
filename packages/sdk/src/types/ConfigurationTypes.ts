@@ -48,6 +48,9 @@ export type ShortcutOptionsDeltaUpdate = {
 
     /** The zoom shortcut. */
     zoom?: ShortcutOption;
+
+    /** The copy/cut/paste/duplicate shortcut. */
+    copyPaste?: ShortcutOption;
 };
 
 /**
@@ -72,5 +75,6 @@ export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
         select: { enabled: false },
         text: { enabled: false },
         zoom: { enabled: false },
+        copyPaste: { enabled: false },
     },
 };
