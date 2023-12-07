@@ -374,6 +374,17 @@ export class FrameController {
     };
 
     /**
+     * This method will duplicate a list of frames
+     * @param ids An array of all ids you want to duplicate
+     * @returns
+     */
+    duplicateFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.duplicateFrames(ids).then((result) => getEditorResponseData<Id>(result));
+    };
+
+
+    /**
      * This method sets or removes the image source to the ImageFrame
      * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
      * @param newImageSource A new image source
