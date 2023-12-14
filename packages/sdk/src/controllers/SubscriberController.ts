@@ -104,16 +104,20 @@ export class SubscriberController {
      * Listener on authentication expiration.
      * The callback should resolve to the refreshed authentication. If the
      * listener is not defined, the http requests from the connector will return
-     * 403 with no refetch of assets.
+     * 401 with no refetch of assets.
      *
-     * Only grafx tokens are supported for now.
+     * When this emits it means either:
+     * - the grafxToken needs to be renewed
+     * - the 3rd party auth (user impersonation) needs to be renewed.
      *
      * @param connectorId connector id
      */
-    onAuthExpired = (connectorId: string) => {
+    onAuthExpired = (connectorId: string, isGrafxToken: boolean) => {
         const callBack = this.config.onAuthExpired;
 
-        return callBack ? callBack(connectorId) : new Promise<string | null>((resolve) => resolve(null));
+        return callBack
+            ? callBack(connectorId, isGrafxToken).then((auth) => JSON.stringify(auth))
+            : new Promise<string | null>((resolve) => resolve(null));
     };
 
     /**
