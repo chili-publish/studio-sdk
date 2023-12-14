@@ -294,7 +294,7 @@ describe('SubscriberController', () => {
             const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
 
             expect(resultAuth.token).toBe(refreshedToken);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, true);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
@@ -313,7 +313,7 @@ describe('SubscriberController', () => {
             const resultAuth = JSON.parse(resultJsonString!);
 
             expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, false);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
