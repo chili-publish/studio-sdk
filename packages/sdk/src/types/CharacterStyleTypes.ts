@@ -10,10 +10,11 @@ export type CharacterStyle = {
     typographicCase?: Case;
     kerningOn: boolean;
     subSuperScript?: Scripting;
+    trackingLeft?: number;
+    trackingRight?: number;
 
     // the following properties are unit properties
-    trackingLeft?: string;
-    trackingRight?: string;
+
     textIndent?: string;
     // end of unit properties
 
@@ -43,10 +44,10 @@ export type CharacterStyleUpdate = {
         value: Scripting;
     };
     trackingLeft: {
-        value: string;
+        value: number;
     };
     trackingRight: {
-        value: string;
+        value: number;
     };
     textIndent: {
         value: string;

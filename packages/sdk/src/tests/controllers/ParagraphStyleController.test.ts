@@ -48,10 +48,10 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
         value: Scripting.NORMAL,
     },
     trackingLeft: {
-        value: '0 px',
+        value: 0,
     },
     trackingRight: {
-        value: '0 px',
+        value: 0,
     },
     textIndent: {
         value: '0 px',
