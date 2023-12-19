@@ -239,3 +239,8 @@ export enum AuthCredentialsTypeEnum {
 }
 
 export type AuthCredentials = GrafxTokenAuthCredentials | RefreshedAuthCredendentials;
+
+export enum AuthRefreshTypeEnum {
+    grafxToken = 'grafxToken',
+    user = 'user',
+}
