@@ -78,8 +78,8 @@ export interface SelectedTextStyle {
     typographicCase?: Case;
     kerningOn?: boolean;
     subSuperScript?: Scripting;
-    trackingLeft?: string;
-    trackingRight?: string;
+    trackingLeft?: number;
+    trackingRight?: number;
     paragraphIndentStart?: string;
     paragraphIndentEnd?: string;
     paragraphSpaceBefore?: string;

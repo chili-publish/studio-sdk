@@ -1,4 +1,4 @@
-import { ActionTrigger, DocumentAction } from '../types/ActionTypes';
+import { ActionDeltaUpdate, ActionTrigger, DocumentAction } from '../types/ActionTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -68,38 +68,50 @@ export class ActionController {
     };
 
     /**
+     * This method updates an existing Action
+     * @param id the id of a specific Action
+     * @param update the delta update to apply to the Action
+     * @returns
+     */
+    update = async (id: Id, update: ActionDeltaUpdate) => {
+        const res = await this.#editorAPI;
+        return res.updateAction(id, JSON.stringify(update)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @deprecated use the update method instead
+     *
      * This method renames an action by the id and provided name
      * @param id the id of a specific action
      * @param name the new unique name for the action
      * @returns
      */
     rename = async (id: Id, name: string) => {
-        const res = await this.#editorAPI;
-        return res.renameAction(id, name).then((result) => getEditorResponseData<null>(result));
+        return this.update(id, { name: name });
     };
 
     /**
+     * @deprecated use the update method instead
+     *
      * This method updates the script the action uses by the id and provided script
      * @param id the id of a specific action
      * @param actionScript the JavaScript based action script
      * @returns
      */
     updateScript = async (id: Id, actionScript: string) => {
-        const res = await this.#editorAPI;
-        return res.updateActionScript(id, actionScript).then((result) => getEditorResponseData<null>(result));
+        return this.update(id, { script: actionScript });
     };
 
     /**
+     * @deprecated use the update method instead
+     *
      * This method updates the triggers on which the action will react.
      * @param id the id of a specific action
      * @param triggers the triggers this action should react on.
      * @returns
      */
     updateTriggers = async (id: Id, triggers: ActionTrigger[]) => {
-        const res = await this.#editorAPI;
-        return res
-            .updateActionTriggers(id, JSON.stringify(triggers))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.update(id, { triggers: triggers });
     };
 
     /**
@@ -114,6 +126,8 @@ export class ActionController {
     };
 
     /**
+     * @deprecated use the update method instead
+     *
      * This method stores the state of action type errors to the document
      *
      * Those errors states can be read back from the usual getters or the
@@ -123,7 +137,6 @@ export class ActionController {
      * @returns
      */
     setTypeError = async (id: string, hasTypeErrors: boolean) => {
-        const res = await this.#editorAPI;
-        return res.setActionTypeError(id, hasTypeErrors).then((result) => getEditorResponseData<null>(result));
+        return this.update(id, { hasTypeError: hasTypeErrors });
     };
 }
