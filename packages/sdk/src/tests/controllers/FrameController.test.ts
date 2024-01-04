@@ -88,7 +88,6 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameY');
     jest.spyOn(mockedEditorApi, 'setFrameRotation');
     jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
-    jest.spyOn(mockedEditorApi, 'removeFrame');
     jest.spyOn(mockedEditorApi, 'removeFrames');
     jest.spyOn(mockedEditorApi, 'resetFrame');
     jest.spyOn(mockedEditorApi, 'resetFrameX');
@@ -233,12 +232,12 @@ describe('FrameController', () => {
     });
     it('Should be possible to remove a frame', async () => {
         await mockedFrameController.remove(id);
-        expect(mockedEditorApi.removeFrame).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.removeFrame).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledWith([id]);
     });
     it('Should be possible to remove frames', async () => {
         await mockedFrameController.removeFrames([id]);
-        expect(mockedEditorApi.removeFrames).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.removeFrames).toHaveBeenCalledWith([id]);
     });
     it('Should be possible to reset a frame', async () => {
