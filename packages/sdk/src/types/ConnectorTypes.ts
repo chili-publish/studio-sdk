@@ -212,3 +212,35 @@ export const grafxMediaConnectorRegistration: ConnectorLocalRegistration = {
     url: 'grafx-media.json',
     source: ConnectorRegistrationSource.local,
 };
+
+/**
+ * Grafx token to return to the engine when it expires.
+ */
+export class GrafxTokenAuthCredentials {
+    token: string;
+    type = AuthCredentialsTypeEnum.grafxToken;
+
+    constructor(token: string) {
+        this.token = token;
+    }
+}
+
+/**
+ * Notification to return to the engine whenever a 3rd party auth (user impersonation)
+ * has been renewed by the integration.
+ */
+export class RefreshedAuthCredendentials {
+    type = AuthCredentialsTypeEnum.refreshed;
+}
+
+export enum AuthCredentialsTypeEnum {
+    grafxToken,
+    refreshed,
+}
+
+export type AuthCredentials = GrafxTokenAuthCredentials | RefreshedAuthCredendentials;
+
+export enum AuthRefreshTypeEnum {
+    grafxToken = 'grafxToken',
+    user = 'user',
+}
