@@ -76,10 +76,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableSource');
         jest.spyOn(mockEditorApi, 'getImageVariableConnectorId');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
-
     });
-
-
 
     it('get variable by id', async () => {
         await mockedVariableController.getById('2');
@@ -213,7 +210,7 @@ describe('VariableController', () => {
     it('set image variable connector', async () => {
         const registration: ConnectorRegistration = {
             url: 'test://test.test',
-            source: ConnectorRegistrationSource.url
+            source: ConnectorRegistrationSource.url,
         };
 
         const response = await mockedVariableController.setImageVariableConnector(variableId, registration);

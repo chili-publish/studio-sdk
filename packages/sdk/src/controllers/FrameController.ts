@@ -182,9 +182,7 @@ export class FrameController {
      */
     setHeight = async (id: Id, height: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setFrameHeight(id, height)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setFrameHeight(id, height).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -195,9 +193,7 @@ export class FrameController {
      */
     setRotation = async (id: Id, rotation: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setFrameRotation(id, rotation)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setFrameRotation(id, rotation).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -208,9 +204,7 @@ export class FrameController {
      */
     setWidth = async (id: Id, width: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setFrameWidth(id, width)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setFrameWidth(id, width).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -221,9 +215,7 @@ export class FrameController {
      */
     setX = async (id: Id, XValue: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setFrameX(id, XValue)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setFrameX(id, XValue).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -234,9 +226,7 @@ export class FrameController {
      */
     setY = async (id: Id, YValue: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setFrameY(id, YValue)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setFrameY(id, YValue).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -321,7 +311,7 @@ export class FrameController {
 
     /**
      * @deprecated Use `setIsVisible` instead.
-     * 
+     *
      * This method will set the visibility property of a specified frame. If set to false the frame will be invisible and vice versa.
      * @param id the id of the frame that needs to get updated
      * @param value True means the frame gets visible, false means the frame gets invisible
@@ -392,6 +382,17 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.addFrame(type, x, y, width, height).then((result) => getEditorResponseData<Id>(result));
     };
+
+    /**
+     * This method will duplicate a list of frames
+     * @param ids An array of all ids you want to duplicate
+     * @returns
+     */
+    duplicateFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.duplicateFrames(ids).then((result) => getEditorResponseData<Id>(result));
+    };
+
 
     /**
      * This method sets or removes the image source to the ImageFrame
@@ -483,9 +484,7 @@ export class FrameController {
      */
     setMinCopyfitting = async (id: Id, value: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setMinCopyfitting(id, value)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setMinCopyfitting(id, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -496,9 +495,7 @@ export class FrameController {
      */
     setMaxCopyfitting = async (id: Id, value: string) => {
         const res = await this.#editorAPI;
-        return res
-            .setMaxCopyfitting(id, value)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setMaxCopyfitting(id, value).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

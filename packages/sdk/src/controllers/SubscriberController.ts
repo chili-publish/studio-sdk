@@ -1,4 +1,5 @@
 import { ConfigType, Id } from '../types/CommonTypes';
+import { AuthRefreshTypeEnum as AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ToolType } from '../utils/enums';
 
@@ -89,11 +90,11 @@ export class SubscriberController {
         multiFrameCallBack && multiFrameCallBack(frames);
 
         const singleFrameCallBack = this.config.onSelectedFrameContentChanged;
-        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
+        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? null : frames[0]);
     };
 
     /**
-     * A listener on the general state of the document, gets triggered every time a change is done on the document.
+     * Listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
         const callBack = this.config.onStateChanged;
@@ -101,7 +102,28 @@ export class SubscriberController {
     };
 
     /**
-     * A listener on when the document is fully loaded.
+     * Listener on authentication expiration.
+     * The callback should resolve to the refreshed authentication. If the
+     * listener is not defined, the http requests from the connector will return
+     * 401 with no refetch of assets.
+     *
+     * When this emits it means either:
+     * - the grafxToken needs to be renewed
+     * - the 3rd party auth (user impersonation) needs to be renewed.
+     *
+     * @param connectorId connector id
+     * @param type the type of auth renewal needed
+     */
+    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum) => {
+        const callBack = this.config.onAuthExpired;
+
+        return callBack
+            ? callBack(connectorId, type).then((auth) => JSON.stringify(auth))
+            : new Promise<string | null>((resolve) => resolve(null));
+    };
+
+    /**
+     * Listener on when the document is fully loaded.
      */
     onDocumentLoaded = () => {
         const callBack = this.config.onDocumentLoaded;

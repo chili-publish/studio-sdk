@@ -12,8 +12,8 @@ export type ParagraphStyle = {
     kerningOn: boolean;
     subSuperScript: Scripting;
     // the following properties are unit properties
-    trackingLeft: string;
-    trackingRight: string;
+    trackingLeft: number;
+    trackingRight: number;
     startIndent: string;
     endIndent: string;
     spaceBefore: string;
@@ -46,10 +46,10 @@ export type ParagraphStyleUpdate = {
         value: Scripting;
     };
     trackingLeft: {
-        value: string;
+        value: number;
     };
     trackingRight: {
-        value: string;
+        value: number;
     };
     textIndent: {
         value: string;
