@@ -1,9 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import {
-    Variable,
-    VariableType,
-} from '../types/VariableTypes';
+import { Variable, VariableType } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -65,7 +62,7 @@ export class VariableController {
 
     /**
      * This method removes a list of variables.
-     * 
+     *
      * All connectors linked to the variables will be unregistered.
      * @param ids list of the variables to be removed
      * @returns
@@ -185,9 +182,7 @@ export class VariableController {
      */
     moveVariables = async (order: number, ids: string[], parentId: string) => {
         const res = await this.#editorAPI;
-        return res
-            .moveVariables(ids, parentId, order)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.moveVariables(ids, parentId, order).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -201,7 +196,7 @@ export class VariableController {
 
     /**
      * @deprecated Use `setIsVisible` instead.
-     * 
+     *
      * This method sets isHidden flag for a variable
      * @returns
      */
@@ -248,7 +243,9 @@ export class VariableController {
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-        return res.setImageVariableConnector(id, JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
+        return res
+            .setImageVariableConnector(id, JSON.stringify(registration))
+            .then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

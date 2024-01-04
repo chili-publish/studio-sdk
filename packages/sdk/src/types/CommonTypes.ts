@@ -9,7 +9,7 @@ import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
-import { ConnectorEvent } from './ConnectorTypes';
+import { AuthCredentials, ConnectorEvent, AuthRefreshTypeEnum } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
@@ -20,9 +20,19 @@ export type Id = string;
 export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
+    onAuthExpired?: (connectorId: string, type: AuthRefreshTypeEnum) => Promise<AuthCredentials | null>;
     onDocumentLoaded?: () => void;
+    /**
+     * @deprecated use `onSelectedFramesLayoutChanged` instead
+     *
+     */
     onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
-    onSelectedFrameContentChanged?: (state: Frame) => void;
+    onSelectedFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
+    /**
+     * @deprecated use `onSelectedFramesContentChanged` instead
+     */
+    onSelectedFrameContentChanged?: (state: Frame | null) => void;
+    onSelectedFramesContentChanged?: (state: Frame[]) => void;
     editorLink?: string;
     editorId?: string;
     chiliEnvironmentUrl?: string;

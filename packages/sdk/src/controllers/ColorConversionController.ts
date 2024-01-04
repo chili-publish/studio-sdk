@@ -28,5 +28,4 @@ export class ColorConversionController {
         const res = await this.#editorAPI;
         return res.colorToRgb(color).then((result) => getEditorResponseData<RGBColor>(result));
     };
-
 }

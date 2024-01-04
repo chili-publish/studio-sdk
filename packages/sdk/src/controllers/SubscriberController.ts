@@ -1,4 +1,5 @@
 import { ConfigType, Id } from '../types/CommonTypes';
+import { AuthRefreshTypeEnum as AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ToolType } from '../utils/enums';
 
@@ -58,34 +59,42 @@ export class SubscriberController {
     /**
      * Listener on the unit of the currently active layout. If you switch between layouts with different units, this listener will get triggered with the new unit
      * If you switch the unit of a layout this listener will get triggered with the new unit
-     * 
+     *
      * @param unit Stringified object of MeasurementUnit
      */
     onSelectedLayoutUnitChanged = (unit: string) => {
         const callBack = this.config.onSelectedLayoutUnitChanged;
         callBack && callBack(unit as MeasurementUnit);
-    }
+    };
 
     /**
-     * Listener on the state of the currently selected frame, if this changes, this listener will get triggered with the updates
-     * @param frameLayout Stringified object of FrameLayoutType
+     * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
+     * @param framesLayout Stringified array of FrameLayoutType objects
      */
-    onSelectedFrameLayoutChanged = (frameLayout: string) => {
-        const callBack = this.config.onSelectedFrameLayoutChanged;
-        callBack && callBack(JSON.parse(frameLayout));
+    onSelectedFramesLayoutChanged = (framesLayout: string) => {
+        const frames = JSON.parse(framesLayout);
+        const multiFrameCallBack = this.config.onSelectedFramesLayoutChanged;
+        multiFrameCallBack && multiFrameCallBack(frames);
+
+        const singleFrameCallBack = this.config.onSelectedFrameLayoutChanged;
+        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
     };
 
     /**
      * Listener on the state of the currently selected frame, it contains some basic information on the type of frame it is
-     * @param frameContent Stringified object of FrameType
+     * @param framesContent Stringified array of Frame objects
      */
-    onSelectedFrameContentChanged = (frameContent: string) => {
-        const callBack = this.config.onSelectedFrameContentChanged;
-        callBack && callBack(JSON.parse(frameContent));
+    onSelectedFramesContentChanged = (framesContent: string) => {
+        const frames = JSON.parse(framesContent);
+        const multiFrameCallBack = this.config.onSelectedFramesContentChanged;
+        multiFrameCallBack && multiFrameCallBack(frames);
+
+        const singleFrameCallBack = this.config.onSelectedFrameContentChanged;
+        singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? null : frames[0]);
     };
 
     /**
-     * A listener on the general state of the document, gets triggered every time a change is done on the document.
+     * Listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
         const callBack = this.config.onStateChanged;
@@ -93,7 +102,28 @@ export class SubscriberController {
     };
 
     /**
-     * A listener on when the document is fully loaded.
+     * Listener on authentication expiration.
+     * The callback should resolve to the refreshed authentication. If the
+     * listener is not defined, the http requests from the connector will return
+     * 401 with no refetch of assets.
+     *
+     * When this emits it means either:
+     * - the grafxToken needs to be renewed
+     * - the 3rd party auth (user impersonation) needs to be renewed.
+     *
+     * @param connectorId connector id
+     * @param type the type of auth renewal needed
+     */
+    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum) => {
+        const callBack = this.config.onAuthExpired;
+
+        return callBack
+            ? callBack(connectorId, type).then((auth) => JSON.stringify(auth))
+            : new Promise<string | null>((resolve) => resolve(null));
+    };
+
+    /**
+     * Listener on when the document is fully loaded.
      */
     onDocumentLoaded = () => {
         const callBack = this.config.onDocumentLoaded;

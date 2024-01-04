@@ -6,7 +6,14 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
-import { ConnectorStateType } from '../../types/ConnectorTypes';
+import {
+    AuthCredentials,
+    ConnectorStateType,
+    RefreshedAuthCredendentials,
+    GrafxTokenAuthCredentials,
+    AuthCredentialsTypeEnum,
+    AuthRefreshTypeEnum,
+} from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { AsyncError, EditorAPI } from '../../types/CommonTypes';
@@ -18,7 +25,9 @@ let mockedSubscriberController: SubscriberController;
 const mockEditorApi: EditorAPI = {
     onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedFramesContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutPropertiesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutUnitChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -53,7 +62,9 @@ beforeEach(() => {
 
     jest.spyOn(mockEditorApi, 'onAnimationChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedFramesContentChanged');
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutPropertiesChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutUnitChanged');
@@ -93,15 +104,39 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onScrubberPositionChanged).toHaveBeenLastCalledWith('test');
     });
-    it('Should be possible to subscribe to onSelectedFrameLayoutChanged', async () => {
-        await mockedSubscriberController.onSelectedFrameLayoutChanged('2');
+    it('Should be possible to subscribe to onSelectedFramesLayoutChanged when a single frame is passed', async () => {
+        await mockedSubscriberController.onSelectedFramesLayoutChanged('[2]');
+
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledWith([2]);
+
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledWith(2);
     });
-    it('Should be possible to subscribe to onSelectedFrameContentChanged', async () => {
-        await mockedSubscriberController.onSelectedFrameContentChanged('2');
+    it('Should be possible to subscribe to onSelectedFramesLayoutChanged when multiple frames are passed', async () => {
+        await mockedSubscriberController.onSelectedFramesLayoutChanged('[1,2]');
+
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesLayoutChanged).toHaveBeenCalledWith([1, 2]);
+
+        expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledWith(undefined);
+    });
+    it('Should be possible to subscribe to onSelectedFramesContentChanged when a single frame is passed', async () => {
+        await mockedSubscriberController.onSelectedFramesContentChanged('[2]');
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledWith([2]);
+
         expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledWith(2);
+    });
+    it('Should be possible to subscribe to onSelectedFramesContentChanged when multiple frames are passed', async () => {
+        await mockedSubscriberController.onSelectedFramesContentChanged('[1,2]');
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledWith([1, 2]);
+
+        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onSelectedFrameContentChanged).toHaveBeenCalledWith(null);
     });
     it('Should be possible to subscribe to onSelectedLayoutPropertiesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutPropertiesChanged('5');
@@ -236,5 +271,65 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
+    });
+
+    describe('onAuthExpired', () => {
+        const connectorId = 'connectorId';
+
+        it('returns the token defined by the callback', async () => {
+            const refreshedToken = 'newToken';
+
+            const mockConfig = {
+                onAuthExpired() {
+                    return new Promise<AuthCredentials | null>((resolve) =>
+                        resolve(new GrafxTokenAuthCredentials(refreshedToken)),
+                    );
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onAuthExpired');
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const resultJsonString = await mockedSubscriberController.onAuthExpired(
+                connectorId,
+                AuthRefreshTypeEnum.grafxToken,
+            );
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
+
+            expect(resultAuth.token).toBe(refreshedToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.grafxToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns the notification defined by the callback', async () => {
+            const mockConfig = {
+                onAuthExpired() {
+                    return new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials()));
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onAuthExpired');
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const resultJsonString = await mockedSubscriberController.onAuthExpired(
+                connectorId,
+                AuthRefreshTypeEnum.user,
+            );
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const resultAuth = JSON.parse(resultJsonString!);
+
+            expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.user);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns a null token if the listener is not defined', async () => {
+            const mockedSubscriberController = new SubscriberController({});
+
+            const result = await mockedSubscriberController.onAuthExpired(connectorId, AuthRefreshTypeEnum.grafxToken);
+
+            expect(result).toBe(null);
+        });
     });
 });

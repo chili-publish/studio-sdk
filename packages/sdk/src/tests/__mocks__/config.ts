@@ -6,9 +6,12 @@ export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, st
 const mockConfig: ConfigType = {
     onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
+    onAuthExpired: defaultMockReturn,
     onDocumentLoaded: defaultMockReturn,
     onSelectedFrameLayoutChanged: defaultMockReturn,
+    onSelectedFramesLayoutChanged: defaultMockReturn,
     onSelectedFrameContentChanged: defaultMockReturn,
+    onSelectedFramesContentChanged: defaultMockReturn,
     editorLink: 'https://chili-editor-dev.azurewebsites.net/',
     documentType: DocumentType.template,
     onPageSelectionChanged: defaultMockReturn,

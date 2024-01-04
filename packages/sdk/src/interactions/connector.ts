@@ -1,6 +1,7 @@
 import { Connection, connectToChild } from 'penpal';
 import { Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
+import { AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -52,9 +53,10 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
+    onAuthExpired: (connectorId: string, refreshType: AuthRefreshTypeEnum) => Promise<string | null>;
     onDocumentLoaded: () => void;
-    onSelectedFrameContentChanged: (state: string) => void;
-    onSelectedFrameLayoutChanged: (state: string) => void;
+    onSelectedFramesContentChanged: (state: string) => void;
+    onSelectedFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
     onPageSelectionChanged: () => void;
@@ -119,8 +121,9 @@ const Connect = (
                 actionsChanged: params.onActionsChanged,
                 stateChanged: params.onStateChanged,
                 documentLoaded: params.onDocumentLoaded,
-                selectedFrameContent: params.onSelectedFrameContentChanged,
-                selectedFrameLayout: params.onSelectedFrameLayoutChanged,
+                authExpired: params.onAuthExpired,
+                selectedFramesContent: params.onSelectedFramesContentChanged,
+                selectedFramesLayout: params.onSelectedFramesLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
                 openLayoutPropertiesPanel: params.onPageSelectionChanged,
                 selectedLayoutUnit: params.onSelectedLayoutUnitChanged,
