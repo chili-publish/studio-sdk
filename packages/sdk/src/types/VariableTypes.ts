@@ -1,10 +1,10 @@
 export interface ConnectorImageVariableSource {
     connectorId: string;
-    /** 
+    /**
      * The requested asset id or name
      */
     assetId: string;
-    /** 
+    /**
      * If the connector was able to query, this will contain
      * the actual resolved media Id.
      */

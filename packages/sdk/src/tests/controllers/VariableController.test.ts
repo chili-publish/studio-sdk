@@ -27,8 +27,8 @@ describe('VariableController', () => {
             connectorId: connectorId,
             assetId: 'highres-brush.png',
             resolved: {
-                mediaId: 'resolved-brush-id'
-            }
+                mediaId: 'resolved-brush-id',
+            },
         },
     };
 
