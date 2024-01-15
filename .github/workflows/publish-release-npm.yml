@@ -38,7 +38,7 @@ jobs:
       - name: publish sdk build
         run: |
           # Get the full reference of the release
-          ref=$ { { github.ref }}
+          ref=${{ github.ref }}
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
           node cicd.js sdk,connectors yarn publish --tag $tag --tag latest
