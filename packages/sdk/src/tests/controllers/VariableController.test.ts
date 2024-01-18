@@ -25,7 +25,10 @@ describe('VariableController', () => {
         occurrences: 0,
         value: {
             connectorId: connectorId,
-            assetId: 'assetId',
+            assetId: 'highres-brush.png',
+            resolved: {
+                mediaId: 'resolved-brush-id',
+            },
         },
     };
 
