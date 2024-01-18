@@ -340,7 +340,17 @@ export class FrameController {
      */
     remove = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.removeFrame(id).then((result) => getEditorResponseData<null>(result));
+        return res.removeFrames([id]).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will remove frames with the given ids.
+     * @param ids an array of ids of the frames to be removed.
+     * @returns
+     */
+    removeFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.removeFrames(ids).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
