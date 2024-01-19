@@ -45,6 +45,7 @@ jobs:
           major-wording: "[MAJOR],[major]"
           patch-wording: "[Fix],[FIX],[Feature],[FEATURE]"
           skip-commit: "true"
+          skip-tag: "true"
 
       # execute local js script
       - name: execute local js script
