@@ -9,7 +9,7 @@ import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
-import { AuthCredentials, ConnectorEvent, AuthRefreshTypeEnum } from './ConnectorTypes';
+import { AuthCredentials, ConnectorEvent, AuthRefreshRequest } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
@@ -20,11 +20,7 @@ export type Id = string;
 export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
-    onAuthExpired?: (
-        connectorId: string,
-        type: AuthRefreshTypeEnum,
-        headerValue: string | null,
-    ) => Promise<AuthCredentials | null>;
+    onAuthExpired?: (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>;
     onDocumentLoaded?: () => void;
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead

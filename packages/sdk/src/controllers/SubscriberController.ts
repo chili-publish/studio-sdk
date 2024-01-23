@@ -1,5 +1,4 @@
 import { ConfigType, Id } from '../types/CommonTypes';
-import { AuthRefreshTypeEnum as AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ToolType } from '../utils/enums';
 
@@ -119,11 +118,11 @@ export class SubscriberController {
      *      Example: "Static, 1234", "OAuthClientCredentials, 5678"
      *      If the http request did not go through the proxy, headerValue is null.
      */
-    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum, headerValue: string | null) => {
+    onAuthExpired = (authRefreshRequest: string) => {
         const callBack = this.config.onAuthExpired;
 
         return callBack
-            ? callBack(connectorId, type, headerValue).then((auth) => JSON.stringify(auth))
+            ? callBack(JSON.parse(authRefreshRequest)).then((auth) => JSON.stringify(auth))
             : new Promise<string | null>((resolve) => resolve(null));
     };
 

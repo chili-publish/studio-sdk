@@ -244,3 +244,9 @@ export enum AuthRefreshTypeEnum {
     grafxToken = 'grafxToken',
     any = 'any',
 }
+
+export type AuthRefreshRequest = {
+    connectorId: Id;
+    type: AuthRefreshTypeEnum;
+    headerValue: string | null;
+};

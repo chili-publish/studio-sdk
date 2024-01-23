@@ -1,7 +1,6 @@
 import { Connection, connectToChild } from 'penpal';
 import { Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
-import { AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -53,11 +52,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
-    onAuthExpired: (
-        connectorId: string,
-        refreshType: AuthRefreshTypeEnum,
-        headerValue: string | null,
-    ) => Promise<string | null>;
+    onAuthExpired: (authRefreshRequest: string) => Promise<string | null>;
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;
