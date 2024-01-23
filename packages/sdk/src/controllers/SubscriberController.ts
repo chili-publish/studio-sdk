@@ -109,16 +109,21 @@ export class SubscriberController {
      *
      * When this emits it means either:
      * - the grafxToken needs to be renewed
-     * - the 3rd party auth (user impersonation) needs to be renewed.
+     * - any other authentication needs to be renewed (user impersonation, static..)
      *
      * @param connectorId connector id
-     * @param type the type of auth renewal needed
+     * @param type type of auth renewal needed
+     * @param headerValue the value of the chili proxy authorization header. This
+     *      will notify that the dam authentication expired if it went through the
+     *      proxy.
+     *      Example: "Static, 1234", "OAuthClientCredentials, 5678"
+     *      If the http request did not go through the proxy, headerValue is null.
      */
-    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum) => {
+    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum, headerValue: string | null) => {
         const callBack = this.config.onAuthExpired;
 
         return callBack
-            ? callBack(connectorId, type).then((auth) => JSON.stringify(auth))
+            ? callBack(connectorId, type, headerValue).then((auth) => JSON.stringify(auth))
             : new Promise<string | null>((resolve) => resolve(null));
     };
 
