@@ -2,7 +2,7 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
-import { MeasurementUnit } from '../../types/LayoutTypes';
+import { LayoutIntent, MeasurementUnit } from '../../types/LayoutTypes';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;
@@ -25,6 +25,8 @@ const mockedEditorApi: EditorAPI = {
     resetLayoutWidth: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutUnit: async () => getEditorResponseData(castToEditorResponse(null)),
     getPageSnapshot: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -46,6 +48,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetLayoutWidth');
     jest.spyOn(mockedEditorApi, 'resetLayoutUnit');
     jest.spyOn(mockedEditorApi, 'getPageSnapshot');
+    jest.spyOn(mockedEditorApi, 'setLayoutIntent');
+    jest.spyOn(mockedEditorApi, 'resetLayoutIntent');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -134,5 +138,13 @@ describe('LayoutController', () => {
     it('Should be possible to get the selected layout snapshot', async () => {
         await mockedLayoutController.getSelectedSnapshot();
         expect(mockedEditorApi.getPageSnapshot).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to set the layout intent', async () => {
+        await mockedLayoutController.setLayoutIntent('1', LayoutIntent.print);
+        expect(mockedEditorApi.setLayoutIntent).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to reset the layout intent', async () => {
+        await mockedLayoutController.resetLayoutIntent('1');
+        expect(mockedEditorApi.resetLayoutIntent).toHaveBeenCalledTimes(1);
     });
 });
