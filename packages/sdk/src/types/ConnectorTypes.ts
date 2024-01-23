@@ -245,6 +245,15 @@ export enum AuthRefreshTypeEnum {
     any = 'any',
 }
 
+/**
+ * @param connectorId connector id
+ * @param type type of auth renewal needed
+ * @param headerValue the value of the chili proxy authorization header. This
+ *      will notify that the dam authentication expired if it went through the
+ *      proxy.
+ *      Example: "Static, 1234", "OAuthClientCredentials, 5678"
+ *      If the http request did not go through the proxy, headerValue is null.
+ */
 export type AuthRefreshRequest = {
     connectorId: Id;
     type: AuthRefreshTypeEnum;
