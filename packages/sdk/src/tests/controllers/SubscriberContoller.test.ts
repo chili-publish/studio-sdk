@@ -6,7 +6,14 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 import { ToolType } from '../../utils/enums';
-import { ConnectorStateType } from '../../types/ConnectorTypes';
+import {
+    AuthCredentials,
+    ConnectorStateType,
+    RefreshedAuthCredendentials,
+    GrafxTokenAuthCredentials,
+    AuthCredentialsTypeEnum,
+    AuthRefreshTypeEnum,
+} from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { AsyncError, EditorAPI } from '../../types/CommonTypes';
@@ -264,5 +271,65 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
+    });
+
+    describe('onAuthExpired', () => {
+        const connectorId = 'connectorId';
+
+        it('returns the token defined by the callback', async () => {
+            const refreshedToken = 'newToken';
+
+            const mockConfig = {
+                onAuthExpired() {
+                    return new Promise<AuthCredentials | null>((resolve) =>
+                        resolve(new GrafxTokenAuthCredentials(refreshedToken)),
+                    );
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onAuthExpired');
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const resultJsonString = await mockedSubscriberController.onAuthExpired(
+                connectorId,
+                AuthRefreshTypeEnum.grafxToken,
+            );
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
+
+            expect(resultAuth.token).toBe(refreshedToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.grafxToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns the notification defined by the callback', async () => {
+            const mockConfig = {
+                onAuthExpired() {
+                    return new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials()));
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onAuthExpired');
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const resultJsonString = await mockedSubscriberController.onAuthExpired(
+                connectorId,
+                AuthRefreshTypeEnum.user,
+            );
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const resultAuth = JSON.parse(resultJsonString!);
+
+            expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.user);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns a null token if the listener is not defined', async () => {
+            const mockedSubscriberController = new SubscriberController({});
+
+            const result = await mockedSubscriberController.onAuthExpired(connectorId, AuthRefreshTypeEnum.grafxToken);
+
+            expect(result).toBe(null);
+        });
     });
 });
