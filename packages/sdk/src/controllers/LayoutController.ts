@@ -2,6 +2,7 @@ import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/Commo
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Layout, MeasurementUnit, LayoutIntent } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
+import { ColorUsage } from '../types/ColorStyleTypes';
 
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
@@ -215,4 +216,27 @@ export class LayoutController {
         const res = await this.#editorAPI;
         return res.resetLayoutIntent(id).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method sets the fill color of a specific layout.
+     * Note: Depending on the layout intent, some colors might not be valid (eg opacity for digitalAnimated)
+     * 
+     * @param id the id of a specific layout
+     * @param color the color that will be used for the layout
+     */
+    setLayoutFillColor = async (id: Id, color: ColorUsage) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutFillColor(id, color).then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
+     * This method resets the fill color of a specific layout to its original (inherited) value.
+     * Note: Calling this on the top layout is not valid
+     * 
+     * @param id The id of the (child) layout to reset the fill color for
+     */
+    resetLayoutFillColor = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayoutFillColor(id).then((result) => getEditorResponseData<null>(result));
+    }
 }
