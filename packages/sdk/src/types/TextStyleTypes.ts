@@ -41,6 +41,7 @@ export interface TextProperties {
     underline?: boolean;
     lineThrough?: boolean;
     letterSpacing?: string;
+    trackingRight?: string;
     lineHeight?: number;
     SUB_SUPER_SCRIPT?: Scripting;
     typographicCase?: Case;
@@ -133,6 +134,7 @@ export enum SelectedTextStyles {
     DROP_SHADOW_COLOR = 'dropShadowColor',
     BLEND_MODE = 'blendMode',
     OPACITY = 'opacity',
+    TRACKING_RIGHT = 'trackingRight',
 }
 
 export interface UpdateStyleType {
