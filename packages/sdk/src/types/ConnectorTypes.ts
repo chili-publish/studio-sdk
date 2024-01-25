@@ -242,5 +242,20 @@ export type AuthCredentials = GrafxTokenAuthCredentials | RefreshedAuthCredenden
 
 export enum AuthRefreshTypeEnum {
     grafxToken = 'grafxToken',
-    user = 'user',
+    any = 'any',
 }
+
+/**
+ * @param connectorId connector id
+ * @param type type of auth renewal needed
+ * @param headerValue the value of the X-GRAFX-UNAUTHORIZED header. This
+ *      will notify that the dam authentication expired if it went through the
+ *      proxy.
+ *      Example: "Static, 1234", "OAuthClientCredentials, 5678"
+ *      If the http request did not go through the proxy, headerValue is null.
+ */
+export type AuthRefreshRequest = {
+    connectorId: Id;
+    type: AuthRefreshTypeEnum;
+    headerValue: string | null;
+};
