@@ -1,6 +1,6 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout, MeasurementUnit } from '../types/LayoutTypes';
+import { Layout, MeasurementUnit, LayoutIntent } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -192,5 +192,27 @@ export class LayoutController {
     getSelectedSnapshot = async () => {
         const res = await this.#blobAPI;
         return res.getPageSnapshot().then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+    };
+
+    /**
+     * This method sets the intent of a specific layout. Note that setting the intent for a layout
+     * can have side-effects such as updating the measurement unit
+     * @param id the id of a specific layout
+     * @param intent the intent that will be used for the layout
+     */
+    setLayoutIntent = async (id: Id, intent: LayoutIntent) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutIntent(id, intent).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method resets the intent of a specific layout to its original (inherited) value.
+     * Note: Calling this on the top layout is not valid
+     * 
+     * @param id The id of the (child) layout to reset the intent for
+     */
+    resetLayoutIntent = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayoutIntent(id).then((result) => getEditorResponseData<null>(result));
     };
 }
