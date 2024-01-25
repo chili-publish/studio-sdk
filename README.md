@@ -2,7 +2,7 @@
 
 ![Coverage](https://img.shields.io/badge/coverage-96.79%25-brightgreen.svg)
 
-[![Build PR](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-build.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-build.yml) [![Publish Package](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml)
+[![Build PR](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-merge.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-merge.yml) [![Publish Package](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-release-npm.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml)
 
 This is the Open Source GraFx Studio SDK which will make your life easier when you’re working on and integrating GraFx Studio.
 
@@ -13,6 +13,9 @@ The project is currently under active development, contributions are welcome in 
 [Link to functional documentation and getting started](https://docs.chiligrafx.com)
 
 [Link to the official SDK documentation on GitHub](https://chili-publish.github.io/studio-sdk/)\*
+
+[Link to Studio UI, a live integration example](https://github.com/chili-publish/studio-ui)
+
 
 \*Note: the hosted documentation is always based on the latest version. To get the documentation of the release that you use, you can download the sourcecode of that release and open `/docs/index.html`.
 
