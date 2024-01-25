@@ -1,5 +1,4 @@
 import { ConfigType, Id } from '../types/CommonTypes';
-import { AuthRefreshTypeEnum as AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ToolType } from '../utils/enums';
 
@@ -109,16 +108,15 @@ export class SubscriberController {
      *
      * When this emits it means either:
      * - the grafxToken needs to be renewed
-     * - the 3rd party auth (user impersonation) needs to be renewed.
+     * - any other authentication needs to be renewed (user impersonation, static..)
      *
-     * @param connectorId connector id
-     * @param type the type of auth renewal needed
+     * @param authRefreshRequest Stringified object of AuthRefreshRequest
      */
-    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum) => {
+    onAuthExpired = (authRefreshRequest: string) => {
         const callBack = this.config.onAuthExpired;
 
         return callBack
-            ? callBack(connectorId, type).then((auth) => JSON.stringify(auth))
+            ? callBack(JSON.parse(authRefreshRequest)).then((auth) => JSON.stringify(auth))
             : new Promise<string | null>((resolve) => resolve(null));
     };
 

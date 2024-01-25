@@ -32,6 +32,7 @@ export type LayoutWithFrameProperties = {
     type: LayoutType;
     timelineLengthMs?: number;
     children?: LayoutWithFrameProperties[];
+    intent: LayoutIntent | null;
 };
 
 // used by new getter methods
@@ -44,6 +45,7 @@ export type Layout = {
     childLayouts: Id[];
     timelineLengthMs: PropertyState<number>;
     unit: PropertyState<MeasurementUnit>;
+    intent: PropertyState<LayoutIntent>;
 };
 
 // used by onLayoutsChanged
@@ -66,4 +68,10 @@ export enum MeasurementUnit {
     cm = 'cm',
     inch = 'inch',
     pt = 'pt',
+}
+
+export enum LayoutIntent {
+    print = 'print',
+    digitalStatic = 'digitalStatic',
+    digitalAnimated = 'digitalAnimated',
 }

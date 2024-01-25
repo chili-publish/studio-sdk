@@ -13,6 +13,7 @@ import {
     GrafxTokenAuthCredentials,
     AuthCredentialsTypeEnum,
     AuthRefreshTypeEnum,
+    AuthRefreshRequest,
 } from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
@@ -275,6 +276,19 @@ describe('SubscriberController', () => {
 
     describe('onAuthExpired', () => {
         const connectorId = 'connectorId';
+        const staticHeaderValue = 'Static, 1234';
+
+        const grafxAuthRefreshRequest: AuthRefreshRequest = {
+            connectorId: connectorId,
+            type: AuthRefreshTypeEnum.grafxToken,
+            headerValue: null,
+        };
+
+        const anyAuthRefreshRequest: AuthRefreshRequest = {
+            connectorId: connectorId,
+            type: AuthRefreshTypeEnum.any,
+            headerValue: staticHeaderValue,
+        };
 
         it('returns the token defined by the callback', async () => {
             const refreshedToken = 'newToken';
@@ -291,14 +305,13 @@ describe('SubscriberController', () => {
             const mockedSubscriberController = new SubscriberController(mockConfig);
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
-                connectorId,
-                AuthRefreshTypeEnum.grafxToken,
+                JSON.stringify(grafxAuthRefreshRequest),
             );
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
 
             expect(resultAuth.token).toBe(refreshedToken);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.grafxToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(grafxAuthRefreshRequest);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
@@ -313,21 +326,20 @@ describe('SubscriberController', () => {
             const mockedSubscriberController = new SubscriberController(mockConfig);
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
-                connectorId,
-                AuthRefreshTypeEnum.user,
+                JSON.stringify(anyAuthRefreshRequest),
             );
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultAuth = JSON.parse(resultJsonString!);
 
             expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.user);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(anyAuthRefreshRequest);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', async () => {
             const mockedSubscriberController = new SubscriberController({});
 
-            const result = await mockedSubscriberController.onAuthExpired(connectorId, AuthRefreshTypeEnum.grafxToken);
+            const result = await mockedSubscriberController.onAuthExpired(JSON.stringify(grafxAuthRefreshRequest));
 
             expect(result).toBe(null);
         });
