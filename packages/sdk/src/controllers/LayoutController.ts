@@ -226,7 +226,7 @@ export class LayoutController {
      */
     setLayoutFillColor = async (id: Id, color: ColorUsage) => {
         const res = await this.#editorAPI;
-        return res.setLayoutFillColor(id, color).then((result) => getEditorResponseData<null>(result));
+        return res.setLayoutFillColor(id, JSON.stringify(color)).then((result) => getEditorResponseData<null>(result));
     }
 
     /**
