@@ -54,7 +54,7 @@ export class ToolController {
      * This method sets the used tool to a Zoom tool
      */
     setZoom = async () => {
-        await this.setTool(ToolType.ZOOM);
+        return this.setTool(ToolType.ZOOM);
     };
 
     /**
