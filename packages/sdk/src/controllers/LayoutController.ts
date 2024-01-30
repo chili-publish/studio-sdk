@@ -219,7 +219,7 @@ export class LayoutController {
 
     /**
      * This method sets the fill color of a specific layout.
-     * Note: Depending on the layout intent, some colors might not be valid (eg opacity for digitalAnimated)
+     * Note: Depending on the layout intent, some colors might not be valid (eg opacity for digitalAnimated, any color for print) 
      * 
      * @param id the id of a specific layout
      * @param color the color that will be used for the layout
