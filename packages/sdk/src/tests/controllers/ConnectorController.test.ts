@@ -1,6 +1,7 @@
 import { ConnectorController } from '../../controllers/ConnectorController';
 import {
     ConnectorMapping,
+    ConnectorMappingDirection,
     ConnectorMappingSource,
     ConnectorRegistration,
     ConnectorRegistrationSource,
@@ -106,6 +107,12 @@ describe('ConnectorController', () => {
             configurator.setMappings([
                 new ConnectorMapping('data', ConnectorMappingSource.variable, '6B29FC40-CA47-1067-B31D-00DD010662DA'),
                 new ConnectorMapping('plain', ConnectorMappingSource.value, 'plain value'),
+                new ConnectorMapping(
+                    'price',
+                    ConnectorMappingSource.variable,
+                    '6B29FC40-CA47-1067-B31D-00DD010662DA',
+                    ConnectorMappingDirection.connectorToEngine,
+                ),
             ]);
             configurator.setOptions({ test: 'data' });
             configurator.setChiliToken(token);
@@ -124,8 +131,17 @@ describe('ConnectorController', () => {
 
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
-            JSON.stringify({ name: 'data', value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA' }),
-            JSON.stringify({ name: 'plain', value: 'plain value' }),
+            JSON.stringify({
+                direction: 'engineToConnector',
+                name: 'data',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+            }),
+            JSON.stringify({ direction: 'engineToConnector', name: 'plain', value: 'plain value' }),
+            JSON.stringify({
+                direction: 'connectorToEngine',
+                name: 'price',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+            }),
         ]);
 
         expect(mockEditorApi.setConnectorOptions).toHaveBeenCalledTimes(1);
