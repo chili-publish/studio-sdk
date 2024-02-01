@@ -111,9 +111,16 @@ export enum ConnectorRegistrationSource {
 export class ConnectorMapping {
     name: string;
     value: string;
+    direction = ConnectorMappingDirection.engineToConnector;
 
-    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string) {
+    constructor(
+        contextProperty: string,
+        mapFrom: ConnectorMappingSource,
+        sourceValue: string,
+        direction = ConnectorMappingDirection.engineToConnector,
+    ) {
         this.name = contextProperty;
+        this.direction = direction;
 
         if (mapFrom === ConnectorMappingSource.variable) {
             this.value = `${mapFrom}.${sourceValue}`;
@@ -142,6 +149,23 @@ export type QueryPage<T> = {
 export enum ConnectorMappingSource {
     variable = 'var',
     value = 'value',
+}
+
+/**
+ * Direction of the Connector Mapping.
+ */
+export enum ConnectorMappingDirection {
+    /**
+     * Indicates the mapping will propagate a value to the connector. This
+     * mapping might cause the linked connector to refresh.
+     */
+    engineToConnector = 'engineToConnector',
+
+    /**
+     * Indicates the mapping will propagate a value from inside the connector
+     * to the engine. AKA "reverse mapping".
+     */
+    connectorToEngine = 'connectorToEngine',
 }
 
 export enum ConnectorStateType {
