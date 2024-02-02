@@ -200,7 +200,7 @@ export class LayoutController {
      * @param id the id of a specific layout
      * @param intent the intent that will be used for the layout
      */
-    setLayoutIntent = async (id: Id, intent: LayoutIntent) => {
+    setIntent = async (id: Id, intent: LayoutIntent) => {
         const res = await this.#editorAPI;
         return res.setLayoutIntent(id, intent).then((result) => getEditorResponseData<null>(result));
     };
@@ -208,10 +208,10 @@ export class LayoutController {
     /**
      * This method resets the intent of a specific layout to its original (inherited) value.
      * Note: Calling this on the top layout is not valid
-     * 
+     *
      * @param id The id of the (child) layout to reset the intent for
      */
-    resetLayoutIntent = async (id: Id) => {
+    resetIntent = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutIntent(id).then((result) => getEditorResponseData<null>(result));
     };
