@@ -22,6 +22,8 @@ export {
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
+export { ViewMode } from './types/ViewModeTypes';
+
 export type {
     LayoutPropertiesType,
     FrameProperties,
