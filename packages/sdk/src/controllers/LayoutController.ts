@@ -216,6 +216,15 @@ export class LayoutController {
         return res.resetLayoutIntent(id).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method sets the bleed value of a specific layout.
+     * Note: this is only valid on a print layout
+     *
+     * @param id The id of the specific layout
+     * @param value The bleed value
+     * @param position When defined will update the bleed value of a single position, 
+     * otherwise will set all positions to the same value.
+     */
     setBleedValue = async (id: Id, value: string, position?: PositionEnum) => {
         const update: BleedDeltaUpdate = position
             ? {
@@ -230,6 +239,12 @@ export class LayoutController {
         return res.updateLayoutBleed(id, JSON.stringify(update)).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method will reset the bleed values on the specified layout to its original (inherited) value.
+     * Note: Calling this on the top layout is not valid.
+     *
+     * @param id The id of the (child) layout to reset the bleed values for
+     */
     resetBleedValues = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.updateLayoutBleed(id, null).then((result) => getEditorResponseData<null>(result));
