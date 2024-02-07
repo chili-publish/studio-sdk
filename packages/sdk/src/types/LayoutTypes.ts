@@ -63,7 +63,7 @@ export type LayoutBleed = {
     top: number;
     right: number;
     bottom: number;
-    isBleedValuesCombined: boolean;
+    areBleedValuesCombined: boolean;
 };
 
 export type BleedDeltaUpdate = {
