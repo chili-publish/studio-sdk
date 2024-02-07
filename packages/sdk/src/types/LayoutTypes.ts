@@ -46,6 +46,7 @@ export type Layout = {
     timelineLengthMs: PropertyState<number>;
     unit: PropertyState<MeasurementUnit>;
     intent: PropertyState<LayoutIntent>;
+    bleed: PropertyState<LayoutBleed>;
 };
 
 // used by onLayoutsChanged
@@ -56,6 +57,28 @@ export type LayoutListItemType = {
     parentId?: Id | null;
     childLayouts: Id[];
 };
+
+export type LayoutBleed = {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+    isBleedValuesCombined: boolean;
+};
+
+export type BleedDeltaUpdate = {
+    left?: string;
+    top?: string;
+    right?: string;
+    bottom?: string;
+};
+
+export enum PositionEnum {
+    top = 'top',
+    right = 'right',
+    bottom = 'bottom',
+    left = 'left',
+}
 
 export enum LayoutType {
     top = 'top',
