@@ -2,7 +2,7 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
-import { LayoutIntent, MeasurementUnit } from '../../types/LayoutTypes';
+import { BleedDeltaUpdate, LayoutIntent, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;
@@ -27,6 +27,7 @@ const mockedEditorApi: EditorAPI = {
     getPageSnapshot: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateLayoutBleed: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -50,6 +51,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getPageSnapshot');
     jest.spyOn(mockedEditorApi, 'setLayoutIntent');
     jest.spyOn(mockedEditorApi, 'resetLayoutIntent');
+    jest.spyOn(mockedEditorApi, 'updateLayoutBleed');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -146,5 +148,53 @@ describe('LayoutController', () => {
     it('Should be possible to reset the layout intent', async () => {
         await mockedLayoutController.resetIntent('1');
         expect(mockedEditorApi.resetLayoutIntent).toHaveBeenCalledTimes(1);
+    });
+    describe('bleed', () => {
+        it('Should be possible set the combined bleed value', async () => {
+            await mockedLayoutController.setBleedValue('1', '5');
+            const update: BleedDeltaUpdate = {
+                left: '5',
+                top: '5',
+                right: '5',
+                bottom: '5',
+            };
+            expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(update));
+        });
+
+        it('Should be possible to set the individual bleed values', async () => {
+            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.left);
+            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.top);
+            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.right);
+            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.bottom);
+
+            const left: BleedDeltaUpdate = {
+                left: '5',
+            };
+
+            const top: BleedDeltaUpdate = {
+                top: '5',
+            };
+
+            const right: BleedDeltaUpdate = {
+                right: '5',
+            };
+
+            const bottom: BleedDeltaUpdate = {
+                bottom: '5',
+            };
+
+            expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(4);
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(left));
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(top));
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(right));
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(bottom));
+        });
+
+        it('Should be possible to reset the layout bleed', async () => {
+            await mockedLayoutController.resetBleedValues('1');
+            expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', null);
+        });
     });
 });
