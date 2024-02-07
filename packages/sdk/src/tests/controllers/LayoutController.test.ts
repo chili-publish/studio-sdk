@@ -163,21 +163,21 @@ describe('LayoutController', () => {
         });
 
         it('Should be possible to set the individual bleed values', async () => {
-            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.left);
-            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.top);
-            await mockedLayoutController.setBleedValue('1', '5', PositionEnum.right);
+            await mockedLayoutController.setBleedValue('1', '2', PositionEnum.left);
+            await mockedLayoutController.setBleedValue('1', '3', PositionEnum.top);
+            await mockedLayoutController.setBleedValue('1', '4', PositionEnum.right);
             await mockedLayoutController.setBleedValue('1', '5', PositionEnum.bottom);
 
             const left: BleedDeltaUpdate = {
-                left: '5',
+                left: '2',
             };
 
             const top: BleedDeltaUpdate = {
-                top: '5',
+                top: '3',
             };
 
             const right: BleedDeltaUpdate = {
-                right: '5',
+                right: '4',
             };
 
             const bottom: BleedDeltaUpdate = {
