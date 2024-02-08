@@ -223,7 +223,8 @@ export class LayoutController {
      * @param id The id of the specific layout
      * @param value The bleed value
      * @param position When defined will update the bleed value of a single position,
-     * otherwise will set all positions to the same value.
+     * otherwise will set all positions to the same value. Depending on this parameter
+     * being defined, the `areBleedValuesCombined` will also be updated.
      */
     setBleedValue = async (id: Id, value: string, position?: PositionEnum) => {
         const update: BleedDeltaUpdate = position
