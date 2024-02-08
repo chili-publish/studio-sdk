@@ -222,7 +222,7 @@ export class LayoutController {
      *
      * @param id The id of the specific layout
      * @param value The bleed value
-     * @param position When defined will update the bleed value of a single position, 
+     * @param position When defined will update the bleed value of a single position,
      * otherwise will set all positions to the same value.
      */
     setBleedValue = async (id: Id, value: string, position?: PositionEnum) => {
@@ -234,6 +234,20 @@ export class LayoutController {
                   bottom: position === PositionEnum.bottom ? value : undefined,
               }
             : { left: value, top: value, right: value, bottom: value };
+
+        const res = await this.#editorAPI;
+        return res.updateLayoutBleed(id, JSON.stringify(update)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the combined state of the bleed values.
+     * Note: this is only valid on a print layout
+     *
+     * @param id The id of the specific layout
+     * @param value Whether the bleed values are combined
+     */
+    setAreBleedValuesCombined = async (id: Id, value: boolean) => {
+        const update: BleedDeltaUpdate = { areBleedValuesCombined: value };
 
         const res = await this.#editorAPI;
         return res.updateLayoutBleed(id, JSON.stringify(update)).then((result) => getEditorResponseData<null>(result));

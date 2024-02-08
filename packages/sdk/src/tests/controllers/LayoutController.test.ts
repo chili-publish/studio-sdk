@@ -191,6 +191,24 @@ describe('LayoutController', () => {
             expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(bottom));
         });
 
+        it('Should be possible set the combined state of the bleed values', async () => {
+            await mockedLayoutController.setAreBleedValuesCombined('1', true);
+            const update: BleedDeltaUpdate = {
+                areBleedValuesCombined: true,
+            };
+            expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(update));
+        });
+
+        it('Should be possible set the non-combined state of the bleed values', async () => {
+            await mockedLayoutController.setAreBleedValuesCombined('1', false);
+            const update: BleedDeltaUpdate = {
+                areBleedValuesCombined: false,
+            };
+            expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', JSON.stringify(update));
+        });
+
         it('Should be possible to reset the layout bleed', async () => {
             await mockedLayoutController.resetBleedValues('1');
             expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);

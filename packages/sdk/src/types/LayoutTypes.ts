@@ -71,6 +71,7 @@ export type BleedDeltaUpdate = {
     top?: string;
     right?: string;
     bottom?: string;
+    areBleedValuesCombined?: boolean;
 };
 
 export enum PositionEnum {
