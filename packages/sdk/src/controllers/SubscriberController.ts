@@ -1,5 +1,6 @@
 import { ConfigType, Id } from '../types/CommonTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
+import { ViewMode } from '../types/ViewModeTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -306,5 +307,14 @@ export class SubscriberController {
     onAsyncError = (asyncError: string) => {
         const callBack = this.config.onAsyncError;
         callBack && callBack(JSON.parse(asyncError));
+    };
+
+    /**
+     * Listener on when the view mode has changed
+     * @param viewMode the string representation of a view mode
+     */
+    onViewModeChanged = (viewMode: string) => {
+        const callBack = this.config.onViewModeChanged;
+        callBack && callBack(viewMode as ViewMode);
     };
 }

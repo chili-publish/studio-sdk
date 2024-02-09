@@ -4,7 +4,7 @@ import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, Me
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType } from '..';
+import { ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
 import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -61,6 +61,7 @@ export type ConfigType = {
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;
     onAsyncError?: (asyncError: AsyncError) => void;
+    onViewModeChanged?: (tool: ViewMode) => void;
 };
 
 export type EditorResponseError = string;

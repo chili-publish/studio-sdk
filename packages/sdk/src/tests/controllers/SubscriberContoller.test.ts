@@ -1,4 +1,4 @@
-import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit } from '../../index';
+import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit, ViewMode } from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -55,6 +55,7 @@ const mockEditorApi: EditorAPI = {
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
+    onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -92,6 +93,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
+    jest.spyOn(mockEditorApi, 'onViewModeChanged');
 });
 
 afterEach(() => {
@@ -343,5 +345,11 @@ describe('SubscriberController', () => {
 
             expect(result).toBe(null);
         });
+    });
+
+    it('Should call the ViewModeChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onViewModeChanged(ViewMode.normal);
+        expect(mockEditorApi.onViewModeChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onViewModeChanged).toHaveBeenCalledWith('normal');
     });
 });
