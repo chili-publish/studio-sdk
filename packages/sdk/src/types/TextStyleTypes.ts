@@ -135,6 +135,7 @@ export enum SelectedTextStyles {
     BLEND_MODE = 'blendMode',
     OPACITY = 'opacity',
     TRACKING_RIGHT = 'trackingRight',
+    BASELINE_SHIFT = 'baselineShiftValue',
 }
 
 export interface UpdateStyleType {
