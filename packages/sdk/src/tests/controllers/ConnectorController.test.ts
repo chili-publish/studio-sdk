@@ -50,7 +50,6 @@ describe('ConnectorController', () => {
         url: '',
     };
     const connectorId = 'dam';
-    const token = 'myToken';
     const headerName = 'headerName';
     const headerValue = 'headerValue';
 
