@@ -17,7 +17,6 @@ const mockEditorApi: EditorAPI = {
     getConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     unregisterConnector: async () => getEditorResponseData(castToEditorResponse(null)),
-    connectorAuthenticationSetChiliToken: async () => getEditorResponseData(castToEditorResponse(null)),
     updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorState: async () => getEditorResponseData(castToEditorResponse({ id: '', type: 'ready' })),
     connectorAuthenticationSetHttpHeader: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -33,7 +32,6 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
     jest.spyOn(mockEditorApi, 'unregisterConnector');
-    jest.spyOn(mockEditorApi, 'connectorAuthenticationSetChiliToken');
     jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
     jest.spyOn(mockEditorApi, 'getConnectorState');
     jest.spyOn(mockEditorApi, 'connectorAuthenticationSetHttpHeader');
@@ -115,11 +113,8 @@ describe('ConnectorController', () => {
                 ),
             ]);
             configurator.setOptions({ test: 'data' });
-            configurator.setChiliToken(token);
         });
 
-        expect(mockEditorApi.connectorAuthenticationSetChiliToken).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.connectorAuthenticationSetChiliToken).toHaveBeenCalledWith(connectorId, token);
         expect(mockEditorApi.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
 
         expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);

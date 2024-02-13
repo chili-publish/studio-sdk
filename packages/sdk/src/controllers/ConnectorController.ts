@@ -243,20 +243,6 @@ class ConnectorConfigurator {
     };
 
     /**
-     * @deprecated define the GraFx Studio Auth Token in the `SDK.Configuration.setValue`
-     *
-     * This method sets the GraFx Access Token in the Authentication HTTP header for the 'chili' authentication type.
-     * The CHILI Token will be used to authenticate every grafx connector http call.
-     * @param token token for the CHILI authentication
-     * @returns
-     */
-    setChiliToken = async (token: string) => {
-        return this.#res
-            .connectorAuthenticationSetChiliToken(this.#connectorId, token)
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * This method sets the HTTP headers for the 'staticKey' authentication type.
      * These additional headers will be added to all connector http calls.
      * Can only be used after a connector has been registered. (if you are using a grafx connector no registration is needed)
