@@ -154,6 +154,7 @@ export class SDK {
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
+                onViewModeChanged: this.subscriber.onViewModeChanged,
             },
             this.setConnection,
             this.config.editorId,

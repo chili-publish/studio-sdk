@@ -145,11 +145,11 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.getPageSnapshot).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to set the layout intent', async () => {
-        await mockedLayoutController.setLayoutIntent('1', LayoutIntent.print);
+        await mockedLayoutController.setIntent('1', LayoutIntent.print);
         expect(mockedEditorApi.setLayoutIntent).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to reset the layout intent', async () => {
-        await mockedLayoutController.resetLayoutIntent('1');
+        await mockedLayoutController.resetIntent('1');
         expect(mockedEditorApi.resetLayoutIntent).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to set the layout fill color', async () => {
