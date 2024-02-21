@@ -78,6 +78,7 @@ interface ConfigParameterTypes {
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
     onAsyncError: (asyncError: string) => void;
+    onViewModeChanged: (viewMode: string) => void;
 }
 
 const Connect = (
@@ -145,6 +146,7 @@ const Connect = (
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
                 asyncError: params.onAsyncError,
+                viewModeChanged: params.onViewModeChanged,
             },
         }),
     );
