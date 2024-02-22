@@ -164,9 +164,14 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onDocumentLoaded).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onVariableListChanged', async () => {
-        await mockedSubscriberController.onVariableListChanged('[{"id":"1","type":"group"}]');
+        await mockedSubscriberController.onVariableListChanged(
+            '[{"id":"1","type":"group"},{"id":"varList","type":"list","selected":"Orange","items":[{"value":"Apple"},{"value":"Pear"},{"value":"Orange"}]}]',
+        );
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalled();
-        expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
+        expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([
+            { id: '1', type: VariableType.group },
+            { id: 'varList', type: VariableType.list, selected: 'Orange', items: ['Apple', 'Pear', 'Orange'] },
+        ]);
     });
     it('Should be possible to subscribe to onSelectedLayoutFramesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutFramesChanged('5');

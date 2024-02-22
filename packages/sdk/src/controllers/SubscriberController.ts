@@ -1,5 +1,6 @@
 import { ConfigType, Id } from '../types/CommonTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
+import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { ToolType } from '../utils/enums';
 
@@ -143,7 +144,30 @@ export class SubscriberController {
      */
     onVariableListChanged = (variablesJson: string) => {
         const callBack = this.config.onVariableListChanged;
-        callBack && callBack(JSON.parse(variablesJson));
+
+        // TODO: Revert in part 2.
+        if (!callBack) {
+            return;
+        }
+
+        const parsed = JSON.parse(variablesJson) as Variable[];
+
+        parsed.forEach((variable) => {
+            if (variable.type === VariableType.list) {
+                const listVariable = variable as ListVariable;
+                const items = listVariable.items as unknown as ListVariableItem[];
+
+                const newItems: string[] = [];
+
+                items.forEach((item) => {
+                    newItems.push(item.value);
+                });
+
+                listVariable.items = newItems;
+            }
+        });
+
+        callBack(parsed);
     };
 
     /**
