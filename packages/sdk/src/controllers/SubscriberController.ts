@@ -152,22 +152,24 @@ export class SubscriberController {
 
         const parsed = JSON.parse(variablesJson) as Variable[];
 
-        parsed.forEach((variable) => {
+        const updated = parsed.map((variable) => {
             if (variable.type === VariableType.list) {
                 const listVariable = variable as ListVariable;
                 const items = listVariable.items as unknown as ListVariableItem[];
 
-                const newItems: string[] = [];
-
-                items.forEach((item) => {
-                    newItems.push(item.value);
+                const newItems = items.map((item) => {
+                    return item.value;
                 });
 
                 listVariable.items = newItems;
+
+                return listVariable;
             }
+
+            return variable;
         });
 
-        callBack(parsed);
+        callBack(updated);
     };
 
     /**
