@@ -224,7 +224,7 @@ export class LayoutController {
      * @param id the id of a specific layout
      * @param color the color that will be used for the layout
      */
-    setLayoutFillColor = async (id: Id, color: ColorUsage) => {
+    setFillColor = async (id: Id, color: ColorUsage) => {
         const res = await this.#editorAPI;
         return res.setLayoutFillColor(id, JSON.stringify(color)).then((result) => getEditorResponseData<null>(result));
     }
@@ -235,12 +235,11 @@ export class LayoutController {
      * 
      * @param id The id of the (child) layout to reset the fill color for
      */
-    resetLayoutFillColor = async (id: Id) => {
+    resetFillColor = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutFillColor(id).then((result) => getEditorResponseData<null>(result));
     }
 
-  
     /**
      * This method sets the bleed value of a specific layout.
      * Note: this is only valid on a print layout

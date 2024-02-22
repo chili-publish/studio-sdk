@@ -155,7 +155,7 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.resetLayoutIntent).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to set the layout fill color', async () => {
-        await mockedLayoutController.setLayoutFillColor('1', {
+        await mockedLayoutController.setFillColor('1', {
             type: ColorUsageType.local,
             color: {
                 r: 0,
@@ -168,7 +168,7 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.setLayoutFillColor).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to reset the layout fill color', async () => {
-        await mockedLayoutController.resetLayoutFillColor('1');
+        await mockedLayoutController.resetFillColor('1');
         expect(mockedEditorApi.resetLayoutFillColor).toHaveBeenCalledTimes(1);
     });
     describe('bleed', () => {
