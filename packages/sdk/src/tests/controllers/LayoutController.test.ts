@@ -3,6 +3,7 @@ import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
 import { BleedDeltaUpdate, LayoutIntent, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
+import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;
@@ -27,6 +28,8 @@ const mockedEditorApi: EditorAPI = {
     getPageSnapshot: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayoutFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
     updateLayoutBleed: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -51,6 +54,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getPageSnapshot');
     jest.spyOn(mockedEditorApi, 'setLayoutIntent');
     jest.spyOn(mockedEditorApi, 'resetLayoutIntent');
+    jest.spyOn(mockedEditorApi, 'setLayoutFillColor');
+    jest.spyOn(mockedEditorApi, 'resetLayoutFillColor');
     jest.spyOn(mockedEditorApi, 'updateLayoutBleed');
 
     mockId = mockSelectPage.layoutId;
@@ -148,6 +153,23 @@ describe('LayoutController', () => {
     it('Should be possible to reset the layout intent', async () => {
         await mockedLayoutController.resetIntent('1');
         expect(mockedEditorApi.resetLayoutIntent).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to set the layout fill color', async () => {
+        await mockedLayoutController.setFillColor('1', {
+            type: ColorUsageType.local,
+            color: {
+                r: 0,
+                g: 0,
+                b: 0,
+                type: ColorType.rgb,
+            },
+            opacity: 1,
+        });
+        expect(mockedEditorApi.setLayoutFillColor).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to reset the layout fill color', async () => {
+        await mockedLayoutController.resetFillColor('1');
+        expect(mockedEditorApi.resetLayoutFillColor).toHaveBeenCalledTimes(1);
     });
     describe('bleed', () => {
         it('Should be possible set the combined bleed value', async () => {
