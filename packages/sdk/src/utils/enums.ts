@@ -8,6 +8,11 @@ export enum FramePropertyNames {
 export enum LayoutPropertyNames {
     LAYOUT_HEIGHT = 'layoutHeight',
     LAYOUT_WIDTH = 'layoutWidth',
+    BLEED_TOP = 'bleedTop',
+    BLEED_BOTTOM = 'bleedBottom',
+    BLEED_LEFT = 'bleedLeft',
+    BLEED_RIGHT = 'bleedRight',
+    BLEED_VALUES_COMBINED = 'areBleedValuesCombined',
 }
 
 export enum ToolType {
