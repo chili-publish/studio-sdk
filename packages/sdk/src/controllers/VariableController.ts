@@ -308,14 +308,12 @@ export class VariableController {
         const updated = listVariable;
 
         const items = listVariable.items as unknown as ListVariableItem[];
+        const selected = listVariable.selected as unknown as ListVariableItem | undefined;
 
-        const newItems: string[] = [];
-
-        items.forEach((item) => {
-            newItems.push(item.value);
-        });
+        const newItems = items.map((item) => item.value);
 
         updated.items = newItems;
+        updated.selected = selected?.value;
 
         return updated;
     }

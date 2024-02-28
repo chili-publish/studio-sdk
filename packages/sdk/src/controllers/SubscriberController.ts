@@ -159,6 +159,7 @@ export class SubscriberController {
                       items: ((variable as ListVariable).items as unknown as ListVariableItem[]).map(
                           (item) => item.value,
                       ),
+                      selected: ((variable as ListVariable).selected as unknown as ListVariableItem | undefined)?.value,
                   }
                 : variable,
         );

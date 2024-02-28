@@ -32,7 +32,7 @@ describe('VariableController', () => {
         },
     };
 
-    const listVar: Variable & { items: ListVariableItem[] } = {
+    const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
         id: variableId,
         type: VariableType.list,
         name: '',
@@ -41,6 +41,7 @@ describe('VariableController', () => {
         isReadonly: false,
         isRequired: false,
         occurrences: 0,
+        selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],
     };
 
@@ -107,6 +108,7 @@ describe('VariableController', () => {
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledWith('name');
         // Backwards compatibility layer maps the new `VariableListItem` into a string.
         expect((result.parsedData as ListVariable).items).toStrictEqual(['abc']);
+        expect((result.parsedData as ListVariable).selected).toStrictEqual('abc');
     });
 
     it('get variable list', async () => {
@@ -114,6 +116,7 @@ describe('VariableController', () => {
         expect(mockEditorApi.getVariables).toHaveBeenCalledTimes(1);
         // Backwards compatibility layer maps the new `VariableListItem` into a string.
         expect((result.parsedData as ListVariable[])[0].items).toStrictEqual(['abc']);
+        expect((result.parsedData as ListVariable[])[0].selected).toStrictEqual('abc');
     });
 
     it('create a new variable', async () => {

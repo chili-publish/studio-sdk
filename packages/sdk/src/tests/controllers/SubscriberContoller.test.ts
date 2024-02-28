@@ -165,7 +165,7 @@ describe('SubscriberController', () => {
     });
     it('Should be possible to subscribe to onVariableListChanged', async () => {
         await mockedSubscriberController.onVariableListChanged(
-            '[{"id":"1","type":"group"},{"id":"varList","type":"list","selected":"Orange","items":[{"value":"Apple"},{"value":"Pear"},{"value":"Orange"}]}]',
+            '[{"id":"1","type":"group"},{"id":"varList","type":"list","selected": {"value": "Orange"},"items":[{"value":"Apple"},{"value":"Pear"},{"value":"Orange"}]}]',
         );
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalled();
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([
