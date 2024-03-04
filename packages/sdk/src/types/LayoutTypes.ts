@@ -1,3 +1,4 @@
+import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
@@ -47,6 +48,7 @@ export type Layout = {
     unit: PropertyState<MeasurementUnit>;
     intent: PropertyState<LayoutIntent>;
     bleed: PropertyState<LayoutBleed>;
+    fillColor: PropertyState<ColorUsage>;
 };
 
 // used by onLayoutsChanged
