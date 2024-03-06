@@ -49,6 +49,7 @@ export type {
     LongTextVariable,
     ShortTextVariable,
     ListVariable,
+    ListVariableItem,
     BooleanVariable,
     ConnectorImageVariableSource,
 } from './types/VariableTypes';

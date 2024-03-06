@@ -47,6 +47,11 @@ export interface ImageVariable extends Variable {
     value?: ConnectorImageVariableSource;
 }
 
+export interface ListVariableItem {
+    value: string;
+    displayValue?: string;
+}
+
 export interface ListVariable extends Variable {
     items: string[];
     selected?: string;
