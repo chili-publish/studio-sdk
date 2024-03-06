@@ -4,7 +4,7 @@ export enum BarcodeType {
     code39 = 'code39',
     code93 = 'code93',
     code128 = 'code128',
-    datamatrix = 'datamatrix',
+    dataMatrix = 'dataMatrix',
     ean13 = 'ean13',
     ean8 = 'ean8',
     isbn = 'isbn',

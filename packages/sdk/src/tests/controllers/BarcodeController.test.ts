@@ -114,7 +114,7 @@ describe('BarcodeController', () => {
             });
         });
         it('retuns valid configuration for data matrix', () => {
-            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.datamatrix);
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.dataMatrix);
             expect(options).toEqual({
                 allowEnableMagnification: false,
                 allowBarHeight: false,
