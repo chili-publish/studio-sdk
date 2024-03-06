@@ -1,7 +1,7 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { BarcodeProperties } from '../types/BarcodeTypes';
+import { BarcodeConfigurationOptions, BarcodeProperties, BarcodeType } from '../types/BarcodeTypes';
 import { BarcodeSource } from '../types/FrameTypes';
 
 /**
@@ -88,5 +88,22 @@ export class BarcodeController {
     setBarcodeSource = async (id: Id, source: BarcodeSource) => {
         const res = await this.#editorAPI;
         return res.setBarcodeSource(id, JSON.stringify(source)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method returns the possible configation options which are valid for the given barcode type.
+     *
+     * @param type the barcode type for which the configuration options are requested.
+     * @returns a BarcodeConfigurationOptions object
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getBarcodeConfigationOptions = (type: BarcodeType): BarcodeConfigurationOptions => {
+        return {
+            allowEnableMagnification: false,
+            allowBarHeight: false,
+            allowQuietZone: false,
+            allowedCharacterSets: undefined,
+            allowedErrorCorrectionLevels: undefined,
+        };
     };
 }

@@ -19,3 +19,26 @@ export interface BarcodeProperties {
     enableBars?: boolean;
     barColor?: ColorUsage;
 }
+
+export enum BarcodeErrorCorrectionLevel {
+    low = 'low',
+    medium = 'medium',
+    quartile = 'quartile',
+    high = 'high',
+}
+
+export enum BarcodeCharacterSet {
+    utf8 = 'utf8',
+    iso8859_1 = 'iso8859_1',
+    code128a = 'code128a',
+    code128b = 'code128b',
+    code128c = 'code128c',
+}
+
+export interface BarcodeConfigurationOptions {
+    allowedErrorCorrectionLevels?: BarcodeErrorCorrectionLevel[];
+    allowedCharacterSets?: BarcodeCharacterSet[];
+    allowQuietZone: boolean;
+    allowBarHeight: boolean;
+    allowEnableMagnification: boolean;
+}
