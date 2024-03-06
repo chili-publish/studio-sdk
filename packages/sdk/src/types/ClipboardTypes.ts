@@ -1,4 +1,4 @@
 export enum ClipboardContentType {
     frame = 'frame',
-    unknown = 'unknown'
+    unknown = 'unknown',
 }

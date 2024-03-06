@@ -16,6 +16,7 @@ import {
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
 import { ShapeController } from './ShapeController';
+import { BarcodeType } from '../types/BarcodeTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -384,6 +385,23 @@ export class FrameController {
     };
 
     /**
+     * This method will create a new barcode frame of 'type' type to the layout positioned on the requested
+     * coordinates. Any coordinate that is not specified will default to 'center'. If any size property is
+     * not specified, that property will use a sensible default
+     *
+     * @param type the type of barcode to create
+     * @param x optional X coordinate of the new frame within the layout
+     * @param y optional Y coordinate of the new frame within the layout
+     * @param width optional Width of the new frame within the layout
+     * @param height optional Height of the new frame within the layout
+     * @returns
+     */
+    createBarcodeFrame = async (type: BarcodeType, x?: number, y?: number, width?: number, height?: number) => {
+        const res = await this.#editorAPI;
+        return res.addBarcodeFrame(type, x, y, width, height).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
      * This method will duplicate a list of frames
      * @param ids An array of all ids you want to duplicate
      * @returns
@@ -392,7 +410,6 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.duplicateFrames(ids).then((result) => getEditorResponseData<Id>(result));
     };
-
 
     /**
      * This method sets or removes the image source to the ImageFrame

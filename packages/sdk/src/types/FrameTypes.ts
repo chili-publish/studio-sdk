@@ -1,4 +1,5 @@
 // FramePropertiesDto
+import { BarcodeType } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
@@ -32,7 +33,7 @@ export type FrameType = {
     constrainProportions: boolean;
 };
 
-export type Frame = TextFrame | ImageFrame | ShapeFrame;
+export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
 
 export type ImageFrameVariableSource = {
     type: ImageSourceTypeEnum.variable;
@@ -106,6 +107,34 @@ export type TextFrame = {
     constrainProportions: boolean;
 };
 
+export type BarcodeFrame = {
+    id: Id;
+    name: string;
+    type: FrameTypeEnum.barcode;
+    blendMode: BlendMode;
+    constrainProportions: boolean;
+    barcodeProperties: {
+        enableBackground: boolean;
+        backgroundColor: ColorUsage;
+        enableBarColor: boolean;
+        barColor: ColorUsage;
+    };
+    src: BarcodeSource;
+    barcodeType: BarcodeType;
+};
+
+export type BarcodeSource = BarcodeVariableSource | BarcodeTextSource;
+
+export type BarcodeVariableSource = {
+    type: BarcodeSourceTypeEnum.variable;
+    id: Id;
+};
+
+export type BarcodeTextSource = {
+    type: BarcodeSourceTypeEnum.text;
+    text: string;
+};
+
 export type CropSettings = {
     left: number;
     top: number;
@@ -129,6 +158,12 @@ export enum FrameTypeEnum {
     text = 'text',
     image = 'image',
     shape = 'shape',
+    barcode = 'barcode',
+}
+
+export enum BarcodeSourceTypeEnum {
+    variable = 'variable',
+    text = 'text',
 }
 
 export enum TextDirection {

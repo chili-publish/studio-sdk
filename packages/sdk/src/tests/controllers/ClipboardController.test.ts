@@ -6,7 +6,7 @@ describe('ClipboardController', () => {
     let mockedClipboardController: ClipboardController;
 
     const clipboardValue = 'a json string frame';
-    const writeText = jest.fn().mockResolvedValue('');;
+    const writeText = jest.fn().mockResolvedValue('');
     const readText = jest.fn().mockResolvedValue(clipboardValue);
 
     Object.assign(navigator, {
@@ -22,7 +22,6 @@ describe('ClipboardController', () => {
         pasteFrames: async () => getEditorResponseData(castToEditorResponse(null)),
         getClipboardContentType: async () => getEditorResponseData(castToEditorResponse(null)),
     };
-
 
     beforeEach(() => {
         mockedClipboardController = new ClipboardController(mockEditorApi);
