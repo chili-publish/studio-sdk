@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
+import { ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -26,16 +26,7 @@ export class VariableController {
      */
     getAll = async () => {
         const res = await this.#editorAPI;
-        return res
-            .getVariables()
-            .then((result) => getEditorResponseData<Variable[]>(result))
-            .then((resp) => {
-                const update = resp;
-                if (update.parsedData) {
-                    update.parsedData = this.makeVariablesBackwardsCompatible(update.parsedData);
-                }
-                return update;
-            });
+        return res.getVariables().then((result) => getEditorResponseData<Variable[]>(result));
     };
 
     /**
@@ -45,16 +36,7 @@ export class VariableController {
      */
     getById = async (id: string) => {
         const res = await this.#editorAPI;
-        return res
-            .getVariableById(id)
-            .then((result) => getEditorResponseData<Variable>(result))
-            .then((resp) => {
-                const update = resp;
-                if (update.parsedData) {
-                    update.parsedData = this.makeVariableBackwardsCompatible(update.parsedData);
-                }
-                return update;
-            });
+        return res.getVariableById(id).then((result) => getEditorResponseData<Variable>(result));
     };
 
     /**
@@ -64,16 +46,7 @@ export class VariableController {
      */
     getByName = async (name: string) => {
         const res = await this.#editorAPI;
-        return res
-            .getVariableByName(name)
-            .then((result) => getEditorResponseData<Variable>(result))
-            .then((resp) => {
-                const update = resp;
-                if (update.parsedData) {
-                    update.parsedData = this.makeVariableBackwardsCompatible(update.parsedData);
-                }
-                return update;
-            });
+        return res.getVariableByName(name).then((result) => getEditorResponseData<Variable>(result));
     };
 
     /**
@@ -289,32 +262,4 @@ export class VariableController {
     removeSource = async (id: string) => {
         return this.setValue(id, null);
     };
-
-    private makeVariablesBackwardsCompatible(variables: Variable[]) {
-        return variables.map((variable) => {
-            return this.makeVariableBackwardsCompatible(variable);
-        });
-    }
-
-    private makeVariableBackwardsCompatible(variable: Variable) {
-        if (variable.type !== VariableType.list) {
-            return variable;
-        }
-
-        return this.makeListVariableBackwardsCompatible(variable as ListVariable);
-    }
-
-    private makeListVariableBackwardsCompatible(listVariable: ListVariable) {
-        const updated = listVariable;
-
-        const items = listVariable.items as unknown as ListVariableItem[];
-        const selected = listVariable.selected as unknown as ListVariableItem | undefined;
-
-        const newItems = items.map((item) => item.value);
-
-        updated.items = newItems;
-        updated.selected = selected?.value;
-
-        return updated;
-    }
 }

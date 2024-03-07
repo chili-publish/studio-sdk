@@ -170,7 +170,12 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalled();
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([
             { id: '1', type: VariableType.group },
-            { id: 'varList', type: VariableType.list, selected: 'Orange', items: ['Apple', 'Pear', 'Orange'] },
+            {
+                id: 'varList',
+                type: VariableType.list,
+                selected: { value: 'Orange' },
+                items: [{ value: 'Apple' }, { value: 'Pear' }, { value: 'Orange' }],
+            },
         ]);
     });
     it('Should be possible to subscribe to onSelectedLayoutFramesChanged', async () => {
