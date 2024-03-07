@@ -4,6 +4,7 @@ import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { BarcodeController } from '../../controllers/BarcodeController';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 import { BarcodeSource, BarcodeSourceTypeEnum } from '../../types/FrameTypes';
+import { BarcodeType } from '../../types/BarcodeTypes';
 
 let id: Id;
 
@@ -69,6 +70,108 @@ describe('BarcodeController', () => {
             await mockedBarcodeController.setBarcodeSource(id, source);
             expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledTimes(2);
             expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledWith(id, JSON.stringify(source));
+        });
+    });
+    describe('getBarcodeConfigurationOptions', () => {
+        it('retuns valid configuration for qr code', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.qr);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for code-128', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code128);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for code-39', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code39);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for code-93', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code93);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for data matrix', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.dataMatrix);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for ean-13', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.ean13);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for ean-8', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.ean8);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for isbn', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.isbn);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for upc-a', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.upca);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
+        });
+        it('retuns valid configuration for upc-e', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.upce);
+            expect(options).toEqual({
+                allowEnableMagnification: false,
+                allowBarHeight: false,
+                allowQuietZone: false,
+                allowedCharacterSets: undefined,
+                allowedErrorCorrectionLevels: undefined,
+            });
         });
     });
 });
