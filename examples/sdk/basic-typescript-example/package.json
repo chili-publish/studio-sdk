@@ -1,0 +1,22 @@
+{
+  "name": "editor-integration-example-ts-npm",
+  "version": "0.0.1",
+  "description": "This is a basic example integration of the @chili-publish/editor-sdk package with TS and NPM (yarn)",
+  "main": "index.js",
+  "repository": "https://github.com/chili-publish/editor-sdk-integration-examples",
+  "author": "chili-publish",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@chili-publish/studio-sdk": "../../../packages/sdk"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.2.8",
+    "typescript": "^4.6.3",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}

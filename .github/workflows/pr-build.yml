@@ -1,72 +1,73 @@
 name: PR Build
 on: [pull_request]
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [18]
-        steps:
-            - uses: FranzDiebold/github-env-vars-action@v2
-            - uses: actions/checkout@v1
-            - name: Check cache
-              id: cache
-              uses: actions/cache@v1
-              with:
-                  path: packages/sdk/node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-                  restore-keys: |
-                      ${{ runner.os }}-node-
-            - name: Use Node ${{ matrix.node-version }}
-              uses: actions/setup-node@v1
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  registry-url: 'https://npm.pkg.github.com'
-                  scope: '@chili-publish'
-            - name: install dependencies
-              run: yarn install
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
-            - name: run license check
-              run: yarn validate-licenses
-            - name: run linting
-              run: yarn ci-lint
-            - name: run tests
-              run: yarn cover
-            - name: Publish Unit Test Results
-              continue-on-error: true
-              uses: EnricoMi/publish-unit-test-result-action@v1
-              if: always()
-              with:
-                  files: packages/sdk/coverage/**/*.xml
-            - name: build code
-              run: yarn build
-            - name: ensure packages/sdk/upload exists
-              run: node cicd.js sdk mkdir -p upload/dev-packages/$CI_PR_ID
-            - name: pack sdk build
-              run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_PR_ID/studio-sdk.tgz
-            - name: prepare for connectors upload
-              run: node cicd.js connectors yarn prepare-upload
-            - name: copy file branch
-              run: |
-                  path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
-                  cp -R packages/sdk/coverage/lcov-report/src packages/sdk/coverage/lcov-report/coverage.html packages/sdk/coverage/lcov-report/base.css packages/sdk/coverage/lcov-report/prettify.css ${path%"/merge"}
-            - name: Copy to Azure Blob Storage
-              uses: azure/CLI@v1
-              with:
-                  inlineScript: |
-                      az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-            - name: Copy to Azure Blob Storage (Connectors)
-              uses: azure/CLI@v1
-              with:
-                  inlineScript: |
-                      az storage blob upload-batch -d sdk -s packages/connectors/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-            - name: prepare for actions upload
-              run: |
-                node cicd.js actions node scripts/prepare-release.mjs
-            - name: Copy to Azure Blob Storage (Actions)
-              uses: azure/CLI@v1
-              with:
-                  inlineScript: |
-                      az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-          
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - uses: FranzDiebold/github-env-vars-action@v2
+      - uses: actions/checkout@v1
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: packages/sdk/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Use Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@chili-publish"
+      - name: install dependencies
+        run: yarn install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+      - name: run license check
+        run: yarn validate-licenses
+      - name: run linting
+        run: yarn ci-lint
+      - name: run tests
+        run: yarn cover
+      - name: Publish Unit Test Results
+        continue-on-error: true
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: packages/sdk/coverage/**/*.xml
+      - name: build code
+        run: yarn build
+      - name: validate sdk examples
+        run: cd examples/sdk/basic-typescript-example && npm install && npm run build
+      - name: ensure packages/sdk/upload exists
+        run: node cicd.js sdk mkdir -p upload/dev-packages/$CI_PR_ID
+      - name: pack sdk build
+        run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_PR_ID/studio-sdk.tgz
+      - name: prepare for connectors upload
+        run: node cicd.js connectors yarn prepare-upload
+      - name: copy file branch
+        run: |
+          path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
+          cp -R packages/sdk/coverage/lcov-report/src packages/sdk/coverage/lcov-report/coverage.html packages/sdk/coverage/lcov-report/base.css packages/sdk/coverage/lcov-report/prettify.css ${path%"/merge"}
+      - name: Copy to Azure Blob Storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+      - name: Copy to Azure Blob Storage (Connectors)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch -d sdk -s packages/connectors/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+      - name: prepare for actions upload
+        run: |
+          node cicd.js actions node scripts/prepare-release.mjs
+      - name: Copy to Azure Blob Storage (Actions)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
