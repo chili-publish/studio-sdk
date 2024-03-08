@@ -37,56 +37,65 @@ export class ToolController {
     };
 
     /**
-     * This method sets the used tool to a Pointer tool
+     * @deprecated
+     * This method sets the used tool to the select tool.
+     * This method is deprecated in favour of the setSelect tool setter.
      */
     setPointer = async () => {
         return this.setTool(ToolType.SELECT);
     };
 
     /**
-     * This method sets the used tool to a Move tool
+     * This method sets the used tool to the select tool.
+     */
+    setSelect = async () => {
+        return this.setTool(ToolType.SELECT);
+    };
+
+    /**
+     * This method sets the used tool to the Move tool
      */
     setHand = async () => {
         return this.setTool(ToolType.HAND);
     };
 
     /**
-     * This method sets the used tool to a Zoom tool
+     * This method sets the used tool to the Zoom tool
      */
     setZoom = async () => {
         return this.setTool(ToolType.ZOOM);
     };
 
     /**
-     * This method sets the used tool to a TextFrame tool
+     * This method sets the used tool to the TextFrame tool
      */
     setTextFrame = async () => {
         return this.setTool(ToolType.TEXT_FRAME);
     };
 
     /**
-     * This method sets the used tool to a ImageFrame tool
+     * This method sets the used tool to the ImageFrame tool
      */
     setImageFrame = async () => {
         return this.setTool(ToolType.IMAGE_FRAME);
     };
 
     /**
-     * This method sets the used tool to a ShapeRectangle tool
+     * This method sets the used tool to the ShapeRectangle tool
      */
     setShapeRect = async () => {
         return this.setTool(ToolType.SHAPE_RECT);
     };
 
     /**
-     * This method sets the used tool to a ShapeEllipse tool
+     * This method sets the used tool to the ShapeEllipse tool
      */
     setShapeEllipse = async () => {
         return this.setTool(ToolType.SHAPE_ELLIPSE);
     };
 
     /**
-     * This method sets the used tool to a ShapePolygon tool
+     * This method sets the used tool to the ShapePolygon tool
      */
     setShapePolygon = async () => {
         return this.setTool(ToolType.SHAPE_POLYGON);

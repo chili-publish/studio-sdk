@@ -1,0 +1,14 @@
+{
+  "name": "basic-javascript-example",
+  "version": "1.0.0",
+  "description": "In this example, the SDK gets initialised in the most simple form. It loads in the SDK without any packagemanager, just as a script from our CDN endpoint, using always the latest version in the process.",
+  "main": "integration.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@chili-publish",
+  "license": "MIT",
+  "dependencies": {
+    "@chili-publish/studio-sdk": "../../../packages/sdk"
+  }
+}
