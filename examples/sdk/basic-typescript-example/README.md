@@ -4,6 +4,11 @@ This basic example shows how simple it is to make a TypeScript integration, as w
 
 ## How to run
 
+### Prerequisites
+
+- npm or yarn
+- a webserver to serve your application
+
 ### Install dependencies
 
 First of all install the SDK with the packagemanager of your preference. Both NPM and Yarn are supported.
