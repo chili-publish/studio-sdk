@@ -9,7 +9,7 @@ jobs:
       matrix:
         node-version: [18]
     steps:
-      - uses: actions/checkout@4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PACKAGE_SECRET }}
       - name: Check cache
