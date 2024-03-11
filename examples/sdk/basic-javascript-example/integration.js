@@ -126,7 +126,7 @@ const onLayoutsChanged = (layouts) => {
         item.classList = `${item.classList} selected`;
       }
       item.setAttribute("id", layout.id);
-      item.setAttribute("onclick", `onLayoutClick(${layout.id})`);
+      item.setAttribute("onclick", `onLayoutClick('${layout.id}')`);
       const itemText = document.createTextNode(layout.name);
       item.appendChild(itemText);
       listContainer.appendChild(item);
