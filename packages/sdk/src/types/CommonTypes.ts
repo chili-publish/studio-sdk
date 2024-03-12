@@ -100,6 +100,7 @@ export type InitialStateType = {
 export interface PropertyState<T> {
     value: T;
     isOverride: boolean;
+    isReadOnly: boolean;
 }
 
 export interface SelectedLayoutFrame {

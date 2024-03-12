@@ -472,7 +472,9 @@ export class FrameController {
         return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
     /**
-     * This method will set the constrainProportions property of a specified frame.
+     * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
+     * true, the frame's constrainProportions property cannot be changed and this method will return an error.
+     *
      * @param id the id of the frame that needs to get updated.
      * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
