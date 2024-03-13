@@ -1,7 +1,7 @@
 {
   "name": "basic-javascript-example",
   "version": "1.0.0",
-  "description": "In this example, the SDK gets initialised in the most simple form. It loads in the SDK without any packagemanager, just as a script from our CDN endpoint, using always the latest version in the process.",
+  "description": "This is a basic example integration of the @chili-publish/studio-sdk package with TS and NPM (yarn)",
   "main": "integration.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
