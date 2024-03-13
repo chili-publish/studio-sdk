@@ -17,7 +17,7 @@ export enum MediaType {
 
 export enum ConnectorType {
     media = 'media',
-    fonts = 'font',
+    fonts = 'fonts',
 }
 
 export enum SortBy {
