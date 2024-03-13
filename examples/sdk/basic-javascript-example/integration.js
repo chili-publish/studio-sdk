@@ -76,7 +76,7 @@ const onToolChanged = (tool) => {
   }
 };
 
-// Play animtion
+// Play animation
 const playAnimation = async () => {
   SDK.animation.play();
 };
