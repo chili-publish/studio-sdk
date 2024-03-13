@@ -1,7 +1,11 @@
 # Basic Vanilla Javascript SDK example
 
 In this example, the SDK gets initialised in the most simple form.
-It loads in the SDK without any packagemanager, just as a script from our CDN endpoint, using always the latest version in the process.
+It loads in the SDK without via a packagemanager. This could be either `npm` or `yarn`.
+
+simply run `npm install @chili-publish/studio-sdk --save` and you're good to go.
+
+\*\* note that this example uses a local reference to the package so that needs to be changed first
 
 ## How to run
 
