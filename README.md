@@ -4,7 +4,7 @@
 
 [![Build PR](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-merge.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/pr-merge.yml) [![Publish Package](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-release-npm.yml/badge.svg)](https://github.com/chili-publish/studio-sdk/actions/workflows/publish-package.yml)
 
-This is the Open Source GraFx Studio SDK which will make your life easier when you’re working on and integrating GraFx Studio.
+This is the Open Source GraFx Studio SDK which you'll need while working on and integrating GraFx Studio.
 
 The project is currently under active development, contributions are welcome in the form of [creating issues](https://github.com/chili-publish/studio-sdk/issues/new/choose) or in the form of actual contributions on the code. See our [CONTRIBUTING.md](https://github.com/chili-publish/studio-sdk/blob/develop/CONTRIBUTING.md) file to get started on your first contribution.
 
@@ -13,9 +13,6 @@ The project is currently under active development, contributions are welcome in 
 [Link to functional documentation and getting started](https://docs.chiligrafx.com)
 
 [Link to the official SDK documentation on GitHub](https://chili-publish.github.io/studio-sdk/)\*
-
-[Link to Studio UI, a live integration example](https://github.com/chili-publish/studio-ui)
-
 
 \*Note: the hosted documentation is always based on the latest version. To get the documentation of the release that you use, you can download the sourcecode of that release and open `/docs/index.html`.
 
@@ -55,8 +52,8 @@ Then you can easily import the SDK in your JS and TS files, but also the typing 
 
 ```typescript
 // TS example
-import EditorSDK from '@chili-publish/studio-sdk';
-import type { Variable } from '@chili-publish/studio-sdk';
+import StudioSDK from "@chili-publish/studio-sdk";
+import type { Variable } from "@chili-publish/studio-sdk";
 ```
 
 ### Load script
@@ -67,8 +64,13 @@ The other way would be to include the sdk using the script tag just before the c
 <script src="https://path/to/sdk/latest/main.js"></script>
 ```
 
-To really get started, there is a nice guide on [the official documentation page](https://chili-publish.github.io/studio-sdk/).
-And you can find basic integration examples in [one of our other repositories](https://github.com/chili-publish/studio-sdk-integration-examples).
+To really get started, or to get inspiration, these are examples of live integrations.
+
+[Link to some basic example integrations in JS and TS](https://github.com/chili-publish/studio-sdk/tree/main/examples/sdk)
+
+[Link to Studio UI, a live advanced integration example used in production (My Projects in CHILI GraFx)](https://github.com/chili-publish/studio-ui)\*
+
+\* Studio UI itself can also be integrated and might be exactly what you need, with almost no effort.
 
 ## Contribute?
 
