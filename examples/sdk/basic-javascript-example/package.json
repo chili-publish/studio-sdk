@@ -1,0 +1,14 @@
+{
+  "name": "basic-javascript-example",
+  "version": "1.0.0",
+  "description": "This is a basic example integration of the @chili-publish/studio-sdk package with TS and NPM (yarn)",
+  "main": "integration.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@chili-publish",
+  "license": "MIT",
+  "dependencies": {
+    "@chili-publish/studio-sdk": "../../../packages/sdk"
+  }
+}
