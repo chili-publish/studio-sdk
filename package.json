@@ -1,25 +1,25 @@
 {
-    "version": "1.7.4",
-    "name": "studio-sdk-monorepo",
-    "description": "The umbrella project of grafx studio sdk",
-    "scripts": {
-        "install": "node cicd.js sdk,actions yarn install",
-        "clean": "node cicd.js sdk yarn clean",
-        "build": "node cicd.js sdk,actions,connectors yarn build",
-        "build:dev": "node cicd.js sdk yarn build:dev",
-        "lint": "node cicd.js sdk yarn lint",
-        "testw": "node cicd.js sdk yarn testw",
-        "test": "node cicd.js sdk yarn test",
-        "ci-lint": "node cicd.js sdk yarn ci-lint",
-        "format": "node cicd.js sdk yarn format",
-        "format-staged": "node cicd.js sdk yarn format-staged",
-        "cover": "node cicd.js sdk yarn cover",
-        "make-badges": "node cicd.js sdk yarn make-badges",
-        "validate-licenses": "node cicd.js sdk yarn validate-licenses",
-        "build-docs-md": "node cicd.js sdk yarn build-docs-md",
-        "build-docs-html": "node cicd.js sdk yarn build-docs-html"
-    },
-    "dependencies": {
-        "glob": "^10.3.5"
-    }
+  "version": "1.7.4",
+  "name": "studio-sdk-monorepo",
+  "description": "The umbrella project of grafx studio sdk",
+  "scripts": {
+    "install": "node cicd.js sdk,actions,connectors yarn install",
+    "clean": "node cicd.js sdk yarn clean",
+    "build": "node cicd.js sdk,actions,connectors yarn build",
+    "build:dev": "node cicd.js sdk yarn build:dev",
+    "lint": "node cicd.js sdk yarn lint",
+    "testw": "node cicd.js sdk yarn testw",
+    "test": "node cicd.js sdk yarn test",
+    "ci-lint": "node cicd.js sdk yarn ci-lint",
+    "format": "node cicd.js sdk yarn format",
+    "format-staged": "node cicd.js sdk yarn format-staged",
+    "cover": "node cicd.js sdk yarn cover",
+    "make-badges": "node cicd.js sdk yarn make-badges",
+    "validate-licenses": "node cicd.js sdk yarn validate-licenses",
+    "build-docs-md": "node cicd.js sdk yarn build-docs-md",
+    "build-docs-html": "node cicd.js sdk yarn build-docs-html"
+  },
+  "dependencies": {
+    "glob": "^10.3.5"
+  }
 }
