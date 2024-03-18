@@ -22,7 +22,7 @@ export class BarcodeController {
     }
 
     /**
-     * This method updates properties of the barcode
+     * @experimental This method updates properties of the barcode
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param properties A property to update
      * @returns
@@ -35,7 +35,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the background of a barcode enabled or disabled
+     * @experimental This method will set the background of a barcode enabled or disabled
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param enableBackground Whether the barcode's background is visible.
      * @returns
@@ -46,7 +46,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the barcode background color of a specified barcode frame.
+     * @experimental This method will set the barcode background color of a specified barcode frame.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param backgroundColor the new barcode background color that you want to set to the barcodeFrame.
      * @returns
@@ -57,7 +57,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the visibility of the barcode's bars.
+     * @experimental This method will set the visibility of the barcode's bars.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param enableBars Whether the barcode bars are visible.
      * @returns
@@ -68,7 +68,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the bar color of a specified barcode frame.
+     * @experimental This method will set the bar color of a specified barcode frame.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param barColor the new bar color that you want to set to the barcodeFrame.
      * @returns
@@ -79,8 +79,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the source of the barcode to the given source.
-     *
+     * @experimental This method will set the source of the barcode to the given source.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param source
      * @returns
@@ -91,8 +90,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method returns the possible configation options which are valid for the given barcode type.
-     *
+     * @experimental This method returns the possible configuration options which are valid for the given barcode type.
      * @param type the barcode type for which the configuration options are requested.
      * @returns a BarcodeConfigurationOptions object
      */
