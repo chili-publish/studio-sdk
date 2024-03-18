@@ -114,12 +114,37 @@ export class SubscriberController {
      *
      * @param authRefreshRequest Stringified object of AuthRefreshRequest
      */
-    onAuthExpired = (authRefreshRequest: string) => {
+    onAuthExpired = async (authRefreshRequest: string) => {
         const callBack = this.config.onAuthExpired;
 
-        return callBack
-            ? callBack(JSON.parse(authRefreshRequest)).then((auth) => JSON.stringify(auth))
-            : new Promise<string | null>((resolve) => resolve(null));
+        if (!callBack) {
+            return null;
+        }
+
+        const authCredentials = await callBack(JSON.parse(authRefreshRequest));
+
+        return authCredentials != null ? JSON.stringify(authCredentials) : null;
+    };
+
+    /**
+     * Listener on viewport request.
+     * The callback should resolve to the visible viewport. If the
+     * listener is not defined, the viewport will take full size.
+     *
+     * When this emits it means that the engine requested the viewport for a
+     * zoom to page call.
+     */
+    onViewportRequested = async () => {
+        console.log('onviewporrequested');
+        const callBack = this.config.onViewportRequested;
+
+        if (!callBack) {
+            return null;
+        }
+
+        const viewport = await callBack();
+
+        return viewport != null ? JSON.stringify(viewport) : null;
     };
 
     /**
