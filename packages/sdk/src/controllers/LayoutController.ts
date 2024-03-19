@@ -219,26 +219,38 @@ export class LayoutController {
 
     /**
      * This method sets the fill color of a specific layout.
-     * Note: Depending on the layout intent, some colors might not be valid (eg opacity for digitalAnimated, any color for print) 
-     * 
+     * Note: Depending on the layout intent, some colors might not be valid (eg opacity for digitalAnimated, any color for print)
+     *
      * @param id the id of a specific layout
      * @param color the color that will be used for the layout
      */
     setFillColor = async (id: Id, color: ColorUsage) => {
         const res = await this.#editorAPI;
         return res.setLayoutFillColor(id, JSON.stringify(color)).then((result) => getEditorResponseData<null>(result));
-    }
+    };
+
+    /**
+     * This is a convience method to enable or disable the fill color of a specific layout.
+     * Note: Depending on the layout intent, disabling might not be valid (eg disabling for digitalAnimated)
+     *
+     * @param id the id of a specific layout
+     * @param enabled  whether the fill color should be enabled or disabled
+     */
+    setFillColorEnabled = async (id: Id, enabled: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutFillColorEnabled(id, enabled).then((result) => getEditorResponseData<null>(result));
+    };
 
     /**
      * This method resets the fill color of a specific layout to its original (inherited) value.
      * Note: Calling this on the top layout is not valid
-     * 
+     *
      * @param id The id of the (child) layout to reset the fill color for
      */
     resetFillColor = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayoutFillColor(id).then((result) => getEditorResponseData<null>(result));
-    }
+    };
 
     /**
      * This method sets the bleed value of a specific layout.
