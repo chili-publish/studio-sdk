@@ -135,7 +135,6 @@ export class SubscriberController {
      * zoom to page call.
      */
     onViewportRequested = async () => {
-        console.log('onviewporrequested');
         const callBack = this.config.onViewportRequested;
 
         if (!callBack) {
