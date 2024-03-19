@@ -8,7 +8,7 @@ module.exports = (env) => ({
         path: path.resolve(__dirname, '_bundles'),
         filename: '[name].js',
         libraryTarget: 'umd',
-        library: 'ChiliEditorSDK',
+        library: 'StudioSDK',
         umdNamedDefine: true,
         globalObject: 'this',
     },
@@ -48,11 +48,13 @@ module.exports = (env) => ({
     ],
     optimization: {
         minimize: true,
-        minimizer: [new TerserPlugin({
-            terserOptions: {
-                mangle: false
-            }
-        })],
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    mangle: false,
+                },
+            }),
+        ],
     },
     devtool: 'source-map',
 });

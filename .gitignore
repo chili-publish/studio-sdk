@@ -15,3 +15,5 @@ lib-esm/
 _bundles/
 coverage/
 docs/
+
+examples/**/package-lock.json
