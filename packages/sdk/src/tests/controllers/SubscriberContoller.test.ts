@@ -361,19 +361,20 @@ describe('SubscriberController', () => {
     });
 
     describe('onViewportRequested', () => {
-        it('returns the viewport defined by the callback', async () => {
+        it('returns the viewport defined by the callback', () => {
             const viewport: Viewport = { top: 0, left: 0, width: 100, height: 100, margin: 10 };
 
             const mockConfig = {
                 onViewportRequested() {
-                    return new Promise<Viewport | null>((resolve) => resolve(viewport));
+                    return viewport;
                 },
             };
 
             jest.spyOn(mockConfig, 'onViewportRequested');
+
             const mockedSubscriberController = new SubscriberController(mockConfig);
 
-            const resultJsonString = await mockedSubscriberController.onViewportRequested();
+            const resultJsonString = mockedSubscriberController.onViewportRequested();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultViewport: Viewport = JSON.parse(resultJsonString!);
 
@@ -381,10 +382,10 @@ describe('SubscriberController', () => {
             expect(mockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a null token if the listener is not defined', async () => {
+        it('returns a null token if the listener is not defined', () => {
             const mockedSubscriberController = new SubscriberController({});
 
-            const result = await mockedSubscriberController.onViewportRequested();
+            const result = mockedSubscriberController.onViewportRequested();
 
             expect(result).toBe(null);
         });

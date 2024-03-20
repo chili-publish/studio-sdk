@@ -134,14 +134,14 @@ export class SubscriberController {
      * When this emits it means that the engine requested the viewport for a
      * zoom to page call.
      */
-    onViewportRequested = async () => {
+    onViewportRequested = () => {
         const callBack = this.config.onViewportRequested;
 
         if (!callBack) {
             return null;
         }
 
-        const viewport = await callBack();
+        const viewport = callBack();
 
         return viewport != null ? JSON.stringify(viewport) : null;
     };

@@ -54,7 +54,7 @@ interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
     onAuthExpired: (authRefreshRequest: string) => Promise<string | null>;
-    onViewportRequested: () => Promise<string | null>;
+    onViewportRequested: () => string | null;
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;

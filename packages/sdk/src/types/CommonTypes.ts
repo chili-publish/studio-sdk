@@ -22,7 +22,7 @@ export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
     onAuthExpired?: (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>;
-    onViewportRequested?: () => Promise<Viewport | null>;
+    onViewportRequested?: () => Viewport | null;
     onDocumentLoaded?: () => void;
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead
