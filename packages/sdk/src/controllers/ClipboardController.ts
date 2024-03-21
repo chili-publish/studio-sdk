@@ -63,7 +63,7 @@ export class ClipboardController {
         const result = await res.pasteFrames(clipboardData);
 
         return getEditorResponseData<null>(result);
-    }
+    };
 
     /**
      * This method will get the content type of the OS clipboard
@@ -76,7 +76,5 @@ export class ClipboardController {
         const result = await res.getClipboardContentType(clipboardData);
 
         return getEditorResponseData<ClipboardContentType>(result);
-    }
+    };
 }
-
-

@@ -49,6 +49,7 @@ export type Layout = {
     intent: PropertyState<LayoutIntent>;
     bleed: PropertyState<LayoutBleed>;
     fillColor: PropertyState<ColorUsage>;
+    fillColorEnabled: PropertyState<ColorUsage>;
 };
 
 // used by onLayoutsChanged
