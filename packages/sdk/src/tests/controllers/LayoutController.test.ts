@@ -29,6 +29,7 @@ const mockedEditorApi: EditorAPI = {
     setLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutIntent: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutFillColorEnabled: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
     updateLayoutBleed: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -56,6 +57,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetLayoutIntent');
     jest.spyOn(mockedEditorApi, 'setLayoutFillColor');
     jest.spyOn(mockedEditorApi, 'resetLayoutFillColor');
+    jest.spyOn(mockedEditorApi, 'setLayoutFillColorEnabled');
     jest.spyOn(mockedEditorApi, 'updateLayoutBleed');
 
     mockId = mockSelectPage.layoutId;
@@ -170,6 +172,14 @@ describe('LayoutController', () => {
     it('Should be possible to reset the layout fill color', async () => {
         await mockedLayoutController.resetFillColor('1');
         expect(mockedEditorApi.resetLayoutFillColor).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to set the layout fill color to disabled', async () => {
+        await mockedLayoutController.setFillColorEnabled('1', false);
+        expect(mockedEditorApi.setLayoutFillColorEnabled).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to set the layout fill color to enabled', async () => {
+        await mockedLayoutController.setFillColorEnabled('1', true);
+        expect(mockedEditorApi.setLayoutFillColorEnabled).toHaveBeenCalledTimes(1);
     });
     describe('bleed', () => {
         it('Should be possible set the combined bleed value', async () => {

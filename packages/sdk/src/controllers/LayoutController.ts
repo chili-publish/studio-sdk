@@ -230,6 +230,18 @@ export class LayoutController {
     };
 
     /**
+     * This is a convenience method to enable or disable the fill color of a specific layout.
+     * Note: Depending on the layout intent, disabling might not be valid (eg disabling for digitalAnimated)
+     *
+     * @param id the id of a specific layout
+     * @param enabled  whether the fill color should be enabled or disabled
+     */
+    setFillColorEnabled = async (id: Id, enabled: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutFillColorEnabled(id, enabled).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method resets the fill color of a specific layout to its original (inherited) value.
      * Note: Calling this on the top layout is not valid
      *
