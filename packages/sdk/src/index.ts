@@ -116,4 +116,6 @@ export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
 
+export type { Viewport } from './types/ViewportTypes';
+
 export default SDK;
