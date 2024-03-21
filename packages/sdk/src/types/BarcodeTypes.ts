@@ -7,7 +7,6 @@ export enum BarcodeType {
     dataMatrix = 'dataMatrix',
     ean13 = 'ean13',
     ean8 = 'ean8',
-    isbn = 'isbn',
     qr = 'qr',
     upca = 'upca',
     upce = 'upce',
@@ -18,6 +17,7 @@ export interface BarcodeProperties {
     backgroundColor?: ColorUsage;
     enableBars?: boolean;
     barColor?: ColorUsage;
+    enableText?: boolean;
 }
 
 export enum BarcodeErrorCorrectionLevel {
@@ -41,4 +41,5 @@ export interface BarcodeConfigurationOptions {
     allowQuietZone: boolean;
     allowBarHeight: boolean;
     allowEnableMagnification: boolean;
+    allowToggleText: boolean;
 }

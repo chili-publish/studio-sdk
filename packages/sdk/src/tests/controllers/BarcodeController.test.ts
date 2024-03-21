@@ -81,6 +81,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: false,
             });
         });
         it('retuns valid configuration for code-128', () => {
@@ -91,6 +92,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: true,
             });
         });
         it('retuns valid configuration for code-39', () => {
@@ -101,6 +103,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: true,
             });
         });
         it('retuns valid configuration for code-93', () => {
@@ -111,6 +114,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: true,
             });
         });
         it('retuns valid configuration for data matrix', () => {
@@ -121,6 +125,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: false,
             });
         });
         it('retuns valid configuration for ean-13', () => {
@@ -131,6 +136,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: false,
             });
         });
         it('retuns valid configuration for ean-8', () => {
@@ -141,16 +147,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
-            });
-        });
-        it('retuns valid configuration for isbn', () => {
-            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.isbn);
-            expect(options).toEqual({
-                allowEnableMagnification: false,
-                allowBarHeight: false,
-                allowQuietZone: false,
-                allowedCharacterSets: undefined,
-                allowedErrorCorrectionLevels: undefined,
+                allowToggleText: false,
             });
         });
         it('retuns valid configuration for upc-a', () => {
@@ -161,6 +158,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: false,
             });
         });
         it('retuns valid configuration for upc-e', () => {
@@ -171,6 +169,7 @@ describe('BarcodeController', () => {
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
+                allowToggleText: false,
             });
         });
     });

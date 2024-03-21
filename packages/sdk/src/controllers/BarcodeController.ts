@@ -96,12 +96,24 @@ export class BarcodeController {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getBarcodeConfigationOptions = (type: BarcodeType): BarcodeConfigurationOptions => {
+        var allowToggleText = true;
+        switch (type) {
+            case BarcodeType.qr:
+            case BarcodeType.dataMatrix:
+            case BarcodeType.ean13:
+            case BarcodeType.ean8:
+            case BarcodeType.upca:
+            case BarcodeType.upce:
+                allowToggleText = false;
+                break;
+        }
         return {
             allowEnableMagnification: false,
             allowBarHeight: false,
             allowQuietZone: false,
             allowedCharacterSets: undefined,
             allowedErrorCorrectionLevels: undefined,
+            allowToggleText: allowToggleText,
         };
     };
 }
