@@ -119,4 +119,6 @@ export * from './types/ShapeTypes';
 
 export * from './types/BarcodeTypes';
 
+export type { Viewport } from './types/ViewportTypes';
+
 export default SDK;
