@@ -96,7 +96,7 @@ export class BarcodeController {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getBarcodeConfigationOptions = (type: BarcodeType): BarcodeConfigurationOptions => {
-        var allowToggleText = true;
+        let allowToggleText = true;
         switch (type) {
             case BarcodeType.qr:
             case BarcodeType.dataMatrix:
