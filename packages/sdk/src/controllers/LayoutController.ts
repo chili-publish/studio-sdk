@@ -230,7 +230,7 @@ export class LayoutController {
     };
 
     /**
-     * This is a convience method to enable or disable the fill color of a specific layout.
+     * This is a convenience method to enable or disable the fill color of a specific layout.
      * Note: Depending on the layout intent, disabling might not be valid (eg disabling for digitalAnimated)
      *
      * @param id the id of a specific layout
