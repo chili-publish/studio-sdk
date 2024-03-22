@@ -123,6 +123,8 @@ export type BarcodeFrame = {
         backgroundColor: ColorUsage;
         enableBarColor: boolean;
         barColor: ColorUsage;
+        enableText: boolean;
+        barHeight: number;
     };
     src: BarcodeSource;
     barcodeType: BarcodeType;
