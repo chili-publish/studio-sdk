@@ -57,6 +57,27 @@ describe('BarcodeController', () => {
             expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(4);
             expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(id, JSON.stringify({ barColor: color }));
         });
+        it('Should be possible to enable text', async () => {
+            await mockedBarcodeController.setEnableText(id, true);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(5);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(id, JSON.stringify({ enableText: true }));
+        });
+        it('Should be possible to disable text', async () => {
+            await mockedBarcodeController.setEnableText(id, false);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(6);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ enableText: false }),
+            );
+        });
+        it('Should be possible to set bar height', async () => {
+            await mockedBarcodeController.setBarHeight(id, '10px');
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(7);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ barHeight: '10px' }),
+            );
+        });
     });
     describe('setBarcodeSource', () => {
         it('Should be possible to set source to text', async () => {
@@ -88,7 +109,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code128);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
@@ -99,7 +120,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code39);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
@@ -110,7 +131,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code93);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
@@ -132,7 +153,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.ean13);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
@@ -143,7 +164,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.ean8);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
@@ -154,7 +175,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.upca);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
@@ -165,7 +186,7 @@ describe('BarcodeController', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.upce);
             expect(options).toEqual({
                 allowEnableMagnification: false,
-                allowBarHeight: false,
+                allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,

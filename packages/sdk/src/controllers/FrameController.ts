@@ -605,7 +605,7 @@ export class FrameController {
     };
 
     /**
-     * This method will set the blend mode of a specified shape frame
+     * This method will set the blend mode of a specified frame
      * @param id the id of a specific frame
      * @param blendMode the blend mode
      * @returns

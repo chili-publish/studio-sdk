@@ -90,6 +90,28 @@ export class BarcodeController {
     };
 
     /**
+     * @experimental This method enables/disables displaying the text of the barcode.
+     * @param id the id of the barcodeFrame that needs to be updated.
+     * @param enableText true if the text should be displayed, false otherwise.
+     * @returns
+     */
+    setEnableText = async (id: Id, enableText: boolean) => {
+        const properties: BarcodeProperties = { enableText: enableText };
+        return this.setBarcodeProperties(id, properties);
+    };
+
+    /**
+     * @experimental This method sets the bar height for 1-dimensional barcodes.
+     * @param id the id of the barcodeFrame that needs to be updated.
+     * @param barHeight the height of the bars in the barcode. The string value will be calculated (f.e. 1+1 will result in 2)
+     * @returns
+     */
+    setBarHeight = async (id: Id, barHeight: string) => {
+        const properties: BarcodeProperties = { barHeight: barHeight };
+        return this.setBarcodeProperties(id, properties);
+    };
+
+    /**
      * @experimental This method returns the possible configuration options which are valid for the given barcode type.
      * @param type the barcode type for which the configuration options are requested.
      * @returns a BarcodeConfigurationOptions object
@@ -97,9 +119,13 @@ export class BarcodeController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getBarcodeConfigationOptions = (type: BarcodeType): BarcodeConfigurationOptions => {
         let allowToggleText = true;
+        let allowBarHeight = true;
         switch (type) {
             case BarcodeType.qr:
             case BarcodeType.dataMatrix:
+                allowToggleText = false;
+                allowBarHeight = false;
+                break;
             case BarcodeType.ean13:
             case BarcodeType.ean8:
             case BarcodeType.upca:
@@ -109,7 +135,7 @@ export class BarcodeController {
         }
         return {
             allowEnableMagnification: false,
-            allowBarHeight: false,
+            allowBarHeight: allowBarHeight,
             allowQuietZone: false,
             allowedCharacterSets: undefined,
             allowedErrorCorrectionLevels: undefined,
