@@ -386,21 +386,15 @@ export class FrameController {
 
     /**
      * This method will create a new barcode frame of 'type' type to the layout positioned on the requested
-     * coordinates. Any coordinate that is not specified will default to 'center'. If any size property is
-     * not specified, that property will use a sensible default
+     * coordinates. Any coordinate that is not specified will default to 'center'.
      *
      * @param type the type of barcode to create
-     * @param position optional position object where you can specify the x, y, width and height of the barcode frame
+     * @param position optional position object where you can specify the x, y of the barcode frame
      * @returns
      */
-    createBarcodeFrame = async (
-        type: BarcodeType,
-        position?: { x?: number; y?: number; width?: number; height?: number },
-    ) => {
+    createBarcodeFrame = async (type: BarcodeType, position?: { x?: number; y?: number }) => {
         const res = await this.#editorAPI;
-        return res
-            .addBarcodeFrame(type, position?.x, position?.y, position?.width, position?.height)
-            .then((result) => getEditorResponseData<Id>(result));
+        return res.addBarcodeFrame(type, position?.x, position?.y).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

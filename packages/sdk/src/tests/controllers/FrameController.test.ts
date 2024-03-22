@@ -145,9 +145,9 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to create a barcode frame', async () => {
-        await mockedFrameController.createBarcodeFrame(BarcodeType.ean13, { x: 100, y: 101, width: 102, height: 103 });
+        await mockedFrameController.createBarcodeFrame(BarcodeType.ean13, { x: 100, y: 101 });
         expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledWith(BarcodeType.ean13, 100, 101, 102, 103);
+        expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledWith(BarcodeType.ean13, 100, 101);
     });
 
     it('Should be possible to duplicate a list of frames', async () => {
