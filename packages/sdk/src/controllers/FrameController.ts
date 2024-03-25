@@ -393,7 +393,6 @@ export class FrameController {
         return res.duplicateFrames(ids).then((result) => getEditorResponseData<Id>(result));
     };
 
-
     /**
      * This method sets or removes the image source to the ImageFrame
      * @param imageFrameId the id of the imageFrame where an image needs to be assigned to

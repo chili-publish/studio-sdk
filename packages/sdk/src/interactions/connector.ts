@@ -49,10 +49,12 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     iframeDoc.write(html);
     iframeDoc.close();
 };
+
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
     onAuthExpired: (authRefreshRequest: string) => Promise<string | null>;
+    onViewportRequested: () => string | null;
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;
@@ -123,6 +125,7 @@ const Connect = (
                 stateChanged: params.onStateChanged,
                 documentLoaded: params.onDocumentLoaded,
                 authExpired: params.onAuthExpired,
+                viewportRequested: params.onViewportRequested,
                 selectedFramesContent: params.onSelectedFramesContentChanged,
                 selectedFramesLayout: params.onSelectedFramesLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,

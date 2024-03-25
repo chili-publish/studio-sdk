@@ -6,7 +6,9 @@ import {
     LayoutType,
     MeasurementUnit,
     ViewMode,
+    Viewport,
 } from '../../index';
+
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -65,6 +67,7 @@ const mockEditorApi: EditorAPI = {
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -104,6 +107,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
     jest.spyOn(mockEditorApi, 'onViewModeChanged');
+    jest.spyOn(mockEditorApi, 'onViewportRequested');
 });
 
 afterEach(() => {
@@ -372,5 +376,36 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onViewModeChanged(ViewMode.normal);
         expect(mockEditorApi.onViewModeChanged).toHaveBeenCalled();
         expect(mockEditorApi.onViewModeChanged).toHaveBeenCalledWith('normal');
+    });
+
+    describe('onViewportRequested', () => {
+        it('returns the viewport defined by the callback', () => {
+            const viewport: Viewport = { top: 0, left: 0, width: 100, height: 100, margin: 10 };
+
+            const mockConfig = {
+                onViewportRequested() {
+                    return viewport;
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onViewportRequested');
+
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const resultJsonString = mockedSubscriberController.onViewportRequested();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const resultViewport: Viewport = JSON.parse(resultJsonString!);
+
+            expect(resultViewport).toStrictEqual(viewport);
+            expect(mockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns a null token if the listener is not defined', () => {
+            const mockedSubscriberController = new SubscriberController({});
+
+            const result = mockedSubscriberController.onViewportRequested();
+
+            expect(result).toBe(null);
+        });
     });
 });

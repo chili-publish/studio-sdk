@@ -14,6 +14,7 @@ import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
+import { Viewport } from './ViewportTypes';
 
 export type Id = string;
 
@@ -21,6 +22,7 @@ export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
     onAuthExpired?: (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>;
+    onViewportRequested?: () => Viewport | null;
     onDocumentLoaded?: () => void;
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead
