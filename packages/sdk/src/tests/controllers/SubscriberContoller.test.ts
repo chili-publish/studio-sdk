@@ -1,4 +1,14 @@
-import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit, ViewMode, Viewport } from '../../index';
+import {
+    ActionEditorEvent,
+    ConnectorRegistrationSource,
+    DocumentAction,
+    Id,
+    LayoutType,
+    MeasurementUnit,
+    ViewMode,
+    Viewport,
+} from '../../index';
+
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -8,12 +18,12 @@ import { VariableType } from '../../types/VariableTypes';
 import { ToolType } from '../../utils/enums';
 import {
     AuthCredentials,
-    ConnectorStateType,
-    RefreshedAuthCredendentials,
-    GrafxTokenAuthCredentials,
     AuthCredentialsTypeEnum,
-    AuthRefreshTypeEnum,
     AuthRefreshRequest,
+    AuthRefreshTypeEnum,
+    ConnectorStateType,
+    GrafxTokenAuthCredentials,
+    RefreshedAuthCredendentials,
 } from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
@@ -47,6 +57,7 @@ const mockEditorApi: EditorAPI = {
     onSelectedLayoutIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onLayoutsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onConnectorEvent: async () => getEditorResponseData(castToEditorResponse(null)),
+    onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -86,6 +97,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockEditorApi, 'onLayoutsChanged');
     jest.spyOn(mockEditorApi, 'onConnectorEvent');
+    jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onZoomChanged');
     jest.spyOn(mockEditorApi, 'onActionsChanged');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
@@ -221,6 +233,12 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onConnectorEvent(connectorEvent);
         expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledWith(JSON.parse(connectorEvent));
         expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to subscribe to onConnectorsChanged', async () => {
+        const connectors = JSON.stringify([{ id: 'id', name: 'name', source: ConnectorRegistrationSource.local }]);
+        await mockedSubscriberController.onConnectorsChanged(connectors);
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(connectors));
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onZoomChanged', async () => {
         await mockedSubscriberController.onZoomChanged(JSON.stringify(150));

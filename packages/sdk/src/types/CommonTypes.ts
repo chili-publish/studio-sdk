@@ -4,12 +4,12 @@ import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, Me
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
+import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
 import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
-import { AuthCredentials, ConnectorEvent, AuthRefreshRequest } from './ConnectorTypes';
+import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
@@ -58,6 +58,7 @@ export type ConfigType = {
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
     onConnectorEvent?: (event: ConnectorEvent) => void;
+    onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
     onZoomChanged?: (scaleFactor: number) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;

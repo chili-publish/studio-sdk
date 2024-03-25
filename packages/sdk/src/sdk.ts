@@ -150,6 +150,7 @@ export class SDK {
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,
+                onConnectorsChanged: this.subscriber.onConnectorsChanged,
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
