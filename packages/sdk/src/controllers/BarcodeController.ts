@@ -149,7 +149,7 @@ export class BarcodeController {
 
         const res = await this.#editorAPI;
         return res
-            .updateBarcodeQuietZone(id, JSON.stringify(update))
+            .setBarcodeProperties(id, JSON.stringify({ quietZone: update }))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -164,7 +164,7 @@ export class BarcodeController {
 
         const res = await this.#editorAPI;
         return res
-            .updateBarcodeQuietZone(id, JSON.stringify(update))
+            .setBarcodeProperties(id, JSON.stringify({ quietZone: update }))
             .then((result) => getEditorResponseData<null>(result));
     };
 

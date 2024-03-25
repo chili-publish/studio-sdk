@@ -20,7 +20,7 @@ export interface BarcodeProperties {
     enableText?: boolean;
     barHeight?: string;
     magnification?: number;
-    quietZone?: QuietZone;
+    quietZone?: QuietZoneDeltaUpdate;
 }
 
 export enum BarcodeErrorCorrectionLevel {

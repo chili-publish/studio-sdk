@@ -14,14 +14,12 @@ let mockedBarcodeController: BarcodeController;
 const mockedEditorApi: EditorAPI = {
     setBarcodeProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     setBarcodeSource: async () => getEditorResponseData(castToEditorResponse(null)),
-    updateBarcodeQuietZone: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     mockedBarcodeController = new BarcodeController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'setBarcodeProperties');
     jest.spyOn(mockedEditorApi, 'setBarcodeSource');
-    jest.spyOn(mockedEditorApi, 'updateBarcodeQuietZone');
 
     id = mockSelectFrame.id;
 });
@@ -91,23 +89,26 @@ describe('BarcodeController', () => {
         });
         it('Should be possible to update quiet zone values combined', async () => {
             await mockedBarcodeController.setAreQuietZoneValuesCombined(id, true);
-            expect(mockedEditorApi.updateBarcodeQuietZone).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.updateBarcodeQuietZone).toHaveBeenCalledWith(
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(9);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
                 id,
-                JSON.stringify({ areQuietZoneValuesCombined: true }),
+                JSON.stringify({ quietZone: { areQuietZoneValuesCombined: true } }),
             );
         });
         it('Should be possible to update quiet zone value one by one', async () => {
             await mockedBarcodeController.setQuietZoneValue(id, '1px', PositionEnum.left);
-            expect(mockedEditorApi.updateBarcodeQuietZone).toHaveBeenCalledTimes(2);
-            expect(mockedEditorApi.updateBarcodeQuietZone).toHaveBeenCalledWith(id, JSON.stringify({ left: '1px' }));
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(10);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ quietZone: { left: '1px' } }),
+            );
         });
         it('Should be possible to update quiet zone values all at once', async () => {
             await mockedBarcodeController.setQuietZoneValue(id, '1px');
-            expect(mockedEditorApi.updateBarcodeQuietZone).toHaveBeenCalledTimes(3);
-            expect(mockedEditorApi.updateBarcodeQuietZone).toHaveBeenCalledWith(
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(11);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
                 id,
-                JSON.stringify({ left: '1px', top: '1px', right: '1px', bottom: '1px' }),
+                JSON.stringify({ quietZone: { left: '1px', top: '1px', right: '1px', bottom: '1px' } }),
             );
         });
     });
