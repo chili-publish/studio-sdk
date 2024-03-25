@@ -125,6 +125,7 @@ export type BarcodeFrame = {
         barColor: ColorUsage;
         enableText: boolean;
         barHeight: number;
+        magnification: number;
     };
     src: BarcodeSource;
     barcodeType: BarcodeType;

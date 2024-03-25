@@ -108,7 +108,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for code-128', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code128);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
@@ -119,7 +119,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for code-39', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code39);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
@@ -130,7 +130,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for code-93', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code93);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
@@ -152,7 +152,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for ean-13', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.ean13);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
@@ -163,7 +163,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for ean-8', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.ean8);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
@@ -174,7 +174,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for upc-a', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.upca);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,
@@ -185,7 +185,7 @@ describe('BarcodeController', () => {
         it('retuns valid configuration for upc-e', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.upce);
             expect(options).toEqual({
-                allowEnableMagnification: false,
+                allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: false,
                 allowedCharacterSets: undefined,

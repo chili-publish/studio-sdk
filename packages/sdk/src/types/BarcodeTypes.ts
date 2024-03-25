@@ -19,6 +19,7 @@ export interface BarcodeProperties {
     barColor?: ColorUsage;
     enableText?: boolean;
     barHeight?: string;
+    magnification?: number;
 }
 
 export enum BarcodeErrorCorrectionLevel {

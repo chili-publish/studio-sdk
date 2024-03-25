@@ -120,11 +120,13 @@ export class BarcodeController {
     getBarcodeConfigationOptions = (type: BarcodeType): BarcodeConfigurationOptions => {
         let allowToggleText = true;
         let allowBarHeight = true;
+        let allowEnableMagnification = true;
         switch (type) {
             case BarcodeType.qr:
             case BarcodeType.dataMatrix:
                 allowToggleText = false;
                 allowBarHeight = false;
+                allowEnableMagnification = false;
                 break;
             case BarcodeType.ean13:
             case BarcodeType.ean8:
@@ -134,7 +136,7 @@ export class BarcodeController {
                 break;
         }
         return {
-            allowEnableMagnification: false,
+            allowEnableMagnification: allowEnableMagnification,
             allowBarHeight: allowBarHeight,
             allowQuietZone: false,
             allowedCharacterSets: undefined,
