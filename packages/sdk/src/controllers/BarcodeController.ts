@@ -1,8 +1,14 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { BarcodeConfigurationOptions, BarcodeProperties, BarcodeType } from '../types/BarcodeTypes';
+import {
+    BarcodeConfigurationOptions,
+    BarcodeProperties,
+    BarcodeType,
+    QuietZoneDeltaUpdate,
+} from '../types/BarcodeTypes';
 import { BarcodeSource } from '../types/FrameTypes';
+import { PositionEnum } from '../types/LayoutTypes';
 
 /**
  * The BarcodeController is responsible for all communication regarding Barcodes.
@@ -112,6 +118,57 @@ export class BarcodeController {
     };
 
     /**
+     * @experimental This method sets the magnification for 1-dimensional barcodes.
+     * @param id the id of the barcodeFrame that needs to be updated.
+     * @param magnification the magnification of the barcode. This is a decimal value where 1 denotes 100%. (f.e. 1.5 will result in 150%)
+     * @returns
+     */
+    setMagnification = async (id: Id, magnification: number) => {
+        const properties: BarcodeProperties = { magnification: magnification };
+        return this.setBarcodeProperties(id, properties);
+    };
+
+    /**
+     * This method sets the quiet zone value of a specific barcode.
+     *
+     * @param id The id of the specific barcode
+     * @param value The quiet zone value
+     * @param position When defined will update the quiet value of a single position,
+     * otherwise will set all positions to the same value. Depending on this parameter
+     * being defined, the `areQuietZoneValuesCombined` will also be updated.
+     */
+    setQuietZoneValue = async (id: Id, value: string, position?: PositionEnum) => {
+        const update: QuietZoneDeltaUpdate = position
+            ? {
+                  left: position === PositionEnum.left ? value : undefined,
+                  top: position === PositionEnum.top ? value : undefined,
+                  right: position === PositionEnum.right ? value : undefined,
+                  bottom: position === PositionEnum.bottom ? value : undefined,
+              }
+            : { left: value, top: value, right: value, bottom: value };
+
+        const res = await this.#editorAPI;
+        return res
+            .updateBarcodeQuietZone(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the combined state of the quiet zone values.
+     *
+     * @param id The id of the specific barcode
+     * @param value Whether the quiet zone values are combined
+     */
+    setAreQuietZoneValuesCombined = async (id: Id, value: boolean) => {
+        const update: QuietZoneDeltaUpdate = { areQuietZoneValuesCombined: value };
+
+        const res = await this.#editorAPI;
+        return res
+            .updateBarcodeQuietZone(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * @experimental This method returns the possible configuration options which are valid for the given barcode type.
      * @param type the barcode type for which the configuration options are requested.
      * @returns a BarcodeConfigurationOptions object
@@ -138,7 +195,7 @@ export class BarcodeController {
         return {
             allowEnableMagnification: allowEnableMagnification,
             allowBarHeight: allowBarHeight,
-            allowQuietZone: false,
+            allowQuietZone: true,
             allowedCharacterSets: undefined,
             allowedErrorCorrectionLevels: undefined,
             allowToggleText: allowToggleText,
