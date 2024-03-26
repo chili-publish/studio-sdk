@@ -6,6 +6,8 @@ import {
     BarcodeProperties,
     BarcodeType,
     QuietZoneDeltaUpdate,
+    BarcodeCharacterSet,
+    BarcodeErrorCorrectionLevel,
 } from '../types/BarcodeTypes';
 import { BarcodeSource } from '../types/FrameTypes';
 import { PositionEnum } from '../types/LayoutTypes';
@@ -87,7 +89,7 @@ export class BarcodeController {
     /**
      * @experimental This method will set the source of the barcode to the given source.
      * @param id the id of the barcodeFrame that needs to be updated.
-     * @param source
+     * @param source the new source that you want to set to the barcodeFrame.
      * @returns
      */
     setBarcodeSource = async (id: Id, source: BarcodeSource) => {
@@ -131,7 +133,7 @@ export class BarcodeController {
     /**
      * This method sets the quiet zone value of a specific barcode.
      *
-     * @param id The id of the specific barcode
+     * @param id The id of the specific barcode frame
      * @param value The quiet zone value
      * @param position When defined will update the quiet value of a single position,
      * otherwise will set all positions to the same value. Depending on this parameter
@@ -156,7 +158,7 @@ export class BarcodeController {
     /**
      * This method sets the combined state of the quiet zone values.
      *
-     * @param id The id of the specific barcode
+     * @param id The id of the specific barcode frame
      * @param value Whether the quiet zone values are combined
      */
     setAreQuietZoneValuesCombined = async (id: Id, value: boolean) => {
@@ -169,17 +171,52 @@ export class BarcodeController {
     };
 
     /**
+     * @experimental This method sets the character set for the barcode.
+     * @param id The id of the specific barcode frame.
+     * @param errorCorrectionLevel The error correction level to set.
+     * @returns
+     */
+    setErrorCorrectionLevel = async (id: Id, errorCorrectionLevel: BarcodeErrorCorrectionLevel) => {
+        const res = await this.#editorAPI;
+        return res
+            .setBarcodeProperties(id, JSON.stringify({ errorCorrectionLevel: errorCorrectionLevel }))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental This method sets the character set for the barcode.
+     * @param id The id of the specific barcode frame.
+     * @param characterSet The character set to set.
+     * @returns
+     */
+    setCharacterSet = async (id: Id, characterSet: BarcodeCharacterSet) => {
+        const res = await this.#editorAPI;
+        return res
+            .setBarcodeProperties(id, JSON.stringify({ characterSet: characterSet }))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * @experimental This method returns the possible configuration options which are valid for the given barcode type.
      * @param type the barcode type for which the configuration options are requested.
      * @returns a BarcodeConfigurationOptions object
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getBarcodeConfigationOptions = (type: BarcodeType): BarcodeConfigurationOptions => {
         let allowToggleText = true;
         let allowBarHeight = true;
         let allowEnableMagnification = true;
+        let allowedCharacterSets = undefined;
+        let allowedErrorCorrectionLevels = undefined;
         switch (type) {
             case BarcodeType.qr:
+                allowedCharacterSets = [BarcodeCharacterSet.iso8859_1, BarcodeCharacterSet.utf8];
+                allowedErrorCorrectionLevels = [
+                    BarcodeErrorCorrectionLevel.low,
+                    BarcodeErrorCorrectionLevel.medium,
+                    BarcodeErrorCorrectionLevel.quartile,
+                    BarcodeErrorCorrectionLevel.high,
+                ];
+            // Intentional fall-through
             case BarcodeType.dataMatrix:
                 allowToggleText = false;
                 allowBarHeight = false;
@@ -191,13 +228,20 @@ export class BarcodeController {
             case BarcodeType.upce:
                 allowToggleText = false;
                 break;
+            case BarcodeType.code128:
+                allowedCharacterSets = [
+                    BarcodeCharacterSet.code128a,
+                    BarcodeCharacterSet.code128b,
+                    BarcodeCharacterSet.code128c,
+                ];
+                break;
         }
         return {
             allowEnableMagnification: allowEnableMagnification,
             allowBarHeight: allowBarHeight,
             allowQuietZone: true,
-            allowedCharacterSets: undefined,
-            allowedErrorCorrectionLevels: undefined,
+            allowedCharacterSets: allowedCharacterSets,
+            allowedErrorCorrectionLevels: allowedErrorCorrectionLevels,
             allowToggleText: allowToggleText,
         };
     };

@@ -4,7 +4,7 @@ import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { BarcodeController } from '../../controllers/BarcodeController';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 import { BarcodeSource, BarcodeSourceTypeEnum } from '../../types/FrameTypes';
-import { BarcodeType } from '../../types/BarcodeTypes';
+import { BarcodeType, BarcodeCharacterSet, BarcodeErrorCorrectionLevel } from '../../types/BarcodeTypes';
 import { PositionEnum } from '../../types/LayoutTypes';
 
 let id: Id;
@@ -111,6 +111,22 @@ describe('BarcodeController', () => {
                 JSON.stringify({ quietZone: { left: '1px', top: '1px', right: '1px', bottom: '1px' } }),
             );
         });
+        it('Should be possible to set error correction level', async () => {
+            await mockedBarcodeController.setErrorCorrectionLevel(id, BarcodeErrorCorrectionLevel.low);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(12);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ errorCorrectionLevel: BarcodeErrorCorrectionLevel.low }),
+            );
+        });
+        it('Should be possible to set the character set', async () => {
+            await mockedBarcodeController.setCharacterSet(id, BarcodeCharacterSet.utf8);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(13);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ characterSet: BarcodeCharacterSet.utf8 }),
+            );
+        });
     });
     describe('setBarcodeSource', () => {
         it('Should be possible to set source to text', async () => {
@@ -133,8 +149,13 @@ describe('BarcodeController', () => {
                 allowEnableMagnification: false,
                 allowBarHeight: false,
                 allowQuietZone: true,
-                allowedCharacterSets: undefined,
-                allowedErrorCorrectionLevels: undefined,
+                allowedCharacterSets: [BarcodeCharacterSet.iso8859_1, BarcodeCharacterSet.utf8],
+                allowedErrorCorrectionLevels: [
+                    BarcodeErrorCorrectionLevel.low,
+                    BarcodeErrorCorrectionLevel.medium,
+                    BarcodeErrorCorrectionLevel.quartile,
+                    BarcodeErrorCorrectionLevel.high,
+                ],
                 allowToggleText: false,
             });
         });
@@ -144,7 +165,11 @@ describe('BarcodeController', () => {
                 allowEnableMagnification: true,
                 allowBarHeight: true,
                 allowQuietZone: true,
-                allowedCharacterSets: undefined,
+                allowedCharacterSets: [
+                    BarcodeCharacterSet.code128a,
+                    BarcodeCharacterSet.code128b,
+                    BarcodeCharacterSet.code128c,
+                ],
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
             });

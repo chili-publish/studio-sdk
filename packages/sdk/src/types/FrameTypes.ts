@@ -1,5 +1,5 @@
 // FramePropertiesDto
-import { BarcodeType, QuietZone } from './BarcodeTypes';
+import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZone } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
@@ -127,6 +127,8 @@ export type BarcodeFrame = {
         barHeight: number;
         magnification: number;
         quietZone: QuietZone;
+        errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
+        characterSet?: BarcodeCharacterSet;
     };
     src: BarcodeSource;
     barcodeType: BarcodeType;

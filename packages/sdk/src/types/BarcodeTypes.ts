@@ -21,6 +21,8 @@ export interface BarcodeProperties {
     barHeight?: string;
     magnification?: number;
     quietZone?: QuietZoneDeltaUpdate;
+    errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
+    characterSet?: BarcodeCharacterSet;
 }
 
 export enum BarcodeErrorCorrectionLevel {
