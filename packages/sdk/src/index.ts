@@ -38,6 +38,7 @@ export type {
     TextFrame,
     ImageFrame,
     ShapeFrame,
+    BarcodeFrame,
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
@@ -118,6 +119,8 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
+
+export * from './types/BarcodeTypes';
 
 export type { Viewport } from './types/ViewportTypes';
 

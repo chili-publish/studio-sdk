@@ -234,7 +234,7 @@ export class LayoutController {
      * Note: Depending on the layout intent, disabling might not be valid (eg disabling for digitalAnimated)
      *
      * @param id the id of a specific layout
-     * @param enabled  whether the fill color should be enabled or disabled
+     * @param enabled whether the fill color should be enabled or disabled
      */
     setFillColorEnabled = async (id: Id, enabled: boolean) => {
         const res = await this.#editorAPI;
