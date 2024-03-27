@@ -76,4 +76,6 @@ export enum BarcodeValidationResult {
     invalidLength = 'invalidLength',
     invalidCharacters = 'invalidCharacters',
     invalidChecksum = 'invalidChecksum',
+    invalidUPCE = 'invalidUPCE',
+    otherError = 'otherError',
 }
