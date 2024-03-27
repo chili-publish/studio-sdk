@@ -9,6 +9,7 @@ import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
+import { BarcodeFrameValidationResult } from './BarcodeTypes';
 import { AuthCredentials, ConnectorEvent, AuthRefreshRequest } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
@@ -64,6 +65,7 @@ export type ConfigType = {
     onCropActiveFrameIdChanged?: (id?: Id) => void;
     onAsyncError?: (asyncError: AsyncError) => void;
     onViewModeChanged?: (tool: ViewMode) => void;
+    onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
 };
 
 export type EditorResponseError = string;

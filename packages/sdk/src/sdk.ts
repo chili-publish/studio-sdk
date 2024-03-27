@@ -160,6 +160,7 @@ export class SDK {
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
                 onViewModeChanged: this.subscriber.onViewModeChanged,
+                onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
             },
             this.setConnection,
             this.config.editorId,

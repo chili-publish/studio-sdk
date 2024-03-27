@@ -64,3 +64,16 @@ export type QuietZoneDeltaUpdate = {
     bottom?: string;
     areQuietZoneValuesCombined?: boolean;
 };
+
+export type BarcodeFrameValidationResult = {
+    id: string;
+    validationResult: BarcodeValidationResult;
+};
+
+export enum BarcodeValidationResult {
+    success = 'success',
+    empty = 'empty',
+    invalidLength = 'invalidLength',
+    invalidCharacters = 'invalidCharacters',
+    invalidChecksum = 'invalidChecksum',
+}

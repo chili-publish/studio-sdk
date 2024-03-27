@@ -81,6 +81,7 @@ interface ConfigParameterTypes {
     onCropActiveFrameIdChanged: (id?: Id) => void;
     onAsyncError: (asyncError: string) => void;
     onViewModeChanged: (viewMode: string) => void;
+    onBarcodeValidationChanged: (validationResults: string) => void;
 }
 
 const Connect = (
@@ -150,6 +151,7 @@ const Connect = (
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
                 asyncError: params.onAsyncError,
                 viewModeChanged: params.onViewModeChanged,
+                barcodeValidationChanged: params.onBarcodeValidationChanged,
             },
         }),
     );
