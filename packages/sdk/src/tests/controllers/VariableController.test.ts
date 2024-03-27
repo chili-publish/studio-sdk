@@ -1,5 +1,5 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariable, ListVariable, ListVariableItem, Variable, VariableType } from '../../types/VariableTypes';
+import { ImageVariable, ListVariable, ListVariableItem, VariableType } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
@@ -32,7 +32,7 @@ describe('VariableController', () => {
         },
     };
 
-    const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
+    const listVar: ListVariable = {
         id: variableId,
         type: VariableType.list,
         name: '',
@@ -106,17 +106,18 @@ describe('VariableController', () => {
         const result = await mockedVariableController.getByName('name');
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledWith('name');
-        // Backwards compatibility layer maps the new `VariableListItem` into a string.
-        expect((result.parsedData as ListVariable).items).toStrictEqual(['abc']);
-        expect((result.parsedData as ListVariable).selected).toStrictEqual('abc');
+        expect((result.parsedData as ListVariable).items).toStrictEqual([{ value: 'abc', displayValue: 'A-B-C' }]);
+        expect((result.parsedData as ListVariable).selected).toStrictEqual({ value: 'abc', displayValue: 'A-B-C' });
     });
 
     it('get variable list', async () => {
         const result = await mockedVariableController.getAll();
         expect(mockEditorApi.getVariables).toHaveBeenCalledTimes(1);
-        // Backwards compatibility layer maps the new `VariableListItem` into a string.
-        expect((result.parsedData as ListVariable[])[0].items).toStrictEqual(['abc']);
-        expect((result.parsedData as ListVariable[])[0].selected).toStrictEqual('abc');
+        expect((result.parsedData as ListVariable[])[0].items).toStrictEqual([{ value: 'abc', displayValue: 'A-B-C' }]);
+        expect((result.parsedData as ListVariable[])[0].selected).toStrictEqual({
+            value: 'abc',
+            displayValue: 'A-B-C',
+        });
     });
 
     it('create a new variable', async () => {

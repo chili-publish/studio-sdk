@@ -53,8 +53,8 @@ export interface ListVariableItem {
 }
 
 export interface ListVariable extends Variable {
-    items: string[];
-    selected?: string;
+    items: ListVariableItem[];
+    selected?: ListVariableItem;
 }
 
 export interface BooleanVariable extends Variable {
