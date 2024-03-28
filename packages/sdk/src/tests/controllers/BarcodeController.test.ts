@@ -157,6 +157,7 @@ describe('BarcodeController', () => {
                     BarcodeErrorCorrectionLevel.high,
                 ],
                 allowToggleText: false,
+                quietZoneAlwaysCombined: true,
             });
         });
         it('retuns valid configuration for code-128', () => {
@@ -172,6 +173,7 @@ describe('BarcodeController', () => {
                 ],
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
+                quietZoneAlwaysCombined: false,
             });
         });
         it('retuns valid configuration for code-39', () => {
@@ -183,6 +185,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
+                quietZoneAlwaysCombined: false,
             });
         });
         it('retuns valid configuration for code-93', () => {
@@ -194,6 +197,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
+                quietZoneAlwaysCombined: false,
             });
         });
         it('retuns valid configuration for data matrix', () => {
@@ -205,6 +209,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
+                quietZoneAlwaysCombined: true,
             });
         });
         it('retuns valid configuration for ean-13', () => {
@@ -216,6 +221,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
+                quietZoneAlwaysCombined: false,
             });
         });
         it('retuns valid configuration for ean-8', () => {
@@ -227,6 +233,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
+                quietZoneAlwaysCombined: false,
             });
         });
         it('retuns valid configuration for upc-a', () => {
@@ -238,6 +245,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
+                quietZoneAlwaysCombined: false,
             });
         });
         it('retuns valid configuration for upc-e', () => {
@@ -249,6 +257,7 @@ describe('BarcodeController', () => {
                 allowedCharacterSets: undefined,
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
+                quietZoneAlwaysCombined: false,
             });
         });
     });

@@ -47,6 +47,7 @@ export interface BarcodeConfigurationOptions {
     allowBarHeight: boolean;
     allowEnableMagnification: boolean;
     allowToggleText: boolean;
+    quietZoneAlwaysCombined: boolean;
 }
 
 export type QuietZone = {

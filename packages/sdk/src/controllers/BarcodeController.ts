@@ -207,6 +207,7 @@ export class BarcodeController {
         let allowEnableMagnification = true;
         let allowedCharacterSets = undefined;
         let allowedErrorCorrectionLevels = undefined;
+        let quietZoneAlwaysCombined = false;
         switch (type) {
             case BarcodeType.qr:
                 allowedCharacterSets = [BarcodeCharacterSet.iso8859_1, BarcodeCharacterSet.utf8];
@@ -221,6 +222,7 @@ export class BarcodeController {
                 allowToggleText = false;
                 allowBarHeight = false;
                 allowEnableMagnification = false;
+                quietZoneAlwaysCombined = true;
                 break;
             case BarcodeType.ean13:
             case BarcodeType.ean8:
@@ -243,6 +245,7 @@ export class BarcodeController {
             allowedCharacterSets: allowedCharacterSets,
             allowedErrorCorrectionLevels: allowedErrorCorrectionLevels,
             allowToggleText: allowToggleText,
+            quietZoneAlwaysCombined: quietZoneAlwaysCombined,
         };
     };
 }
