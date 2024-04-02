@@ -130,7 +130,7 @@ export type BarcodeFrame = {
         errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
         characterSet?: BarcodeCharacterSet;
     };
-    src: BarcodeSource;
+    src?: BarcodeSource;
     barcodeType: BarcodeType;
 };
 
