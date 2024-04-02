@@ -75,6 +75,7 @@ interface ConfigParameterTypes {
     onSelectedLayoutIdChanged: (id: string) => void;
     onLayoutsChanged: (layouts: string) => void;
     onConnectorEvent: (state: string) => void;
+    onConnectorsChanged: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
@@ -145,6 +146,7 @@ const Connect = (
                 selectedLayoutId: params.onSelectedLayoutIdChanged,
                 layoutListChanged: params.onLayoutsChanged,
                 connectorEvent: params.onConnectorEvent,
+                connectorsChanged: params.onConnectorsChanged,
                 zoomChanged: params.onZoomChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,

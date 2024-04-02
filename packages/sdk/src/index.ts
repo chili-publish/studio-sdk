@@ -74,6 +74,9 @@ export type {
     SelectedLayoutFrame,
     MetaData,
     Id,
+    ConnectorConfigOptions,
+    ConnectorConfigValue,
+    ConnectorConfigValueType,
 } from './types/CommonTypes';
 
 export type {
