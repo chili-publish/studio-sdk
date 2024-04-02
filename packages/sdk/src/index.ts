@@ -41,6 +41,8 @@ export type {
     ShapeFrame,
     BarcodeFrame,
     BarcodeSource,
+    BarcodeVariableSource,
+    BarcodeTextSource,
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
