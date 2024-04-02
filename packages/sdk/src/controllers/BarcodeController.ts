@@ -131,8 +131,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the quiet zone value of a specific barcode.
-     *
+     * @experimental This method sets the quiet zone value of a specific barcode.
      * @param id The id of the specific barcode frame
      * @param value The quiet zone value
      * @param position When defined will update the quiet value of a single position,
@@ -156,8 +155,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the combined state of the quiet zone values.
-     *
+     * @experimental This method sets the combined state of the quiet zone values.
      * @param id The id of the specific barcode frame
      * @param value Whether the quiet zone values are combined
      */
