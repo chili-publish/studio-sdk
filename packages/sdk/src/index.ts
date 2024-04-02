@@ -19,6 +19,7 @@ export {
     FitMode,
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
+    BarcodeSourceTypeEnum,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -39,6 +40,7 @@ export type {
     ImageFrame,
     ShapeFrame,
     BarcodeFrame,
+    BarcodeSource,
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
