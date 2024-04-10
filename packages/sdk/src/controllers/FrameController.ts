@@ -385,7 +385,7 @@ export class FrameController {
     };
 
     /**
-     * @experimental This method will create a new barcode frame of 'type' type to the layout positioned on the requested
+     * This method will create a new barcode frame of 'type' type to the layout positioned on the requested
      * coordinates. Any coordinate that is not specified will default to 'center'.
      * @param type the type of barcode to create
      * @param position optional position object where you can specify the x, y of the barcode frame
