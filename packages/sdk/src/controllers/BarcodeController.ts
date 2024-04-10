@@ -30,7 +30,7 @@ export class BarcodeController {
     }
 
     /**
-     * This method updates properties of the barcode
+     * @experimental This method updates properties of the barcode
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param properties A property to update
      * @returns
@@ -43,7 +43,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the background of a barcode enabled or disabled
+     * @experimental This method will set the background of a barcode enabled or disabled
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param enableBackground Whether the barcode's background is visible.
      * @returns
@@ -54,7 +54,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the barcode background color of a specified barcode frame.
+     * @experimental This method will set the barcode background color of a specified barcode frame.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param backgroundColor the new barcode background color that you want to set to the barcodeFrame.
      * @returns
@@ -65,7 +65,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the visibility of the barcode's bars.
+     * @experimental This method will set the visibility of the barcode's bars.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param enableBars Whether the barcode bars are visible.
      * @returns
@@ -76,7 +76,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the bar color of a specified barcode frame.
+     * @experimental This method will set the bar color of a specified barcode frame.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param barColor the new bar color that you want to set to the barcodeFrame.
      * @returns
@@ -87,7 +87,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method will set the source of the barcode to the given source.
+     * @experimental This method will set the source of the barcode to the given source.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param source the new source that you want to set to the barcodeFrame.
      * @returns
@@ -98,7 +98,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method enables/disables displaying the text of the barcode.
+     * @experimental This method enables/disables displaying the text of the barcode.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param enableText true if the text should be displayed, false otherwise.
      * @returns
@@ -109,7 +109,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the bar height for 1-dimensional barcodes.
+     * @experimental This method sets the bar height for 1-dimensional barcodes.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param barHeight the height of the bars in the barcode. The string value will be calculated (f.e. 1+1 will result in 2)
      * @returns
@@ -120,7 +120,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the magnification for 1-dimensional barcodes.
+     * @experimental This method sets the magnification for 1-dimensional barcodes.
      * @param id the id of the barcodeFrame that needs to be updated.
      * @param magnification the magnification of the barcode. This is a decimal value where 1 denotes 100%. (f.e. 1.5 will result in 150%)
      * @returns
@@ -131,7 +131,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the quiet zone value of a specific barcode.
+     * @experimental This method sets the quiet zone value of a specific barcode.
      * @param id The id of the specific barcode frame
      * @param value The quiet zone value
      * @param position When defined will update the quiet value of a single position,
@@ -155,7 +155,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the combined state of the quiet zone values.
+     * @experimental This method sets the combined state of the quiet zone values.
      * @param id The id of the specific barcode frame
      * @param value Whether the quiet zone values are combined
      */
@@ -169,7 +169,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the character set for the barcode.
+     * @experimental This method sets the character set for the barcode.
      * @param id The id of the specific barcode frame.
      * @param errorCorrectionLevel The error correction level to set.
      * @returns
@@ -182,7 +182,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method sets the character set for the barcode.
+     * @experimental This method sets the character set for the barcode.
      * @param id The id of the specific barcode frame.
      * @param characterSet The character set to set.
      * @returns
@@ -195,7 +195,7 @@ export class BarcodeController {
     };
 
     /**
-     * This method returns the possible configuration options which are valid for the given barcode type.
+     * @experimental This method returns the possible configuration options which are valid for the given barcode type.
      * @param type the barcode type for which the configuration options are requested.
      * @returns a BarcodeConfigurationOptions object
      */

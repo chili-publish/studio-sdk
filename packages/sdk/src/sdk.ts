@@ -53,6 +53,7 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     shape: ShapeController;
+    /** @experimental */
     barcode: BarcodeController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
