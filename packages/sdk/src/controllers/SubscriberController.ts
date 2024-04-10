@@ -371,4 +371,14 @@ export class SubscriberController {
         const callBack = this.config.onViewModeChanged;
         callBack && callBack(viewMode as ViewMode);
     };
+
+    /**
+     * Listener on when barcode frames change their validation state
+     *
+     * @param validationResults the json string representation of the validation results
+     */
+    onBarcodeValidationChanged = (validationResults: string) => {
+        const callBack = this.config.onBarcodeValidationChanged;
+        callBack && callBack(JSON.parse(validationResults));
+    };
 }

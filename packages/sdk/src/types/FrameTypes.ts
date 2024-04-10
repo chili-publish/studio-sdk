@@ -1,4 +1,5 @@
 // FramePropertiesDto
+import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZone } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
@@ -30,9 +31,10 @@ export type FrameType = {
     imageUrl: string;
     blendMode: string;
     constrainProportions: boolean;
+    constrainProportionsReadOnly: boolean;
 };
 
-export type Frame = TextFrame | ImageFrame | ShapeFrame;
+export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
 
 export type ImageFrameVariableSource = {
     type: ImageSourceTypeEnum.variable;
@@ -60,6 +62,7 @@ export type ImageFrame = {
     src?: ImageFrameSource;
     blendMode: BlendMode;
     constrainProportions: boolean;
+    constrainProportionsReadOnly: boolean;
     crop?: CropSettings | NoCropSettings;
 };
 
@@ -69,6 +72,7 @@ export type ShapeFrame = {
     type: FrameTypeEnum.shape;
     blendMode: BlendMode;
     constrainProportions: boolean;
+    constrainProportionsReadOnly: boolean;
     shapeProperties: {
         enableFill: boolean;
         fillColor: ColorUsage;
@@ -104,6 +108,42 @@ export type TextFrame = {
     hasClippingPath: boolean;
     blendMode: BlendMode;
     constrainProportions: boolean;
+    constrainProportionsReadOnly: boolean;
+};
+
+export type BarcodeFrame = {
+    id: Id;
+    name: string;
+    type: FrameTypeEnum.barcode;
+    blendMode: BlendMode;
+    constrainProportions: boolean;
+    constrainProportionsReadOnly: boolean;
+    barcodeProperties: {
+        enableBackground: boolean;
+        backgroundColor: ColorUsage;
+        enableBarColor: boolean;
+        barColor: ColorUsage;
+        enableText: boolean;
+        barHeight: number;
+        magnification: number;
+        quietZone: QuietZone;
+        errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
+        characterSet?: BarcodeCharacterSet;
+    };
+    src?: BarcodeSource;
+    barcodeType: BarcodeType;
+};
+
+export type BarcodeSource = BarcodeVariableSource | BarcodeTextSource;
+
+export type BarcodeVariableSource = {
+    type: BarcodeSourceTypeEnum.variable;
+    id: Id;
+};
+
+export type BarcodeTextSource = {
+    type: BarcodeSourceTypeEnum.text;
+    text: string;
 };
 
 export type CropSettings = {
@@ -129,6 +169,12 @@ export enum FrameTypeEnum {
     text = 'text',
     image = 'image',
     shape = 'shape',
+    barcode = 'barcode',
+}
+
+export enum BarcodeSourceTypeEnum {
+    variable = 'variable',
+    text = 'text',
 }
 
 export enum TextDirection {

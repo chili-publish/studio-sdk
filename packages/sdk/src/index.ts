@@ -19,6 +19,7 @@ export {
     FitMode,
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
+    BarcodeSourceTypeEnum,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -38,6 +39,10 @@ export type {
     TextFrame,
     ImageFrame,
     ShapeFrame,
+    BarcodeFrame,
+    BarcodeSource,
+    BarcodeVariableSource,
+    BarcodeTextSource,
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
@@ -118,6 +123,8 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
+
+export * from './types/BarcodeTypes';
 
 export type { Viewport } from './types/ViewportTypes';
 
