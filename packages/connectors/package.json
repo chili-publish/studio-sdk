@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-connectors",
-    "version": "1.7.15",
+    "version": "1.7.16",
     "types": "dist/index.d.ts",
     "files": [
         "dist"
