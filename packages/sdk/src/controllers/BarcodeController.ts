@@ -229,6 +229,7 @@ export class BarcodeController {
                 allowToggleText = false;
                 break;
             case BarcodeType.code128:
+            case BarcodeType.gs1128:
                 allowedCharacterSets = [
                     BarcodeCharacterSet.code128a,
                     BarcodeCharacterSet.code128b,

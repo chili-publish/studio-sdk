@@ -10,6 +10,7 @@ export enum BarcodeType {
     qr = 'qr',
     upca = 'upca',
     upce = 'upce',
+    gs1128 = 'gs1128',
 }
 
 export interface BarcodeProperties {

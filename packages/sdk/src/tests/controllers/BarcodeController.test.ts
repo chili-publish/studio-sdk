@@ -176,6 +176,22 @@ describe('BarcodeController', () => {
                 quietZoneAlwaysCombined: false,
             });
         });
+        it('retuns valid configuration for gs1-128', () => {
+            const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.gs1128);
+            expect(options).toEqual({
+                allowEnableMagnification: true,
+                allowBarHeight: true,
+                allowQuietZone: true,
+                allowedCharacterSets: [
+                    BarcodeCharacterSet.code128a,
+                    BarcodeCharacterSet.code128b,
+                    BarcodeCharacterSet.code128c,
+                ],
+                allowedErrorCorrectionLevels: undefined,
+                allowToggleText: true,
+                quietZoneAlwaysCombined: false,
+            });
+        });
         it('retuns valid configuration for code-39', () => {
             const options = mockedBarcodeController.getBarcodeConfigationOptions(BarcodeType.code39);
             expect(options).toEqual({
