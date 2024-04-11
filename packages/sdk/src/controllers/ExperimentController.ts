@@ -111,6 +111,7 @@ export class ExperimentController {
 
     /**
      * @experimental
+     * DO NOT USE THIS CALL, not supported by engine
      * This method will apply smartcrop to an image frame
      * @param frameId The ID of an image frame
      * @param apply If the smartcrop should be applied or not
