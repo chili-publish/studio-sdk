@@ -23,6 +23,7 @@ export class ExperimentController {
     }
 
     /**
+     * @experimental
      * This method will assign an image from a variable to the correct ImageFrame
      * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
      * @param variableId the id of the variable which contains the image
@@ -37,6 +38,7 @@ export class ExperimentController {
     };
 
     /**
+     * @experimental
      * This method will insert a text variable in the selected frame. Calling this method
      * requires that the selected frame is in text editing mode.
      * @param id the id of the variable to be inserted.
@@ -48,6 +50,7 @@ export class ExperimentController {
     };
 
     /**
+     * @experimental
      * This method will enter text editing mode on the provided frame.
      * @param id the id frame to enter text edit mode on.
      * @returns
@@ -58,6 +61,7 @@ export class ExperimentController {
     };
 
     /**
+     * @experimental
      * This method will exit text editing mode.
      * @returns
      */
@@ -67,6 +71,7 @@ export class ExperimentController {
     };
 
     /**
+     * @experimental
      * This method gets the text content of a text frame.
      * The variables contained in the text will return their values only if you
      * are in text editing mode.
@@ -80,6 +85,7 @@ export class ExperimentController {
     };
 
     /**
+     * @experimental
      * This method sets the text content of a text frame
      * @param frameId The ID of a text frame
      * @param text The new text content
@@ -91,6 +97,7 @@ export class ExperimentController {
     };
 
     /**
+     * @experimental
      * This method selects the text content of a text frame
      * @param frameId The ID of a text frame
      * @param startIndex The index where the selection starts
@@ -100,5 +107,17 @@ export class ExperimentController {
     selectText = async (frameId: string, startIndex: number, length: number) => {
         const res = await this.#editorAPI;
         return res.selectTextById(frameId, startIndex, length).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental
+     * This method will apply smartcrop to an image frame
+     * @param frameId The ID of an image frame
+     * @param apply If the smartcrop should be applied or not
+     * @returns
+     */
+    applySmartCropToFrame = async (frameId: string, apply?: boolean) => {
+        const res = await this.#editorAPI;
+        return res.applySmartCropToFrame(frameId, apply);
     };
 }
