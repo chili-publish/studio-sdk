@@ -1,5 +1,6 @@
 import {
     ActionEditorEvent,
+    BarcodeValidationResult,
     ConnectorRegistrationSource,
     DocumentAction,
     Id,
@@ -8,7 +9,6 @@ import {
     ViewMode,
     Viewport,
 } from '../../index';
-
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -68,6 +68,7 @@ const mockEditorApi: EditorAPI = {
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
+    onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -107,6 +108,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
     jest.spyOn(mockEditorApi, 'onViewModeChanged');
+    jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
 });
 
@@ -376,6 +378,16 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onViewModeChanged(ViewMode.normal);
         expect(mockEditorApi.onViewModeChanged).toHaveBeenCalled();
         expect(mockEditorApi.onViewModeChanged).toHaveBeenCalledWith('normal');
+    });
+
+    it('Should call BarcodeValidationChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onBarcodeValidationChanged(
+            JSON.stringify([{ id: '1', validationResult: 'success' }]),
+        );
+        expect(mockEditorApi.onBarcodeValidationChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onBarcodeValidationChanged).toHaveBeenCalledWith([
+            { id: '1', validationResult: BarcodeValidationResult.success },
+        ]);
     });
 
     describe('onViewportRequested', () => {
