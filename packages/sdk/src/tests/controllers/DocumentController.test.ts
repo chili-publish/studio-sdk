@@ -9,14 +9,12 @@ const mockFetch = jest.fn();
 const mockedEditorApi: EditorAPI = {
     getCurrentDocumentState: async () => getEditorResponseData(castToEditorResponse(null)),
     loadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
-    loadDocumentKeepConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     mockedDocumentController = new DocumentController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'getCurrentDocumentState');
     jest.spyOn(mockedEditorApi, 'loadDocument');
-    jest.spyOn(mockedEditorApi, 'loadDocumentKeepConnectors');
     global.fetch = mockFetch;
 });
 
@@ -36,19 +34,19 @@ describe('Document controller', () => {
         it('it stringifies the doc if it is an object', async () => {
             await mockedDocumentController.load(JSON.parse(mockDocument));
             expect(mockedEditorApi.loadDocument).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(mockDocument);
+            expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(
+                mockDocument,
+                JSON.stringify({ keepConnectors: false }),
+            );
         });
 
-        it('it calls loadDocument', async () => {
-            await mockedDocumentController.load(mockDocument);
-            expect(mockedEditorApi.loadDocument).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(mockDocument);
-        });
-
-        it('it calls loadDocumentKeepConnectors', async () => {
+        it('it calls loadDocument with load options', async () => {
             await mockedDocumentController.load(mockDocument, { keepConnectors: true });
-            expect(mockedEditorApi.loadDocumentKeepConnectors).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.loadDocumentKeepConnectors).toHaveBeenCalledWith(mockDocument);
+            expect(mockedEditorApi.loadDocument).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(
+                mockDocument,
+                JSON.stringify({ keepConnectors: true }),
+            );
         });
     });
 });
