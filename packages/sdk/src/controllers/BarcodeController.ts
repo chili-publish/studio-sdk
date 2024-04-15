@@ -94,7 +94,8 @@ export class BarcodeController {
      */
     setBarcodeSource = async (id: Id, source: BarcodeSource | null) => {
         const res = await this.#editorAPI;
-        return res.setBarcodeSource(id, JSON.stringify(source)).then((result) => getEditorResponseData<null>(result));
+        const srcJson = source !== null ? JSON.stringify(source) : null;
+        return res.setBarcodeSource(id, srcJson).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
