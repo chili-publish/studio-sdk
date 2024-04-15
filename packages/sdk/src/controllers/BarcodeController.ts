@@ -92,7 +92,7 @@ export class BarcodeController {
      * @param source the new source that you want to set to the barcodeFrame.
      * @returns
      */
-    setBarcodeSource = async (id: Id, source: BarcodeSource) => {
+    setBarcodeSource = async (id: Id, source: BarcodeSource | null) => {
         const res = await this.#editorAPI;
         return res.setBarcodeSource(id, JSON.stringify(source)).then((result) => getEditorResponseData<null>(result));
     };
