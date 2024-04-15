@@ -44,12 +44,10 @@ export class DocumentController {
     load = async (doc: ChiliDocument | string, options: DocumentLoadOptions = { keepConnectors: false }) => {
         const res = await this.#editorAPI;
 
-        // Note: loadDocumentKeepConnectors is a temporary engine call to make the
-        // merging smoother, it will be removed when all projects will point to
-        // this SDK version but the SDK API won't change. -> [EDT-1107]
-        const loadDocumentRedirection = options.keepConnectors ? res.loadDocumentKeepConnectors : res.loadDocument;
         const parsedDoc = typeof doc !== 'string' ? JSON.stringify(doc) : doc;
 
-        return loadDocumentRedirection(parsedDoc).then((result) => getEditorResponseData<null>(result));
+        return res
+            .loadDocument(parsedDoc, JSON.stringify(options))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
