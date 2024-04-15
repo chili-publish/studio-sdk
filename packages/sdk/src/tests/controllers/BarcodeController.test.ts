@@ -148,7 +148,7 @@ describe('BarcodeController', () => {
             const source: BarcodeSource = { type: BarcodeSourceTypeEnum.text, text: 'test' };
             await mockedBarcodeController.setBarcodeSource(id, source);
             await mockedBarcodeController.removeBarcodeSource(id);
-            expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalled();
+            expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledTimes(2);
             expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledWith(id, null);
         });
     });
