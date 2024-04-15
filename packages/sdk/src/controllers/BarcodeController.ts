@@ -92,10 +92,19 @@ export class BarcodeController {
      * @param source the new source that you want to set to the barcodeFrame.
      * @returns
      */
-    setBarcodeSource = async (id: Id, source: BarcodeSource | null) => {
+    setBarcodeSource = async (id: Id, source: BarcodeSource) => {
         const res = await this.#editorAPI;
-        const srcJson = source !== null ? JSON.stringify(source) : null;
-        return res.setBarcodeSource(id, srcJson).then((result) => getEditorResponseData<null>(result));
+        return res.setBarcodeSource(id, JSON.stringify(source) ).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental This method will remove the source from the barcode frame provided.
+     * @param id the id of the barcodeFrame that needs to have the source removed.
+     * @returns
+     */
+    removeBarcodeSource = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.setBarcodeSource(id, null).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
