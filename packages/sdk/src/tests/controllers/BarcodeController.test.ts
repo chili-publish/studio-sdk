@@ -12,6 +12,7 @@ let id: Id;
 let mockedBarcodeController: BarcodeController;
 
 const mockedEditorApi: EditorAPI = {
+    removeBarcodeSource: async () => getEditorResponseData(castToEditorResponse(null)),
     setBarcodeProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     setBarcodeSource: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -140,6 +141,15 @@ describe('BarcodeController', () => {
             await mockedBarcodeController.setBarcodeSource(id, source);
             expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledTimes(2);
             expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledWith(id, JSON.stringify(source));
+        });
+    });
+    describe('removeBarcodeSource', () => {
+        it('Should be possible to remove the source', async () => {
+            const source: BarcodeSource = { type: BarcodeSourceTypeEnum.text, text: 'test' };
+            await mockedBarcodeController.setBarcodeSource(id, source);
+            await mockedBarcodeController.removeBarcodeSource(id);
+            expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledTimes(4);
+            expect(mockedEditorApi.setBarcodeSource).toHaveBeenCalledWith(id, null);
         });
     });
     describe('getBarcodeConfigurationOptions', () => {
