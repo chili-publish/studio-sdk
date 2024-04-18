@@ -16,6 +16,11 @@ export class VariableController {
     /**
      * @ignore
      */
+    config: ConfigType;
+
+    /**
+     * @ignore
+     */
     isDisplayValuesAvailable: boolean;
 
     /**
@@ -23,6 +28,7 @@ export class VariableController {
      */
     constructor(editorAPI: EditorAPI, config: ConfigType) {
         this.#editorAPI = editorAPI;
+        this.config = config;
         this.isDisplayValuesAvailable =
             config.featureFlags?.includes({ name: 'variableDisplayValue', enabled: true }) || false;
     }
@@ -317,10 +323,10 @@ export class VariableController {
             return variable;
         }
 
-        return this.makeListVariableBackwardsCompatible(variable as ListVariable);
+        return this.makeListVariableBackwardsCompatible(variable as ListVariable<typeof this.config>);
     }
 
-    private makeListVariableBackwardsCompatible(listVariable: ListVariable) {
+    private makeListVariableBackwardsCompatible(listVariable: ListVariable<typeof this.config>) {
         const updated = listVariable;
 
         const items = listVariable.items as unknown as ListVariableItem[];
