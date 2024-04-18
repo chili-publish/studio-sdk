@@ -67,6 +67,11 @@ export type ConfigType = {
     onAsyncError?: (asyncError: AsyncError) => void;
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
+    /**
+     * @experimental we are experimenting with this config vaule, use with caution
+     * A feature flag, when turned on, will enable an integrator to use a new function.
+     */
+    featureFlags?: FeatureFlag[];
 };
 
 export type EditorResponseError = string;
@@ -152,3 +157,17 @@ export interface ActionAsyncError extends AsyncErrorBase {
 }
 
 export type AsyncError = ActionAsyncError;
+
+export type FeatureFlag = {
+    name: string;
+    enabled: boolean;
+};
+
+// Helper type to check if a feature flag is enabled in the config
+export type IsFeatureEnabled<ConfigType, FeatureName extends string> = ConfigType extends {
+    featureFlags: Array<{ name: FeatureName; enabled: infer E }>;
+}
+    ? E extends true
+        ? true
+        : false
+    : false;

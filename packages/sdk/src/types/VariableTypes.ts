@@ -1,3 +1,5 @@
+import { ConfigType, IsFeatureEnabled } from './CommonTypes';
+
 export interface ConnectorImageVariableSource {
     connectorId: string;
     /**
@@ -52,9 +54,10 @@ export interface ListVariableItem {
     displayValue?: string;
 }
 
+// Extend ListVariable from Variable and make 'items' dependent on the feature flag
 export interface ListVariable extends Variable {
-    items: string[];
-    selected?: string;
+    items: IsFeatureEnabled<ConfigType, string> extends true ? ListVariableItem[] : string[];
+    selected?: IsFeatureEnabled<ConfigType, string> extends true ? ListVariableItem : string;
 }
 
 export interface BooleanVariable extends Variable {

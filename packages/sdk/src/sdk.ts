@@ -103,7 +103,7 @@ export class SDK {
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new ConfigurationController(this.editorAPI);
-        this.variable = new VariableController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI, config);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config);
         this.tool = new ToolController(this.editorAPI);
@@ -190,7 +190,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
-        this.variable = new VariableController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI, this.config);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);

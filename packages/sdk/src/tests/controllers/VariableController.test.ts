@@ -3,6 +3,7 @@ import { ImageVariable, ListVariable, ListVariableItem, Variable, VariableType }
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
+import { mockEditorConfig } from './SubscriberContoller.test';
 
 afterEach(() => {
     jest.restoreAllMocks();
@@ -72,7 +73,7 @@ describe('VariableController', () => {
     };
 
     beforeEach(() => {
-        mockedVariableController = new VariableController(mockEditorApi);
+        mockedVariableController = new VariableController(mockEditorApi, mockEditorConfig);
         jest.spyOn(mockEditorApi, 'getVariableById');
         jest.spyOn(mockEditorApi, 'getVariableByName');
         jest.spyOn(mockEditorApi, 'getVariables');

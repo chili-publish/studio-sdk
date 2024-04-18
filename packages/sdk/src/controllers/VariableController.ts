@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../types/CommonTypes';
+import type { ConfigType, EditorAPI, Id } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
@@ -16,8 +16,15 @@ export class VariableController {
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    isDisplayValuesAvailable: boolean;
+
+    /**
+     * @ignore
+     */
+    constructor(editorAPI: EditorAPI, config: ConfigType) {
         this.#editorAPI = editorAPI;
+        this.isDisplayValuesAvailable =
+            config.featureFlags?.includes({ name: 'variableDisplayValue', enabled: true }) || false;
     }
 
     /**
@@ -26,6 +33,9 @@ export class VariableController {
      */
     getAll = async () => {
         const res = await this.#editorAPI;
+        if (this.isDisplayValuesAvailable) {
+            return res.getVariables().then((result) => getEditorResponseData<Variable[]>(result));
+        }
         return res
             .getVariables()
             .then((result) => getEditorResponseData<Variable[]>(result))
@@ -45,6 +55,9 @@ export class VariableController {
      */
     getById = async (id: string) => {
         const res = await this.#editorAPI;
+        if (this.isDisplayValuesAvailable) {
+            return res.getVariableById(id).then((result) => getEditorResponseData<Variable>(result));
+        }
         return res
             .getVariableById(id)
             .then((result) => getEditorResponseData<Variable>(result))
@@ -64,6 +77,9 @@ export class VariableController {
      */
     getByName = async (name: string) => {
         const res = await this.#editorAPI;
+        if (this.isDisplayValuesAvailable) {
+            return res.getVariableByName(name).then((result) => getEditorResponseData<Variable>(result));
+        }
         return res
             .getVariableByName(name)
             .then((result) => getEditorResponseData<Variable>(result))
