@@ -29,8 +29,7 @@ export class VariableController {
     constructor(editorAPI: EditorAPI, config: ConfigType) {
         this.#editorAPI = editorAPI;
         this.config = config;
-        this.isDisplayValuesAvailable =
-            config.featureFlags?.includes({ name: 'variableDisplayValue', enabled: true }) || false;
+        this.isDisplayValuesAvailable = !!config.featureFlags?.variableDisplayValue;
     }
 
     /**
@@ -323,10 +322,10 @@ export class VariableController {
             return variable;
         }
 
-        return this.makeListVariableBackwardsCompatible(variable as ListVariable<typeof this.config>);
+        return this.makeListVariableBackwardsCompatible(variable as ListVariable);
     }
 
-    private makeListVariableBackwardsCompatible(listVariable: ListVariable<typeof this.config>) {
+    private makeListVariableBackwardsCompatible(listVariable: ListVariable) {
         const updated = listVariable;
 
         const items = listVariable.items as unknown as ListVariableItem[];

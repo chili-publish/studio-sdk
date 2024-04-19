@@ -169,7 +169,7 @@ export class SubscriberController {
     onVariableListChanged = (variablesJson: string) => {
         const callBack = this.config.onVariableListChanged;
 
-        if (this.config.featureFlags?.includes({ name: 'variableDisplayValue', enabled: true })) {
+        if (!!this.config.featureFlags?.variableDisplayValue) {
             callBack && callBack(JSON.parse(variablesJson));
             return;
         }
