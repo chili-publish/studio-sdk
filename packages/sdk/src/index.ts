@@ -70,8 +70,19 @@ export type {
     AnimationPlaybackType,
     BasicAnimationsType,
 } from './types/AnimationTypes';
-
-export type * from './types/CommonTypes';
+export type {
+    ConfigType,
+    InitialStateType,
+    PageType,
+    EditorResponse,
+    SelectedLayoutFrame,
+    MetaData,
+    Id,
+    ConnectorConfigOptions,
+    ConnectorConfigValue,
+    ConnectorConfigValueType,
+    FeatureFlags,
+} from './types/CommonTypes';
 
 export type {
     TextProperties,
