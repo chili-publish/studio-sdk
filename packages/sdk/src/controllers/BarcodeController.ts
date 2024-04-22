@@ -94,7 +94,7 @@ export class BarcodeController {
      */
     setBarcodeSource = async (id: Id, source: BarcodeSource) => {
         const res = await this.#editorAPI;
-        return res.setBarcodeSource(id, JSON.stringify(source) ).then((result) => getEditorResponseData<null>(result));
+        return res.setBarcodeSource(id, JSON.stringify(source)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -205,6 +205,30 @@ export class BarcodeController {
     };
 
     /**
+     * @experimental This method sets the flag to render the end characters of the barcode. This is not
+     * supported for all barcode types.
+     * @param id The id of the specific barcode frame.
+     * @param drawEndChar The flag indicating if the end characters should be drawn or not
+     * @returns
+     */
+    setDrawEndChar = async (id: Id, drawEndChar: boolean) => {
+        const properties: BarcodeProperties = { drawStartStopChars: drawEndChar };
+        return this.setBarcodeProperties(id, properties);
+    };
+
+    /**
+     * @experimental This method sets the flag to render the start and end characters of the barcode. This is not
+     * supported for all barcode types.
+     * @param id The id of the specific barcode frame.
+     * @param drawStartStopChars The flag indicating if the start and stop characters should be drawn or not
+     * @returns
+     */
+    setDrawStartStopChars = async (id: Id, drawStartStopChars: boolean) => {
+        const properties: BarcodeProperties = { drawStartStopChars: drawStartStopChars };
+        return this.setBarcodeProperties(id, properties);
+    };
+
+    /**
      * @experimental This method returns the possible configuration options which are valid for the given barcode type.
      * @param type the barcode type for which the configuration options are requested.
      * @returns a BarcodeConfigurationOptions object
@@ -216,6 +240,8 @@ export class BarcodeController {
         let allowedCharacterSets = undefined;
         let allowedErrorCorrectionLevels = undefined;
         let quietZoneAlwaysCombined = false;
+        let allowToggleDrawEndChar = false;
+        let allowToggleDrawStartAndEndChar = false;
         switch (type) {
             case BarcodeType.qr:
                 allowedCharacterSets = [BarcodeCharacterSet.iso8859_1, BarcodeCharacterSet.utf8];
@@ -233,7 +259,12 @@ export class BarcodeController {
                 quietZoneAlwaysCombined = true;
                 break;
             case BarcodeType.ean13:
+                allowToggleText = false;
+                allowToggleDrawEndChar = true;
+                break;
             case BarcodeType.ean8:
+                allowToggleDrawStartAndEndChar = true;
+            // Intentional fall-through
             case BarcodeType.upca:
             case BarcodeType.upce:
                 allowToggleText = false;
@@ -246,6 +277,9 @@ export class BarcodeController {
                     BarcodeCharacterSet.code128c,
                 ];
                 break;
+            case BarcodeType.code39:
+                allowToggleDrawStartAndEndChar = true;
+                break;
         }
         return {
             allowEnableMagnification: allowEnableMagnification,
@@ -255,6 +289,8 @@ export class BarcodeController {
             allowedErrorCorrectionLevels: allowedErrorCorrectionLevels,
             allowToggleText: allowToggleText,
             quietZoneAlwaysCombined: quietZoneAlwaysCombined,
+            allowToggleDrawEndChar: allowToggleDrawEndChar,
+            allowToggleDrawStartAndEndChar: allowToggleDrawStartAndEndChar,
         };
     };
 }
