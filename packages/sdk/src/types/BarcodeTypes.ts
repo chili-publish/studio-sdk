@@ -24,6 +24,7 @@ export interface BarcodeProperties {
     quietZone?: QuietZoneDeltaUpdate;
     errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
     characterSet?: BarcodeCharacterSet;
+    drawStartStopChars?: boolean;
 }
 
 export enum BarcodeErrorCorrectionLevel {
@@ -49,6 +50,8 @@ export interface BarcodeConfigurationOptions {
     allowEnableMagnification: boolean;
     allowToggleText: boolean;
     quietZoneAlwaysCombined: boolean;
+    allowToggleDrawEndChar: boolean;
+    allowToggleDrawStartAndEndChar: boolean;
 }
 
 export type QuietZone = {
