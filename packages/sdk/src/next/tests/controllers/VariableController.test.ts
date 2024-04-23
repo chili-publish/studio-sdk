@@ -81,12 +81,16 @@ describe('Next.VariableController', () => {
         await mockedVariableController.setListVariable('listId', [
             { value: 'a', displayValue: 'dis a' },
             { value: 'b', displayValue: 'dis b' },
-            { value: 'c', displayValue: 'dis b' },
+            { value: 'c', displayValue: 'dis c' },
         ]);
         expect(mockEditorApi.setListVariableItems).toHaveBeenCalledTimes(2);
         expect(mockEditorApi.setListVariableItems).toHaveBeenCalledWith(
             'listId',
-            (<ListVariableItem[]>[{ value: 'a' }, { value: 'b' }, { value: 'c' }]).map((item) => JSON.stringify(item)),
+            (<ListVariableItem[]>[
+                { value: 'a', displayValue: 'dis a' },
+                { value: 'b', displayValue: 'dis b' },
+                { value: 'c', displayValue: 'dis c' },
+            ]).map((item) => JSON.stringify(item)),
         );
     });
 });
