@@ -49,4 +49,13 @@ export class ConfigurationController {
         const res = await this.#editorAPI;
         return res.updateStudioOptions(JSON.stringify(options)).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method returns the engine session id. This id is unique for this engine session
+     * @returns the engine session id
+     */
+    getEngineSessionId = async () => {
+        const res = await this.#editorAPI;
+        return res.getEngineSessionId().then((result) => getEditorResponseData<string>(result));
+    };
 }

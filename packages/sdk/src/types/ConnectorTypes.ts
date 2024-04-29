@@ -111,9 +111,16 @@ export enum ConnectorRegistrationSource {
 export class ConnectorMapping {
     name: string;
     value: string;
+    direction = ConnectorMappingDirection.engineToConnector;
 
-    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string) {
+    constructor(
+        contextProperty: string,
+        mapFrom: ConnectorMappingSource,
+        sourceValue: string,
+        direction = ConnectorMappingDirection.engineToConnector,
+    ) {
         this.name = contextProperty;
+        this.direction = direction;
 
         if (mapFrom === ConnectorMappingSource.variable) {
             this.value = `${mapFrom}.${sourceValue}`;
@@ -142,6 +149,23 @@ export type QueryPage<T> = {
 export enum ConnectorMappingSource {
     variable = 'var',
     value = 'value',
+}
+
+/**
+ * Direction of the Connector Mapping.
+ */
+export enum ConnectorMappingDirection {
+    /**
+     * Indicates the mapping will propagate a value to the connector. This
+     * mapping might cause the linked connector to refresh.
+     */
+    engineToConnector = 'engineToConnector',
+
+    /**
+     * Indicates the mapping will propagate a value from inside the connector
+     * to the engine. AKA "reverse mapping".
+     */
+    connectorToEngine = 'connectorToEngine',
 }
 
 export enum ConnectorStateType {
@@ -234,13 +258,28 @@ export class RefreshedAuthCredendentials {
 }
 
 export enum AuthCredentialsTypeEnum {
-    grafxToken,
-    refreshed,
+    grafxToken = 'grafxToken',
+    refreshed = 'refreshed',
 }
 
 export type AuthCredentials = GrafxTokenAuthCredentials | RefreshedAuthCredendentials;
 
 export enum AuthRefreshTypeEnum {
     grafxToken = 'grafxToken',
-    user = 'user',
+    any = 'any',
 }
+
+/**
+ * @param connectorId connector id
+ * @param type type of auth renewal needed
+ * @param headerValue the value of the X-GRAFX-UNAUTHORIZED header. This
+ *      will notify that the dam authentication expired if it went through the
+ *      proxy.
+ *      Example: "Static, 1234", "OAuthClientCredentials, 5678"
+ *      If the http request did not go through the proxy, headerValue is null.
+ */
+export type AuthRefreshRequest = {
+    connectorId: Id;
+    type: AuthRefreshTypeEnum;
+    headerValue: string | null;
+};

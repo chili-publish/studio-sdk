@@ -1,5 +1,5 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariable, VariableType } from '../../types/VariableTypes';
+import { ImageVariable, ListVariable, ListVariableItem, Variable, VariableType } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
@@ -25,14 +25,32 @@ describe('VariableController', () => {
         occurrences: 0,
         value: {
             connectorId: connectorId,
-            assetId: 'assetId',
+            assetId: 'highres-brush.png',
+            resolved: {
+                mediaId: 'resolved-brush-id',
+            },
         },
     };
 
+    const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
+        id: variableId,
+        type: VariableType.list,
+        name: '',
+        label: '',
+        isVisible: true,
+        isReadonly: false,
+        isRequired: false,
+        occurrences: 0,
+        selected: { value: 'abc', displayValue: 'A-B-C' },
+        items: [{ value: 'abc', displayValue: 'A-B-C' }],
+    };
+
+    const variables = [listVar];
+
     const mockEditorApi: EditorAPI = {
         getVariableById: async () => getEditorResponseData(castToEditorResponse(variable)),
-        getVariableByName: async () => getEditorResponseData(castToEditorResponse(null)),
-        getVariables: async () => getEditorResponseData(castToEditorResponse(null)),
+        getVariableByName: async () => getEditorResponseData(castToEditorResponse(listVar)),
+        getVariables: async () => getEditorResponseData(castToEditorResponse(variables)),
         addVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         removeVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableLabel: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -85,14 +103,20 @@ describe('VariableController', () => {
     });
 
     it('get variable by name', async () => {
-        await mockedVariableController.getByName('name');
+        const result = await mockedVariableController.getByName('name');
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariableByName).toHaveBeenCalledWith('name');
+        // Backwards compatibility layer maps the new `VariableListItem` into a string.
+        expect((result.parsedData as ListVariable).items).toStrictEqual(['abc']);
+        expect((result.parsedData as ListVariable).selected).toStrictEqual('abc');
     });
 
     it('get variable list', async () => {
-        await mockedVariableController.getAll();
+        const result = await mockedVariableController.getAll();
         expect(mockEditorApi.getVariables).toHaveBeenCalledTimes(1);
+        // Backwards compatibility layer maps the new `VariableListItem` into a string.
+        expect((result.parsedData as ListVariable[])[0].items).toStrictEqual(['abc']);
+        expect((result.parsedData as ListVariable[])[0].selected).toStrictEqual('abc');
     });
 
     it('create a new variable', async () => {
@@ -128,7 +152,10 @@ describe('VariableController', () => {
     it('sets the variable list items', async () => {
         await mockedVariableController.setListVariable('listId', ['a', 'b', 'c']);
         expect(mockEditorApi.setListVariableItems).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setListVariableItems).toHaveBeenCalledWith('listId', ['a', 'b', 'c']);
+        expect(mockEditorApi.setListVariableItems).toHaveBeenCalledWith(
+            'listId',
+            (<ListVariableItem[]>[{ value: 'a' }, { value: 'b' }, { value: 'c' }]).map((item) => JSON.stringify(item)),
+        );
     });
 
     it('set variable string value', async () => {

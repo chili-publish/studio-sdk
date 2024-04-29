@@ -34,6 +34,7 @@ import { VariableController } from './controllers/VariableController';
 import { ShapeController } from './controllers/ShapeController';
 import { InfoController } from './controllers/InfoController';
 import { ClipboardController } from './controllers/ClipboardController';
+import { BarcodeController } from './controllers/BarcodeController';
 
 let connection: Connection;
 
@@ -52,6 +53,8 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     shape: ShapeController;
+    /** @experimental */
+    barcode: BarcodeController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
@@ -92,6 +95,7 @@ export class SDK {
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
+        this.barcode = new BarcodeController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
@@ -129,6 +133,7 @@ export class SDK {
                 onActionsChanged: this.subscriber.onActionsChanged,
                 onStateChanged: this.subscriber.onStateChanged,
                 onAuthExpired: this.subscriber.onAuthExpired,
+                onViewportRequested: this.subscriber.onViewportRequested,
                 onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFramesContentChanged: this.subscriber.onSelectedFramesContentChanged,
                 onSelectedFramesLayoutChanged: this.subscriber.onSelectedFramesLayoutChanged,
@@ -149,11 +154,14 @@ export class SDK {
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,
+                onConnectorsChanged: this.subscriber.onConnectorsChanged,
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
+                onViewModeChanged: this.subscriber.onViewModeChanged,
+                onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -166,6 +174,7 @@ export class SDK {
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
+        this.barcode = new BarcodeController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new ConfigurationController(this.editorAPI);

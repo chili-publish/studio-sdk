@@ -4,23 +4,26 @@ import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, Me
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
-import { ActionEditorEvent, DocumentAction, DocumentFontFamily, ToolType } from '..';
+import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
 import { DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
-import { AuthCredentials, ConnectorEvent, AuthRefreshTypeEnum } from './ConnectorTypes';
+import { BarcodeFrameValidationResult } from './BarcodeTypes';
+import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
 import { PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
+import { Viewport } from './ViewportTypes';
 
 export type Id = string;
 
 export type ConfigType = {
     onActionsChanged?: (state: DocumentAction[]) => void;
     onStateChanged?: () => void;
-    onAuthExpired?: (connectorId: string, type: AuthRefreshTypeEnum) => Promise<AuthCredentials | null>;
+    onAuthExpired?: (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>;
+    onViewportRequested?: () => Viewport | null;
     onDocumentLoaded?: () => void;
     /**
      * @deprecated use `onSelectedFramesLayoutChanged` instead
@@ -56,11 +59,14 @@ export type ConfigType = {
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
     onConnectorEvent?: (event: ConnectorEvent) => void;
+    onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
     onZoomChanged?: (scaleFactor: number) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;
     onAsyncError?: (asyncError: AsyncError) => void;
+    onViewModeChanged?: (tool: ViewMode) => void;
+    onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
 };
 
 export type EditorResponseError = string;
@@ -99,6 +105,7 @@ export type InitialStateType = {
 export interface PropertyState<T> {
     value: T;
     isOverride: boolean;
+    isReadOnly: boolean;
 }
 
 export interface SelectedLayoutFrame {
