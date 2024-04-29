@@ -1,5 +1,6 @@
 import { CanvasController } from '../../controllers/CanvasController';
 import { EditorAPI } from '../../types/CommonTypes';
+import { ViewMode } from '../../types/ViewModeTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 
 let mockedCanvasController: CanvasController;
@@ -8,12 +9,14 @@ const mockEditorApi: EditorAPI = {
     zoomToPage: async () => getEditorResponseData(castToEditorResponse(null)),
     getZoomPercentage: async () => getEditorResponseData(castToEditorResponse(null)),
     setZoomPercentage: async () => getEditorResponseData(castToEditorResponse(null)),
+    setViewMode: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 beforeEach(() => {
     mockedCanvasController = new CanvasController(mockEditorApi);
     jest.spyOn(mockEditorApi, 'zoomToPage');
     jest.spyOn(mockEditorApi, 'getZoomPercentage');
     jest.spyOn(mockEditorApi, 'setZoomPercentage');
+    jest.spyOn(mockEditorApi, 'setViewMode');
 });
 
 afterAll(() => {
@@ -45,5 +48,11 @@ describe('CanvasController', () => {
         await mockedCanvasController.setZoomPercentage(50);
         expect(mockEditorApi.setZoomPercentage).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setZoomPercentage).toHaveBeenCalledWith(50);
+    });
+
+    it('should call set function of EditorAPI', async () => {
+        await mockedCanvasController.setViewMode(ViewMode.normal);
+        expect(mockEditorApi.setViewMode).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setViewMode).toHaveBeenCalledWith(ViewMode.normal);
     });
 });

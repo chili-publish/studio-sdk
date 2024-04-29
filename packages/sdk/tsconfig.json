@@ -24,31 +24,8 @@
         "entryPoints": [
             // Alphabetically!!
             "src/index.ts",
-            "src/controllers/ActionController.ts",
-            "src/controllers/AnimationController.ts",
-            "src/controllers/CanvasController.ts",
-            "src/controllers/CharacterStyleController.ts",
-            "src/controllers/ColorStyleController.ts",
-            "src/controllers/ConfigurationController.ts",
-            "src/controllers/ConnectorController.ts",
-            "src/controllers/DebugController.ts",
-            "src/controllers/DocumentController.ts",
-            "src/controllers/ExperimentController.ts",
-            "src/controllers/FontConnectorController.ts",
-            "src/controllers/FontController.ts",
-            "src/controllers/FrameController.ts",
-            "src/controllers/LayoutController.ts",
-            "src/controllers/MediaConnectorController.ts",
-            "src/controllers/PageController.ts",
-            "src/controllers/ParagraphStyleController.ts",
-            "src/controllers/SubscriberController.ts",
-            "src/controllers/TextStyleController.ts",
-            "src/controllers/ToolController.ts",
-            "src/controllers/UndoManagerController.ts",
-            "src/controllers/UtilsController.ts",
-            "src/controllers/VariableController.ts",
-            "src/types/DocumentTypes.ts",
-            "src/types/MediaConnectorTypes.ts"
+            "src/controllers/*.ts",
+            "src/types/*.ts"
         ],
         "out": "docs",
         "excludePrivate": true

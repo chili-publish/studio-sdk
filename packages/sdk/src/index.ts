@@ -9,7 +9,7 @@ export {
     TweenTypes,
     BasicAnimationsEmphasisStyles,
 } from './types/AnimationTypes';
-export { LayoutType, MeasurementUnit } from './types/LayoutTypes';
+export { LayoutType, MeasurementUnit, LayoutIntent, PositionEnum } from './types/LayoutTypes';
 export {
     BlendMode,
     FrameTypeEnum,
@@ -19,8 +19,11 @@ export {
     FitMode,
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
+    BarcodeSourceTypeEnum,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
+
+export { ViewMode } from './types/ViewModeTypes';
 
 export type {
     LayoutPropertiesType,
@@ -36,6 +39,10 @@ export type {
     TextFrame,
     ImageFrame,
     ShapeFrame,
+    BarcodeFrame,
+    BarcodeSource,
+    BarcodeVariableSource,
+    BarcodeTextSource,
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
@@ -47,6 +54,7 @@ export type {
     LongTextVariable,
     ShortTextVariable,
     ListVariable,
+    ListVariableItem,
     BooleanVariable,
     ConnectorImageVariableSource,
 } from './types/VariableTypes';
@@ -70,6 +78,9 @@ export type {
     SelectedLayoutFrame,
     MetaData,
     Id,
+    ConnectorConfigOptions,
+    ConnectorConfigValue,
+    ConnectorConfigValueType,
 } from './types/CommonTypes';
 
 export type {
@@ -112,5 +123,9 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
+
+export * from './types/BarcodeTypes';
+
+export type { Viewport } from './types/ViewportTypes';
 
 export default SDK;

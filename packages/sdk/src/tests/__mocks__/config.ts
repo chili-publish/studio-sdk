@@ -7,6 +7,7 @@ const mockConfig: ConfigType = {
     onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
     onAuthExpired: defaultMockReturn,
+    onViewportRequested: defaultMockReturn,
     onDocumentLoaded: defaultMockReturn,
     onSelectedFrameLayoutChanged: defaultMockReturn,
     onSelectedFramesLayoutChanged: defaultMockReturn,
@@ -32,5 +33,6 @@ const mockConfig: ConfigType = {
     onConnectorEvent: defaultMockReturn,
     onZoomChanged: defaultMockReturn,
     onPageSizeChanged: defaultMockReturn,
+    onViewModeChanged: defaultMockReturn,
 };
 export default mockConfig;

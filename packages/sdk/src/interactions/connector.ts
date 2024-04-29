@@ -1,7 +1,6 @@
 import { Connection, connectToChild } from 'penpal';
 import { Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
-import { AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -50,10 +49,12 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     iframeDoc.write(html);
     iframeDoc.close();
 };
+
 interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
     onStateChanged: (state: string) => void;
-    onAuthExpired: (connectorId: string, refreshType: AuthRefreshTypeEnum) => Promise<string | null>;
+    onAuthExpired: (authRefreshRequest: string) => Promise<string | null>;
+    onViewportRequested: () => string | null;
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;
@@ -74,11 +75,14 @@ interface ConfigParameterTypes {
     onSelectedLayoutIdChanged: (id: string) => void;
     onLayoutsChanged: (layouts: string) => void;
     onConnectorEvent: (state: string) => void;
+    onConnectorsChanged: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
     onAsyncError: (asyncError: string) => void;
+    onViewModeChanged: (viewMode: string) => void;
+    onBarcodeValidationChanged: (validationResults: string) => void;
 }
 
 const Connect = (
@@ -122,6 +126,7 @@ const Connect = (
                 stateChanged: params.onStateChanged,
                 documentLoaded: params.onDocumentLoaded,
                 authExpired: params.onAuthExpired,
+                viewportRequested: params.onViewportRequested,
                 selectedFramesContent: params.onSelectedFramesContentChanged,
                 selectedFramesLayout: params.onSelectedFramesLayoutChanged,
                 selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
@@ -141,11 +146,14 @@ const Connect = (
                 selectedLayoutId: params.onSelectedLayoutIdChanged,
                 layoutListChanged: params.onLayoutsChanged,
                 connectorEvent: params.onConnectorEvent,
+                connectorsChanged: params.onConnectorsChanged,
                 zoomChanged: params.onZoomChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
                 asyncError: params.onAsyncError,
+                viewModeChanged: params.onViewModeChanged,
+                barcodeValidationChanged: params.onBarcodeValidationChanged,
             },
         }),
     );

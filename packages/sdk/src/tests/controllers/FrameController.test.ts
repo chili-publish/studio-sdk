@@ -12,6 +12,7 @@ import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ShapeType } from '../../types/ShapeTypes';
+import { BarcodeType } from '../../types/BarcodeTypes';
 
 let id: Id;
 
@@ -19,7 +20,7 @@ let mockedFrameController: FrameController;
 
 const mockedEditorApi: EditorAPI = {
     addFrame: async () => getEditorResponseData(castToEditorResponse(null)),
-    addShapeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
+    addBarcodeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     getFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     getSelectedFrames: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -36,6 +37,7 @@ const mockedEditorApi: EditorAPI = {
     setFrameRotation: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
     removeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
+    removeFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrameY: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -73,7 +75,7 @@ beforeEach(() => {
     mockedFrameController = new FrameController(mockedEditorApi);
 
     jest.spyOn(mockedEditorApi, 'addFrame');
-    jest.spyOn(mockedEditorApi, 'addShapeFrame');
+    jest.spyOn(mockedEditorApi, 'addBarcodeFrame');
     jest.spyOn(mockedEditorApi, 'duplicateFrames');
     jest.spyOn(mockedEditorApi, 'getFrames');
     jest.spyOn(mockedEditorApi, 'getSelectedFrames');
@@ -89,7 +91,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameY');
     jest.spyOn(mockedEditorApi, 'setFrameRotation');
     jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
-    jest.spyOn(mockedEditorApi, 'removeFrame');
+    jest.spyOn(mockedEditorApi, 'removeFrames');
     jest.spyOn(mockedEditorApi, 'resetFrame');
     jest.spyOn(mockedEditorApi, 'resetFrameX');
     jest.spyOn(mockedEditorApi, 'resetFrameY');
@@ -140,6 +142,12 @@ describe('FrameController', () => {
         await mockedFrameController.createShapeFrame(ShapeType.ellipse, 100, 100, 100, 100);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.addFrame).toHaveBeenCalledWith(ShapeType.ellipse, 100, 100, 100, 100);
+    });
+
+    it('Should be possible to create a barcode frame', async () => {
+        await mockedFrameController.createBarcodeFrame(BarcodeType.ean13, { x: 100, y: 101 });
+        expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledWith(BarcodeType.ean13, 100, 101);
     });
 
     it('Should be possible to duplicate a list of frames', async () => {
@@ -249,8 +257,14 @@ describe('FrameController', () => {
 
     it('Should be possible to remove a frame', async () => {
         await mockedFrameController.remove(id);
-        expect(mockedEditorApi.removeFrame).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.removeFrame).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledWith([id]);
+    });
+
+    it('Should be possible to remove frames', async () => {
+        await mockedFrameController.removeFrames([id]);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.removeFrames).toHaveBeenCalledWith([id]);
     });
 
     it('Should be possible to reset a frame', async () => {

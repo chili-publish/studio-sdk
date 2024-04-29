@@ -1,4 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
+import { ViewMode } from '../types/ViewModeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -57,5 +58,15 @@ export class CanvasController {
     setZoomPercentage = async (scaleFactor: number) => {
         const res = await this.#editorAPI;
         return res.setZoomPercentage(scaleFactor).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new view mode
+     * @param viewMode view mode of the editor
+     * @returns
+     */
+    setViewMode = async (viewMode: ViewMode) => {
+        const res = await this.#editorAPI;
+        return res.setViewMode(viewMode).then((result) => getEditorResponseData<null>(result));
     };
 }

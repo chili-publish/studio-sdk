@@ -2,7 +2,7 @@ import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsO
 import { DocumentColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 import { BlendMode, FrameTypeEnum } from './FrameTypes';
-import { LayoutType } from './LayoutTypes';
+import { LayoutIntent, LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Variable } from './VariableTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
@@ -106,12 +106,14 @@ export interface Layout {
     frameAnimations?: FrameAnimation[];
     timelineLengthMs?: number;
     animated?: boolean;
+    intent?: LayoutIntent;
 }
 
 export interface TopLayout extends Layout {
     frameAnimations: FrameAnimation[];
     timelineLengthMs: number;
     animated: boolean;
+    intent: LayoutIntent;
     width: number;
     height: number;
 }
@@ -200,5 +202,5 @@ export interface ProjectDocumentProperties extends DocumentProperties {
 }
 
 export type DocumentLoadOptions = {
-    keepConnectors?: boolean;
+    keepConnectors: boolean;
 };

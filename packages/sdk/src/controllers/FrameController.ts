@@ -16,6 +16,7 @@ import {
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
 import { ShapeController } from './ShapeController';
+import { BarcodeType } from '../types/BarcodeTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -340,7 +341,17 @@ export class FrameController {
      */
     remove = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.removeFrame(id).then((result) => getEditorResponseData<null>(result));
+        return res.removeFrames([id]).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will remove frames with the given ids.
+     * @param ids an array of ids of the frames to be removed.
+     * @returns
+     */
+    removeFrames = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.removeFrames(ids).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -374,6 +385,18 @@ export class FrameController {
     };
 
     /**
+     * @experimental This method will create a new barcode frame of 'type' type to the layout positioned on the requested
+     * coordinates. Any coordinate that is not specified will default to 'center'.
+     * @param type the type of barcode to create
+     * @param position optional position object where you can specify the x, y of the barcode frame
+     * @returns
+     */
+    createBarcodeFrame = async (type: BarcodeType, position?: { x?: number; y?: number }) => {
+        const res = await this.#editorAPI;
+        return res.addBarcodeFrame(type, position?.x, position?.y).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
      * This method will duplicate a list of frames
      * @param ids An array of all ids you want to duplicate
      * @returns
@@ -382,7 +405,6 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.duplicateFrames(ids).then((result) => getEditorResponseData<Id>(result));
     };
-
 
     /**
      * This method sets or removes the image source to the ImageFrame
@@ -443,7 +465,9 @@ export class FrameController {
         return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
     /**
-     * This method will set the constrainProportions property of a specified frame.
+     * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
+     * true, the frame's constrainProportions property cannot be changed and this method will return an error.
+     *
      * @param id the id of the frame that needs to get updated.
      * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
@@ -580,7 +604,7 @@ export class FrameController {
     };
 
     /**
-     * This method will set the blend mode of a specified shape frame
+     * This method will set the blend mode of a specified frame
      * @param id the id of a specific frame
      * @param blendMode the blend mode
      * @returns

@@ -1,6 +1,7 @@
 import { ConfigType, Id } from '../types/CommonTypes';
-import { AuthRefreshTypeEnum as AuthRefreshTypeEnum } from '../types/ConnectorTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
+import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
+import { ViewMode } from '../types/ViewModeTypes';
 import { ToolType } from '../utils/enums';
 
 /**
@@ -109,17 +110,40 @@ export class SubscriberController {
      *
      * When this emits it means either:
      * - the grafxToken needs to be renewed
-     * - the 3rd party auth (user impersonation) needs to be renewed.
+     * - any other authentication needs to be renewed (user impersonation, static..)
      *
-     * @param connectorId connector id
-     * @param type the type of auth renewal needed
+     * @param authRefreshRequest Stringified object of AuthRefreshRequest
      */
-    onAuthExpired = (connectorId: string, type: AuthRefreshTypeEnum) => {
+    onAuthExpired = async (authRefreshRequest: string) => {
         const callBack = this.config.onAuthExpired;
 
-        return callBack
-            ? callBack(connectorId, type).then((auth) => JSON.stringify(auth))
-            : new Promise<string | null>((resolve) => resolve(null));
+        if (!callBack) {
+            return null;
+        }
+
+        const authCredentials = await callBack(JSON.parse(authRefreshRequest));
+
+        return authCredentials != null ? JSON.stringify(authCredentials) : null;
+    };
+
+    /**
+     * Listener on viewport request.
+     * The callback should resolve to the visible viewport. If the
+     * listener is not defined, the viewport will take full size.
+     *
+     * When this emits it means that the engine requested the viewport for a
+     * zoom to page call.
+     */
+    onViewportRequested = () => {
+        const callBack = this.config.onViewportRequested;
+
+        if (!callBack) {
+            return null;
+        }
+
+        const viewport = callBack();
+
+        return viewport != null ? JSON.stringify(viewport) : null;
     };
 
     /**
@@ -144,7 +168,27 @@ export class SubscriberController {
      */
     onVariableListChanged = (variablesJson: string) => {
         const callBack = this.config.onVariableListChanged;
-        callBack && callBack(JSON.parse(variablesJson));
+
+        // TODO: Revert in part 2.
+        if (!callBack) {
+            return;
+        }
+
+        const parsed = JSON.parse(variablesJson) as Variable[];
+
+        const updated = parsed.map((variable) =>
+            variable.type === VariableType.list
+                ? {
+                      ...variable,
+                      items: ((variable as ListVariable).items as unknown as ListVariableItem[]).map(
+                          (item) => item.value,
+                      ),
+                      selected: ((variable as ListVariable).selected as unknown as ListVariableItem | undefined)?.value,
+                  }
+                : variable,
+        );
+
+        callBack(updated);
     };
 
     /**
@@ -266,6 +310,15 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on connectors, if this changes, this listener will get triggered with the updates
+     * @param connectors Stringified array of ConnectorInstance type
+     */
+    onConnectorsChanged = (connectors: string) => {
+        const callBack = this.config.onConnectorsChanged;
+        callBack && callBack(JSON.parse(connectors));
+    };
+
+    /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
      * This will not emit anything if your document is a `template`.
      * @param pageSize Stringified object of the PageSize
@@ -308,5 +361,24 @@ export class SubscriberController {
     onAsyncError = (asyncError: string) => {
         const callBack = this.config.onAsyncError;
         callBack && callBack(JSON.parse(asyncError));
+    };
+
+    /**
+     * Listener on when the view mode has changed
+     * @param viewMode the string representation of a view mode
+     */
+    onViewModeChanged = (viewMode: string) => {
+        const callBack = this.config.onViewModeChanged;
+        callBack && callBack(viewMode as ViewMode);
+    };
+
+    /**
+     * Listener on when barcode frames change their validation state
+     *
+     * @param validationResults the json string representation of the validation results
+     */
+    onBarcodeValidationChanged = (validationResults: string) => {
+        const callBack = this.config.onBarcodeValidationChanged;
+        callBack && callBack(JSON.parse(validationResults));
     };
 }

@@ -1,4 +1,14 @@
-import { ActionEditorEvent, DocumentAction, Id, LayoutType, MeasurementUnit } from '../../index';
+import {
+    ActionEditorEvent,
+    BarcodeValidationResult,
+    ConnectorRegistrationSource,
+    DocumentAction,
+    Id,
+    LayoutType,
+    MeasurementUnit,
+    ViewMode,
+    Viewport,
+} from '../../index';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/animations';
 
@@ -8,11 +18,12 @@ import { VariableType } from '../../types/VariableTypes';
 import { ToolType } from '../../utils/enums';
 import {
     AuthCredentials,
-    ConnectorStateType,
-    RefreshedAuthCredendentials,
-    GrafxTokenAuthCredentials,
     AuthCredentialsTypeEnum,
+    AuthRefreshRequest,
     AuthRefreshTypeEnum,
+    ConnectorStateType,
+    GrafxTokenAuthCredentials,
+    RefreshedAuthCredendentials,
 } from '../../types/ConnectorTypes';
 import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
@@ -46,6 +57,7 @@ const mockEditorApi: EditorAPI = {
     onSelectedLayoutIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onLayoutsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onConnectorEvent: async () => getEditorResponseData(castToEditorResponse(null)),
+    onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -54,6 +66,9 @@ const mockEditorApi: EditorAPI = {
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
+    onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
+    onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -83,6 +98,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onSelectedLayoutIdChanged');
     jest.spyOn(mockEditorApi, 'onLayoutsChanged');
     jest.spyOn(mockEditorApi, 'onConnectorEvent');
+    jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onZoomChanged');
     jest.spyOn(mockEditorApi, 'onActionsChanged');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
@@ -91,6 +107,9 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
+    jest.spyOn(mockEditorApi, 'onViewModeChanged');
+    jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
+    jest.spyOn(mockEditorApi, 'onViewportRequested');
 });
 
 afterEach(() => {
@@ -161,9 +180,14 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onDocumentLoaded).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onVariableListChanged', async () => {
-        await mockedSubscriberController.onVariableListChanged('[{"id":"1","type":"group"}]');
+        await mockedSubscriberController.onVariableListChanged(
+            '[{"id":"1","type":"group"},{"id":"varList","type":"list","selected": {"value": "Orange"},"items":[{"value":"Apple"},{"value":"Pear"},{"value":"Orange"}]}]',
+        );
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalled();
-        expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([{ id: '1', type: VariableType.group }]);
+        expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith([
+            { id: '1', type: VariableType.group },
+            { id: 'varList', type: VariableType.list, selected: 'Orange', items: ['Apple', 'Pear', 'Orange'] },
+        ]);
     });
     it('Should be possible to subscribe to onSelectedLayoutFramesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutFramesChanged('5');
@@ -211,6 +235,12 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onConnectorEvent(connectorEvent);
         expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledWith(JSON.parse(connectorEvent));
         expect(mockEditorApi.onConnectorEvent).toHaveBeenCalledTimes(1);
+    });
+    it('Should be possible to subscribe to onConnectorsChanged', async () => {
+        const connectors = JSON.stringify([{ id: 'id', name: 'name', source: ConnectorRegistrationSource.local }]);
+        await mockedSubscriberController.onConnectorsChanged(connectors);
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(connectors));
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onZoomChanged', async () => {
         await mockedSubscriberController.onZoomChanged(JSON.stringify(150));
@@ -275,6 +305,19 @@ describe('SubscriberController', () => {
 
     describe('onAuthExpired', () => {
         const connectorId = 'connectorId';
+        const staticHeaderValue = 'Static, 1234';
+
+        const grafxAuthRefreshRequest: AuthRefreshRequest = {
+            connectorId: connectorId,
+            type: AuthRefreshTypeEnum.grafxToken,
+            headerValue: null,
+        };
+
+        const anyAuthRefreshRequest: AuthRefreshRequest = {
+            connectorId: connectorId,
+            type: AuthRefreshTypeEnum.any,
+            headerValue: staticHeaderValue,
+        };
 
         it('returns the token defined by the callback', async () => {
             const refreshedToken = 'newToken';
@@ -291,14 +334,13 @@ describe('SubscriberController', () => {
             const mockedSubscriberController = new SubscriberController(mockConfig);
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
-                connectorId,
-                AuthRefreshTypeEnum.grafxToken,
+                JSON.stringify(grafxAuthRefreshRequest),
             );
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
 
             expect(resultAuth.token).toBe(refreshedToken);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.grafxToken);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(grafxAuthRefreshRequest);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
@@ -313,21 +355,67 @@ describe('SubscriberController', () => {
             const mockedSubscriberController = new SubscriberController(mockConfig);
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
-                connectorId,
-                AuthRefreshTypeEnum.user,
+                JSON.stringify(anyAuthRefreshRequest),
             );
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultAuth = JSON.parse(resultJsonString!);
 
             expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(connectorId, AuthRefreshTypeEnum.user);
+            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(anyAuthRefreshRequest);
             expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', async () => {
             const mockedSubscriberController = new SubscriberController({});
 
-            const result = await mockedSubscriberController.onAuthExpired(connectorId, AuthRefreshTypeEnum.grafxToken);
+            const result = await mockedSubscriberController.onAuthExpired(JSON.stringify(grafxAuthRefreshRequest));
+
+            expect(result).toBe(null);
+        });
+    });
+
+    it('Should call the ViewModeChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onViewModeChanged(ViewMode.normal);
+        expect(mockEditorApi.onViewModeChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onViewModeChanged).toHaveBeenCalledWith('normal');
+    });
+
+    it('Should call BarcodeValidationChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onBarcodeValidationChanged(
+            JSON.stringify([{ id: '1', validationResult: 'success' }]),
+        );
+        expect(mockEditorApi.onBarcodeValidationChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onBarcodeValidationChanged).toHaveBeenCalledWith([
+            { id: '1', validationResult: BarcodeValidationResult.success },
+        ]);
+    });
+
+    describe('onViewportRequested', () => {
+        it('returns the viewport defined by the callback', () => {
+            const viewport: Viewport = { top: 0, left: 0, width: 100, height: 100, margin: 10 };
+
+            const mockConfig = {
+                onViewportRequested() {
+                    return viewport;
+                },
+            };
+
+            jest.spyOn(mockConfig, 'onViewportRequested');
+
+            const mockedSubscriberController = new SubscriberController(mockConfig);
+
+            const resultJsonString = mockedSubscriberController.onViewportRequested();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const resultViewport: Viewport = JSON.parse(resultJsonString!);
+
+            expect(resultViewport).toStrictEqual(viewport);
+            expect(mockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns a null token if the listener is not defined', () => {
+            const mockedSubscriberController = new SubscriberController({});
+
+            const result = mockedSubscriberController.onViewportRequested();
 
             expect(result).toBe(null);
         });

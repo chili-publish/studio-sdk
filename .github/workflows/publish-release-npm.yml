@@ -9,7 +9,7 @@ jobs:
       matrix:
         node-version: [18]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PACKAGE_SECRET }}
       - name: Check cache
@@ -41,7 +41,7 @@ jobs:
           ref=${{ github.ref }}
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
-          node cicd.js sdk,connectors yarn publish --tag $tag --tag latest
+          node cicd.js sdk yarn publish --tag $tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: get new npm version

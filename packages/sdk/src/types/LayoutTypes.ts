@@ -1,3 +1,4 @@
+import { ColorUsage } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
@@ -32,6 +33,7 @@ export type LayoutWithFrameProperties = {
     type: LayoutType;
     timelineLengthMs?: number;
     children?: LayoutWithFrameProperties[];
+    intent: LayoutIntent | null;
 };
 
 // used by new getter methods
@@ -44,6 +46,10 @@ export type Layout = {
     childLayouts: Id[];
     timelineLengthMs: PropertyState<number>;
     unit: PropertyState<MeasurementUnit>;
+    intent: PropertyState<LayoutIntent>;
+    bleed: PropertyState<LayoutBleed>;
+    fillColor: PropertyState<ColorUsage>;
+    fillColorEnabled: PropertyState<boolean>;
 };
 
 // used by onLayoutsChanged
@@ -54,6 +60,29 @@ export type LayoutListItemType = {
     parentId?: Id | null;
     childLayouts: Id[];
 };
+
+export type LayoutBleed = {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+    areBleedValuesCombined: boolean;
+};
+
+export type BleedDeltaUpdate = {
+    left?: string;
+    top?: string;
+    right?: string;
+    bottom?: string;
+    areBleedValuesCombined?: boolean;
+};
+
+export enum PositionEnum {
+    top = 'top',
+    right = 'right',
+    bottom = 'bottom',
+    left = 'left',
+}
 
 export enum LayoutType {
     top = 'top',
@@ -66,4 +95,10 @@ export enum MeasurementUnit {
     cm = 'cm',
     inch = 'inch',
     pt = 'pt',
+}
+
+export enum LayoutIntent {
+    print = 'print',
+    digitalStatic = 'digitalStatic',
+    digitalAnimated = 'digitalAnimated',
 }

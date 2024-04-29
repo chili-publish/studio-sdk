@@ -1,7 +1,8 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout, MeasurementUnit } from '../types/LayoutTypes';
+import { Layout, MeasurementUnit, LayoutIntent, PositionEnum, BleedDeltaUpdate } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
+import { ColorUsage } from '../types/ColorStyleTypes';
 
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
@@ -192,5 +193,111 @@ export class LayoutController {
     getSelectedSnapshot = async () => {
         const res = await this.#blobAPI;
         return res.getPageSnapshot().then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+    };
+
+    /**
+     * This method sets the intent of a specific layout. Note that setting the intent for a layout
+     * can have side-effects such as updating the measurement unit
+     * @param id the id of a specific layout
+     * @param intent the intent that will be used for the layout
+     */
+    setIntent = async (id: Id, intent: LayoutIntent) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutIntent(id, intent).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method resets the intent of a specific layout to its original (inherited) value.
+     * Note: Calling this on the top layout is not valid
+     *
+     * @param id The id of the (child) layout to reset the intent for
+     */
+    resetIntent = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayoutIntent(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the fill color of a specific layout.
+     * Note: Depending on the layout intent, some colors might not be valid (eg opacity for digitalAnimated, any color for print)
+     *
+     * @param id the id of a specific layout
+     * @param color the color that will be used for the layout
+     */
+    setFillColor = async (id: Id, color: ColorUsage) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutFillColor(id, JSON.stringify(color)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This is a convenience method to enable or disable the fill color of a specific layout.
+     * Note: Depending on the layout intent, disabling might not be valid (eg disabling for digitalAnimated)
+     *
+     * @param id the id of a specific layout
+     * @param enabled whether the fill color should be enabled or disabled
+     */
+    setFillColorEnabled = async (id: Id, enabled: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutFillColorEnabled(id, enabled).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method resets the fill color of a specific layout to its original (inherited) value.
+     * Note: Calling this on the top layout is not valid
+     *
+     * @param id The id of the (child) layout to reset the fill color for
+     */
+    resetFillColor = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayoutFillColor(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the bleed value of a specific layout.
+     * Note: this is only valid on a print layout
+     *
+     * @param id The id of the specific layout
+     * @param value The bleed value
+     * @param position When defined will update the bleed value of a single position,
+     * otherwise will set all positions to the same value. Depending on this parameter
+     * being defined, the `areBleedValuesCombined` will also be updated.
+     */
+    setBleedValue = async (id: Id, value: string, position?: PositionEnum) => {
+        const update: BleedDeltaUpdate = position
+            ? {
+                  left: position === PositionEnum.left ? value : undefined,
+                  top: position === PositionEnum.top ? value : undefined,
+                  right: position === PositionEnum.right ? value : undefined,
+                  bottom: position === PositionEnum.bottom ? value : undefined,
+              }
+            : { left: value, top: value, right: value, bottom: value };
+
+        const res = await this.#editorAPI;
+        return res.updateLayoutBleed(id, JSON.stringify(update)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the combined state of the bleed values.
+     * Note: this is only valid on a print layout
+     *
+     * @param id The id of the specific layout
+     * @param value Whether the bleed values are combined
+     */
+    setAreBleedValuesCombined = async (id: Id, value: boolean) => {
+        const update: BleedDeltaUpdate = { areBleedValuesCombined: value };
+
+        const res = await this.#editorAPI;
+        return res.updateLayoutBleed(id, JSON.stringify(update)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the bleed values on the specified layout to its original (inherited) value.
+     * Note: Calling this on the top layout is not valid.
+     *
+     * @param id The id of the (child) layout to reset the bleed values for
+     */
+    resetBleedValues = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.updateLayoutBleed(id, null).then((result) => getEditorResponseData<null>(result));
     };
 }
