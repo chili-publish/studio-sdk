@@ -208,11 +208,11 @@ export class BarcodeController {
      * @experimental This method sets the flag to render the end characters of the barcode. This is not
      * supported for all barcode types.
      * @param id The id of the specific barcode frame.
-     * @param drawEndChar The flag indicating if the end characters should be drawn or not
+     * @param drawLightMarginIndicator The flag indicating if the end characters should be drawn or not
      * @returns
      */
-    setDrawEndChar = async (id: Id, drawEndChar: boolean) => {
-        const properties: BarcodeProperties = { drawStartStopChars: drawEndChar };
+    setDrawLightMarginIndicator = async (id: Id, drawLightMarginIndicator: boolean) => {
+        const properties: BarcodeProperties = { drawStartStopChars: drawLightMarginIndicator };
         return this.setBarcodeProperties(id, properties);
     };
 
@@ -240,7 +240,7 @@ export class BarcodeController {
         let allowedCharacterSets = undefined;
         let allowedErrorCorrectionLevels = undefined;
         let quietZoneAlwaysCombined = false;
-        let allowToggleDrawEndChar = false;
+        let allowToggleLightMarginIndicator = false;
         let allowToggleDrawStartAndEndChar = false;
         switch (type) {
             case BarcodeType.qr:
@@ -260,10 +260,10 @@ export class BarcodeController {
                 break;
             case BarcodeType.ean13:
                 allowToggleText = false;
-                allowToggleDrawEndChar = true;
+                allowToggleLightMarginIndicator = true;
                 break;
             case BarcodeType.ean8:
-                allowToggleDrawStartAndEndChar = true;
+                allowToggleLightMarginIndicator = true;
             // Intentional fall-through
             case BarcodeType.upca:
             case BarcodeType.upce:
@@ -289,7 +289,7 @@ export class BarcodeController {
             allowedErrorCorrectionLevels: allowedErrorCorrectionLevels,
             allowToggleText: allowToggleText,
             quietZoneAlwaysCombined: quietZoneAlwaysCombined,
-            allowToggleDrawEndChar: allowToggleDrawEndChar,
+            allowToggleLightMarginIndicator: allowToggleLightMarginIndicator,
             allowToggleDrawStartAndEndChar: allowToggleDrawStartAndEndChar,
         };
     };

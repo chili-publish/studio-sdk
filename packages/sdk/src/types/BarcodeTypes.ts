@@ -50,7 +50,7 @@ export interface BarcodeConfigurationOptions {
     allowEnableMagnification: boolean;
     allowToggleText: boolean;
     quietZoneAlwaysCombined: boolean;
-    allowToggleDrawEndChar: boolean;
+    allowToggleLightMarginIndicator: boolean;
     allowToggleDrawStartAndEndChar: boolean;
 }
 
