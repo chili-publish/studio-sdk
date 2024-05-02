@@ -1,6 +1,6 @@
 import { VariableController } from '../../controllers/VariableController';
 import { ListVariableItem, Variable, VariableType } from '../../../types/VariableTypes';
-import type { ListVariable } from '../../types/VariableTypes';
+import type { ListVariable } from '../../../next/types/VariableTypes';
 import { EditorAPI } from '../../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../../utils/EditorResponseData';
 
