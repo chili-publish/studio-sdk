@@ -69,6 +69,7 @@ describe('VariableController', () => {
         setVariableSource: async () => getEditorResponseData(castToEditorResponse(null)),
         getImageVariableConnectorId: async () => getEditorResponseData(castToEditorResponse('connectorId')),
         setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
+        updateNumberVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -94,6 +95,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableSource');
         jest.spyOn(mockEditorApi, 'getImageVariableConnectorId');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
+        jest.spyOn(mockEditorApi, 'updateNumberVariableProperties');
     });
 
     it('get variable by id', async () => {
@@ -254,5 +256,56 @@ describe('VariableController', () => {
 
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, null);
+    });
+
+    it('updates the minimum variable value', async () => {
+        await mockedVariableController.setMinimum('1', 20);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"min":20}');
+    });
+
+    it('updates the maximum variable value', async () => {
+        await mockedVariableController.setMaximum('1', 20);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"max":20}');
+    });
+
+    it('updates the show stepper variable value', async () => {
+        await mockedVariableController.setShowStepper('1', false);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"showStepper":false}');
+    });
+
+    it('updates the step size variable value', async () => {
+        await mockedVariableController.setStepSize('1', 2);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"stepSize":2}');
+    });
+
+    it('updates the thousands separator', async () => {
+        await mockedVariableController.setThousandsSeparator('1', '_');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"thousandsSeparator":"_"}');
+    });
+
+    it('updates the decimal separator', async () => {
+        await mockedVariableController.setDecimalSeparator('1', '_');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"decimalSeparator":"_"}');
+    });
+
+    it('updates the decimal places', async () => {
+        await mockedVariableController.setNumberOfDecimals('1', 2);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"numberOfDecimals":2}');
+    });
+
+    it('updates the decimal character style', async () => {
+        await mockedVariableController.setDecimalCharacterStyle('1', '2');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            '{"decimalCharacterStyleId":"2"}',
+        );
     });
 });

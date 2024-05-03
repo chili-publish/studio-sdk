@@ -158,7 +158,7 @@ export class VariableController {
      * @param value the new value of the variable
      * @returns
      */
-    setValue = async (id: Id, value: string | boolean | null) => {
+    setValue = async (id: Id, value: string | boolean | number | null) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
     };
@@ -288,6 +288,118 @@ export class VariableController {
      */
     removeSource = async (id: string) => {
         return this.setValue(id, null);
+    };
+
+    /**
+     * @experimental Sets the minimum value for a number variable
+     * @param id the id of the variable to update
+     * @param minimum the minimum value or null to remove the minimum value
+     * @returns
+     */
+    setMinimum = async (id: string, minimum: number | null) => {
+        const res = await this.#editorAPI;
+        const update = { min: minimum };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets the maximum value for a number variable
+     * @param id the id of the variable to update
+     * @param maximum the maximum value or null to remove the maximum value
+     * @returns
+     */
+    setMaximum = async (id: string, maximum: number | null) => {
+        const res = await this.#editorAPI;
+        const update = { max: maximum };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets the visibility of the stepper for a number variable
+     * @param id the id of the variable to update
+     * @param showStep true to show the stepper, false to hide it
+     * @returns
+     */
+    setShowStepper = async (id: string, showStepper: boolean) => {
+        const res = await this.#editorAPI;
+        const update = { showStepper: showStepper };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets the step size for a number variable
+     * @param id the id of the variable to update
+     * @param stepSize the step size or null to remove the step size
+     * @returns
+     */
+    setStepSize = async (id: string, stepSize: number) => {
+        const res = await this.#editorAPI;
+        const update = { stepSize: stepSize };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets the thousands separator for a number variable
+     * @param id the id of the variable to update
+     * @param thousandsSeparator the thousands separator to use
+     * @returns
+     */
+    setThousandsSeparator = async (id: string, thousandsSeparator: string) => {
+        const res = await this.#editorAPI;
+        const update = { thousandsSeparator: thousandsSeparator };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets the decimal separator for a number variable
+     * @param id the id of the variable to update
+     * @param decimalSeparator the decimal separator to use
+     * @returns
+     */
+    setDecimalSeparator = async (id: string, decimalSeparator: string) => {
+        const res = await this.#editorAPI;
+        const update = { decimalSeparator: decimalSeparator };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets or clears the decimal character style for a number variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the decimals
+     * @returns
+     */
+    setDecimalCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const res = await this.#editorAPI;
+        const update = { decimalCharacterStyleId: characterStyleId };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental Sets the number of decimals for a number variable
+     * @param id the id of the variable to update
+     * @param numberOfDecimals the number of decimals to use
+     * @returns
+     */
+    setNumberOfDecimals = async (id: string, numberOfDecimals: number) => {
+        const res = await this.#editorAPI;
+        const update = { numberOfDecimals: numberOfDecimals };
+        return res
+            .updateNumberVariableProperties(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
