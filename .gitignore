@@ -15,5 +15,6 @@ lib-esm/
 _bundles/
 coverage/
 docs/
+packages/sdk/next
 
 examples/**/package-lock.json
