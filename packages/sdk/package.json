@@ -79,6 +79,7 @@
     "files": [
         "lib/",
         "_bundles/",
+        "next/",
         "README.md"
     ],
     "typings": "lib/src/",
