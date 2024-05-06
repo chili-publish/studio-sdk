@@ -1,6 +1,12 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
+import {
+    ListVariable,
+    ListVariableItem,
+    Variable,
+    VariableType,
+    NumberVariablePropertiesDeltaUpdate,
+} from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -296,12 +302,10 @@ export class VariableController {
      * @param minimum the minimum value or null to remove the minimum value
      * @returns
      */
-    setMinimum = async (id: string, minimum: number | null) => {
+    setMinimum = async (id: string, minimum?: number) => {
         const res = await this.#editorAPI;
         const update = { min: minimum };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
@@ -310,12 +314,10 @@ export class VariableController {
      * @param maximum the maximum value or null to remove the maximum value
      * @returns
      */
-    setMaximum = async (id: string, maximum: number | null) => {
+    setMaximum = async (id: string, maximum?: number) => {
         const res = await this.#editorAPI;
         const update = { max: maximum };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
@@ -327,23 +329,19 @@ export class VariableController {
     setShowStepper = async (id: string, showStepper: boolean) => {
         const res = await this.#editorAPI;
         const update = { showStepper: showStepper };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
      * @experimental Sets the step size for a number variable
      * @param id the id of the variable to update
-     * @param stepSize the step size or null to remove the step size
+     * @param stepSize the step size or null to remove the step size. Must be > 0
      * @returns
      */
     setStepSize = async (id: string, stepSize: number) => {
         const res = await this.#editorAPI;
         const update = { stepSize: stepSize };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
@@ -352,12 +350,10 @@ export class VariableController {
      * @param thousandsSeparator the thousands separator to use
      * @returns
      */
-    setThousandsSeparator = async (id: string, thousandsSeparator: string) => {
+    setThousandsSeparator = async (id: string, thousandsSeparator: '' | '.' | ',' | ' ') => {
         const res = await this.#editorAPI;
         const update = { thousandsSeparator: thousandsSeparator };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
@@ -366,12 +362,10 @@ export class VariableController {
      * @param decimalSeparator the decimal separator to use
      * @returns
      */
-    setDecimalSeparator = async (id: string, decimalSeparator: string) => {
+    setDecimalSeparator = async (id: string, decimalSeparator: '' | '.' | ',' | ' ') => {
         const res = await this.#editorAPI;
         const update = { decimalSeparator: decimalSeparator };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
@@ -380,12 +374,10 @@ export class VariableController {
      * @param characterStyleId the id of the character style to use/clear for the decimals
      * @returns
      */
-    setDecimalCharacterStyle = async (id: string, characterStyleId: string | null) => {
+    setDecimalCharacterStyle = async (id: string, characterStyleId?: string) => {
         const res = await this.#editorAPI;
         const update = { decimalCharacterStyleId: characterStyleId };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
     /**
@@ -394,13 +386,17 @@ export class VariableController {
      * @param numberOfDecimals the number of decimals to use
      * @returns
      */
-    setNumberOfDecimals = async (id: string, numberOfDecimals: number) => {
+    setNumberOfDecimals = async (id: string, numberOfDecimals: 0 | 1 | 2 | 3 | 4) => {
         const res = await this.#editorAPI;
         const update = { numberOfDecimals: numberOfDecimals };
-        return res
-            .updateNumberVariableProperties(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.applyNumberVariablePropertiesUpdate(id, update);
     };
+
+    private async applyNumberVariablePropertiesUpdate(id: string, update: NumberVariablePropertiesDeltaUpdate) {
+        const res = this.#editorAPI;
+        const result = await res.updateNumberVariableProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
+    }
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {

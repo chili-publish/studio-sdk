@@ -93,3 +93,14 @@ export interface NumberVariable extends Variable {
     showStepper: boolean;
     stepSize?: number;
 }
+
+export interface NumberVariablePropertiesDeltaUpdate {
+    min?: number;
+    max?: number;
+    showStepper?: boolean;
+    stepSize?: number;
+    numberOfDecimals?: number;
+    decimalCharacterStyleId?: string;
+    decimalSeparator?: string;
+    thousandsSeparator?: string;
+}

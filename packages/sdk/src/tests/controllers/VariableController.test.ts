@@ -283,15 +283,15 @@ describe('VariableController', () => {
     });
 
     it('updates the thousands separator', async () => {
-        await mockedVariableController.setThousandsSeparator('1', '_');
+        await mockedVariableController.setThousandsSeparator('1', ',');
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"thousandsSeparator":"_"}');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"thousandsSeparator":","}');
     });
 
     it('updates the decimal separator', async () => {
-        await mockedVariableController.setDecimalSeparator('1', '_');
+        await mockedVariableController.setDecimalSeparator('1', ',');
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"decimalSeparator":"_"}');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith('1', '{"decimalSeparator":","}');
     });
 
     it('updates the decimal places', async () => {
