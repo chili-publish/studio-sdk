@@ -1,15 +1,17 @@
-import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, QueryOptions } from './Connector.Shared';
+import { ArrayBufferPointer, Dictionary, Id, QueryOptions } from './Connector.Shared';
+import { ConnectorConfigValue } from './external/Connector.Shared.external';
+import { FontConnectorCapabilities, FontFamily, FontPreviewFormat  as SharedFontPreviewFormat } from './external/FontConnector.Shared.external';
 
 export interface GrafxFontConnector {
-    detail(connectorId: string, fontFamilyId: string, context: Dictionary): Promise<FontStyle[]>;
-    query(connectorId: string, queryOptions: QueryOptions, context: Dictionary): Promise<FontFamilyPage>;
-    download(styleId: string, context: Dictionary): Promise<ArrayBufferPointer>;
-    preview(familyId: string, previewFormat: FontPreviewFormat, context: Dictionary): Promise<ArrayBufferPointer>;
-    getConfigurationOptions(): ConnectorConfigValue[] | null;
+    detail(connectorId: Id, fontFamilyId: Id, context: Dictionary): Promise<FontStyle[]>;
+    query(connectorId: Id, queryOptions: QueryOptions, context: Dictionary): Promise<FontFamilyPage>;
+    download(styleId: Id, context: Dictionary): Promise<ArrayBufferPointer>;
+    preview(familyId: Id, previewFormat: FontPreviewFormat, context: Dictionary): Promise<ArrayBufferPointer>;
+    getConfigurationOptions(): ConnectorConfigValue[];
     getCapabilities(): FontConnectorCapabilities;
 }
 
-export type FontPreviewFormat = 'square' | 'line';
+export type FontPreviewFormat = `${SharedFontPreviewFormat}`;
 
 export interface FontFamilyPage {
     pageSize: number;
@@ -19,23 +21,11 @@ export interface FontFamilyPage {
     };
 }
 
-export interface FontFamily {
-    id: string;
-    name: string;
-    fontStylesCount: number;
-    extensions: string[];
-}
-
 export interface FontStyle {
-    id: string;
+    id: Id;
     name: string;
     familyId: string;
     familyName: string;
 }
 
-export type FontConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    preview: boolean;
-    filtering: boolean;
-};
+

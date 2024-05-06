@@ -1,20 +1,22 @@
-import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, QueryOptions } from './Connector.Shared';
+import { ArrayBufferPointer, Dictionary, Id, QueryOptions } from './Connector.Shared';
+import { ConnectorConfigValue } from './external/Connector.Shared.external';
+import { MediaConnectorCapabilities, MediaDetail, MediaDownloadIntent, MediaDownloadType, MediaType as SharedMediaType } from './external/MediaConnector.Shared.external';
 
 export interface MediaConnector {
-    detail(id: string, context: Dictionary): Promise<MediaDetail>;
+    detail(id: Id, context: Dictionary): Promise<MediaDetail>;
     query(options: QueryOptions, context: Dictionary): Promise<MediaPage>;
     download(
-        id: string,
+        id: Id,
         previewType: DownloadType,
         intent: DownloadIntent,
         context: Dictionary,
     ): Promise<ArrayBufferPointer>;
-    getConfigurationOptions(): ConnectorConfigValue[] | null;
+    getConfigurationOptions(): ConnectorConfigValue[];
     getCapabilities(): MediaConnectorCapabilities;
 }
 
-export type DownloadIntent = 'web' | 'print' | 'animation';
-export type DownloadType = 'thumbnail' | 'mediumres' | 'highres' | 'fullres' | 'original';
+export type DownloadIntent = `${MediaDownloadIntent}`;
+export type DownloadType = `${MediaDownloadType}`;
 
 export interface MediaPage {
     pageSize: number;
@@ -24,22 +26,15 @@ export interface MediaPage {
     };
 }
 
-export interface Media {
-    id: string;
+export type MediaType = `${SharedMediaType}`;
+
+export type MediaT<T> = {
+    id: Id;
     name: string;
     relativePath: string;
-    type: number;
+    type: T;
+    extension: string | null;
     metaData: Dictionary;
-    extension?: string;
-}
-
-export interface MediaDetail extends Media {
-    width?: number;
-    height?: number;
-}
-
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
 };
+
+export type Media = MediaT<MediaType>;

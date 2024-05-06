@@ -115,27 +115,6 @@ export interface SelectedLayoutFrame {
     isVisible: boolean;
 }
 
-export interface MetaData {
-    [key: string]: string;
-}
-
-export interface ConnectorOptions {
-    [key: string]: string;
-}
-
-export enum ConnectorConfigValueType {
-    text = 'text',
-    boolean = 'boolean',
-}
-
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
-}
-
-export type ConnectorConfigOptions = ConnectorConfigValue[];
-
 export interface ActionEventErrorData {
     event: ActionEditorEvent;
     actionIds: Id[];

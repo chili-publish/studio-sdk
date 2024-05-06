@@ -1,3 +1,8 @@
+import { ConnectorConfigValueType  as SharedConnectorConfigValueType } from './external/Connector.Shared.external';
+import { SortBy as SharedSortBy, SortOrder as SharedSortOrder } from './external/Connector.Shared.external';
+
+export type Id = string;
+
 export interface Dictionary {
     [Key: string]: string;
 }
@@ -12,14 +17,19 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
-export type QueryOptions = {
-    sortOrder: string | null;
-    collection: string | null;
-    filter: string[] | null;
-    pageToken: string | null;
+export type SortBy = `${SharedSortBy}`
+export type SortOrder = `${SharedSortOrder}`
+
+export type QueryOptionsT<SortByType, SortOrderType> = {
+    filter?: string[] | null;
+    pageToken?: string | null;
+    collection?: string | null;
     pageSize: number;
-    sortBy: string | null;
+    sortBy?: SortByType | null;
+    sortOrder?: SortOrderType | null;
 };
+
+export type QueryOptions = QueryOptionsT<SortBy, SortOrder>;
 
 export interface ChiliRequestInit {
     /**
@@ -37,7 +47,7 @@ export interface ChiliRequestInit {
     /**
      * A string to set request's method.
      */
-    method?: string;
+    method?: 'GET' | 'POST';
     /**
      * A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect.
      */
@@ -68,10 +78,5 @@ export interface ChiliResponse extends ChiliBody {
     readonly url: string;
 }
 
-export type ConnectorConfigValueType = 'text' | 'boolean';
+export type ConnectorConfigValueType = `${SharedConnectorConfigValueType}`;
 
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
-}
