@@ -303,7 +303,6 @@ export class VariableController {
      * @returns
      */
     setMinimum = async (id: string, minimum?: number) => {
-        const res = await this.#editorAPI;
         const update = { min: minimum };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -315,7 +314,6 @@ export class VariableController {
      * @returns
      */
     setMaximum = async (id: string, maximum?: number) => {
-        const res = await this.#editorAPI;
         const update = { max: maximum };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -327,7 +325,6 @@ export class VariableController {
      * @returns
      */
     setShowStepper = async (id: string, showStepper: boolean) => {
-        const res = await this.#editorAPI;
         const update = { showStepper: showStepper };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -339,7 +336,6 @@ export class VariableController {
      * @returns
      */
     setStepSize = async (id: string, stepSize: number) => {
-        const res = await this.#editorAPI;
         const update = { stepSize: stepSize };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -351,7 +347,6 @@ export class VariableController {
      * @returns
      */
     setThousandsSeparator = async (id: string, thousandsSeparator: '' | '.' | ',' | ' ') => {
-        const res = await this.#editorAPI;
         const update = { thousandsSeparator: thousandsSeparator };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -363,7 +358,6 @@ export class VariableController {
      * @returns
      */
     setDecimalSeparator = async (id: string, decimalSeparator: '' | '.' | ',' | ' ') => {
-        const res = await this.#editorAPI;
         const update = { decimalSeparator: decimalSeparator };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -375,7 +369,6 @@ export class VariableController {
      * @returns
      */
     setDecimalCharacterStyle = async (id: string, characterStyleId?: string) => {
-        const res = await this.#editorAPI;
         const update = { decimalCharacterStyleId: characterStyleId };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -387,7 +380,6 @@ export class VariableController {
      * @returns
      */
     setNumberOfDecimals = async (id: string, numberOfDecimals: 0 | 1 | 2 | 3 | 4) => {
-        const res = await this.#editorAPI;
         const update = { numberOfDecimals: numberOfDecimals };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
