@@ -29,6 +29,7 @@ export enum VariableType {
     list = 'list',
     boolean = 'boolean',
     group = 'group',
+    number = 'number',
 }
 
 export interface Variable {
@@ -63,6 +64,18 @@ export interface BooleanVariable extends Variable {
 
 export interface ShortTextVariable extends Variable {
     value: string;
+}
+
+export interface NumberVariable extends Variable {
+    value: number;
+    numberOfDecimals: number;
+    decimalCharacterStyleId?: string;
+    decimalSeparator: string;
+    thousandsSeparator: string;
+    minValue?: number;
+    maxValue?: number;
+    showStepper: boolean;
+    stepSize: number;
 }
 
 export type LongTextVariable = ShortTextVariable;
