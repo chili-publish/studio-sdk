@@ -385,7 +385,7 @@ export class VariableController {
     };
 
     private async applyNumberVariablePropertiesUpdate(id: string, update: NumberVariablePropertiesDeltaUpdate) {
-        const res = this.#editorAPI;
+        const res = await this.#editorAPI;
         const result = await res.updateNumberVariableProperties(id, JSON.stringify(update));
         return getEditorResponseData<null>(result);
     }
