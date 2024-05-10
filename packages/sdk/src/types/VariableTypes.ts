@@ -93,7 +93,7 @@ export interface NumberVariablePropertiesDeltaUpdate {
         value: boolean;
     };
     stepSize?: {
-        value: number | null;
+        value: number;
     };
     numberOfDecimals?: {
         value: number;

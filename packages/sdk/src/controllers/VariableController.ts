@@ -332,10 +332,10 @@ export class VariableController {
     /**
      * @experimental Sets the step size for a number variable
      * @param id the id of the variable to update
-     * @param stepSize the step size or null to remove the step size. Must be > 0
+     * @param stepSize the step size. Must be > 0
      * @returns
      */
-    setStepSize = async (id: string, stepSize: number | null) => {
+    setStepSize = async (id: string, stepSize: number) => {
         const update = { stepSize: { value: stepSize } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
