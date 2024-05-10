@@ -84,22 +84,22 @@ export type GroupVariable = Variable;
 
 export interface NumberVariablePropertiesDeltaUpdate {
     minValue?: {
-        value?: number;
+        value: number | null;
     };
     maxValue?: {
-        value?: number;
+        value: number | null;
     };
     showStepper?: {
         value: boolean;
     };
     stepSize?: {
-        value: number;
+        value: number | null;
     };
     numberOfDecimals?: {
         value: number;
     };
     decimalCharacterStyleId?: {
-        value?: string;
+        value: string | null;
     };
     decimalSeparator?: {
         value: string;

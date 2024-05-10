@@ -302,7 +302,7 @@ export class VariableController {
      * @param minimum the minimum value or null to remove the minimum value
      * @returns
      */
-    setMinimum = async (id: string, minimum?: number) => {
+    setMinimum = async (id: string, minimum: number | null) => {
         const update = { minValue: { value: minimum } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -313,7 +313,7 @@ export class VariableController {
      * @param maximum the maximum value or null to remove the maximum value
      * @returns
      */
-    setMaximum = async (id: string, maximum?: number) => {
+    setMaximum = async (id: string, maximum: number | null) => {
         const update = { maxValue: { value: maximum } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -335,7 +335,7 @@ export class VariableController {
      * @param stepSize the step size or null to remove the step size. Must be > 0
      * @returns
      */
-    setStepSize = async (id: string, stepSize: number) => {
+    setStepSize = async (id: string, stepSize: number | null) => {
         const update = { stepSize: { value: stepSize } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
@@ -368,7 +368,7 @@ export class VariableController {
      * @param characterStyleId the id of the character style to use/clear for the decimals
      * @returns
      */
-    setDecimalCharacterStyle = async (id: string, characterStyleId?: string) => {
+    setDecimalCharacterStyle = async (id: string, characterStyleId: string | null) => {
         const update = { decimalCharacterStyleId: { value: characterStyleId } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
