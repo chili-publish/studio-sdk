@@ -303,7 +303,7 @@ export class VariableController {
      * @returns
      */
     setMinimum = async (id: string, minimum?: number) => {
-        const update = { min: minimum };
+        const update = { minValue: { value: minimum } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -314,7 +314,7 @@ export class VariableController {
      * @returns
      */
     setMaximum = async (id: string, maximum?: number) => {
-        const update = { max: maximum };
+        const update = { maxValue: { value: maximum } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -325,7 +325,7 @@ export class VariableController {
      * @returns
      */
     setShowStepper = async (id: string, showStepper: boolean) => {
-        const update = { showStepper: showStepper };
+        const update = { showStepper: { value: showStepper } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -336,7 +336,7 @@ export class VariableController {
      * @returns
      */
     setStepSize = async (id: string, stepSize: number) => {
-        const update = { stepSize: stepSize };
+        const update = { stepSize: { value: stepSize } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -347,7 +347,7 @@ export class VariableController {
      * @returns
      */
     setThousandsSeparator = async (id: string, thousandsSeparator: '' | '.' | ',' | ' ') => {
-        const update = { thousandsSeparator: thousandsSeparator };
+        const update = { thousandsSeparator: { value: thousandsSeparator } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -358,7 +358,7 @@ export class VariableController {
      * @returns
      */
     setDecimalSeparator = async (id: string, decimalSeparator: '' | '.' | ',' | ' ') => {
-        const update = { decimalSeparator: decimalSeparator };
+        const update = { decimalSeparator: { value: decimalSeparator } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -369,7 +369,7 @@ export class VariableController {
      * @returns
      */
     setDecimalCharacterStyle = async (id: string, characterStyleId?: string) => {
-        const update = { decimalCharacterStyleId: characterStyleId };
+        const update = { decimalCharacterStyleId: { value: characterStyleId } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
@@ -380,7 +380,7 @@ export class VariableController {
      * @returns
      */
     setNumberOfDecimals = async (id: string, numberOfDecimals: 0 | 1 | 2 | 3 | 4) => {
-        const update = { numberOfDecimals: numberOfDecimals };
+        const update = { numberOfDecimals: { value: numberOfDecimals } };
         return this.applyNumberVariablePropertiesUpdate(id, update);
     };
 
