@@ -83,8 +83,8 @@ export type LongTextVariable = ShortTextVariable;
 export type GroupVariable = Variable;
 
 export interface NumberVariablePropertiesDeltaUpdate {
-    min?: number;
-    max?: number;
+    minValue?: number;
+    maxValue?: number;
     showStepper?: boolean;
     stepSize?: number;
     numberOfDecimals?: number;
