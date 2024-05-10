@@ -82,18 +82,6 @@ export type LongTextVariable = ShortTextVariable;
 
 export type GroupVariable = Variable;
 
-export interface NumberVariable extends Variable {
-    value: number;
-    numberOfDecimals: number;
-    decimalCharacterStyleId?: string;
-    decimalSeparator?: string;
-    thousandsSeparator?: string;
-    minValue?: number;
-    maxValue?: number;
-    showStepper: boolean;
-    stepSize?: number;
-}
-
 export interface NumberVariablePropertiesDeltaUpdate {
     min?: number;
     max?: number;
