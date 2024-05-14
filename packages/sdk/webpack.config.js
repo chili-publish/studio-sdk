@@ -25,7 +25,7 @@ module.exports = (env) => ({
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
         alias: {
-            "@connectorShared": path.resolve(__dirname, "../connectors/src/external/"),
+            "@connectorShared": path.resolve(__dirname, "../connectors/src/"),
         }
     },
     externals: {

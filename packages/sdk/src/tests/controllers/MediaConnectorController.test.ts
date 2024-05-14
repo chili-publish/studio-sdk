@@ -1,9 +1,12 @@
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
-import { DeprecatedMediaConnectorDownloadType } from '../../types/ConnectorTypes';
+import {
+    DeprecatedMediaConnectorDownloadType,
+    MediaDownloadIntent,
+    MediaDownloadType,
+} from '../../types/ConnectorTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { MediaDownloadIntent, MediaDownloadType } from '@connectorShared/MediaConnector.Shared.external';
-import { SortBy, SortOrder } from '@connectorShared/Connector.Shared.external';
+import { SortBy, SortOrder } from '@connectorShared/Connector.Shared';
 
 let mockedMediaConnectorController: MediaConnectorController;
 

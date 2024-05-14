@@ -1,6 +1,3 @@
-import { ConnectorConfigValueType  as SharedConnectorConfigValueType } from './external/Connector.Shared.external';
-import { SortBy as SharedSortBy, SortOrder as SharedSortOrder } from './external/Connector.Shared.external';
-
 export type Id = string;
 
 export interface Dictionary {
@@ -17,19 +14,25 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
-export type SortBy = `${SharedSortBy}`
-export type SortOrder = `${SharedSortOrder}`
+export enum SortBy {
+    name = 'name',
+    path = 'relativePath',
+    id = 'id',
+}
 
-export type QueryOptionsT<SortByType, SortOrderType> = {
+export enum SortOrder {
+    ascending = 'asc',
+    descending = 'desc',
+}
+
+export type QueryOptions = {
     filter?: string[] | null;
     pageToken?: string | null;
     collection?: string | null;
     pageSize: number;
-    sortBy?: SortByType | null;
-    sortOrder?: SortOrderType | null;
+    sortBy?: SortBy | null;
+    sortOrder?: SortOrder | null;
 };
-
-export type QueryOptions = QueryOptionsT<SortBy, SortOrder>;
 
 export interface ChiliRequestInit {
     /**
@@ -78,5 +81,15 @@ export interface ChiliResponse extends ChiliBody {
     readonly url: string;
 }
 
-export type ConnectorConfigValueType = `${SharedConnectorConfigValueType}`;
+export enum ConnectorConfigValueType {
+    text = 'text',
+    boolean = 'boolean',
+}
+
+export interface ConnectorConfigValue {
+    readonly name: string;
+    readonly displayName: string;
+    readonly type: ConnectorConfigValueType;
+}
+
 

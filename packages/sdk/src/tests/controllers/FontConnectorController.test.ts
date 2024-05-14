@@ -1,8 +1,8 @@
-import { SortBy, SortOrder } from '@connectorShared/Connector.Shared.external';
+import { SortBy, SortOrder } from '@connectorShared/Connector.Shared';
 import { FontConnectorController } from '../../controllers/FontConnectorController';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { FontPreviewFormat } from '@connectorShared/FontConnector.Shared.external';
+import { FontPreviewFormat } from '@connectorShared/FontConnector';
 
 let mockedFontConnectorController: FontConnectorController;
 

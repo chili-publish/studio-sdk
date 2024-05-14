@@ -4,20 +4,14 @@ import {
     ConnectorConfigOptions,
     DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
+    MediaDownloadIntent,
+    MediaDownloadType,
     MetaData,
     QueryPage,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
-import {
-    MediaConnectorCapabilities,
-    Media,
-    MediaDetail,
-    MediaDownloadType,
-    MediaDownloadIntent,
-    MediaType,
-} from '@connectorShared/MediaConnector.Shared.external';
-import { QueryOptions } from '@connectorShared/Connector.Shared.external';
-// import { MediaConnectorCapabilities } from 'shared/MediaConnector.Shared.external';
+import { MediaConnectorCapabilities, Media, MediaDetail, MediaType } from '@connectorShared/MediaConnector';
+import { QueryOptions } from '@connectorShared/Connector.Shared';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.

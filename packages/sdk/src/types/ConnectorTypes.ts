@@ -1,5 +1,9 @@
-import { ConnectorConfigValue } from '@connectorShared/Connector.Shared.external';
+import { ConnectorConfigValue } from '@connectorShared/Connector.Shared';
 import { Id } from './CommonTypes';
+export {
+    DownloadIntent as MediaDownloadIntent,
+    DownloadType as MediaDownloadType,
+} from '@connectorShared/MediaConnector';
 
 export enum DeprecatedMediaType {
     file = 0,

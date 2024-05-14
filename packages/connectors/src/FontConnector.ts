@@ -1,6 +1,4 @@
-import { ArrayBufferPointer, Dictionary, Id, QueryOptions } from './Connector.Shared';
-import { ConnectorConfigValue } from './external/Connector.Shared.external';
-import { FontConnectorCapabilities, FontFamily, FontPreviewFormat  as SharedFontPreviewFormat } from './external/FontConnector.Shared.external';
+import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, Id, QueryOptions } from './Connector.Shared';
 
 export interface GrafxFontConnector {
     detail(connectorId: Id, fontFamilyId: Id, context: Dictionary): Promise<FontStyle[]>;
@@ -11,7 +9,24 @@ export interface GrafxFontConnector {
     getCapabilities(): FontConnectorCapabilities;
 }
 
-export type FontPreviewFormat = `${SharedFontPreviewFormat}`;
+export type FontConnectorCapabilities = {
+    query: boolean;
+    detail: boolean;
+    preview: boolean;
+    filtering: boolean;
+};
+
+export enum FontPreviewFormat {
+    Square = 'square',
+    Line = 'line',
+}
+
+export interface FontFamily {
+    id: Id;
+    name: string;
+    fontStylesCount: number;
+    extensions: string[];
+}
 
 export interface FontFamilyPage {
     pageSize: number;
