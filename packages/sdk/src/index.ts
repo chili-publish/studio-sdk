@@ -56,6 +56,7 @@ export type {
     ListVariable,
     ListVariableItem,
     BooleanVariable,
+    NumberVariable,
     ConnectorImageVariableSource,
 } from './types/VariableTypes';
 export { VariableType } from './types/VariableTypes';
