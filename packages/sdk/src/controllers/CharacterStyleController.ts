@@ -94,4 +94,15 @@ export class CharacterStyleController {
             .renameCharacterStyle(characterStyleId, characterStyleName)
             .then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method changes positions of character styles
+     * @param order the position of the character styles
+     * @param ids the list of character style ids
+     * @returns
+     */
+    move = async (order: number, ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.moveCharacterStyles(order, ids).then((result) => getEditorResponseData<null>(result));
+    };
 }
