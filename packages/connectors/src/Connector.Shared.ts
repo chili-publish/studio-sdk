@@ -1,7 +1,6 @@
 import { ConnectorConfigValueType  as SharedConnectorConfigValueType } from './external/Connector.Shared.external';
 import { SortBy as SharedSortBy, SortOrder as SharedSortOrder } from './external/Connector.Shared.external';
 
-export type Id = string;
 
 export interface Dictionary {
     [Key: string]: string;

@@ -1,0 +1,12 @@
+{
+  "name": "@chili-publish/connectors-shared",
+  "version": "0.0.1",
+  "description": "Private connector package for both SDK & connectors",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "private": true
+}

@@ -16,10 +16,9 @@
         "checkJs": true /* Report errors in .js files. Works in tandem with allowJs. */,
         // Ensure that .d.ts files are created by tsc, but not .js files
         "declaration": true,
-        "sourceMap": true,
-        "paths": { "@connectorShared/*": ["../connectors/src/external/*"] }
+        "sourceMap": true
     },
-    "include": ["src/**/*", "../connectors/src/external/*"],
+    "include": ["src/**/*"],
     "exclude": ["node_modules", "build"], // *** The files to not type check ***
     "typedocOptions": {
         "entryPoints": [
