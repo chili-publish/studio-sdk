@@ -24,6 +24,9 @@ module.exports = (env) => ({
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
+        alias: {
+            "@connectorShared": path.resolve(__dirname, "../connectors/src/external/"),
+        }
     },
     externals: {
         // Don't bundle react or react-dom

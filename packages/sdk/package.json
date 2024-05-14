@@ -11,7 +11,6 @@
         "penpal": "6.1.0"
     },
     "devDependencies": {
-        "@chili-publish/connectors-shared": "^0.0.1",
         "@babel/cli": "^7.14.8",
         "@babel/core": "^7.14.8",
         "@babel/plugin-transform-runtime": "^7.14.5",
