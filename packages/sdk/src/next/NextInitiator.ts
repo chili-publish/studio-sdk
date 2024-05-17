@@ -9,6 +9,8 @@ import { VariableController } from './controllers/VariableController';
  * This allows us to introduce breaking changes before bumping the SDK Major version, since we want to bundle some of them.
  * This way our major version can stay stable for longer, without sacrificing the flexibility we need to innovate.
  * Together with a major update, the functions and additions in this part of the SDK will be moved to the main part.
+ * If you're using the next controller, you might need to import the typings also from the next types.
+ * this can be referenced in your application as @chili-publish/studio-sdk/lib/src/next
  */
 export class NextInitiator {
     private config: ConfigType;

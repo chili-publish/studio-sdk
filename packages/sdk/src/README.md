@@ -4,28 +4,15 @@ Welcome to the SDK documentation, if you want to be absolutely 100% sure that yo
 
 So on these pages you'll find some very technical but super handy descriptions of all the functions available in the controllers, as well as the exported enums and other configuration params.
 
-## Controllers
+## Next
 
--   [Default methods (SDK)](classes/sdk.SDK.md)
--   [ActionController](classes/controllers_ActionController.ActionController.md)
--   [AnimationController](classes/controllers_AnimationController.AnimationController.md)
--   [CanvasController](classes/controllers_CanvasController.CanvasController.md)
--   [CharacterStyleController](classes/controllers_CharacterStyleController.CharacterStyleController.md)
--   [ColorStyleController](classes/controllers_ColorStyleController.ColorStyleController.md)
--   [ConfigurationController](classes/controllers_ConfigurationController.ConfigurationController.md)
--   [ConnectorController](classes/controllers_ConnectorController.ConnectorController.md)
--   [DebugController](classes/controllers_DebugController.DebugController.md)
--   [DocumentController](classes/controllers_DocumentController.DocumentController.md)
--   [FontConnectorController](classes/controllers_FontConnectorController.FontConnectorController.md)
--   [FontController](classes/controllers_FontController.FontController.md)
--   [FrameController](classes/controllers_FrameController.FrameController.md)
--   [LayoutController](classes/controllers_LayoutController.LayoutController.md)
--   [MediaConnectorController](classes/controllers_MediaConnectorController.MediaConnectorController.md)
--   [PageController](classes/controllers_PageController.PageController.md)
--   [ParagraphStyleController](classes/controllers_ParagraphStyleController.ParagraphStyleController.md)
--   [SubscriberController](classes/controllers_SubscriberController.SubscriberController.md)
--   [TextStyleController](classes/controllers_TextStyleController.TextStyleController.md)
--   [ToolController](classes/controllers_ToolController.ToolController.md)
+The next section of the SDK gives you a glimpse of the future. We're going to put the latest and newest into our next section so that you can prepare yourself for what's coming.
+This enables us to introduce new features that are breaking, without breaking your integration when you'd update.
+This way our major version can stay stable for longer, without sacrificing the flexibility we need, to innovate.
+Together with a major update, the functions and additions in this part of the SDK will be moved to the main part.
+If you're using the next controller, you might need to import the typings also from the next types.
+The (breaking) typings are accessible in your application by referencing @chili-publish/studio-sdk/lib/src/next.
+f.e. `import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';`
 
 ## The document
 
