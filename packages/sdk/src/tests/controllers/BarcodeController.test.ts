@@ -128,6 +128,22 @@ describe('BarcodeController', () => {
                 JSON.stringify({ characterSet: BarcodeCharacterSet.utf8 }),
             );
         });
+        it('Should be possible to set the draw end char property', async () => {
+            await mockedBarcodeController.setDrawLightMarginIndicator(id, true);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(14);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ drawStartStopChars: true }),
+            );
+        });
+        it('Should be possible to set the draw start/stop chars property', async () => {
+            await mockedBarcodeController.setDrawStartStopChars(id, true);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledTimes(15);
+            expect(mockedEditorApi.setBarcodeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ drawStartStopChars: true }),
+            );
+        });
     });
     describe('setBarcodeSource', () => {
         it('Should be possible to set source to text', async () => {
@@ -168,6 +184,8 @@ describe('BarcodeController', () => {
                 ],
                 allowToggleText: false,
                 quietZoneAlwaysCombined: true,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for code-128', () => {
@@ -184,6 +202,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for gs1-128', () => {
@@ -200,6 +220,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for code-39', () => {
@@ -212,6 +234,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: true,
             });
         });
         it('retuns valid configuration for code-93', () => {
@@ -224,6 +248,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: true,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for data matrix', () => {
@@ -236,6 +262,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
                 quietZoneAlwaysCombined: true,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for ean-13', () => {
@@ -248,6 +276,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: true,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for ean-8', () => {
@@ -260,6 +290,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: true,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for upc-a', () => {
@@ -272,6 +304,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
         it('retuns valid configuration for upc-e', () => {
@@ -284,6 +318,8 @@ describe('BarcodeController', () => {
                 allowedErrorCorrectionLevels: undefined,
                 allowToggleText: false,
                 quietZoneAlwaysCombined: false,
+                allowToggleLightMarginIndicator: false,
+                allowToggleDrawStartAndEndChar: false,
             });
         });
     });
