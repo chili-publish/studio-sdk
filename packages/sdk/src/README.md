@@ -6,13 +6,15 @@ So on these pages you'll find some very technical but super handy descriptions o
 
 ## Next
 
-The next section of the SDK gives you a glimpse of the future. We're going to put the latest and newest into our next section so that you can prepare yourself for what's coming.
-This enables us to introduce new features that are breaking, without breaking your integration when you'd update.
-This way our major version can stay stable for longer, without sacrificing the flexibility we need, to innovate.
-Together with a major update, the functions and additions in this part of the SDK will be moved to the main part.
-If you're using the next controller, you might need to import the typings also from the next types.
-The (breaking) typings are accessible in your application by referencing @chili-publish/studio-sdk/lib/src/next.
-f.e. `import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';`
+The 'Next' section of the SDK provides a glimpse of what’s to come. We’ll include the latest and most cutting-edge features in this section, allowing you to prepare for upcoming changes. 
+
+By doing this, we can introduce breaking changes without disrupting your integration when you update. Our goal is to maintain stability for the major version while still allowing flexibility for innovation. When a major update occurs, the functions and additions from this section will be moved to the main part of the SDK. 
+
+If you’re using the next controller, consider importing the typings from the next types as well. These (breaking) typings are accessible in your application by referencing @chili-publish/studio-sdk/lib/src/next, for example: 
+
+```ts
+import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';
+```
 
 ## The document
 
