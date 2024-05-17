@@ -16,5 +16,6 @@ _bundles/
 coverage/
 docs/
 packages/sdk/next
+packages/sdk/types
 
 examples/**/package-lock.json

@@ -69,10 +69,8 @@ jobs:
           versionpath=packages/sdk/upload/${{ steps.package-version.outputs.current-version}}
           mkdir -p ${path%"/merge"}
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
-          cp -R packages/sdk/next ${path%"/merge"}
           mkdir -p ${versionpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
-          cp -R packages/sdk/next ${versionpath%"/merge"}
 
       - name: Copy to Azure Blob Storage (SDK)
         uses: azure/CLI@v1
