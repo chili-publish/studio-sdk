@@ -14,6 +14,7 @@ const mockEditorApi: EditorAPI = {
     updateCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
     renameCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
+    moveCharacterStyles: async () => getEditorResponseData(castToEditorResponse(null)),
     removeCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -24,6 +25,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'createCharacterStyle');
     jest.spyOn(mockEditorApi, 'updateCharacterStyle');
     jest.spyOn(mockEditorApi, 'duplicateCharacterStyle');
+    jest.spyOn(mockEditorApi, 'moveCharacterStyles');
     jest.spyOn(mockEditorApi, 'renameCharacterStyle');
     jest.spyOn(mockEditorApi, 'removeCharacterStyle');
 });
@@ -119,6 +121,12 @@ describe('CharacterStyleController', () => {
         await mockedCharacterStyleController.duplicate('6');
         expect(mockEditorApi.duplicateCharacterStyle).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.duplicateCharacterStyle).toHaveBeenCalledWith('6');
+    });
+
+    it('Should call the moveCharacterStyles method', async () => {
+        await mockedCharacterStyleController.move(2, ['1', '2']);
+        expect(mockEditorApi.moveCharacterStyles).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.moveCharacterStyles).toHaveBeenCalledWith(2, ['1', '2']);
     });
 
     it('Should call the renameCharacterStyle method', async () => {

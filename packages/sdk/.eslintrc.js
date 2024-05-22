@@ -43,5 +43,12 @@ module.exports = {
         'no-shadow': 0,
         radix: 0,
     },
-    ignorePatterns: ['**/dist/*.js', '**/lib/**/*.ts', '_bundles/*.js', '**/.storybook/**', '**/src/stories/**'],
+    ignorePatterns: [
+        '**/dist/*.js',
+        '**/lib/**/*.ts',
+        '_bundles/*.js',
+        'next/*.js',
+        '**/.storybook/**',
+        '**/src/stories/**',
+    ],
 };
