@@ -63,7 +63,7 @@ export type {
     RelativeDate,
     AbsoluteDate,
 } from './types/VariableTypes';
-export { VariableType, Day } from './types/VariableTypes';
+export { VariableType, Day, Locale } from './types/VariableTypes';
 
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 

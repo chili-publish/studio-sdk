@@ -85,6 +85,7 @@ export interface DateVariable extends Variable {
     startDate?: DateRestriction;
     endDate?: DateRestriction;
     excludedDays: Day[];
+    locale: Locale;
 }
 
 export type LongTextVariable = ShortTextVariable;
@@ -111,4 +112,38 @@ export enum Day {
     Friday = 'friday',
     Saturday = 'saturday',
     Sunday = 'sunday',
+}
+
+export enum Locale {
+    en_US = 'en_US',
+    cs = 'cs',
+    da = 'da',
+    nl = 'nl',
+    fi = 'fi',
+    fr = 'fr',
+    de = 'de',
+    it = 'it',
+    no = 'no',
+    pl = 'pl',
+    pt_PT = 'pt_PT',
+    es_ES = 'es_ES',
+    sv = 'sv',
+}
+
+export interface DateVariablePropertiesDeltaUpdate {
+    startDate?: {
+        value: DateRestriction | null;
+    };
+    endDate?: {
+        value: DateRestriction | null;
+    };
+    excludedDays?: {
+        value: Day[] | null;
+    };
+    locale?: {
+        value: Locale;
+    };
+    displayFormat?: {
+        value: string;
+    };
 }
