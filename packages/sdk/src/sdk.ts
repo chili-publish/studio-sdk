@@ -147,7 +147,8 @@ export class SDK {
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
                 onVariableListChanged: (state) => {
                     this.subscriber.onVariableListChanged(state);
-                    this.next.subscriber.onVariableListChanged(state);
+                    // TODO: to be revisited after the release as it overrides the variables list
+                    // this.next.subscriber.onVariableListChanged(state);
                 },
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
