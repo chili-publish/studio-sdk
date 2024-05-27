@@ -259,7 +259,7 @@ describe('VariableController', () => {
     });
 
     it('updates the minimum variable value', async () => {
-        await mockedVariableController.setMinimum('1', 20);
+        await mockedVariableController.number.setMinimum('1', 20);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -268,7 +268,7 @@ describe('VariableController', () => {
     });
 
     it('updates the maximum variable value', async () => {
-        await mockedVariableController.setMaximum('1', 20);
+        await mockedVariableController.number.setMaximum('1', 20);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -277,7 +277,7 @@ describe('VariableController', () => {
     });
 
     it('updates the show stepper variable value', async () => {
-        await mockedVariableController.setShowStepper('1', false);
+        await mockedVariableController.number.setShowStepper('1', false);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -286,7 +286,7 @@ describe('VariableController', () => {
     });
 
     it('updates the step size variable value', async () => {
-        await mockedVariableController.setStepSize('1', 2);
+        await mockedVariableController.number.setStepSize('1', 2);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -295,7 +295,7 @@ describe('VariableController', () => {
     });
 
     it('updates the thousands separator', async () => {
-        await mockedVariableController.setThousandsSeparator('1', ',');
+        await mockedVariableController.number.setThousandsSeparator('1', ',');
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -304,7 +304,7 @@ describe('VariableController', () => {
     });
 
     it('updates the decimal separator', async () => {
-        await mockedVariableController.setDecimalSeparator('1', ',');
+        await mockedVariableController.number.setDecimalSeparator('1', ',');
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -313,7 +313,7 @@ describe('VariableController', () => {
     });
 
     it('updates the decimal places', async () => {
-        await mockedVariableController.setNumberOfDecimals('1', 2);
+        await mockedVariableController.number.setNumberOfDecimals('1', 2);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -322,7 +322,7 @@ describe('VariableController', () => {
     });
 
     it('updates the decimal character style', async () => {
-        await mockedVariableController.setDecimalCharacterStyle('1', '2');
+        await mockedVariableController.number.setDecimalCharacterStyle('1', '2');
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
