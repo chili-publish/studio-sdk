@@ -241,6 +241,7 @@ declare module 'grafx-studio-actions' {
             | ImageVariable
             | ListVariable
             | BooleanVariable
+            | NumberVariable
             | GroupVariable;
 
         export interface VariableMethods {
@@ -286,6 +287,7 @@ declare module 'grafx-studio-actions' {
             image = 'image',
             list = 'list',
             boolean = 'boolean',
+            number = 'number',
             group = 'group',
         }
 
@@ -294,6 +296,17 @@ declare module 'grafx-studio-actions' {
             shape = 'shape',
             image = 'image',
         }
+
+        /**
+         * The number thousands or decimal separator symbol.
+         * 
+         * Possible values are:
+         * - None = ''
+         * - Space = ' '
+         * - Dot = '.'
+         * - Comma = ','
+         */
+        export type NumberSeparator = '' | '.' | ',' | ' ';
 
         /**
          * The different values a Variable can have depending on the Variable Type.
@@ -339,6 +352,13 @@ declare module 'grafx-studio-actions' {
              * Make sure this variable is a BooleanVariable
              */
             readonly booleanValue: boolean;
+
+            /**
+             * The value of the current variable
+             * 
+             * Make sure this variable is a `NumberVariable`
+             */
+            readonly numberValue: number;
         }
 
         export interface ShortTextVariable extends BaseVariable {
@@ -365,6 +385,24 @@ declare module 'grafx-studio-actions' {
 
         export interface BooleanVariable extends BaseVariable {
             readonly type: VariableType.boolean;
+        }
+
+        export interface NumberVariable extends BaseVariable {
+            readonly type: VariableType.number;
+
+            /**
+             * Sets the decimal separator of the number variable.
+             * 
+             * @param separator the decimal separator
+             */
+            setDecimalSeparator(separator: NumberSeparator): void;
+
+            /**
+             * Sets the thousands separator of the number variable.
+             * 
+             * @param separator the thousands separator
+             */
+            setThousandsSeparator(separator: NumberSeparator): void;
         }
 
         export interface GroupVariable extends BaseVariable {
@@ -494,6 +532,11 @@ declare module 'grafx-studio-actions' {
              * Gets the boolean value of a variable
              */
             getBooleanValue(name: string | Variable): boolean;
+
+            /**
+             * Gets the number value of a variable
+             */
+            getNumberValue(name: string | Variable): number;
 
             /**
              * Set the readonly state of a variable

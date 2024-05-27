@@ -35,6 +35,23 @@ function getTriggeredVariableValue(): VariableValue {
 }
 
 /**
+ * Gets the number variable by name.
+ *
+ * @throws {Error} Throws an error if the variable type is not a number.
+ *
+ * @returns {NumberVariable & VariableMethods} The number variable.
+ */
+function getNumberVariable(variableName: string | Variable): NumberVariable & VariableMethods {
+    const numberVariable = studio.variables.byName(variableName);
+    
+    if (numberVariable.type !== 'number') {
+        throw new Error('Expected a number variable but got one of type ' + numberVariable.type);
+    }
+
+    return numberVariable;
+}
+
+/**
  * Retrieves the value of a variable by its name or variable object.
  *
  * @param {string | Variable} variableName - The variable name or variable object.
@@ -65,6 +82,17 @@ function getTextVariableValue(variableName: string | Variable): string {
  */
 function getBooleanVariableValue(variableName: string | Variable): boolean {
     return studio.variables.byName(variableName).booleanValue;
+}
+
+/**
+ * Retrieves the value of a number variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns The value of the variable as a number.
+ */
+function getNumberVariableValue(variableName: string | Variable): number {
+    return studio.variables.byName(variableName).numberValue;
 }
 
 /**
@@ -116,6 +144,16 @@ function setTextVariableValue(variableName: string | Variable, value: string) {
  * @param {boolean} value - The new boolean variable value.
  */
 function setBooleanVariableValue(variableName: string | Variable, value: boolean) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a number variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {number} value - The new boolean variable value.
+ */
+function setNumberVariableValue(variableName: string | Variable, value: number) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -229,6 +267,32 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
     }
 
     setVariableValue(variableName, item);
+}
+
+/**
+ * Set decimal separator of the number variable.
+ * 
+ * @param {string | Variable} variableName - The name of the number variable or a variable object.
+ * 
+ * @param separator The decimal separator.
+ */
+function setNumberVariableDecimalSeparator(variableName: string | Variable, separator: NumberSeparator) {
+    const numberVar = getNumberVariable(variableName);
+
+    numberVar.setDecimalSeparator(separator);
+}
+
+/**
+ * Set thousands separator of the number variable.
+ * 
+ * @param {string | Variable} variableName - The name of the number variable or a variable object.
+ * 
+ * @param separator The thousands separator.
+ */
+function setNumberVariableThousandsSeparator(variableName: string | Variable, separator: NumberSeparator) {
+    const numberVar = getNumberVariable(variableName);
+
+    numberVar.setThousandsSeparator(separator);
 }
 
 /**
