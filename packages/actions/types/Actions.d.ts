@@ -20,31 +20,31 @@ declare module 'grafx-studio-actions' {
          */
         export interface Triggers {
             /**
-             * If the event was 'variableValueChanged', this will contain the
+             * If the event was `variableValueChanged`, this will contain the
              * variable that caused the trigger to fire.
              */
             readonly variableValueChanged?: Variable;
 
             /**
-             * If the event was 'selectedLayoutChanged', this will contain the
+             * If the event was `selectedLayoutChanged`, this will contain the
              * layout that caused the trigger to fire.
              */
             readonly selectedLayoutChanged?: Layout;
 
             /**
-             * If the event was 'frameMoved', this will contain the
+             * If the event was `frameMoved`, this will contain the
              * frame that caused the trigger to fire.
              */
             readonly frameMoved?: Frame;
 
             /**
-             * If the event was 'pageSizeChanged', this will contain the
+             * If the event was `pageSizeChanged`, this will contain the
              * page that caused the trigger to fire.
              */
             readonly pageSizeChanged?: Page;
 
             /**
-             * If the event was 'documentLoaded', this will return true.
+             * If the event was `documentLoaded`, this will return true.
              * otherwise it will return false.
              */
             readonly documentLoaded: boolean;
@@ -210,7 +210,7 @@ declare module 'grafx-studio-actions' {
         export type PageWithMethods = Page & PageMethods;
 
         /**
-         * Respresents a Layout inside Actions
+         * Represents a Layout inside Actions
          */
         export interface Layout extends HasName {
             readonly width: number;
@@ -226,13 +226,13 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Respresents a Layout inside Actions
+         * Represents a Layout inside Actions
          * Contains layout specific methods
          */
         export type LayoutWithMethods = Layout & LayoutMethods;
 
         /**
-         * Respresents a Variable inside Actions
+         * Represents a Variable inside Actions
          */
         export type Variable =
             | ShortTextVariable
@@ -275,7 +275,7 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Respresents a Variable inside Actions.
+         * Represents a Variable inside Actions.
          * Has variable instance specific methods.
          */
         export type VariableWithMethods = Variable & VariableMethods;
@@ -390,7 +390,6 @@ declare module 'grafx-studio-actions' {
 
         export interface NumberVariable extends BaseVariable {
             readonly type: VariableType.number;
-
             /**
              * Sets the decimal separator of the number variable.
              * 
