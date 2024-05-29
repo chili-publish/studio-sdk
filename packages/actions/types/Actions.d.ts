@@ -295,6 +295,7 @@ declare module 'grafx-studio-actions' {
             text = 'text',
             shape = 'shape',
             image = 'image',
+            barcode = 'barcode',
         }
 
         /**
