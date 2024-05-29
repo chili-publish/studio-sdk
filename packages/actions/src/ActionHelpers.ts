@@ -274,7 +274,7 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
  * 
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
  * 
- * @param separator The decimal separator.
+ * @param separator The decimal separator (`''`, `'.'`, `','`, `' '`).
  */
 function setNumberVariableDecimalSeparator(variableName: string | Variable, separator: NumberSeparator) {
     const numberVar = getNumberVariable(variableName);
@@ -287,7 +287,7 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
  * 
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
  * 
- * @param separator The thousands separator.
+ * @param separator The thousands separator (`''`, `'.'`, `','`, `' '`).
  */
 function setNumberVariableThousandsSeparator(variableName: string | Variable, separator: NumberSeparator) {
     const numberVar = getNumberVariable(variableName);
