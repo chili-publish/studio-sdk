@@ -384,12 +384,29 @@ declare module 'grafx-studio-actions' {
             readonly selected: string | null;
         }
 
+        /**
+         * Represents a boolean variable. This variable can store `boolean` values.
+         */
         export interface BooleanVariable extends BaseVariable {
             readonly type: VariableType.boolean;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: boolean;
         }
 
+        /**
+         * Represents a number variable. This variable can store `number` values.
+         */
         export interface NumberVariable extends BaseVariable {
             readonly type: VariableType.number;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: number;
+
             /**
              * Sets the decimal separator of the number variable.
              * 
@@ -407,6 +424,8 @@ declare module 'grafx-studio-actions' {
 
         export interface GroupVariable extends BaseVariable {
             readonly type: VariableType.group;
+
+            readonly value: never;
         }
 
         /**
