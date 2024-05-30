@@ -42,4 +42,5 @@ export type MediaConnectorCapabilities = {
     query: boolean;
     detail: boolean;
     filtering: boolean;
+    metadata?: boolean;
 };
