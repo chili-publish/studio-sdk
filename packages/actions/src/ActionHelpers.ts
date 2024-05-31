@@ -151,7 +151,7 @@ function setBooleanVariableValue(variableName: string | Variable, value: boolean
  * Sets the value of a number variable by its name or variable object.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
- * @param {number} value - The new boolean variable value.
+ * @param {number} value - The new number variable value.
  */
 function setNumberVariableValue(variableName: string | Variable, value: number) {
     studio.variables.setValue(variableName, value);
