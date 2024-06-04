@@ -20,31 +20,31 @@ declare module 'grafx-studio-actions' {
          */
         export interface Triggers {
             /**
-             * If the event was 'variableValueChanged', this will contain the
+             * If the event was `variableValueChanged`, this will contain the
              * variable that caused the trigger to fire.
              */
             readonly variableValueChanged?: Variable;
 
             /**
-             * If the event was 'selectedLayoutChanged', this will contain the
+             * If the event was `selectedLayoutChanged`, this will contain the
              * layout that caused the trigger to fire.
              */
             readonly selectedLayoutChanged?: Layout;
 
             /**
-             * If the event was 'frameMoved', this will contain the
+             * If the event was `frameMoved`, this will contain the
              * frame that caused the trigger to fire.
              */
             readonly frameMoved?: Frame;
 
             /**
-             * If the event was 'pageSizeChanged', this will contain the
+             * If the event was `pageSizeChanged`, this will contain the
              * page that caused the trigger to fire.
              */
             readonly pageSizeChanged?: Page;
 
             /**
-             * If the event was 'documentLoaded', this will return true.
+             * If the event was `documentLoaded`, this will return true.
              * otherwise it will return false.
              */
             readonly documentLoaded: boolean;
@@ -210,7 +210,7 @@ declare module 'grafx-studio-actions' {
         export type PageWithMethods = Page & PageMethods;
 
         /**
-         * Respresents a Layout inside Actions
+         * Represents a Layout inside Actions
          */
         export interface Layout extends HasName {
             readonly width: number;
@@ -226,13 +226,13 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Respresents a Layout inside Actions
+         * Represents a Layout inside Actions
          * Contains layout specific methods
          */
         export type LayoutWithMethods = Layout & LayoutMethods;
 
         /**
-         * Respresents a Variable inside Actions
+         * Represents a Variable inside Actions
          */
         export type Variable =
             | ShortTextVariable
@@ -241,6 +241,7 @@ declare module 'grafx-studio-actions' {
             | ImageVariable
             | ListVariable
             | BooleanVariable
+            | NumberVariable
             | GroupVariable;
 
         export interface VariableMethods {
@@ -274,7 +275,7 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Respresents a Variable inside Actions.
+         * Represents a Variable inside Actions.
          * Has variable instance specific methods.
          */
         export type VariableWithMethods = Variable & VariableMethods;
@@ -286,6 +287,7 @@ declare module 'grafx-studio-actions' {
             image = 'image',
             list = 'list',
             boolean = 'boolean',
+            number = 'number',
             group = 'group',
         }
 
@@ -293,7 +295,19 @@ declare module 'grafx-studio-actions' {
             text = 'text',
             shape = 'shape',
             image = 'image',
+            barcode = 'barcode',
         }
+
+        /**
+         * The number thousands or decimal separator symbol.
+         * 
+         * Possible values are:
+         * - None = ''
+         * - Space = ' '
+         * - Dot = '.'
+         * - Comma = ','
+         */
+        export type NumberSeparator = '' | '.' | ',' | ' ';
 
         /**
          * The different values a Variable can have depending on the Variable Type.
@@ -339,6 +353,13 @@ declare module 'grafx-studio-actions' {
              * Make sure this variable is a BooleanVariable
              */
             readonly booleanValue: boolean;
+
+            /**
+             * The value of the current variable
+             * 
+             * Make sure this variable is a `NumberVariable`
+             */
+            readonly numberValue: number;
         }
 
         export interface ShortTextVariable extends BaseVariable {
@@ -363,12 +384,48 @@ declare module 'grafx-studio-actions' {
             readonly selected: string | null;
         }
 
+        /**
+         * Represents a boolean variable. This variable can store `boolean` values.
+         */
         export interface BooleanVariable extends BaseVariable {
             readonly type: VariableType.boolean;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: boolean;
+        }
+
+        /**
+         * Represents a number variable. This variable can store `number` values.
+         */
+        export interface NumberVariable extends BaseVariable {
+            readonly type: VariableType.number;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: number;
+
+            /**
+             * Sets the decimal separator of the number variable.
+             * 
+             * @param separator the decimal separator
+             */
+            setDecimalSeparator(separator: NumberSeparator): void;
+
+            /**
+             * Sets the thousands separator of the number variable.
+             * 
+             * @param separator the thousands separator
+             */
+            setThousandsSeparator(separator: NumberSeparator): void;
         }
 
         export interface GroupVariable extends BaseVariable {
             readonly type: VariableType.group;
+
+            readonly value: never;
         }
 
         /**
@@ -494,6 +551,11 @@ declare module 'grafx-studio-actions' {
              * Gets the boolean value of a variable
              */
             getBooleanValue(name: string | Variable): boolean;
+
+            /**
+             * Gets the number value of a variable
+             */
+            getNumberValue(name: string | Variable): number;
 
             /**
              * Set the readonly state of a variable
