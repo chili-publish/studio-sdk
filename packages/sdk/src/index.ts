@@ -77,11 +77,7 @@ export type {
     PageType,
     EditorResponse,
     SelectedLayoutFrame,
-    MetaData,
     Id,
-    ConnectorConfigOptions,
-    ConnectorConfigValue,
-    ConnectorConfigValueType,
 } from './types/CommonTypes';
 
 export type {
@@ -115,8 +111,6 @@ export {
     Scripting,
 } from './types/TextStyleTypes';
 export { ColorType } from './types/ColorStyleTypes';
-export * from './types/MediaConnectorTypes';
-export * from './types/FontConnectorTypes';
 export * from './types/ConnectorTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';

@@ -1,15 +1,17 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
+import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
+    ConnectorConfigOptions,
     DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
-    MediaConnectorCapabilities,
-    MediaType,
-    QueryOptions,
+    MediaDownloadIntent,
+    MediaDownloadType,
+    MetaData,
     QueryPage,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
-import { Media, MediaDownloadIntent, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
+import { MediaConnectorCapabilities, Media, MediaDetail, MediaType } from '@connectorShared/MediaConnector';
+import { QueryOptions } from '@connectorShared/Connector.Shared';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.

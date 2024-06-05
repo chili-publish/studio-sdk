@@ -1,4 +1,9 @@
+import { ConnectorConfigValue } from '@connectorShared/Connector.Shared';
 import { Id } from './CommonTypes';
+export {
+    DownloadIntent as MediaDownloadIntent,
+    DownloadType as MediaDownloadType,
+} from '@connectorShared/MediaConnector';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -10,48 +15,20 @@ export enum DeprecatedMediaConnectorDownloadType {
     HighResolutionWeb = 'highresWeb',
 }
 
-export enum MediaType {
-    file = 'file',
-    collection = 'collection',
-}
-
 export enum ConnectorType {
     media = 'media',
     fonts = 'fonts',
 }
 
-export enum SortBy {
-    name = 'name',
-    path = 'relativePath',
-    id = 'id',
+export interface MetaData {
+    [key: string]: string;
 }
 
-export enum SortOrder {
-    ascending = 'asc',
-    descending = 'desc',
+export interface ConnectorOptions {
+    [key: string]: string;
 }
 
-export type QueryOptions = {
-    filter?: string[] | null;
-    collection?: string | null;
-    pageToken?: string | null;
-    pageSize?: number | null;
-    sortBy?: SortBy | null;
-    sortOrder?: SortOrder | null;
-};
-
-export type FontConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    preview: boolean;
-    filtering: boolean;
-};
-
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
-};
+export type ConnectorConfigOptions = ConnectorConfigValue[];
 
 interface ConnectorRegistrationBase {
     /**

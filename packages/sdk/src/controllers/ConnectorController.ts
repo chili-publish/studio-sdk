@@ -1,4 +1,4 @@
-import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorState,
     ConnectorStateType,
@@ -6,6 +6,7 @@ import {
     ConnectorRegistration,
     ConnectorInstance,
     ConnectorType,
+    ConnectorOptions,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 

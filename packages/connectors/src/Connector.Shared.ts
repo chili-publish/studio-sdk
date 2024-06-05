@@ -1,3 +1,5 @@
+export type Id = string;
+
 export interface Dictionary {
     [Key: string]: string;
 }
@@ -12,13 +14,24 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
+export enum SortBy {
+    name = 'name',
+    path = 'relativePath',
+    id = 'id',
+}
+
+export enum SortOrder {
+    ascending = 'asc',
+    descending = 'desc',
+}
+
 export type QueryOptions = {
-    sortOrder: string | null;
-    collection: string | null;
-    filter: string[] | null;
-    pageToken: string | null;
+    filter?: string[] | null;
+    pageToken?: string | null;
+    collection?: string | null;
     pageSize: number;
-    sortBy: string | null;
+    sortBy?: SortBy | null;
+    sortOrder?: SortOrder | null;
 };
 
 export interface ChiliRequestInit {
@@ -37,7 +50,7 @@ export interface ChiliRequestInit {
     /**
      * A string to set request's method.
      */
-    method?: string;
+    method?: 'GET' | 'POST';
     /**
      * A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect.
      */
@@ -68,10 +81,15 @@ export interface ChiliResponse extends ChiliBody {
     readonly url: string;
 }
 
-export type ConnectorConfigValueType = 'text' | 'boolean';
+export enum ConnectorConfigValueType {
+    text = 'text',
+    boolean = 'boolean',
+}
 
 export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
     readonly type: ConnectorConfigValueType;
 }
+
+
