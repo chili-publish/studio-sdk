@@ -6,6 +6,10 @@ import {
     Variable,
     VariableType,
     NumberVariablePropertiesDeltaUpdate,
+    DateVariablePropertiesDeltaUpdate,
+    DateRestriction,
+    DocumentLocaleEnum,
+    DayEnum,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -110,6 +114,76 @@ class NumberVariable {
         return getEditorResponseData<null>(result);
     }
 }
+
+class DateVariable {
+    #editorAPI: EditorAPI;
+
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * @experimental Sets the displayFormat value for a date variable
+     * @param id the id of the variable to update
+     * @param displayFormat the pattern of the date
+     * @returns
+     */
+    setDisplayFormat = async (id: string, displayFormat: string) => {
+        const update = { displayFormat: { value: displayFormat } };
+        return this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the startDate value for a date variable
+     * @param id the id of the variable to update
+     * @param startDate the start date
+     * @returns
+     */
+    setStartDate = async (id: string, startDate: DateRestriction | null) => {
+        const update = { startDate: { value: startDate } };
+        return this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the endDate value for a date variable
+     * @param id the id of the variable to update
+     * @param endDate the end date
+     * @returns
+     */
+    setEndDate = async (id: string, endDate: DateRestriction | null) => {
+        const update = { endDate: { value: endDate } };
+        return this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the locale value for a date variable
+     * @param id the id of the variable to update
+     * @param locale the locale used to display the date
+     * @returns
+     */
+    setLocale = async (id: string, locale: DocumentLocaleEnum) => {
+        const update = { locale: { value: locale } };
+        return this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the excludedDays value for a date variable
+     * @param id the id of the variable to update
+     * @param excludedDays the excluded days list
+     * @returns
+     */
+    setExcludedDays = async (id: string, excludedDays: DayEnum[] | null) => {
+        const update = { excludedDays: { value: excludedDays } };
+        return this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    private async applyDateVariablePropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateDateVariableProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
+    }
+}
+
 /**
  * The VariableController is responsible for all communication regarding the variables.
  * Methods inside this controller can be called by `window.SDK.variable.{method-name}`
@@ -121,6 +195,7 @@ export class VariableController {
     #editorAPI: EditorAPI;
 
     number: NumberVariable;
+    date: DateVariable;
 
     /**
      * @ignore
@@ -128,6 +203,7 @@ export class VariableController {
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
         this.number = new NumberVariable(this.#editorAPI);
+        this.date = new DateVariable(this.#editorAPI);
     }
 
     /**

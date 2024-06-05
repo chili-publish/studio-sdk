@@ -30,6 +30,7 @@ export enum VariableType {
     boolean = 'boolean',
     group = 'group',
     number = 'number',
+    date = 'date',
 }
 
 export interface Variable {
@@ -78,6 +79,15 @@ export interface NumberVariable extends Variable {
     stepSize: number;
 }
 
+export interface DateVariable extends Variable {
+    value: number;
+    displayFormat: number;
+    locale: DocumentLocaleEnum;
+    startDate?: DateRestriction;
+    endDate?: DateRestriction;
+    excludedDays?: DayEnum[];
+}
+
 export type LongTextVariable = ShortTextVariable;
 
 export type GroupVariable = Variable;
@@ -107,4 +117,73 @@ export interface NumberVariablePropertiesDeltaUpdate {
     thousandsSeparator?: {
         value: string;
     };
+}
+
+export interface DateVariablePropertiesDeltaUpdate {
+    startDate?: {
+        value: DateRestriction | null;
+    };
+    endDate?: {
+        value: DateRestriction | null;
+    };
+    locale?: {
+        value: DocumentLocaleEnum;
+    };
+    displayFormat?: {
+        value: string;
+    };
+    excludedDays?: {
+        value: DayEnum[] | null;
+    };
+}
+
+export type DateRestriction = RelativeDateRestriction | AbsoluteDateRestriction;
+
+export class RelativeDateRestriction {
+    type = DateRestrictionTypeEnum.relative;
+    offset: number;
+
+    constructor(offset: number) {
+        this.offset = offset;
+    }
+}
+
+export class AbsoluteDateRestriction {
+    type = DateRestrictionTypeEnum.absolute;
+    value: string;
+
+    constructor(value: string) {
+        this.value = value;
+    }
+}
+
+export enum DateRestrictionTypeEnum {
+    relative = 'relative',
+    absolute = 'absolute',
+}
+
+export enum DayEnum {
+    monday = 'monday',
+    tuesday = 'tuesday',
+    wednesday = 'wednesday',
+    thursday = 'thursday',
+    friday = 'friday',
+    saturday = 'saturday',
+    sunday = 'sunday',
+}
+
+export enum DocumentLocaleEnum {
+    en_US = 'en_US',
+    cs = 'cs',
+    da = 'da',
+    nl = 'nl',
+    fi = 'fi',
+    fr = 'fr',
+    de = 'de',
+    it = 'it',
+    no = 'no',
+    pl = 'pl',
+    pt_PT = 'pt_PT',
+    es_ES = 'es_ES',
+    sv = 'sv',
 }

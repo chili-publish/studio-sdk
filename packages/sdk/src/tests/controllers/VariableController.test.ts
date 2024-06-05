@@ -1,5 +1,15 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ImageVariable, ListVariable, ListVariableItem, Variable, VariableType } from '../../types/VariableTypes';
+import {
+    AbsoluteDateRestriction,
+    DayEnum,
+    DocumentLocaleEnum,
+    ImageVariable,
+    ListVariable,
+    ListVariableItem,
+    RelativeDateRestriction,
+    Variable,
+    VariableType,
+} from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
@@ -70,6 +80,7 @@ describe('VariableController', () => {
         getImageVariableConnectorId: async () => getEditorResponseData(castToEditorResponse('connectorId')),
         setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
         updateNumberVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+        updateDateVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -96,6 +107,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'getImageVariableConnectorId');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
         jest.spyOn(mockEditorApi, 'updateNumberVariableProperties');
+        jest.spyOn(mockEditorApi, 'updateDateVariableProperties');
     });
 
     it('get variable by id', async () => {
@@ -327,6 +339,51 @@ describe('VariableController', () => {
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
             JSON.stringify({ decimalCharacterStyleId: { value: '2' } }),
+        );
+    });
+
+    it('updates the display format', async () => {
+        await mockedVariableController.date.setDisplayFormat('1', 'yyyy');
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ displayFormat: { value: 'yyyy' } }),
+        );
+    });
+
+    it('updates the start date', async () => {
+        await mockedVariableController.date.setStartDate('1', new AbsoluteDateRestriction('1900-01-01'));
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ startDate: { value: { type: 'absolute', value: '1900-01-01' } } }),
+        );
+    });
+
+    it('updates the end date', async () => {
+        await mockedVariableController.date.setEndDate('1', new RelativeDateRestriction(-123));
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ endDate: { value: { type: 'relative', offset: -123 } } }),
+        );
+    });
+
+    it('updates the locale', async () => {
+        await mockedVariableController.date.setLocale('1', DocumentLocaleEnum.nl);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ locale: { value: 'nl' } }),
+        );
+    });
+
+    it('updates the excluded days', async () => {
+        await mockedVariableController.date.setExcludedDays('1', [DayEnum.monday, DayEnum.friday]);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ excludedDays: { value: ['monday', 'friday'] } }),
         );
     });
 });
