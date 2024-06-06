@@ -147,3 +147,30 @@ export interface DateVariablePropertiesDeltaUpdate {
         value: string;
     };
 }
+
+export interface NumberVariablePropertiesDeltaUpdate {
+    minValue?: {
+        value: number | null;
+    };
+    maxValue?: {
+        value: number | null;
+    };
+    showStepper?: {
+        value: boolean;
+    };
+    stepSize?: {
+        value: number;
+    };
+    numberOfDecimals?: {
+        value: number;
+    };
+    decimalCharacterStyleId?: {
+        value: string | null;
+    };
+    decimalSeparator?: {
+        value: string;
+    };
+    thousandsSeparator?: {
+        value: string;
+    };
+}

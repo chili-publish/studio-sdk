@@ -78,6 +78,7 @@ describe('VariableController', () => {
         getImageVariableConnectorId: async () => getEditorResponseData(castToEditorResponse('connectorId')),
         setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
         updateDateVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+        updateNumberVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -104,6 +105,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'getImageVariableConnectorId');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
         jest.spyOn(mockEditorApi, 'updateDateVariableProperties');
+        jest.spyOn(mockEditorApi, 'updateNumberVariableProperties');
     });
 
     it('get variable by id', async () => {
@@ -304,6 +306,78 @@ describe('VariableController', () => {
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
             '1',
             JSON.stringify({ displayFormat: { value: 'yyyy-MM-dd' } }),
+        );
+    });
+
+    it('updates the minimum variable value', async () => {
+        await mockedVariableController.number.setMinimum('1', 20);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ minValue: { value: 20 } }),
+        );
+    });
+
+    it('updates the maximum variable value', async () => {
+        await mockedVariableController.number.setMaximum('1', 20);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ maxValue: { value: 20 } }),
+        );
+    });
+
+    it('updates the show stepper variable value', async () => {
+        await mockedVariableController.number.setShowStepper('1', false);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ showStepper: { value: false } }),
+        );
+    });
+
+    it('updates the step size variable value', async () => {
+        await mockedVariableController.number.setStepSize('1', 2);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ stepSize: { value: 2 } }),
+        );
+    });
+
+    it('updates the thousands separator', async () => {
+        await mockedVariableController.number.setThousandsSeparator('1', ',');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ thousandsSeparator: { value: ',' } }),
+        );
+    });
+
+    it('updates the decimal separator', async () => {
+        await mockedVariableController.number.setDecimalSeparator('1', ',');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ decimalSeparator: { value: ',' } }),
+        );
+    });
+
+    it('updates the decimal places', async () => {
+        await mockedVariableController.number.setNumberOfDecimals('1', 2);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ numberOfDecimals: { value: 2 } }),
+        );
+    });
+
+    it('updates the decimal character style', async () => {
+        await mockedVariableController.number.setDecimalCharacterStyle('1', '2');
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ decimalCharacterStyleId: { value: '2' } }),
         );
     });
 });
