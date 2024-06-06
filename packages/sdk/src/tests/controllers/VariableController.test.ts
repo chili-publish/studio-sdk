@@ -269,7 +269,7 @@ describe('VariableController', () => {
     });
 
     it('updates the date start date', async () => {
-        await mockedVariableController.setDateVariableStartDate('1', { offset: 4, type: 'relative' });
+        await mockedVariableController.date.setDateVariableStartDate('1', { offset: 4, type: 'relative' });
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -277,7 +277,7 @@ describe('VariableController', () => {
         );
     });
     it('updates the date end date', async () => {
-        await mockedVariableController.setDateVariableEndDate('1', { value: '2022-12-13', type: 'absolute' });
+        await mockedVariableController.date.setDateVariableEndDate('1', { value: '2022-12-13', type: 'absolute' });
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -285,7 +285,7 @@ describe('VariableController', () => {
         );
     });
     it('updates the date excluded days', async () => {
-        await mockedVariableController.setDateVariableExcludedDays('1', [Day.Monday, Day.Friday]);
+        await mockedVariableController.date.setDateVariableExcludedDays('1', [Day.Monday, Day.Friday]);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -293,7 +293,7 @@ describe('VariableController', () => {
         );
     });
     it('updates the date locale', async () => {
-        await mockedVariableController.setDateVariableLocale('1', Locale.es_ES);
+        await mockedVariableController.date.setDateVariableLocale('1', Locale.es_ES);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
             '1',
@@ -301,7 +301,7 @@ describe('VariableController', () => {
         );
     });
     it('updates the date format', async () => {
-        await mockedVariableController.setDateVariableDisplayFormat('1', 'yyyy-MM-dd');
+        await mockedVariableController.date.setDateVariableDisplayFormat('1', 'yyyy-MM-dd');
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledWith(
             '1',

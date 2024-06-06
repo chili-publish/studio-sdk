@@ -114,6 +114,71 @@ class NumberVariable {
         return getEditorResponseData<null>(result);
     }
 }
+
+class DateVariable {
+    #editorAPI: EditorAPI;
+
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * @experimental This method sets the display format for a date variable.
+     * @param id The id of the date variable to update
+     * @param displayFormat The display format for the date variable
+     */
+    setDateVariableDisplayFormat = async (id: string, displayFormat: string) => {
+        const update = { displayFormat: { value: displayFormat } };
+        this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets the locale for a date variable.
+     * @param id The id of the date variable to update
+     * @param locale The locale for the date variable
+     */
+    setDateVariableLocale = async (id: string, locale: Locale) => {
+        const update = { locale: { value: locale } };
+        this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets or clears the start date for a date variable.
+     * @param id The id of the date variable to update
+     * @param date The start date for the date variable
+     */
+    setDateVariableStartDate = async (id: string, date: DateRestriction | null) => {
+        const update = { startDate: { value: date } };
+        this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets or clears the end date for a date variable.
+     * @param id The id of the date variable to update
+     * @param date The end date for the date variable
+     */
+    setDateVariableEndDate = async (id: string, date: DateRestriction | null) => {
+        const update = { endDate: { value: date } };
+        this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets or clears the excluded days for a date variable.
+     * @param id The id of the date variable to update
+     * @param excludedDays The excluded days for the date variable
+     */
+    setDateVariableExcludedDays = async (id: string, excludedDays: Day[] | null) => {
+        const update = { excludedDays: { value: excludedDays } };
+        this.applyDateVariablePropertiesUpdate(id, update);
+    };
+
+    private async applyDateVariablePropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateDateVariableProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
+    }
+}
+
 /**
  * The VariableController is responsible for all communication regarding the variables.
  * Methods inside this controller can be called by `window.SDK.variable.{method-name}`
@@ -125,6 +190,7 @@ export class VariableController {
     #editorAPI: EditorAPI;
 
     number: NumberVariable;
+    date: DateVariable;
 
     /**
      * @ignore
@@ -132,6 +198,7 @@ export class VariableController {
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
         this.number = new NumberVariable(this.#editorAPI);
+        this.date = new DateVariable(this.#editorAPI);
     }
 
     /**
@@ -395,56 +462,6 @@ export class VariableController {
     };
 
     /**
-     * @experimental This method sets the display format for a date variable.
-     * @param id The id of the date variable to update
-     * @param displayFormat The display format for the date variable
-     */
-    setDateVariableDisplayFormat = async (id: string, displayFormat: string) => {
-        const update = { displayFormat: { value: displayFormat } };
-        this.applyDateVariablePropertiesUpdate(id, update);
-    };
-
-    /**
-     * @experimental This method sets the locale for a date variable.
-     * @param id The id of the date variable to update
-     * @param locale The locale for the date variable
-     */
-    setDateVariableLocale = async (id: string, locale: Locale) => {
-        const update = { locale: { value: locale } };
-        this.applyDateVariablePropertiesUpdate(id, update);
-    };
-
-    /**
-     * @experimental This method sets or clears the start date for a date variable.
-     * @param id The id of the date variable to update
-     * @param date The start date for the date variable
-     */
-    setDateVariableStartDate = async (id: string, date: DateRestriction | null) => {
-        const update = { startDate: { value: date } };
-        this.applyDateVariablePropertiesUpdate(id, update);
-    };
-
-    /**
-     * @experimental This method sets or clears the end date for a date variable.
-     * @param id The id of the date variable to update
-     * @param date The end date for the date variable
-     */
-    setDateVariableEndDate = async (id: string, date: DateRestriction | null) => {
-        const update = { endDate: { value: date } };
-        this.applyDateVariablePropertiesUpdate(id, update);
-    };
-
-    /**
-     * @experimental This method sets or clears the excluded days for a date variable.
-     * @param id The id of the date variable to update
-     * @param excludedDays The excluded days for the date variable
-     */
-    setDateVariableExcludedDays = async (id: string, excludedDays: Day[] | null) => {
-        const update = { excludedDays: { value: excludedDays } };
-        this.applyDateVariablePropertiesUpdate(id, update);
-    };
-
-    /**
      * @deprecated use `setValue` instead and pass `null` as the value argument.
      *
      * This method removes the variable source
@@ -480,11 +497,5 @@ export class VariableController {
         updated.selected = selected?.value;
 
         return updated;
-    }
-
-    private async applyDateVariablePropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
-        const res = await this.#editorAPI;
-        const result = await res.updateDateVariableProperties(id, JSON.stringify(update));
-        return getEditorResponseData<null>(result);
     }
 }
