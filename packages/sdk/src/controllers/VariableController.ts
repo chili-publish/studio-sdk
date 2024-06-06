@@ -28,7 +28,7 @@ class NumberVariable {
      */
     setMinimum = async (id: string, minimum: number | null) => {
         const update = { minValue: { value: minimum } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -39,7 +39,7 @@ class NumberVariable {
      */
     setMaximum = async (id: string, maximum: number | null) => {
         const update = { maxValue: { value: maximum } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -50,7 +50,7 @@ class NumberVariable {
      */
     setShowStepper = async (id: string, showStepper: boolean) => {
         const update = { showStepper: { value: showStepper } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -61,7 +61,7 @@ class NumberVariable {
      */
     setStepSize = async (id: string, stepSize: number) => {
         const update = { stepSize: { value: stepSize } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -72,7 +72,7 @@ class NumberVariable {
      */
     setThousandsSeparator = async (id: string, thousandsSeparator: '' | '.' | ',' | ' ') => {
         const update = { thousandsSeparator: { value: thousandsSeparator } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -83,7 +83,7 @@ class NumberVariable {
      */
     setDecimalSeparator = async (id: string, decimalSeparator: '' | '.' | ',' | ' ') => {
         const update = { decimalSeparator: { value: decimalSeparator } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -94,7 +94,7 @@ class NumberVariable {
      */
     setDecimalCharacterStyle = async (id: string, characterStyleId: string | null) => {
         const update = { decimalCharacterStyleId: { value: characterStyleId } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -105,10 +105,10 @@ class NumberVariable {
      */
     setNumberOfDecimals = async (id: string, numberOfDecimals: 0 | 1 | 2 | 3 | 4) => {
         const update = { numberOfDecimals: { value: numberOfDecimals } };
-        return this.applyNumberVariablePropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
-    private async applyNumberVariablePropertiesUpdate(id: string, update: NumberVariablePropertiesDeltaUpdate) {
+    private async applyPropertiesUpdate(id: string, update: NumberVariablePropertiesDeltaUpdate) {
         const res = await this.#editorAPI;
         const result = await res.updateNumberVariableProperties(id, JSON.stringify(update));
         return getEditorResponseData<null>(result);
@@ -127,9 +127,9 @@ class DateVariable {
      * @param id The id of the date variable to update
      * @param displayFormat The display format for the date variable
      */
-    setDateVariableDisplayFormat = async (id: string, displayFormat: string) => {
+    setDisplayFormat = async (id: string, displayFormat: string) => {
         const update = { displayFormat: { value: displayFormat } };
-        this.applyDateVariablePropertiesUpdate(id, update);
+        this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -137,9 +137,9 @@ class DateVariable {
      * @param id The id of the date variable to update
      * @param locale The locale for the date variable
      */
-    setDateVariableLocale = async (id: string, locale: Locale) => {
+    setLocale = async (id: string, locale: Locale) => {
         const update = { locale: { value: locale } };
-        this.applyDateVariablePropertiesUpdate(id, update);
+        this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -147,9 +147,9 @@ class DateVariable {
      * @param id The id of the date variable to update
      * @param date The start date for the date variable
      */
-    setDateVariableStartDate = async (id: string, date: DateRestriction | null) => {
+    setStartDate = async (id: string, date: DateRestriction | null) => {
         const update = { startDate: { value: date } };
-        this.applyDateVariablePropertiesUpdate(id, update);
+        this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -157,9 +157,9 @@ class DateVariable {
      * @param id The id of the date variable to update
      * @param date The end date for the date variable
      */
-    setDateVariableEndDate = async (id: string, date: DateRestriction | null) => {
+    setEndDate = async (id: string, date: DateRestriction | null) => {
         const update = { endDate: { value: date } };
-        this.applyDateVariablePropertiesUpdate(id, update);
+        this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -167,12 +167,12 @@ class DateVariable {
      * @param id The id of the date variable to update
      * @param excludedDays The excluded days for the date variable
      */
-    setDateVariableExcludedDays = async (id: string, excludedDays: Day[] | null) => {
+    setExcludedDays = async (id: string, excludedDays: Day[] | null) => {
         const update = { excludedDays: { value: excludedDays } };
-        this.applyDateVariablePropertiesUpdate(id, update);
+        this.applyPropertiesUpdate(id, update);
     };
 
-    private async applyDateVariablePropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
+    private async applyPropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
         const res = await this.#editorAPI;
         const result = await res.updateDateVariableProperties(id, JSON.stringify(update));
         return getEditorResponseData<null>(result);
