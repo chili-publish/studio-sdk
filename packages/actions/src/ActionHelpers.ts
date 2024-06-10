@@ -56,6 +56,23 @@ function getNumberVariable(variableName: string | Variable): NumberVariable & Va
 }
 
 /**
+ * Gets the date variable by name.
+ *
+ * @throws {Error} Throws an error if the variable type is not a date.
+ *
+ * @returns {DateVariable & VariableMethods} The number variable.
+ */
+function getDateVariable(variableName: string | Variable): DateVariable & VariableMethods {
+    const dateVariable = studio.variables.byName(variableName);
+
+    if (dateVariable.type !== 'date') {
+        throw new Error('Expected a date variable but got one of type ' + dateVariable.type);
+    }
+
+    return dateVariable;
+}
+
+/**
  * Retrieves the value of a variable by its name or variable object.
  *
  * @param {string | Variable} variableName - The variable name or variable object.
@@ -97,6 +114,17 @@ function getBooleanVariableValue(variableName: string | Variable): boolean {
  */
 function getNumberVariableValue(variableName: string | Variable): number {
     return studio.variables.byName(variableName).numberValue;
+}
+
+/**
+ * Retrieves the value of a date variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns The value of the variable as a date.
+ */
+function getDateVariableValue(variableName: string | Variable): Date {
+    return studio.variables.byName(variableName).dateValue;
 }
 
 /**
@@ -158,6 +186,16 @@ function setBooleanVariableValue(variableName: string | Variable, value: boolean
  * @param {number} value - The new number variable value.
  */
 function setNumberVariableValue(variableName: string | Variable, value: number) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a date variable by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string | Date | null} value - The new date variable value as a string, date object or null to reset.
+ */
+function setDateVariableValue(variableName: string | Variable, value: string | Date | null) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -297,6 +335,32 @@ function setNumberVariableThousandsSeparator(variableName: string | Variable, se
     const numberVar = getNumberVariable(variableName);
 
     numberVar.setThousandsSeparator(separator);
+}
+
+/**
+ * Set display format of the date variable.
+ *
+ * @param {string | Variable} variableName - The name of the date variable or a variable object.
+ *
+ * @param displayFormat The display format (`'yyyy-MM-dd'`).
+ */
+function setDateVariableDisplayFormat(variableName: string | Variable, displayFormat: string) {
+    const dateVar = getDateVariable(variableName);
+
+    dateVar.setDisplayFormat(displayFormat);
+}
+
+/**
+ * Set language of the date variable.
+ *
+ * @param {string | Variable} variableName - The name of the date variable or a variable object.
+ *
+ * @param language The language (`'en_US'`, `'fi'`, `'fr'`...).
+ */
+function setDateVariableLanguage(variableName: string | Variable, language: Language) {
+    const dateVar = getDateVariable(variableName);
+
+    dateVar.setLanguage(language);
 }
 
 /**
