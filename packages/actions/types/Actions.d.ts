@@ -236,7 +236,7 @@ declare module 'grafx-studio-actions' {
         export interface Date {
             readonly year: number;
             readonly month: number;
-            readonly date: number;
+            readonly day: number;
         }
 
         /**
