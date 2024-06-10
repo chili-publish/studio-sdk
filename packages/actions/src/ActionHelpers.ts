@@ -9,9 +9,11 @@
  */
 function getTriggeredVariableName(): string {
     const variable = triggers.variableValueChanged;
-    
+
     if (!variable) {
-        throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
+        throw new Error(
+            'This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.',
+        );
     }
 
     return variable.name;
@@ -28,7 +30,9 @@ function getTriggeredVariableValue(): VariableValue {
     const variable = triggers.variableValueChanged;
 
     if (!variable) {
-        throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
+        throw new Error(
+            'This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.',
+        );
     }
 
     return variable.value;
@@ -43,7 +47,7 @@ function getTriggeredVariableValue(): VariableValue {
  */
 function getNumberVariable(variableName: string | Variable): NumberVariable & VariableMethods {
     const numberVariable = studio.variables.byName(variableName);
-    
+
     if (numberVariable.type !== 'number') {
         throw new Error('Expected a number variable but got one of type ' + numberVariable.type);
     }
@@ -248,11 +252,11 @@ function getSelectedItemFromListVariable(variableName: string | Variable) {
 
 /**
  * Set the selected item in a list variable. Provides additional runtime checks.
- * 
+ *
  * @param {string | Variable} variableName - The name of the list variable or a variable object.
- * 
+ *
  * @param {string | VariableValue} item - The item to select, null to deselect, or text-based variables are also allowed.
- * 
+ *
  * @throws {Error} If the variable is not of type 'list' or if the selected item is not a string or undefined.
  */
 function setSelectedItemFromListVariable(variableName: string | Variable, item: string | VariableValue) {
@@ -262,7 +266,7 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
         throw new Error('Expected a list variable but got one of type ' + list.type);
     }
 
-    if (item && typeof item !== 'string'){
+    if (item && typeof item !== 'string') {
         throw new Error('Expected the selected item to be of type string, but got one of type ' + typeof item);
     }
 
@@ -271,9 +275,9 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
 
 /**
  * Set decimal separator of the number variable.
- * 
+ *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
- * 
+ *
  * @param separator The decimal separator (`''`, `'.'`, `','`, `' '`).
  */
 function setNumberVariableDecimalSeparator(variableName: string | Variable, separator: NumberSeparator) {
@@ -284,9 +288,9 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
 
 /**
  * Set thousands separator of the number variable.
- * 
+ *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
- * 
+ *
  * @param separator The thousands separator (`''`, `'.'`, `','`, `' '`).
  */
 function setNumberVariableThousandsSeparator(variableName: string | Variable, separator: NumberSeparator) {
@@ -304,9 +308,11 @@ function setNumberVariableThousandsSeparator(variableName: string | Variable, se
  */
 function getTriggeredFrameName(): string {
     const frame = triggers.frameMoved;
-    
+
     if (!frame) {
-        throw new Error('This action was not triggered by a frame moved trigger. Make sure the trigger for this action is set to frame moved.');
+        throw new Error(
+            'This action was not triggered by a frame moved trigger. Make sure the trigger for this action is set to frame moved.',
+        );
     }
 
     return frame.name;
@@ -471,9 +477,11 @@ function setFrameVisible(name: string | Frame, visibility: boolean | VariableVal
  */
 function getTriggeredLayoutName(): string {
     const layout = triggers.selectedLayoutChanged;
-    
+
     if (!layout) {
-        throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to selected layout changed.');
+        throw new Error(
+            'This action was not triggered by a variable value change. Make sure the trigger for this action is set to selected layout changed.',
+        );
     }
 
     return layout.name;
@@ -523,7 +531,7 @@ function getPageHeight(): number {
  */
 function setPageSize(width: number | VariableValue, height: number | VariableValue) {
     studio.pages.setSize(width, height);
- }
+}
 
 /**
  * Copy a stylekit color.

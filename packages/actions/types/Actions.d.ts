@@ -14,7 +14,6 @@ declare module 'grafx-studio-actions' {
         // @ts-ignore
         const console: Console;
 
-
         /**
          * An interface representing the trigger for executing this action.
          */
@@ -300,7 +299,7 @@ declare module 'grafx-studio-actions' {
 
         /**
          * The number thousands or decimal separator symbol.
-         * 
+         *
          * Possible values are:
          * - None = ''
          * - Space = ' '
@@ -316,8 +315,8 @@ declare module 'grafx-studio-actions' {
 
         export interface BaseVariable extends HasName {
             /**
-            * Whether the variable is visible
-            */
+             * Whether the variable is visible
+             */
             readonly isVisible: boolean;
 
             /**
@@ -342,21 +341,21 @@ declare module 'grafx-studio-actions' {
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a StringVariable
              */
             readonly stringValue: string;
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a BooleanVariable
              */
             readonly booleanValue: boolean;
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a `NumberVariable`
              */
             readonly numberValue: number;
@@ -409,14 +408,14 @@ declare module 'grafx-studio-actions' {
 
             /**
              * Sets the decimal separator of the number variable.
-             * 
+             *
              * @param separator the decimal separator
              */
             setDecimalSeparator(separator: NumberSeparator): void;
 
             /**
              * Sets the thousands separator of the number variable.
-             * 
+             *
              * @param separator the thousands separator
              */
             setThousandsSeparator(separator: NumberSeparator): void;
