@@ -233,7 +233,7 @@ declare module 'grafx-studio-actions' {
         /**
          * Represents a Date inside Actions
          */
-        export interface Date {
+        export interface DateValue {
             readonly year: number;
             readonly month: number;
             readonly day: number;
@@ -355,7 +355,7 @@ declare module 'grafx-studio-actions' {
         /**
          * The different values a Variable can have depending on the Variable Type.
          */
-        export type VariableValue = string | boolean | number | Date | null;
+        export type VariableValue = string | boolean | number | DateValue | null;
 
         export interface BaseVariable extends HasName {
             /**
@@ -409,7 +409,7 @@ declare module 'grafx-studio-actions' {
              *
              * Make sure this variable is a `DateVariable`
              */
-            readonly dateValue: Date | null;
+            readonly dateValue: DateValue | null;
         }
 
         export interface ShortTextVariable extends BaseVariable {
@@ -481,7 +481,7 @@ declare module 'grafx-studio-actions' {
             /**
              * The current value of the variable.
              */
-            readonly value: Date | null;
+            readonly value: DateValue | null;
 
             /**
              * Sets the display format of the date variable.
@@ -636,7 +636,7 @@ declare module 'grafx-studio-actions' {
             /**
              * Gets the date value of a variable
              */
-            getDateValue(name: string | Variable): Date | null;
+            getDateValue(name: string | Variable): DateValue | null;
 
             /**
              * Set the readonly state of a variable

@@ -123,7 +123,7 @@ function getNumberVariableValue(variableName: string | Variable): number {
  *
  * @returns The value of the variable as a date.
  */
-function getDateVariableValue(variableName: string | Variable): Date {
+function getDateVariableValue(variableName: string | Variable): DateValue {
     return studio.variables.byName(variableName).dateValue;
 }
 
@@ -193,9 +193,9 @@ function setNumberVariableValue(variableName: string | Variable, value: number) 
  * Sets the value of a date variable by its name or variable object.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
- * @param {string | Date | null} value - The new date variable value as a string, date object or null to reset.
+ * @param {string | DateValue | null} value - The new date variable value as a string, date object or null to reset.
  */
-function setDateVariableValue(variableName: string | Variable, value: string | Date | null) {
+function setDateVariableValue(variableName: string | Variable, value: string | DateValue | null) {
     studio.variables.setValue(variableName, value);
 }
 
