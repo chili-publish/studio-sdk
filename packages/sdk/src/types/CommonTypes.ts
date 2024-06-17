@@ -116,11 +116,11 @@ export interface SelectedLayoutFrame {
 }
 
 export interface MetaData {
-    [key: string]: string;
+    [key: string]: string | boolean;
 }
 
 export interface ConnectorOptions {
-    [key: string]: string;
+    [key: string]: string | boolean;
 }
 
 export enum ConnectorConfigValueType {

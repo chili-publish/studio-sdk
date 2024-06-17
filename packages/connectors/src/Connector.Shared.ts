@@ -1,5 +1,5 @@
 export interface Dictionary {
-    [Key: string]: string;
+    [Key: string]: string | boolean;
 }
 
 export type ChiliPlatform = 'web' | 'server';
