@@ -68,7 +68,7 @@ export type ConfigType = {
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
     enableNextSubscribers?: {
-        variable: boolean;
+        onVariableListChanged: boolean;
     };
 };
 

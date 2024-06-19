@@ -23,7 +23,7 @@ import StudioSDK from '@chili-publish/studio-sdk';
 
 const sdk = new StudioSDK({
     enableNextSubscribers: {
-        variable: true,
+        onVariableListChanged: true,
     },
 });
 ```

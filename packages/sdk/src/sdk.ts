@@ -149,7 +149,7 @@ export class SDK {
                 onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
                 onVariableListChanged: (state) => {
-                    if (this.enabledNextSubscribers?.variable) {
+                    if (this.enabledNextSubscribers?.onVariableListChanged) {
                         this.next.subscriber.onVariableListChanged(state);
                     } else {
                         this.subscriber.onVariableListChanged(state);

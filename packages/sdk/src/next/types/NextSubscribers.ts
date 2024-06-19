@@ -1,3 +1,3 @@
 export interface NextSubscribers {
-    variable: boolean;
+    onVariableListChanged: boolean;
 }
