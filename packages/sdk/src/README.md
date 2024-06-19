@@ -16,6 +16,18 @@ If you’re using the next controller, consider importing the typings from the n
 import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';
 ```
 
+In addition, `Next` version of event stream is available when specifying `enableNextSubscribers`
+
+```ts
+import StudioSDK from '@chili-publish/studio-sdk';
+
+const sdk = new StudioSDK({
+    enableNextSubscribers: {
+        variable: true,
+    },
+});
+```
+
 ## The document
 
 We have made an effort to type the document that is used by the editor-engine as ChiliDocument.

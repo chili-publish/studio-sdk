@@ -36,6 +36,7 @@ import { InfoController } from './controllers/InfoController';
 import { ClipboardController } from './controllers/ClipboardController';
 import { BarcodeController } from './controllers/BarcodeController';
 import { NextInitiator } from './next/NextInitiator';
+import { NextSubscribers } from './next';
 
 let connection: Connection;
 
@@ -81,6 +82,7 @@ export class SDK {
     next: NextInitiator;
 
     private subscriber: SubscriberController;
+    private enabledNextSubscribers: NextSubscribers | undefined;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -123,6 +125,7 @@ export class SDK {
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
+        this.enabledNextSubscribers = this.config.enableNextSubscribers;
     }
 
     /**
@@ -146,9 +149,11 @@ export class SDK {
                 onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
                 onVariableListChanged: (state) => {
-                    this.subscriber.onVariableListChanged(state);
-                    // TODO: to be revisited after the release as it overrides the variables list
-                    // this.next.subscriber.onVariableListChanged(state);
+                    if (this.enabledNextSubscribers?.variable) {
+                        this.next.subscriber.onVariableListChanged(state);
+                    } else {
+                        this.subscriber.onVariableListChanged(state);
+                    }
                 },
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
