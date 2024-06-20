@@ -129,7 +129,7 @@ class DateVariable {
      */
     setDisplayFormat = async (id: string, displayFormat: string) => {
         const update = { displayFormat: { value: displayFormat } };
-        this.applyPropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -139,7 +139,7 @@ class DateVariable {
      */
     setLocale = async (id: string, locale: Locale) => {
         const update = { locale: { value: locale } };
-        this.applyPropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -149,7 +149,7 @@ class DateVariable {
      */
     setStartDate = async (id: string, date: DateRestriction | null) => {
         const update = { startDate: { value: date } };
-        this.applyPropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -159,7 +159,7 @@ class DateVariable {
      */
     setEndDate = async (id: string, date: DateRestriction | null) => {
         const update = { endDate: { value: date } };
-        this.applyPropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     /**
@@ -169,7 +169,7 @@ class DateVariable {
      */
     setExcludedDays = async (id: string, excludedDays: Day[] | null) => {
         const update = { excludedDays: { value: excludedDays } };
-        this.applyPropertiesUpdate(id, update);
+        return this.applyPropertiesUpdate(id, update);
     };
 
     private async applyPropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
