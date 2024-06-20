@@ -308,13 +308,13 @@ describe('SubscriberController', () => {
         const staticHeaderValue = 'Static, 1234';
 
         const grafxAuthRefreshRequest: AuthRefreshRequest = {
-            connectorId: connectorId,
+            environmentConnectorId: connectorId,
             type: AuthRefreshTypeEnum.grafxToken,
             headerValue: null,
         };
 
         const anyAuthRefreshRequest: AuthRefreshRequest = {
-            connectorId: connectorId,
+            environmentConnectorId: connectorId,
             type: AuthRefreshTypeEnum.any,
             headerValue: staticHeaderValue,
         };
