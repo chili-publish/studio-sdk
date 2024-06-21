@@ -81,7 +81,7 @@ const loadScript = async (url: string, callback: () => void) => {
 const init = async (accessToken: string, pr: string) => {
   let url = "";
   if (pr !== "") {
-    url = `https://stgrafxstudiodevpublic.blob.core.windows.net/sdk/dev-packages/${pr}/main.js`;
+    url = `https://stgrafxstudiodevpublic.blob.core.windows.net/sdk/dev-packages/${pr}/_bundles/main.js`;
   } else {
     url =
       "https://stgrafxstudiodevpublic.blob.core.windows.net/sdk/latest/main.js";
