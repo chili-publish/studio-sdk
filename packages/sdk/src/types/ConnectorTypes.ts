@@ -111,13 +111,13 @@ export enum ConnectorRegistrationSource {
 
 export class ConnectorMapping {
     name: string;
-    value: string;
+    value: string | boolean;
     direction = ConnectorMappingDirection.engineToConnector;
 
     constructor(
         contextProperty: string,
         mapFrom: ConnectorMappingSource,
-        sourceValue: string,
+        sourceValue: string | boolean,
         direction = ConnectorMappingDirection.engineToConnector,
     ) {
         this.name = contextProperty;
