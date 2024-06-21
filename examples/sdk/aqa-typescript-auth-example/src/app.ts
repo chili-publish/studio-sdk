@@ -3,6 +3,7 @@ import { createAuth0Client } from "@auth0/auth0-spa-js";
 
 // Instantiate the class when the window loads
 window.onload = async () => {
+  let isAuthenticated = false;
   const auth0 = await createAuth0Client({
     domain: "https://login.chiligrafx-dev.com",
     clientId: "zkWRMzeEKNSoAvJ8hj4Od3sp7pUFtXOO",
@@ -38,12 +39,22 @@ window.onload = async () => {
     // Handle the redirect from Auth0
     await auth0.handleRedirectCallback();
 
-    window.history.replaceState({}, document.title, "/");
+    isAuthenticated = await auth0.isAuthenticated();
 
-    const isAuthenticated = await auth0.isAuthenticated();
-    console.log({ isAuthenticated });
+    if (isAuthenticated) {
+      document.getElementById("login").remove();
+      (<HTMLInputElement>document.getElementById("init")).disabled = false;
+    }
+  }
 
-    const accessToken = await auth0.getTokenSilently();
-    integration.init(accessToken);
+  const initButton = document.getElementById("init");
+  if (initButton) {
+    initButton.addEventListener("click", async (e: Event) => {
+      if (isAuthenticated) {
+        const pr = (<HTMLInputElement>document.getElementById("pr")).value;
+        const accessToken = await auth0.getTokenSilently();
+        integration.init(accessToken, pr);
+      }
+    });
   }
 };
