@@ -1,6 +1,6 @@
 {
     "name": "actions",
-    "version": "1.11.0",
+    "version": "1.11.1",
     "apiVersion": "1.0",
     "license": "MIT",
     "scripts": {
@@ -11,6 +11,7 @@
         "find-root": "^1.1.0",
         "fs-extra": "^11.1.1",
         "terser": "^5.19.4",
-        "typescript": "^5.2.2"
+        "typescript": "^5.2.2",
+        "prettier": "^3.0.3"
     }
 }

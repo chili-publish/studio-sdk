@@ -9,9 +9,11 @@
  */
 function getTriggeredVariableName(): string {
     const variable = triggers.variableValueChanged;
-    
+
     if (!variable) {
-        throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
+        throw new Error(
+            'This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.',
+        );
     }
 
     return variable.name;
@@ -28,7 +30,9 @@ function getTriggeredVariableValue(): VariableValue {
     const variable = triggers.variableValueChanged;
 
     if (!variable) {
-        throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.');
+        throw new Error(
+            'This action was not triggered by a variable value change. Make sure the trigger for this action is set to variable value changed.',
+        );
     }
 
     return variable.value;
@@ -43,12 +47,29 @@ function getTriggeredVariableValue(): VariableValue {
  */
 function getNumberVariable(variableName: string | Variable): NumberVariable & VariableMethods {
     const numberVariable = studio.variables.byName(variableName);
-    
+
     if (numberVariable.type !== 'number') {
         throw new Error('Expected a number variable but got one of type ' + numberVariable.type);
     }
 
     return numberVariable;
+}
+
+/**
+ * Gets the date variable by name.
+ *
+ * @throws {Error} Throws an error if the variable type is not a date.
+ *
+ * @returns {DateVariable & VariableMethods} The number variable.
+ */
+function getDateVariable(variableName: string | Variable): DateVariable & VariableMethods {
+    const dateVariable = studio.variables.byName(variableName);
+
+    if (dateVariable.type !== 'date') {
+        throw new Error('Expected a date variable but got one of type ' + dateVariable.type);
+    }
+
+    return dateVariable;
 }
 
 /**
@@ -93,6 +114,17 @@ function getBooleanVariableValue(variableName: string | Variable): boolean {
  */
 function getNumberVariableValue(variableName: string | Variable): number {
     return studio.variables.byName(variableName).numberValue;
+}
+
+/**
+ * Retrieves the value of a date variable in UTC by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The variable name or variable object.
+ *
+ * @returns The value of the variable as a date in UTC.
+ */
+function getDateVariableValue(variableName: string | Variable): Date {
+    return studio.variables.byName(variableName).dateValue;
 }
 
 /**
@@ -154,6 +186,16 @@ function setBooleanVariableValue(variableName: string | Variable, value: boolean
  * @param {number} value - The new number variable value.
  */
 function setNumberVariableValue(variableName: string | Variable, value: number) {
+    studio.variables.setValue(variableName, value);
+}
+
+/**
+ * Sets the value of a date variable in UTC by its name or variable object.
+ *
+ * @param {string | Variable} variableName - The name of the variable to update.
+ * @param {string | Date | null} value - The new date variable value in UTC as a string, date object or null to reset.
+ */
+function setDateVariableValue(variableName: string | Variable, value: string | Date | null) {
     studio.variables.setValue(variableName, value);
 }
 
@@ -248,11 +290,11 @@ function getSelectedItemFromListVariable(variableName: string | Variable) {
 
 /**
  * Set the selected item in a list variable. Provides additional runtime checks.
- * 
+ *
  * @param {string | Variable} variableName - The name of the list variable or a variable object.
- * 
+ *
  * @param {string | VariableValue} item - The item to select, null to deselect, or text-based variables are also allowed.
- * 
+ *
  * @throws {Error} If the variable is not of type 'list' or if the selected item is not a string or undefined.
  */
 function setSelectedItemFromListVariable(variableName: string | Variable, item: string | VariableValue) {
@@ -262,7 +304,7 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
         throw new Error('Expected a list variable but got one of type ' + list.type);
     }
 
-    if (item && typeof item !== 'string'){
+    if (item && typeof item !== 'string') {
         throw new Error('Expected the selected item to be of type string, but got one of type ' + typeof item);
     }
 
@@ -271,9 +313,9 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
 
 /**
  * Set decimal separator of the number variable.
- * 
+ *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
- * 
+ *
  * @param separator The decimal separator (`''`, `'.'`, `','`, `' '`).
  */
 function setNumberVariableDecimalSeparator(variableName: string | Variable, separator: NumberSeparator) {
@@ -284,15 +326,41 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
 
 /**
  * Set thousands separator of the number variable.
- * 
+ *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
- * 
+ *
  * @param separator The thousands separator (`''`, `'.'`, `','`, `' '`).
  */
 function setNumberVariableThousandsSeparator(variableName: string | Variable, separator: NumberSeparator) {
     const numberVar = getNumberVariable(variableName);
 
     numberVar.setThousandsSeparator(separator);
+}
+
+/**
+ * Set display format of the date variable.
+ *
+ * @param {string | Variable} variableName - The name of the date variable or a variable object.
+ *
+ * @param displayFormat The display format (`'yyyy-MM-dd'`).
+ */
+function setDateVariableDisplayFormat(variableName: string | Variable, displayFormat: string) {
+    const dateVar = getDateVariable(variableName);
+
+    dateVar.setDisplayFormat(displayFormat);
+}
+
+/**
+ * Set language of the date variable.
+ *
+ * @param {string | Variable} variableName - The name of the date variable or a variable object.
+ *
+ * @param language The language (`'en_US'`, `'fi'`, `'fr'`...).
+ */
+function setDateVariableLanguage(variableName: string | Variable, language: Language) {
+    const dateVar = getDateVariable(variableName);
+
+    dateVar.setLanguage(language);
 }
 
 /**
@@ -304,9 +372,11 @@ function setNumberVariableThousandsSeparator(variableName: string | Variable, se
  */
 function getTriggeredFrameName(): string {
     const frame = triggers.frameMoved;
-    
+
     if (!frame) {
-        throw new Error('This action was not triggered by a frame moved trigger. Make sure the trigger for this action is set to frame moved.');
+        throw new Error(
+            'This action was not triggered by a frame moved trigger. Make sure the trigger for this action is set to frame moved.',
+        );
     }
 
     return frame.name;
@@ -471,9 +541,11 @@ function setFrameVisible(name: string | Frame, visibility: boolean | VariableVal
  */
 function getTriggeredLayoutName(): string {
     const layout = triggers.selectedLayoutChanged;
-    
+
     if (!layout) {
-        throw new Error('This action was not triggered by a variable value change. Make sure the trigger for this action is set to selected layout changed.');
+        throw new Error(
+            'This action was not triggered by a variable value change. Make sure the trigger for this action is set to selected layout changed.',
+        );
     }
 
     return layout.name;
@@ -523,7 +595,7 @@ function getPageHeight(): number {
  */
 function setPageSize(width: number | VariableValue, height: number | VariableValue) {
     studio.pages.setSize(width, height);
- }
+}
 
 /**
  * Copy a stylekit color.
