@@ -14,7 +14,6 @@ declare module 'grafx-studio-actions' {
         // @ts-ignore
         const console: Console;
 
-
         /**
          * An interface representing the trigger for executing this action.
          */
@@ -242,6 +241,7 @@ declare module 'grafx-studio-actions' {
             | ListVariable
             | BooleanVariable
             | NumberVariable
+            | DateVariable
             | GroupVariable;
 
         export interface VariableMethods {
@@ -288,6 +288,7 @@ declare module 'grafx-studio-actions' {
             list = 'list',
             boolean = 'boolean',
             number = 'number',
+            date = 'date',
             group = 'group',
         }
 
@@ -300,7 +301,7 @@ declare module 'grafx-studio-actions' {
 
         /**
          * The number thousands or decimal separator symbol.
-         * 
+         *
          * Possible values are:
          * - None = ''
          * - Space = ' '
@@ -310,14 +311,47 @@ declare module 'grafx-studio-actions' {
         export type NumberSeparator = '' | '.' | ',' | ' ';
 
         /**
+         * The language used to display the date.
+         *
+         * Possible values are:
+         * - "en_US"
+         * - "cs"
+         * - "da"
+         * - "nl"
+         * - "fi"
+         * - "fr"
+         * - "de"
+         * - "it"
+         * - "no"
+         * - "pl"
+         * - "pt_PT"
+         * - "es_ES"
+         * - "sv"
+         */
+        export type Language =
+            | 'en_US'
+            | 'cs'
+            | 'da'
+            | 'nl'
+            | 'fi'
+            | 'fr'
+            | 'de'
+            | 'it'
+            | 'no'
+            | 'pl'
+            | 'pt_PT'
+            | 'es_ES'
+            | 'sv';
+
+        /**
          * The different values a Variable can have depending on the Variable Type.
          */
-        export type VariableValue = string | boolean | number | null;
+        export type VariableValue = string | boolean | number | Date | null;
 
         export interface BaseVariable extends HasName {
             /**
-            * Whether the variable is visible
-            */
+             * Whether the variable is visible
+             */
             readonly isVisible: boolean;
 
             /**
@@ -342,24 +376,31 @@ declare module 'grafx-studio-actions' {
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a StringVariable
              */
             readonly stringValue: string;
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a BooleanVariable
              */
             readonly booleanValue: boolean;
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a `NumberVariable`
              */
             readonly numberValue: number;
+
+            /**
+             * The value of the current variable
+             *
+             * Make sure this variable is a `DateVariable`
+             */
+            readonly dateValue: Date | null;
         }
 
         export interface ShortTextVariable extends BaseVariable {
@@ -409,17 +450,43 @@ declare module 'grafx-studio-actions' {
 
             /**
              * Sets the decimal separator of the number variable.
-             * 
+             *
              * @param separator the decimal separator
              */
             setDecimalSeparator(separator: NumberSeparator): void;
 
             /**
              * Sets the thousands separator of the number variable.
-             * 
+             *
              * @param separator the thousands separator
              */
             setThousandsSeparator(separator: NumberSeparator): void;
+        }
+
+        /**
+         * Represents a date variable. This variable can store `date` values.
+         */
+        export interface DateVariable extends BaseVariable {
+            readonly type: VariableType.date;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: Date | null;
+
+            /**
+             * Sets the display format of the date variable.
+             *
+             * @param displayFormat the display format (`'yyyy-MM-dd'`)
+             */
+            setDisplayFormat(displayFormat: string): void;
+
+            /**
+             * Sets the language of the date variable.
+             *
+             * @param language the language
+             */
+            setLanguage(language: Language): void;
         }
 
         export interface GroupVariable extends BaseVariable {
@@ -556,6 +623,11 @@ declare module 'grafx-studio-actions' {
              * Gets the number value of a variable
              */
             getNumberValue(name: string | Variable): number;
+
+            /**
+             * Gets the date value of a variable
+             */
+            getDateValue(name: string | Variable): Date | null;
 
             /**
              * Set the readonly state of a variable
