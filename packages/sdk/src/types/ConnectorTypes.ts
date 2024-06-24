@@ -271,6 +271,7 @@ export enum AuthRefreshTypeEnum {
 }
 
 /**
+ * @param connectorId connector id
  * @param environmentConnectorId environment connector id
  * @param type type of auth renewal needed
  * @param headerValue the value of the X-GRAFX-UNAUTHORIZED header. This
@@ -280,6 +281,7 @@ export enum AuthRefreshTypeEnum {
  *      If the http request did not go through the proxy, headerValue is null.
  */
 export type AuthRefreshRequest = {
+    connectorId: Id;
     environmentConnectorId: Id;
     type: AuthRefreshTypeEnum;
     headerValue: string | null;

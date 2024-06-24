@@ -305,16 +305,19 @@ describe('SubscriberController', () => {
 
     describe('onAuthExpired', () => {
         const connectorId = 'connectorId';
+        const environmentConnectorId = 'environmentConnectorId';
         const staticHeaderValue = 'Static, 1234';
 
         const grafxAuthRefreshRequest: AuthRefreshRequest = {
-            environmentConnectorId: connectorId,
+            connectorId: connectorId,
+            environmentConnectorId: environmentConnectorId,
             type: AuthRefreshTypeEnum.grafxToken,
             headerValue: null,
         };
 
         const anyAuthRefreshRequest: AuthRefreshRequest = {
-            environmentConnectorId: connectorId,
+            connectorId: connectorId,
+            environmentConnectorId: environmentConnectorId,
             type: AuthRefreshTypeEnum.any,
             headerValue: staticHeaderValue,
         };
