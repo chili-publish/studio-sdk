@@ -1,6 +1,6 @@
 # Basic TypeScript and NPM example of SDK usage
 
-This basic example shows how simple it is to make a TypeScript integration, as well as using the SDK via NPM instead of a script.
+This example is used as an authenticated example to our own IDP. We use this example for our QA engineers to automate our QA process.
 
 ## How to run
 
@@ -11,7 +11,7 @@ This basic example shows how simple it is to make a TypeScript integration, as w
 
 ### Install dependencies
 
-First of all install the SDK with the packagemanager of your preference. Both NPM and Yarn are supported.
+First of all install the SDK with the package-manager of your preference. Both NPM and Yarn are supported.
 
 ```bash
 npm install
