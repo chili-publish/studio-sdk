@@ -2,7 +2,6 @@ import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/Common
 import {
     ConnectorState,
     ConnectorStateType,
-    ConnectorMapping,
     ConnectorMappingType,
     ConnectorRegistration,
     ConnectorInstance,
