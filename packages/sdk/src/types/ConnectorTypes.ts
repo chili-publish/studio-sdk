@@ -272,7 +272,7 @@ export enum AuthRefreshTypeEnum {
 
 /**
  * @param connectorId connector id
- * @param environmentConnectorId environment connector id
+ * @param remoteConnectorId remote connector id
  * @param type type of auth renewal needed
  * @param headerValue the value of the X-GRAFX-UNAUTHORIZED header. This
  *      will notify that the dam authentication expired if it went through the
@@ -282,7 +282,7 @@ export enum AuthRefreshTypeEnum {
  */
 export type AuthRefreshRequest = {
     connectorId: Id;
-    environmentConnectorId: Id;
+    remoteConnectorId: Id;
     type: AuthRefreshTypeEnum;
     headerValue: string | null;
 };
