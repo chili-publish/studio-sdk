@@ -129,17 +129,14 @@ export class ConnectorController {
         return res
             .getConnectorMappings(id)
             .then((result) => getEditorResponseData<ConnectorMappingType[]>(result))
-            .then((result) => {
-                if (!direction) {
-                    return result;
-                }
-                if (direction) {
-                    return {
-                        ...result,
-                        parsedData: result.parsedData?.filter((cm) => cm.direction === direction),
-                    };
-                }
-            });
+            .then((result) =>
+                !direction
+                    ? result
+                    : {
+                          ...result,
+                          parsedData: result.parsedData?.filter((cm) => cm.direction === direction),
+                      },
+            );
     }
 
     /**
