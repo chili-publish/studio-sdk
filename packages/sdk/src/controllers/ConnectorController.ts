@@ -3,6 +3,7 @@ import {
     ConnectorState,
     ConnectorStateType,
     ConnectorMapping,
+    ConnectorMappingType,
     ConnectorRegistration,
     ConnectorInstance,
     ConnectorType,
@@ -113,7 +114,7 @@ export class ConnectorController {
      */
     getMappings = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.getConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMapping[]>(result));
+        return res.getConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMappingType[]>(result));
     };
 
     /**
@@ -232,7 +233,7 @@ class ConnectorConfigurator {
      * @param mappings collection of mappings to set to this connector
      * @returns
      */
-    setMappings = async (mappings: ConnectorMapping[]) => {
+    setMappings = async (mappings: ConnectorMappingType[]) => {
         const result = await this.#res.setConnectorMappings(
             this.#connectorId,
             mappings.map(function (m) {
