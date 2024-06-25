@@ -6,6 +6,9 @@ import {
     ConnectorRegistration,
     ConnectorInstance,
     ConnectorType,
+    ConnectorMappingDirection,
+    EngineToConnectorMapping,
+    ConnectorToEngineMapping,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -109,12 +112,35 @@ export class ConnectorController {
     /**
      * Gets the mapped data from connector.
      * @param id the id of your registered connector
+     * @param direction the mapping direction
      * @returns mappings
      */
-    getMappings = async (id: string) => {
+    async getMappings(
+        id: string,
+        direction: ConnectorMappingDirection.engineToConnector,
+    ): Promise<EditorResponse<EngineToConnectorMapping[]>>;
+    async getMappings(
+        id: string,
+        direction: ConnectorMappingDirection.connectorToEngine,
+    ): Promise<EditorResponse<ConnectorToEngineMapping[]>>;
+    async getMappings(id: string, direction?: undefined): Promise<EditorResponse<ConnectorMappingType[]>>;
+    async getMappings(id: string, direction?: ConnectorMappingDirection) {
         const res = await this.#editorAPI;
-        return res.getConnectorMappings(id).then((result) => getEditorResponseData<ConnectorMappingType[]>(result));
-    };
+        return res
+            .getConnectorMappings(id)
+            .then((result) => getEditorResponseData<ConnectorMappingType[]>(result))
+            .then((result) => {
+                if (!direction) {
+                    return result;
+                }
+                if (direction) {
+                    return {
+                        ...result,
+                        parsedData: result.parsedData?.filter((cm) => cm.direction === direction),
+                    };
+                }
+            });
+    }
 
     /**
      * Gets the options from the connector.

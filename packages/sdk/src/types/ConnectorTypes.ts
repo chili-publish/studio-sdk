@@ -125,7 +125,9 @@ export type ConnectorMappingType = EngineToConnectorMapping | ConnectorToEngineM
 
 export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEngineMapping {
     name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     direction: any = ConnectorMappingDirection.engineToConnector;
 
     constructor(
