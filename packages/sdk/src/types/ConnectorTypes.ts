@@ -130,6 +130,19 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
 
     constructor(
         contextProperty: string,
+        mapFrom: ConnectorMappingSource.variable,
+        sourceValue: string,
+        direction: ConnectorMappingDirection.connectorToEngine,
+    );
+    constructor(
+        contextProperty: string,
+        mapFrom: ConnectorMappingSource,
+        sourceValue: string | boolean,
+        direction?: ConnectorMappingDirection.engineToConnector,
+    );
+    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string | boolean);
+    constructor(
+        contextProperty: string,
         mapFrom: ConnectorMappingSource,
         sourceValue: string | boolean,
         direction = ConnectorMappingDirection.engineToConnector,

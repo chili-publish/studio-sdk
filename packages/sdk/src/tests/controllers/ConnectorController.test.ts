@@ -104,6 +104,7 @@ describe('ConnectorController', () => {
             configurator.setMappings([
                 new ConnectorMapping('data', ConnectorMappingSource.variable, '6B29FC40-CA47-1067-B31D-00DD010662DA'),
                 new ConnectorMapping('plain', ConnectorMappingSource.value, 'plain value'),
+                new ConnectorMapping('switch', ConnectorMappingSource.value, true),
                 new ConnectorMapping(
                     'price',
                     ConnectorMappingSource.variable,
@@ -131,6 +132,7 @@ describe('ConnectorController', () => {
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
             }),
             JSON.stringify({ direction: 'engineToConnector', name: 'plain', value: 'plain value' }),
+            JSON.stringify({ direction: 'engineToConnector', name: 'switch', value: true }),
             JSON.stringify({
                 direction: 'connectorToEngine',
                 name: 'price',
