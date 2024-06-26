@@ -5,9 +5,11 @@ import {
     ConnectorMappingSource,
     ConnectorRegistration,
     ConnectorRegistrationSource,
+    ConnectorToEngineMapping,
     ConnectorType,
+    EngineToConnectorMapping,
 } from '../../types/ConnectorTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedConnectorController: ConnectorController;
@@ -98,12 +100,59 @@ describe('ConnectorController', () => {
         expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledWith(connectorId);
     });
 
+    it('Should be possible to get typed "EngineToConnector" connector mappings', async () => {
+        (mockEditorApi.getConnectorMappings as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            data: JSON.stringify([
+                {
+                    direction: ConnectorMappingDirection.connectorToEngine,
+                },
+                {
+                    direction: ConnectorMappingDirection.engineToConnector,
+                },
+            ]),
+        });
+        const result: EditorResponse<EngineToConnectorMapping[]> = await mockedConnectorController.getMappings(
+            connectorId,
+            ConnectorMappingDirection.engineToConnector,
+        );
+        expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledWith(connectorId);
+        expect(
+            result.parsedData?.every((r) => r.direction === ConnectorMappingDirection.engineToConnector),
+        ).toBeTruthy();
+    });
+
+    it('Should be possible to get typed "ConnectorToEngine" connector mappings', async () => {
+        (mockEditorApi.getConnectorMappings as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            data: JSON.stringify([
+                {
+                    direction: ConnectorMappingDirection.connectorToEngine,
+                },
+                {
+                    direction: ConnectorMappingDirection.engineToConnector,
+                },
+            ]),
+        });
+        const result: EditorResponse<ConnectorToEngineMapping[]> = await mockedConnectorController.getMappings(
+            connectorId,
+            ConnectorMappingDirection.connectorToEngine,
+        );
+        expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledWith(connectorId);
+        expect(
+            result.parsedData?.every((r) => r.direction === ConnectorMappingDirection.connectorToEngine),
+        ).toBeTruthy();
+    });
+
     it('Should be possible to configure a connector', async () => {
         await mockedConnectorController.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);
             configurator.setMappings([
                 new ConnectorMapping('data', ConnectorMappingSource.variable, '6B29FC40-CA47-1067-B31D-00DD010662DA'),
                 new ConnectorMapping('plain', ConnectorMappingSource.value, 'plain value'),
+                new ConnectorMapping('switch', ConnectorMappingSource.value, true),
                 new ConnectorMapping(
                     'price',
                     ConnectorMappingSource.variable,
@@ -131,6 +180,7 @@ describe('ConnectorController', () => {
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
             }),
             JSON.stringify({ direction: 'engineToConnector', name: 'plain', value: 'plain value' }),
+            JSON.stringify({ direction: 'engineToConnector', name: 'switch', value: true }),
             JSON.stringify({
                 direction: 'connectorToEngine',
                 name: 'price',
