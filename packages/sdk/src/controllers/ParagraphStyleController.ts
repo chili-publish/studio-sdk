@@ -94,10 +94,10 @@ export class ParagraphStyleController {
     /**
      * This method changes positions of paragraph styles
      * @param order the position of the paragraph styles
-     * @param ids the list of paragraph styles ids
+     * @param ids the list of paragraph style ids
      * @returns
      */
-    move = async (order: number, ids: string[]) => {
+    move = async (order: number, ids: Id[]) => {
         const res = await this.#editorAPI;
         return res.moveParagraphStyles(order, ids).then((result) => getEditorResponseData<null>(result));
     };

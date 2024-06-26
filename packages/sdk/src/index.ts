@@ -56,9 +56,14 @@ export type {
     ListVariable,
     ListVariableItem,
     BooleanVariable,
+    NumberVariable,
     ConnectorImageVariableSource,
+    DateVariable,
+    DateRestriction,
+    RelativeDate,
+    AbsoluteDate,
 } from './types/VariableTypes';
-export { VariableType } from './types/VariableTypes';
+export { VariableType, Day, Locale } from './types/VariableTypes';
 
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 

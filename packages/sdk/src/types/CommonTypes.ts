@@ -67,6 +67,9 @@ export type ConfigType = {
     onAsyncError?: (asyncError: AsyncError) => void;
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
+    enableNextSubscribers?: {
+        onVariableListChanged: boolean;
+    };
 };
 
 export type EditorResponseError = string;
@@ -116,11 +119,11 @@ export interface SelectedLayoutFrame {
 }
 
 export interface MetaData {
-    [key: string]: string;
+    [key: string]: string | boolean;
 }
 
 export interface ConnectorOptions {
-    [key: string]: string;
+    [key: string]: string | boolean;
 }
 
 export enum ConnectorConfigValueType {

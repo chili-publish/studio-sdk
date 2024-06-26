@@ -51,6 +51,7 @@ export type MediaConnectorCapabilities = {
     query: boolean;
     detail: boolean;
     filtering: boolean;
+    metadata?: boolean;
 };
 
 interface ConnectorRegistrationBase {
@@ -108,15 +109,44 @@ export enum ConnectorRegistrationSource {
     local = 'local',
 }
 
-export class ConnectorMapping {
+export interface EngineToConnectorMapping {
+    name: string;
+    value: string | boolean;
+    direction: ConnectorMappingDirection.engineToConnector;
+}
+
+export interface ConnectorToEngineMapping {
     name: string;
     value: string;
-    direction = ConnectorMappingDirection.engineToConnector;
+    direction: ConnectorMappingDirection.connectorToEngine;
+}
+
+export type ConnectorMappingType = EngineToConnectorMapping | ConnectorToEngineMapping;
+
+export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEngineMapping {
+    name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    value: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    direction: any = ConnectorMappingDirection.engineToConnector;
 
     constructor(
         contextProperty: string,
-        mapFrom: ConnectorMappingSource,
+        mapFrom: ConnectorMappingSource.variable,
         sourceValue: string,
+        direction: ConnectorMappingDirection.connectorToEngine,
+    );
+    constructor(
+        contextProperty: string,
+        mapFrom: ConnectorMappingSource,
+        sourceValue: string | boolean,
+        direction?: ConnectorMappingDirection.engineToConnector,
+    );
+    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string | boolean);
+    constructor(
+        contextProperty: string,
+        mapFrom: ConnectorMappingSource,
+        sourceValue: string | boolean,
         direction = ConnectorMappingDirection.engineToConnector,
     ) {
         this.name = contextProperty;

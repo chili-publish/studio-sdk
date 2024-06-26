@@ -129,6 +129,7 @@ export type BarcodeFrame = {
         quietZone: QuietZone;
         errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
         characterSet?: BarcodeCharacterSet;
+        drawStartStopChars: boolean;
     };
     src?: BarcodeSource;
     barcodeType: BarcodeType;

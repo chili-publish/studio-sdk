@@ -35,6 +35,8 @@ import { ShapeController } from './controllers/ShapeController';
 import { InfoController } from './controllers/InfoController';
 import { ClipboardController } from './controllers/ClipboardController';
 import { BarcodeController } from './controllers/BarcodeController';
+import { NextInitiator } from './next/NextInitiator';
+import { NextSubscribers } from './next';
 
 let connection: Connection;
 
@@ -77,8 +79,10 @@ export class SDK {
     colorConversion: ColorConversionController;
     info: InfoController;
     clipboard: ClipboardController;
+    next: NextInitiator;
 
     private subscriber: SubscriberController;
+    private enabledNextSubscribers: NextSubscribers | undefined;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -120,6 +124,8 @@ export class SDK {
         this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
+        this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
+        this.enabledNextSubscribers = this.config.enableNextSubscribers;
     }
 
     /**
@@ -142,7 +148,13 @@ export class SDK {
                 onPageSelectionChanged: this.subscriber.onPageSelectionChanged,
                 onScrubberPositionChanged: this.subscriber.onAnimationPlaybackChanged,
                 onFrameAnimationsChanged: this.subscriber.onAnimationChanged,
-                onVariableListChanged: this.subscriber.onVariableListChanged,
+                onVariableListChanged: (state) => {
+                    if (this.enabledNextSubscribers?.onVariableListChanged) {
+                        this.next.subscriber.onVariableListChanged(state);
+                    } else {
+                        this.subscriber.onVariableListChanged(state);
+                    }
+                },
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
                 onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,
@@ -197,6 +209,7 @@ export class SDK {
         this.shape = new ShapeController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
+        this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks

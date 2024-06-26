@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-sdk",
-    "version": "1.9.1",
+    "version": "1.11.3",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
@@ -50,9 +50,10 @@
         "node": ">=18.0.0"
     },
     "scripts": {
-        "clean": "shx rm -rf _bundles lib lib-esm",
-        "build": "yarn clean && tsc && tsc -m es6 --outDir lib-esm && webpack --config webpack.config.js --env env=production",
-        "build:dev": "yarn clean && tsc && tsc -m es6 --outDir lib-esm && webpack --config webpack.config.js --env env=development",
+        "clean": "shx rm -rf _bundles lib lib-esm next",
+        "build": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=production",
+        "build:modules": "tsc && tsc -m es6 --outDir lib-esm ",
+        "build:dev": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=development",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
         "test": "jest",

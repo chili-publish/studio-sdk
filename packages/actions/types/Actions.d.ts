@@ -14,37 +14,36 @@ declare module 'grafx-studio-actions' {
         // @ts-ignore
         const console: Console;
 
-
         /**
          * An interface representing the trigger for executing this action.
          */
         export interface Triggers {
             /**
-             * If the event was 'variableValueChanged', this will contain the
+             * If the event was `variableValueChanged`, this will contain the
              * variable that caused the trigger to fire.
              */
             readonly variableValueChanged?: Variable;
 
             /**
-             * If the event was 'selectedLayoutChanged', this will contain the
+             * If the event was `selectedLayoutChanged`, this will contain the
              * layout that caused the trigger to fire.
              */
             readonly selectedLayoutChanged?: Layout;
 
             /**
-             * If the event was 'frameMoved', this will contain the
+             * If the event was `frameMoved`, this will contain the
              * frame that caused the trigger to fire.
              */
             readonly frameMoved?: Frame;
 
             /**
-             * If the event was 'pageSizeChanged', this will contain the
+             * If the event was `pageSizeChanged`, this will contain the
              * page that caused the trigger to fire.
              */
             readonly pageSizeChanged?: Page;
 
             /**
-             * If the event was 'documentLoaded', this will return true.
+             * If the event was `documentLoaded`, this will return true.
              * otherwise it will return false.
              */
             readonly documentLoaded: boolean;
@@ -210,7 +209,7 @@ declare module 'grafx-studio-actions' {
         export type PageWithMethods = Page & PageMethods;
 
         /**
-         * Respresents a Layout inside Actions
+         * Represents a Layout inside Actions
          */
         export interface Layout extends HasName {
             readonly width: number;
@@ -226,13 +225,13 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Respresents a Layout inside Actions
+         * Represents a Layout inside Actions
          * Contains layout specific methods
          */
         export type LayoutWithMethods = Layout & LayoutMethods;
 
         /**
-         * Respresents a Variable inside Actions
+         * Represents a Variable inside Actions
          */
         export type Variable =
             | ShortTextVariable
@@ -241,6 +240,8 @@ declare module 'grafx-studio-actions' {
             | ImageVariable
             | ListVariable
             | BooleanVariable
+            | NumberVariable
+            | DateVariable
             | GroupVariable;
 
         export interface VariableMethods {
@@ -274,7 +275,7 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Respresents a Variable inside Actions.
+         * Represents a Variable inside Actions.
          * Has variable instance specific methods.
          */
         export type VariableWithMethods = Variable & VariableMethods;
@@ -286,6 +287,8 @@ declare module 'grafx-studio-actions' {
             image = 'image',
             list = 'list',
             boolean = 'boolean',
+            number = 'number',
+            date = 'date',
             group = 'group',
         }
 
@@ -293,17 +296,62 @@ declare module 'grafx-studio-actions' {
             text = 'text',
             shape = 'shape',
             image = 'image',
+            barcode = 'barcode',
         }
+
+        /**
+         * The number thousands or decimal separator symbol.
+         *
+         * Possible values are:
+         * - None = ''
+         * - Space = ' '
+         * - Dot = '.'
+         * - Comma = ','
+         */
+        export type NumberSeparator = '' | '.' | ',' | ' ';
+
+        /**
+         * The language used to display the date.
+         *
+         * Possible values are:
+         * - "en_US"
+         * - "cs"
+         * - "da"
+         * - "nl"
+         * - "fi"
+         * - "fr"
+         * - "de"
+         * - "it"
+         * - "no"
+         * - "pl"
+         * - "pt_PT"
+         * - "es_ES"
+         * - "sv"
+         */
+        export type Language =
+            | 'en_US'
+            | 'cs'
+            | 'da'
+            | 'nl'
+            | 'fi'
+            | 'fr'
+            | 'de'
+            | 'it'
+            | 'no'
+            | 'pl'
+            | 'pt_PT'
+            | 'es_ES'
+            | 'sv';
 
         /**
          * The different values a Variable can have depending on the Variable Type.
          */
-        export type VariableValue = string | boolean | number | null;
+        export type VariableValue = string | boolean | number | Date | null;
 
         export interface BaseVariable extends HasName {
             /**
-            * Whether the variable is visible
-            */
+             * Whether the variable is visible
+             */
             readonly isVisible: boolean;
 
             /**
@@ -328,17 +376,31 @@ declare module 'grafx-studio-actions' {
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a StringVariable
              */
             readonly stringValue: string;
 
             /**
              * The value of the current variable
-             * 
+             *
              * Make sure this variable is a BooleanVariable
              */
             readonly booleanValue: boolean;
+
+            /**
+             * The value of the current variable
+             *
+             * Make sure this variable is a `NumberVariable`
+             */
+            readonly numberValue: number;
+
+            /**
+             * The value of the current variable
+             *
+             * Make sure this variable is a `DateVariable`
+             */
+            readonly dateValue: Date | null;
         }
 
         export interface ShortTextVariable extends BaseVariable {
@@ -363,12 +425,74 @@ declare module 'grafx-studio-actions' {
             readonly selected: string | null;
         }
 
+        /**
+         * Represents a boolean variable. This variable can store `boolean` values.
+         */
         export interface BooleanVariable extends BaseVariable {
             readonly type: VariableType.boolean;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: boolean;
+        }
+
+        /**
+         * Represents a number variable. This variable can store `number` values.
+         */
+        export interface NumberVariable extends BaseVariable {
+            readonly type: VariableType.number;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: number;
+
+            /**
+             * Sets the decimal separator of the number variable.
+             *
+             * @param separator the decimal separator
+             */
+            setDecimalSeparator(separator: NumberSeparator): void;
+
+            /**
+             * Sets the thousands separator of the number variable.
+             *
+             * @param separator the thousands separator
+             */
+            setThousandsSeparator(separator: NumberSeparator): void;
+        }
+
+        /**
+         * Represents a date variable. This variable can store `date` values.
+         */
+        export interface DateVariable extends BaseVariable {
+            readonly type: VariableType.date;
+
+            /**
+             * The current value of the variable.
+             */
+            readonly value: Date | null;
+
+            /**
+             * Sets the display format of the date variable.
+             *
+             * @param displayFormat the display format (`'yyyy-MM-dd'`)
+             */
+            setDisplayFormat(displayFormat: string): void;
+
+            /**
+             * Sets the language of the date variable.
+             *
+             * @param language the language
+             */
+            setLanguage(language: Language): void;
         }
 
         export interface GroupVariable extends BaseVariable {
             readonly type: VariableType.group;
+
+            readonly value: never;
         }
 
         /**
@@ -494,6 +618,16 @@ declare module 'grafx-studio-actions' {
              * Gets the boolean value of a variable
              */
             getBooleanValue(name: string | Variable): boolean;
+
+            /**
+             * Gets the number value of a variable
+             */
+            getNumberValue(name: string | Variable): number;
+
+            /**
+             * Gets the date value of a variable
+             */
+            getDateValue(name: string | Variable): Date | null;
 
             /**
              * Set the readonly state of a variable

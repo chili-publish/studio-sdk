@@ -1,7 +1,183 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
+import {
+    DateRestriction,
+    DateVariablePropertiesDeltaUpdate,
+    Day,
+    ListVariable,
+    ListVariableItem,
+    Locale,
+    Variable,
+    VariableType,
+    NumberVariablePropertiesDeltaUpdate,
+} from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+
+class NumberVariable {
+    #editorAPI: EditorAPI;
+
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * @experimental Sets the minimum value for a number variable
+     * @param id the id of the variable to update
+     * @param minimum the minimum value or null to remove the minimum value
+     * @returns
+     */
+    setMinimum = async (id: string, minimum: number | null) => {
+        const update = { minValue: { value: minimum } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the maximum value for a number variable
+     * @param id the id of the variable to update
+     * @param maximum the maximum value or null to remove the maximum value
+     * @returns
+     */
+    setMaximum = async (id: string, maximum: number | null) => {
+        const update = { maxValue: { value: maximum } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the visibility of the stepper for a number variable
+     * @param id the id of the variable to update
+     * @param showStep true to show the stepper, false to hide it
+     * @returns
+     */
+    setShowStepper = async (id: string, showStepper: boolean) => {
+        const update = { showStepper: { value: showStepper } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the step size for a number variable
+     * @param id the id of the variable to update
+     * @param stepSize the step size. Must be > 0
+     * @returns
+     */
+    setStepSize = async (id: string, stepSize: number) => {
+        const update = { stepSize: { value: stepSize } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the thousands separator for a number variable
+     * @param id the id of the variable to update
+     * @param thousandsSeparator the thousands separator to use
+     * @returns
+     */
+    setThousandsSeparator = async (id: string, thousandsSeparator: '' | '.' | ',' | ' ') => {
+        const update = { thousandsSeparator: { value: thousandsSeparator } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the decimal separator for a number variable
+     * @param id the id of the variable to update
+     * @param decimalSeparator the decimal separator to use
+     * @returns
+     */
+    setDecimalSeparator = async (id: string, decimalSeparator: '' | '.' | ',' | ' ') => {
+        const update = { decimalSeparator: { value: decimalSeparator } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets or clears the decimal character style for a number variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the decimals
+     * @returns
+     */
+    setDecimalCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { decimalCharacterStyleId: { value: characterStyleId } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the number of decimals for a number variable
+     * @param id the id of the variable to update
+     * @param numberOfDecimals the number of decimals to use
+     * @returns
+     */
+    setNumberOfDecimals = async (id: string, numberOfDecimals: 0 | 1 | 2 | 3 | 4) => {
+        const update = { numberOfDecimals: { value: numberOfDecimals } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    private async applyPropertiesUpdate(id: string, update: NumberVariablePropertiesDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateNumberVariableProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
+    }
+}
+
+class DateVariable {
+    #editorAPI: EditorAPI;
+
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * @experimental This method sets the display format for a date variable.
+     * @param id The id of the date variable to update
+     * @param displayFormat The display format for the date variable
+     */
+    setDisplayFormat = async (id: string, displayFormat: string) => {
+        const update = { displayFormat: { value: displayFormat } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets the locale for a date variable.
+     * @param id The id of the date variable to update
+     * @param locale The locale for the date variable
+     */
+    setLocale = async (id: string, locale: Locale) => {
+        const update = { locale: { value: locale } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets or clears the start date for a date variable.
+     * @param id The id of the date variable to update
+     * @param date The start date for the date variable
+     */
+    setStartDate = async (id: string, date: DateRestriction | null) => {
+        const update = { startDate: { value: date } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets or clears the end date for a date variable.
+     * @param id The id of the date variable to update
+     * @param date The end date for the date variable
+     */
+    setEndDate = async (id: string, date: DateRestriction | null) => {
+        const update = { endDate: { value: date } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    /**
+     * @experimental This method sets or clears the excluded days for a date variable.
+     * @param id The id of the date variable to update
+     * @param excludedDays The excluded days for the date variable
+     */
+    setExcludedDays = async (id: string, excludedDays: Day[] | null) => {
+        const update = { excludedDays: { value: excludedDays } };
+        return this.applyPropertiesUpdate(id, update);
+    };
+
+    private async applyPropertiesUpdate(id: string, update: DateVariablePropertiesDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateDateVariableProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
+    }
+}
 
 /**
  * The VariableController is responsible for all communication regarding the variables.
@@ -13,11 +189,16 @@ export class VariableController {
      */
     #editorAPI: EditorAPI;
 
+    number: NumberVariable;
+    date: DateVariable;
+
     /**
      * @ignore
      */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
+        this.number = new NumberVariable(this.#editorAPI);
+        this.date = new DateVariable(this.#editorAPI);
     }
 
     /**
@@ -158,7 +339,7 @@ export class VariableController {
      * @param value the new value of the variable
      * @returns
      */
-    setValue = async (id: Id, value: string | boolean | null) => {
+    setValue = async (id: Id, value: string | boolean | number | null) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
     };
