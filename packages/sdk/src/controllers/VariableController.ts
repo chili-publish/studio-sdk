@@ -133,7 +133,17 @@ class DateVariable {
      * - Year -> `yy`, `yyyy`
      * - Day of week -> `ccc`, `cccc`
      *
-     * e.g. `dd/MM/yyyy`
+     * Examples for an input date of `10-12-1815`:
+     * - Format `dd/MM/yyyy` will display `12/10/1815`
+     * - Format `d.M.yy` will display `12.10.15`
+     * - Format `d MMM yyyy` will display `12 Oct 1815` for the `en_US` language
+     * - Format `MMMM d, yyyy` will display `October 12, 1815` for the `en_US` language
+     * - Format `ccc, MMM d, yyyy` will display `Thu, Oct 12, 1815` for the `en_US` language
+     * - Format `cccc, MMMM d, yyyy` will display `Thursday, October 12, 1815` for the `en_US` language
+     * - Format `cccc, MMMM d, yyyy` will display `donderdag, oktober 12, 1815` for the `nl` language
+     *
+     * Patterns which output words such as `MM`, `MMM`, `MMMM`, `cc` and `ccc` will
+     * differ depending on chosen language (default is `en_US`).
      *
      * @param id The id of the date variable to update
      * @param displayFormat The display format for the date variable
