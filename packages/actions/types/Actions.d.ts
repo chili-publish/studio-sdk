@@ -477,6 +477,16 @@ declare module 'grafx-studio-actions' {
             /**
              * Sets the display format of the date variable.
              *
+             * The `displayFormat` is using ICU formatting (Unicode).
+             *
+             * Supported date formats:
+             * - Day -> `d`, `dd`
+             * - Month -> `M`, `MM`, `MMM`, `MMMM`
+             * - Year -> `yy`, `yyyy`
+             * - Day of week -> `ccc`, `cccc`
+             *
+             * e.g. `dd/MM/yyyy`
+             *
              * @param displayFormat the display format (`'yyyy-MM-dd'`)
              */
             setDisplayFormat(displayFormat: string): void;
@@ -484,7 +494,13 @@ declare module 'grafx-studio-actions' {
             /**
              * Sets the language of the date variable.
              *
-             * @param language the language
+             * Supported languages are:
+             *
+             * Czech (`cs`), Danish (`da`), Dutch (`nl`), English (`en_US`), Finnish (`fi`),
+             * French (`fr`), German (`de`), Italian (`it`), Norwegian (`no`), Polish (`pl`),
+             * Portuguese (`pt_PT`), Spanish (`es_ES`), Swedish (`sv`)
+             *
+             * @param language the language (`'en_US'`, `'fi'`, `'fr'`...)
              */
             setLanguage(language: Language): void;
         }

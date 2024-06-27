@@ -340,6 +340,16 @@ function setNumberVariableThousandsSeparator(variableName: string | Variable, se
 /**
  * Set display format of the date variable.
  *
+ * The `displayFormat` is using ICU formatting (Unicode).
+ *
+ * Supported date formats:
+ * - Day -> `d`, `dd`
+ * - Month -> `M`, `MM`, `MMM`, `MMMM`
+ * - Year -> `yy`, `yyyy`
+ * - Day of week -> `ccc`, `cccc`
+ *
+ * e.g. `dd/MM/yyyy`
+ *
  * @param {string | Variable} variableName - The name of the date variable or a variable object.
  *
  * @param displayFormat The display format (`'yyyy-MM-dd'`).
@@ -352,6 +362,12 @@ function setDateVariableDisplayFormat(variableName: string | Variable, displayFo
 
 /**
  * Set language of the date variable.
+ *
+ * Supported languages are:
+ *
+ * Czech (`cs`), Danish (`da`), Dutch (`nl`), English (`en_US`), Finnish (`fi`),
+ * French (`fr`), German (`de`), Italian (`it`), Norwegian (`no`), Polish (`pl`),
+ * Portuguese (`pt_PT`), Spanish (`es_ES`), Swedish (`sv`)
  *
  * @param {string | Variable} variableName - The name of the date variable or a variable object.
  *

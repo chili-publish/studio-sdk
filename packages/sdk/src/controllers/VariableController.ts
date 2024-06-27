@@ -124,6 +124,17 @@ class DateVariable {
 
     /**
      * @experimental This method sets the display format for a date variable.
+     *
+     * The `displayFormat` is using ICU formatting (Unicode).
+     *
+     * Supported date formats:
+     * - Day -> `d`, `dd`
+     * - Month -> `M`, `MM`, `MMM`, `MMMM`
+     * - Year -> `yy`, `yyyy`
+     * - Day of week -> `ccc`, `cccc`
+     *
+     * e.g. `dd/MM/yyyy`
+     *
      * @param id The id of the date variable to update
      * @param displayFormat The display format for the date variable
      */
@@ -134,6 +145,13 @@ class DateVariable {
 
     /**
      * @experimental This method sets the locale for a date variable.
+     *
+     * Supported languages are (between brackets is the `locale`):
+     *
+     * Czech (`cs`), Danish (`da`), Dutch (`nl`), English (`en_US`), Finnish (`fi`),
+     * French (`fr`), German (`de`), Italian (`it`), Norwegian (`no`), Polish (`pl`),
+     * Portuguese (`pt_PT`), Spanish (`es_ES`), Swedish (`sv`)
+     *
      * @param id The id of the date variable to update
      * @param locale The locale for the date variable
      */
