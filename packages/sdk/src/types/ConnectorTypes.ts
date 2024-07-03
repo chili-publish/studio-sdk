@@ -54,31 +54,25 @@ export type MediaConnectorCapabilities = {
     metadata?: boolean;
 };
 
-interface ConnectorRegistrationBase {
+export interface ConnectorUrlRegistration {
     /**
-     * Url to the connector.
+     * Url to the connector. Must be a publicly available url.
      *
-     * - If source is `url`, this must be a publicly available url.
-     *
-     * - If source is `grafx`, this must be the full url to the connector GET endpoint on GraFx Environment API.
      */
     url: string;
-
-    /**
-     * Connector source type.
-     */
-    source: ConnectorRegistrationSource;
-}
-
-export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.url;
 }
 
-export interface ConnectorGrafxRegistration extends ConnectorRegistrationBase {
+export interface ConnectorGrafxRegistration {
+    /**
+     * RemoteConnectorId of the connector with `grafx` source.
+     */
+    id: Id;
     source: ConnectorRegistrationSource.grafx;
 }
 
-export interface ConnectorLocalRegistration extends ConnectorRegistrationBase {
+export interface ConnectorLocalRegistration {
+    url: string;
     source: ConnectorRegistrationSource.local;
 }
 
