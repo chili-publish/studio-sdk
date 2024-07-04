@@ -373,12 +373,6 @@ function setDateVariableDisplayFormat(variableName: string | Variable, displayFo
 /**
  * Set language of the date variable.
  *
- * Supported languages are:
- *
- * Czech (`cs`), Danish (`da`), Dutch (`nl`), English (`en_US`), Finnish (`fi`),
- * French (`fr`), German (`de`), Italian (`it`), Norwegian (`no`), Polish (`pl`),
- * Portuguese (`pt_PT`), Spanish (`es_ES`), Swedish (`sv`)
- *
  * @param {string | Variable} variableName - The name of the date variable or a variable object.
  *
  * @param language The language (`'en_US'`, `'fi'`, `'fr'`...).

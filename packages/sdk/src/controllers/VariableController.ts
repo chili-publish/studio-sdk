@@ -156,14 +156,8 @@ class DateVariable {
     /**
      * @experimental This method sets the locale for a date variable.
      *
-     * Supported languages are (between brackets is the `locale`):
-     *
-     * Czech (`cs`), Danish (`da`), Dutch (`nl`), English (`en_US`), Finnish (`fi`),
-     * French (`fr`), German (`de`), Italian (`it`), Norwegian (`no`), Polish (`pl`),
-     * Portuguese (`pt_PT`), Spanish (`es_ES`), Swedish (`sv`)
-     *
      * @param id The id of the date variable to update
-     * @param locale The locale for the date variable
+     * @param locale The locale for the date variable (`'en_US'`, `'fi'`, `'fr'`...)
      */
     setLocale = async (id: string, locale: Locale) => {
         const update = { locale: { value: locale } };

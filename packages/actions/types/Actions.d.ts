@@ -504,12 +504,6 @@ declare module 'grafx-studio-actions' {
             /**
              * Sets the language of the date variable.
              *
-             * Supported languages are:
-             *
-             * Czech (`cs`), Danish (`da`), Dutch (`nl`), English (`en_US`), Finnish (`fi`),
-             * French (`fr`), German (`de`), Italian (`it`), Norwegian (`no`), Polish (`pl`),
-             * Portuguese (`pt_PT`), Spanish (`es_ES`), Swedish (`sv`)
-             *
              * @param language the language (`'en_US'`, `'fi'`, `'fr'`...)
              */
             setLanguage(language: Language): void;
