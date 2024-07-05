@@ -26,8 +26,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
             <meta name="studio-styling" content='${stylingJson}'>
         </head>
         <body>
-            <script>
-                window.location = new URL('${window.location.href}');
+            <script>                
             </script>
             <script src="${link}init.js" async></script>
             <script src="${link}init_engine.js"></script>
