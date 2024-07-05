@@ -19,35 +19,30 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     const link = validateEditorLink(editorLink);
     const stylingJson = JSON.stringify(styling || {});
     const html = `<html>
-    <head>
-      <base href="/" />
-      <meta charset="UTF-8"/>
-      <!--  use this property to pass the StudioStyling to the engine -->
-      <meta name="studio-styling" content=${stylingJson}>
-    </head>
-    <body>
-    <script src="${link}init.js" async></script>
-    <script src="${link}init_engine.js"></script>
-    <script>
-        initializeStudioEngine({
-            assetBase: '${link}',
-            entryPointUrl: '${link}main.dart.js',
-        });
-    </script>
-    </body>
-    </html>
+        <head>
+            <base href="/" />
+            <meta charset="UTF-8"/>
+            <!--  use this property to pass the StudioStyling to the engine -->
+            <meta name="studio-styling" content='${stylingJson}'>
+        </head>
+        <body>
+            <script>
+                window.location = new URL('${window.location.href}');
+            </script>
+            <script src="${link}init.js" async></script>
+            <script src="${link}init_engine.js"></script>
+            <script>
+                initializeStudioEngine({
+                    assetBase: '${link}',
+                    entryPointUrl: '${link}main.dart.js',
+                });
+            </script>
+        </body>
+        </html>
     `;
 
-    // eslint-disable-next-line no-param-reassign
-    iframe.srcdoc = 'placeholder';
-
-    let iframeDoc: Document = iframe.ownerDocument;
-    if (iframe.contentWindow) {
-        iframeDoc = iframe.contentWindow.document;
-    }
-    iframeDoc.open();
-    iframeDoc.write(html);
-    iframeDoc.close();
+    // Set the iframe's content using DOM manipulation
+    iframe.srcdoc = html;
 };
 
 interface ConfigParameterTypes {
