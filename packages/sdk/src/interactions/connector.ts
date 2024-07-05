@@ -42,6 +42,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     `;
 
     // Set the iframe's content using DOM manipulation
+    // eslint-disable-next-line no-param-reassign
     iframe.srcdoc = html;
 };
 
