@@ -58,7 +58,7 @@ interface ConnectorRegistrationBase {
     /**
      * Url to the connector.
      *
-     * - If source is `url`, this must be a publicly available url.
+     * - If source is `url`, this must be a publicly accessible url.
      *
      * - If source is `grafx`, this must be the full url to the connector GET endpoint on GraFx Environment API.
      */
@@ -74,7 +74,16 @@ export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.url;
 }
 
-export interface ConnectorGrafxRegistration extends ConnectorRegistrationBase {
+export interface ConnectorGrafxRegistration {
+    /**
+     * @deprecated set the `id` instead
+     * Exists only to avoid breaking changes with Grafx Source connectors
+     */
+    url: string;
+    /**
+     * Newly introduced RemoteConnectorId parsed from the url
+     * **/
+    id: Id;
     source: ConnectorRegistrationSource.grafx;
 }
 
@@ -93,7 +102,7 @@ export type ConnectorInstance = {
 
 export enum ConnectorRegistrationSource {
     /**
-     * Connector is hosted on a publicly available link.
+     * Connector is hosted on a publicly accessible link.
      */
     url = 'url',
 

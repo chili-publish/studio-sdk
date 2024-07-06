@@ -1,5 +1,6 @@
 import { ConnectorController } from '../../controllers/ConnectorController';
 import {
+    ConnectorGrafxRegistration,
     ConnectorMapping,
     ConnectorMappingDirection,
     ConnectorMappingSource,
@@ -47,7 +48,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 describe('ConnectorController', () => {
-    const registration: ConnectorRegistration = {
+    const nonGrafxRegistration: ConnectorRegistration = {
         source: ConnectorRegistrationSource.url,
         url: '',
     };
@@ -76,10 +77,29 @@ describe('ConnectorController', () => {
         expect(mockEditorApi.getConnectorState).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to register a connector', async () => {
-        await mockedConnectorController.register(registration);
+    it('Should be possible to register a non-grafx connector', async () => {
+        await mockedConnectorController.register(nonGrafxRegistration);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(registration));
+        expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(nonGrafxRegistration));
+    });
+
+    it('Should be possible to register a grafx connector', async () => {
+        const grafxRegistration: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            url: 'http://mock.url/grafx-id',
+            id: '',
+        };
+
+        await mockedConnectorController.register(grafxRegistration);
+
+        const expectedGrafxRegistration: ConnectorGrafxRegistration = {
+            id: 'grafx-id',
+            url: '',
+            source: ConnectorRegistrationSource.grafx,
+        };
+
+        expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(expectedGrafxRegistration));
     });
 
     it('Should be possible to unregister a connector', async () => {

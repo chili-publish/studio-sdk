@@ -1,16 +1,17 @@
 import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
-    ConnectorState,
-    ConnectorStateType,
+    ConnectorInstance,
+    ConnectorMappingDirection,
     ConnectorMappingType,
     ConnectorRegistration,
-    ConnectorInstance,
-    ConnectorType,
-    ConnectorMappingDirection,
-    EngineToConnectorMapping,
+    ConnectorState,
+    ConnectorStateType,
     ConnectorToEngineMapping,
+    ConnectorType,
+    EngineToConnectorMapping,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+import { manipulateConnectorRegistrationSource } from '../utils/ManipulateConnectorRegistrationSource';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
@@ -68,7 +69,12 @@ export class ConnectorController {
      */
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-        return res.registerConnector(JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
+
+        const connectorRegistration = manipulateConnectorRegistrationSource(registration);
+
+        return res
+            .registerConnector(JSON.stringify(connectorRegistration))
+            .then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
