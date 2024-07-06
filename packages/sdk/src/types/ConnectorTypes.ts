@@ -102,7 +102,7 @@ export type ConnectorInstance = {
 
 export enum ConnectorRegistrationSource {
     /**
-     * Connector is hosted on a publicly accessible link.
+     * Connector is hosted on a publicly available link.
      */
     url = 'url',
 
