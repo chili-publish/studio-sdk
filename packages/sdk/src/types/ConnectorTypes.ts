@@ -74,16 +74,7 @@ export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.url;
 }
 
-export interface ConnectorGrafxRegistration {
-    /**
-     * @deprecated set the `id` instead
-     * Exists only to avoid breaking changes with Grafx Source connectors
-     */
-    url: string;
-    /**
-     * Newly introduced RemoteConnectorId parsed from the url
-     * **/
-    id: Id;
+export interface ConnectorGrafxRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.grafx;
 }
 
