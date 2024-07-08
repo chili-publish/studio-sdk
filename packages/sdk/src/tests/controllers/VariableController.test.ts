@@ -10,11 +10,7 @@ import {
 } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import {
-    ConnectorGrafxRegistration,
-    ConnectorRegistration,
-    ConnectorRegistrationSource,
-} from '../../types/ConnectorTypes';
+import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 
 afterEach(() => {
     jest.restoreAllMocks();
@@ -267,14 +263,14 @@ describe('VariableController', () => {
         const grafxRegistration: ConnectorRegistration = {
             source: ConnectorRegistrationSource.grafx,
             url: 'http://mock.url/grafx-id',
-            id: '',
         };
 
         const response = await mockedVariableController.setImageVariableConnector(variableId, grafxRegistration);
 
-        const expectedGrafxRegistration: ConnectorGrafxRegistration = {
-            id: 'grafx-id',
+        // MigratedConnectorGrafxRegistration type
+        const expectedGrafxRegistration = {
             url: '',
+            id: 'grafx-id',
             source: ConnectorRegistrationSource.grafx,
         };
 

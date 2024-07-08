@@ -1,6 +1,5 @@
 import { ConnectorController } from '../../controllers/ConnectorController';
 import {
-    ConnectorGrafxRegistration,
     ConnectorMapping,
     ConnectorMappingDirection,
     ConnectorMappingSource,
@@ -87,14 +86,14 @@ describe('ConnectorController', () => {
         const grafxRegistration: ConnectorRegistration = {
             source: ConnectorRegistrationSource.grafx,
             url: 'http://mock.url/grafx-id',
-            id: '',
         };
 
         await mockedConnectorController.register(grafxRegistration);
 
-        const expectedGrafxRegistration: ConnectorGrafxRegistration = {
-            id: 'grafx-id',
+        // MigratedConnectorGrafxRegistration type
+        const expectedGrafxRegistration = {
             url: '',
+            id: 'grafx-id',
             source: ConnectorRegistrationSource.grafx,
         };
 
