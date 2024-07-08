@@ -7,9 +7,9 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
+    NumberVariablePropertiesDeltaUpdate,
     Variable,
     VariableType,
-    NumberVariablePropertiesDeltaUpdate,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -300,6 +300,33 @@ export class VariableController {
     setLabel = async (id: string, label: string) => {
         const res = await this.#editorAPI;
         return res.setVariableLabel(id, label).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Internal private method to set/reset a placeholder for a variable
+     */
+    private setPlaceholderInternal = async (id: string, placeholder: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariablePlaceholder(id, placeholder).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new placeholder for a variable
+     * @param id id of the variable
+     * @param placeholder placeholder of the variable
+     * @returns
+     */
+    setPlaceholder = async (id: string, placeholder: string | null) => {
+        return this.setPlaceholderInternal(id, placeholder);
+    };
+
+    /**
+     * This method resets a placeholder for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetPlaceholder = async (id: string) => {
+        return this.setPlaceholderInternal(id, null);
     };
 
     /**
