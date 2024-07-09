@@ -316,7 +316,7 @@ export class VariableController {
      * @param placeholder placeholder of the variable
      * @returns
      */
-    setPlaceholder = async (id: string, placeholder: string | null) => {
+    setPlaceholder = async (id: string, placeholder: string) => {
         return this.setPlaceholderInternal(id, placeholder);
     };
 
