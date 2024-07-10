@@ -20,6 +20,7 @@ export type FrameLayoutType = {
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
+    autoGrow: AutoGrowSettings;
 } | null;
 
 //Frame.image
@@ -159,6 +160,52 @@ export type CropSettings = {
 export type NoCropSettings = {
     type: 'noCrop';
 };
+
+export type AutoGrowSettings = {
+    enabled: PropertyState<boolean>;
+    minWidth: PropertyState<number>;
+    maxWidth: PropertyState<number>;
+    minHeight: PropertyState<number>;
+    maxHeight: PropertyState<number>;
+    directions: PropertyState<Array<AutoGrowDirection>>;
+};
+
+export interface AutoGrowDeltaUpdate {
+    enabled?: {
+        value: boolean;
+    };
+    minWidth?: {
+        value: string | null;
+    };
+    maxWidth?: {
+        value: string | null;
+    };
+    minHeight?: {
+        value: string | null;
+    };
+    maxHeight?: {
+        value: string | null;
+    };
+    directions?: {
+        value: Array<AutoGrowDirection>;
+    };
+}
+
+export interface AutoGrowResetUpdate {
+    enabled?: boolean;
+    minWidth?: boolean;
+    maxWidth?: boolean;
+    minHeight?: boolean;
+    maxHeight?: boolean;
+    directions?: boolean;
+}
+
+export enum AutoGrowDirection {
+    top = 'top',
+    bottom = 'bottom',
+    left = 'left',
+    right = 'right',
+}
 
 export enum ImageSourceTypeEnum {
     url = 'url',
