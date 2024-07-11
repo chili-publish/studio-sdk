@@ -12,7 +12,6 @@ import {
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { manipulateConnectorRegistrationSource } from '../utils/ManipulateConnectorRegistrationSource';
-import * as Next from '../../src/next/types/ConectorTypes';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
@@ -68,7 +67,7 @@ export class ConnectorController {
      * @param registration registration object containing all details about the connector
      * @returns the Id of the newly created connector, this Id should be used going forward.
      */
-    register = async (registration: ConnectorRegistration | Next.ConnectorGrafxRegistration) => {
+    register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
 
         const connectorRegistration = manipulateConnectorRegistrationSource(registration);
