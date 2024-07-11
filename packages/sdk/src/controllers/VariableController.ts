@@ -13,6 +13,7 @@ import {
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { manipulateConnectorRegistrationSource } from '../utils/ManipulateConnectorRegistrationSource';
+import * as Next from '../../src/next/types/ConectorTypes';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -455,7 +456,10 @@ export class VariableController {
      * @param registration registration object containing all details about the connector
      * @returns The new id of the connector
      */
-    setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
+    setImageVariableConnector = async (
+        id: string,
+        registration: ConnectorRegistration | Next.ConnectorGrafxRegistration,
+    ) => {
         const res = await this.#editorAPI;
 
         const connectorRegistration = manipulateConnectorRegistrationSource(registration);

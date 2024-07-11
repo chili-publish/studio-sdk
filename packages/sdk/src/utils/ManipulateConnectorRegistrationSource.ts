@@ -1,14 +1,18 @@
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../types/ConnectorTypes';
-import { Id } from '../types/CommonTypes';
+import * as Next from '../../src/next/types/ConectorTypes';
 
 /**
  * Since `ConnectorGrafxRegistration` uses `RemoteConnectorId` instead of `url` on the engine side,
  * we extract that `id` from the source `url` to avoid any breaking changes
  * **/
 export const manipulateConnectorRegistrationSource = (
-    registration: ConnectorRegistration,
-): ConnectorRegistration | MigratedConnectorGrafxRegistration => {
+    registration: ConnectorRegistration | Next.ConnectorGrafxRegistration,
+): ConnectorRegistration | Next.ConnectorGrafxRegistration => {
     if (registration.source != ConnectorRegistrationSource.grafx) {
+        return registration;
+    }
+
+    if (isAlreadyMigrated(registration)) {
         return registration;
     }
 
@@ -16,17 +20,9 @@ export const manipulateConnectorRegistrationSource = (
     // `RemoteConnectorId` is always the very last part of the URL
     const remoteConnectorId = pathChunks[pathChunks.length - 1];
 
-    return { url: '', id: remoteConnectorId, source: ConnectorRegistrationSource.grafx };
+    return { id: remoteConnectorId, source: ConnectorRegistrationSource.grafx };
 };
 
-interface MigratedConnectorGrafxRegistration {
-    /**
-     * Exists only to avoid breaking changes with Grafx Source connectors
-     **/
-    url: string;
-    /**
-     * Newly introduced RemoteConnectorId parsed from the url
-     **/
-    id: Id;
-    source: ConnectorRegistrationSource.grafx;
-}
+const isAlreadyMigrated = (
+    registration: ConnectorRegistration | Next.ConnectorGrafxRegistration,
+): registration is Next.ConnectorGrafxRegistration => 'id' in registration;

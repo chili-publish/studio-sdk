@@ -92,7 +92,6 @@ describe('ConnectorController', () => {
 
         // MigratedConnectorGrafxRegistration type
         const expectedGrafxRegistration = {
-            url: '',
             id: 'grafx-id',
             source: ConnectorRegistrationSource.grafx,
         };
