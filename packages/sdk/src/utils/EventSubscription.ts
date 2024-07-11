@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DocumentAction } from '../types/ActionTypes';
 import { AnimationPlaybackType, FrameAnimationType } from '../types/AnimationTypes';
 import { BarcodeFrameValidationResult } from '../types/BarcodeTypes';
@@ -20,7 +21,7 @@ import { ToolType } from './Enums';
 
 class EventSubscriptionBase {}
 
-export class EventSubscription<T extends (...args: unknown[]) => unknown> extends EventSubscriptionBase {
+export class EventSubscription<T extends (...args: any[]) => any> extends EventSubscriptionBase {
     private callbacks: Map<string, T> = new Map();
     legacyEventHandler: (() => T | undefined) | undefined;
 
@@ -42,7 +43,7 @@ export class EventSubscription<T extends (...args: unknown[]) => unknown> extend
     }
 
     // Execute all registered callbacks with given arguments
-    executeCallbacks(...args: Parameters<T>): unknown {
+    executeCallbacks(...args: Parameters<T>): any {
         let result;
 
         if (this.legacyEventHandler) {
@@ -149,7 +150,7 @@ export class EventHelper {
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    static triggerEvent(event: EventSubscriptionBase | Function | undefined, ...args: unknown[]): unknown {
+    static triggerEvent(event: EventSubscriptionBase | Function | undefined, ...args: any[]): any {
         if (!event) {
             return;
         }
