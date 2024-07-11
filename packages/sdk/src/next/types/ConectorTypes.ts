@@ -38,3 +38,15 @@ export enum ConnectorRegistrationSource {
      */
     local = 'local',
 }
+
+export enum ConnectorType {
+    media = 'media',
+    fonts = 'fonts',
+}
+
+export type ConnectorInstance = {
+    id: Id;
+    name: string;
+    iconUrl: string;
+    source: ConnectorGrafxRegistration | ConnectorUrlRegistration | ConnectorLocalRegistration;
+};

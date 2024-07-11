@@ -1,6 +1,8 @@
 import {
     ConnectorGrafxRegistration,
+    ConnectorInstance,
     ConnectorLocalRegistration,
+    ConnectorType,
     ConnectorUrlRegistration,
 } from '../types/ConectorTypes';
 import { getEditorResponseData } from '../../utils/EditorResponseData';
@@ -46,5 +48,25 @@ export class ConnectorController {
         const res = await this.#editorAPI;
 
         return res.registerConnector(JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * Gets a connector by its id
+     * @param id the id of the connector
+     * @returns connector
+     */
+    getById = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getConnectorById(id).then((result) => getEditorResponseData<ConnectorInstance>(result));
+    };
+
+    /**
+     * Gets all available connectors of a 'ConnectorType'
+     * @param type type of connector you want to get
+     * @returns list of all available connectors of a 'ConnectorType'
+     */
+    getAllByType = async (type: ConnectorType) => {
+        const res = await this.#editorAPI;
+        return res.getConnectors(type).then((result) => getEditorResponseData<ConnectorInstance[]>(result));
     };
 }

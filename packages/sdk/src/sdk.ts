@@ -101,7 +101,7 @@ export class SDK {
         this.shape = new ShapeController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
-        this.connector = new ConnectorController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI, this.config);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
@@ -201,7 +201,7 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.connector = new ConnectorController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI, this.config);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
