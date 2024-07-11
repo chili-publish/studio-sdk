@@ -74,9 +74,6 @@ export interface ConnectorUrlRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.url;
 }
 
-/**
-  @deprecated use migrated ConnectorGrafxRegistration with `id` instead
- */
 export interface ConnectorGrafxRegistration extends ConnectorRegistrationBase {
     source: ConnectorRegistrationSource.grafx;
 }
