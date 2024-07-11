@@ -4,7 +4,7 @@ import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/Config
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
 
-import { type ConfigType, type EditorAPI, type RuntimeConfigType } from './types/CommonTypes';
+import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
 import { DocumentType } from './types/DocumentTypes';
 
 import { ActionController } from './controllers/ActionController';
@@ -90,8 +90,8 @@ export class SDK {
      * @param config The configuration object where the SDK and editor can get configured
      */
     constructor(config: ConfigType) {
-        this.config = EventHelper.ensureSubscriptions(config);                
-        
+        this.config = EventHelper.ensureSubscriptions(config);
+
         this.connection = connection;
         this.editorAPI = connection?.promise.then((child) => {
             return child;

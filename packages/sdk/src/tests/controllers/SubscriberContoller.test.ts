@@ -29,7 +29,6 @@ import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { AsyncError, ConfigType } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import mockConfig from '../__mocks__/Config';
 import { EventHelper } from '../../utils/EventSubscription';
 
 let mockedAnimation: FrameAnimationType;
@@ -72,7 +71,6 @@ const mockEditorApi: ConfigType = {
 };
 
 beforeEach(() => {
-
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
@@ -323,11 +321,15 @@ describe('SubscriberController', () => {
             const refreshedToken = 'newToken';
 
             const localMockConfig = EventHelper.ensureSubscriptions({
-                onAuthExpired: jest.fn().mockReturnValue(new Promise<AuthCredentials | null>((resolve) =>
-                    resolve(new GrafxTokenAuthCredentials(refreshedToken)),
-                )),
+                onAuthExpired: jest
+                    .fn()
+                    .mockReturnValue(
+                        new Promise<AuthCredentials | null>((resolve) =>
+                            resolve(new GrafxTokenAuthCredentials(refreshedToken)),
+                        ),
+                    ),
             });
-            
+
             const mockedSubscriberController = new SubscriberController(localMockConfig);
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
@@ -343,7 +345,11 @@ describe('SubscriberController', () => {
 
         it('returns the notification defined by the callback', async () => {
             const localMockConfig = EventHelper.ensureSubscriptions({
-                onAuthExpired: jest.fn().mockReturnValue(new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials()))),
+                onAuthExpired: jest
+                    .fn()
+                    .mockReturnValue(
+                        new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials())),
+                    ),
             });
 
             const mockedSubscriberController = new SubscriberController(localMockConfig);

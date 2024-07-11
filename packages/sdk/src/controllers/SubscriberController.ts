@@ -69,7 +69,7 @@ export class SubscriberController {
      */
     onSelectedFramesLayoutChanged = (framesLayout: string) => {
         const frames = JSON.parse(framesLayout);
-        this.config.events.onSelectedFramesLayoutChanged.executeCallbacks(frames);        
+        this.config.events.onSelectedFramesLayoutChanged.executeCallbacks(frames);
 
         const singleFrameCallBack = this.config.onSelectedFrameLayoutChanged;
         singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
@@ -91,7 +91,7 @@ export class SubscriberController {
      * Listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
-        this.config.events.onStateChanged.executeCallbacks();        
+        this.config.events.onStateChanged.executeCallbacks();
     };
 
     /**
@@ -165,7 +165,7 @@ export class SubscriberController {
      * @param tool the string representation of a certain tool
      */
     onSelectedToolChanged = (tool: string) => {
-        this.config.events.onSelectedToolChanged.executeCallbacks(tool as ToolType);        
+        this.config.events.onSelectedToolChanged.executeCallbacks(tool as ToolType);
     };
 
     /**

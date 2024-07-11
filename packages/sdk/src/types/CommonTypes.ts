@@ -30,7 +30,7 @@ export type BaseConfigType = {
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
-}
+};
 
 export type ManagedCallbacksConfigType = {
     events: {
@@ -66,166 +66,165 @@ export type ManagedCallbacksConfigType = {
         onAsyncError: EventSubscription<(asyncError: AsyncError) => void>;
         onViewModeChanged: EventSubscription<(tool: ViewMode) => void>;
         onBarcodeValidationChanged: EventSubscription<(validationResults: BarcodeFrameValidationResult[]) => void>;
-    }
-}
+    };
+};
 
 export type InitialCallbacksConfigType = {
-    
     /**
      * @deprecated use `events.onActionsChanged` instead
      */
     onActionsChanged?: (state: DocumentAction[]) => void;
-    
+
     /**
      * @deprecated use `events.onStateChanged` instead
      */
     onStateChanged?: () => void;
-    
+
     /**
      * @deprecated use `events.onAuthExpired` instead
      */
     onAuthExpired?: (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>;
-    
+
     /**
      * @deprecated use `events.onViewportRequested` instead
      */
     onViewportRequested?: () => Viewport | null;
-    
+
     /**
      * @deprecated use `events.onDocumentLoaded` instead
      */
     onDocumentLoaded?: () => void;
-    
+
     /**
      * @deprecated use `events.onSelectedFramesLayoutChanged` instead
      */
     onSelectedFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
-    
+
     /**
      * @deprecated use `events.onSelectedFramesContentChanged` instead
      */
     onSelectedFramesContentChanged?: (state: Frame[]) => void;
-    
+
     /**
      * @deprecated use `events.onPageSelectionChanged` instead
      */
     onPageSelectionChanged?: () => void;
-    
+
     /**
      * @deprecated use `events.onSelectedLayoutPropertiesChanged` instead
      */
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
-    
+
     /**
      * @deprecated use `events.onSelectedLayoutUnitChanged` instead
      */
     onSelectedLayoutUnitChanged?: (unit: MeasurementUnit) => void;
-    
+
     /**
      * @deprecated use `events.onScrubberPositionChanged` instead
      */
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
-    
+
     /**
      * @deprecated use `events.onFrameAnimationsChanged` instead
      */
     onFrameAnimationsChanged?: (animationState: FrameAnimationType[]) => void;
-    
+
     /**
      * @deprecated use `events.onVariableListChanged` instead
      */
     onVariableListChanged?: (variableList: Variable[]) => void;
-    
+
     /**
      * @deprecated use `events.onSelectedToolChanged` instead
      */
     onSelectedToolChanged?: (tool: ToolType) => void;
-    
+
     /**
      * @deprecated use `events.onUndoStackStateChanged` instead
      */
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
-    
+
     /**
      * @deprecated use `events.onSelectedLayoutFramesChanged` instead
      */
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
-    
+
     /**
      * @deprecated use `events.onSelectedTextStyleChanged` instead
      */
     onSelectedTextStyleChanged?: (styles: SelectedTextStyle) => void;
-    
+
     /**
      * @deprecated use `events.onColorsChanged` instead
      */
     onColorsChanged?: (colors: DocumentColor[]) => void;
-    
+
     /**
      * @deprecated use `events.onParagraphStylesChanged` instead
      */
     onParagraphStylesChanged?: (paragraphStyles: ParagraphStyle[]) => void;
-    
+
     /**
      * @deprecated use `events.onCharacterStylesChanged` instead
      */
     onCharacterStylesChanged?: (characterStyles: CharacterStyle[]) => void;
-    
+
     /**
      * @deprecated use `events.onFontFamiliesChanged` instead
      */
     onFontFamiliesChanged?: (fontFamilies: DocumentFontFamily[]) => void;
-    
+
     /**
      * @deprecated use `events.onSelectedLayoutIdChanged` instead
      */
     onSelectedLayoutIdChanged?: (layoutId: string) => void;
-    
+
     /**
      * @deprecated use `events.onLayoutsChanged` instead
      */
     onLayoutsChanged?: (layouts: LayoutListItemType[]) => void;
-    
+
     /**
      * @deprecated use `events.onConnectorEvent` instead
      */
     onConnectorEvent?: (event: ConnectorEvent) => void;
-    
+
     /**
      * @deprecated use `events.onConnectorsChanged` instead
      */
     onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
-    
+
     /**
      * @deprecated use `events.onZoomChanged` instead
      */
     onZoomChanged?: (scaleFactor: number) => void;
-    
+
     /**
      * @deprecated use `events.onPageSizeChanged` instead
      */
     onPageSizeChanged?: (pageSize: PageSize) => void;
-    
+
     /**
      * @deprecated use `events.onShapeCornerRadiusChanged` instead
      */
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
-    
+
     /**
      * @deprecated use `events.onCropActiveFrameIdChanged` instead
      */
     onCropActiveFrameIdChanged?: (id?: Id) => void;
-    
+
     /**
      * @deprecated use `events.onAsyncError` instead
      */
     onAsyncError?: (asyncError: AsyncError) => void;
-    
+
     /**
      * @deprecated use `events.onViewModeChanged` instead
      */
     onViewModeChanged?: (tool: ViewMode) => void;
-    
+
     /**
      * @deprecated use `events.onBarcodeValidationChanged` instead
      */
