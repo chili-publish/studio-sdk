@@ -1,10 +1,10 @@
 import { Connection } from 'penpal';
-import Connect from './interactions/connector';
+import Connect from './interactions/Connector';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
 
-import type { ConfigType, EditorAPI } from './types/CommonTypes';
+import { type ConfigType, type EditorAPI, type RuntimeConfigType } from './types/CommonTypes';
 import { DocumentType } from './types/DocumentTypes';
 
 import { ActionController } from './controllers/ActionController';
@@ -37,13 +37,14 @@ import { ClipboardController } from './controllers/ClipboardController';
 import { BarcodeController } from './controllers/BarcodeController';
 import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
+import { EventHelper } from './utils/EventSubscription';
 
 let connection: Connection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
 
 export class SDK {
-    config: ConfigType;
+    config: RuntimeConfigType;
     connection: Connection;
 
     /**
@@ -89,7 +90,8 @@ export class SDK {
      * @param config The configuration object where the SDK and editor can get configured
      */
     constructor(config: ConfigType) {
-        this.config = config;
+        this.config = EventHelper.ensureSubscriptions(config);                
+        
         this.connection = connection;
         this.editorAPI = connection?.promise.then((child) => {
             return child;

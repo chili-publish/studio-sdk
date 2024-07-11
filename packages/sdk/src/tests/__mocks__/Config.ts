@@ -1,9 +1,10 @@
-import { ConfigType } from '../../types/CommonTypes';
+import { RuntimeConfigType } from '../../types/CommonTypes';
 import { DocumentType } from '../../types/DocumentTypes';
+import { EventHelper } from '../../utils/EventSubscription';
 
 export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
-const mockConfig: ConfigType = {
+const mockConfig: RuntimeConfigType = EventHelper.ensureSubscriptions({
     onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
     onAuthExpired: defaultMockReturn,
@@ -34,5 +35,5 @@ const mockConfig: ConfigType = {
     onZoomChanged: defaultMockReturn,
     onPageSizeChanged: defaultMockReturn,
     onViewModeChanged: defaultMockReturn,
-};
+});
 export default mockConfig;

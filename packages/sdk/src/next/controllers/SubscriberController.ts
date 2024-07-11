@@ -1,4 +1,4 @@
-import { ConfigType } from '../../types/CommonTypes';
+import { ConfigType, RuntimeConfigType } from '../../types/CommonTypes';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
@@ -8,12 +8,12 @@ export class SubscriberController {
     /**
      * @ignore
      */
-    private config: ConfigType;
+    private config: RuntimeConfigType;
 
     /**
      * @ignore
      */
-    constructor(config: ConfigType) {
+    constructor(config: RuntimeConfigType) {
         this.config = config;
     }
 
@@ -22,7 +22,6 @@ export class SubscriberController {
      * @param variablesJson Stringified array of Variable
      */
     onVariableListChanged = (variablesJson: string) => {
-        const callBack = this.config.onVariableListChanged;
-        callBack && callBack(JSON.parse(variablesJson));
+        this.config.events.onVariableListChanged.executeCallbacks(JSON.parse(variablesJson));
     };
 }

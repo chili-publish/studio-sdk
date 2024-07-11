@@ -1,5 +1,5 @@
 import { SDK } from '../sdk';
-import mockConfig from './__mocks__/config';
+import mockConfig from './__mocks__/Config';
 
 let mockedSDK: SDK;
 
