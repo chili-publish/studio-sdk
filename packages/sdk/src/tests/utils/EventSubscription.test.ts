@@ -11,7 +11,7 @@ describe('EventSubscription', () => {
         const callback = jest.fn();
         subscription.registerCallback(callback);
 
-        subscription.executeCallbacks('arg1', 'arg2');
+        subscription.trigger('arg1', 'arg2');
 
         expect(callback).toHaveBeenCalledWith('arg1', 'arg2');
     });
@@ -22,7 +22,7 @@ describe('EventSubscription', () => {
         subscription.registerCallback(callback1);
         subscription.registerCallback(callback2);
 
-        subscription.executeCallbacks('arg1', 'arg2');
+        subscription.trigger('arg1', 'arg2');
 
         expect(callback1).toHaveBeenCalledWith('arg1', 'arg2');
         expect(callback2).toHaveBeenCalledWith('arg1', 'arg2');
@@ -33,7 +33,7 @@ describe('EventSubscription', () => {
         const callbackName = subscription.registerCallback(callback);
 
         subscription.unsubscribeCallback(callbackName);
-        subscription.executeCallbacks('arg1', 'arg2');
+        subscription.trigger('arg1', 'arg2');
 
         expect(callback).not.toHaveBeenCalled();
     });
@@ -43,7 +43,7 @@ describe('EventSubscription', () => {
         const legacyEventHandler = () => legacyCallback;
         subscription = new EventSubscription(legacyEventHandler);
 
-        subscription.executeCallbacks('arg1', 'arg2');
+        subscription.trigger('arg1', 'arg2');
 
         expect(legacyCallback).toHaveBeenCalledWith('arg1', 'arg2');
     });
@@ -67,7 +67,7 @@ describe('EventSubscription', () => {
         subscription.registerCallback(callback1);
         subscription.registerCallback(callback2);
 
-        subscription.executeCallbacks('arg1', 'arg2');
+        subscription.trigger('arg1', 'arg2');
 
         expect(legacyCallback).toHaveBeenCalledWith('arg1', 'arg2');
         expect(callback1).toHaveBeenCalledWith('arg1', 'arg2');
@@ -85,7 +85,7 @@ describe('EventHelper', () => {
             },
         });
 
-        runtimeConfig.events.onActionsChanged.executeCallbacks([]);
+        runtimeConfig.events.onActionsChanged.trigger([]);
 
         expect(counter).toBe(1);
     });
@@ -106,7 +106,7 @@ describe('EventHelper', () => {
             counter = 100;
         };
 
-        sdk.config.events.onActionsChanged.executeCallbacks([]);
+        sdk.config.events.onActionsChanged.trigger([]);
 
         expect(counter).toBe(100);
     });

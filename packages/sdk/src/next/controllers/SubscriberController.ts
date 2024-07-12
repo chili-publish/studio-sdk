@@ -22,6 +22,6 @@ export class SubscriberController {
      * @param variablesJson Stringified array of Variable
      */
     onVariableListChanged = (variablesJson: string) => {
-        this.config.events.onVariableListChanged.executeCallbacks(JSON.parse(variablesJson));
+        this.config.events.onVariableListChanged.trigger(JSON.parse(variablesJson));
     };
 }

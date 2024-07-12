@@ -26,7 +26,7 @@ export class SubscriberController {
      * @param actions Stringified array of DocumentAction type
      */
     onActionsChanged = (actions: string) => {
-        this.config.events.onActionsChanged.executeCallbacks(JSON.parse(actions));
+        this.config.events.onActionsChanged.trigger(JSON.parse(actions));
     };
 
     /**
@@ -34,7 +34,7 @@ export class SubscriberController {
      * @param animation Stringified array of FrameAnimationType
      */
     onAnimationChanged = (animation: string) => {
-        this.config.events.onFrameAnimationsChanged.executeCallbacks(JSON.parse(animation));
+        this.config.events.onFrameAnimationsChanged.trigger(JSON.parse(animation));
     };
 
     /**
@@ -42,7 +42,7 @@ export class SubscriberController {
      * @param animationPlaybackState Stringified array of AnimationPlaybackType
      */
     onAnimationPlaybackChanged = (animationPlaybackState: string) => {
-        this.config.events.onScrubberPositionChanged.executeCallbacks(JSON.parse(animationPlaybackState));
+        this.config.events.onScrubberPositionChanged.trigger(JSON.parse(animationPlaybackState));
     };
 
     /**
@@ -50,7 +50,7 @@ export class SubscriberController {
      * @param layoutProperties Stringified object of LayoutPropertiesType
      */
     onSelectedLayoutPropertiesChanged = (layoutProperties: string) => {
-        this.config.events.onSelectedLayoutPropertiesChanged.executeCallbacks(JSON.parse(layoutProperties));
+        this.config.events.onSelectedLayoutPropertiesChanged.trigger(JSON.parse(layoutProperties));
     };
 
     /**
@@ -60,7 +60,7 @@ export class SubscriberController {
      * @param unit Stringified object of MeasurementUnit
      */
     onSelectedLayoutUnitChanged = (unit: string) => {
-        this.config.events.onSelectedLayoutUnitChanged.executeCallbacks(unit as MeasurementUnit);
+        this.config.events.onSelectedLayoutUnitChanged.trigger(unit as MeasurementUnit);
     };
 
     /**
@@ -69,7 +69,7 @@ export class SubscriberController {
      */
     onSelectedFramesLayoutChanged = (framesLayout: string) => {
         const frames = JSON.parse(framesLayout);
-        this.config.events.onSelectedFramesLayoutChanged.executeCallbacks(frames);
+        this.config.events.onSelectedFramesLayoutChanged.trigger(frames);
 
         const singleFrameCallBack = this.config.onSelectedFrameLayoutChanged;
         singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? undefined : frames[0]);
@@ -81,7 +81,7 @@ export class SubscriberController {
      */
     onSelectedFramesContentChanged = (framesContent: string) => {
         const frames = JSON.parse(framesContent);
-        this.config.events.onSelectedFramesContentChanged.executeCallbacks(frames);
+        this.config.events.onSelectedFramesContentChanged.trigger(frames);
 
         const singleFrameCallBack = this.config.onSelectedFrameContentChanged;
         singleFrameCallBack && singleFrameCallBack(frames.length > 1 ? null : frames[0]);
@@ -91,7 +91,7 @@ export class SubscriberController {
      * Listener on the general state of the document, gets triggered every time a change is done on the document.
      */
     onStateChanged = () => {
-        this.config.events.onStateChanged.executeCallbacks();
+        this.config.events.onStateChanged.trigger();
     };
 
     /**
@@ -107,7 +107,7 @@ export class SubscriberController {
      * @param authRefreshRequest Stringified object of AuthRefreshRequest
      */
     onAuthExpired = async (authRefreshRequest: string) => {
-        const authCredentials = await this.config.events.onAuthExpired.executeCallbacks(JSON.parse(authRefreshRequest));
+        const authCredentials = await this.config.handlers.onAuthExpired.trigger(JSON.parse(authRefreshRequest));
         return authCredentials != null ? JSON.stringify(authCredentials) : null;
     };
 
@@ -120,7 +120,7 @@ export class SubscriberController {
      * zoom to page call.
      */
     onViewportRequested = () => {
-        const viewport = this.config.events.onViewportRequested.executeCallbacks();
+        const viewport = this.config.handlers.onViewportRequested.trigger();
         return viewport != null ? JSON.stringify(viewport) : null;
     };
 
@@ -128,14 +128,14 @@ export class SubscriberController {
      * Listener on when the document is fully loaded.
      */
     onDocumentLoaded = () => {
-        this.config.events.onDocumentLoaded.executeCallbacks();
+        this.config.events.onDocumentLoaded.trigger();
     };
 
     /**
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
     onPageSelectionChanged = () => {
-        this.config.events.onPageSelectionChanged.executeCallbacks();
+        this.config.events.onPageSelectionChanged.trigger();
     };
 
     /**
@@ -157,7 +157,7 @@ export class SubscriberController {
                 : variable,
         );
 
-        this.config.events.onVariableListChanged.executeCallbacks(updated);
+        this.config.events.onVariableListChanged.trigger(updated);
     };
 
     /**
@@ -165,7 +165,7 @@ export class SubscriberController {
      * @param tool the string representation of a certain tool
      */
     onSelectedToolChanged = (tool: string) => {
-        this.config.events.onSelectedToolChanged.executeCallbacks(tool as ToolType);
+        this.config.events.onSelectedToolChanged.trigger(tool as ToolType);
     };
 
     /**
@@ -173,7 +173,7 @@ export class SubscriberController {
      * @param undoState Stringified object of UndoState
      */
     onUndoStateChanged = (undoState: string) => {
-        this.config.events.onUndoStackStateChanged.executeCallbacks(JSON.parse(undoState));
+        this.config.events.onUndoStackStateChanged.trigger(JSON.parse(undoState));
     };
 
     /**
@@ -181,7 +181,7 @@ export class SubscriberController {
      * @param layoutFrames Stringified object of Frames
      */
     onSelectedLayoutFramesChanged = (layoutFrames: string) => {
-        this.config.events.onSelectedLayoutFramesChanged.executeCallbacks(JSON.parse(layoutFrames));
+        this.config.events.onSelectedLayoutFramesChanged.trigger(JSON.parse(layoutFrames));
     };
 
     /**
@@ -189,7 +189,7 @@ export class SubscriberController {
      * @param styles Stringified object of styles
      */
     onSelectedTextStyleChanged = (styles: string) => {
-        this.config.events.onSelectedTextStyleChanged.executeCallbacks(JSON.parse(styles));
+        this.config.events.onSelectedTextStyleChanged.trigger(JSON.parse(styles));
     };
 
     /**
@@ -197,7 +197,7 @@ export class SubscriberController {
      * @param colors Stringified object of colors
      */
     onColorsChanged = (colors: string) => {
-        this.config.events.onColorsChanged.executeCallbacks(JSON.parse(colors));
+        this.config.events.onColorsChanged.trigger(JSON.parse(colors));
     };
 
     /**
@@ -205,7 +205,7 @@ export class SubscriberController {
      * @param paragraphStyles Stringified object of paragraph styles
      */
     onParagraphStylesChanged = (paragraphStyles: string) => {
-        this.config.events.onParagraphStylesChanged.executeCallbacks(JSON.parse(paragraphStyles));
+        this.config.events.onParagraphStylesChanged.trigger(JSON.parse(paragraphStyles));
     };
 
     /**
@@ -213,7 +213,7 @@ export class SubscriberController {
      * @param characterStyles Stringified object of character styles
      */
     onCharacterStylesChanged = (characterStyles: string) => {
-        this.config.events.onCharacterStylesChanged.executeCallbacks(JSON.parse(characterStyles));
+        this.config.events.onCharacterStylesChanged.trigger(JSON.parse(characterStyles));
     };
 
     /**
@@ -221,7 +221,7 @@ export class SubscriberController {
      * @param fonts Stringified object of font families
      */
     onFontFamiliesChanged = (fonts: string) => {
-        this.config.events.onFontFamiliesChanged.executeCallbacks(JSON.parse(fonts));
+        this.config.events.onFontFamiliesChanged.trigger(JSON.parse(fonts));
     };
 
     /**
@@ -229,7 +229,7 @@ export class SubscriberController {
      * @param id the currently selected layout id
      */
     onSelectedLayoutIdChanged = (id: Id) => {
-        this.config.events.onSelectedLayoutIdChanged.executeCallbacks(id);
+        this.config.events.onSelectedLayoutIdChanged.trigger(id);
     };
 
     /**
@@ -241,7 +241,7 @@ export class SubscriberController {
      * @param layouts Stringified object of layouts
      */
     onLayoutsChanged = (layouts: string) => {
-        this.config.events.onLayoutsChanged.executeCallbacks(JSON.parse(layouts));
+        this.config.events.onLayoutsChanged.trigger(JSON.parse(layouts));
     };
 
     /**
@@ -249,7 +249,7 @@ export class SubscriberController {
      * @param zoom Stringified scale factor
      */
     onZoomChanged = (zoom: string) => {
-        this.config.events.onZoomChanged.executeCallbacks(JSON.parse(zoom));
+        this.config.events.onZoomChanged.trigger(JSON.parse(zoom));
     };
 
     /**
@@ -263,7 +263,7 @@ export class SubscriberController {
      * @param connectorEvent Stringified object of ConnectorEvent
      */
     onConnectorEvent = (connectorEvent: string) => {
-        this.config.events.onConnectorEvent.executeCallbacks(JSON.parse(connectorEvent));
+        this.config.events.onConnectorEvent.trigger(JSON.parse(connectorEvent));
     };
 
     /**
@@ -271,7 +271,7 @@ export class SubscriberController {
      * @param connectors Stringified array of ConnectorInstance type
      */
     onConnectorsChanged = (connectors: string) => {
-        this.config.events.onConnectorsChanged.executeCallbacks(JSON.parse(connectors));
+        this.config.events.onConnectorsChanged.trigger(JSON.parse(connectors));
     };
 
     /**
@@ -280,7 +280,7 @@ export class SubscriberController {
      * @param pageSize Stringified object of the PageSize
      */
     onPageSizeChanged = (pageSize: string) => {
-        this.config.events.onPageSizeChanged.executeCallbacks(JSON.parse(pageSize));
+        this.config.events.onPageSizeChanged.trigger(JSON.parse(pageSize));
     };
 
     /**
@@ -288,7 +288,7 @@ export class SubscriberController {
      * @param cornerRadius Stringified object of the CornerRadius
      */
     onShapeCornerRadiusChanged = (cornerRadius: string) => {
-        this.config.events.onShapeCornerRadiusChanged.executeCallbacks(JSON.parse(cornerRadius));
+        this.config.events.onShapeCornerRadiusChanged.trigger(JSON.parse(cornerRadius));
     };
 
     /**
@@ -296,7 +296,7 @@ export class SubscriberController {
      * @param id frame id when entering / null when exiting
      */
     onCropActiveFrameIdChanged = (id?: Id) => {
-        this.config.events.onCropActiveFrameIdChanged.executeCallbacks(id);
+        this.config.events.onCropActiveFrameIdChanged.trigger(id);
     };
 
     /**
@@ -312,7 +312,7 @@ export class SubscriberController {
      * @param asyncError error triggered asynchronously
      */
     onAsyncError = (asyncError: string) => {
-        this.config.events.onAsyncError.executeCallbacks(JSON.parse(asyncError));
+        this.config.events.onAsyncError.trigger(JSON.parse(asyncError));
     };
 
     /**
@@ -320,7 +320,7 @@ export class SubscriberController {
      * @param viewMode the string representation of a view mode
      */
     onViewModeChanged = (viewMode: string) => {
-        this.config.events.onViewModeChanged.executeCallbacks(viewMode as ViewMode);
+        this.config.events.onViewModeChanged.trigger(viewMode as ViewMode);
     };
 
     /**
@@ -329,6 +329,6 @@ export class SubscriberController {
      * @param validationResults the json string representation of the validation results
      */
     onBarcodeValidationChanged = (validationResults: string) => {
-        this.config.events.onBarcodeValidationChanged.executeCallbacks(JSON.parse(validationResults));
+        this.config.events.onBarcodeValidationChanged.trigger(JSON.parse(validationResults));
     };
 }

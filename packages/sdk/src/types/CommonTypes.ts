@@ -16,7 +16,7 @@ import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 import { Viewport } from './ViewportTypes';
-import { EventSubscription } from '../utils/EventSubscription';
+import { EventSubscription, SingleSubscription } from '../utils/EventSubscription';
 
 export type Id = string;
 
@@ -33,11 +33,13 @@ export type BaseConfigType = {
 };
 
 export type ManagedCallbacksConfigType = {
+    handlers: {
+        onAuthExpired: SingleSubscription<(authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>>;
+        onViewportRequested: SingleSubscription<() => Viewport | null>;
+    };
     events: {
         onActionsChanged: EventSubscription<(state: DocumentAction[]) => void>;
         onStateChanged: EventSubscription<() => void>;
-        onAuthExpired: EventSubscription<(authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>>;
-        onViewportRequested: EventSubscription<() => Viewport | null>;
         onDocumentLoaded: EventSubscription<() => void>;
         onSelectedFramesLayoutChanged: EventSubscription<(states: FrameLayoutType[]) => void>;
         onSelectedFramesContentChanged: EventSubscription<(state: Frame[]) => void>;

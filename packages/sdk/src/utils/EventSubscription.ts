@@ -5,7 +5,7 @@ import { BarcodeFrameValidationResult } from '../types/BarcodeTypes';
 import { CharacterStyle } from '../types/CharacterStyleTypes';
 import { DocumentColor } from '../types/ColorStyleTypes';
 import { ConfigType, RuntimeConfigType, SelectedLayoutFrame, Id, AsyncError } from '../types/CommonTypes';
-import { AuthRefreshRequest, AuthCredentials, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
+import { AuthCredentials, AuthRefreshRequest, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
 import { UndoState } from '../types/DocumentTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { FrameLayoutType, Frame } from '../types/FrameTypes';
@@ -21,29 +21,66 @@ import { ToolType } from './Enums';
 
 class EventSubscriptionBase {}
 
-export class EventSubscription<T extends (...args: any[]) => any> extends EventSubscriptionBase {
-    private callbacks: Map<string, T> = new Map();
-    legacyEventHandler: (() => T | undefined) | undefined;
+export class SingleSubscription<T extends (...args: any[]) => any> extends EventSubscriptionBase {
+    protected callbacks: Map<string, T> = new Map();
+    protected legacyEventHandler: (() => T | undefined) | undefined;
 
     constructor(legacyEventHandler?: () => T | undefined) {
         super();
         this.legacyEventHandler = legacyEventHandler;
     }
 
-    // Register a new callback with an optional name
-    registerCallback(callback: T, name?: string): string {
-        const callbackName = name || this.generateUniqueName();
+    /**
+     * Executes the registered callbacks with the provided arguments.
+     *
+     * @param args The arguments to pass to the callbacks.
+     * @returns The result of executing the callbacks.
+     */
+    trigger(...args: Parameters<T>): any {
+        let result;
+
+        if (this.legacyEventHandler) {
+            const callback = this.legacyEventHandler();
+            if (callback) {
+                result = callback(...args);
+            }
+        }
+
+        for (const callback of this.callbacks.values()) {
+            result = callback(...args);
+        }
+
+        return result;
+    }
+}
+
+export class EventSubscription<T extends (...args: any[]) => any> extends SingleSubscription<T> {
+    constructor(legacyEventHandler?: () => T | undefined) {
+        super(legacyEventHandler);
+    }
+
+    /**
+     * Registers a callback function with an optional key.
+     *
+     * @param callback - The callback function to register.
+     * @param key - An optional key to associate with the callback.
+     * @returns The generated or provided key associated with the callback.
+     */
+    registerCallback(callback: T, key?: string): string {
+        const callbackName = key || this.generateUniqueName();
         this.callbacks.set(callbackName, callback);
         return callbackName;
     }
 
-    // Unsubscribe a callback by its name
+    /**
+     * Removes the callback associated with the specified name from the subscription.
+     * @param name - The name of the callback to remove.
+     */
     unsubscribeCallback(name: string): void {
         this.callbacks.delete(name);
     }
 
-    // Execute all registered callbacks with given arguments
-    executeCallbacks(...args: Parameters<T>): any {
+    trigger(...args: Parameters<T>): any {
         let result;
 
         if (this.legacyEventHandler) {
@@ -72,13 +109,16 @@ export class EventHelper {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const clone: RuntimeConfigType = { ...config };
-        clone.events = {
-            onActionsChanged: new EventSubscription<(state: DocumentAction[]) => void>(() => clone.onActionsChanged),
-            onStateChanged: new EventSubscription<() => void>(() => clone.onStateChanged),
+        clone.handlers = {
             onAuthExpired: new EventSubscription<
                 (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>
             >(() => clone.onAuthExpired),
             onViewportRequested: new EventSubscription<() => Viewport | null>(() => clone.onViewportRequested),
+        };
+        clone.events = {
+            onActionsChanged: new EventSubscription<(state: DocumentAction[]) => void>(() => clone.onActionsChanged),
+            onStateChanged: new EventSubscription<() => void>(() => clone.onStateChanged),
+
             onDocumentLoaded: new EventSubscription<() => void>(() => clone.onDocumentLoaded),
             onSelectedFramesLayoutChanged: new EventSubscription<(states: FrameLayoutType[]) => void>(
                 () => clone.onSelectedFramesLayoutChanged,
@@ -156,7 +196,7 @@ export class EventHelper {
         }
 
         if (event instanceof EventSubscription) {
-            return event.executeCallbacks(...args);
+            return event.trigger(...args);
         } else if (event instanceof Function) {
             return event(...args);
         }
