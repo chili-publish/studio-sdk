@@ -87,48 +87,54 @@ describe('ConnectorCompatibilityTools', () => {
         });
     });
 
-    describe('makeConnectorBackwardsCompatible', () => {
+    describe('makeSingleConnectorBackwardsCompatible', () => {
         it('it returns non grafx connector as it is', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorBackwardsCompatible(nonGrafxConnector, baseUrl),
+                mockedConnectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(nonGrafxConnector, baseUrl),
             ).toMatchObject(nonGrafxConnector);
         });
 
         it('it returns old grafx connector as it is', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorBackwardsCompatible(grafxConnector, baseUrl),
+                mockedConnectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(grafxConnector, baseUrl),
             ).toMatchObject(grafxConnector);
         });
 
         it('it migrates back from next grafx connector to the old one', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorBackwardsCompatible(nextGrafxConnector, baseUrl),
+                mockedConnectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(nextGrafxConnector, baseUrl),
             ).toMatchObject(grafxConnector);
         });
     });
 
-    describe('makeConnectorsBackwardsCompatible', () => {
+    describe('makeMultipleConnectorsBackwardsCompatible', () => {
         it('it returns non grafx connector list as it is', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorsBackwardsCompatible([nonGrafxConnector], baseUrl),
+                mockedConnectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
+                    [nonGrafxConnector],
+                    baseUrl,
+                ),
             ).toMatchObject([nonGrafxConnector]);
         });
 
         it('it returns old grafx connector list as it is', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorsBackwardsCompatible([grafxConnector], baseUrl),
+                mockedConnectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible([grafxConnector], baseUrl),
             ).toMatchObject([grafxConnector]);
         });
 
         it('it migrates back from next grafx connector list to the old one', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorsBackwardsCompatible([nextGrafxConnector], baseUrl),
+                mockedConnectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
+                    [nextGrafxConnector],
+                    baseUrl,
+                ),
             ).toMatchObject([grafxConnector]);
         });
 
         it('it migrate ONLY next grafx connectors', async () => {
             expect(
-                mockedConnectorCompatibilityTools.makeConnectorsBackwardsCompatible(
+                mockedConnectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
                     [nonGrafxConnector, grafxConnector, nextGrafxConnector],
                     baseUrl,
                 ),

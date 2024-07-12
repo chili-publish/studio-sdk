@@ -29,12 +29,13 @@ export class ConnectorCompatibilityTools {
         return { id: remoteConnectorId, source: ConnectorRegistrationSource.grafx };
     };
 
-    makeConnectorsBackwardsCompatible = (
+    makeMultipleConnectorsBackwardsCompatible = (
         connectors: (ConnectorInstance | Next.ConnectorInstance)[],
         baseUrl: string | undefined,
-    ): ConnectorInstance[] => connectors.map((connector) => this.makeConnectorBackwardsCompatible(connector, baseUrl));
+    ): ConnectorInstance[] =>
+        connectors.map((connector) => this.makeSingleConnectorBackwardsCompatible(connector, baseUrl));
 
-    makeConnectorBackwardsCompatible = (
+    makeSingleConnectorBackwardsCompatible = (
         connector: ConnectorInstance | Next.ConnectorInstance,
         baseUrl: string | undefined,
     ): ConnectorInstance => {

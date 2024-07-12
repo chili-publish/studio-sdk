@@ -60,10 +60,10 @@ export class ConnectorController {
             .then((resp) => {
                 const update: EditorResponse<ConnectorInstance> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
-                    update.parsedData = this.connectorCompatibilityTools.makeConnectorsBackwardsCompatible(
-                        [resp.parsedData],
+                    update.parsedData = this.connectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(
+                        resp.parsedData,
                         this.config.chiliEnvironmentUrl,
-                    )[0];
+                    );
                 }
                 return update;
             });
@@ -83,7 +83,7 @@ export class ConnectorController {
             .then((resp) => {
                 const update: EditorResponse<ConnectorInstance[]> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
-                    update.parsedData = this.connectorCompatibilityTools.makeConnectorsBackwardsCompatible(
+                    update.parsedData = this.connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
                         resp.parsedData,
                         this.config.chiliEnvironmentUrl,
                     );
