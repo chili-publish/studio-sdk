@@ -34,16 +34,16 @@ export class ConnectorController {
      * @ignore
      */
     #editorAPI: EditorAPI;
-    config: ConfigType;
-    connectorCompatibilityTools: ConnectorCompatibilityTools;
+    #config: ConfigType;
+    #connectorCompatibilityTools: ConnectorCompatibilityTools;
 
     /**
      * @ignore
      */
     constructor(editorAPI: EditorAPI, config: ConfigType) {
         this.#editorAPI = editorAPI;
-        this.config = config;
-        this.connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        this.#config = config;
+        this.#connectorCompatibilityTools = new ConnectorCompatibilityTools();
     }
 
     /**
@@ -60,9 +60,9 @@ export class ConnectorController {
             .then((resp) => {
                 const update: EditorResponse<ConnectorInstance> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
-                    update.parsedData = this.connectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(
+                    update.parsedData = this.#connectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(
                         resp.parsedData,
-                        this.config.chiliEnvironmentUrl,
+                        this.#config.chiliEnvironmentUrl,
                     );
                 }
                 return update;
@@ -83,9 +83,9 @@ export class ConnectorController {
             .then((resp) => {
                 const update: EditorResponse<ConnectorInstance[]> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
-                    update.parsedData = this.connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
+                    update.parsedData = this.#connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
                         resp.parsedData,
-                        this.config.chiliEnvironmentUrl,
+                        this.#config.chiliEnvironmentUrl,
                     );
                 }
                 return update;
@@ -103,7 +103,7 @@ export class ConnectorController {
         const res = await this.#editorAPI;
 
         const connectorRegistration =
-            this.connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+            this.#connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
 
         return res
             .registerConnector(JSON.stringify(connectorRegistration))
