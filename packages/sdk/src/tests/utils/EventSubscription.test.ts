@@ -1,4 +1,14 @@
-import { EventHelper, EventSubscription } from '../../utils/EventSubscription';
+import { EventHelper, EventSubscription, SingleSubscription } from '../../utils/EventSubscription';
+
+describe('SingleSubscription', () => {
+    test('When handler has no value, we expect to return null', () => {
+        const subscription = new SingleSubscription(() => undefined);
+
+        const result = subscription.trigger('arg1', 'arg2');
+
+        expect(result).toBeNull();
+    });
+});
 
 describe('EventSubscription', () => {
     let subscription: EventSubscription<(...args: unknown[]) => unknown>;

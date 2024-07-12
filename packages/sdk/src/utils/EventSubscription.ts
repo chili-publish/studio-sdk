@@ -50,7 +50,7 @@ export class SingleSubscription<T extends (...args: any[]) => any> extends Event
             result = callback(...args);
         }
 
-        return result;
+        return result ?? null;
     }
 }
 
