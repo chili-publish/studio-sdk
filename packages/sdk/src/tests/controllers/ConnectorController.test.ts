@@ -1,5 +1,6 @@
 import { ConnectorController } from '../../controllers/ConnectorController';
 import {
+    ConnectorInstance,
     ConnectorMapping,
     ConnectorMappingDirection,
     ConnectorMappingSource,
@@ -11,12 +12,41 @@ import {
 } from '../../types/ConnectorTypes';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import mockConfig from '../__mocks__/config';
+import * as Next from '../../next/types/ConnectorTypes';
 
 let mockedConnectorController: ConnectorController;
 
+const grafxSourceId = 'grafx-id';
+const baseUrl = 'https://mock.url';
+
+const grafxSource: ConnectorRegistration = {
+    source: ConnectorRegistrationSource.grafx,
+    url: `${baseUrl}/connectors/${grafxSourceId}`,
+};
+
+const nextGrafxSource: Next.ConnectorGrafxRegistration = {
+    source: ConnectorRegistrationSource.grafx,
+    id: grafxSourceId,
+};
+
+const grafxConnector: ConnectorInstance = {
+    id: 'connector-id',
+    name: 'connector.name',
+    iconUrl: 'icon-url',
+    source: grafxSource,
+};
+
+const nextGrafxConnector: Next.ConnectorInstance = {
+    id: 'connector-id',
+    name: 'connector.name',
+    iconUrl: 'icon-url',
+    source: nextGrafxSource,
+};
+
 const mockEditorApi: EditorAPI = {
-    getConnectorById: async () => getEditorResponseData(castToEditorResponse(null)),
-    getConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
+    getConnectorById: async () => getEditorResponseData(castToEditorResponse(grafxConnector)),
+    getConnectors: async () => getEditorResponseData(castToEditorResponse([nextGrafxConnector])),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     unregisterConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -29,7 +59,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedConnectorController = new ConnectorController(mockEditorApi);
+    mockedConnectorController = new ConnectorController(mockEditorApi, mockConfig);
     jest.spyOn(mockEditorApi, 'getConnectorById');
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
@@ -46,11 +76,8 @@ beforeEach(() => {
 afterEach(() => {
     jest.restoreAllMocks();
 });
+
 describe('ConnectorController', () => {
-    const nonGrafxRegistration: ConnectorRegistration = {
-        source: ConnectorRegistrationSource.url,
-        url: '',
-    };
     const connectorId = 'dam';
     const headerName = 'headerName';
     const headerValue = 'headerValue';
@@ -60,9 +87,19 @@ describe('ConnectorController', () => {
         expect(mockEditorApi.getConnectorById).toHaveBeenCalledTimes(1);
     });
 
+    it('Makes sure getById returns an old connector instance', async () => {
+        const res = await mockedConnectorController.getById(connectorId);
+        expect(res.parsedData).toMatchObject(grafxConnector);
+    });
+
     it('Should call the getAllByType method', async () => {
         await mockedConnectorController.getAllByType(ConnectorType.media);
         expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
+    });
+
+    it('Makes sure getAllByType returns old connector instances', async () => {
+        const res = await mockedConnectorController.getAllByType(ConnectorType.media);
+        expect(res.parsedData).toMatchObject([grafxConnector]);
     });
 
     it('Should be possible to retrieve all connectors of a certain type', async () => {
@@ -77,9 +114,14 @@ describe('ConnectorController', () => {
     });
 
     it('Should be possible to register a non-grafx connector', async () => {
-        await mockedConnectorController.register(nonGrafxRegistration);
+        const nonGrafxSource: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.url,
+            url: baseUrl,
+        };
+
+        await mockedConnectorController.register(nonGrafxSource);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(nonGrafxRegistration));
+        expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(nonGrafxSource));
     });
 
     it('Should be possible to register a grafx connector', async () => {

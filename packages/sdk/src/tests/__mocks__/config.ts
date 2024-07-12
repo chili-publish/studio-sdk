@@ -14,6 +14,7 @@ const mockConfig: ConfigType = {
     onSelectedFrameContentChanged: defaultMockReturn,
     onSelectedFramesContentChanged: defaultMockReturn,
     editorLink: 'https://chili-editor-dev.azurewebsites.net/',
+    chiliEnvironmentUrl: 'https://mock.url/',
     documentType: DocumentType.template,
     onPageSelectionChanged: defaultMockReturn,
     onSelectedLayoutPropertiesChanged: defaultMockReturn,

@@ -9,7 +9,7 @@ import {
     ConnectorLocalRegistration,
     ConnectorRegistrationSource,
     ConnectorUrlRegistration,
-} from '../../types/ConectorTypes';
+} from '../../types/ConnectorTypes';
 
 afterEach(() => {
     jest.restoreAllMocks();
