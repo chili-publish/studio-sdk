@@ -12,7 +12,7 @@ import {
     VariableType,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { makeConnectorSourceForwardsCompatible } from '../utils/MakeConnectorsCompatible';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -479,8 +479,8 @@ export class VariableController {
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-
-        const connectorRegistration = makeConnectorSourceForwardsCompatible(registration);
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const connectorRegistration = connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
 
         return res
             .setImageVariableConnector(id, JSON.stringify(connectorRegistration))
