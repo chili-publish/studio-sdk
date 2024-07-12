@@ -11,11 +11,9 @@ import {
     EngineToConnectorMapping,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import {
-    makeConnectorBackwardsCompatible,
-    makeConnectorsBackwardsCompatible,
-    makeConnectorSourceForwardsCompatible,
-} from '../utils/MakeConnectorsCompatible';
+
+import * as Next from '../next/types/ConnectorTypes';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
@@ -37,6 +35,7 @@ export class ConnectorController {
      */
     #editorAPI: EditorAPI;
     config: ConfigType;
+    connectorCompatibilityTools: ConnectorCompatibilityTools;
 
     /**
      * @ignore
@@ -44,6 +43,7 @@ export class ConnectorController {
     constructor(editorAPI: EditorAPI, config: ConfigType) {
         this.#editorAPI = editorAPI;
         this.config = config;
+        this.connectorCompatibilityTools = new ConnectorCompatibilityTools();
     }
 
     /**
@@ -56,16 +56,16 @@ export class ConnectorController {
         const res = await this.#editorAPI;
         return res
             .getConnectorById(id)
-            .then((result) => getEditorResponseData<ConnectorInstance>(result))
+            .then((result) => getEditorResponseData(result))
             .then((resp) => {
                 const update = resp;
                 if (update.parsedData) {
-                    update.parsedData = makeConnectorBackwardsCompatible(
-                        update.parsedData,
+                    update.parsedData = this.connectorCompatibilityTools.makeConnectorBackwardsCompatible(
+                        update.parsedData as Next.ConnectorInstance,
                         this.config.chiliEnvironmentUrl,
                     );
                 }
-                return update;
+                return update as EditorResponse<ConnectorInstance>;
             });
     };
 
@@ -79,16 +79,16 @@ export class ConnectorController {
         const res = await this.#editorAPI;
         return res
             .getConnectors(type)
-            .then((result) => getEditorResponseData<ConnectorInstance[]>(result))
+            .then((result) => getEditorResponseData(result))
             .then((resp) => {
                 const update = resp;
                 if (update.parsedData) {
-                    update.parsedData = makeConnectorsBackwardsCompatible(
-                        update.parsedData,
+                    update.parsedData = this.connectorCompatibilityTools.makeConnectorsBackwardsCompatible(
+                        update.parsedData as Next.ConnectorInstance[],
                         this.config.chiliEnvironmentUrl,
                     );
                 }
-                return update;
+                return update as EditorResponse<ConnectorInstance[]>;
             });
     };
 
@@ -102,7 +102,8 @@ export class ConnectorController {
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
 
-        const connectorRegistration = makeConnectorSourceForwardsCompatible(registration);
+        const connectorRegistration =
+            this.connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
 
         return res
             .registerConnector(JSON.stringify(connectorRegistration))

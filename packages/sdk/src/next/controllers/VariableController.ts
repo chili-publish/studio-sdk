@@ -6,7 +6,7 @@ import {
     ConnectorGrafxRegistration,
     ConnectorLocalRegistration,
     ConnectorUrlRegistration,
-} from '../types/ConectorTypes';
+} from '../types/ConnectorTypes';
 
 export class VariableController {
     /**

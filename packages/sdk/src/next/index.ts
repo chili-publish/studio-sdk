@@ -4,4 +4,4 @@ export type {
     ConnectorGrafxRegistration,
     ConnectorUrlRegistration,
     ConnectorLocalRegistration,
-} from './types/ConectorTypes';
+} from './types/ConnectorTypes';

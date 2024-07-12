@@ -4,7 +4,7 @@ import {
     ConnectorLocalRegistration,
     ConnectorType,
     ConnectorUrlRegistration,
-} from '../types/ConectorTypes';
+} from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../../utils/EditorResponseData';
 import { EditorAPI, Id } from '../../types/CommonTypes';
 
