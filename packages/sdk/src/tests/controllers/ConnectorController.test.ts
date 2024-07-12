@@ -1,4 +1,6 @@
 import { ConnectorController } from '../../controllers/ConnectorController';
+import * as Next from '../../next/types/ConnectorTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import {
     ConnectorInstance,
     ConnectorMapping,
@@ -10,10 +12,8 @@ import {
     ConnectorType,
     EngineToConnectorMapping,
 } from '../../types/ConnectorTypes';
-import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import mockConfig from '../__mocks__/config';
-import * as Next from '../../next/types/ConnectorTypes';
 
 let mockedConnectorController: ConnectorController;
 
@@ -88,7 +88,7 @@ describe('ConnectorController', () => {
     });
 
     it('Makes sure getById returns an old connector instance', async () => {
-        const res = await mockedConnectorController.getById(connectorId);
+        const res: EditorResponse<ConnectorInstance> = await mockedConnectorController.getById(connectorId);
         expect(res.parsedData).toMatchObject(grafxConnector);
     });
 
@@ -98,7 +98,9 @@ describe('ConnectorController', () => {
     });
 
     it('Makes sure getAllByType returns old connector instances', async () => {
-        const res = await mockedConnectorController.getAllByType(ConnectorType.media);
+        const res: EditorResponse<ConnectorInstance[]> = await mockedConnectorController.getAllByType(
+            ConnectorType.media,
+        );
         expect(res.parsedData).toMatchObject([grafxConnector]);
     });
 

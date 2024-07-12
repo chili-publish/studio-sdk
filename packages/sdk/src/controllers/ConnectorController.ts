@@ -56,16 +56,16 @@ export class ConnectorController {
         const res = await this.#editorAPI;
         return res
             .getConnectorById(id)
-            .then((result) => getEditorResponseData(result))
+            .then((result) => getEditorResponseData<Next.ConnectorInstance>(result))
             .then((resp) => {
-                const update = resp;
-                if (update.parsedData) {
-                    update.parsedData = this.connectorCompatibilityTools.makeConnectorBackwardsCompatible(
-                        update.parsedData as Next.ConnectorInstance,
+                const update: EditorResponse<ConnectorInstance> = { ...resp, parsedData: null };
+                if (resp.parsedData) {
+                    update.parsedData = this.connectorCompatibilityTools.makeConnectorsBackwardsCompatible(
+                        [resp.parsedData],
                         this.config.chiliEnvironmentUrl,
-                    );
+                    )[0];
                 }
-                return update as EditorResponse<ConnectorInstance>;
+                return update;
             });
     };
 
@@ -79,16 +79,16 @@ export class ConnectorController {
         const res = await this.#editorAPI;
         return res
             .getConnectors(type)
-            .then((result) => getEditorResponseData(result))
+            .then((result) => getEditorResponseData<Next.ConnectorInstance[]>(result))
             .then((resp) => {
-                const update = resp;
-                if (update.parsedData) {
+                const update: EditorResponse<ConnectorInstance[]> = { ...resp, parsedData: null };
+                if (resp.parsedData) {
                     update.parsedData = this.connectorCompatibilityTools.makeConnectorsBackwardsCompatible(
-                        update.parsedData as Next.ConnectorInstance[],
+                        resp.parsedData,
                         this.config.chiliEnvironmentUrl,
                     );
                 }
-                return update as EditorResponse<ConnectorInstance[]>;
+                return update;
             });
     };
 
