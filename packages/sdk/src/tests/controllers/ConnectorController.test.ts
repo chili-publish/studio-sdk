@@ -45,7 +45,7 @@ const nextGrafxConnector: Next.ConnectorInstance = {
 };
 
 const mockEditorApi: EditorAPI = {
-    getConnectorById: async () => getEditorResponseData(castToEditorResponse(grafxConnector)),
+    getConnectorById: async () => getEditorResponseData(castToEditorResponse(nextGrafxConnector)),
     getConnectors: async () => getEditorResponseData(castToEditorResponse([nextGrafxConnector])),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
     unregisterConnector: async () => getEditorResponseData(castToEditorResponse(null)),
