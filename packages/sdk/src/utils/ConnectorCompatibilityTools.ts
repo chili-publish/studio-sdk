@@ -17,7 +17,13 @@ export class ConnectorCompatibilityTools {
             return registration;
         }
 
-        const pathChunks = registration.url.split('/');
+        let url = registration.url;
+
+        while (url.endsWith('/')) {
+            url = url.substring(0, url.length - 1);
+        }
+
+        const pathChunks = url.split('/');
         // `RemoteConnectorId` is always the very last part of the URL
         const remoteConnectorId = pathChunks[pathChunks.length - 1];
 
