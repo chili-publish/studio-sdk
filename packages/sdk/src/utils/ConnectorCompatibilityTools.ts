@@ -1,9 +1,4 @@
-import {
-    ConnectorGrafxRegistration,
-    ConnectorInstance,
-    ConnectorRegistration,
-    ConnectorRegistrationSource,
-} from '../types/ConnectorTypes';
+import { ConnectorInstance, ConnectorRegistration, ConnectorRegistrationSource } from '../types/ConnectorTypes';
 import * as Next from '../next/types/ConnectorTypes';
 
 export class ConnectorCompatibilityTools {
@@ -30,13 +25,13 @@ export class ConnectorCompatibilityTools {
     };
 
     makeMultipleConnectorsBackwardsCompatible = (
-        connectors: (ConnectorInstance | Next.ConnectorInstance)[],
+        connectors: Next.ConnectorInstance[],
         baseUrl: string | undefined,
     ): ConnectorInstance[] =>
         connectors.map((connector) => this.makeSingleConnectorBackwardsCompatible(connector, baseUrl));
 
     makeSingleConnectorBackwardsCompatible = (
-        connector: ConnectorInstance | Next.ConnectorInstance,
+        connector: Next.ConnectorInstance,
         baseUrl: string | undefined,
     ): ConnectorInstance => {
         if (connector.source.source != ConnectorRegistrationSource.grafx) {
@@ -56,13 +51,9 @@ export class ConnectorCompatibilityTools {
      * we generate that `url` from the `baseUrl` and `id`
      * **/
     makeConnectorSourceBackwardsCompatible = (
-        connector: ConnectorGrafxRegistration | Next.ConnectorGrafxRegistration,
+        connector: Next.ConnectorGrafxRegistration,
         baseUrl: string | undefined,
     ): ConnectorRegistration => {
-        if (!this.isSourceMigrated(connector)) {
-            return connector;
-        }
-
         let url = baseUrl;
 
         while (url?.endsWith('/')) {
