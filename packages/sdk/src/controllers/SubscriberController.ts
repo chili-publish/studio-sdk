@@ -3,6 +3,7 @@ import { MeasurementUnit } from '../types/LayoutTypes';
 import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { ToolType } from '../utils/enums';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
@@ -315,7 +316,12 @@ export class SubscriberController {
      */
     onConnectorsChanged = (connectors: string) => {
         const callBack = this.config.onConnectorsChanged;
-        callBack && callBack(JSON.parse(connectors));
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const compatibleConnectors = connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
+            JSON.parse(connectors),
+            this.config.chiliEnvironmentUrl,
+        );
+        callBack && callBack(compatibleConnectors);
     };
 
     /**

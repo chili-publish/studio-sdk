@@ -1,6 +1,8 @@
 import {
     ActionEditorEvent,
     BarcodeValidationResult,
+    ConnectorInstance,
+    ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
     Id,
@@ -29,6 +31,7 @@ import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import * as Next from '../../next/types/ConnectorTypes';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -240,6 +243,42 @@ describe('SubscriberController', () => {
         const connectors = JSON.stringify([{ id: 'id', name: 'name', source: ConnectorRegistrationSource.local }]);
         await mockedSubscriberController.onConnectorsChanged(connectors);
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(connectors));
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
+    });
+    it('onConnectorsChanged migrates Next.ConnectorInstance', async () => {
+        const grafxSourceId = 'grafx-id';
+        // Can't mock it on EditorApi
+        const baseUrl = 'undefined';
+
+        const nextGrafxSource: Next.ConnectorGrafxRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            id: grafxSourceId,
+        };
+
+        const nextGrafxConnector: Next.ConnectorInstance = {
+            id: 'connector-id',
+            name: 'connector.name',
+            iconUrl: 'icon-url',
+            source: nextGrafxSource,
+        };
+
+        const grafxSource: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            url: `${baseUrl}/connectors/${grafxSourceId}`,
+        };
+
+        const grafxConnector: ConnectorInstance = {
+            id: 'connector-id',
+            name: 'connector.name',
+            iconUrl: 'icon-url',
+            source: grafxSource,
+        };
+
+        const connectors = JSON.stringify([nextGrafxConnector]);
+        const expectedConnectors = JSON.stringify([grafxConnector]);
+
+        await mockedSubscriberController.onConnectorsChanged(connectors);
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(expectedConnectors));
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to onZoomChanged', async () => {
