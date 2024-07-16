@@ -4,6 +4,7 @@ import { ListVariable, ListVariableItem, Variable, VariableType } from '../types
 import { ViewMode } from '../types/ViewModeTypes';
 import { ToolType } from '../utils/enums';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
@@ -18,8 +19,14 @@ export class SubscriberController {
     /**
      * @ignore
      */
-    constructor(config: ConfigType) {
+    private localConfig: Map<string, string>;
+
+    /**
+     * @ignore
+     */
+    constructor(config: ConfigType, localConfig: Map<string, string>) {
         this.config = config;
+        this.localConfig = localConfig;
     }
 
     /**
@@ -319,7 +326,7 @@ export class SubscriberController {
         const connectorCompatibilityTools = new ConnectorCompatibilityTools();
         const compatibleConnectors = connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
             JSON.parse(connectors),
-            this.config.chiliEnvironmentUrl,
+            this.localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
         );
         callBack && callBack(compatibleConnectors);
     };

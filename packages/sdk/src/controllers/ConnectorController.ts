@@ -1,4 +1,4 @@
-import { ConfigType, ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
+import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorInstance,
     ConnectorMappingDirection,
@@ -14,6 +14,7 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 
 import * as Next from '../next/types/ConnectorTypes';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
@@ -34,15 +35,15 @@ export class ConnectorController {
      * @ignore
      */
     #editorAPI: EditorAPI;
-    #config: ConfigType;
+    #localConfig: Map<string, string>;
     #connectorCompatibilityTools: ConnectorCompatibilityTools;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, config: ConfigType) {
+    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
         this.#editorAPI = editorAPI;
-        this.#config = config;
+        this.#localConfig = localConfig;
         this.#connectorCompatibilityTools = new ConnectorCompatibilityTools();
     }
 
@@ -62,7 +63,7 @@ export class ConnectorController {
                 if (resp.parsedData) {
                     update.parsedData = this.#connectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(
                         resp.parsedData,
-                        this.#config.chiliEnvironmentUrl,
+                        this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
                     );
                 }
                 return update;
@@ -85,7 +86,7 @@ export class ConnectorController {
                 if (resp.parsedData) {
                     update.parsedData = this.#connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
                         resp.parsedData,
-                        this.#config.chiliEnvironmentUrl,
+                        this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
                     );
                 }
                 return update;
