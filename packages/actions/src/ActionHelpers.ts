@@ -357,7 +357,7 @@ function setNumberVariableThousandsSeparator(variableName: string | Variable, se
  * - Format `cccc, MMMM d, yyyy` will display `Thursday, October 12, 1815` for the `en_US` language
  * - Format `cccc, MMMM d, yyyy` will display `donderdag, oktober 12, 1815` for the `nl` language
  *
- * Patterns which output words such as `MM`, `MMM`, `MMMM`, `cc` and `ccc` will
+ * Patterns which output words such as `MMM`, `MMMM`, `ccc` and `cccc` will
  * differ depending on chosen language (default is `en_US`).
  *
  * @param {string | Variable} variableName - The name of the date variable or a variable object.
