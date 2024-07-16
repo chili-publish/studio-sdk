@@ -13,16 +13,15 @@ import {
     EngineToConnectorMapping,
 } from '../../types/ConnectorTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import mockConfig from '../__mocks__/config';
+import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 
 let mockedConnectorController: ConnectorController;
 
 const grafxSourceId = 'grafx-id';
-const baseUrl = 'https://mock.url';
 
 const grafxSource: ConnectorRegistration = {
     source: ConnectorRegistrationSource.grafx,
-    url: `${baseUrl}/connectors/${grafxSourceId}`,
+    url: `${mockBaseUrl}/connectors/${grafxSourceId}`,
 };
 
 const nextGrafxSource: Next.ConnectorGrafxRegistration = {
@@ -59,7 +58,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedConnectorController = new ConnectorController(mockEditorApi, mockConfig);
+    mockedConnectorController = new ConnectorController(mockEditorApi, mockLocalConfig);
     jest.spyOn(mockEditorApi, 'getConnectorById');
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
@@ -118,7 +117,7 @@ describe('ConnectorController', () => {
     it('Should be possible to register a non-grafx connector', async () => {
         const nonGrafxSource: ConnectorRegistration = {
             source: ConnectorRegistrationSource.url,
-            url: baseUrl,
+            url: mockBaseUrl,
         };
 
         await mockedConnectorController.register(nonGrafxSource);
