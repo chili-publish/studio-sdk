@@ -17,7 +17,7 @@ import { Variable } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { Viewport } from '../types/ViewportTypes';
 import { ToolType } from './Enums';
-import { EventSubscription } from './EventSubscription';
+import { EngineEvent } from './EngineEvent';
 
 export class ConfigHelper {
     /**
@@ -27,7 +27,7 @@ export class ConfigHelper {
      * @returns The runtime configuration object.
      */
     static createRuntimeConfig(config: ConfigType): RuntimeConfigType {
-        // we need a reference to the clone object in the eventsubscriptions, so we need to create the object in 2 steps
+        // we need a reference to the clone object in the engineEvent, so we need to create the object in 2 steps
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const clone: RuntimeConfigType = { ...config };
@@ -53,129 +53,131 @@ export class ConfigHelper {
                 }),
         };
         clone.handlers = {
-            onAuthExpired: new EventSubscription<
-                (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>
-            >(() => clone.onAuthExpired, clone.logging?.logger),
-            onViewportRequested: new EventSubscription<() => Viewport | null>(
+            onAuthExpired: new EngineEvent<(authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>>(
+                () => clone.onAuthExpired,
+                clone.logging?.logger,
+            ),
+            onViewportRequested: new EngineEvent<() => Viewport | null>(
                 () => clone.onViewportRequested,
                 clone.logging?.logger,
             ),
         };
         clone.events = {
-            onActionsChanged: new EventSubscription<(state: DocumentAction[]) => void>(
+            onActionsChanged: new EngineEvent<(state: DocumentAction[]) => void>(
                 () => clone.onActionsChanged,
                 clone.logging?.logger,
             ),
-            onStateChanged: new EventSubscription<() => void>(() => clone.onStateChanged, clone.logging?.logger),
+            onStateChanged: new EngineEvent<() => void>(() => clone.onStateChanged, clone.logging?.logger),
 
-            onDocumentLoaded: new EventSubscription<() => void>(() => clone.onDocumentLoaded, clone.logging?.logger),
-            onSelectedFramesLayoutChanged: new EventSubscription<(states: FrameLayoutType[]) => void>(
+            onDocumentLoaded: new EngineEvent<() => void>(() => clone.onDocumentLoaded, clone.logging?.logger),
+            onSelectedFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => void>(
                 () => clone.onSelectedFramesLayoutChanged,
                 clone.logging?.logger,
             ),
-            onSelectedFramesContentChanged: new EventSubscription<(state: Frame[]) => void>(
+            onSelectedFramesContentChanged: new EngineEvent<(state: Frame[]) => void>(
                 () => clone.onSelectedFramesContentChanged,
                 clone.logging?.logger,
             ),
-            onPageSelectionChanged: new EventSubscription<() => void>(
+            onPageSelectionChanged: new EngineEvent<() => void>(
                 () => clone.onPageSelectionChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutPropertiesChanged: new EventSubscription<(state: LayoutPropertiesType) => void>(
+            onSelectedLayoutPropertiesChanged: new EngineEvent<(state: LayoutPropertiesType) => void>(
                 () => clone.onSelectedLayoutPropertiesChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutUnitChanged: new EventSubscription<(unit: MeasurementUnit) => void>(
+            onSelectedLayoutUnitChanged: new EngineEvent<(unit: MeasurementUnit) => void>(
                 () => clone.onSelectedLayoutUnitChanged,
                 clone.logging?.logger,
             ),
-            onScrubberPositionChanged: new EventSubscription<(state: AnimationPlaybackType) => void>(
+            onScrubberPositionChanged: new EngineEvent<(state: AnimationPlaybackType) => void>(
                 () => clone.onScrubberPositionChanged,
                 clone.logging?.logger,
             ),
-            onFrameAnimationsChanged: new EventSubscription<(animationState: FrameAnimationType[]) => void>(
+            onFrameAnimationsChanged: new EngineEvent<(animationState: FrameAnimationType[]) => void>(
                 () => clone.onFrameAnimationsChanged,
                 clone.logging?.logger,
             ),
-            onVariableListChanged: new EventSubscription<(variableList: Variable[]) => void>(
+            onVariableListChanged: new EngineEvent<(variableList: Variable[]) => void>(
                 () => clone.onVariableListChanged,
                 clone.logging?.logger,
             ),
-            onSelectedToolChanged: new EventSubscription<(tool: ToolType) => void>(
+            onSelectedToolChanged: new EngineEvent<(tool: ToolType) => void>(
                 () => clone.onSelectedToolChanged,
                 clone.logging?.logger,
             ),
-            onUndoStackStateChanged: new EventSubscription<(undoStackState: UndoState) => void>(
+            onUndoStackStateChanged: new EngineEvent<(undoStackState: UndoState) => void>(
                 () => clone.onUndoStackStateChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutFramesChanged: new EventSubscription<(frames: SelectedLayoutFrame[]) => void>(
+            onSelectedLayoutFramesChanged: new EngineEvent<(frames: SelectedLayoutFrame[]) => void>(
                 () => clone.onSelectedLayoutFramesChanged,
                 clone.logging?.logger,
             ),
-            onSelectedTextStyleChanged: new EventSubscription<(styles: SelectedTextStyle) => void>(
+            onSelectedTextStyleChanged: new EngineEvent<(styles: SelectedTextStyle) => void>(
                 () => clone.onSelectedTextStyleChanged,
                 clone.logging?.logger,
             ),
-            onColorsChanged: new EventSubscription<(colors: DocumentColor[]) => void>(
+            onColorsChanged: new EngineEvent<(colors: DocumentColor[]) => void>(
                 () => clone.onColorsChanged,
                 clone.logging?.logger,
             ),
-            onParagraphStylesChanged: new EventSubscription<(paragraphStyles: ParagraphStyle[]) => void>(
+            onParagraphStylesChanged: new EngineEvent<(paragraphStyles: ParagraphStyle[]) => void>(
                 () => clone.onParagraphStylesChanged,
                 clone.logging?.logger,
             ),
-            onCharacterStylesChanged: new EventSubscription<(characterStyles: CharacterStyle[]) => void>(
+            onCharacterStylesChanged: new EngineEvent<(characterStyles: CharacterStyle[]) => void>(
                 () => clone.onCharacterStylesChanged,
                 clone.logging?.logger,
             ),
-            onFontFamiliesChanged: new EventSubscription<(fontFamilies: DocumentFontFamily[]) => void>(
+            onFontFamiliesChanged: new EngineEvent<(fontFamilies: DocumentFontFamily[]) => void>(
                 () => clone.onFontFamiliesChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutIdChanged: new EventSubscription<(layoutId: string) => void>(
+            onSelectedLayoutIdChanged: new EngineEvent<(layoutId: string) => void>(
                 () => clone.onSelectedLayoutIdChanged,
                 clone.logging?.logger,
             ),
-            onLayoutsChanged: new EventSubscription<(layouts: LayoutListItemType[]) => void>(
+            onLayoutsChanged: new EngineEvent<(layouts: LayoutListItemType[]) => void>(
                 () => clone.onLayoutsChanged,
                 clone.logging?.logger,
             ),
-            onConnectorEvent: new EventSubscription<(event: ConnectorEvent) => void>(
+            onConnectorEvent: new EngineEvent<(event: ConnectorEvent) => void>(
                 () => clone.onConnectorEvent,
                 clone.logging?.logger,
             ),
-            onConnectorsChanged: new EventSubscription<(connectors: ConnectorInstance[]) => void>(
+            onConnectorsChanged: new EngineEvent<(connectors: ConnectorInstance[]) => void>(
                 () => clone.onConnectorsChanged,
                 clone.logging?.logger,
             ),
-            onZoomChanged: new EventSubscription<(scaleFactor: number) => void>(
+            onZoomChanged: new EngineEvent<(scaleFactor: number) => void>(
                 () => clone.onZoomChanged,
                 clone.logging?.logger,
             ),
-            onPageSizeChanged: new EventSubscription<(pageSize: PageSize) => void>(
+            onPageSizeChanged: new EngineEvent<(pageSize: PageSize) => void>(
                 () => clone.onPageSizeChanged,
                 clone.logging?.logger,
             ),
-            onShapeCornerRadiusChanged: new EventSubscription<(cornerRadius: CornerRadiusUpdateModel) => void>(
+            onShapeCornerRadiusChanged: new EngineEvent<(cornerRadius: CornerRadiusUpdateModel) => void>(
                 () => clone.onShapeCornerRadiusChanged,
                 clone.logging?.logger,
             ),
-            onCropActiveFrameIdChanged: new EventSubscription<(id?: Id) => void>(
+            onCropActiveFrameIdChanged: new EngineEvent<(id?: Id) => void>(
                 () => clone.onCropActiveFrameIdChanged,
                 clone.logging?.logger,
             ),
-            onAsyncError: new EventSubscription<(asyncError: AsyncError) => void>(
+            onAsyncError: new EngineEvent<(asyncError: AsyncError) => void>(
                 () => clone.onAsyncError,
                 clone.logging?.logger,
             ),
-            onViewModeChanged: new EventSubscription<(tool: ViewMode) => void>(
+            onViewModeChanged: new EngineEvent<(tool: ViewMode) => void>(
                 () => clone.onViewModeChanged,
                 clone.logging?.logger,
             ),
-            onBarcodeValidationChanged: new EventSubscription<
-                (validationResults: BarcodeFrameValidationResult[]) => void
-            >(() => clone.onBarcodeValidationChanged, clone.logging?.logger),
+            onBarcodeValidationChanged: new EngineEvent<(validationResults: BarcodeFrameValidationResult[]) => void>(
+                () => clone.onBarcodeValidationChanged,
+                clone.logging?.logger,
+            ),
         };
         return clone;
     }

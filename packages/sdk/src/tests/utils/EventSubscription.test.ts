@@ -1,8 +1,9 @@
 import { CallbackErrorBehavior, LogLevel, LogCategory } from '../../types/CommonTypes';
-import { EventSubscription, EngineCallbackHandler } from '../../utils/EventSubscription';
+import { EngineCallbackHandler } from '../../utils/EngineCallbackHandler';
+import { EngineEvent } from '../../utils/EngineEvent';
 import { ConfigHelper } from '../../utils/ConfigHelper';
 
-describe('SingleSubscription', () => {
+describe('EngineCallbackHandler', () => {
     test('When handler has no value, we expect to return null', () => {
         const subscription = new EngineCallbackHandler(() => undefined);
 
@@ -12,11 +13,11 @@ describe('SingleSubscription', () => {
     });
 });
 
-describe('EventSubscription', () => {
-    let subscription: EventSubscription<(...args: unknown[]) => unknown>;
+describe('EngineEvent', () => {
+    let subscription: EngineEvent<(...args: unknown[]) => unknown>;
 
     beforeEach(() => {
-        subscription = new EventSubscription();
+        subscription = new EngineEvent();
     });
 
     test('should register and execute a callback', () => {
@@ -53,7 +54,7 @@ describe('EventSubscription', () => {
     test('should handle legacy event handler', () => {
         const legacyCallback = jest.fn();
         const legacyEventHandler = () => legacyCallback;
-        subscription = new EventSubscription(legacyEventHandler);
+        subscription = new EngineEvent(legacyEventHandler);
 
         subscription.trigger('arg1', 'arg2');
 
@@ -74,7 +75,7 @@ describe('EventSubscription', () => {
         const callback2 = jest.fn();
         const legacyCallback = jest.fn();
         const legacyEventHandler = () => legacyCallback;
-        subscription = new EventSubscription(legacyEventHandler);
+        subscription = new EngineEvent(legacyEventHandler);
 
         subscription.registerCallback(callback1);
         subscription.registerCallback(callback2);
@@ -124,7 +125,7 @@ describe('EventHelper', () => {
     });
 });
 
-describe('EventSubscription Error Handling', () => {
+describe('EngineEvent Error Handling', () => {
     let mockLogger: jest.Mock;
     let legacyEventHandler: jest.Mock;
 
@@ -134,14 +135,14 @@ describe('EventSubscription Error Handling', () => {
     });
 
     it('logs an error when a callback errors out with LOG behavior', () => {
-        const eventSubscription = new EventSubscription(() => undefined, mockLogger);
+        const engineEvent = new EngineEvent(() => undefined, mockLogger);
         const errorCallback = jest.fn(() => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.log);
+        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.log);
 
-        eventSubscription.trigger();
+        engineEvent.trigger();
 
         expect(mockLogger).toHaveBeenCalledWith(
             LogLevel.error,
@@ -152,26 +153,26 @@ describe('EventSubscription Error Handling', () => {
     });
 
     it('throws an error when a callback errors out with THROW behavior', () => {
-        const eventSubscription = new EventSubscription(() => undefined, mockLogger);
+        const engineEvent = new EngineEvent(() => undefined, mockLogger);
         const errorCallback = jest.fn(() => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.throw);
+        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.throw);
 
-        expect(() => eventSubscription.trigger()).toThrow('Test Error');
+        expect(() => engineEvent.trigger()).toThrow('Test Error');
         expect(errorCallback).toHaveBeenCalled();
     });
 
     it('removes the callback when a callback errors out with REMOVE behavior', () => {
-        const eventSubscription = new EventSubscription(() => undefined, mockLogger);
+        const engineEvent = new EngineEvent(() => undefined, mockLogger);
         const errorCallback = jest.fn(() => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.remove);
+        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.remove);
 
-        eventSubscription.trigger();
+        engineEvent.trigger();
 
         expect(mockLogger).toHaveBeenCalledWith(
             LogLevel.warn,
@@ -179,43 +180,43 @@ describe('EventSubscription Error Handling', () => {
             expect.stringContaining('Removed callback'),
         );
         expect(errorCallback).toHaveBeenCalled();
-        expect(() => eventSubscription.trigger()).not.toThrow();
+        expect(() => engineEvent.trigger()).not.toThrow();
     });
 
     it('executes legacy event handler if provided', () => {
         const legacyCallback = jest.fn();
         legacyEventHandler.mockReturnValue(legacyCallback);
 
-        const eventSubscription = new EventSubscription(legacyEventHandler, mockLogger);
+        const engineEvent = new EngineEvent(legacyEventHandler, mockLogger);
 
-        eventSubscription.trigger();
+        engineEvent.trigger();
 
         expect(legacyEventHandler).toHaveBeenCalled();
         expect(legacyCallback).toHaveBeenCalled();
     });
 
     it('does not log if no logger provided for LOG behavior', () => {
-        const eventSubscription = new EventSubscription(() => undefined);
+        const engineEvent = new EngineEvent(() => undefined);
         const errorCallback = jest.fn(() => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.log);
+        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.log);
 
-        eventSubscription.trigger();
+        engineEvent.trigger();
 
         expect(mockLogger).not.toHaveBeenCalled();
     });
 
     it('does not log if no logger provided for REMOVE behavior', () => {
-        const eventSubscription = new EventSubscription(() => undefined);
+        const engineEvent = new EngineEvent(() => undefined);
         const errorCallback = jest.fn(() => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.remove);
+        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.remove);
 
-        eventSubscription.trigger();
+        engineEvent.trigger();
 
         expect(mockLogger).not.toHaveBeenCalled();
     });
