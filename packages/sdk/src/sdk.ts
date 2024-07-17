@@ -37,7 +37,7 @@ import { ClipboardController } from './controllers/ClipboardController';
 import { BarcodeController } from './controllers/BarcodeController';
 import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
-import { EventHelper } from './utils/EventSubscription';
+import { ConfigHelper } from './utils/ConfigHelper';
 
 let connection: Connection;
 
@@ -90,7 +90,7 @@ export class SDK {
      * @param config The configuration object where the SDK and editor can get configured
      */
     constructor(config: ConfigType) {
-        this.config = EventHelper.ensureSubscriptions(config);
+        this.config = ConfigHelper.createRuntimeConfig(config);
 
         this.connection = connection;
         this.editorAPI = connection?.promise.then((child) => {

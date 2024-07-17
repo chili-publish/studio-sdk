@@ -1,10 +1,10 @@
 import { RuntimeConfigType } from '../../types/CommonTypes';
 import { DocumentType } from '../../types/DocumentTypes';
-import { EventHelper } from '../../utils/EventSubscription';
+import { ConfigHelper } from '../../utils/ConfigHelper';
 
 export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
-const mockConfig: RuntimeConfigType = EventHelper.ensureSubscriptions({
+const mockConfig: RuntimeConfigType = ConfigHelper.createRuntimeConfig({
     onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
     onAuthExpired: defaultMockReturn,

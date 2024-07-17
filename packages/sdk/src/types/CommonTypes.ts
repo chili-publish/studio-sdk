@@ -16,10 +16,9 @@ import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 import { Viewport } from './ViewportTypes';
-import { EventSubscription, SingleSubscription } from '../utils/EventSubscription';
+import { EventSubscription, EngineCallbackHandler } from '../utils/EventSubscription';
 
 export type Id = string;
-
 export type BaseConfigType = {
     editorLink?: string;
     editorId?: string;
@@ -30,12 +29,50 @@ export type BaseConfigType = {
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
+    logger?: LoggerFunction;
 };
 
+export type LoggerFunction = (logLevel: LogLevel, category: LogCategory, message: string) => void;
+
+export enum LogLevel {
+    INFO = 'info',
+    WARN = 'warn',
+    ERROR = 'error',
+}
+
+export enum LogCategory {
+    GENERAL = 'general',
+    CONNECTOR = 'connector',
+    EVENT = 'event',
+}
+
+/**
+ * Defines the behavior when encountering an error in the event / handler callback.
+ */
+export enum CallbackErrorBehavior {
+    /**
+     * Throws an error when encountering an error in a callback.
+     */
+    THROW = 'throw',
+
+    /**
+     * Logs the error when encountering an error in a callback.
+     */
+    LOG = 'log',
+
+    /**
+     * Removes the callback when encountering an error in a callback.
+     */
+    REMOVE = 'remove',
+}
+
 export type ManagedCallbacksConfigType = {
+    errorBehavior: CallbackErrorBehavior;
     handlers: {
-        onAuthExpired: SingleSubscription<(authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>>;
-        onViewportRequested: SingleSubscription<() => Viewport | null>;
+        onAuthExpired: EngineCallbackHandler<
+            (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>
+        >;
+        onViewportRequested: EngineCallbackHandler<() => Viewport | null>;
     };
     events: {
         onActionsChanged: EventSubscription<(state: DocumentAction[]) => void>;
