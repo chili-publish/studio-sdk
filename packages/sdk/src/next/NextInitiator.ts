@@ -1,5 +1,5 @@
 import { Connection } from 'penpal';
-import { ConfigType, EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, RuntimeConfigType } from '../types/CommonTypes';
 import { SubscriberController } from './controllers/SubscriberController';
 import { VariableController } from './controllers/VariableController';
 
@@ -13,7 +13,7 @@ import { VariableController } from './controllers/VariableController';
  * this can be referenced in your application as @chili-publish/studio-sdk/lib/src/next
  */
 export class NextInitiator {
-    private config: ConfigType;
+    private config: RuntimeConfigType;
     private connection: Connection;
 
     /**
@@ -29,7 +29,7 @@ export class NextInitiator {
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
      * @param config The configuration object where the SDK and editor can get configured
      */
-    constructor(config: ConfigType, connection: Connection, editorAPI: EditorAPI) {
+    constructor(config: RuntimeConfigType, connection: Connection, editorAPI: EditorAPI) {
         this.config = config;
         this.connection = connection;
         this.editorAPI = editorAPI;

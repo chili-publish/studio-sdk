@@ -3,7 +3,7 @@ import { AdvancedUndoManagerController, UndoManagerController } from '../../cont
 import SDK from '../../sdk';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
-import mockConfig from '../__mocks__/config';
+import mockConfig from '../__mocks__/Config';
 
 describe('UndoManagerController', () => {
     let mockedUndoManagerController: UndoManagerController;
