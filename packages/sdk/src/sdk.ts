@@ -37,7 +37,6 @@ import { BarcodeController } from './controllers/BarcodeController';
 import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
-import { ConfigurationController } from './controllers/ConfigurationController';
 
 let connection: Connection;
 
@@ -109,10 +108,7 @@ export class SDK {
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
 
-        this.configuration = new LocalConfigurationDecorator(
-            new ConfigurationController(this.editorAPI),
-            this.localConfig,
-        );
+        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
         this.subscriber = new SubscriberController(this.config, this.localConfig);
@@ -195,10 +191,7 @@ export class SDK {
         this.barcode = new BarcodeController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new LocalConfigurationDecorator(
-            new ConfigurationController(this.editorAPI),
-            this.localConfig,
-        );
+        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);

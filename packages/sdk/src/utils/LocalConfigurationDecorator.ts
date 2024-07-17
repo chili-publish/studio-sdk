@@ -1,8 +1,9 @@
-import { StudioOptionsDeltaUpdate, WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import { getEditorResponseData } from './EditorResponseData';
 import { ConfigurationController } from '../controllers/ConfigurationController';
+import { EditorAPI } from '../types/CommonTypes';
 
-export class LocalConfigurationDecorator {
+export class LocalConfigurationDecorator extends ConfigurationController {
     /**
      * @ignore
      */
@@ -11,24 +12,19 @@ export class LocalConfigurationDecorator {
     /**
      * @ignore
      */
-    #configurationController: ConfigurationController;
-
-    /**
-     * @ignore
-     */
-    constructor(configurationController: ConfigurationController, localConfig: Map<string, string>) {
-        this.#configurationController = configurationController;
+    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
+        super(editorAPI);
         this.#localConfig = localConfig;
     }
 
     /**
-     * This method returns the value for a given configuration key. If a value was not found in the configuration store
+     * This method returns the value for a given configuration key. If a value was not found in the configuration store,
      * this method returns an error. The key cannot be null.
      * @returns value for a given configuration key
      */
-    getValue = async (key: WellKnownConfigurationKeys | string) => {
+    async getValue(key: WellKnownConfigurationKeys | string) {
         const value = this.#localConfig.get(key);
-        if (value) {
+        if (value != null) {
             return getEditorResponseData<string>(
                 {
                     status: 200,
@@ -40,29 +36,18 @@ export class LocalConfigurationDecorator {
             );
         }
 
-        return this.#configurationController.getValue(key);
-    };
+        return super.getValue(key);
+    }
 
     /**
-     * This method sets, or overrides the value for a given key. Null values are not allowed for both key and value,
+     * This method sets or overrides the value for a given key.
+     * Null values are not allowed for both key and value,
      * using them will result in an error.
      * @returns
      */
-    setValue = async (key: WellKnownConfigurationKeys | string, value: string) => {
+    async setValue(key: WellKnownConfigurationKeys | string, value: string) {
+        const res = super.setValue(key, value);
         this.#localConfig.set(key, value);
-        return this.#configurationController.setValue(key, value);
-    };
-
-    /**
-     * This method updates the studio options. Only defined options are updated, null values are ignored.
-     * @returns
-     */
-    updateStudioOptions = async (options: StudioOptionsDeltaUpdate) =>
-        this.#configurationController.updateStudioOptions(options);
-
-    /**
-     * This method returns the engine session id. This id is unique for this engine session
-     * @returns the engine session id
-     */
-    getEngineSessionId = async () => this.#configurationController.getEngineSessionId();
+        return res;
+    }
 }
