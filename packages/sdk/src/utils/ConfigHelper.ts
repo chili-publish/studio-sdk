@@ -3,13 +3,7 @@ import { AnimationPlaybackType, FrameAnimationType } from '../types/AnimationTyp
 import { BarcodeFrameValidationResult } from '../types/BarcodeTypes';
 import { CharacterStyle } from '../types/CharacterStyleTypes';
 import { DocumentColor } from '../types/ColorStyleTypes';
-import {
-    ConfigType,
-    RuntimeConfigType,
-    SelectedLayoutFrame,
-    Id,
-    AsyncError
-} from '../types/CommonTypes';
+import { ConfigType, RuntimeConfigType, SelectedLayoutFrame, Id, AsyncError, LogLevel } from '../types/CommonTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
 import { UndoState } from '../types/DocumentTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
@@ -23,153 +17,176 @@ import { Variable } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { Viewport } from '../types/ViewportTypes';
 import { ToolType } from './Enums';
-import { EventSubscription, EventSubscriptionBase } from './EventSubscription';
-
+import { EventSubscription } from './EventSubscription';
 
 export class ConfigHelper {
+    /**
+     * Creates a runtime configuration object from the provided configuration object.
+     *
+     * @param config The configuration object to create the runtime configuration object from.
+     * @returns The runtime configuration object.
+     */
     static createRuntimeConfig(config: ConfigType): RuntimeConfigType {
         // we need a reference to the clone object in the eventsubscriptions, so we need to create the object in 2 steps
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const clone: RuntimeConfigType = { ...config };
-        clone.logger = config.logger || ((level, cat, msg) => console.log(`[${cat}] [${level}] ${msg}`));
+        clone.logging = {
+            logLevel: config.logging?.logLevel || LogLevel.ERROR,
+            logger:
+                config.logging?.logger ||
+                ((level, cat, msg) => {
+                    if (!ConfigHelper.isLoggingEnabled(level, clone.logging?.logLevel ?? LogLevel.ERROR)) {
+                        return;
+                    }
+
+                    switch (level) {
+                        case LogLevel.ERROR:
+                            console.error(`[${cat}] [${level}] ${msg}`);
+                            break;
+                        case LogLevel.WARN:
+                            console.warn(`[${cat}] [${level}] ${msg}`);
+                            break;
+                        default:
+                            console.log(`[${cat}] [${level}] ${msg}`);
+                    }
+                }),
+        };
         clone.handlers = {
             onAuthExpired: new EventSubscription<
                 (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>
-            >(() => clone.onAuthExpired, clone.logger),
+            >(() => clone.onAuthExpired, clone.logging?.logger),
             onViewportRequested: new EventSubscription<() => Viewport | null>(
                 () => clone.onViewportRequested,
-                clone.logger
+                clone.logging?.logger,
             ),
         };
         clone.events = {
             onActionsChanged: new EventSubscription<(state: DocumentAction[]) => void>(
                 () => clone.onActionsChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
-            onStateChanged: new EventSubscription<() => void>(() => clone.onStateChanged, clone.logger),
+            onStateChanged: new EventSubscription<() => void>(() => clone.onStateChanged, clone.logging?.logger),
 
-            onDocumentLoaded: new EventSubscription<() => void>(() => clone.onDocumentLoaded, clone.logger),
+            onDocumentLoaded: new EventSubscription<() => void>(() => clone.onDocumentLoaded, clone.logging?.logger),
             onSelectedFramesLayoutChanged: new EventSubscription<(states: FrameLayoutType[]) => void>(
                 () => clone.onSelectedFramesLayoutChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onSelectedFramesContentChanged: new EventSubscription<(state: Frame[]) => void>(
                 () => clone.onSelectedFramesContentChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
-            onPageSelectionChanged: new EventSubscription<() => void>(() => clone.onPageSelectionChanged, clone.logger),
+            onPageSelectionChanged: new EventSubscription<() => void>(
+                () => clone.onPageSelectionChanged,
+                clone.logging?.logger,
+            ),
             onSelectedLayoutPropertiesChanged: new EventSubscription<(state: LayoutPropertiesType) => void>(
                 () => clone.onSelectedLayoutPropertiesChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onSelectedLayoutUnitChanged: new EventSubscription<(unit: MeasurementUnit) => void>(
                 () => clone.onSelectedLayoutUnitChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onScrubberPositionChanged: new EventSubscription<(state: AnimationPlaybackType) => void>(
                 () => clone.onScrubberPositionChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onFrameAnimationsChanged: new EventSubscription<(animationState: FrameAnimationType[]) => void>(
                 () => clone.onFrameAnimationsChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onVariableListChanged: new EventSubscription<(variableList: Variable[]) => void>(
                 () => clone.onVariableListChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onSelectedToolChanged: new EventSubscription<(tool: ToolType) => void>(
                 () => clone.onSelectedToolChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onUndoStackStateChanged: new EventSubscription<(undoStackState: UndoState) => void>(
                 () => clone.onUndoStackStateChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onSelectedLayoutFramesChanged: new EventSubscription<(frames: SelectedLayoutFrame[]) => void>(
                 () => clone.onSelectedLayoutFramesChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onSelectedTextStyleChanged: new EventSubscription<(styles: SelectedTextStyle) => void>(
                 () => clone.onSelectedTextStyleChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onColorsChanged: new EventSubscription<(colors: DocumentColor[]) => void>(
                 () => clone.onColorsChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onParagraphStylesChanged: new EventSubscription<(paragraphStyles: ParagraphStyle[]) => void>(
                 () => clone.onParagraphStylesChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onCharacterStylesChanged: new EventSubscription<(characterStyles: CharacterStyle[]) => void>(
                 () => clone.onCharacterStylesChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onFontFamiliesChanged: new EventSubscription<(fontFamilies: DocumentFontFamily[]) => void>(
                 () => clone.onFontFamiliesChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onSelectedLayoutIdChanged: new EventSubscription<(layoutId: string) => void>(
                 () => clone.onSelectedLayoutIdChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onLayoutsChanged: new EventSubscription<(layouts: LayoutListItemType[]) => void>(
                 () => clone.onLayoutsChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onConnectorEvent: new EventSubscription<(event: ConnectorEvent) => void>(
                 () => clone.onConnectorEvent,
-                clone.logger
+                clone.logging?.logger,
             ),
             onConnectorsChanged: new EventSubscription<(connectors: ConnectorInstance[]) => void>(
                 () => clone.onConnectorsChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onZoomChanged: new EventSubscription<(scaleFactor: number) => void>(
                 () => clone.onZoomChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onPageSizeChanged: new EventSubscription<(pageSize: PageSize) => void>(
                 () => clone.onPageSizeChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onShapeCornerRadiusChanged: new EventSubscription<(cornerRadius: CornerRadiusUpdateModel) => void>(
                 () => clone.onShapeCornerRadiusChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onCropActiveFrameIdChanged: new EventSubscription<(id?: Id) => void>(
                 () => clone.onCropActiveFrameIdChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onAsyncError: new EventSubscription<(asyncError: AsyncError) => void>(
                 () => clone.onAsyncError,
-                clone.logger
+                clone.logging?.logger,
             ),
             onViewModeChanged: new EventSubscription<(tool: ViewMode) => void>(
                 () => clone.onViewModeChanged,
-                clone.logger
+                clone.logging?.logger,
             ),
             onBarcodeValidationChanged: new EventSubscription<
                 (validationResults: BarcodeFrameValidationResult[]) => void
-            >(() => clone.onBarcodeValidationChanged, clone.logger),
+            >(() => clone.onBarcodeValidationChanged, clone.logging?.logger),
         };
         return clone;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    static triggerEvent(event: EventSubscriptionBase | Function | undefined, ...args: any[]): any {
-        if (!event) {
-            return;
+    private static isLoggingEnabled(level: LogLevel, logLevel: LogLevel): boolean {
+        if (logLevel == LogLevel.INFO) {
+            return true;
         }
-
-        if (event instanceof EventSubscription) {
-            return event.trigger(...args);
-        } else if (event instanceof Function) {
-            return event(...args);
+        if (logLevel == LogLevel.WARN && (level == LogLevel.WARN || level == LogLevel.ERROR)) {
+            return true;
         }
-
-        throw new Error('Invalid event type');
+        return logLevel == LogLevel.ERROR && level == LogLevel.ERROR;
     }
 }

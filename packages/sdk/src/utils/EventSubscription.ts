@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-    CallbackErrorBehavior,
-    LoggerFunction,
-    LogLevel,
-    LogCategory,
-} from '../types/CommonTypes';
+import { CallbackErrorBehavior, LoggerFunction, LogLevel, LogCategory } from '../types/CommonTypes';
 
 export class EventSubscriptionBase {}
 
@@ -97,5 +92,3 @@ export class EventSubscription<T extends (...args: any[]) => any> extends Engine
         return `callback_${Math.random().toString(36).substr(2, 9)}`;
     }
 }
-
-

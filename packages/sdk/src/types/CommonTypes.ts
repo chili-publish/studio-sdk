@@ -29,7 +29,10 @@ export type BaseConfigType = {
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
-    logger?: LoggerFunction;
+    logging?: {
+        logLevel?: LogLevel;
+        logger?: LoggerFunction;
+    };
 };
 
 export type LoggerFunction = (logLevel: LogLevel, category: LogCategory, message: string) => void;
@@ -44,6 +47,7 @@ export enum LogCategory {
     GENERAL = 'general',
     CONNECTOR = 'connector',
     EVENT = 'event',
+    ENGINE = 'engine',
 }
 
 /**

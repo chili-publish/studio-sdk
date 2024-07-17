@@ -124,82 +124,99 @@ describe('EventHelper', () => {
     });
 });
 
-
 describe('EventSubscription Error Handling', () => {
     let mockLogger: jest.Mock;
     let legacyEventHandler: jest.Mock;
-  
+
     beforeEach(() => {
-      mockLogger = jest.fn();
-      legacyEventHandler = jest.fn();
+        mockLogger = jest.fn();
+        legacyEventHandler = jest.fn();
     });
-  
+
     it('logs an error when a callback errors out with LOG behavior', () => {
-      const eventSubscription = new EventSubscription(() => undefined, mockLogger);
-      const errorCallback = jest.fn(() => { throw new Error('Test Error'); });
-  
-      eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.LOG);
-  
-      eventSubscription.trigger();
-  
-      expect(mockLogger).toHaveBeenCalledWith(LogLevel.ERROR, LogCategory.EVENT, expect.stringContaining('Error in callback'));
-      expect(errorCallback).toHaveBeenCalled();
+        const eventSubscription = new EventSubscription(() => undefined, mockLogger);
+        const errorCallback = jest.fn(() => {
+            throw new Error('Test Error');
+        });
+
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.LOG);
+
+        eventSubscription.trigger();
+
+        expect(mockLogger).toHaveBeenCalledWith(
+            LogLevel.ERROR,
+            LogCategory.EVENT,
+            expect.stringContaining('Error in callback'),
+        );
+        expect(errorCallback).toHaveBeenCalled();
     });
-  
+
     it('throws an error when a callback errors out with THROW behavior', () => {
-      const eventSubscription = new EventSubscription(() => undefined, mockLogger);
-      const errorCallback = jest.fn(() => { throw new Error('Test Error'); });
-  
-      eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.THROW);
-  
-      expect(() => eventSubscription.trigger()).toThrow('Test Error');
-      expect(errorCallback).toHaveBeenCalled();
+        const eventSubscription = new EventSubscription(() => undefined, mockLogger);
+        const errorCallback = jest.fn(() => {
+            throw new Error('Test Error');
+        });
+
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.THROW);
+
+        expect(() => eventSubscription.trigger()).toThrow('Test Error');
+        expect(errorCallback).toHaveBeenCalled();
     });
-  
+
     it('removes the callback when a callback errors out with REMOVE behavior', () => {
-      const eventSubscription = new EventSubscription(() => undefined, mockLogger);
-      const errorCallback = jest.fn(() => { throw new Error('Test Error'); });
-  
-      const callbackName = eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.REMOVE);
-  
-      eventSubscription.trigger();
-  
-      expect(mockLogger).toHaveBeenCalledWith(LogLevel.WARN, LogCategory.EVENT, expect.stringContaining('Removed callback'));
-      expect(errorCallback).toHaveBeenCalled();
-      expect(() => eventSubscription.trigger()).not.toThrow();
+        const eventSubscription = new EventSubscription(() => undefined, mockLogger);
+        const errorCallback = jest.fn(() => {
+            throw new Error('Test Error');
+        });
+
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.REMOVE);
+
+        eventSubscription.trigger();
+
+        expect(mockLogger).toHaveBeenCalledWith(
+            LogLevel.WARN,
+            LogCategory.EVENT,
+            expect.stringContaining('Removed callback'),
+        );
+        expect(errorCallback).toHaveBeenCalled();
+        expect(() => eventSubscription.trigger()).not.toThrow();
     });
-  
+
     it('executes legacy event handler if provided', () => {
-      const legacyCallback = jest.fn();
-      legacyEventHandler.mockReturnValue(legacyCallback);
-  
-      const eventSubscription = new EventSubscription(legacyEventHandler, mockLogger);
-  
-      eventSubscription.trigger();
-  
-      expect(legacyEventHandler).toHaveBeenCalled();
-      expect(legacyCallback).toHaveBeenCalled();
+        const legacyCallback = jest.fn();
+        legacyEventHandler.mockReturnValue(legacyCallback);
+
+        const eventSubscription = new EventSubscription(legacyEventHandler, mockLogger);
+
+        eventSubscription.trigger();
+
+        expect(legacyEventHandler).toHaveBeenCalled();
+        expect(legacyCallback).toHaveBeenCalled();
     });
-  
+
     it('does not log if no logger provided for LOG behavior', () => {
-      const eventSubscription = new EventSubscription(() => undefined);
-      const errorCallback = jest.fn(() => { throw new Error('Test Error'); });
-  
-      eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.LOG);
-  
-      eventSubscription.trigger();
-  
-      expect(mockLogger).not.toHaveBeenCalled();
+        const eventSubscription = new EventSubscription(() => undefined);
+        const errorCallback = jest.fn(() => {
+            throw new Error('Test Error');
+        });
+
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.LOG);
+
+        eventSubscription.trigger();
+
+        expect(mockLogger).not.toHaveBeenCalled();
     });
-  
+
     it('does not log if no logger provided for REMOVE behavior', () => {
-      const eventSubscription = new EventSubscription(() => undefined);
-      const errorCallback = jest.fn(() => { throw new Error('Test Error'); });
-  
-      eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.REMOVE);
-  
-      eventSubscription.trigger();
-  
-      expect(mockLogger).not.toHaveBeenCalled();
+        const eventSubscription = new EventSubscription(() => undefined);
+        const errorCallback = jest.fn(() => {
+            throw new Error('Test Error');
+        });
+
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.REMOVE);
+
+        eventSubscription.trigger();
+
+        expect(mockLogger).not.toHaveBeenCalled();
     });
-  });
+});
