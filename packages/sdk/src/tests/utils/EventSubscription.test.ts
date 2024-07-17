@@ -13,6 +13,66 @@ describe('EngineCallbackHandler', () => {
     });
 });
 
+describe('EngineEvent with async callbacks', () => {
+    let subscription: EngineEvent<(...args: unknown[]) => Promise<unknown>>;
+
+    beforeEach(() => {
+        subscription = new EngineEvent();
+    });
+
+    test('should register and execute an async callback', async () => {
+        const callback = jest.fn().mockResolvedValue('result');
+        subscription.registerCallback(callback);
+
+        const result = await subscription.trigger('arg1', 'arg2');
+
+        expect(callback).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(result).toBe('result');
+    });
+
+    test('should register multiple async callbacks and execute them', async () => {
+        const callback1 = jest.fn().mockResolvedValue('result1');
+        const callback2 = jest.fn().mockResolvedValue('result2');
+        subscription.registerCallback(callback1);
+        subscription.registerCallback(callback2);
+
+        const result = await subscription.trigger('arg1', 'arg2');
+
+        expect(callback1).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(callback2).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(result).toBe('result2');
+    });
+
+    test('should handle legacy event handler', async () => {
+        const legacyCallback = jest.fn().mockResolvedValue('result');
+        const legacyEventHandler = () => legacyCallback;
+        subscription = new EngineEvent(legacyEventHandler);
+
+        const result = await subscription.trigger('arg1', 'arg2');
+
+        expect(legacyCallback).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(result).toBe('result');
+    });
+
+    test('should execute all registered async callbacks including legacy handler', async () => {
+        const callback1 = jest.fn().mockResolvedValue('result1');
+        const callback2 = jest.fn().mockResolvedValue('result2');
+        const legacyCallback = jest.fn().mockResolvedValue('result3');
+        const legacyEventHandler = () => legacyCallback;
+        subscription = new EngineEvent(legacyEventHandler);
+
+        subscription.registerCallback(callback1);
+        subscription.registerCallback(callback2);
+
+        const result = await subscription.trigger('arg1', 'arg2');
+
+        expect(legacyCallback).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(callback1).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(callback2).toHaveBeenCalledWith('arg1', 'arg2');
+        expect(result).toBe('result2');
+    });
+});
+
 describe('EngineEvent', () => {
     let subscription: EngineEvent<(...args: unknown[]) => unknown>;
 
@@ -102,6 +162,36 @@ describe('EventHelper', () => {
 
         expect(counter).toBe(1);
     });
+    test('should fire and forget', async () => {
+        jest.useFakeTimers(); // Use fake timers
+
+        let counter = 0;
+
+        const runtimeConfig = ConfigHelper.createRuntimeConfig({
+            onActionsChanged: async () => {
+                await new Promise((resolve) => setTimeout(resolve, 100));
+                counter++;
+            },
+        });
+
+        runtimeConfig.events.onActionsChanged.registerCallback(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 1));
+            counter++;
+        });
+
+        runtimeConfig.events.onActionsChanged.trigger([]);
+        expect(counter).toBe(0);
+
+        jest.advanceTimersByTime(1); // Simulate the passage of 50ms
+        await Promise.resolve(); // Allow any pending promises to resolve
+        expect(counter).toBe(1);
+
+        jest.advanceTimersByTime(100); // Simulate the passage of 200ms
+        await Promise.resolve(); // Allow any pending promises to resolve
+        expect(counter).toBe(2);
+
+        jest.useRealTimers(); // Restore real timers
+    });
     test('old (broken) workflow should remain intact', () => {
         let counter = 0;
 
@@ -118,7 +208,6 @@ describe('EventHelper', () => {
         sdk.config.onActionsChanged = () => {
             counter = 100;
         };
-
         sdk.config.events.onActionsChanged.trigger([]);
 
         expect(counter).toBe(100);

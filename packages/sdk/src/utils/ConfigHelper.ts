@@ -3,7 +3,15 @@ import { AnimationPlaybackType, FrameAnimationType } from '../types/AnimationTyp
 import { BarcodeFrameValidationResult } from '../types/BarcodeTypes';
 import { CharacterStyle } from '../types/CharacterStyleTypes';
 import { DocumentColor } from '../types/ColorStyleTypes';
-import { ConfigType, RuntimeConfigType, SelectedLayoutFrame, Id, AsyncError, LogLevel } from '../types/CommonTypes';
+import {
+    ConfigType,
+    RuntimeConfigType,
+    SelectedLayoutFrame,
+    Id,
+    AsyncError,
+    LogLevel,
+    MaybePromise,
+} from '../types/CommonTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
 import { UndoState } from '../types/DocumentTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
@@ -63,121 +71,126 @@ export class ConfigHelper {
             ),
         };
         clone.events = {
-            onActionsChanged: new EngineEvent<(state: DocumentAction[]) => void>(
+            onActionsChanged: new EngineEvent<(state: DocumentAction[]) => MaybePromise<void>>(
                 () => clone.onActionsChanged,
                 clone.logging?.logger,
             ),
-            onStateChanged: new EngineEvent<() => void>(() => clone.onStateChanged, clone.logging?.logger),
+            onStateChanged: new EngineEvent<() => MaybePromise<void>>(
+                () => clone.onStateChanged,
+                clone.logging?.logger,
+            ),
 
-            onDocumentLoaded: new EngineEvent<() => void>(() => clone.onDocumentLoaded, clone.logging?.logger),
-            onSelectedFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => void>(
+            onDocumentLoaded: new EngineEvent<() => MaybePromise<void>>(
+                () => clone.onDocumentLoaded,
+                clone.logging?.logger,
+            ),
+            onSelectedFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>(
                 () => clone.onSelectedFramesLayoutChanged,
                 clone.logging?.logger,
             ),
-            onSelectedFramesContentChanged: new EngineEvent<(state: Frame[]) => void>(
+            onSelectedFramesContentChanged: new EngineEvent<(state: Frame[]) => MaybePromise<void>>(
                 () => clone.onSelectedFramesContentChanged,
                 clone.logging?.logger,
             ),
-            onPageSelectionChanged: new EngineEvent<() => void>(
+            onPageSelectionChanged: new EngineEvent<() => MaybePromise<void>>(
                 () => clone.onPageSelectionChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutPropertiesChanged: new EngineEvent<(state: LayoutPropertiesType) => void>(
+            onSelectedLayoutPropertiesChanged: new EngineEvent<(state: LayoutPropertiesType) => MaybePromise<void>>(
                 () => clone.onSelectedLayoutPropertiesChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutUnitChanged: new EngineEvent<(unit: MeasurementUnit) => void>(
+            onSelectedLayoutUnitChanged: new EngineEvent<(unit: MeasurementUnit) => MaybePromise<void>>(
                 () => clone.onSelectedLayoutUnitChanged,
                 clone.logging?.logger,
             ),
-            onScrubberPositionChanged: new EngineEvent<(state: AnimationPlaybackType) => void>(
+            onScrubberPositionChanged: new EngineEvent<(state: AnimationPlaybackType) => MaybePromise<void>>(
                 () => clone.onScrubberPositionChanged,
                 clone.logging?.logger,
             ),
-            onFrameAnimationsChanged: new EngineEvent<(animationState: FrameAnimationType[]) => void>(
+            onFrameAnimationsChanged: new EngineEvent<(animationState: FrameAnimationType[]) => MaybePromise<void>>(
                 () => clone.onFrameAnimationsChanged,
                 clone.logging?.logger,
             ),
-            onVariableListChanged: new EngineEvent<(variableList: Variable[]) => void>(
+            onVariableListChanged: new EngineEvent<(variableList: Variable[]) => MaybePromise<void>>(
                 () => clone.onVariableListChanged,
                 clone.logging?.logger,
             ),
-            onSelectedToolChanged: new EngineEvent<(tool: ToolType) => void>(
+            onSelectedToolChanged: new EngineEvent<(tool: ToolType) => MaybePromise<void>>(
                 () => clone.onSelectedToolChanged,
                 clone.logging?.logger,
             ),
-            onUndoStackStateChanged: new EngineEvent<(undoStackState: UndoState) => void>(
+            onUndoStackStateChanged: new EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>(
                 () => clone.onUndoStackStateChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutFramesChanged: new EngineEvent<(frames: SelectedLayoutFrame[]) => void>(
+            onSelectedLayoutFramesChanged: new EngineEvent<(frames: SelectedLayoutFrame[]) => MaybePromise<void>>(
                 () => clone.onSelectedLayoutFramesChanged,
                 clone.logging?.logger,
             ),
-            onSelectedTextStyleChanged: new EngineEvent<(styles: SelectedTextStyle) => void>(
+            onSelectedTextStyleChanged: new EngineEvent<(styles: SelectedTextStyle) => MaybePromise<void>>(
                 () => clone.onSelectedTextStyleChanged,
                 clone.logging?.logger,
             ),
-            onColorsChanged: new EngineEvent<(colors: DocumentColor[]) => void>(
+            onColorsChanged: new EngineEvent<(colors: DocumentColor[]) => MaybePromise<void>>(
                 () => clone.onColorsChanged,
                 clone.logging?.logger,
             ),
-            onParagraphStylesChanged: new EngineEvent<(paragraphStyles: ParagraphStyle[]) => void>(
+            onParagraphStylesChanged: new EngineEvent<(paragraphStyles: ParagraphStyle[]) => MaybePromise<void>>(
                 () => clone.onParagraphStylesChanged,
                 clone.logging?.logger,
             ),
-            onCharacterStylesChanged: new EngineEvent<(characterStyles: CharacterStyle[]) => void>(
+            onCharacterStylesChanged: new EngineEvent<(characterStyles: CharacterStyle[]) => MaybePromise<void>>(
                 () => clone.onCharacterStylesChanged,
                 clone.logging?.logger,
             ),
-            onFontFamiliesChanged: new EngineEvent<(fontFamilies: DocumentFontFamily[]) => void>(
+            onFontFamiliesChanged: new EngineEvent<(fontFamilies: DocumentFontFamily[]) => MaybePromise<void>>(
                 () => clone.onFontFamiliesChanged,
                 clone.logging?.logger,
             ),
-            onSelectedLayoutIdChanged: new EngineEvent<(layoutId: string) => void>(
+            onSelectedLayoutIdChanged: new EngineEvent<(layoutId: string) => MaybePromise<void>>(
                 () => clone.onSelectedLayoutIdChanged,
                 clone.logging?.logger,
             ),
-            onLayoutsChanged: new EngineEvent<(layouts: LayoutListItemType[]) => void>(
+            onLayoutsChanged: new EngineEvent<(layouts: LayoutListItemType[]) => MaybePromise<void>>(
                 () => clone.onLayoutsChanged,
                 clone.logging?.logger,
             ),
-            onConnectorEvent: new EngineEvent<(event: ConnectorEvent) => void>(
+            onConnectorEvent: new EngineEvent<(event: ConnectorEvent) => MaybePromise<void>>(
                 () => clone.onConnectorEvent,
                 clone.logging?.logger,
             ),
-            onConnectorsChanged: new EngineEvent<(connectors: ConnectorInstance[]) => void>(
+            onConnectorsChanged: new EngineEvent<(connectors: ConnectorInstance[]) => MaybePromise<void>>(
                 () => clone.onConnectorsChanged,
                 clone.logging?.logger,
             ),
-            onZoomChanged: new EngineEvent<(scaleFactor: number) => void>(
+            onZoomChanged: new EngineEvent<(scaleFactor: number) => MaybePromise<void>>(
                 () => clone.onZoomChanged,
                 clone.logging?.logger,
             ),
-            onPageSizeChanged: new EngineEvent<(pageSize: PageSize) => void>(
+            onPageSizeChanged: new EngineEvent<(pageSize: PageSize) => MaybePromise<void>>(
                 () => clone.onPageSizeChanged,
                 clone.logging?.logger,
             ),
-            onShapeCornerRadiusChanged: new EngineEvent<(cornerRadius: CornerRadiusUpdateModel) => void>(
+            onShapeCornerRadiusChanged: new EngineEvent<(cornerRadius: CornerRadiusUpdateModel) => MaybePromise<void>>(
                 () => clone.onShapeCornerRadiusChanged,
                 clone.logging?.logger,
             ),
-            onCropActiveFrameIdChanged: new EngineEvent<(id?: Id) => void>(
+            onCropActiveFrameIdChanged: new EngineEvent<(id?: Id) => MaybePromise<void>>(
                 () => clone.onCropActiveFrameIdChanged,
                 clone.logging?.logger,
             ),
-            onAsyncError: new EngineEvent<(asyncError: AsyncError) => void>(
+            onAsyncError: new EngineEvent<(asyncError: AsyncError) => MaybePromise<void>>(
                 () => clone.onAsyncError,
                 clone.logging?.logger,
             ),
-            onViewModeChanged: new EngineEvent<(tool: ViewMode) => void>(
+            onViewModeChanged: new EngineEvent<(tool: ViewMode) => MaybePromise<void>>(
                 () => clone.onViewModeChanged,
                 clone.logging?.logger,
             ),
-            onBarcodeValidationChanged: new EngineEvent<(validationResults: BarcodeFrameValidationResult[]) => void>(
-                () => clone.onBarcodeValidationChanged,
-                clone.logging?.logger,
-            ),
+            onBarcodeValidationChanged: new EngineEvent<
+                (validationResults: BarcodeFrameValidationResult[]) => MaybePromise<void>
+            >(() => clone.onBarcodeValidationChanged, clone.logging?.logger),
         };
         return clone;
     }

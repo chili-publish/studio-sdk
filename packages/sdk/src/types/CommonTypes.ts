@@ -71,6 +71,8 @@ export enum CallbackErrorBehavior {
     remove = 'remove',
 }
 
+export type MaybePromise<T> = T | Promise<T>;
+
 export type ManagedCallbacksConfigType = {
     errorBehavior: CallbackErrorBehavior;
     handlers: {
@@ -80,36 +82,38 @@ export type ManagedCallbacksConfigType = {
         onViewportRequested: EngineCallbackHandler<() => Viewport | null>;
     };
     events: {
-        onActionsChanged: EngineEvent<(state: DocumentAction[]) => void>;
-        onStateChanged: EngineEvent<() => void>;
-        onDocumentLoaded: EngineEvent<() => void>;
-        onSelectedFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => void>;
-        onSelectedFramesContentChanged: EngineEvent<(state: Frame[]) => void>;
-        onPageSelectionChanged: EngineEvent<() => void>;
-        onSelectedLayoutPropertiesChanged: EngineEvent<(state: LayoutPropertiesType) => void>;
-        onSelectedLayoutUnitChanged: EngineEvent<(unit: MeasurementUnit) => void>;
-        onScrubberPositionChanged: EngineEvent<(state: AnimationPlaybackType) => void>;
-        onFrameAnimationsChanged: EngineEvent<(animationState: FrameAnimationType[]) => void>;
-        onVariableListChanged: EngineEvent<(variableList: Variable[]) => void>;
-        onSelectedToolChanged: EngineEvent<(tool: ToolType) => void>;
-        onUndoStackStateChanged: EngineEvent<(undoStackState: UndoState) => void>;
-        onSelectedLayoutFramesChanged: EngineEvent<(frames: SelectedLayoutFrame[]) => void>;
-        onSelectedTextStyleChanged: EngineEvent<(styles: SelectedTextStyle) => void>;
-        onColorsChanged: EngineEvent<(colors: DocumentColor[]) => void>;
-        onParagraphStylesChanged: EngineEvent<(paragraphStyles: ParagraphStyle[]) => void>;
-        onCharacterStylesChanged: EngineEvent<(characterStyles: CharacterStyle[]) => void>;
-        onFontFamiliesChanged: EngineEvent<(fontFamilies: DocumentFontFamily[]) => void>;
-        onSelectedLayoutIdChanged: EngineEvent<(layoutId: string) => void>;
-        onLayoutsChanged: EngineEvent<(layouts: LayoutListItemType[]) => void>;
-        onConnectorEvent: EngineEvent<(event: ConnectorEvent) => void>;
-        onConnectorsChanged: EngineEvent<(connectors: ConnectorInstance[]) => void>;
-        onZoomChanged: EngineEvent<(scaleFactor: number) => void>;
-        onPageSizeChanged: EngineEvent<(pageSize: PageSize) => void>;
-        onShapeCornerRadiusChanged: EngineEvent<(cornerRadius: CornerRadiusUpdateModel) => void>;
-        onCropActiveFrameIdChanged: EngineEvent<(id?: Id) => void>;
-        onAsyncError: EngineEvent<(asyncError: AsyncError) => void>;
-        onViewModeChanged: EngineEvent<(tool: ViewMode) => void>;
-        onBarcodeValidationChanged: EngineEvent<(validationResults: BarcodeFrameValidationResult[]) => void>;
+        onActionsChanged: EngineEvent<(state: DocumentAction[]) => MaybePromise<void>>;
+        onStateChanged: EngineEvent<() => MaybePromise<void>>;
+        onDocumentLoaded: EngineEvent<() => MaybePromise<void>>;
+        onSelectedFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
+        onSelectedFramesContentChanged: EngineEvent<(state: Frame[]) => MaybePromise<void>>;
+        onPageSelectionChanged: EngineEvent<() => MaybePromise<void>>;
+        onSelectedLayoutPropertiesChanged: EngineEvent<(state: LayoutPropertiesType) => MaybePromise<void>>;
+        onSelectedLayoutUnitChanged: EngineEvent<(unit: MeasurementUnit) => MaybePromise<void>>;
+        onScrubberPositionChanged: EngineEvent<(state: AnimationPlaybackType) => MaybePromise<void>>;
+        onFrameAnimationsChanged: EngineEvent<(animationState: FrameAnimationType[]) => MaybePromise<void>>;
+        onVariableListChanged: EngineEvent<(variableList: Variable[]) => MaybePromise<void>>;
+        onSelectedToolChanged: EngineEvent<(tool: ToolType) => MaybePromise<void>>;
+        onUndoStackStateChanged: EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>;
+        onSelectedLayoutFramesChanged: EngineEvent<(frames: SelectedLayoutFrame[]) => MaybePromise<void>>;
+        onSelectedTextStyleChanged: EngineEvent<(styles: SelectedTextStyle) => MaybePromise<void>>;
+        onColorsChanged: EngineEvent<(colors: DocumentColor[]) => MaybePromise<void>>;
+        onParagraphStylesChanged: EngineEvent<(paragraphStyles: ParagraphStyle[]) => MaybePromise<void>>;
+        onCharacterStylesChanged: EngineEvent<(characterStyles: CharacterStyle[]) => MaybePromise<void>>;
+        onFontFamiliesChanged: EngineEvent<(fontFamilies: DocumentFontFamily[]) => MaybePromise<void>>;
+        onSelectedLayoutIdChanged: EngineEvent<(layoutId: string) => MaybePromise<void>>;
+        onLayoutsChanged: EngineEvent<(layouts: LayoutListItemType[]) => MaybePromise<void>>;
+        onConnectorEvent: EngineEvent<(event: ConnectorEvent) => MaybePromise<void>>;
+        onConnectorsChanged: EngineEvent<(connectors: ConnectorInstance[]) => MaybePromise<void>>;
+        onZoomChanged: EngineEvent<(scaleFactor: number) => MaybePromise<void>>;
+        onPageSizeChanged: EngineEvent<(pageSize: PageSize) => MaybePromise<void>>;
+        onShapeCornerRadiusChanged: EngineEvent<(cornerRadius: CornerRadiusUpdateModel) => MaybePromise<void>>;
+        onCropActiveFrameIdChanged: EngineEvent<(id?: Id) => MaybePromise<void>>;
+        onAsyncError: EngineEvent<(asyncError: AsyncError) => MaybePromise<void>>;
+        onViewModeChanged: EngineEvent<(tool: ViewMode) => MaybePromise<void>>;
+        onBarcodeValidationChanged: EngineEvent<
+            (validationResults: BarcodeFrameValidationResult[]) => MaybePromise<void>
+        >;
     };
 };
 
