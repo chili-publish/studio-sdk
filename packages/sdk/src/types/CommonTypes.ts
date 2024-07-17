@@ -38,16 +38,16 @@ export type BaseConfigType = {
 export type LoggerFunction = (logLevel: LogLevel, category: LogCategory, message: string) => void;
 
 export enum LogLevel {
-    INFO = 'info',
-    WARN = 'warn',
-    ERROR = 'error',
+    info = 'info',
+    warn = 'warn',
+    error = 'error',
 }
 
 export enum LogCategory {
-    GENERAL = 'general',
-    CONNECTOR = 'connector',
-    EVENT = 'event',
-    ENGINE = 'engine',
+    general = 'general',
+    connector = 'connector',
+    event = 'event',
+    engine = 'engine',
 }
 
 /**
@@ -57,17 +57,17 @@ export enum CallbackErrorBehavior {
     /**
      * Throws an error when encountering an error in a callback.
      */
-    THROW = 'throw',
+    throw = 'throw',
 
     /**
      * Logs the error when encountering an error in a callback.
      */
-    LOG = 'log',
+    log = 'log',
 
     /**
      * Removes the callback when encountering an error in a callback.
      */
-    REMOVE = 'remove',
+    remove = 'remove',
 }
 
 export type ManagedCallbacksConfigType = {

@@ -32,19 +32,19 @@ export class ConfigHelper {
         // @ts-ignore
         const clone: RuntimeConfigType = { ...config };
         clone.logging = {
-            logLevel: config.logging?.logLevel || LogLevel.ERROR,
+            logLevel: config.logging?.logLevel || LogLevel.error,
             logger:
                 config.logging?.logger ||
                 ((level, cat, msg) => {
-                    if (!ConfigHelper.isLoggingEnabled(level, clone.logging?.logLevel ?? LogLevel.ERROR)) {
+                    if (!ConfigHelper.isLoggingEnabled(level, clone.logging?.logLevel ?? LogLevel.error)) {
                         return;
                     }
 
                     switch (level) {
-                        case LogLevel.ERROR:
+                        case LogLevel.error:
                             console.error(`[${cat}] [${level}] ${msg}`);
                             break;
-                        case LogLevel.WARN:
+                        case LogLevel.warn:
                             console.warn(`[${cat}] [${level}] ${msg}`);
                             break;
                         default:
@@ -181,12 +181,12 @@ export class ConfigHelper {
     }
 
     private static isLoggingEnabled(level: LogLevel, logLevel: LogLevel): boolean {
-        if (logLevel == LogLevel.INFO) {
+        if (logLevel == LogLevel.info) {
             return true;
         }
-        if (logLevel == LogLevel.WARN && (level == LogLevel.WARN || level == LogLevel.ERROR)) {
+        if (logLevel == LogLevel.warn && (level == LogLevel.warn || level == LogLevel.error)) {
             return true;
         }
-        return logLevel == LogLevel.ERROR && level == LogLevel.ERROR;
+        return logLevel == LogLevel.error && level == LogLevel.error;
     }
 }

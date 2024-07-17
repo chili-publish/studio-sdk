@@ -38,10 +38,10 @@ describe('ConfigHelper', () => {
     };
 
     it('should log error messages when log level is ERROR', () => {
-        const runtimeConfig = createConfigWithLogLevel(LogLevel.ERROR);
-        getLogger(runtimeConfig)(LogLevel.ERROR, LogCategory.GENERAL, 'This is an error message');
-        getLogger(runtimeConfig)(LogLevel.WARN, LogCategory.GENERAL, 'This is a warning message');
-        getLogger(runtimeConfig)(LogLevel.INFO, LogCategory.GENERAL, 'This is an info message');
+        const runtimeConfig = createConfigWithLogLevel(LogLevel.error);
+        getLogger(runtimeConfig)(LogLevel.error, LogCategory.general, 'This is an error message');
+        getLogger(runtimeConfig)(LogLevel.warn, LogCategory.general, 'This is a warning message');
+        getLogger(runtimeConfig)(LogLevel.info, LogCategory.general, 'This is an info message');
 
         expect(console.error).toHaveBeenCalledWith('[general] [error] This is an error message');
         expect(console.warn).not.toHaveBeenCalled();
@@ -49,10 +49,10 @@ describe('ConfigHelper', () => {
     });
 
     it('should log warning and error messages when log level is WARN', () => {
-        const runtimeConfig = createConfigWithLogLevel(LogLevel.WARN);
-        getLogger(runtimeConfig)(LogLevel.ERROR, LogCategory.GENERAL, 'This is an error message');
-        getLogger(runtimeConfig)(LogLevel.WARN, LogCategory.GENERAL, 'This is a warning message');
-        getLogger(runtimeConfig)(LogLevel.INFO, LogCategory.GENERAL, 'This is an info message');
+        const runtimeConfig = createConfigWithLogLevel(LogLevel.warn);
+        getLogger(runtimeConfig)(LogLevel.error, LogCategory.general, 'This is an error message');
+        getLogger(runtimeConfig)(LogLevel.warn, LogCategory.general, 'This is a warning message');
+        getLogger(runtimeConfig)(LogLevel.info, LogCategory.general, 'This is an info message');
 
         expect(console.error).toHaveBeenCalledWith('[general] [error] This is an error message');
         expect(console.warn).toHaveBeenCalledWith('[general] [warn] This is a warning message');
@@ -60,10 +60,10 @@ describe('ConfigHelper', () => {
     });
 
     it('should log info, warning, and error messages when log level is INFO', () => {
-        const runtimeConfig = createConfigWithLogLevel(LogLevel.INFO);
-        getLogger(runtimeConfig)(LogLevel.ERROR, LogCategory.GENERAL, 'This is an error message');
-        getLogger(runtimeConfig)(LogLevel.WARN, LogCategory.GENERAL, 'This is a warning message');
-        getLogger(runtimeConfig)(LogLevel.INFO, LogCategory.GENERAL, 'This is an info message');
+        const runtimeConfig = createConfigWithLogLevel(LogLevel.info);
+        getLogger(runtimeConfig)(LogLevel.error, LogCategory.general, 'This is an error message');
+        getLogger(runtimeConfig)(LogLevel.warn, LogCategory.general, 'This is a warning message');
+        getLogger(runtimeConfig)(LogLevel.info, LogCategory.general, 'This is an info message');
 
         expect(console.error).toHaveBeenCalledWith('[general] [error] This is an error message');
         expect(console.warn).toHaveBeenCalledWith('[general] [warn] This is a warning message');
@@ -72,9 +72,9 @@ describe('ConfigHelper', () => {
 
     it('should log only ERROR when loglevel is undefined', () => {
         const runtimeConfig = createConfigWithLogLevel(undefined as unknown as LogLevel);
-        getLogger(runtimeConfig)(LogLevel.ERROR, LogCategory.GENERAL, 'This is an error message');
-        getLogger(runtimeConfig)(LogLevel.WARN, LogCategory.GENERAL, 'This is a warning message');
-        getLogger(runtimeConfig)(LogLevel.INFO, LogCategory.GENERAL, 'This is an info message');
+        getLogger(runtimeConfig)(LogLevel.error, LogCategory.general, 'This is an error message');
+        getLogger(runtimeConfig)(LogLevel.warn, LogCategory.general, 'This is a warning message');
+        getLogger(runtimeConfig)(LogLevel.info, LogCategory.general, 'This is an info message');
 
         expect(console.error).toHaveBeenCalledTimes(1);
         expect(console.warn).not.toHaveBeenCalled();
@@ -82,23 +82,23 @@ describe('ConfigHelper', () => {
     });
 
     it('should adopt functionality when loglevel changes', () => {
-        const runtimeConfig = createConfigWithLogLevel(LogLevel.ERROR);
-        getLogger(runtimeConfig)(LogLevel.ERROR, LogCategory.GENERAL, 'This is an error message');
-        getLogger(runtimeConfig)(LogLevel.WARN, LogCategory.GENERAL, 'This is a warning message');
-        getLogger(runtimeConfig)(LogLevel.INFO, LogCategory.GENERAL, 'This is an info message');
+        const runtimeConfig = createConfigWithLogLevel(LogLevel.error);
+        getLogger(runtimeConfig)(LogLevel.error, LogCategory.general, 'This is an error message');
+        getLogger(runtimeConfig)(LogLevel.warn, LogCategory.general, 'This is a warning message');
+        getLogger(runtimeConfig)(LogLevel.info, LogCategory.general, 'This is an info message');
 
         expect(console.error).toHaveBeenCalledWith('[general] [error] This is an error message');
         expect(console.warn).not.toHaveBeenCalled();
         expect(console.log).not.toHaveBeenCalled();
 
         if (runtimeConfig.logging) {
-            runtimeConfig.logging.logLevel = LogLevel.WARN;
+            runtimeConfig.logging.logLevel = LogLevel.warn;
         } else {
             throw new Error('runtimeConfig.logging is undefined');
         }
-        getLogger(runtimeConfig)(LogLevel.ERROR, LogCategory.GENERAL, 'This is an error message');
-        getLogger(runtimeConfig)(LogLevel.WARN, LogCategory.GENERAL, 'This is a warning message');
-        getLogger(runtimeConfig)(LogLevel.INFO, LogCategory.GENERAL, 'This is an info message');
+        getLogger(runtimeConfig)(LogLevel.error, LogCategory.general, 'This is an error message');
+        getLogger(runtimeConfig)(LogLevel.warn, LogCategory.general, 'This is a warning message');
+        getLogger(runtimeConfig)(LogLevel.info, LogCategory.general, 'This is an info message');
 
         expect(console.error).toHaveBeenCalledTimes(2);
         expect(console.warn).toHaveBeenCalledTimes(1);

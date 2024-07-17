@@ -139,13 +139,13 @@ describe('EventSubscription Error Handling', () => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.LOG);
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.log);
 
         eventSubscription.trigger();
 
         expect(mockLogger).toHaveBeenCalledWith(
-            LogLevel.ERROR,
-            LogCategory.EVENT,
+            LogLevel.error,
+            LogCategory.event,
             expect.stringContaining('Error in callback'),
         );
         expect(errorCallback).toHaveBeenCalled();
@@ -157,7 +157,7 @@ describe('EventSubscription Error Handling', () => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.THROW);
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.throw);
 
         expect(() => eventSubscription.trigger()).toThrow('Test Error');
         expect(errorCallback).toHaveBeenCalled();
@@ -169,13 +169,13 @@ describe('EventSubscription Error Handling', () => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.REMOVE);
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.remove);
 
         eventSubscription.trigger();
 
         expect(mockLogger).toHaveBeenCalledWith(
-            LogLevel.WARN,
-            LogCategory.EVENT,
+            LogLevel.warn,
+            LogCategory.event,
             expect.stringContaining('Removed callback'),
         );
         expect(errorCallback).toHaveBeenCalled();
@@ -200,7 +200,7 @@ describe('EventSubscription Error Handling', () => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.LOG);
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.log);
 
         eventSubscription.trigger();
 
@@ -213,7 +213,7 @@ describe('EventSubscription Error Handling', () => {
             throw new Error('Test Error');
         });
 
-        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.REMOVE);
+        eventSubscription.registerCallback(errorCallback, CallbackErrorBehavior.remove);
 
         eventSubscription.trigger();
 

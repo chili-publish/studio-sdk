@@ -26,7 +26,7 @@ export class EngineCallbackHandler<T extends (...args: any[]) => any> extends Ev
         if (this.legacyEventHandler) {
             const callback = this.legacyEventHandler();
             if (callback) {
-                result = this.executeCallback('legacyEventHandler', callback, CallbackErrorBehavior.LOG, ...args);
+                result = this.executeCallback('legacyEventHandler', callback, CallbackErrorBehavior.log, ...args);
             }
         }
         for (const [key, callback] of this.callbacks.entries()) {
@@ -45,16 +45,16 @@ export class EngineCallbackHandler<T extends (...args: any[]) => any> extends Ev
         try {
             return callback(...args);
         } catch (error) {
-            if (errorBehavior === CallbackErrorBehavior.LOG) {
+            if (errorBehavior === CallbackErrorBehavior.log) {
                 if (this.logger) {
-                    this.logger(LogLevel.ERROR, LogCategory.EVENT, `Error in callback ${key}: ${error}`);
+                    this.logger(LogLevel.error, LogCategory.event, `Error in callback ${key}: ${error}`);
                 }
-            } else if (errorBehavior === CallbackErrorBehavior.THROW) {
+            } else if (errorBehavior === CallbackErrorBehavior.throw) {
                 throw error;
-            } else if (errorBehavior === CallbackErrorBehavior.REMOVE) {
+            } else if (errorBehavior === CallbackErrorBehavior.remove) {
                 this.callbacks.delete(key);
                 if (this.logger) {
-                    this.logger(LogLevel.WARN, LogCategory.EVENT, `Removed callback ${key} due to error: ${error}`);
+                    this.logger(LogLevel.warn, LogCategory.event, `Removed callback ${key} due to error: ${error}`);
                 }
             }
         }
@@ -75,7 +75,7 @@ export class EventSubscription<T extends (...args: any[]) => any> extends Engine
      */
     registerCallback(callback: T, errorBehavior?: CallbackErrorBehavior, key?: string): string {
         const callbackName = key || this.generateUniqueName();
-        this.callbacks.set(callbackName, { callback, errorBehavior: errorBehavior || CallbackErrorBehavior.LOG });
+        this.callbacks.set(callbackName, { callback, errorBehavior: errorBehavior || CallbackErrorBehavior.log });
         return callbackName;
     }
 
