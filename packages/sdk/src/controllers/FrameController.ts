@@ -12,6 +12,9 @@ import {
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
     VerticalAlign,
+    AutoGrowDeltaUpdate,
+    AutoGrowDirection,
+    AutoGrowResetUpdate,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -650,5 +653,187 @@ export class FrameController {
     exitCropMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will enable auto grow on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setEnableAutoGrow = async (id: Id, value: boolean) => {
+        const update: AutoGrowDeltaUpdate = { enabled: { value: value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the minWidth for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new minWidth value to be set
+     * @returns
+     */
+    setAutoGrowMinWidth = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { minWidth: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the maxWidth for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new maxWidth value to be set
+     * @returns
+     */
+    setAutoGrowMaxWidth = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { maxWidth: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the minHeight for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new minHeight value to be set
+     * @returns
+     */
+    setAutoGrowMinHeight = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { minHeight: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the maxHeight for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new maxHeight value to be set
+     * @returns
+     */
+    setAutoGrowMaxHeight = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { maxHeight: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the auto grow directions for auto-grow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new directions value to be set
+     * @returns
+     */
+    setAutoGrowDirections = async (id: Id, value: Array<AutoGrowDirection>) => {
+        const update: AutoGrowDeltaUpdate = { directions: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow enabled property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowSettingsEnabled = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { enabled: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow minWidth property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMinWidth = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { minWidth: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow maxWidth property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMaxWidth = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { maxWidth: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow minHeight property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMinHeight = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { minHeight: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow maxHeight property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMaxHeight = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { maxHeight: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow directions property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowDirections = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { directions: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset all auto grow properties of a specified frame to their original values
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrow = async (id: Id) => {
+        const update: AutoGrowResetUpdate = {
+            enabled: true,
+            minWidth: true,
+            maxWidth: true,
+            minHeight: true,
+            maxHeight: true,
+            directions: true,
+        };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
