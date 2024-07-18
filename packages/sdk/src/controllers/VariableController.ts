@@ -7,11 +7,12 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
+    NumberVariablePropertiesDeltaUpdate,
     Variable,
     VariableType,
-    NumberVariablePropertiesDeltaUpdate,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -478,8 +479,11 @@ export class VariableController {
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const connectorRegistration = connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+
         return res
-            .setImageVariableConnector(id, JSON.stringify(registration))
+            .setImageVariableConnector(id, JSON.stringify(connectorRegistration))
             .then((result) => getEditorResponseData<Id>(result));
     };
 
