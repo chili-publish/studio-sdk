@@ -37,6 +37,7 @@ import { BarcodeController } from './controllers/BarcodeController';
 import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { ConfigurationController } from './controllers/ConfigurationController';
 
 let connection: Connection;
 
@@ -62,7 +63,7 @@ export class SDK {
     fontConnector: FontConnectorController;
     animation: AnimationController;
     document: DocumentController;
-    configuration: LocalConfigurationDecorator;
+    configuration: ConfigurationController;
     variable: VariableController;
     utils: UtilsController;
     tool: ToolController;
