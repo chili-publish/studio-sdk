@@ -9,7 +9,7 @@ import {
     VariableType,
 } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 
 afterEach(() => {
@@ -256,6 +256,28 @@ describe('VariableController', () => {
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
+        expect(response?.parsedData).toBe('newConnectorId');
+    });
+
+    it('set image variable Grafx connector', async () => {
+        const grafxRegistration: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            url: 'http://mock.url/grafx-id',
+        };
+
+        const response = await mockedVariableController.setImageVariableConnector(variableId, grafxRegistration);
+
+        // MigratedConnectorGrafxRegistration type
+        const expectedGrafxRegistration = {
+            id: 'grafx-id',
+            source: ConnectorRegistrationSource.grafx,
+        };
+
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(
+            variableId,
+            JSON.stringify(expectedGrafxRegistration),
+        );
         expect(response?.parsedData).toBe('newConnectorId');
     });
 
