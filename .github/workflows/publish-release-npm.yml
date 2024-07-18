@@ -79,7 +79,9 @@ jobs:
         node-version: [18]
     needs: build
     steps:
-      - name: Bump minor version after release
-        run: node cicd.js sdk,connectors yarn version --preminor
+      - name: bump minor version after release
+        run: yarn version --preminor
+      - name: align versions
+        run: node ./.github/scripts/replicate-version.js
       - name: execute commit script
         run: node ./.github/scripts/commit.js

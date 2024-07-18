@@ -36,7 +36,7 @@ jobs:
       - name: run readmeUpdater
         run: yarn make-badges
       - name: bump build version
-        run: node cicd.js sdk,connectors yarn version --prerelease
+        run: yarn version --prerelease
 
       # execute local js script
       - name: execute local js script
