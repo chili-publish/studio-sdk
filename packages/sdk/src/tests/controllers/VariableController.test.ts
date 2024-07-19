@@ -62,6 +62,7 @@ describe('VariableController', () => {
         addVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         removeVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableLabel: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariablePlaceholder: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableValue: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -89,6 +90,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'addVariable');
         jest.spyOn(mockEditorApi, 'removeVariables');
         jest.spyOn(mockEditorApi, 'setVariableLabel');
+        jest.spyOn(mockEditorApi, 'setVariablePlaceholder');
         jest.spyOn(mockEditorApi, 'setVariableType');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setVariableValue');
@@ -153,6 +155,18 @@ describe('VariableController', () => {
         await mockedVariableController.setLabel('3', 'newLabel');
         expect(mockEditorApi.setVariableLabel).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableLabel).toHaveBeenCalledWith('3', 'newLabel');
+    });
+
+    it('set variable placeholder', async () => {
+        await mockedVariableController.setPlaceholder('3', 'newPlaceholder');
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledWith('3', 'newPlaceholder');
+    });
+
+    it('reset variable placeholder', async () => {
+        await mockedVariableController.resetPlaceholder('3');
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledWith('3', null);
     });
 
     it('set variable type', async () => {
