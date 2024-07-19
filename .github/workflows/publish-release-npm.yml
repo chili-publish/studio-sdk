@@ -41,7 +41,9 @@ jobs:
           ref=${{ github.ref }}
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
-          node cicd.js sdk,connectors yarn publish --tag $tag --tag latest
+          stripped_tag=${tag%-*}
+          node cicd.js sdk,connectors yarn version --new-version $stripped_tag
+          node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: get new npm version
@@ -69,3 +71,17 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
+
+  bump:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    needs: build
+    steps:
+      - name: bump minor version after release
+        run: yarn version --preminor
+      - name: align versions
+        run: node ./.github/scripts/replicate-version.js
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js

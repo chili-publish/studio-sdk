@@ -35,17 +35,8 @@ jobs:
         run: yarn cover
       - name: run readmeUpdater
         run: yarn make-badges
-      - name: bump version
-        uses: phips28/gh-action-bump-version@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
-        with:
-          minor-wording: "[Breaking],[BREAKING]"
-          major-wording: "[MAJOR],[major]"
-          patch-wording: "[Fix],[FIX],[Feature],[FEATURE]"
-          skip-commit: "true"
-          skip-tag: "true"
+      - name: bump build version
+        run: yarn version --prerelease
 
       # execute local js script
       - name: execute local js script
