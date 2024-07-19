@@ -37,6 +37,8 @@ jobs:
         run: yarn make-badges
       - name: bump build version
         run: yarn version --prerelease
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
 
       # execute local js script
       - name: execute local js script
