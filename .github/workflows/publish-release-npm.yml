@@ -35,6 +35,17 @@ jobs:
         run: yarn make-badges
       - name: build code
         run: yarn build
+      - name: bump version
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+        with:
+          version-type:  'prerelease'
+          skip-commit: "true"
+          skip-tag: "true"
+      - name: execute local js script
+        run: node ./.github/scripts/replicate-version.js
       - name: publish sdk build
         run: |
           # Get the full reference of the release
@@ -42,10 +53,11 @@ jobs:
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
           stripped_tag=${tag%-*}
-          node cicd.js sdk,connectors yarn version --new-version $stripped_tag
           node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js
       - name: get new npm version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -79,9 +91,16 @@ jobs:
         node-version: [18]
     needs: build
     steps:
-      - name: bump minor version after release
-        run: yarn version --preminor
-      - name: align versions
+      - name: bump version
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+        with:
+          version-type:  'preminor'
+          skip-commit: "true"
+          skip-tag: "true"
+      - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: execute commit script
         run: node ./.github/scripts/commit.js
