@@ -1,12 +1,12 @@
 name: Test Integration
 
 on:
-  push:
-    tags:
-      - 'test-integration'
+  pull_request:
+    types: [ labeled ]
 
 jobs:
   test:
+    if: ${{ github.event.label.name == 'test-integration' }}
     runs-on: ubuntu-latest
 
     strategy:
