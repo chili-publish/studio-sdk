@@ -44,6 +44,8 @@ jobs:
           default: prerelease
           skip-commit: "true"
           skip-tag: "true"
+          bump-policy: 'ignore'
+          preid: 'build'
 
       # execute local js script
       - name: execute local js script
