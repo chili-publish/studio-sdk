@@ -41,7 +41,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-
       # execute local js script
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
