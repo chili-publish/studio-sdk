@@ -28,6 +28,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@chili-publish'
 
       - name: Install dependencies in current repository using Yarn
         run: yarn install
@@ -38,6 +40,8 @@ jobs:
       - name: Install dependencies in workspace repository using Yarn
         run: yarn install
         working-directory: studio-workspace
+        env: 
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
 
       - name: Link current repository into workspace repository
         run: yarn link @chili-publish/studio-sdk
