@@ -34,8 +34,13 @@ jobs:
       - name: Install dependencies in current repository using Yarn
         run: yarn install
 
+      - name: Build current repository
+        run: yarn build
+        working-directory: packages/sdk
+
       - name: Link current repository
         run: yarn link
+        working-directory: packages/sdk
 
       - name: Install dependencies in workspace repository using Yarn
         run: yarn install
