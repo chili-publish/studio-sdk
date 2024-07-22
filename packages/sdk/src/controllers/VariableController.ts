@@ -371,7 +371,7 @@ export class VariableController {
     };
 
     /**
-     * This method resets a placeholder for a variable
+     * This method resets a help text for a variable
      * @param id id of the variable
      * @returns
      */
