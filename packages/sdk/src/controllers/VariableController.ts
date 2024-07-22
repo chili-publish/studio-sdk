@@ -355,7 +355,7 @@ export class VariableController {
     /**
      * Internal private method to set/reset a help text for a variable
      */
-    private setHelpTextInternal = async (id: string, helpText: string | null) => {
+    #setHelpText = async (id: string, helpText: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariableHelpText(id, helpText).then((result) => getEditorResponseData<null>(result));
     };
@@ -367,7 +367,7 @@ export class VariableController {
      * @returns
      */
     setHelpText = async (id: string, helpText: string) => {
-        return this.setHelpTextInternal(id, helpText);
+        return this.#setHelpText(id, helpText);
     };
 
     /**
@@ -376,7 +376,7 @@ export class VariableController {
      * @returns
      */
     resetHelpText = async (id: string) => {
-        return this.setHelpTextInternal(id, null);
+        return this.#setHelpText(id, null);
     };
 
     /**
