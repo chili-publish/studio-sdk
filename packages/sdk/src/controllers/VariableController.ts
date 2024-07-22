@@ -353,6 +353,33 @@ export class VariableController {
     };
 
     /**
+     * Internal private method to set/reset a help text for a variable
+     */
+    private setHelpTextInternal = async (id: string, helpText: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariableHelpText(id, helpText).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new help text for a variable
+     * @param id id of the variable
+     * @param helpText placeholder of the variable
+     * @returns
+     */
+    setHelpText = async (id: string, helpText: string) => {
+        return this.setHelpTextInternal(id, helpText);
+    };
+
+    /**
+     * This method resets a placeholder for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetHelpText = async (id: string) => {
+        return this.setHelpTextInternal(id, null);
+    };
+
+    /**
      * This method sets a new type for a variable
      * @param id id of the variable
      * @param type type of the variable
