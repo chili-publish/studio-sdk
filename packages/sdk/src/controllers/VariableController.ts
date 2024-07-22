@@ -328,7 +328,7 @@ export class VariableController {
     /**
      * Internal private method to set/reset a placeholder for a variable
      */
-    private setPlaceholderInternal = async (id: string, placeholder: string | null) => {
+    #setPlaceholder = async (id: string, placeholder: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariablePlaceholder(id, placeholder).then((result) => getEditorResponseData<null>(result));
     };
@@ -340,7 +340,7 @@ export class VariableController {
      * @returns
      */
     setPlaceholder = async (id: string, placeholder: string) => {
-        return this.setPlaceholderInternal(id, placeholder);
+        return this.#setPlaceholder(id, placeholder);
     };
 
     /**
@@ -349,7 +349,7 @@ export class VariableController {
      * @returns
      */
     resetPlaceholder = async (id: string) => {
-        return this.setPlaceholderInternal(id, null);
+        return this.#setPlaceholder(id, null);
     };
 
     /**
