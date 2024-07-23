@@ -35,15 +35,29 @@ jobs:
         run: yarn make-badges
       - name: build code
         run: yarn build
+      - name: bump version
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+        with:
+          version-type:  'patch'
+          skip-commit: "true"
+          skip-tag: "true"
+      - name: execute local js script
+        run: node ./.github/scripts/replicate-version.js
       - name: publish sdk build
         run: |
           # Get the full reference of the release
           ref=${{ github.ref }}
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
-          node cicd.js sdk,connectors yarn publish --tag $tag --tag latest
+          stripped_tag=${tag%-*}
+          node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js
       - name: get new npm version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -69,3 +83,24 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
+
+  bump:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    needs: build
+    steps:
+      - name: bump version
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+        with:
+          version-type:  'preminor'
+          skip-commit: "true"
+          skip-tag: "true"
+      - name: execute local js script
+        run: node ./.github/scripts/replicate-version.js
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js

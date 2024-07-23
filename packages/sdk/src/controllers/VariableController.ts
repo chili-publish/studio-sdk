@@ -7,11 +7,12 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
+    NumberVariablePropertiesDeltaUpdate,
     Variable,
     VariableType,
-    NumberVariablePropertiesDeltaUpdate,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -325,6 +326,33 @@ export class VariableController {
     };
 
     /**
+     * Internal private method to set/reset a placeholder for a variable
+     */
+    private setPlaceholderInternal = async (id: string, placeholder: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariablePlaceholder(id, placeholder).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new placeholder for a variable
+     * @param id id of the variable
+     * @param placeholder placeholder of the variable
+     * @returns
+     */
+    setPlaceholder = async (id: string, placeholder: string) => {
+        return this.setPlaceholderInternal(id, placeholder);
+    };
+
+    /**
+     * This method resets a placeholder for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetPlaceholder = async (id: string) => {
+        return this.setPlaceholderInternal(id, null);
+    };
+
+    /**
      * This method sets a new type for a variable
      * @param id id of the variable
      * @param type type of the variable
@@ -478,8 +506,11 @@ export class VariableController {
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const connectorRegistration = connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+
         return res
-            .setImageVariableConnector(id, JSON.stringify(registration))
+            .setImageVariableConnector(id, JSON.stringify(connectorRegistration))
             .then((result) => getEditorResponseData<Id>(result));
     };
 
