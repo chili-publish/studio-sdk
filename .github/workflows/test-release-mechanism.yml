@@ -1,0 +1,27 @@
+name: Publish Release
+on:
+  release:
+    types: [released]
+jobs:
+  check-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get release information
+        id: get_release
+        run: |
+          release_info=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.event.release.tag_name }})
+          echo "$release_info" > release_info.json
+          release_created_at=$(jq -r '.created_at' release_info.json)
+          tag_created_at=$(git log -1 --format=%aI ${{ github.event.release.tag_name }})
+          echo "Release created at: $release_created_at"
+          echo "Tag created at: $tag_created_at"
+          if [ "$release_created_at" == "$tag_created_at" ]; then
+            echo "::set-output name=tag_created_by_release::true"
+          else
+            echo "::set-output name=tag_created_by_release::false"
+          fi
+      - if: steps.get_release.outputs.tag_created_by_release == 'true'
+        run: echo "This tag was created by the release mechanism."
+      - if: steps.get_release.outputs.tag_created_by_release == 'false'
+        run: echo "This tag was created from merge to main"
