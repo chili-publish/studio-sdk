@@ -6,6 +6,7 @@ jobs:
   check-release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Get release information
         id: get_release
         run: |
