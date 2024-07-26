@@ -6,12 +6,11 @@ jobs:
   check-release:
     runs-on: ubuntu-latest
     steps:
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        name: Get release information
+      - name: Get release information
         id: get_release
         run: |
-          release_info=$(gh api /repos/${{ github.repository }}/tags/${{ github.event.release.tag_name }})
+          release_info=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.event.release.tag_name }})
           echo "$release_info" > release_info.json
           release_created_at=$(jq -r '.created_at' release_info.json)
           tag_created_at=$(git log -1 --format=%aI ${{ github.event.release.tag_name }})
