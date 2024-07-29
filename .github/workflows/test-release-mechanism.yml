@@ -17,7 +17,9 @@ jobs:
           tag_created_at=$(git log -1 --format=%aI ${{ github.event.release.tag_name }})
           echo "Release created at: $release_created_at"
           echo "Tag created at: $tag_created_at"
-          if [ "$release_created_at" == "$tag_created_at" ]; then
+          release_timestamp=$(date -d "$release_created_at" +%s)
+          tag_timestamp=$(date -d "$tag_created_at" +%s)
+          if [ "$release_timestamp" == "$tag_timestamp" ]; then
             echo "::set-output name=tag_created_by_release::true"
           else
             echo "::set-output name=tag_created_by_release::false"
