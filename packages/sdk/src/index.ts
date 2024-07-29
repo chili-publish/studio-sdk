@@ -64,6 +64,7 @@ export type {
     DateRestriction,
     RelativeDate,
     AbsoluteDate,
+    ValueWithStyle,
 } from './types/VariableTypes';
 export { VariableType, Day, Locale } from './types/VariableTypes';
 
