@@ -1,0 +1,38 @@
+name: Trigger the automated tests
+on:
+    pull_request:
+        types: [labeled]
+jobs:
+    trigger-automated-tests:
+        if: github.event.label.name == 'Ready for QA'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Get GitHub application JWT
+              id: get-gh-app-jwt
+              uses: ./.github/actions/get-gh-app-jwt
+              with:
+                  gh-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
+                  gh-app-id: ${{ vars.GH_APP_ID_CHILI_REPO_ACTIONS }}
+
+            - uses: actions/checkout@v3
+            - name: Get GitHub application installation access token
+              id: get-gh-app-installation-access-token
+              uses: ./.github/actions/get-gh-app-installation-access-token
+              with:
+                  gh-app-jwt: ${{ steps.get-gh-app-jwt.outputs.gh-app-jwt }}
+                  gh-app-installation-id: ${{ vars.GH_APP_INSTALL_ID_CHILI_REPO_ACTIONS }}
+
+            - name: Trigger the automated tests
+              uses: convictional/trigger-workflow-and-wait@v1.6.1
+              with:
+                  owner: chili-publish
+                  repo: editor-qa-framework
+                  github_token: ${{ steps.get-gh-app-installation-access-token.outputs.gh-app-installation-access-token }}
+                  workflow_file_name: parallel_run_trigger.yml
+                  ref: main
+                  wait_interval: 10
+                  propagate_failure: true
+                  trigger_workflow: true
+                  wait_workflow: true
+                  client_payload: '{"PR_NUMBER": "pr_builds/${{ github.event.number }}", "SETTAG": "StudioUI"}'
