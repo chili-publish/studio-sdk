@@ -20,6 +20,7 @@ export {
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
     BarcodeSourceTypeEnum,
+    AutoGrowDirection,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -46,6 +47,7 @@ export type {
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
+    AutoGrowSettings,
 } from './types/FrameTypes';
 export type {
     Variable,

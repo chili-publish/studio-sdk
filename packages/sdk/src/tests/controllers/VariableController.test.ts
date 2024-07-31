@@ -9,7 +9,7 @@ import {
     VariableType,
 } from '../../types/VariableTypes';
 import { EditorAPI } from '../../types/CommonTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 
 afterEach(() => {
@@ -62,6 +62,8 @@ describe('VariableController', () => {
         addVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         removeVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableLabel: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariablePlaceholder: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableHelpText: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableValue: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -89,6 +91,8 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'addVariable');
         jest.spyOn(mockEditorApi, 'removeVariables');
         jest.spyOn(mockEditorApi, 'setVariableLabel');
+        jest.spyOn(mockEditorApi, 'setVariablePlaceholder');
+        jest.spyOn(mockEditorApi, 'setVariableHelpText');
         jest.spyOn(mockEditorApi, 'setVariableType');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setVariableValue');
@@ -153,6 +157,30 @@ describe('VariableController', () => {
         await mockedVariableController.setLabel('3', 'newLabel');
         expect(mockEditorApi.setVariableLabel).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableLabel).toHaveBeenCalledWith('3', 'newLabel');
+    });
+
+    it('set variable placeholder', async () => {
+        await mockedVariableController.setPlaceholder('3', 'newPlaceholder');
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledWith('3', 'newPlaceholder');
+    });
+
+    it('reset variable placeholder', async () => {
+        await mockedVariableController.resetPlaceholder('3');
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariablePlaceholder).toHaveBeenCalledWith('3', null);
+    });
+
+    it('set variable help text', async () => {
+        await mockedVariableController.setHelpText('3', 'newHelpText');
+        expect(mockEditorApi.setVariableHelpText).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableHelpText).toHaveBeenCalledWith('3', 'newHelpText');
+    });
+
+    it('reset variable help text', async () => {
+        await mockedVariableController.resetHelpText('3');
+        expect(mockEditorApi.setVariableHelpText).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableHelpText).toHaveBeenCalledWith('3', null);
     });
 
     it('set variable type', async () => {
@@ -256,6 +284,28 @@ describe('VariableController', () => {
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
+        expect(response?.parsedData).toBe('newConnectorId');
+    });
+
+    it('set image variable Grafx connector', async () => {
+        const grafxRegistration: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            url: 'http://mock.url/grafx-id',
+        };
+
+        const response = await mockedVariableController.setImageVariableConnector(variableId, grafxRegistration);
+
+        // MigratedConnectorGrafxRegistration type
+        const expectedGrafxRegistration = {
+            id: 'grafx-id',
+            source: ConnectorRegistrationSource.grafx,
+        };
+
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(
+            variableId,
+            JSON.stringify(expectedGrafxRegistration),
+        );
         expect(response?.parsedData).toBe('newConnectorId');
     });
 

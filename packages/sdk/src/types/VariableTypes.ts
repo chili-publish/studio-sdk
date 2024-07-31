@@ -43,6 +43,8 @@ export interface Variable {
     isReadonly: boolean;
     isRequired: boolean;
     occurrences: number;
+    placeholder?: string | null;
+    helpText?: string | null;
 }
 
 export interface ImageVariable extends Variable {
