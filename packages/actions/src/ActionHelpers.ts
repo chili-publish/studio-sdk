@@ -312,6 +312,26 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
 }
 
 /**
+ * Set the prefix of the variable.
+ *
+ * @param variableName The name of the variable or a variable object.
+ * @param {string | null | VariableValue} prefix The prefix to set or clear
+ */
+function setVariablePrefix(variableName: string | Variable, prefix: string | null) {
+    studio.variables.setPrefix(variableName, prefix);
+}
+
+/**
+ * Set the suffix of the variable.
+ *
+ * @param variableName The name of the variable or a variable object.
+ * @param {string | null | VariableValue} suffix The suffix to set or clear.
+ */
+function setVariableSuffix(variableName: string | Variable, suffix: string | null) {
+    studio.variables.setSuffix(variableName, suffix);
+}
+
+/**
  * Set decimal separator of the number variable.
  *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
