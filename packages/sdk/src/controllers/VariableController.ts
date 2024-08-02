@@ -328,7 +328,7 @@ export class VariableController {
     /**
      * Internal private method to set/reset a placeholder for a variable
      */
-    private setPlaceholderInternal = async (id: string, placeholder: string | null) => {
+    #setPlaceholder = async (id: string, placeholder: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariablePlaceholder(id, placeholder).then((result) => getEditorResponseData<null>(result));
     };
@@ -340,7 +340,7 @@ export class VariableController {
      * @returns
      */
     setPlaceholder = async (id: string, placeholder: string) => {
-        return this.setPlaceholderInternal(id, placeholder);
+        return this.#setPlaceholder(id, placeholder);
     };
 
     /**
@@ -349,7 +349,34 @@ export class VariableController {
      * @returns
      */
     resetPlaceholder = async (id: string) => {
-        return this.setPlaceholderInternal(id, null);
+        return this.#setPlaceholder(id, null);
+    };
+
+    /**
+     * Internal private method to set/reset a help text for a variable
+     */
+    #setHelpText = async (id: string, helpText: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariableHelpText(id, helpText).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new help text for a variable
+     * @param id id of the variable
+     * @param helpText placeholder of the variable
+     * @returns
+     */
+    setHelpText = async (id: string, helpText: string) => {
+        return this.#setHelpText(id, helpText);
+    };
+
+    /**
+     * This method resets a help text for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetHelpText = async (id: string) => {
+        return this.#setHelpText(id, null);
     };
 
     /**
