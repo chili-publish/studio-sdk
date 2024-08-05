@@ -44,7 +44,7 @@ jobs:
           version-type:  'patch'
           skip-commit: 'true'
           skip-tag: 'true'
-          target-branch: 'main'
+          skip-push: 'true'
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: publish sdk build
