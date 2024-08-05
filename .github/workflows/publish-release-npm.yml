@@ -42,8 +42,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
         with:
           version-type:  'patch'
-          skip-commit: "true"
-          skip-tag: "true"
+          skip-commit: 'true'
+          skip-tag: 'true'
+          target-branch: 'main'
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: publish sdk build
@@ -91,6 +92,9 @@ jobs:
         node-version: [18]
     needs: build
     steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PACKAGE_SECRET }}
       - name: bump version
         uses: phips28/gh-action-bump-version@master
         env:
@@ -100,6 +104,7 @@ jobs:
           version-type:  'preminor'
           skip-commit: "true"
           skip-tag: "true"
+          target-branch: 'main'
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: execute commit script
