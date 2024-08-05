@@ -35,4 +35,4 @@ jobs:
                   propagate_failure: true
                   trigger_workflow: true
                   wait_workflow: true
-                  client_payload: '{"PR_NUMBER": "pr_builds/${{ github.event.number }}", "SETTAG": "StudioUI"}'
+                  client_payload: '{"PR_NUMBER": "pr_builds/${{ github.event.number }}", "SETTAG": "SDK"}'
