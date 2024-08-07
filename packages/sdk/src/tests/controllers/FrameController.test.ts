@@ -498,12 +498,12 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                enabled: true,
-                minWidth: true,
-                maxWidth: true,
-                minHeight: true,
-                maxHeight: true,
-                directions: true,
+                resetEnabled: true,
+                resetMinWidth: true,
+                resetMaxWidth: true,
+                resetMinHeight: true,
+                resetMaxHeight: true,
+                resetDirections: true,
             }),
         );
     });
@@ -513,7 +513,7 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                enabled: true,
+                resetEnabled: true,
             }),
         );
     });
@@ -523,7 +523,7 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                minWidth: true,
+                resetMinWidth: true,
             }),
         );
     });
@@ -533,7 +533,7 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                maxWidth: true,
+                resetMaxWidth: true,
             }),
         );
     });
@@ -543,7 +543,7 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                minHeight: true,
+                resetMinHeight: true,
             }),
         );
     });
@@ -553,7 +553,7 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                maxHeight: true,
+                resetMaxHeight: true,
             }),
         );
     });
@@ -563,7 +563,7 @@ describe('Auto grow resetting', () => {
         expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({
-                directions: true,
+                resetDirections: true,
             }),
         );
     });

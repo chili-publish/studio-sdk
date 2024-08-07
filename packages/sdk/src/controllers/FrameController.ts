@@ -745,7 +745,7 @@ export class FrameController {
      * @returns
      */
     resetAutoGrowSettingsEnabled = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { enabled: true };
+        const update: AutoGrowResetUpdate = { resetEnabled: true };
         const res = await this.#editorAPI;
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
@@ -758,7 +758,7 @@ export class FrameController {
      * @returns
      */
     resetAutoGrowMinWidth = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { minWidth: true };
+        const update: AutoGrowResetUpdate = { resetMinWidth: true };
         const res = await this.#editorAPI;
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
@@ -771,7 +771,7 @@ export class FrameController {
      * @returns
      */
     resetAutoGrowMaxWidth = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { maxWidth: true };
+        const update: AutoGrowResetUpdate = { resetMaxWidth: true };
         const res = await this.#editorAPI;
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
@@ -784,7 +784,7 @@ export class FrameController {
      * @returns
      */
     resetAutoGrowMinHeight = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { minHeight: true };
+        const update: AutoGrowResetUpdate = { resetMinHeight: true };
         const res = await this.#editorAPI;
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
@@ -797,7 +797,7 @@ export class FrameController {
      * @returns
      */
     resetAutoGrowMaxHeight = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { maxHeight: true };
+        const update: AutoGrowResetUpdate = { resetMaxHeight: true };
         const res = await this.#editorAPI;
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
@@ -810,7 +810,7 @@ export class FrameController {
      * @returns
      */
     resetAutoGrowDirections = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { directions: true };
+        const update: AutoGrowResetUpdate = { resetDirections: true };
         const res = await this.#editorAPI;
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
@@ -824,12 +824,12 @@ export class FrameController {
      */
     resetAutoGrow = async (id: Id) => {
         const update: AutoGrowResetUpdate = {
-            enabled: true,
-            minWidth: true,
-            maxWidth: true,
-            minHeight: true,
-            maxHeight: true,
-            directions: true,
+            resetEnabled: true,
+            resetMinWidth: true,
+            resetMaxWidth: true,
+            resetMinHeight: true,
+            resetMaxHeight: true,
+            resetDirections: true,
         };
         const res = await this.#editorAPI;
         return res
