@@ -44,7 +44,7 @@ jobs:
           version-type:  'patch'
           skip-commit: 'true'
           skip-tag: 'true'
-          target-branch: 'main'
+          skip-push: 'true'
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: publish sdk build
@@ -95,6 +95,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PACKAGE_SECRET }}
+          ref: 'main'
       - name: bump version
         uses: phips28/gh-action-bump-version@master
         env:
