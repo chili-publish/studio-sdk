@@ -8,6 +8,7 @@ import {
     ListVariableItem,
     Locale,
     NumberVariablePropertiesDeltaUpdate,
+    PrefixSuffixDeltaUpdate,
     Variable,
     VariableType,
 } from '../types/VariableTypes';
@@ -551,6 +552,50 @@ export class VariableController {
         return this.setValue(id, null);
     };
 
+    /**
+     * @experimental Sets the prefix for a supported variable
+     * @param id the id of the variable to update
+     * @param prefix the prefix to set/clear
+     * @returns
+     */
+    setPrefix = async (id: string, prefix: string | null) => {
+        const update = { prefix: { value: prefix } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the suffix for a supported variable
+     * @param id the id of the variable to update
+     * @param suffix the suffix to set/clear
+     * @returns
+     */
+    setSuffix = async (id: string, suffix: string | null) => {
+        const update = { suffix: { value: suffix } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the prefix character style for a supported variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the prefix
+     * @returns
+     */
+    setPrefixCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { prefixCharacterStyleId: { value: characterStyleId } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the suffix character style for a supported variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the suffix
+     * @returns
+     */
+    setSuffixCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { suffixCharacterStyleId: { value: characterStyleId } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);
@@ -577,5 +622,11 @@ export class VariableController {
         updated.selected = selected?.value;
 
         return updated;
+    }
+
+    private async applyPrefixSuffixDeltaUpdate(id: string, update: PrefixSuffixDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateVariablePrefixSuffixProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
     }
 }

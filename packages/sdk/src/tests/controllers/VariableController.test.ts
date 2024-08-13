@@ -81,6 +81,7 @@ describe('VariableController', () => {
         setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
         updateDateVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
         updateNumberVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+        updateVariablePrefixSuffixProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -110,6 +111,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
         jest.spyOn(mockEditorApi, 'updateDateVariableProperties');
         jest.spyOn(mockEditorApi, 'updateNumberVariableProperties');
+        jest.spyOn(mockEditorApi, 'updateVariablePrefixSuffixProperties');
     });
 
     it('get variable by id', async () => {
@@ -428,6 +430,42 @@ describe('VariableController', () => {
         expect(mockEditorApi.updateNumberVariableProperties).toHaveBeenCalledWith(
             '1',
             JSON.stringify({ decimalCharacterStyleId: { value: '2' } }),
+        );
+    });
+
+    it('updates the prefix', async () => {
+        await mockedVariableController.setPrefix('1', '$');
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ prefix: { value: '$' } }),
+        );
+    });
+
+    it('updates the suffix', async () => {
+        await mockedVariableController.setSuffix('1', '€');
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ suffix: { value: '€' } }),
+        );
+    });
+
+    it('updates the prefix style', async () => {
+        await mockedVariableController.setPrefixCharacterStyle('1', 'some id');
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ prefixCharacterStyleId: { value: 'some id' } }),
+        );
+    });
+
+    it('updates the suffix style', async () => {
+        await mockedVariableController.setSuffixCharacterStyle('1', 'some id');
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateVariablePrefixSuffixProperties).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ suffixCharacterStyleId: { value: 'some id' } }),
         );
     });
 });
