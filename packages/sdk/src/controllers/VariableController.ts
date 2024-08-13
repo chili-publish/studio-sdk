@@ -553,7 +553,7 @@ export class VariableController {
     };
 
     /**
-     * @experimaental Sets the prefix for a supported variable
+     * @experimental Sets the prefix for a supported variable
      * @param id the id of the variable to update
      * @param prefix the prefix to set/clear
      * @returns
