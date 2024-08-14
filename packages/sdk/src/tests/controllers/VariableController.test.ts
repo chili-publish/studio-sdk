@@ -21,7 +21,7 @@ describe('VariableController', () => {
 
     const connectorId = 'connectorId';
     const variableId = 'variableId';
-    const privateData = { hello: 'world' };
+    const privateData = { hello: 'world' } as Record<string, string>;
 
     const variable: ImageVariable = {
         id: variableId,
