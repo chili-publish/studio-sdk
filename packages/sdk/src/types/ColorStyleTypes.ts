@@ -70,12 +70,27 @@ export type SpotColorRGB = {
     type: ColorType;
 };
 
+export type SpotColorHEX = {
+    spotName: string;
+    value: string;
+    type: ColorType;
+};
+
 export type HexColor = {
     value: string;
     type: ColorType;
 };
 
-export type Color = RGBColor | CMYKColor | HSLColor | GrayColor | SpotColor | HexColor | SpotColorCMYK | SpotColorRGB;
+export type Color =
+    | RGBColor
+    | CMYKColor
+    | HSLColor
+    | GrayColor
+    | SpotColor
+    | HexColor
+    | SpotColorCMYK
+    | SpotColorRGB
+    | SpotColorHEX;
 
 export type ColorUpdate = Color;
 
