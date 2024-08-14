@@ -6,7 +6,12 @@ export enum ColorType {
     cmyk = 'cmyk',
     gray = 'gray',
     hsl = 'hsl',
+    /**
+     * @deprecated Use spotCMYK or spotRGB instead
+     */
     spot = 'spot',
+    spotCMYK = 'spotCMYK',
+    spotRGB = 'spotRGB',
 }
 
 export type RGBColor = {
@@ -36,6 +41,9 @@ export type GrayColor = {
     type: ColorType;
 };
 
+/**
+ * @deprecated Use SpotColorCMYK or SpotColorRGB instead
+ */
 export type SpotColor = {
     spotName: string;
     c: number;
@@ -45,12 +53,29 @@ export type SpotColor = {
     type: ColorType;
 };
 
+export type SpotColorCMYK = {
+    spotName: string;
+    c: number;
+    m: number;
+    y: number;
+    k: number;
+    type: ColorType;
+};
+
+export type SpotColorRGB = {
+    spotName: string;
+    r: number;
+    g: number;
+    b: number;
+    type: ColorType;
+};
+
 export type HexColor = {
     value: string;
     type: ColorType;
 };
 
-export type Color = RGBColor | CMYKColor | HSLColor | GrayColor | SpotColor | HexColor;
+export type Color = RGBColor | CMYKColor | HSLColor | GrayColor | SpotColor | HexColor | SpotColorCMYK | SpotColorRGB;
 
 export type ColorUpdate = Color;
 
