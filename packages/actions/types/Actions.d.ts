@@ -272,6 +272,20 @@ declare module 'grafx-studio-actions' {
              * @returns
              */
             setVisible(isVisible: boolean | VariableValue): void;
+
+            /**
+             * Sets the prefix of a variable
+             *
+             * @param prefix the prefix to set
+             */
+            setPrefix(prefix: string | null): void;
+
+            /**
+             * Sets the suffix of a variable
+             *
+             * @param suffix the suffix to set
+             */
+            setSuffix(suffix: string | null): void;
         }
 
         /**
