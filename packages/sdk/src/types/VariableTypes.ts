@@ -45,6 +45,7 @@ export interface Variable {
     occurrences: number;
     placeholder?: string | null;
     helpText?: string | null;
+    privateData: Record<string, string>;
 }
 
 export interface ImageVariable extends Variable {

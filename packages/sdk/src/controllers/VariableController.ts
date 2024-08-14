@@ -596,6 +596,29 @@ export class VariableController {
         return this.applyPrefixSuffixDeltaUpdate(id, update);
     };
 
+    /**
+     * Sets the private data for any variable
+     * @param id the id of the variable to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: Record<string, string>) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariablePrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any variable
+     * @param id the id of the variable
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getVariablePrivateData(id).then((result) => getEditorResponseData<null>(result));
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);
