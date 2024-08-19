@@ -95,12 +95,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
             token: ${{ secrets.PACKAGE_SECRET }}
-      - name: Use Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-            node-version: ${{ matrix.node-version }}
-            registry-url: 'https://npm.pkg.github.com'
-            scope: '@chili-publish'
       - name: Bump version
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
