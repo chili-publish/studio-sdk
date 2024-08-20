@@ -603,7 +603,7 @@ export class VariableController {
      * @param privateData the private data
      * @returns
      */
-    setPrivateData = async (id: string, privateData: Record<string, string>) => {
+    setPrivateData = async (id: string, privateData: PrivateData) => {
         const res = await this.#editorAPI;
         return res
             .setVariablePrivateData(id, JSON.stringify(privateData))
