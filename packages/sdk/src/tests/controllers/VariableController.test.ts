@@ -5,6 +5,7 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
+    PrivateData,
     Variable,
     VariableType,
 } from '../../types/VariableTypes';
@@ -21,7 +22,7 @@ describe('VariableController', () => {
 
     const connectorId = 'connectorId';
     const variableId = 'variableId';
-    const privateData = { hello: 'world' } as Record<string, string>;
+    const privateData = { hello: 'world' } as PrivateData;
 
     const variable: ImageVariable = {
         id: variableId,

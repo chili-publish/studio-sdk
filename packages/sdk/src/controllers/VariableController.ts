@@ -9,6 +9,7 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
+    PrivateData,
     Variable,
     VariableType,
 } from '../types/VariableTypes';
@@ -616,7 +617,7 @@ export class VariableController {
      */
     getPrivateData = async (id: string) => {
         const res = await this.#editorAPI;
-        return res.getVariablePrivateData(id).then((result) => getEditorResponseData<null>(result));
+        return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
