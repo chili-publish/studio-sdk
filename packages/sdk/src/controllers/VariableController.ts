@@ -9,6 +9,7 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
+    PrivateData,
     Variable,
     VariableType,
 } from '../types/VariableTypes';
@@ -594,6 +595,29 @@ export class VariableController {
     setSuffixCharacterStyle = async (id: string, characterStyleId: string | null) => {
         const update = { suffixCharacterStyleId: { value: characterStyleId } };
         return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * Sets the private data for any variable
+     * @param id the id of the variable to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: PrivateData) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariablePrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any variable
+     * @param id the id of the variable
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {

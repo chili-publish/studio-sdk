@@ -5,6 +5,7 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
+    PrivateData,
     Variable,
     VariableType,
 } from '../../types/VariableTypes';
@@ -21,6 +22,7 @@ describe('VariableController', () => {
 
     const connectorId = 'connectorId';
     const variableId = 'variableId';
+    const privateData = { hello: 'world' } as PrivateData;
 
     const variable: ImageVariable = {
         id: variableId,
@@ -38,6 +40,7 @@ describe('VariableController', () => {
                 mediaId: 'resolved-brush-id',
             },
         },
+        privateData: {},
     };
 
     const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
@@ -51,6 +54,7 @@ describe('VariableController', () => {
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],
+        privateData: {},
     };
 
     const variables = [listVar];
@@ -82,6 +86,8 @@ describe('VariableController', () => {
         updateDateVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
         updateNumberVariableProperties: async () => getEditorResponseData(castToEditorResponse(null)),
         updateVariablePrefixSuffixProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
+        getVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(privateData)),
     };
 
     beforeEach(() => {
@@ -112,6 +118,8 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'updateDateVariableProperties');
         jest.spyOn(mockEditorApi, 'updateNumberVariableProperties');
         jest.spyOn(mockEditorApi, 'updateVariablePrefixSuffixProperties');
+        jest.spyOn(mockEditorApi, 'setVariablePrivateData');
+        jest.spyOn(mockEditorApi, 'getVariablePrivateData');
     });
 
     it('get variable by id', async () => {
@@ -467,5 +475,18 @@ describe('VariableController', () => {
             '1',
             JSON.stringify({ suffixCharacterStyleId: { value: 'some id' } }),
         );
+    });
+
+    it('sets the private data', async () => {
+        await mockedVariableController.setPrivateData('1', privateData);
+        expect(mockEditorApi.setVariablePrivateData).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariablePrivateData).toHaveBeenCalledWith('1', JSON.stringify({ hello: 'world' }));
+    });
+
+    it('gets the private data', async () => {
+        const response = await mockedVariableController.getPrivateData('1');
+        expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledWith('1');
+        expect(response?.parsedData).toStrictEqual(privateData);
     });
 });
