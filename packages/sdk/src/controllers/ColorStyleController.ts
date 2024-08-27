@@ -1,5 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { ColorUpdate, DocumentColor } from '../types/ColorStyleTypes';
+import { ColorType, ColorUpdate, DocumentColor } from '../types/ColorStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -87,9 +87,11 @@ export class ColorStyleController {
      */
     update = async (id: string, newColorProperties: ColorUpdate) => {
         const res = await this.#editorAPI;
-        return res
-            .updateColor(id, JSON.stringify(newColorProperties))
-            .then((result) => getEditorResponseData<null>(result));
+        const properties = newColorProperties;
+        if (properties.type === ColorType.spot) {
+            properties.type = ColorType.spotCMYK;
+        }
+        return res.updateColor(id, JSON.stringify(properties)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
