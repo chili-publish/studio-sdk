@@ -620,6 +620,27 @@ export class VariableController {
         return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
     };
 
+    /**
+     * Gets the variables having required values that are not set
+     *
+     * PDF output won't work if all required variables are not set
+     *
+     * @returns the list of invalid variables
+     */
+    getAllRequiredAndInvalid = async () => {
+        const res = await this.#editorAPI;
+        return res
+            .getInvalidRequiredVariables()
+            .then((result) => getEditorResponseData<Variable[]>(result))
+            .then((resp) => {
+                const update = resp;
+                if (update.parsedData) {
+                    update.parsedData = this.makeVariablesBackwardsCompatible(update.parsedData);
+                }
+                return update;
+            });
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);
