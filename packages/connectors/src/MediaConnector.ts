@@ -17,19 +17,16 @@ export type DownloadIntent = 'web' | 'print' | 'animation';
 export type DownloadType = 'thumbnail' | 'mediumres' | 'highres' | 'fullres' | 'original';
 
 export interface MediaPage {
-    pageSize: number;
     data: Media[];
-    links: {
-        nextPage: string;
-    };
+    nextPage?: string;    
 }
 
 export interface Media {
     id: string;
     name: string;
-    relativePath: string;
+    parentCollection: string;
     type: number;
-    metaData: Dictionary;
+    metadata: Dictionary;
     extension?: string;
 }
 

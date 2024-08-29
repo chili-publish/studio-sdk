@@ -7,7 +7,7 @@ export type ChiliPlatform = 'web' | 'server';
 export interface ConnectorRuntimeContext {
     options: Dictionary;
     fetch(url: string, init: ChiliRequestInit): Promise<ChiliResponse>;
-    logError(msg: string): void;
+    log(msg: string): void;
     platform: ChiliPlatform;
     sdkVersion: string;
 }
