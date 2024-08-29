@@ -414,6 +414,9 @@ export class VariableController {
     /**
      * This method sets a new value for a variable
      *
+     * If the value is some text to be set on a ShortTextVariable, it cannot
+     * contain any type of line breaks.
+     *
      * @param id the id of the variable
      * @param value the new value of the variable
      * @returns
