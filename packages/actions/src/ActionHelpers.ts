@@ -152,7 +152,7 @@ function getImageVariableValue(variableName: string | Variable): string {
 /**
  * Sets the value of a variable by its name or variable object.
  *
- * If the value is set on a ShortTextVariable, it cannot contain any type of
+ * If the value is set on a ShortTextVariable, it must not contain any type of
  * line breaks.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
@@ -165,7 +165,7 @@ function setVariableValue(variableName: string | Variable, value: VariableValue)
 /**
  * Sets the value of a text variable by its name or variable object.
  *
- * If the value is set on a ShortTextVariable, it cannot contain any type of
+ * If the value is set on a ShortTextVariable, it must not contain any type of
  * line breaks.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
