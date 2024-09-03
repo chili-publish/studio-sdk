@@ -247,6 +247,10 @@ declare module 'grafx-studio-actions' {
         export interface VariableMethods {
             /**
              * Sets the value of a variable
+             *
+             * If the value is some text to be set on a ShortTextVariable, it
+             * cannot contain any type of line breaks.
+             *
              * @param value the value
              * @returns
              */

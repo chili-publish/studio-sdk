@@ -152,6 +152,9 @@ function getImageVariableValue(variableName: string | Variable): string {
 /**
  * Sets the value of a variable by its name or variable object.
  *
+ * If the value is set on a ShortTextVariable, it must not contain any type of
+ * line breaks.
+ *
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {VariableValue} value - The new variable value (ensure correct types are used). Text variables should get a string value, Boolean variables should get a boolean value, List variables should get the item to select as a string.
  */
@@ -161,6 +164,9 @@ function setVariableValue(variableName: string | Variable, value: VariableValue)
 
 /**
  * Sets the value of a text variable by its name or variable object.
+ *
+ * If the value is set on a ShortTextVariable, it must not contain any type of
+ * line breaks.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {string} value - The new text variable value.
