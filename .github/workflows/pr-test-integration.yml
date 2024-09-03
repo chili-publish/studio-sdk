@@ -1,0 +1,57 @@
+name: Test Integration
+
+on:
+  pull_request:
+    types: [ labeled ]
+
+jobs:
+  test:
+    if: ${{ github.event.label.name == 'test-integration' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      - name: Checkout private repository
+        uses: actions/checkout@v2
+        with:
+          repository: chili-publish/studio-workspace
+          token: ${{ secrets.PACKAGE_SECRET }}
+          path: studio-workspace
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@chili-publish'
+
+      - name: Install dependencies in current repository using Yarn
+        run: yarn install
+
+      - name: Build current repository
+        run: yarn build
+        working-directory: packages/sdk
+
+      - name: Link current repository
+        run: yarn link
+        working-directory: packages/sdk
+
+      - name: Install dependencies in workspace repository using Yarn
+        run: yarn install
+        working-directory: studio-workspace
+        env: 
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+
+      - name: Link current repository into workspace repository
+        run: yarn link @chili-publish/studio-sdk
+        working-directory: studio-workspace
+
+      - name: Run tests in workspace repository
+        run: yarn test
+        working-directory: studio-workspace
