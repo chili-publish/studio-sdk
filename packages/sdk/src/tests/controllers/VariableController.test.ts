@@ -57,7 +57,22 @@ describe('VariableController', () => {
         privateData: {},
     };
 
+    const listVar2: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
+        id: variableId,
+        type: VariableType.list,
+        name: '',
+        label: '',
+        isVisible: true,
+        isReadonly: false,
+        isRequired: true,
+        occurrences: 0,
+        selected: undefined,
+        items: [{ value: 'def', displayValue: 'D-E-F' }],
+        privateData: {},
+    };
+
     const variables = [listVar];
+    const invalidVariables = [listVar2];
 
     const mockEditorApi: EditorAPI = {
         getVariableById: async () => getEditorResponseData(castToEditorResponse(variable)),
@@ -88,6 +103,7 @@ describe('VariableController', () => {
         updateVariablePrefixSuffixProperties: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
         getVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(privateData)),
+        getInvalidRequiredVariables: async () => getEditorResponseData(castToEditorResponse(invalidVariables)),
     };
 
     beforeEach(() => {
@@ -120,6 +136,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'updateVariablePrefixSuffixProperties');
         jest.spyOn(mockEditorApi, 'setVariablePrivateData');
         jest.spyOn(mockEditorApi, 'getVariablePrivateData');
+        jest.spyOn(mockEditorApi, 'getInvalidRequiredVariables');
     });
 
     it('get variable by id', async () => {
@@ -488,5 +505,13 @@ describe('VariableController', () => {
         expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledWith('1');
         expect(response?.parsedData).toStrictEqual(privateData);
+    });
+
+    it('get invalid required variable list', async () => {
+        const result = await mockedVariableController.getAllRequiredAndInvalid();
+        expect(mockEditorApi.getInvalidRequiredVariables).toHaveBeenCalledTimes(1);
+        // Backwards compatibility layer maps the new `VariableListItem` into a string.
+        expect((result.parsedData as ListVariable[])[0].items).toStrictEqual(['def']);
+        expect((result.parsedData as ListVariable[])[0].selected).toStrictEqual(undefined);
     });
 });
