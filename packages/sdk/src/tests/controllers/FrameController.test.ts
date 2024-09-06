@@ -1,10 +1,13 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
+    AnchorDirection,
     AutoGrowDirection,
     BlendMode,
     FitMode,
     FrameTypeEnum,
     ImageSourceTypeEnum,
+    SpecificHorizontalAnchorPosition,
+    SpecificVerticalAnchorPosition,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -72,6 +75,8 @@ const mockedEditorApi: EditorAPI = {
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -128,6 +133,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
     jest.spyOn(mockedEditorApi, 'resetAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
+    jest.spyOn(mockedEditorApi, 'setAnchorProperties');
+    jest.spyOn(mockedEditorApi, 'resetAnchorProperties');
 
     id = mockSelectFrame.id;
 });
@@ -633,6 +640,35 @@ describe('Auto grow updating', () => {
         expect(mockedEditorApi.updateAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ directions: { value: directions } }),
+        );
+    });
+});
+
+describe('Anchoring', () => {
+    it('should be possible to set the vertical anchor settings', async () => {
+        await mockedFrameController.setVerticalPageAnchor(id, SpecificVerticalAnchorPosition.top);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(
+            id,
+            AnchorDirection.vertical,
+            SpecificVerticalAnchorPosition.top,
+        );
+    });
+    it('should be possible to set the horizontal anchor settings', async () => {
+        await mockedFrameController.setHorizontalPageAnchor(id, SpecificHorizontalAnchorPosition.leftRight);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenLastCalledWith(
+            id,
+            AnchorDirection.horizontal,
+            SpecificHorizontalAnchorPosition.leftRight,
+        );
+    });
+
+    it('should be possible to reset anchor settings', async () => {
+        await mockedFrameController.resetAnchoring(id);
+        expect(mockedEditorApi.resetAnchorProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetAnchorProperties).toHaveBeenLastCalledWith(
+            id,
         );
     });
 });

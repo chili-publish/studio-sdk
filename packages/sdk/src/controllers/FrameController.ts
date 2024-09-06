@@ -15,6 +15,9 @@ import {
     AutoGrowDeltaUpdate,
     AutoGrowDirection,
     AutoGrowResetUpdate,
+    VerticalAnchorPosition,
+    HorizontalAnchorPosition,
+    AnchorDirection,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -835,5 +838,37 @@ export class FrameController {
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the vertical anchor to page on a specified frame.
+     * @param id the id of the frame that needs to get a page anchor set
+     * @param anchor the new page-anchor position to be set to the frame.
+     * @returns
+     */
+    setVerticalPageAnchor = async (id: Id, anchor: VerticalAnchorPosition) => {
+        const res = await this.#editorAPI;
+        return res.setAnchorProperties(id, AnchorDirection.vertical, anchor).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the horizontal anchor to page on a specified frame.
+     * @param id the id of the frame that needs to get a page anchor set
+     * @param anchor the new page-anchor position to be set to the frame.
+     * @returns
+     */
+    setHorizontalPageAnchor = async (id: Id, anchor: HorizontalAnchorPosition) => {
+        const res = await this.#editorAPI;
+        return res.setAnchorProperties(id, AnchorDirection.horizontal, anchor).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset all anchoring properties of a specified frame to their original values
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAnchoring = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAnchorProperties(id).then((result) => getEditorResponseData<null>(result));
     };
 }

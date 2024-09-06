@@ -21,6 +21,7 @@ export type FrameLayoutType = {
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
     autoGrow: AutoGrowSettings;
+    anchoring: AnchorSettings;
 } | null;
 
 //Frame.image
@@ -274,3 +275,34 @@ export enum UpdateZIndexMethod {
     bringForward = 'bringForward',
     sendBackward = 'sendBackward',
 }
+
+export enum SharedAnchorPosition {
+    relative = 'relative',
+    center = 'center',
+}
+
+export enum SpecificVerticalAnchorPosition {
+    top = 'top',
+    bottom = 'bottom',
+    topBottom = 'topBottom',
+}
+
+export enum SpecificHorizontalAnchorPosition {
+    right = 'right',
+    left = 'left',
+    leftRight = 'leftRight',
+}
+
+export enum AnchorDirection {
+    horizontal = 'horizontal',
+    vertical = 'vertical',
+}
+
+export type VerticalAnchorPosition = SharedAnchorPosition | SpecificVerticalAnchorPosition;
+export type HorizontalAnchorPosition = SharedAnchorPosition | SpecificHorizontalAnchorPosition;
+
+export type AnchorSettings = {
+    vertical: PropertyState<VerticalAnchorPosition>;
+    horizontal: PropertyState<HorizontalAnchorPosition>;
+    frameId?: PropertyState<Id>;
+};
