@@ -331,7 +331,7 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
  *
  * @param decimalPlaces The decimal places (`0`, `1`, `2`, `3`, `4`).
  */
-function setNumberVariableDecimalPlaces(variableName: string | Variable, decimalPlaces: DecimalPlaces) {
+function setNumberVariableDecimalPlaces(variableName: string | Variable, decimalPlaces: number) {
     const numberVar = getNumberVariable(variableName);
 
     numberVar.setDecimalPlaces(decimalPlaces);
