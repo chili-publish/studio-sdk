@@ -1,5 +1,6 @@
 import { EditorAPI } from '../types/CommonTypes';
 import type { ChiliDocument, DocumentLoadOptions } from '../types/DocumentTypes';
+import { LayoutPreset } from '../types/LayoutTypes';
 
 import { getEditorResponseData } from '../utils/EditorResponseData';
 /**
@@ -48,6 +49,21 @@ export class DocumentController {
 
         return res
             .loadDocument(parsedDoc, JSON.stringify(options))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will create a new document, based on a document preset
+     * @param preset the preset where we will create a document of.
+     * @returns the new document created and loaded inside of the canvas
+     */
+    create = async (preset: LayoutPreset) => {
+        const res = await this.#editorAPI;
+
+        const parsedDoc = JSON.stringify(preset);
+
+        return res
+            .createDocument(parsedDoc)
             .then((result) => getEditorResponseData<null>(result));
     };
 }
