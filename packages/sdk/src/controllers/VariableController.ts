@@ -8,6 +8,8 @@ import {
     ListVariableItem,
     Locale,
     NumberVariablePropertiesDeltaUpdate,
+    PrefixSuffixDeltaUpdate,
+    PrivateData,
     Variable,
     VariableType,
 } from '../types/VariableTypes';
@@ -328,7 +330,7 @@ export class VariableController {
     /**
      * Internal private method to set/reset a placeholder for a variable
      */
-    private setPlaceholderInternal = async (id: string, placeholder: string | null) => {
+    #setPlaceholder = async (id: string, placeholder: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariablePlaceholder(id, placeholder).then((result) => getEditorResponseData<null>(result));
     };
@@ -340,7 +342,7 @@ export class VariableController {
      * @returns
      */
     setPlaceholder = async (id: string, placeholder: string) => {
-        return this.setPlaceholderInternal(id, placeholder);
+        return this.#setPlaceholder(id, placeholder);
     };
 
     /**
@@ -349,7 +351,34 @@ export class VariableController {
      * @returns
      */
     resetPlaceholder = async (id: string) => {
-        return this.setPlaceholderInternal(id, null);
+        return this.#setPlaceholder(id, null);
+    };
+
+    /**
+     * Internal private method to set/reset a help text for a variable
+     */
+    #setHelpText = async (id: string, helpText: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariableHelpText(id, helpText).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new help text for a variable
+     * @param id id of the variable
+     * @param helpText placeholder of the variable
+     * @returns
+     */
+    setHelpText = async (id: string, helpText: string) => {
+        return this.#setHelpText(id, helpText);
+    };
+
+    /**
+     * This method resets a help text for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetHelpText = async (id: string) => {
+        return this.#setHelpText(id, null);
     };
 
     /**
@@ -384,6 +413,9 @@ export class VariableController {
 
     /**
      * This method sets a new value for a variable
+     *
+     * If the value is some text to be set on a ShortTextVariable, it must not
+     * contain any type of line breaks.
      *
      * @param id the id of the variable
      * @param value the new value of the variable
@@ -524,6 +556,73 @@ export class VariableController {
         return this.setValue(id, null);
     };
 
+    /**
+     * @experimental Sets the prefix for a supported variable
+     * @param id the id of the variable to update
+     * @param prefix the prefix to set/clear
+     * @returns
+     */
+    setPrefix = async (id: string, prefix: string | null) => {
+        const update = { prefix: { value: prefix } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the suffix for a supported variable
+     * @param id the id of the variable to update
+     * @param suffix the suffix to set/clear
+     * @returns
+     */
+    setSuffix = async (id: string, suffix: string | null) => {
+        const update = { suffix: { value: suffix } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the prefix character style for a supported variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the prefix
+     * @returns
+     */
+    setPrefixCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { prefixCharacterStyleId: { value: characterStyleId } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the suffix character style for a supported variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the suffix
+     * @returns
+     */
+    setSuffixCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { suffixCharacterStyleId: { value: characterStyleId } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * Sets the private data for any variable
+     * @param id the id of the variable to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: PrivateData) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariablePrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any variable
+     * @param id the id of the variable
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);
@@ -550,5 +649,11 @@ export class VariableController {
         updated.selected = selected?.value;
 
         return updated;
+    }
+
+    private async applyPrefixSuffixDeltaUpdate(id: string, update: PrefixSuffixDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateVariablePrefixSuffixProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
     }
 }

@@ -1,0 +1,27 @@
+name: get-gh-app-jwt
+description: Action to get a GitHub application JWT
+
+inputs:
+    gh-app-private-key:
+        description: GitHub application private key
+        required: true
+    gh-app-id:
+        description: GitHub application ID
+        required: true
+
+outputs:
+    gh-app-jwt:
+        description: GitHub application JWT
+        value: ${{ steps.get-gh-app-jwt.outputs.jwt }}
+
+runs:
+    using: composite
+    steps:
+        - id: get-gh-app-jwt
+          shell: pwsh
+          run: |
+              $JWT = & '${{ github.action_path }}/get-gh-app-jwt.ps1' `
+              -GH_App_Private_Key '${{ inputs.gh-app-private-key }}' `
+              -GH_App_ID '${{ inputs.gh-app-id }}'
+
+              "jwt=$JWT" >> $env:GITHUB_OUTPUT

@@ -1,0 +1,28 @@
+name: get-gh-app-installation-access-token
+description: Action to get a GitHub application installation access token
+
+inputs:
+    gh-app-jwt:
+        description: GitHub application JWT
+        required: true
+    gh-app-installation-id:
+        description: GitHub application installation ID
+        required: true
+
+outputs:
+    gh-app-installation-access-token:
+        description: GitHub application installation access token
+        value: ${{ steps.get-gh-app-installation-access-token.outputs.token }}
+
+runs:
+    using: composite
+    steps:
+        - name: Get GitHub application installation access token
+          id: get-gh-app-installation-access-token
+          shell: pwsh
+          run: |
+              $Token = & '${{ github.action_path }}/get-gh-app-installation-access-token.ps1' `
+              -GH_App_JWT '${{ inputs.gh-app-jwt }}' `
+              -GH_App_Installation_ID '${{ inputs.gh-app-installation-id }}' `
+
+              "token=$Token" >> $env:GITHUB_OUTPUT
