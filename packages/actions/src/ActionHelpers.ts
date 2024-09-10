@@ -325,6 +325,19 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
 }
 
 /**
+ * Set decimal places of the number variable.
+ *
+ * @param {string | Variable} variableName - The name of the number variable or a variable object.
+ *
+ * @param decimalPlaces The decimal places (`0`, `1`, `2`, `3`, `4`).
+ */
+function setNumberVariableDecimalPlaces(variableName: string | Variable, decimalPlaces: DecimalPlaces) {
+    const numberVar = getNumberVariable(variableName);
+
+    numberVar.setDecimalPlaces(decimalPlaces);
+}
+
+/**
  * Set thousands separator of the number variable.
  *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.

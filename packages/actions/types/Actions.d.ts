@@ -461,6 +461,19 @@ declare module 'grafx-studio-actions' {
              * @param separator the thousands separator
              */
             setThousandsSeparator(separator: NumberSeparator): void;
+
+            /**
+             * Sets decimal places of the number variable.
+             *
+             * @param decimalPlaces the decimal separator
+             * Possible values are:
+             * - 0
+             * - 1
+             * - 2
+             * - 3
+             * - 4
+             */
+            setDecimalPlaces(decimalPlaces: number): void;
         }
 
         /**
