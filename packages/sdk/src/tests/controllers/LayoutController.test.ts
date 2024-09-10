@@ -93,9 +93,23 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledWith('1');
     });
     it('Should be possible to create a layout', async () => {
+        const preset = {
+            name: 'name',
+            intent: LayoutIntent.print,
+            unit: MeasurementUnit.mm,
+            width: '100 mm',
+            height: '200 mm',
+        };
+
+        await mockedLayoutController.create('1', [preset]);
+        
+        expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1', [preset]);
+    });
+    it('Should be possible to create a layout with a preset', async () => {
         await mockedLayoutController.create('1');
         expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1');
+        expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1', []);
     });
     it('Should be possible to set the layout name', async () => {
         await mockedLayoutController.rename('1', 'TEST');

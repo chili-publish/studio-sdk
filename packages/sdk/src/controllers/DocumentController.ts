@@ -57,13 +57,13 @@ export class DocumentController {
      * @param preset the preset where we will create a document of.
      * @returns the new document created and loaded inside of the canvas
      */
-    create = async (preset: LayoutPreset) => {
+    createAndLoad = async (preset: LayoutPreset) => {
         const res = await this.#editorAPI;
 
         const parsedDoc = JSON.stringify(preset);
 
         return res
-            .createDocument(parsedDoc)
+            .createAndLoadDocument(parsedDoc)
             .then((result) => getEditorResponseData<null>(result));
     };
 }
