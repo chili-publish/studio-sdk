@@ -86,9 +86,13 @@ export class LayoutController {
     create = async (parentId: Id, presets?: LayoutPreset[]) => {
         const res = await this.#editorAPI;
 
-        return res
-            .addLayout(parentId, presets?.length ? presets : [])
-            .then((result) => getEditorResponseData<Id>(result));
+        if (presets?.length) {
+            return res
+                .addLayouts(parentId, JSON.stringify(presets))
+                .then((result) => getEditorResponseData<Id>(result));
+        }
+        
+        return res.addLayout(parentId).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

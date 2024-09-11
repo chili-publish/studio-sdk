@@ -15,6 +15,7 @@ const mockedEditorApi: EditorAPI = {
     getSelectedLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     removeLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     addLayout: async () => getEditorResponseData(castToEditorResponse(null)),
+    addLayouts: async () => getEditorResponseData(castToEditorResponse(null)),
     renameLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     selectLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateLayout: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -42,6 +43,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getSelectedLayout');
     jest.spyOn(mockedEditorApi, 'removeLayout');
     jest.spyOn(mockedEditorApi, 'addLayout');
+    jest.spyOn(mockedEditorApi, 'addLayouts');
     jest.spyOn(mockedEditorApi, 'renameLayout');
     jest.spyOn(mockedEditorApi, 'selectLayout');
     jest.spyOn(mockedEditorApi, 'duplicateLayout');
@@ -92,7 +94,7 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledWith('1');
     });
-    it('Should be possible to create a layout', async () => {
+    it('Should be possible to create a layout with a preset', async () => {
         const preset = {
             name: 'name',
             intent: LayoutIntent.print,
@@ -103,13 +105,13 @@ describe('LayoutController', () => {
 
         await mockedLayoutController.create('1', [preset]);
         
-        expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1', [preset]);
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledWith('1', JSON.stringify([preset]));
     });
-    it('Should be possible to create a layout with a preset', async () => {
+    it('Should be possible to create a layout without a preset', async () => {
         await mockedLayoutController.create('1');
         expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1', []);
+        expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1');
     });
     it('Should be possible to set the layout name', async () => {
         await mockedLayoutController.rename('1', 'TEST');
