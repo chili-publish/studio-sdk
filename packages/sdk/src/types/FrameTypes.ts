@@ -7,6 +7,8 @@ import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from '
 export type FrameLayoutType = {
     id: Id;
     layoutId: Id;
+    horizontal: FrameAnchorType;
+    vertical: FrameAnchorType;
     x: PropertyState<number>;
     y: PropertyState<number>;
     width: PropertyState<number>;
@@ -21,7 +23,6 @@ export type FrameLayoutType = {
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
     autoGrow: AutoGrowSettings;
-    anchoring: AnchorSettings;
 } | null;
 
 //Frame.image
@@ -276,33 +277,61 @@ export enum UpdateZIndexMethod {
     sendBackward = 'sendBackward',
 }
 
-export enum SharedAnchorPosition {
+export enum FrameAnchorType {
     relative = 'relative',
+    start = 'start',
+    end = 'end',
+    startAndEnd = 'startAndEnd',
     center = 'center',
 }
 
-export enum SpecificVerticalAnchorPosition {
-    top = 'top',
-    bottom = 'bottom',
-    topBottom = 'topBottom',
+export enum AnchorTargetType {
+    page = 'page',
+    // frame = 'frame', // will be added later
 }
 
-export enum SpecificHorizontalAnchorPosition {
-    right = 'right',
-    left = 'left',
-    leftRight = 'leftRight',
-}
-
-export enum AnchorDirection {
-    horizontal = 'horizontal',
-    vertical = 'vertical',
-}
-
-export type VerticalAnchorPosition = SharedAnchorPosition | SpecificVerticalAnchorPosition;
-export type HorizontalAnchorPosition = SharedAnchorPosition | SpecificHorizontalAnchorPosition;
-
-export type AnchorSettings = {
-    vertical: PropertyState<VerticalAnchorPosition>;
-    horizontal: PropertyState<HorizontalAnchorPosition>;
-    frameId?: PropertyState<Id>;
+export type PageAnchorTarget = {
+    type: AnchorTargetType;
 };
+
+export type FrameAnchorTarget = {
+    id: Id;
+    type: AnchorTargetType;
+};
+
+export type AnchorTarget = PageAnchorTarget | FrameAnchorTarget;
+
+export type RelativeFrameAnchor = {
+    start: PropertyState<number>;
+    end: PropertyState<number>;
+    target: PropertyState<AnchorTarget>;
+};
+
+export type StartFrameAnchor = {
+    offset: PropertyState<number>;
+    target: PropertyState<AnchorTarget>;
+};
+
+export type EndFrameAnchor = {
+    offset: PropertyState<number>;
+    target: PropertyState<AnchorTarget>;
+};
+
+export type StartAndEndFrameAnchor = {
+    start: PropertyState<number>;
+    end: PropertyState<number>;
+    target: PropertyState<AnchorTarget>;
+};
+
+export type CenterFrameAnchor = {
+    offset: PropertyState<number>;
+    size: PropertyState<number>;
+    target: PropertyState<AnchorTarget>;
+};
+
+export type FrameAnchor =
+    | RelativeFrameAnchor
+    | StartFrameAnchor
+    | EndFrameAnchor
+    | StartAndEndFrameAnchor
+    | CenterFrameAnchor;

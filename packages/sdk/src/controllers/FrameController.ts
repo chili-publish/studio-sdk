@@ -15,9 +15,8 @@ import {
     AutoGrowDeltaUpdate,
     AutoGrowDirection,
     AutoGrowResetUpdate,
-    VerticalAnchorPosition,
-    HorizontalAnchorPosition,
-    AnchorDirection,
+    AnchorTargetType,
+    FrameAnchorType,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -840,26 +839,33 @@ export class FrameController {
             .then((result) => getEditorResponseData<null>(result));
     };
 
-    /**
-     * This method will set the vertical anchor to page on a specified frame.
-     * @param id the id of the frame that needs to get a page anchor set
-     * @param anchor the new page-anchor position to be set to the frame.
-     * @returns
-     */
-    setVerticalPageAnchor = async (id: Id, anchor: VerticalAnchorPosition) => {
+    private setPageAnchor = async (id: Id, anchorType: FrameAnchorType, horizontal: boolean) => {
         const res = await this.#editorAPI;
-        return res.setAnchorProperties(id, AnchorDirection.vertical, anchor).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setAnchorProperties(id, horizontal, anchorType, AnchorTargetType.page)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method will set the horizontal anchor to page on a specified frame.
+     * @experimental
+     * This method will set the vertical anchor to page on a specified frame.
      * @param id the id of the frame that needs to get a page anchor set
-     * @param anchor the new page-anchor position to be set to the frame.
+     * @param anchorType the new page-anchor position to be set to the frame.
      * @returns
      */
-    setHorizontalPageAnchor = async (id: Id, anchor: HorizontalAnchorPosition) => {
-        const res = await this.#editorAPI;
-        return res.setAnchorProperties(id, AnchorDirection.horizontal, anchor).then((result) => getEditorResponseData<null>(result));
+    setVerticalPageAnchor = async (id: Id, anchorType: FrameAnchorType) => {
+        return this.setPageAnchor(id, anchorType, false);
+    };
+
+    /**
+     * @experimental
+     * This method will set the horizontal anchor to page on a specified frame.
+     * @param id the id of the frame that needs to get a page anchor set
+     * @param anchorType the new page-anchor position to be set to the frame.
+     * @returns
+     */
+    setHorizontalPageAnchor = async (id: Id, anchorType: FrameAnchorType) => {
+        return this.setPageAnchor(id, anchorType, true);
     };
 
     /**

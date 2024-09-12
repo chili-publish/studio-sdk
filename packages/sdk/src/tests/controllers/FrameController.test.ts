@@ -1,13 +1,12 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
-    AnchorDirection,
+    AnchorTargetType,
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FrameAnchorType,
     FrameTypeEnum,
     ImageSourceTypeEnum,
-    SpecificHorizontalAnchorPosition,
-    SpecificVerticalAnchorPosition,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -646,29 +645,29 @@ describe('Auto grow updating', () => {
 
 describe('Anchoring', () => {
     it('should be possible to set the vertical anchor settings', async () => {
-        await mockedFrameController.setVerticalPageAnchor(id, SpecificVerticalAnchorPosition.top);
+        await mockedFrameController.setVerticalPageAnchor(id, FrameAnchorType.center);
         expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(
             id,
-            AnchorDirection.vertical,
-            SpecificVerticalAnchorPosition.top,
+            false,
+            FrameAnchorType.center,
+            AnchorTargetType.page,
         );
     });
     it('should be possible to set the horizontal anchor settings', async () => {
-        await mockedFrameController.setHorizontalPageAnchor(id, SpecificHorizontalAnchorPosition.leftRight);
+        await mockedFrameController.setHorizontalPageAnchor(id, FrameAnchorType.startAndEnd);
         expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setAnchorProperties).toHaveBeenLastCalledWith(
             id,
-            AnchorDirection.horizontal,
-            SpecificHorizontalAnchorPosition.leftRight,
+            true,
+            FrameAnchorType.startAndEnd,
+            AnchorTargetType.page,
         );
     });
 
     it('should be possible to reset anchor settings', async () => {
         await mockedFrameController.resetAnchoring(id);
         expect(mockedEditorApi.resetAnchorProperties).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetAnchorProperties).toHaveBeenLastCalledWith(
-            id,
-        );
+        expect(mockedEditorApi.resetAnchorProperties).toHaveBeenLastCalledWith(id);
     });
 });
