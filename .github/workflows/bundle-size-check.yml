@@ -37,7 +37,7 @@ jobs:
             - name: Get bundle size for current PR
               id: get_current_bundle_size
               run: |
-                  current_bundle_size=$(du -sb _bundles/ | cut -f1)
+                  current_bundle_size=$(du -sb packages/sdk/_bundles/ | cut -f1)
                   echo "Current PR size: $current_bundle_size bytes"
                   echo "::set-output name=current_bundle_size::$current_bundle_size"
 
@@ -103,7 +103,7 @@ jobs:
             - name: Get bundle size after merge
               id: get_new_bundle_size
               run: |
-                  new_bundle_size=$(du -sb _bundles/ | cut -f1)
+                  new_bundle_size=$(du -sb packages/sdk/_bundles/ | cut -f1)
                   echo "New size after merge: $new_bundle_size"
                   echo "::set-output name=new_bundle_size::$new_bundle_size"
 
