@@ -324,8 +324,6 @@ export type StartAndEndFrameAnchor = {
 };
 
 export type CenterFrameAnchor = {
-    offset: PropertyState<number>;
-    size: PropertyState<number>;
     target: PropertyState<AnchorTarget>;
 };
 
