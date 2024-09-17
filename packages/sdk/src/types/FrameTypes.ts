@@ -7,8 +7,8 @@ import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from '
 export type FrameLayoutType = {
     id: Id;
     layoutId: Id;
-    horizontal: FrameAnchorType;
-    vertical: FrameAnchorType;
+    horizontal: PropertyState<FrameAnchorType>;
+    vertical: PropertyState<FrameAnchorType>;
     x: PropertyState<number>;
     y: PropertyState<number>;
     width: PropertyState<number>;
