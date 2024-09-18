@@ -7,8 +7,8 @@ import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from '
 export type FrameLayoutType = {
     id: Id;
     layoutId: Id;
-    horizontal: PropertyState<FrameAnchorType>;
-    vertical: PropertyState<FrameAnchorType>;
+    horizontal: FrameAnchor;
+    vertical: FrameAnchor;
     x: PropertyState<number>;
     y: PropertyState<number>;
     width: PropertyState<number>;
@@ -305,26 +305,31 @@ export type RelativeFrameAnchor = {
     start: PropertyState<number>;
     end: PropertyState<number>;
     target: PropertyState<AnchorTarget>;
+    type: FrameAnchorType;
 };
 
 export type StartFrameAnchor = {
     offset: PropertyState<number>;
     target: PropertyState<AnchorTarget>;
+    type: FrameAnchorType;
 };
 
 export type EndFrameAnchor = {
     offset: PropertyState<number>;
     target: PropertyState<AnchorTarget>;
+    type: FrameAnchorType;
 };
 
 export type StartAndEndFrameAnchor = {
     start: PropertyState<number>;
     end: PropertyState<number>;
     target: PropertyState<AnchorTarget>;
+    type: FrameAnchorType;
 };
 
 export type CenterFrameAnchor = {
     target: PropertyState<AnchorTarget>;
+    type: FrameAnchorType;
 };
 
 export type FrameAnchor =
