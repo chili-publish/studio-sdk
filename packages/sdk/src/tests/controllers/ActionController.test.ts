@@ -1,7 +1,7 @@
-import { ActionDeltaUpdate, ActionEditorEvent, ActionTrigger } from '../../types/ActionTypes';
-import { EditorAPI } from '../../types/CommonTypes';
-import { ActionController } from '../../controllers/ActionController';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import {ActionDeltaUpdate, ActionEditorEvent, ActionTrigger} from '../../types/ActionTypes';
+import {EditorAPI} from '../../types/CommonTypes';
+import {ActionController} from '../../controllers/ActionController';
+import {castToEditorResponse, getEditorResponseData} from '../../utils/EditorResponseData';
 
 let mockedActionController: ActionController;
 
@@ -17,6 +17,8 @@ const mockEditorApi: EditorAPI = {
     updateActionTriggers: async () => getEditorResponseData(castToEditorResponse(null)),
     moveActions: async () => getEditorResponseData(castToEditorResponse(null)),
     setActionTypeError: async () => getEditorResponseData(castToEditorResponse(null)),
+    disableActions: async () => getEditorResponseData(castToEditorResponse(null)),
+    enableActions: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -32,6 +34,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'updateActionTriggers');
     jest.spyOn(mockEditorApi, 'moveActions');
     jest.spyOn(mockEditorApi, 'setActionTypeError');
+    jest.spyOn(mockEditorApi, 'disableActions');
+    jest.spyOn(mockEditorApi, 'enableActions');
 });
 
 afterEach(() => {
@@ -144,5 +148,15 @@ describe('Should call all of the ActionController functions of child successfull
         await mockedActionController.setTypeError('0', true);
         expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
+    });
+
+    it('Should call the disableActions method', async () => {
+        await mockedActionController.disableExecution();
+        expect(mockEditorApi.disableActions).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call the enableActions method', async () => {
+        await mockedActionController.enableExecution();
+        expect(mockEditorApi.enableActions).toHaveBeenCalledTimes(1);
     });
 });

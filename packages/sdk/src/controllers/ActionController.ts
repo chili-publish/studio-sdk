@@ -1,6 +1,6 @@
-import { ActionDeltaUpdate, ActionTrigger, DocumentAction } from '../types/ActionTypes';
-import { EditorAPI, Id } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
+import {ActionDeltaUpdate, ActionTrigger, DocumentAction} from '../types/ActionTypes';
+import {EditorAPI, Id} from '../types/CommonTypes';
+import {getEditorResponseData} from '../utils/EditorResponseData';
 
 /**
  * The ActionController is responsible for all Actions-related functionality.
@@ -138,5 +138,23 @@ export class ActionController {
      */
     setTypeError = async (id: string, hasTypeErrors: boolean) => {
         return this.update(id, { hasTypeError: hasTypeErrors });
+    };
+
+    /**
+     * This method disables actions execution on the engine side
+     * @returns
+     */
+    disableExecution = async () => {
+        const res = await this.#editorAPI;
+        return res.disableActions().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method enables actions execution on the engine side
+     * @returns
+     */
+    enableExecution = async () => {
+        const res = await this.#editorAPI;
+        return res.enableActions().then((result) => getEditorResponseData<null>(result));
     };
 }
