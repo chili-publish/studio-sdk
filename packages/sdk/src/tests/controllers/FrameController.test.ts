@@ -1,12 +1,15 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
-    AnchorTargetType,
+    AnchorTargetEdgeType,
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FrameAnchorProperties,
+    FrameAnchorTarget,
     FrameAnchorType,
     FrameTypeEnum,
     ImageSourceTypeEnum,
+    PageAnchorTarget,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -645,24 +648,35 @@ describe('Auto grow updating', () => {
 
 describe('Anchoring', () => {
     it('should be possible to set the vertical anchor settings', async () => {
-        await mockedFrameController.setVerticalPageAnchor(id, FrameAnchorType.center);
+        const anchorType = FrameAnchorType.startAndEnd;
+        const startTarget = new FrameAnchorTarget('target-id', AnchorTargetEdgeType.end);
+        const endTarget = new PageAnchorTarget();
+
+        await mockedFrameController.setVerticalAnchor(id, anchorType, startTarget, endTarget);
         expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(
-            id,
-            false,
-            FrameAnchorType.center,
-            AnchorTargetType.page,
-        );
+
+        const expectedProperties: FrameAnchorProperties = {
+            horizontal: false,
+            type: anchorType,
+            target: startTarget,
+            endTarget: endTarget,
+        };
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(id, JSON.stringify(expectedProperties));
     });
+
     it('should be possible to set the horizontal anchor settings', async () => {
-        await mockedFrameController.setHorizontalPageAnchor(id, FrameAnchorType.startAndEnd);
+        const anchorType = FrameAnchorType.center;
+        const startTarget = new FrameAnchorTarget('target-id', AnchorTargetEdgeType.start);
+
+        await mockedFrameController.setHorizontalAnchor(id, anchorType, startTarget);
         expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.setAnchorProperties).toHaveBeenLastCalledWith(
-            id,
-            true,
-            FrameAnchorType.startAndEnd,
-            AnchorTargetType.page,
-        );
+
+        const expectedProperties: FrameAnchorProperties = {
+            horizontal: true,
+            type: anchorType,
+            target: startTarget,
+        };
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(id, JSON.stringify(expectedProperties));
     });
 
     it('should be possible to reset anchor settings', async () => {
