@@ -151,7 +151,8 @@ export class ActionController {
     };
 
     /**
-     * This method enables actions execution on the engine side
+     * This method enables the execution of Actions.
+     * Note this is enabled by default.
      * @returns
      */
     enableExecution = async () => {
