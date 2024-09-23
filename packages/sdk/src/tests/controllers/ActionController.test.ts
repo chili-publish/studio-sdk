@@ -1,7 +1,7 @@
-import {ActionDeltaUpdate, ActionEditorEvent, ActionTrigger} from '../../types/ActionTypes';
-import {EditorAPI} from '../../types/CommonTypes';
-import {ActionController} from '../../controllers/ActionController';
-import {castToEditorResponse, getEditorResponseData} from '../../utils/EditorResponseData';
+import { ActionDeltaUpdate, ActionEditorEvent, ActionTrigger } from '../../types/ActionTypes';
+import { EditorAPI } from '../../types/CommonTypes';
+import { ActionController } from '../../controllers/ActionController';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedActionController: ActionController;
 

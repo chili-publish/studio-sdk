@@ -1,6 +1,6 @@
-import {ActionDeltaUpdate, ActionTrigger, DocumentAction} from '../types/ActionTypes';
-import {EditorAPI, Id} from '../types/CommonTypes';
-import {getEditorResponseData} from '../utils/EditorResponseData';
+import { ActionDeltaUpdate, ActionTrigger, DocumentAction } from '../types/ActionTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The ActionController is responsible for all Actions-related functionality.
@@ -141,7 +141,8 @@ export class ActionController {
     };
 
     /**
-     * This method disables actions execution on the engine side
+     * This method disables the execution of Actions.
+     * Note that any Action will be ignored and forgotten.
      * @returns
      */
     disableExecution = async () => {
