@@ -51,6 +51,7 @@ export type {
     ImageFrameUrlSource,
     AutoGrowSettings,
     AnchorTarget,
+    FrameAnchor,
 } from './types/FrameTypes';
 export type {
     Variable,
