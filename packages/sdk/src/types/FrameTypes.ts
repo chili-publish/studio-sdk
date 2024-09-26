@@ -266,6 +266,8 @@ export enum BlendMode {
 export enum FitMode {
     fit = 'fit',
     fill = 'fill',
+    // CAUTION, DO NOT USE
+    experimental_smartCrop = 'smartCrop',
 }
 
 export enum UpdateZIndexMethod {
