@@ -84,7 +84,7 @@ export type LayoutPreset = {
     width: string;
     height: string;
     duration?: number;
-    bleed?: LayoutBleed;
+    bleed?: BleedDeltaUpdate;
 };
 
 
