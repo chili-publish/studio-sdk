@@ -52,7 +52,6 @@ const mockedEditorApi: EditorAPI = {
     selectMultipleFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameName: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
-    setFrameConstrainProportions: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setMaxCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -108,7 +107,6 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'selectMultipleFrames');
     jest.spyOn(mockedEditorApi, 'setFrameName');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
-    jest.spyOn(mockedEditorApi, 'setFrameConstrainProportions');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
     jest.spyOn(mockedEditorApi, 'setMaxCopyfitting');
@@ -336,12 +334,6 @@ describe('FrameController', () => {
         await mockedFrameController.setImageFrameFitMode(id, FitMode.fit);
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
-    });
-
-    it('Should be possible to set the frame to constrain proportions', async () => {
-        await mockedFrameController.setFrameConstrainProportions(id, true);
-        expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(id, true);
     });
 
     it('Should be possible to set the vertical alignment of a frame', async () => {

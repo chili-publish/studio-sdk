@@ -31,8 +31,6 @@ export type FrameType = {
     // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
 };
 
 export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
@@ -62,8 +60,6 @@ export type ImageFrame = {
     type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
     crop?: CropSettings | NoCropSettings;
 };
 
@@ -72,8 +68,6 @@ export type ShapeFrame = {
     name: string;
     type: FrameTypeEnum.shape;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
     shapeProperties: {
         enableFill: boolean;
         fillColor: ColorUsage;
@@ -108,8 +102,6 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
 };
 
 export type BarcodeFrame = {
@@ -117,8 +109,6 @@ export type BarcodeFrame = {
     name: string;
     type: FrameTypeEnum.barcode;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
     barcodeProperties: {
         enableBackground: boolean;
         backgroundColor: ColorUsage;
