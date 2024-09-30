@@ -300,6 +300,7 @@ export class PageAnchorTarget {
     type = AnchorTargetType.page;
 }
 
+// Future future, do NOT export in index
 export class FrameAnchorTarget {
     id: Id;
     edge: AnchorTargetEdgeType;
