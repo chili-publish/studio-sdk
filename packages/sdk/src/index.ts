@@ -21,6 +21,8 @@ export {
     ImageSourceTypeEnum,
     BarcodeSourceTypeEnum,
     AutoGrowDirection,
+    AnchorTargetType,
+    FrameAnchorType,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -32,6 +34,7 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
     Layout,
+    LayoutPreset
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
@@ -48,6 +51,8 @@ export type {
     ImageFrameVariableSource,
     ImageFrameUrlSource,
     AutoGrowSettings,
+    AnchorTarget,
+    FrameAnchor,
 } from './types/FrameTypes';
 export type {
     Variable,
