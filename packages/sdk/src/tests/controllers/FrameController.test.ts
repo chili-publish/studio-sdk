@@ -1,10 +1,15 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
+    AnchorTargetEdgeType,
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FrameAnchorProperties,
+    FrameAnchorTarget,
+    FrameAnchorType,
     FrameTypeEnum,
     ImageSourceTypeEnum,
+    PageAnchorTarget,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -72,6 +77,8 @@ const mockedEditorApi: EditorAPI = {
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -128,6 +135,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
     jest.spyOn(mockedEditorApi, 'resetAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
+    jest.spyOn(mockedEditorApi, 'setAnchorProperties');
+    jest.spyOn(mockedEditorApi, 'resetAnchorProperties');
 
     id = mockSelectFrame.id;
 });
@@ -634,5 +643,45 @@ describe('Auto grow updating', () => {
             id,
             JSON.stringify({ directions: { value: directions } }),
         );
+    });
+});
+
+describe('Anchoring', () => {
+    it('should be possible to set the vertical anchor settings', async () => {
+        const anchorType = FrameAnchorType.startAndEnd;
+        const startTarget = new FrameAnchorTarget('target-id', AnchorTargetEdgeType.end);
+        const endTarget = new PageAnchorTarget();
+
+        await mockedFrameController.setVerticalAnchor(id, anchorType, startTarget, endTarget);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(1);
+
+        const expectedProperties: FrameAnchorProperties = {
+            horizontal: false,
+            type: anchorType,
+            target: startTarget,
+            endTarget: endTarget,
+        };
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(id, JSON.stringify(expectedProperties));
+    });
+
+    it('should be possible to set the horizontal anchor settings', async () => {
+        const anchorType = FrameAnchorType.center;
+        const startTarget = new FrameAnchorTarget('target-id', AnchorTargetEdgeType.start);
+
+        await mockedFrameController.setHorizontalAnchor(id, anchorType, startTarget);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(2);
+
+        const expectedProperties: FrameAnchorProperties = {
+            horizontal: true,
+            type: anchorType,
+            target: startTarget,
+        };
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(id, JSON.stringify(expectedProperties));
+    });
+
+    it('should be possible to reset anchor settings', async () => {
+        await mockedFrameController.resetAnchoring(id);
+        expect(mockedEditorApi.resetAnchorProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetAnchorProperties).toHaveBeenLastCalledWith(id);
     });
 });

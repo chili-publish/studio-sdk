@@ -7,6 +7,8 @@ import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from '
 export type FrameLayoutType = {
     id: Id;
     layoutId: Id;
+    horizontal: FrameAnchor;
+    vertical: FrameAnchor;
     x: PropertyState<number>;
     y: PropertyState<number>;
     width: PropertyState<number>;
@@ -274,3 +276,85 @@ export enum UpdateZIndexMethod {
     bringForward = 'bringForward',
     sendBackward = 'sendBackward',
 }
+
+export enum FrameAnchorType {
+    relative = 'relative',
+    start = 'start',
+    end = 'end',
+    startAndEnd = 'startAndEnd',
+    center = 'center',
+}
+
+export enum AnchorTargetType {
+    page = 'page',
+    frame = 'frame',
+}
+
+export enum AnchorTargetEdgeType {
+    start = 'start',
+    end = 'end',
+    center = 'center',
+}
+
+export class PageAnchorTarget {
+    type = AnchorTargetType.page;
+}
+
+// Future future, do NOT export in index
+export class FrameAnchorTarget {
+    id: Id;
+    edge: AnchorTargetEdgeType;
+    type = AnchorTargetType.frame;
+
+    constructor(id: Id, edge: AnchorTargetEdgeType) {
+        (this.id = id), (this.edge = edge);
+    }
+}
+
+export type AnchorTarget = PageAnchorTarget | FrameAnchorTarget;
+
+export type RelativeFrameAnchor = {
+    start: PropertyState<number>;
+    end: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.relative;
+};
+
+export type StartFrameAnchor = {
+    offset: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.start;
+};
+
+export type EndFrameAnchor = {
+    offset: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.end;
+};
+
+export type StartAndEndFrameAnchor = {
+    start: PropertyState<number>;
+    end: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.startAndEnd;
+};
+
+export type CenterFrameAnchor = {
+    offset: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.center;
+};
+
+export type FrameAnchor =
+    | RelativeFrameAnchor
+    | StartFrameAnchor
+    | EndFrameAnchor
+    | StartAndEndFrameAnchor
+    | CenterFrameAnchor;
+
+export type FrameAnchorProperties = {
+    horizontal: boolean;
+    type: FrameAnchorType;
+    target: AnchorTarget;
+    endTarget?: AnchorTarget | null;
+};

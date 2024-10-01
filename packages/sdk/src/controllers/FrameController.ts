@@ -15,6 +15,9 @@ import {
     AutoGrowDeltaUpdate,
     AutoGrowDirection,
     AutoGrowResetUpdate,
+    FrameAnchorType,
+    FrameAnchorProperties,
+    AnchorTarget,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -835,5 +838,71 @@ export class FrameController {
         return res
             .resetAutoGrowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    private setAnchor = async (
+        id: Id,
+        horizontal: boolean,
+        anchorType: FrameAnchorType,
+        anchorTarget: AnchorTarget,
+        endAnchorTarget?: AnchorTarget | null,
+    ) => {
+        const properties: FrameAnchorProperties = {
+            horizontal: horizontal,
+            type: anchorType,
+            target: anchorTarget,
+            endTarget: endAnchorTarget,
+        };
+
+        const res = await this.#editorAPI;
+        return res
+            .setAnchorProperties(id, JSON.stringify(properties))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental
+     * This method will set the vertical anchor to target frame on a specified frame.
+     * @param id the id of the frame that needs to get a frame anchor set
+     * @param anchorType the type of positioning to be set to the frame
+     * @param anchorTarget the target frame to which it is anchored
+     * @param endAnchorTarget the target (end) frame to which it can be anchored
+     * @returns
+     */
+    setVerticalAnchor = async (
+        id: Id,
+        anchorType: FrameAnchorType,
+        anchorTarget: AnchorTarget,
+        endAnchorTarget?: AnchorTarget | null,
+    ) => {
+        return this.setAnchor(id, false, anchorType, anchorTarget, endAnchorTarget);
+    };
+
+    /**
+     * @experimental
+     * This method will set the horizontal anchor to target frame on a specified frame.
+     * @param id the id of the frame that needs to get a frame anchor set
+     * @param anchorType the type of positioning to be set to the frame
+     * @param anchorTarget the target frame to which it is anchored
+     * @param endAnchorTarget the target (end) frame to which it can be anchored
+     * @returns
+     */
+    setHorizontalAnchor = async (
+        id: Id,
+        anchorType: FrameAnchorType,
+        anchorTarget: AnchorTarget,
+        endAnchorTarget?: AnchorTarget | null,
+    ) => {
+        return this.setAnchor(id, true, anchorType, anchorTarget, endAnchorTarget);
+    };
+
+    /**
+     * This method will reset all anchoring properties of a specified frame to their original values
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAnchoring = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAnchorProperties(id).then((result) => getEditorResponseData<null>(result));
     };
 }
