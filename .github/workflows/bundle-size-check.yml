@@ -41,12 +41,6 @@ jobs:
                   echo "Current PR size: $current_bundle_size bytes"
                   echo "::set-output name=current_bundle_size::$current_bundle_size"
 
-            - name: Check if bundle-size.json exists
-              run: |
-                  if [ ! -f bundle-size.json ]; then
-                    echo '{"bundle_size": ${{ steps.get_current_bundle_size.outputs.current_bundle_size }}}' > bundle-size.json
-                  fi
-
             - name: Get previous bundle size from bundle-size.json
               id: get_previous_bundle_size
               run: |
