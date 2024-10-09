@@ -1,14 +1,27 @@
 import type { EditorResponse } from '../types/CommonTypes';
 
+// This is an error code from the engine exception table, do not change
+const connectorHttpErrorErrorCode = 404075;
+
 export function getEditorResponseData<T>(response: EditorResponse<unknown>, parse = true): EditorResponse<T> {
     try {
         if (!response.success) {
-            throw new Error(response.error ?? 'Yikes, something went wrong', {
+            const parsedError = response.error ?? 'Yikes, something went wrong';
+            const parsedCause = {
                 cause: {
                     name: String(response.status),
                     message: response.error ?? 'Yikes, something went wrong',
                 },
-            });
+            };
+
+            if (response.status === connectorHttpErrorErrorCode) {
+                const parsedErrorData = JSON.parse(response.data as string);
+                const httpStatusCode = parsedErrorData['statusCode'] as number;
+
+                throw new ConnectorHttpError(httpStatusCode, parsedError, parsedCause);
+            } else {
+                throw new Error(parsedError, parsedCause);
+            }
         }
         const dataShouldBeParsed = response.data && parse;
         return {
@@ -31,4 +44,14 @@ export function castToEditorResponse(toCast: unknown): EditorResponse<unknown> {
         parsedData: null,
         data: JSON.stringify(toCast),
     };
+}
+
+export class ConnectorHttpError extends Error {
+    statusCode: number;
+
+    constructor(statusCode: number, message?: string, options?: ErrorOptions) {
+        super(message, options);
+
+        this.statusCode = statusCode;
+    }
 }
