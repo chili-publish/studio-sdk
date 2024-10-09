@@ -33,6 +33,7 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
     Layout,
+    LayoutPreset
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
