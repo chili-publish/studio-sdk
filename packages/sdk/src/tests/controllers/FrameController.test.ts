@@ -336,6 +336,10 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
     });
 
+    it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {
+        await expect(mockedFrameController.setFrameConstrainProportions(id, true)).rejects.toThrow();
+    });
+
     it('Should be possible to set the vertical alignment of a frame', async () => {
         await mockedFrameController.setVerticalAlign(id, VerticalAlign.justify);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledTimes(1);
