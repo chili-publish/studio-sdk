@@ -1,0 +1,115 @@
+name: Bundle Size Check
+on:
+    pull_request:
+        branches:
+            - main
+jobs:
+    check-bundle-size:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20]
+        steps:
+            - uses: FranzDiebold/github-env-vars-action@v2
+            - uses: actions/checkout@v4
+            - name: Check cache
+              id: cache
+              uses: actions/cache@v1
+              with:
+                path: packages/sdk/node_modules
+                key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+                restore-keys: |
+                  ${{ runner.os }}-node-
+            - name: Use Node ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                node-version: ${{ matrix.node-version }}
+                registry-url: "https://npm.pkg.github.com"
+                scope: "@chili-publish"
+            - name: install dependencies
+              run: yarn install
+              env:
+                NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+
+            - name: build code
+              run: yarn build
+
+            - name: Get bundle size for current PR
+              id: get_current_bundle_size
+              run: |
+                  current_bundle_size=$(du -sb packages/sdk/_bundles/ | cut -f1)
+                  echo "Current PR size: $current_bundle_size bytes"
+                  echo "::set-output name=current_bundle_size::$current_bundle_size"
+
+            - name: Get previous bundle size from bundle-size.json
+              id: get_previous_bundle_size
+              run: |
+                  previous_bundle_size=$(cat bundle-size.json | jq '.bundle_size')
+                  echo "Previous bundle size from main: $previous_bundle_size bytes"
+                  echo "::set-output name=previous_bundle_size::$previous_bundle_size"
+
+            - name: Compare bundle sizes
+              run: |
+                  current_bundle_size=${{ steps.get_current_bundle_size.outputs.current_bundle_size }}
+                  previous_bundle_size=${{ steps.get_previous_bundle_size.outputs.previous_bundle_size }}
+
+                  echo "Current PR size: $current_bundle_size bytes"
+                  echo "Previous main size: $previous_bundle_size bytes"
+
+                  # Calculate the percentage difference
+                  percentage=$(echo "scale=2; (($current_bundle_size - $previous_bundle_size) / $previous_bundle_size) * 100" | bc)
+                  echo "Size difference: $percentage%"
+
+                  if (( $(echo "$percentage > 3" | bc -l) )); then
+                    echo "Bundle size increased by more than 3%. Failing the check."
+                    exit 1
+                  else
+                    echo "Bundle size is within the acceptable range."
+                  fi
+
+    update-bundle-size:
+        needs: check-bundle-size
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged }}
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20]
+        steps:
+            - uses: FranzDiebold/github-env-vars-action@v2
+            - uses: actions/checkout@v3
+              with:
+                  token: ${{ secrets.PACKAGE_SECRET }}
+            - name: Use Node ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@chili-publish'
+            - name: install dependencies
+              run: |
+                  yarn install
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+
+            - name: Build project
+              run: yarn build
+
+            - name: Get bundle size after merge
+              id: get_new_bundle_size
+              run: |
+                  new_bundle_size=$(du -sb packages/sdk/_bundles/ | cut -f1)
+                  echo "New size after merge: $new_bundle_size"
+                  echo "::set-output name=new_bundle_size::$new_bundle_size"
+
+            - name: Update bundle-size.json
+              run: |
+                  new_bundle_size=${{ steps.get_new_bundle_size.outputs.new_bundle_size }}
+                  echo "{ \"bundle_size\": $new_bundle_size }" > bundle-size.json
+
+            - name: Commit and push updated bundle size
+              run: |
+                  git config --global user.name 'github-actions[bot]'
+                  git config --global user.email user.email 'github-actions[bot]@users.noreply.github.com'
+                  git add bundle-size.json
+                  git commit -m "Update bundle size"
+                  git push origin main --follow-tags
