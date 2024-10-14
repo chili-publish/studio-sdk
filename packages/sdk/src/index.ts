@@ -1,6 +1,7 @@
 import { SDK } from './sdk';
 
 export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats, EnvironmentType } from './utils/enums';
+export { ConnectorHttpError } from './utils/EditorResponseData';
 
 export {
     SlideDirections,
