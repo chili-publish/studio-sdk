@@ -1,4 +1,4 @@
-import { Dictionary, ConnectorConfigValue, ConnectorRuntimeContext } from './Connector.Shared'
+import { ConnectorConfigValue, ConnectorRuntimeContext, Dictionary } from './Connector.Shared';
 
 export interface DataConnector {
     getPage(config: PageConfig, context: Dictionary): Promise<DataPage>;
@@ -8,15 +8,14 @@ export interface DataConnector {
     getCapabilities(): DataConnectorCapabilities;
 }
 
-export interface DataConnectorRuntimeContext extends ConnectorRuntimeContext {
-    // tryParseDate(input: string | number): Date;
-}
+// TODO: add methods once defined
+export type DataConnectorRuntimeContext = ConnectorRuntimeContext;
 
 export type DataConnectorCapabilities = {
     filtering: boolean;
     sorting: boolean;
     model: boolean;
-}
+};
 
 export class DataModel {
     properties: DataModelProperty[];
@@ -33,7 +32,7 @@ export type DataItem = {
 
 export interface DataPage {
     data: DataItem[];
-    continuationToken: string;
+    continuationToken?: string | null;
 }
 
 export interface PageConfig {
@@ -51,5 +50,5 @@ export interface DataSorting {
 export interface DataFilter {
     property: string;
     value: string;
-    type: 'contains' | 'exact'
+    type: 'contains' | 'exact';
 }
