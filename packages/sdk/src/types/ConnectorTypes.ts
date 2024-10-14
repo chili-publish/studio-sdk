@@ -18,6 +18,7 @@ export enum MediaType {
 export enum ConnectorType {
     media = 'media',
     fonts = 'fonts',
+    data = 'data',
 }
 
 export enum SortBy {
@@ -38,20 +39,6 @@ export type QueryOptions = {
     pageSize?: number | null;
     sortBy?: SortBy | null;
     sortOrder?: SortOrder | null;
-};
-
-export type FontConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    preview: boolean;
-    filtering: boolean;
-};
-
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
-    metadata?: boolean;
 };
 
 interface ConnectorRegistrationBase {
