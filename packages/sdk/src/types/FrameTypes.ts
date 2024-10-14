@@ -334,8 +334,9 @@ export type EndFrameAnchor = {
 
 export type StartAndEndFrameAnchor = {
     start: PropertyState<number>;
+    startTarget: AnchorTarget;
     end: PropertyState<number>;
-    target: AnchorTarget;
+    endTarget: AnchorTarget;
     type: FrameAnchorType.startAndEnd;
 };
 
