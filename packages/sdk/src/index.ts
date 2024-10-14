@@ -24,6 +24,7 @@ export {
     AutoGrowDirection,
     AnchorTargetType,
     FrameAnchorType,
+    AnchorTargetEdgeType,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -53,6 +54,8 @@ export type {
     AutoGrowSettings,
     AnchorTarget,
     FrameAnchor,
+    PageAnchorTarget,
+    FrameAnchorTarget,
 } from './types/FrameTypes';
 export type {
     Variable,

@@ -300,14 +300,13 @@ export class PageAnchorTarget {
     type = AnchorTargetType.page;
 }
 
-// Future future, do NOT export in index
 export class FrameAnchorTarget {
-    id: Id;
+    frameId: Id;
     edge: AnchorTargetEdgeType;
     type = AnchorTargetType.frame;
 
     constructor(id: Id, edge: AnchorTargetEdgeType) {
-        (this.id = id), (this.edge = edge);
+        (this.frameId = id), (this.edge = edge);
     }
 }
 
