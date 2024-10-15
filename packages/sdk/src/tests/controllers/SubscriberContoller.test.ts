@@ -64,6 +64,7 @@ const mockEditorApi: EditorAPI = {
     onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedPageIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPagesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSnapshotChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -107,6 +108,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onZoomChanged');
     jest.spyOn(mockEditorApi, 'onActionsChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedPageIdChanged');
     jest.spyOn(mockEditorApi, 'onPagesChanged');
     jest.spyOn(mockEditorApi, 'onPageSnapshotChanged');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
@@ -302,6 +304,11 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onActionsChanged(JSON.stringify(actions));
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledWith(actions);
+    });
+
+    it('Should be possible to subscribe to onSelectedPageIdChanged', async () => {
+        await mockedSubscriberController.onSelectedPageIdChanged('newid');
+        expect(mockEditorApi.onSelectedPageIdChanged).toHaveBeenCalledWith('newid');
     });
 
     it('should be possible to subscribe to onPagesChanged', async () => {

@@ -171,6 +171,7 @@ export class SDK {
                 onConnectorEvent: this.subscriber.onConnectorEvent,
                 onConnectorsChanged: this.subscriber.onConnectorsChanged,
                 onZoomChanged: this.subscriber.onZoomChanged,
+                onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
                 onPagesChanged: this.subscriber.onPagesChanged,
                 onPageSnapshotChanged: this.subscriber.onPageSnapshotChanged,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,

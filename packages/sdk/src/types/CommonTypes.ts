@@ -61,6 +61,7 @@ export type ConfigType = {
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
     onZoomChanged?: (scaleFactor: number) => void;
+    onSelectedPageIdChanged?: (pageId: Id) => void;
     onPagesChanged?: (pages: Page[]) => void;
     onPageSnapshotChanged?: (page: Id) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;

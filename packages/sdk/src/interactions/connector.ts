@@ -72,6 +72,7 @@ interface ConfigParameterTypes {
     onConnectorEvent: (state: string) => void;
     onConnectorsChanged: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
+    onSelectedPageIdChanged: (pageId: string) => void;
     onPagesChanged: (pages: string) => void;
     onPageSnapshotChanged: (pageId: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;

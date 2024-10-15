@@ -332,6 +332,15 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on when the selectedPageID is changed.
+     * @param pageId Stringified pageId
+     */
+    onSelectedPageIdChanged = (pageId: string) => {
+        const callBack = this.config.onSelectedPageIdChanged;
+        callBack && callBack(pageId);
+    };
+
+    /**
      * Listener on pages list, this listener will get triggered when the pages are updated.
      * @param pages Stringified object of the pages
      */
