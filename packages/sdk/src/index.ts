@@ -56,6 +56,7 @@ export type {
     FrameAnchor,
     PageAnchorTarget,
     FrameAnchorTarget,
+    StartAndEndFrameAnchor,
 } from './types/FrameTypes';
 export type {
     Variable,
