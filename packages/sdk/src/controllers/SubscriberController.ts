@@ -332,6 +332,23 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on pages list, this listener will get triggered when the pages are updated.
+     * @param pages Stringified object of the pages
+     */
+    onPagesChanged = (pages: string) => {
+        const callBack = this.config.onPagesChanged;
+        callBack && callBack(JSON.parse(pages));
+    };
+
+    /**
+     * Listener on pages snapshots, this will fire when a page snapshot should be updated.
+     * @param page id of the page
+     */
+    onPageSnapshotChanged = (page: Id) => {
+        const callBack = this.config.onPageSnapshotChanged;
+        callBack && callBack(JSON.parse(page));
+    };
+    /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
      * This will not emit anything if your document is a `template`.
      * @param pageSize Stringified object of the PageSize

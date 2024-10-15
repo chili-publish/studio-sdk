@@ -11,7 +11,7 @@ import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { BarcodeFrameValidationResult } from './BarcodeTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
-import { PageSize } from './PageTypes';
+import { Page, PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
@@ -61,6 +61,8 @@ export type ConfigType = {
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
     onZoomChanged?: (scaleFactor: number) => void;
+    onPagesChanged?: (pages: Page[]) => void;
+    onPageSnapshotChanged?: (page: Id) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;

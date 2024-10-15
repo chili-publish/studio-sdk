@@ -1,6 +1,7 @@
-import { EditorAPI, Id } from '../types/CommonTypes';
+import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Page } from '../types/PageTypes';
+import { CallSender } from 'penpal';
 
 /**
  * The PageController is responsible for all communication regarding Pages.
@@ -15,9 +16,44 @@ export class PageController {
     /**
      * @ignore
      */
+    #blobAPI: EditorRawAPI;
+
+    /**
+     * @ignore
+     */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
+        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
     }
+
+    /**
+     * This method adds a new page.
+     * @returns
+     */
+    add = async () => {
+        const res = await this.#editorAPI;
+        return res.addPage().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method removes a certain page.
+     * @param id the id of the page
+     * @returns
+     */
+    remove = async (pageId: Id) => {
+        const res = await this.#editorAPI;
+        return res.removePage(pageId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method selects a certain page to be the active page.
+     * @param id the id of the page
+     * @returns
+     */
+    select = async (pageId: Id) => {
+        const res = await this.#editorAPI;
+        return res.selectPage(pageId).then((result) => getEditorResponseData<null>(result));
+    };
 
     /**
      * This method returns the list of pages
@@ -36,6 +72,16 @@ export class PageController {
     getById = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getPageById(id).then((result) => getEditorResponseData<Page>(result));
+    };
+
+    /**
+     * This method returns a UInt8Array containing a PNG encoded image of the page.
+     * @param id the id of a specific page
+     * @returns UInt8Array snapshot of the given page
+     */
+    getSnapshot = async (pageId: Id) => {
+        const res = await this.#blobAPI;
+        return res.getPageSnapshot(pageId).then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
     /**

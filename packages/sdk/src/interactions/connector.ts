@@ -72,6 +72,8 @@ interface ConfigParameterTypes {
     onConnectorEvent: (state: string) => void;
     onConnectorsChanged: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
+    onPagesChanged: (pages: string) => void;
+    onPageSnapshotChanged: (pageId: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
@@ -143,6 +145,8 @@ const Connect = (
                 connectorEvent: params.onConnectorEvent,
                 connectorsChanged: params.onConnectorsChanged,
                 zoomChanged: params.onZoomChanged,
+                pageSnapshotChanged: params.onPageSnapshotChanged,
+                pagesChanged: params.onPagesChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,

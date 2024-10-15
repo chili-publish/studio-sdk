@@ -27,7 +27,7 @@ import {
     GrafxTokenAuthCredentials,
     RefreshedAuthCredendentials,
 } from '../../types/ConnectorTypes';
-import type { PageSize } from '../../types/PageTypes';
+import type { Page, PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -64,6 +64,8 @@ const mockEditorApi: EditorAPI = {
     onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPagesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSnapshotChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -105,6 +107,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onZoomChanged');
     jest.spyOn(mockEditorApi, 'onActionsChanged');
+    jest.spyOn(mockEditorApi, 'onPagesChanged');
+    jest.spyOn(mockEditorApi, 'onPageSnapshotChanged');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
@@ -298,6 +302,20 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onActionsChanged(JSON.stringify(actions));
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledWith(actions);
+    });
+
+    it('should be possible to subscribe to onPagesChanged', async () => {
+        const pages: Page[] = [{ id: 'id', name: 'Page 1', number: 1, width: 123, height: 456 }];
+
+        await mockedSubscriberController.onPagesChanged(JSON.stringify(pages));
+        expect(mockEditorApi.onPagesChanged).toHaveBeenCalledWith(pages);
+    });
+
+    it('should be possible to subscribe to onPageSnapshotChanged', async () => {
+        const pageID: Id = '123';
+
+        await mockedSubscriberController.onPageSnapshotChanged(JSON.stringify(pageID));
+        expect(mockEditorApi.onPageSnapshotChanged).toHaveBeenCalledWith(pageID);
     });
 
     it('should be possible to subscribe to onPageSizeChanged', async () => {
