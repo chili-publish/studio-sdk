@@ -189,7 +189,7 @@ export class LayoutController {
     /**
      * @deprecated
      * This method returns a UInt8Array containing a PNG encoded image of the currently selected layout.
-     * This method is deprecated, please use getPageSnapshot in the PageController
+     * This method is deprecated, please use getSnapshot in the PageController
      * @returns UInt8Array snapshot of the current layout
      */
     getSelectedSnapshot = async () => {
