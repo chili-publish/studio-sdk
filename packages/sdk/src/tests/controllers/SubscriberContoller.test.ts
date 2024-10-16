@@ -312,7 +312,7 @@ describe('SubscriberController', () => {
     });
 
     it('should be possible to subscribe to onPagesChanged', async () => {
-        const pages: Page[] = [{ id: 'id', name: 'Page 1', number: 1, width: 123, height: 456 }];
+        const pages: Page[] = [{ id: 'id', name: 'Page 1', number: 1, isVisible: true, width: 123, height: 456 }];
 
         await mockedSubscriberController.onPagesChanged(JSON.stringify(pages));
         expect(mockEditorApi.onPagesChanged).toHaveBeenCalledWith(pages);
