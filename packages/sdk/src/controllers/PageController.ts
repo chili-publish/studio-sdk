@@ -27,6 +27,7 @@ export class PageController {
     }
 
     /**
+     * @experimental
      * This method adds a new page.
      * @returns
      */
@@ -36,6 +37,7 @@ export class PageController {
     };
 
     /**
+     * @experimental
      * This method removes a certain page.
      * @param pageId the id of the page
      * @returns
@@ -46,6 +48,7 @@ export class PageController {
     };
 
     /**
+     * @experimental
      * This method selects a certain page to be the active page.
      * @param pageId the id of the page
      * @returns
@@ -56,6 +59,7 @@ export class PageController {
     };
 
     /**
+     * @experimental
      * This method sets the page's visibility.
      * @param pageId the id of the page
      * @param isVisible the visibility of the page
@@ -65,6 +69,18 @@ export class PageController {
         const res = await this.#editorAPI;
         return res.setPageIsVisible(pageId, isVisible).then((result) => getEditorResponseData<null>(result));
     };
+
+     /**
+     * @experimental
+     * This method duplicates a certain page.
+     * @param pageId the id of the page
+     * @returns
+     */
+     duplicate = async (pageId: Id) => {
+        const res = await this.#editorAPI;
+        return res.duplicatePage(pageId).then((result) => getEditorResponseData<null>(result));
+    };
+
     /**
      * This method returns the list of pages
      * @returns list of all pages

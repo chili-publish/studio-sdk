@@ -332,6 +332,7 @@ export class SubscriberController {
     };
 
     /**
+     * @experimental
      * Listener on when the selectedPageID is changed.
      * @param pageId Stringified pageId
      */
@@ -341,6 +342,7 @@ export class SubscriberController {
     };
 
     /**
+     * @experimental
      * Listener on pages list, this listener will get triggered when the pages are updated.
      * @param pages Stringified object of the pages
      */
@@ -350,6 +352,7 @@ export class SubscriberController {
     };
 
     /**
+     * @experimental
      * Listener on pages snapshots, this will fire when a page snapshot should be updated.
      * @param page id of the page
      */

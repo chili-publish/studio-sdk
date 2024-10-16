@@ -3,8 +3,7 @@ import { Id } from './CommonTypes';
 export type Page = {
     id: Id;
     number: number;
-    name: string;
-    isVisible: boolean;
+    isVisible?: boolean;
     width?: number;
     height?: number;
 };
