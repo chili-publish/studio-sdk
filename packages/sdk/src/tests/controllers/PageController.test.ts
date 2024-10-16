@@ -14,7 +14,7 @@ const mockEditorApi: EditorAPI = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getPageSnapshot: async (id: unknown) => getEditorResponseData(castToEditorResponse([1])),
     selectPage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
-    setPageIsVisible: async (id: unknown, isVisible: boolean) => getEditorResponseData(castToEditorResponse(id)),
+    setPageIsVisible: async (id: unknown, isVisible: unknown) => getEditorResponseData(castToEditorResponse({id, isVisible})),
 };
 
 beforeEach(() => {
