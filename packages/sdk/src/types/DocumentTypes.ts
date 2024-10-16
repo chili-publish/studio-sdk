@@ -44,7 +44,6 @@ export interface DocumentFrame {
     name: string;
     type: FrameTypeEnum;
     blendMode: BlendMode;
-    constrainProportions: boolean;
 }
 
 export interface ImageFrame extends DocumentFrame {
