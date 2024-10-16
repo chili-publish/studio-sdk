@@ -37,7 +37,7 @@ export class PageController {
 
     /**
      * This method removes a certain page.
-     * @param id the id of the page
+     * @param pageId the id of the page
      * @returns
      */
     remove = async (pageId: Id) => {
@@ -47,7 +47,7 @@ export class PageController {
 
     /**
      * This method selects a certain page to be the active page.
-     * @param id the id of the page
+     * @param pageId the id of the page
      * @returns
      */
     select = async (pageId: Id) => {
@@ -55,6 +55,16 @@ export class PageController {
         return res.selectPage(pageId).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method sets the page's visibility.
+     * @param pageId the id of the page
+     * @param isVisible the visibility of the page
+     * @returns
+     */
+    setVisibility = async (pageId: Id, isVisible: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setPageIsVisible(pageId, isVisible).then((result) => getEditorResponseData<null>(result));
+    };
     /**
      * This method returns the list of pages
      * @returns list of all pages
@@ -66,17 +76,17 @@ export class PageController {
 
     /**
      * This method returns a page by its id
-     * @param id the id of a specific page
+     * @param pageId the id of a specific page
      * @returns page properties
      */
-    getById = async (id: Id) => {
+    getById = async (pageId: Id) => {
         const res = await this.#editorAPI;
-        return res.getPageById(id).then((result) => getEditorResponseData<Page>(result));
+        return res.getPageById(pageId).then((result) => getEditorResponseData<Page>(result));
     };
 
     /**
      * This method returns a UInt8Array containing a PNG encoded image of the page.
-     * @param id the id of a specific page
+     * @param pageId the id of a specific page
      * @returns UInt8Array snapshot of the given page
      */
     getSnapshot = async (pageId: Id) => {
@@ -87,13 +97,13 @@ export class PageController {
     /**
      * This method will set the width of the page to a specific value.
      * This only works if the document is a project.
-     * @param id the id of a specific page
+     * @param pageId the id of a specific page
      * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setWidth = async (id: Id, width: string) => {
+    setWidth = async (pageId: Id, width: string) => {
         const res = await this.#editorAPI;
-        return res.setPageWidth(id, width).then((result) => getEditorResponseData<null>(result));
+        return res.setPageWidth(pageId, width).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

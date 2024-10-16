@@ -4,6 +4,7 @@ export type Page = {
     id: Id;
     number: number;
     name: string;
+    isVisible: boolean;
     width?: number;
     height?: number;
 };

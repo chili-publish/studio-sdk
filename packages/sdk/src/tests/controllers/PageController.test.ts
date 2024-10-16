@@ -14,6 +14,7 @@ const mockEditorApi: EditorAPI = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getPageSnapshot: async (id: unknown) => getEditorResponseData(castToEditorResponse([1])),
     selectPage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    setPageIsVisible: async (id: unknown, isVisible: boolean) => getEditorResponseData(castToEditorResponse(id)),
 };
 
 beforeEach(() => {
@@ -26,6 +27,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'removePage');
     jest.spyOn(mockEditorApi, 'getPageSnapshot');
     jest.spyOn(mockEditorApi, 'selectPage');
+    jest.spyOn(mockEditorApi, 'setPageIsVisible');
 });
 
 afterAll(() => {
@@ -45,6 +47,11 @@ describe('PageController', () => {
         await mockedPageController.select('1');
         expect(mockEditorApi.selectPage).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.selectPage).toHaveBeenCalledWith('1');
+    });
+    it('Should call the setVisibility method', async () => {
+        await mockedPageController.setVisibility('1', true);
+        expect(mockEditorApi.setPageIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setPageIsVisible).toHaveBeenCalledWith('1', true);
     });
     it('Should call the getPages method', async () => {
         await mockedPageController.getAll();
