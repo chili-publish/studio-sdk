@@ -22,13 +22,14 @@ export type DataFilter = {
     type: 'contains' | 'exact';
 };
 
-export type DataPage = {
-    data: DataItem[];
+// Generic DataItem
+export type DataPage<DI> = {
+    data: DI[];
     continuationToken?: string | null;
 };
 
 export type DataItem = {
-    [key: string]: string | number | boolean | DatePropertyWrapper | Date | null;
+    [key: string]: string | number | boolean | Date | null;
 };
 
 export type DatePropertyWrapper = {

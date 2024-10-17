@@ -1,4 +1,4 @@
-import { DataPage, PageConfig } from '../../types/DataConnectorTypes';
+import { DataItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { DataConnectorController } from '../../controllers/DataConnectorController';
@@ -46,25 +46,31 @@ describe('DataConnectorController', () => {
         );
     });
 
-    it('Should parse dates correctly', async () => {
+    it('only DatePropertyWrapper objects are being converted to date objects', async () => {
         (mockedEditorApi.dataConnectorGetPage as jest.Mock).mockResolvedValueOnce({
             success: true,
             data: JSON.stringify({
                 data: [
                     {
-                        createDate: { type: 'date', value: 1000 },
-                    },
-                    {
                         createDate: { type: 'date', value: 1111 },
+                        stringDate: '01-01-2021',
+                        epochDate: 1111,
                     },
                     {
                         createDate: { type: 'date', value: 2222 },
+                        stringDate: '02-02-2022',
+                        epochDate: 1111,
+                    },
+                    {
+                        createDate: { type: 'date', value: 3333 },
+                        stringDate: '03-03-2023',
+                        epochDate: 3333,
                     },
                 ],
             }),
         });
 
-        const result: EditorResponse<DataPage> = await mockedDataConnectorController.getPage(
+        const result: EditorResponse<DataPage<DataItem>> = await mockedDataConnectorController.getPage(
             connectorId,
             pageConfig,
             context,
@@ -72,13 +78,19 @@ describe('DataConnectorController', () => {
 
         expect(result.parsedData?.data).toStrictEqual([
             {
-                createDate: new Date(1000),
-            },
-            {
                 createDate: new Date(1111),
+                stringDate: '01-01-2021',
+                epochDate: 1111,
             },
             {
                 createDate: new Date(2222),
+                stringDate: '02-02-2022',
+                epochDate: 1111,
+            },
+            {
+                createDate: new Date(3333),
+                stringDate: '03-03-2023',
+                epochDate: 3333,
             },
         ]);
     });

@@ -1,6 +1,12 @@
 import { ConnectorConfigOptions, EditorAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DataConnectorCapabilities, DataItem, DataPage, PageConfig } from '../types/DataConnectorTypes';
+import {
+    DataConnectorCapabilities,
+    DataItem,
+    DataPage,
+    DatePropertyWrapper,
+    PageConfig,
+} from '../types/DataConnectorTypes';
 
 /**
  * The DataConnectorController is responsible for all communication regarding Data connectors.
@@ -35,16 +41,20 @@ export class DataConnectorController {
      * @param context context that will be available in the connector script.
      * @returns a DataPage with an array of data objects
      */
-    getPage = async (connectorId: string, config: PageConfig, context: MetaData = {}) => {
+    getPage = async (
+        connectorId: string,
+        config: PageConfig,
+        context: MetaData = {},
+    ): Promise<EditorResponse<DataPage<DataItem>>> => {
         const res = await this.#editorAPI;
         return res
             .dataConnectorGetPage(connectorId, JSON.stringify(config), JSON.stringify(context))
-            .then((result) => getEditorResponseData<DataPage>(result))
+            .then((result) => getEditorResponseData<DataPage<InternalDataItem>>(result))
             .then((resp) => {
-                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
+                const update: EditorResponse<DataPage<DataItem>> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
                     update.parsedData = {
-                        data: resp.parsedData.data.map((e: DataItem) => this.parseDateProperties(e)),
+                        data: resp.parsedData.data.map((e: InternalDataItem) => this.mapInternalToDataItem(e)),
                         continuationToken: resp.parsedData.continuationToken,
                     };
                 }
@@ -92,21 +102,41 @@ export class DataConnectorController {
             .then((result) => getEditorResponseData<DataConnectorCapabilities>(result));
     };
 
-    private parseDateProperties(dataItem: DataItem): DataItem {
+    /**
+     * Check if the value is a DatePropertyWrapper with the type guard
+     * @param value a dynamic value which
+     * @returns boolean value.
+     */
+    private isDatePropertyWrapper(
+        value: string | number | boolean | DatePropertyWrapper | null,
+    ): value is DatePropertyWrapper {
+        return typeof value === 'object' && value?.type === 'date';
+    }
+
+    /**
+     * Transforms an InternalDataItem into a DataItem.
+     *
+     * Converts DatePropertyWrapper values to JavaScript Date objects
+     * while keeping other values unchanged.
+     *
+     * @param dataItem - The InternalDataItem to transform.
+     * @returns The resulting DataItem with parsed date properties.
+     */
+    private mapInternalToDataItem(dataItem: InternalDataItem): DataItem {
         const parsedItem: DataItem = {};
 
-        for (const k in dataItem) {
-            const v = dataItem[k];
-
-            // Check if the value is a DatePropertyWrapper
-            if (v && typeof v === 'object' && 'type' in v && v.type === 'date') {
-                // Parse the timestamp to a Date object
-                parsedItem[k] = new Date(v.value);
-            } else {
-                parsedItem[k] = v;
-            }
-        }
+        Object.entries(dataItem).forEach(([key, value]) => {
+            parsedItem[key] = this.isDatePropertyWrapper(value) ? new Date(value.value) : value;
+        });
 
         return parsedItem;
     }
 }
+
+/**
+ * Internal (DTO) data item type,
+ * created due to the specifics of handling dates across QuickJS ⇒ Engine ⇒ JSON ⇒ SDK.
+ */
+type InternalDataItem = {
+    [key: string]: string | number | boolean | DatePropertyWrapper | null;
+};

@@ -38,7 +38,7 @@ export interface DataPage {
 export interface PageConfig {
     filters: DataFilter[];
     sorting: DataSorting[];
-    continuationToken: string;
+    continuationToken?: string | null;
     limit: number;
 }
 
