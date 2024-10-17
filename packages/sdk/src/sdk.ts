@@ -207,6 +207,7 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
