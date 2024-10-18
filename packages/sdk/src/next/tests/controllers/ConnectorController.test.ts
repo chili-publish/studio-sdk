@@ -7,9 +7,9 @@ import {
     ConnectorGrafxRegistration,
     ConnectorLocalRegistration,
     ConnectorRegistrationSource,
+    ConnectorType,
     ConnectorUrlRegistration,
 } from '../../types/ConnectorTypes';
-import { ConnectorType } from '../../../types/ConnectorTypes';
 
 let mockedConnectorController: ConnectorController;
 
