@@ -151,12 +151,12 @@ describe('Should call all of the ActionController functions of child successfull
     });
 
     it('Should call the disableActions method', async () => {
-        await mockedActionController.disableExecution();
+        await mockedActionController.disable();
         expect(mockEditorApi.disableActions).toHaveBeenCalledTimes(1);
     });
 
     it('Should call the enableActions method', async () => {
-        await mockedActionController.enableExecution();
+        await mockedActionController.enable();
         expect(mockEditorApi.enableActions).toHaveBeenCalledTimes(1);
     });
 });
