@@ -1,4 +1,4 @@
-import type { EditorAPI, Id } from '../types/CommonTypes';
+import type { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     BlendMode,
@@ -493,7 +493,10 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
+
     /**
+     * @deprecated the constrain proportions setter is not supported anymore.
+     *
      * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
      * true, the frame's constrainProportions property cannot be changed and this method will return an error.
      *
@@ -501,11 +504,18 @@ export class FrameController {
      * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setFrameConstrainProportions = async (id: Id, constrainProportions: boolean) => {
-        const res = await this.#editorAPI;
-        return res
-            .setFrameConstrainProportions(id, constrainProportions)
-            .then((result) => getEditorResponseData<null>(result));
+        console.error('setFrameConstrainProportions is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'setFrameConstrainProportions is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
     };
 
     /**
