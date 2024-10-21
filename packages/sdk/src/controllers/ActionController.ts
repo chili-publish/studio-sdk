@@ -139,4 +139,24 @@ export class ActionController {
     setTypeError = async (id: string, hasTypeErrors: boolean) => {
         return this.update(id, { hasTypeError: hasTypeErrors });
     };
+
+    /**
+     * This method disables the execution of Actions.
+     * Note that any Action will be ignored and forgotten.
+     * @returns
+     */
+    disable = async () => {
+        const res = await this.#editorAPI;
+        return res.disableActions().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method enables the execution of Actions.
+     * Note this is enabled by default.
+     * @returns
+     */
+    enable = async () => {
+        const res = await this.#editorAPI;
+        return res.enableActions().then((result) => getEditorResponseData<null>(result));
+    };
 }
