@@ -117,7 +117,8 @@ export type {
 
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
-export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
+export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
+export { ColorUsageType } from './types/ColorStyleTypes';
 
 export type {
     DocumentFontStyle,
