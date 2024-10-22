@@ -54,14 +54,14 @@ export type {
     AutoGrowSettings,
     AnchorTarget,
     FrameAnchor,
-    PageAnchorTarget,
-    FrameAnchorTarget,
     RelativeFrameAnchor,
     StartFrameAnchor,
     EndFrameAnchor,
     StartAndEndFrameAnchor,
     CenterFrameAnchor
 } from './types/FrameTypes';
+export { PageAnchorTarget, FrameAnchorTarget } from './types/FrameTypes';
+
 export type {
     Variable,
     GroupVariable,
@@ -102,8 +102,8 @@ export type {
     Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
-    ConnectorConfigValueType,
 } from './types/CommonTypes';
+export { ConnectorConfigValueType } from './types/CommonTypes';
 
 export type {
     TextProperties,
