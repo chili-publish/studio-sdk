@@ -1,6 +1,7 @@
 import { SDK } from './sdk';
 
 export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats, EnvironmentType } from './utils/enums';
+export { ConnectorHttpError } from './utils/EditorResponseData';
 
 export {
     SlideDirections,
@@ -21,6 +22,9 @@ export {
     ImageSourceTypeEnum,
     BarcodeSourceTypeEnum,
     AutoGrowDirection,
+    AnchorTargetType,
+    FrameAnchorType,
+    AnchorTargetEdgeType,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -49,6 +53,15 @@ export type {
     ImageFrameVariableSource,
     ImageFrameUrlSource,
     AutoGrowSettings,
+    AnchorTarget,
+    FrameAnchor,
+    PageAnchorTarget,
+    FrameAnchorTarget,
+    RelativeFrameAnchor,
+    StartFrameAnchor,
+    EndFrameAnchor,
+    StartAndEndFrameAnchor,
+    CenterFrameAnchor
 } from './types/FrameTypes';
 export type {
     Variable,
