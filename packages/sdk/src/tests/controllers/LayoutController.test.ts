@@ -2,7 +2,7 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
-import { BleedDeltaUpdate, LayoutIntent, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
+import { BleedDeltaUpdate, LayoutIntent, LayoutPreset, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 let mockedLayoutController: LayoutController;
@@ -95,18 +95,29 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledWith('1');
     });
     it('Should be possible to create a layout with a preset', async () => {
-        const preset = {
+        const preset: LayoutPreset = {
             name: 'name',
             intent: LayoutIntent.print,
             unit: MeasurementUnit.mm,
             width: '100 mm',
             height: '200 mm',
+            duration: 5000,
+            bleed: {
+                left: '3 mm',
+                right: '2 mm',
+                bottom: '1 mm',
+                top: '0 mm',
+                areBleedValuesCombined: false,
+            },
         };
 
         await mockedLayoutController.create('1', [preset]);
-        
+
         expect(mockedEditorApi.addLayouts).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.addLayouts).toHaveBeenCalledWith('1', JSON.stringify([preset]));
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledWith(
+            '1',
+            '[{"name":"name","intent":"print","unit":"mm","width":"100 mm","height":"200 mm","duration":5000,"bleed":{"left":"3 mm","right":"2 mm","bottom":"1 mm","top":"0 mm","areBleedValuesCombined":false}}]',
+        );
     });
     it('Should be possible to create a layout without a preset', async () => {
         await mockedLayoutController.create('1');
