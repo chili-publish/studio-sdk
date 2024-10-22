@@ -77,6 +77,17 @@ export type BleedDeltaUpdate = {
     areBleedValuesCombined?: boolean;
 };
 
+export type LayoutPreset = {
+    name: string;
+    intent: LayoutIntent;
+    unit: MeasurementUnit;
+    width: string;
+    height: string;
+    duration?: number;
+    bleed?: BleedDeltaUpdate;
+};
+
+
 export enum PositionEnum {
     top = 'top',
     right = 'right',
@@ -102,3 +113,5 @@ export enum LayoutIntent {
     digitalStatic = 'digitalStatic',
     digitalAnimated = 'digitalAnimated',
 }
+
+

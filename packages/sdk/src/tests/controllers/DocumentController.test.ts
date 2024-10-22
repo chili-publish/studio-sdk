@@ -2,6 +2,7 @@ import { mockDocument } from '../__mocks__/mockDocument';
 import { DocumentController } from '../../controllers/DocumentController';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { LayoutIntent, MeasurementUnit } from '../../types/LayoutTypes';
 
 let mockedDocumentController: DocumentController;
 const mockFetch = jest.fn();
@@ -9,12 +10,14 @@ const mockFetch = jest.fn();
 const mockedEditorApi: EditorAPI = {
     getCurrentDocumentState: async () => getEditorResponseData(castToEditorResponse(null)),
     loadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
+    createAndLoadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     mockedDocumentController = new DocumentController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'getCurrentDocumentState');
     jest.spyOn(mockedEditorApi, 'loadDocument');
+    jest.spyOn(mockedEditorApi, 'createAndLoadDocument');
     global.fetch = mockFetch;
 });
 
@@ -46,6 +49,21 @@ describe('Document controller', () => {
             expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(
                 mockDocument,
                 JSON.stringify({ keepConnectors: true }),
+            );
+        });
+
+        it('is possible to create a new document with a layout preset', async () => {
+            const preset = {
+                name: 'name',
+                intent: LayoutIntent.print,
+                unit: MeasurementUnit.mm,
+                width: '100 mm',
+                height: '200 mm',
+            };
+            await mockedDocumentController.createAndLoad(preset);
+            expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledWith(
+               JSON.stringify(preset)
             );
         });
     });
