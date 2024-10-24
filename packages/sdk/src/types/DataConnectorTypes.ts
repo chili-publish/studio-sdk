@@ -23,8 +23,8 @@ export type DataFilter = {
 };
 
 // Generic DataItem
-export type DataPage<DI> = {
-    data: DI[];
+export type DataPage<Item> = {
+    data: Item[];
     continuationToken?: string | null;
 };
 
