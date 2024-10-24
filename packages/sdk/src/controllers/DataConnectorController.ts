@@ -6,12 +6,13 @@ import { DataConnectorCapabilities, DataItem, DataModel, DataPage, PageConfig } 
  * The DataConnectorController is responsible for all communication regarding Data connectors.
  * Methods inside this controller can be called by `window.SDK.DataConnector.{method-name}`
  *
- * The way GraFx Studio handles different sources of Data is called 'DataConnectors'. A DataConnectors is an
- * implementation of a set of capabilities we need to interact with a certain Data Management system.
- * In essence, a connector is the combination of a JavaScript snippet and some metadata. The JavaScript snippet
- * is loaded in the studio engine using a sandboxed JavaScript execution engine (QuickJs). This allows us to
- * execute the Data connector both on web using webassembly and on the server side during e.g., animation output
- * generation.
+ * The way GraFx Studio handles different sources of Data is called 'DataConnector'.
+ * A DataConnector is an implementation of a set of capabilities we need
+ * to interact with a certain Data Management system.
+ * In essence, a connector is the combination of a JavaScript snippet and some metadata.
+ * The JavaScript snippet is loaded in the studio engine using a sandboxed JavaScript execution engine (QuickJs).
+ * This allows us to execute the Data connector
+ * both on web using webassembly and on the server side during e.g., animation output generation.
  * This controller is an interface to the running connector instance inside the studio engine.
  */
 export class DataConnectorController {
