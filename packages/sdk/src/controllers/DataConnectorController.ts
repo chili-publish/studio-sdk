@@ -1,12 +1,6 @@
 import { ConnectorConfigOptions, EditorAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import {
-    DataConnectorCapabilities,
-    DataItem,
-    DataPage,
-    DatePropertyWrapper,
-    PageConfig,
-} from '../types/DataConnectorTypes';
+import { DataConnectorCapabilities, DataItem, DataPage, PageConfig } from '../types/DataConnectorTypes';
 
 /**
  * The DataConnectorController is responsible for all communication regarding Data connectors.
@@ -132,6 +126,15 @@ export class DataConnectorController {
         return parsedItem;
     }
 }
+
+/**
+ * Internal type to wrap the date object value on the engine side,
+ * created due to the specifics of handling dates across QuickJS ⇒ Engine ⇒ JSON ⇒ SDK.
+ */
+type DatePropertyWrapper = {
+    value: number;
+    type: 'date';
+};
 
 /**
  * Internal (DTO) data item type,

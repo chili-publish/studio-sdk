@@ -32,11 +32,6 @@ export type DataItem = {
     [key: string]: string | number | boolean | Date | null;
 };
 
-export type DatePropertyWrapper = {
-    value: number;
-    type: 'date';
-};
-
 export type DataModel = {
     properties: DataModelProperty[];
 };
