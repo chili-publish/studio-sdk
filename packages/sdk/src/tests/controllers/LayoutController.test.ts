@@ -2,7 +2,7 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
-import { BleedDeltaUpdate, LayoutIntent, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
+import { BleedDeltaUpdate, LayoutIntent, LayoutPreset, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 let mockedLayoutController: LayoutController;
@@ -15,6 +15,7 @@ const mockedEditorApi: EditorAPI = {
     getSelectedLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     removeLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     addLayout: async () => getEditorResponseData(castToEditorResponse(null)),
+    addLayouts: async () => getEditorResponseData(castToEditorResponse(null)),
     renameLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     selectLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateLayout: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -42,6 +43,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getSelectedLayout');
     jest.spyOn(mockedEditorApi, 'removeLayout');
     jest.spyOn(mockedEditorApi, 'addLayout');
+    jest.spyOn(mockedEditorApi, 'addLayouts');
     jest.spyOn(mockedEditorApi, 'renameLayout');
     jest.spyOn(mockedEditorApi, 'selectLayout');
     jest.spyOn(mockedEditorApi, 'duplicateLayout');
@@ -92,7 +94,32 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledWith('1');
     });
-    it('Should be possible to create a layout', async () => {
+    it('Should be possible to create a layout with a preset', async () => {
+        const preset: LayoutPreset = {
+            name: 'name',
+            intent: LayoutIntent.print,
+            unit: MeasurementUnit.mm,
+            width: '100 mm',
+            height: '200 mm',
+            duration: 5000,
+            bleed: {
+                left: '3 mm',
+                right: '2 mm',
+                bottom: '1 mm',
+                top: '0 mm',
+                areBleedValuesCombined: false,
+            },
+        };
+
+        await mockedLayoutController.create('1', [preset]);
+
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledWith(
+            '1',
+            '[{"name":"name","intent":"print","unit":"mm","width":"100 mm","height":"200 mm","duration":5000,"bleed":{"left":"3 mm","right":"2 mm","bottom":"1 mm","top":"0 mm","areBleedValuesCombined":false}}]',
+        );
+    });
+    it('Should be possible to create a layout without a preset', async () => {
         await mockedLayoutController.create('1');
         expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1');

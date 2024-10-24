@@ -36,6 +36,7 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
     Layout,
+    LayoutPreset
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
@@ -54,14 +55,14 @@ export type {
     AutoGrowSettings,
     AnchorTarget,
     FrameAnchor,
-    PageAnchorTarget,
-    FrameAnchorTarget,
     RelativeFrameAnchor,
     StartFrameAnchor,
     EndFrameAnchor,
     StartAndEndFrameAnchor,
     CenterFrameAnchor
 } from './types/FrameTypes';
+export { PageAnchorTarget, FrameAnchorTarget } from './types/FrameTypes';
+
 export type {
     Variable,
     GroupVariable,
@@ -102,8 +103,8 @@ export type {
     Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
-    ConnectorConfigValueType,
 } from './types/CommonTypes';
+export { ConnectorConfigValueType } from './types/CommonTypes';
 
 export type {
     TextProperties,
@@ -117,7 +118,8 @@ export type {
 
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
-export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
+export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
+export { ColorUsageType } from './types/ColorStyleTypes';
 
 export type {
     DocumentFontStyle,
