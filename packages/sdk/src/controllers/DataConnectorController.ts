@@ -113,7 +113,7 @@ export class DataConnectorController {
      * Converts DatePropertyWrapper values to JavaScript Date objects
      * while keeping other values unchanged.
      *
-     * @param dataItem the InternalDataItem to transform.
+     * @param dataItem the EngineDataItem to transform.
      * @returns the resulting DataItem with parsed date properties.
      */
     private mapEngineToDataItem(dataItem: EngineDataItem): DataItem {
