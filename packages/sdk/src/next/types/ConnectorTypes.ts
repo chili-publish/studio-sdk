@@ -42,6 +42,7 @@ export enum ConnectorRegistrationSource {
 export enum ConnectorType {
     media = 'media',
     fonts = 'fonts',
+    data = 'data',
 }
 
 export type ConnectorInstance = {

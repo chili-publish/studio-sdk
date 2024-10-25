@@ -1,25 +1,20 @@
 import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import {
-    DeprecatedMediaType,
-    FontConnectorCapabilities,
-    MediaType,
-    QueryOptions,
-    QueryPage,
-} from '../types/ConnectorTypes';
-import { FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
+import { DeprecatedMediaType, MediaType, QueryOptions, QueryPage } from '../types/ConnectorTypes';
+import { FontConnectorCapabilities, FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
 
 /**
  * The FontConnectorController is responsible for all communication regarding Font connectors.
  * Methods inside this controller can be called by `window.SDK.FontConnector.{method-name}`
  *
- * The way CHILI Studio handles different sources of Font is called 'FontConnectors'. A FontConnectors is an
- * implementation of a set of capabilities we need to interact with a certain Digital Asset Management system.
- * In essence a connector is the combination of a Javascript snippet and some metadata. The Javascript snippet
- * is loaded in the studio engine using a sandboxed Javascript execution engine (QuickJs). This allows us to
- * execute the Font connector both on web using webassembly and on the server side during e.g. animation output
- * generation.
+ * The way GraFx Studio handles different sources of Font is called 'FontConnector'.
+ * A FontConnector is an implementation of a set of capabilities we need
+ * to interact with a certain Digital Asset Management system.
+ * In essence, a connector is the combination of a JavaScript snippet and some metadata.
+ * The JavaScript snippet is loaded in the studio engine using a sandboxed JavaScript execution engine (QuickJs).
+ * This allows us to execute the Font connector
+ * both on web using webassembly and on the server side during e.g. animation output generation.
  * This controller is an interface to the running connector instance inside the studio engine.
  */
 export class FontConnectorController {
