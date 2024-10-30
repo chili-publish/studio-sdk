@@ -5,8 +5,8 @@ export type DataConnectorCapabilities = {
 };
 
 export type PageConfig = {
-    filters: DataFilter[];
-    sorting: DataSorting[];
+    filters?: DataFilter[] | null;
+    sorting?: DataSorting[] | null;
     continuationToken?: string | null;
     limit: number;
 };
