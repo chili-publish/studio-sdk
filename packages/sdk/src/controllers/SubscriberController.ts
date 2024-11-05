@@ -165,8 +165,8 @@ export class SubscriberController {
     /**
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
-    onPageSelectionChanged = () => {
-        const callBack = this.config.onPageSelectionChanged;
+    onPageSelectionChanged = (id: Id) => {
+        const callBack = this.config.onPageSelectionChanged(id);
         callBack && callBack();
     };
 
@@ -353,11 +353,11 @@ export class SubscriberController {
 
     /**
      * @experimental
-     * Listener on pages snapshots, this will fire when a page snapshot should be updated.
+     * Listener on pages snapshots, this will fire when a page snapshot is invalidated and should be updated.
      * @param page id of the page
      */
-    onPageSnapshotChanged = (page: Id) => {
-        const callBack = this.config.onPageSnapshotChanged;
+    onPageSnapshotInvalidated = (page: Id) => {
+        const callBack = this.config.onPageSnapshotInvalidated;
         callBack && callBack(JSON.parse(page));
     };
     /**

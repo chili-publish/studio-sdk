@@ -66,7 +66,7 @@ const mockEditorApi: EditorAPI = {
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedPageIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPagesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onPageSnapshotChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSnapshotInvalidated: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -110,7 +110,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onActionsChanged');
     jest.spyOn(mockEditorApi, 'onSelectedPageIdChanged');
     jest.spyOn(mockEditorApi, 'onPagesChanged');
-    jest.spyOn(mockEditorApi, 'onPageSnapshotChanged');
+    jest.spyOn(mockEditorApi, 'onPageSnapshotInvalidated');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
@@ -178,7 +178,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
-        await mockedSubscriberController.onPageSelectionChanged();
+        await mockedSubscriberController.onPageSelectionChanged("a");
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to the onStateChanged', async () => {
@@ -318,11 +318,11 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onPagesChanged).toHaveBeenCalledWith(pages);
     });
 
-    it('should be possible to subscribe to onPageSnapshotChanged', async () => {
+    it('should be possible to subscribe to onPageSnapshotInvalidated', async () => {
         const pageID: Id = '123';
 
-        await mockedSubscriberController.onPageSnapshotChanged(JSON.stringify(pageID));
-        expect(mockEditorApi.onPageSnapshotChanged).toHaveBeenCalledWith(pageID);
+        await mockedSubscriberController.onPageSnapshotInvalidated(JSON.stringify(pageID));
+        expect(mockEditorApi.onPageSnapshotInvalidated).toHaveBeenCalledWith(pageID);
     });
 
     it('should be possible to subscribe to onPageSizeChanged', async () => {

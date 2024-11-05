@@ -176,7 +176,7 @@ export class SDK {
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
                 onPagesChanged: this.subscriber.onPagesChanged,
-                onPageSnapshotChanged: this.subscriber.onPageSnapshotChanged,
+                onPageSnapshotInvalidated: this.subscriber.onPageSnapshotInvalidated,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,

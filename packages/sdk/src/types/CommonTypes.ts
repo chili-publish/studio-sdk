@@ -42,7 +42,7 @@ export type ConfigType = {
     documentType?: DocumentType;
     studioStyling?: StudioStyling;
     studioOptions?: StudioOptionsDeltaUpdate;
-    onPageSelectionChanged?: () => void;
+    onPageSelectionChanged?: (id: Id) => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onSelectedLayoutUnitChanged?: (unit: MeasurementUnit) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
@@ -63,7 +63,7 @@ export type ConfigType = {
     onZoomChanged?: (scaleFactor: number) => void;
     onSelectedPageIdChanged?: (pageId: Id) => void;
     onPagesChanged?: (pages: Page[]) => void;
-    onPageSnapshotChanged?: (page: Id) => void;
+    onPageSnapshotInvalidated?: (page: Id) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;
