@@ -166,8 +166,8 @@ export class SubscriberController {
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
     onPageSelectionChanged = (id: Id) => {
-        const callBack = this.config.onPageSelectionChanged(id);
-        callBack && callBack();
+        const callBack = this.config.onPageSelectionChanged;
+        callBack && callBack(id);
     };
 
     /**
