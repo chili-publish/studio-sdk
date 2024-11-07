@@ -146,7 +146,7 @@ const Connect = (
                 connectorEvent: params.onConnectorEvent,
                 connectorsChanged: params.onConnectorsChanged,
                 zoomChanged: params.onZoomChanged,
-                pageSnapshotChanged: params.onPageSnapshotInvalidated,
+                pageSnapshotInvalidated: params.onPageSnapshotInvalidated,
                 pagesChanged: params.onPagesChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
@@ -154,6 +154,7 @@ const Connect = (
                 asyncError: params.onAsyncError,
                 viewModeChanged: params.onViewModeChanged,
                 barcodeValidationChanged: params.onBarcodeValidationChanged,
+                selectedPageIdChanged: params.onSelectedPageIdChanged,
             },
         }),
     );
