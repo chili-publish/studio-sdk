@@ -9,8 +9,32 @@ export interface MediaConnector {
         intent: DownloadIntent,
         context: Dictionary,
     ): Promise<ArrayBufferPointer>;
+    analyze(id: string, features: MediaFeatureRequest[], context: Dictionary): Promise<MediaFeatures>
+
     getConfigurationOptions(): ConnectorConfigValue[] | null;
     getCapabilities(): MediaConnectorCapabilities;
+}
+
+export const enum MediaFeatureRequest {
+    smartCrop = 'smartCrop',
+}
+
+export type MediaFeatures = {
+    subject?: MediaSubject,
+    poi?: MediaPointOfInterest,
+    category?: string,
+}
+
+export type MediaPointOfInterest = {
+    x: number;
+    y: number;
+}
+
+export type MediaSubject = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 }
 
 export type DownloadIntent = 'web' | 'print' | 'animation';
@@ -43,4 +67,5 @@ export type MediaConnectorCapabilities = {
     detail: boolean;
     filtering: boolean;
     metadata?: boolean;
+    analyzeSmartCrop?: boolean;
 };
