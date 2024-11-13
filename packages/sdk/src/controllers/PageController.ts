@@ -68,7 +68,7 @@ export class PageController {
      * @param ids An array of all IDs you want to move to the given index
      * @returns
      */
-    reorderPages = async (order: number, ids: Id[]) => {
+    reorder = async (order: number, ids: Id[]) => {
         const res = await this.#editorAPI;
         return res.reorderPages(order, ids).then((result) => getEditorResponseData<null>(result));
     };
