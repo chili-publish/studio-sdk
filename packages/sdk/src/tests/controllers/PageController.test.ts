@@ -9,6 +9,7 @@ const mockEditorApi: EditorAPI = {
     getPageById: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageWidth: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageHeight: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    reorderPages: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
 };
 
 beforeEach(() => {
@@ -17,6 +18,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'getPageById');
     jest.spyOn(mockEditorApi, 'setPageWidth');
     jest.spyOn(mockEditorApi, 'setPageHeight');
+    jest.spyOn(mockEditorApi, 'reorderPages');
 });
 
 afterAll(() => {
@@ -51,5 +53,11 @@ describe('PageController', () => {
         await mockedPageController.setWidth('id', '4*3');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(2);
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4*3');
+    });
+
+    it('Should be possible to reorder the pages', async () => {
+        await mockedPageController.reorderPages(1, ['id']);
+        expect(mockEditorApi.reorderPages).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.reorderPages).toHaveBeenCalledWith(1, ['id']);
     });
 });

@@ -61,4 +61,15 @@ export class PageController {
         const res = await this.#editorAPI;
         return res.setPageHeight(id, height).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method changes the order of pages.
+     * @param order the index in the list to move to
+     * @param ids An array of all IDs you want to move to the given index
+     * @returns
+     */
+    reorderPages = async (order: number, ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.reorderPages(order, ids).then((result) => getEditorResponseData<null>(result));
+    };
 }
