@@ -56,7 +56,7 @@ describe('PageController', () => {
     });
 
     it('Should be possible to reorder the pages', async () => {
-        await mockedPageController.reorder(1, ['id']);
+        await mockedPageController.move(1, ['id']);
         expect(mockEditorApi.reorderPages).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.reorderPages).toHaveBeenCalledWith(1, ['id']);
     });
