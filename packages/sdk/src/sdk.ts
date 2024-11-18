@@ -13,7 +13,6 @@ import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { ColorStyleController } from './controllers/ColorStyleController';
 import { ColorConversionController } from './controllers/ColorConversionController';
-import { ConfigurationController } from './controllers/ConfigurationController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { DebugController } from './controllers/DebugController';
 import { DocumentController } from './controllers/DocumentController';
@@ -37,6 +36,9 @@ import { ClipboardController } from './controllers/ClipboardController';
 import { BarcodeController } from './controllers/BarcodeController';
 import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
+import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { ConfigurationController } from './controllers/ConfigurationController';
+import { DataConnectorController } from './controllers/DataConnectorController';
 
 let connection: Connection;
 
@@ -60,6 +62,7 @@ export class SDK {
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
+    dataConnector: DataConnectorController;
     animation: AnimationController;
     document: DocumentController;
     configuration: ConfigurationController;
@@ -83,6 +86,7 @@ export class SDK {
 
     private subscriber: SubscriberController;
     private enabledNextSubscribers: NextSubscribers | undefined;
+    private localConfig = new Map<string, string>();
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -101,15 +105,17 @@ export class SDK {
         this.shape = new ShapeController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
-        this.connector = new ConnectorController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new ConfigurationController(this.editorAPI);
+
+        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
-        this.subscriber = new SubscriberController(this.config);
+        this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
@@ -189,7 +195,7 @@ export class SDK {
         this.barcode = new BarcodeController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new ConfigurationController(this.editorAPI);
+        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
@@ -201,7 +207,8 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.connector = new ConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);

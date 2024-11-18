@@ -1,6 +1,13 @@
 import { Id } from './CommonTypes';
 import { MediaType } from './ConnectorTypes';
 
+export type MediaConnectorCapabilities = {
+    query: boolean;
+    detail: boolean;
+    filtering: boolean;
+    metadata?: boolean;
+};
+
 export enum MediaDownloadType {
     thumbnail = 'thumbnail',
     mediumres = 'mediumres',

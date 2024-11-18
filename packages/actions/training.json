@@ -18,5 +18,9 @@
     {
         "query": "Write a function that moves all frames to a random location",
         "response": "function moveFramesToRandomLocation(){ \n  // Get all frames\n  const allFrames = studio.frames.all();\n\n  // Move each frame to a random position\n  allFrames.forEach(frame => {\n    const randomX = Math.random() * getPageWidth();\n    const randomY = Math.random() * getPageHeight();\n    frame.move(randomX, randomY);\n  });\n}\nmoveFramesToRandomLocation();"
+    },
+    {
+        "query": "set the value of the short text variable 'text' to this paragraph 'Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua\r'",
+        "response": "setVariableValue(\"text\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\");"
     }
 ]

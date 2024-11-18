@@ -1,6 +1,7 @@
 import { SDK } from './sdk';
 
 export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats, EnvironmentType } from './utils/enums';
+export { ConnectorHttpError } from './utils/EditorResponseData';
 
 export {
     SlideDirections,
@@ -20,6 +21,10 @@ export {
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
     BarcodeSourceTypeEnum,
+    AutoGrowDirection,
+    AnchorTargetType,
+    FrameAnchorType,
+    AnchorTargetEdgeType,
 } from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
 
@@ -31,6 +36,7 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
     Layout,
+    LayoutPreset
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
@@ -46,7 +52,17 @@ export type {
     ImageFrameSource,
     ImageFrameVariableSource,
     ImageFrameUrlSource,
+    AutoGrowSettings,
+    AnchorTarget,
+    FrameAnchor,
+    RelativeFrameAnchor,
+    StartFrameAnchor,
+    EndFrameAnchor,
+    StartAndEndFrameAnchor,
+    CenterFrameAnchor
 } from './types/FrameTypes';
+export { PageAnchorTarget, FrameAnchorTarget } from './types/FrameTypes';
+
 export type {
     Variable,
     GroupVariable,
@@ -62,6 +78,8 @@ export type {
     DateRestriction,
     RelativeDate,
     AbsoluteDate,
+    ValueWithStyle,
+    PrivateData,
 } from './types/VariableTypes';
 export { VariableType, Day, Locale } from './types/VariableTypes';
 
@@ -85,8 +103,8 @@ export type {
     Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
-    ConnectorConfigValueType,
 } from './types/CommonTypes';
+export { ConnectorConfigValueType } from './types/CommonTypes';
 
 export type {
     TextProperties,
@@ -100,7 +118,8 @@ export type {
 
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
-export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
+export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
+export { ColorUsageType } from './types/ColorStyleTypes';
 
 export type {
     DocumentFontStyle,

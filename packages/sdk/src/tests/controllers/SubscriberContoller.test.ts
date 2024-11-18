@@ -1,6 +1,8 @@
 import {
     ActionEditorEvent,
     BarcodeValidationResult,
+    ConnectorInstance,
+    ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
     Id,
@@ -29,6 +31,8 @@ import type { PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import * as Next from '../../next/types/ConnectorTypes';
+import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -72,7 +76,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedSubscriberController = new SubscriberController(mockEditorApi);
+    mockedSubscriberController = new SubscriberController(mockEditorApi, mockLocalConfig);
     mockedAnimation = mockFrameAnimation;
 
     jest.spyOn(mockEditorApi, 'onAnimationChanged');
@@ -242,6 +246,41 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(connectors));
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });
+    it('onConnectorsChanged migrates Next.ConnectorInstance', async () => {
+        const grafxSourceId = 'grafx-id';
+        // Can't mock it on EditorApi
+
+        const nextGrafxSource: Next.ConnectorGrafxRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            id: grafxSourceId,
+        };
+
+        const nextGrafxConnector: Next.ConnectorInstance = {
+            id: 'connector-id',
+            name: 'connector.name',
+            iconUrl: 'icon-url',
+            source: nextGrafxSource,
+        };
+
+        const grafxSource: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            url: `${mockBaseUrl}/connectors/${grafxSourceId}`,
+        };
+
+        const grafxConnector: ConnectorInstance = {
+            id: 'connector-id',
+            name: 'connector.name',
+            iconUrl: 'icon-url',
+            source: grafxSource,
+        };
+
+        const connectors = JSON.stringify([nextGrafxConnector]);
+        const expectedConnectors = JSON.stringify([grafxConnector]);
+
+        await mockedSubscriberController.onConnectorsChanged(connectors);
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(expectedConnectors));
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
+    });
     it('Should be possible to subscribe to onZoomChanged', async () => {
         await mockedSubscriberController.onZoomChanged(JSON.stringify(150));
         expect(mockEditorApi.onZoomChanged).toHaveBeenCalledTimes(1);
@@ -305,16 +344,19 @@ describe('SubscriberController', () => {
 
     describe('onAuthExpired', () => {
         const connectorId = 'connectorId';
+        const remoteConnectorId = 'remoteConnectorId';
         const staticHeaderValue = 'Static, 1234';
 
         const grafxAuthRefreshRequest: AuthRefreshRequest = {
             connectorId: connectorId,
+            remoteConnectorId: remoteConnectorId,
             type: AuthRefreshTypeEnum.grafxToken,
             headerValue: null,
         };
 
         const anyAuthRefreshRequest: AuthRefreshRequest = {
             connectorId: connectorId,
+            remoteConnectorId: remoteConnectorId,
             type: AuthRefreshTypeEnum.any,
             headerValue: staticHeaderValue,
         };
@@ -331,7 +373,7 @@ describe('SubscriberController', () => {
             };
 
             jest.spyOn(mockConfig, 'onAuthExpired');
-            const mockedSubscriberController = new SubscriberController(mockConfig);
+            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(grafxAuthRefreshRequest),
@@ -352,7 +394,7 @@ describe('SubscriberController', () => {
             };
 
             jest.spyOn(mockConfig, 'onAuthExpired');
-            const mockedSubscriberController = new SubscriberController(mockConfig);
+            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(anyAuthRefreshRequest),
@@ -366,7 +408,7 @@ describe('SubscriberController', () => {
         });
 
         it('returns a null token if the listener is not defined', async () => {
-            const mockedSubscriberController = new SubscriberController({});
+            const mockedSubscriberController = new SubscriberController({}, new Map<string, string>());
 
             const result = await mockedSubscriberController.onAuthExpired(JSON.stringify(grafxAuthRefreshRequest));
 
@@ -402,7 +444,7 @@ describe('SubscriberController', () => {
 
             jest.spyOn(mockConfig, 'onViewportRequested');
 
-            const mockedSubscriberController = new SubscriberController(mockConfig);
+            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
 
             const resultJsonString = mockedSubscriberController.onViewportRequested();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -413,7 +455,7 @@ describe('SubscriberController', () => {
         });
 
         it('returns a null token if the listener is not defined', () => {
-            const mockedSubscriberController = new SubscriberController({});
+            const mockedSubscriberController = new SubscriberController({}, new Map<string, string>());
 
             const result = mockedSubscriberController.onViewportRequested();
 

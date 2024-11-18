@@ -18,6 +18,7 @@ export enum MediaType {
 export enum ConnectorType {
     media = 'media',
     fonts = 'fonts',
+    data = 'data',
 }
 
 export enum SortBy {
@@ -40,25 +41,11 @@ export type QueryOptions = {
     sortOrder?: SortOrder | null;
 };
 
-export type FontConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    preview: boolean;
-    filtering: boolean;
-};
-
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
-    metadata?: boolean;
-};
-
 interface ConnectorRegistrationBase {
     /**
      * Url to the connector.
      *
-     * - If source is `url`, this must be a publicly available url.
+     * - If source is `url`, this must be a publicly accessible url.
      *
      * - If source is `grafx`, this must be the full url to the connector GET endpoint on GraFx Environment API.
      */
@@ -93,7 +80,7 @@ export type ConnectorInstance = {
 
 export enum ConnectorRegistrationSource {
     /**
-     * Connector is hosted on a publicly available link.
+     * Connector is hosted on a publicly accessible link.
      */
     url = 'url',
 
@@ -301,6 +288,7 @@ export enum AuthRefreshTypeEnum {
 
 /**
  * @param connectorId connector id
+ * @param remoteConnectorId remote connector id
  * @param type type of auth renewal needed
  * @param headerValue the value of the X-GRAFX-UNAUTHORIZED header. This
  *      will notify that the dam authentication expired if it went through the
@@ -310,6 +298,7 @@ export enum AuthRefreshTypeEnum {
  */
 export type AuthRefreshRequest = {
     connectorId: Id;
+    remoteConnectorId: Id;
     type: AuthRefreshTypeEnum;
     headerValue: string | null;
 };

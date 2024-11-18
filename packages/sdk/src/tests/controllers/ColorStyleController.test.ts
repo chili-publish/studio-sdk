@@ -73,6 +73,20 @@ describe('ColorStyleController', () => {
             }),
         );
     });
+    it('Should call the replace spot with spotCMYK', async () => {
+        await mockedColorStyleController.update('3', { c: 0.1, m: 0.2, y: 0.3, k: 0.4, type: ColorType.spot });
+        expect(mockEditorApi.updateColor).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.updateColor).toHaveBeenCalledWith(
+            '3',
+            JSON.stringify({
+                c: 0.1,
+                m: 0.2,
+                y: 0.3,
+                k: 0.4,
+                type: ColorType.spotCMYK,
+            }),
+        );
+    });
     it('Should call the remove method', async () => {
         await mockedColorStyleController.remove('4');
         expect(mockEditorApi.removeColor).toHaveBeenCalledTimes(1);

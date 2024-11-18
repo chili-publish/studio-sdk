@@ -7,11 +7,14 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
+    NumberVariablePropertiesDeltaUpdate,
+    PrefixSuffixDeltaUpdate,
+    PrivateData,
     Variable,
     VariableType,
-    NumberVariablePropertiesDeltaUpdate,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -124,6 +127,27 @@ class DateVariable {
 
     /**
      * @experimental This method sets the display format for a date variable.
+     *
+     * The `displayFormat` is using ICU formatting (Unicode).
+     *
+     * Supported date formats:
+     * - Day -> `d`, `dd`
+     * - Month -> `M`, `MM`, `MMM`, `MMMM`
+     * - Year -> `yy`, `yyyy`
+     * - Day of week -> `ccc`, `cccc`
+     *
+     * Examples for an input date of `10-12-1815`:
+     * - Format `dd/MM/yyyy` will display `12/10/1815`
+     * - Format `d.M.yy` will display `12.10.15`
+     * - Format `d MMM yyyy` will display `12 Oct 1815` for the `en_US` language
+     * - Format `MMMM d, yyyy` will display `October 12, 1815` for the `en_US` language
+     * - Format `ccc, MMM d, yyyy` will display `Thu, Oct 12, 1815` for the `en_US` language
+     * - Format `cccc, MMMM d, yyyy` will display `Thursday, October 12, 1815` for the `en_US` language
+     * - Format `cccc, MMMM d, yyyy` will display `donderdag, oktober 12, 1815` for the `nl` language
+     *
+     * Patterns which output words such as `MMM`, `MMMM`, `ccc` and `cccc` will
+     * differ depending on chosen language (default is `en_US`).
+     *
      * @param id The id of the date variable to update
      * @param displayFormat The display format for the date variable
      */
@@ -134,8 +158,9 @@ class DateVariable {
 
     /**
      * @experimental This method sets the locale for a date variable.
+     *
      * @param id The id of the date variable to update
-     * @param locale The locale for the date variable
+     * @param locale The locale for the date variable (`'en_US'`, `'fi'`, `'fr'`...)
      */
     setLocale = async (id: string, locale: Locale) => {
         const update = { locale: { value: locale } };
@@ -303,6 +328,60 @@ export class VariableController {
     };
 
     /**
+     * Internal private method to set/reset a placeholder for a variable
+     */
+    #setPlaceholder = async (id: string, placeholder: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariablePlaceholder(id, placeholder).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new placeholder for a variable
+     * @param id id of the variable
+     * @param placeholder placeholder of the variable
+     * @returns
+     */
+    setPlaceholder = async (id: string, placeholder: string) => {
+        return this.#setPlaceholder(id, placeholder);
+    };
+
+    /**
+     * This method resets a placeholder for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetPlaceholder = async (id: string) => {
+        return this.#setPlaceholder(id, null);
+    };
+
+    /**
+     * Internal private method to set/reset a help text for a variable
+     */
+    #setHelpText = async (id: string, helpText: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariableHelpText(id, helpText).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new help text for a variable
+     * @param id id of the variable
+     * @param helpText placeholder of the variable
+     * @returns
+     */
+    setHelpText = async (id: string, helpText: string) => {
+        return this.#setHelpText(id, helpText);
+    };
+
+    /**
+     * This method resets a help text for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetHelpText = async (id: string) => {
+        return this.#setHelpText(id, null);
+    };
+
+    /**
      * This method sets a new type for a variable
      * @param id id of the variable
      * @param type type of the variable
@@ -334,6 +413,9 @@ export class VariableController {
 
     /**
      * This method sets a new value for a variable
+     *
+     * If the value is some text to be set on a ShortTextVariable, it must not
+     * contain any type of line breaks.
      *
      * @param id the id of the variable
      * @param value the new value of the variable
@@ -456,8 +538,11 @@ export class VariableController {
      */
     setImageVariableConnector = async (id: string, registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const connectorRegistration = connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+
         return res
-            .setImageVariableConnector(id, JSON.stringify(registration))
+            .setImageVariableConnector(id, JSON.stringify(connectorRegistration))
             .then((result) => getEditorResponseData<Id>(result));
     };
 
@@ -469,6 +554,73 @@ export class VariableController {
      */
     removeSource = async (id: string) => {
         return this.setValue(id, null);
+    };
+
+    /**
+     * @experimental Sets the prefix for a supported variable
+     * @param id the id of the variable to update
+     * @param prefix the prefix to set/clear
+     * @returns
+     */
+    setPrefix = async (id: string, prefix: string | null) => {
+        const update = { prefix: { value: prefix } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the suffix for a supported variable
+     * @param id the id of the variable to update
+     * @param suffix the suffix to set/clear
+     * @returns
+     */
+    setSuffix = async (id: string, suffix: string | null) => {
+        const update = { suffix: { value: suffix } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the prefix character style for a supported variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the prefix
+     * @returns
+     */
+    setPrefixCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { prefixCharacterStyleId: { value: characterStyleId } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * @experimental Sets the suffix character style for a supported variable
+     * @param id the id of the variable to update
+     * @param characterStyleId the id of the character style to use/clear for the suffix
+     * @returns
+     */
+    setSuffixCharacterStyle = async (id: string, characterStyleId: string | null) => {
+        const update = { suffixCharacterStyleId: { value: characterStyleId } };
+        return this.applyPrefixSuffixDeltaUpdate(id, update);
+    };
+
+    /**
+     * Sets the private data for any variable
+     * @param id the id of the variable to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: PrivateData) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariablePrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any variable
+     * @param id the id of the variable
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
@@ -497,5 +649,11 @@ export class VariableController {
         updated.selected = selected?.value;
 
         return updated;
+    }
+
+    private async applyPrefixSuffixDeltaUpdate(id: string, update: PrefixSuffixDeltaUpdate) {
+        const res = await this.#editorAPI;
+        const result = await res.updateVariablePrefixSuffixProperties(id, JSON.stringify(update));
+        return getEditorResponseData<null>(result);
     }
 }

@@ -1,4 +1,4 @@
-import type { EditorAPI, Id } from '../types/CommonTypes';
+import type { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     BlendMode,
@@ -12,6 +12,12 @@ import {
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
     VerticalAlign,
+    AutoGrowDeltaUpdate,
+    AutoGrowDirection,
+    AutoGrowResetUpdate,
+    FrameAnchorType,
+    FrameAnchorProperties,
+    AnchorTarget,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -124,13 +130,26 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the frame size (width and height) to the frame's original value
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
      * @param id the id of a specific frame
      * @returns
      */
+    resetTransformation = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
+     * @returns
+     * @deprecated Use 'resetTransformation' instead
+     */
     resetSize = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameSize(id).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -251,53 +270,63 @@ export class FrameController {
         return res.resetFrame(id).then((result) => getEditorResponseData<null>(result));
     };
     /**
-     * This method will reset the x value of a specific frame to its original value
-     * @param id the id of the frame that needs to get reset
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
      * @returns
+     * @deprecated Use 'resetTransformation' instead
      */
     resetX = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameX(id).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method will reset the y value of a specific frame to its original value
-     * @param id the id of the frame that needs to get reset
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
      * @returns
+     * @deprecated Use 'resetTransformation' instead
      */
     resetY = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameY(id).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method will reset the rotation value of a specific frame to its original value
-     * @param id the id of the frame that needs to get reset
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
      * @returns
+     * @deprecated Use 'resetTransformation' instead
      */
     resetRotation = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameRotation(id).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method will reset the width of a specific frame to its original value
-     * @param id the id of the frame that needs to get reset
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
      * @returns
+     * @deprecated Use 'resetTransformation' instead
      */
     resetWidth = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameWidth(id).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method will reset the height of a specific frame to its original value
-     * @param id the id of the frame that needs to get reset
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
      * @returns
+     * @deprecated Use 'resetTransformation' instead
      */
     resetHeight = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.resetFrameHeight(id).then((result) => getEditorResponseData<null>(result));
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -464,7 +493,10 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
+
     /**
+     * @deprecated the constrain proportions setter is not supported anymore.
+     *
      * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
      * true, the frame's constrainProportions property cannot be changed and this method will return an error.
      *
@@ -472,11 +504,18 @@ export class FrameController {
      * @param constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setFrameConstrainProportions = async (id: Id, constrainProportions: boolean) => {
-        const res = await this.#editorAPI;
-        return res
-            .setFrameConstrainProportions(id, constrainProportions)
-            .then((result) => getEditorResponseData<null>(result));
+        console.error('setFrameConstrainProportions is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'setFrameConstrainProportions is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
     };
 
     /**
@@ -650,5 +689,255 @@ export class FrameController {
     exitCropMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will enable auto grow on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setEnableAutoGrow = async (id: Id, value: boolean) => {
+        const update: AutoGrowDeltaUpdate = { enabled: { value: value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the minWidth for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new minWidth value to be set
+     * @returns
+     */
+    setAutoGrowMinWidth = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { minWidth: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the maxWidth for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new maxWidth value to be set
+     * @returns
+     */
+    setAutoGrowMaxWidth = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { maxWidth: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the minHeight for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new minHeight value to be set
+     * @returns
+     */
+    setAutoGrowMinHeight = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { minHeight: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the maxHeight for auto-grow of a specified frame. Set to null to remove the value.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new maxHeight value to be set
+     * @returns
+     */
+    setAutoGrowMaxHeight = async (id: Id, value: string | null) => {
+        const update: AutoGrowDeltaUpdate = { maxHeight: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the auto grow directions for auto-grow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new directions value to be set
+     * @returns
+     */
+    setAutoGrowDirections = async (id: Id, value: Array<AutoGrowDirection>) => {
+        const update: AutoGrowDeltaUpdate = { directions: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow enabled property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowSettingsEnabled = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { resetEnabled: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow minWidth property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMinWidth = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { resetMinWidth: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow maxWidth property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMaxWidth = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { resetMaxWidth: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow minHeight property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMinHeight = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { resetMinHeight: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow maxHeight property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowMaxHeight = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { resetMaxHeight: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the auto grow directions property of a specified frame to its original value
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrowDirections = async (id: Id) => {
+        const update: AutoGrowResetUpdate = { resetDirections: true };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset all auto grow properties of a specified frame to their original values
+     * @param id the id of the frame that needs to get reset
+     * @returns
+     */
+    resetAutoGrow = async (id: Id) => {
+        const update: AutoGrowResetUpdate = {
+            resetEnabled: true,
+            resetMinWidth: true,
+            resetMaxWidth: true,
+            resetMinHeight: true,
+            resetMaxHeight: true,
+            resetDirections: true,
+        };
+        const res = await this.#editorAPI;
+        return res
+            .resetAutoGrowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    private setAnchor = async (
+        id: Id,
+        horizontal: boolean,
+        anchorType: FrameAnchorType,
+        anchorTarget: AnchorTarget,
+        endAnchorTarget?: AnchorTarget | null,
+    ) => {
+        const properties: FrameAnchorProperties = {
+            horizontal: horizontal,
+            type: anchorType,
+            target: anchorTarget,
+            endTarget: endAnchorTarget,
+        };
+
+        const res = await this.#editorAPI;
+        return res
+            .setAnchorProperties(id, JSON.stringify(properties))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental
+     * This method will set the vertical anchor to target frame on a specified frame.
+     * @param id the id of the frame that needs to get a frame anchor set
+     * @param anchorType the type of positioning to be set to the frame
+     * @param anchorTarget the target frame to which it is anchored
+     * @param endAnchorTarget the target (end) frame to which it can be anchored
+     * @returns
+     */
+    setVerticalAnchor = async (
+        id: Id,
+        anchorType: FrameAnchorType,
+        anchorTarget: AnchorTarget,
+        endAnchorTarget?: AnchorTarget | null,
+    ) => {
+        return this.setAnchor(id, false, anchorType, anchorTarget, endAnchorTarget);
+    };
+
+    /**
+     * @experimental
+     * This method will set the horizontal anchor to target frame on a specified frame.
+     * @param id the id of the frame that needs to get a frame anchor set
+     * @param anchorType the type of positioning to be set to the frame
+     * @param anchorTarget the target frame to which it is anchored
+     * @param endAnchorTarget the target (end) frame to which it can be anchored
+     * @returns
+     */
+    setHorizontalAnchor = async (
+        id: Id,
+        anchorType: FrameAnchorType,
+        anchorTarget: AnchorTarget,
+        endAnchorTarget?: AnchorTarget | null,
+    ) => {
+        return this.setAnchor(id, true, anchorType, anchorTarget, endAnchorTarget);
+    };
+
+    /**
+     * This method will reset the frame's transformation properties (x, y, width, height, rotation, anchors)
+     * to the frame's to be inherited from the parent layout
+     * @param id the id of a specific frame
+     * @returns
+     * @deprecated Use 'resetTransformation' instead
+     */
+    resetAnchoring = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
 }

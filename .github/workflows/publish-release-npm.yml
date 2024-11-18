@@ -31,8 +31,19 @@ jobs:
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
+      - name: bump version locally
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git fetch origin
+            git checkout -B main origin/main
+            npm version patch
       - name: run readmeUpdater
         run: yarn make-badges
+      - name: execute local js script
+        run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
       - name: publish sdk build
@@ -41,9 +52,12 @@ jobs:
           ref=${{ github.ref }}
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
-          node cicd.js sdk,connectors yarn publish --tag $tag --tag latest
+          stripped_tag=${tag%-*}
+          node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js
       - name: get new npm version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -69,3 +83,28 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
+
+  bump:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    needs: build
+    steps:
+      - uses: FranzDiebold/github-env-vars-action@v2
+      - uses: actions/checkout@v3
+        with:
+            token: ${{ secrets.PACKAGE_SECRET }}
+      - name: Bump version
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git fetch origin
+            git checkout -B main origin/main
+            npm version preminor
+      - name: execute local js script
+        run: node ./.github/scripts/replicate-version.js
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js
