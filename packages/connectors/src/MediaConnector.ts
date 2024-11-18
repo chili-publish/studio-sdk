@@ -20,9 +20,13 @@ export const enum MediaFeatureRequest {
 }
 
 export type MediaFeatures = {
-    subject?: MediaSubject,
-    poi?: MediaPointOfInterest,
-    category?: string,
+    smartCrop?: SmartCropFeatures;
+}
+
+export type SmartCropFeatures = {
+    subject?: MediaSubject;
+    poi?: MediaPointOfInterest;
+    category?: string;
 }
 
 export type MediaPointOfInterest = {
