@@ -180,6 +180,7 @@ export class SDK {
                 onAsyncError: this.subscriber.onAsyncError,
                 onViewModeChanged: this.subscriber.onViewModeChanged,
                 onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
+                onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
             },
             this.setConnection,
             this.config.editorId,
