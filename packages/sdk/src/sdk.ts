@@ -240,6 +240,7 @@ export class SDK {
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
+        this.connection = newConnection;
     };
 }
 
