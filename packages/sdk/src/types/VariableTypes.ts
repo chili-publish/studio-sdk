@@ -38,7 +38,7 @@ export interface Variable {
     type: VariableType;
     parentId?: string;
     name: string;
-    label?: string;
+    label?: string | null;
     isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
