@@ -94,6 +94,7 @@ const Connect = (
     iframe.setAttribute('style', 'width: 100%; height: 100%;');
     iframe.setAttribute('frameBorder', '0');
     iframe.setAttribute('referrerpolicy', 'origin');
+    iframe.setAttribute('id', `${editorSelectorId}-iframe`);
 
     const setupNewFrame = () => {
         const iframeContainer = document.querySelector(editorSelectorId);
@@ -110,6 +111,7 @@ const Connect = (
             setupNewFrame();
         });
     }
+    console.log('iframe', iframe)
     setConnection(
         connectToChild({
             // The iframe to which a connection should be made
