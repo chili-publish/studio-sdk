@@ -322,7 +322,7 @@ export class VariableController {
      * @param label label of the variable
      * @returns
      */
-    setLabel = async (id: string, label: string) => {
+    setLabel = async (id: string, label: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariableLabel(id, label).then((result) => getEditorResponseData<null>(result));
     };
