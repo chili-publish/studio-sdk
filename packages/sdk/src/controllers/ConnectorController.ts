@@ -190,47 +190,6 @@ export class ConnectorController {
     };
 
     /**
-     * Sets the data source by id.
-     * @param connectorId the id of your data connector
-     * @returns
-     */
-    setDataSource = async (connectorId: string) => {
-        const res = await this.#editorAPI;
-        return res.setDataSource(connectorId).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * Gets the data source.
-     * @returns the id of your data connector
-     */
-    getDataSource = async () => {
-        // add backwards compatibility code
-        const res = await this.#editorAPI;
-        return res
-            .getDataSource()
-            .then((result) => getEditorResponseData<Next.ConnectorInstance>(result))
-            .then((resp) => {
-                const update: EditorResponse<ConnectorInstance> = { ...resp, parsedData: null };
-                if (resp.parsedData) {
-                    update.parsedData = this.#connectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(
-                        resp.parsedData,
-                        this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
-                    );
-                }
-                return update;
-            });
-    };
-
-    /**
-     * Removes the data source if defined.
-     * @returns
-     */
-    removeDataSource = async () => {
-        const res = await this.#editorAPI;
-        return res.removeDataSource().then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * Connectors are loaded asynchronously in the editor engine, this causes some challenges while configuring them. To make sure
      * an action on the connector will be available, it's advised to await this method. After the Promise resolves we are sure
      * the connector is up and running. This is used internally by the configure method to ensure correct execution. It's especially

@@ -4,7 +4,7 @@ import { DataConnectorCapabilities, DataItem, DataModel, DataPage, PageConfig } 
 
 /**
  * The DataConnectorController is responsible for all communication regarding Data connectors.
- * Methods inside this controller can be called by `window.SDK.DataConnector.{method-name}`
+ * Methods inside this controller can be called by `window.SDK.dataConnector.{method-name}`
  *
  * The way GraFx Studio handles different sources of Data is called 'DataConnector'.
  * A DataConnector is an implementation of a set of capabilities we need

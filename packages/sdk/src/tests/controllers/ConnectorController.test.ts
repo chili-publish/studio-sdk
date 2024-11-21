@@ -55,9 +55,6 @@ const mockEditorApi: EditorAPI = {
     setConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
-    setDataSource: async () => getEditorResponseData(castToEditorResponse(null)),
-    getDataSource: async () => getEditorResponseData(castToEditorResponse(null)),
-    removeDataSource: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -73,9 +70,6 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'setConnectorMappings');
     jest.spyOn(mockEditorApi, 'getConnectorOptions');
     jest.spyOn(mockEditorApi, 'getConnectorMappings');
-    jest.spyOn(mockEditorApi, 'setDataSource');
-    jest.spyOn(mockEditorApi, 'getDataSource');
-    jest.spyOn(mockEditorApi, 'removeDataSource');
 });
 
 afterEach(() => {
@@ -165,22 +159,6 @@ describe('ConnectorController', () => {
         await mockedConnectorController.getMappings(connectorId);
         expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getConnectorMappings).toHaveBeenCalledWith(connectorId);
-    });
-
-    it('Should be possible to set the data source id', async () => {
-        await mockedConnectorController.setDataSource(connectorId);
-        expect(mockEditorApi.setDataSource).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setDataSource).toHaveBeenCalledWith(connectorId);
-    });
-
-    it('Should be possible to get the data source', async () => {
-        await mockedConnectorController.getDataSource();
-        expect(mockEditorApi.getDataSource).toHaveBeenCalledTimes(1);
-    });
-
-    it('Should be possible to remove the data source', async () => {
-        await mockedConnectorController.removeDataSource();
-        expect(mockEditorApi.removeDataSource).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to get typed "EngineToConnector" connector mappings', async () => {
