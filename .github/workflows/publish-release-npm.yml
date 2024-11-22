@@ -56,6 +56,10 @@ jobs:
           node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: publish sdk build
+        run: node cicd.js sdk,connectors yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}    
       - name: execute commit script
         run: node ./.github/scripts/commit.js
       - name: get new npm version
