@@ -1,5 +1,5 @@
 {
-    "version": "1.17.0-rc.3",
+    "version": "1.17.0-rc.4",
     "name": "studio-sdk-monorepo",
     "description": "The umbrella project of grafx studio sdk",
     "scripts": {
