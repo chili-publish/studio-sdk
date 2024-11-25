@@ -197,7 +197,7 @@ export class ConnectorController {
      * @param id the id of your registered connector you want to make sure it is loaded
      * @returns
      */
-    private waitToBeReady = async (id: Id, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
+    waitToBeReady = async (id: Id, timeoutMilliseconds = 2000): Promise<EditorResponse<null>> => {
         // minimum timeout is 500ms
         let timeout = Math.max(timeoutMilliseconds, 500);
 
