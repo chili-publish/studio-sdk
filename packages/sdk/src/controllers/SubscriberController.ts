@@ -404,4 +404,14 @@ export class SubscriberController {
         const callBack = this.config.onDataSourceIdChanged;
         callBack && callBack(connectorId);
     };
+
+    /**
+     * Listener on when the data row has been changed
+     *
+     * @param dataRow the data item
+     */
+    onDataRowChanged = (dataRow?: string) => {
+        const callBack = this.config.onDataRowChanged;
+        callBack && callBack(dataRow ? JSON.parse(dataRow) : dataRow);
+    };
 }
