@@ -216,8 +216,6 @@ export class SDK {
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
-        this.dataConnector = new DataConnectorController(this.editorAPI);
-        this.dataSource = new DataSourceController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
