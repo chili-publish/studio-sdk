@@ -36,7 +36,7 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
     Layout,
-    LayoutPreset
+    LayoutPreset,
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
@@ -59,7 +59,7 @@ export type {
     StartFrameAnchor,
     EndFrameAnchor,
     StartAndEndFrameAnchor,
-    CenterFrameAnchor
+    CenterFrameAnchor,
 } from './types/FrameTypes';
 export { PageAnchorTarget, FrameAnchorTarget } from './types/FrameTypes';
 
@@ -141,6 +141,7 @@ export { ColorType } from './types/ColorStyleTypes';
 export * from './types/MediaConnectorTypes';
 export * from './types/FontConnectorTypes';
 export * from './types/ConnectorTypes';
+export * from './types/DataConnectorTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
