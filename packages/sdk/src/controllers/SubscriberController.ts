@@ -394,4 +394,14 @@ export class SubscriberController {
         const callBack = this.config.onBarcodeValidationChanged;
         callBack && callBack(JSON.parse(validationResults));
     };
+
+    /**
+     * Listener on when the data source has changed
+     *
+     * @param connectorId the id of the data connector
+     */
+    onDataSourceIdChanged = (connectorId?: Id) => {
+        const callBack = this.config.onDataSourceIdChanged;
+        callBack && callBack(connectorId);
+    };
 }
