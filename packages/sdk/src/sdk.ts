@@ -39,6 +39,7 @@ import { NextSubscribers } from './next';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 import { ConfigurationController } from './controllers/ConfigurationController';
 import { DataConnectorController } from './controllers/DataConnectorController';
+import { DataSourceController } from './controllers/DataSourceController';
 
 let connection: Connection;
 
@@ -63,6 +64,7 @@ export class SDK {
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
     dataConnector: DataConnectorController;
+    dataSource: DataSourceController;
     animation: AnimationController;
     document: DocumentController;
     configuration: ConfigurationController;
@@ -109,6 +111,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI);
+        this.dataSource = new DataSourceController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
 
@@ -209,6 +212,7 @@ export class SDK {
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI);
+        this.dataSource = new DataSourceController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
