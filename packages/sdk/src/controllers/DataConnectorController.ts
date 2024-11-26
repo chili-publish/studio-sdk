@@ -1,6 +1,7 @@
 import { ConnectorConfigOptions, EditorAPI, EditorResponse, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { DataConnectorCapabilities, DataItem, DataModel, DataPage, PageConfig } from '../types/DataConnectorTypes';
+import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
 
 /**
  * The DataConnectorController is responsible for all communication regarding Data connectors.
@@ -20,12 +21,14 @@ export class DataConnectorController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    #dataItemMappingTools: DataItemMappingTools;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
         this.#editorAPI = editorAPI;
+        this.#dataItemMappingTools = dataItemMappingTools;
     }
 
     /**
@@ -49,7 +52,9 @@ export class DataConnectorController {
                 const update: EditorResponse<DataPage<DataItem>> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
                     update.parsedData = {
-                        data: resp.parsedData.data.map((e: EngineDataItem) => this.mapEngineToDataItem(e)),
+                        data: resp.parsedData.data.map((e: EngineDataItem) =>
+                            this.#dataItemMappingTools.mapEngineToDataItem(e),
+                        ),
                         continuationToken: resp.parsedData.continuationToken,
                     };
                 }
@@ -96,49 +101,4 @@ export class DataConnectorController {
             .dataConnectorGetCapabilities(connectorId)
             .then((result) => getEditorResponseData<DataConnectorCapabilities>(result));
     };
-
-    /**
-     * Check if the value is a DatePropertyWrapper with the type guard
-     * @param value a dynamic value which
-     * @returns boolean value.
-     */
-    private isDatePropertyWrapper(
-        value: string | number | boolean | DatePropertyWrapper | null,
-    ): value is DatePropertyWrapper {
-        return typeof value === 'object' && value?.type === 'date';
-    }
-
-    /**
-     * Transforms an InternalDataItem into a DataItem.
-     *
-     * Converts DatePropertyWrapper values to JavaScript Date objects
-     * while keeping other values unchanged.
-     *
-     * @param dataItem the EngineDataItem to transform.
-     * @returns the resulting DataItem with parsed date properties.
-     */
-    private mapEngineToDataItem(dataItem: EngineDataItem): DataItem {
-        const parsedItem: DataItem = {};
-
-        Object.entries(dataItem).forEach(([key, value]) => {
-            parsedItem[key] = this.isDatePropertyWrapper(value) ? new Date(value.value) : value;
-        });
-
-        return parsedItem;
-    }
 }
-
-/**
- * Internal type to wrap the date object value on the engine side.
- */
-type DatePropertyWrapper = {
-    value: number;
-    type: 'date';
-};
-
-/**
- * Engine data item type.
- */
-type EngineDataItem = {
-    [key: string]: string | number | boolean | DatePropertyWrapper | null;
-};
