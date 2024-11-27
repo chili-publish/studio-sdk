@@ -186,7 +186,6 @@ export class SDK {
                 onViewModeChanged: this.subscriber.onViewModeChanged,
                 onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
                 onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
-                onDataRowChanged: this.subscriber.onDataRowChanged,
             },
             this.setConnection,
             this.config.editorId,

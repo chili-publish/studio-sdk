@@ -33,7 +33,6 @@ import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import * as Next from '../../next/types/ConnectorTypes';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
-import { DataItem } from '../../types/DataConnectorTypes';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -75,7 +74,6 @@ const mockEditorApi: EditorAPI = {
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onDataRowChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -118,7 +116,6 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
-    jest.spyOn(mockEditorApi, 'onDataRowChanged');
 });
 
 afterEach(() => {
@@ -474,13 +471,5 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
-    });
-
-    it('should be possible to subscribe to onDataSourceIdChanged', async () => {
-        const dataRow: DataItem = { '1': '2' };
-        await mockedSubscriberController.onDataRowChanged(JSON.stringify(dataRow));
-
-        expect(mockEditorApi.onDataRowChanged).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.onDataRowChanged).toHaveBeenCalledWith(dataRow);
     });
 });

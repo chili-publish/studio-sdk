@@ -16,7 +16,6 @@ import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 import { Viewport } from './ViewportTypes';
-import { DataItem } from './DataConnectorTypes';
 
 export type Id = string;
 
@@ -69,7 +68,6 @@ export type ConfigType = {
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
     onDataSourceIdChanged?: (connectorId?: Id) => void;
-    onDataRowChanged?: (dataRow?: DataItem) => void;
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
