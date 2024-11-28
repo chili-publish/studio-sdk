@@ -1,10 +1,14 @@
 import { DataItem } from '../types/DataConnectorTypes';
 
+/**
+ * Utility tools for mapping between `EngineDataItem` and `DataItem`.
+ */
 export class DataItemMappingTools {
     /**
-     * Check if the value is a DatePropertyWrapper with the type guard
-     * @param value a dynamic value which
-     * @returns boolean value.
+     * Checks if the given value is a `DatePropertyWrapper`.
+     *
+     * @param value The value to check.
+     * @returns `true` if the value is a `DatePropertyWrapper`, otherwise `false`.
      */
     private isDatePropertyWrapper(
         value: string | number | boolean | DatePropertyWrapper | null,
@@ -13,22 +17,23 @@ export class DataItemMappingTools {
     }
 
     /**
-     * Check if the value is a Date object instance
-     * @param value a dynamic value which
-     * @returns boolean value.
+     * Checks if the given value is a `Date` object instance.
+     *
+     * @param value The value to check.
+     * @returns `true` if the value is a `Date` object, otherwise `false`.
      */
     private isDateObject(value: string | number | boolean | Date | null): value is Date {
         return value instanceof Date;
     }
 
     /**
-     * Transforms an InternalDataItem into a DataItem.
+     * Transforms an `EngineDataItem` into a `DataItem`.
      *
-     * Converts DatePropertyWrapper values to JavaScript Date objects
+     * Converts `DatePropertyWrapper` values to JavaScript `Date` objects
      * while keeping other values unchanged.
      *
      * @param dataItem the EngineDataItem to transform.
-     * @returns the resulting DataItem with parsed date properties.
+     * @returns the resulting `DataItem` with parsed date properties.
      */
     mapEngineToDataItem(dataItem: EngineDataItem): DataItem {
         const parsedItem: DataItem = {};
@@ -41,13 +46,13 @@ export class DataItemMappingTools {
     }
 
     /**
-     * Transforms a DataItem into an InternalDataItem.
+     * Transforms a `DataItem` into an `EngineDataItem`.
      *
-     * Converts JavaScript Date objects to DatePropertyWrapper objects
+     * Converts JavaScript `Date` objects to `DatePropertyWrapper` objects
      * while keeping other values unchanged.
      *
-     * @param dataItem the DataItem to transform.
-     * @returns the resulting DataItem with parsed date properties.
+     * @param dataItem the `DataItem` to transform.
+     * @returns the resulting `EngineDataItem` with parsed date properties.
      */
     mapDataItemToEngine(dataItem: DataItem): EngineDataItem {
         const parsedItem: EngineDataItem = {};
@@ -63,7 +68,7 @@ export class DataItemMappingTools {
 }
 
 /**
- * Internal type to wrap the date object value on the engine side.
+ * Internal type used to wrap date objects on the engine side.
  */
 export type DatePropertyWrapper = {
     value: number;
