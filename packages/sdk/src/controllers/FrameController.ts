@@ -676,10 +676,9 @@ export class FrameController {
      * This method will reset the currently applied crop mode and apply the last selected fit mode again.
      * @param id the id of a specific image frame
      * @returns
+     * @deprecated This method no longer has any effect. Use 'setFitMode' instead
      */
     resetCropMode = async (id: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetCropMode(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
