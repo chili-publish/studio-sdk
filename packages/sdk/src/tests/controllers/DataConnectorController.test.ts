@@ -2,6 +2,7 @@ import { DataItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { DataConnectorController } from '../../controllers/DataConnectorController';
+import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 
 let mockedDataConnectorController: DataConnectorController;
 
@@ -12,8 +13,10 @@ const mockedEditorApi: EditorAPI = {
     dataConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
+const mockedDataItemMappingTools = new DataItemMappingTools();
+
 beforeEach(() => {
-    mockedDataConnectorController = new DataConnectorController(mockedEditorApi);
+    mockedDataConnectorController = new DataConnectorController(mockedEditorApi, mockedDataItemMappingTools);
     jest.spyOn(mockedEditorApi, 'dataConnectorGetPage');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetModel');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetCapabilities');

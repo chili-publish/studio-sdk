@@ -1,6 +1,8 @@
 import { EditorAPI } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorInstance } from '../next';
+import { DataItem } from '../types/DataConnectorTypes';
+import { DataItemMappingTools } from '../utils/DataItemMappingTools';
 
 /**
  * The DataSourceController is responsible for all communication regarding data source.
@@ -16,12 +18,14 @@ export class DataSourceController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    #dataItemMappingTools: DataItemMappingTools;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
         this.#editorAPI = editorAPI;
+        this.#dataItemMappingTools = dataItemMappingTools;
     }
 
     /**
@@ -50,5 +54,17 @@ export class DataSourceController {
     removeDataSource = async () => {
         const res = await this.#editorAPI;
         return res.removeDataSource().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Maps the data row values to variables by names (data row keys).
+     * Variables must exist.
+     * @param dataRow DataItem to set
+     * @returns
+     */
+    setDataRow = async (dataRow: DataItem) => {
+        const res = await this.#editorAPI;
+        const engineDataItem = this.#dataItemMappingTools.mapDataItemToEngine(dataRow);
+        return res.setDataRow(JSON.stringify(engineDataItem)).then((result) => getEditorResponseData<null>(result));
     };
 }
