@@ -153,4 +153,6 @@ export * from './types/BarcodeTypes';
 
 export type { Viewport } from './types/ViewportTypes';
 
+export * from './types/PageTypes';
+
 export default SDK;

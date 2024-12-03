@@ -55,7 +55,7 @@ interface ConfigParameterTypes {
     onSelectedFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
-    onPageSelectionChanged: () => void;
+    onPageSelectionChanged: (id: Id) => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
     onVariableListChanged: (state: string) => void;
@@ -72,6 +72,9 @@ interface ConfigParameterTypes {
     onConnectorEvent: (state: string) => void;
     onConnectorsChanged: (state: string) => void;
     onZoomChanged: (scaleFactor: string) => void;
+    onSelectedPageIdChanged: (pageId: string) => void;
+    onPagesChanged: (pages: string) => void;
+    onPageSnapshotInvalidated: (pageId: string) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
@@ -144,12 +147,15 @@ const Connect = (
                 connectorEvent: params.onConnectorEvent,
                 connectorsChanged: params.onConnectorsChanged,
                 zoomChanged: params.onZoomChanged,
+                pageSnapshotInvalidated: params.onPageSnapshotInvalidated,
+                pagesChanged: params.onPagesChanged,
                 pageSizeChanged: params.onPageSizeChanged,
                 shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
                 cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
                 asyncError: params.onAsyncError,
                 viewModeChanged: params.onViewModeChanged,
                 barcodeValidationChanged: params.onBarcodeValidationChanged,
+                selectedPageIdChanged: params.onSelectedPageIdChanged,
                 dataSourceIdChanged: params.onDataSourceIdChanged,
             },
         }),

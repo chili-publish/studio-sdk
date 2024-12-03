@@ -11,7 +11,7 @@ import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { BarcodeFrameValidationResult } from './BarcodeTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
-import { PageSize } from './PageTypes';
+import { Page, PageSize } from './PageTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
@@ -42,7 +42,7 @@ export type ConfigType = {
     documentType?: DocumentType;
     studioStyling?: StudioStyling;
     studioOptions?: StudioOptionsDeltaUpdate;
-    onPageSelectionChanged?: () => void;
+    onPageSelectionChanged?: (id: Id) => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onSelectedLayoutUnitChanged?: (unit: MeasurementUnit) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
@@ -61,6 +61,9 @@ export type ConfigType = {
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
     onZoomChanged?: (scaleFactor: number) => void;
+    onSelectedPageIdChanged?: (pageId: Id) => void;
+    onPagesChanged?: (pages: Page[]) => void;
+    onPageSnapshotInvalidated?: (page: Id) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;

@@ -165,9 +165,9 @@ export class SubscriberController {
     /**
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
-    onPageSelectionChanged = () => {
+    onPageSelectionChanged = (id: Id) => {
         const callBack = this.config.onPageSelectionChanged;
-        callBack && callBack();
+        callBack && callBack(id);
     };
 
     /**
@@ -331,6 +331,35 @@ export class SubscriberController {
         callBack && callBack(compatibleConnectors);
     };
 
+    /**
+     * @experimental
+     * Listener on when the selectedPageID is changed.
+     * @param pageId Stringified pageId
+     */
+    onSelectedPageIdChanged = (pageId: string) => {
+        const callBack = this.config.onSelectedPageIdChanged;
+        callBack && callBack(pageId);
+    };
+
+    /**
+     * @experimental
+     * Listener on pages list, this listener will get triggered when the pages are updated.
+     * @param pages Stringified object of the pages
+     */
+    onPagesChanged = (pages: string) => {
+        const callBack = this.config.onPagesChanged;
+        callBack && callBack(JSON.parse(pages));
+    };
+
+    /**
+     * @experimental
+     * Listener on pages snapshots, this will fire when a page snapshot is invalidated and should be updated.
+     * @param page id of the page
+     */
+    onPageSnapshotInvalidated = (page: Id) => {
+        const callBack = this.config.onPageSnapshotInvalidated;
+        callBack && callBack(JSON.parse(page));
+    };
     /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
      * This will not emit anything if your document is a `template`.
