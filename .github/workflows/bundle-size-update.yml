@@ -1,0 +1,50 @@
+name: Bundle Size Update
+on:
+    push:
+        branches:
+            - main
+jobs:
+    update-bundle-size:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20]
+        steps:
+            - uses: FranzDiebold/github-env-vars-action@v2
+            - uses: actions/checkout@v3
+              with:
+                  token: ${{ secrets.PACKAGE_SECRET }}
+            - name: Use Node ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  registry-url: 'https://npm.pkg.github.com'
+                  scope: '@chili-publish'
+            - name: install dependencies
+              run: |
+                  yarn install
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+
+            - name: Build project
+              run: yarn build
+
+            - name: Get bundle size
+              id: get_new_bundle_size
+              run: |
+                  new_bundle_size=$(du -sb packages/sdk/_bundles/ | cut -f1)
+                  echo "New size: $new_bundle_size"
+                  echo "::set-output name=new_bundle_size::$new_bundle_size"
+
+            - name: Update bundle-size.json
+              run: |
+                  new_bundle_size=${{ steps.get_new_bundle_size.outputs.new_bundle_size }}
+                  echo "{ \"bundle_size\": $new_bundle_size }" > bundle-size.json
+
+            - name: Commit and push updated bundle size
+              run: |
+                  git config --global user.name 'github-actions[bot]'
+                  git config --global user.email user.email 'github-actions[bot]@users.noreply.github.com'
+                  git add bundle-size.json
+                  git commit -m "Update bundle size"
+                  git push origin main --follow-tags
