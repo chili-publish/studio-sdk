@@ -70,6 +70,7 @@ export type ConfigType = {
     onAsyncError?: (asyncError: AsyncError) => void;
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
+    onDataSourceIdChanged?: (connectorId?: Id) => void;
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };

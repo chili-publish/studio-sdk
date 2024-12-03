@@ -81,6 +81,7 @@ interface ConfigParameterTypes {
     onAsyncError: (asyncError: string) => void;
     onViewModeChanged: (viewMode: string) => void;
     onBarcodeValidationChanged: (validationResults: string) => void;
+    onDataSourceIdChanged: (connectorId?: Id) => void;
 }
 
 const Connect = (
@@ -155,6 +156,7 @@ const Connect = (
                 viewModeChanged: params.onViewModeChanged,
                 barcodeValidationChanged: params.onBarcodeValidationChanged,
                 selectedPageIdChanged: params.onSelectedPageIdChanged,
+                dataSourceIdChanged: params.onDataSourceIdChanged,
             },
         }),
     );

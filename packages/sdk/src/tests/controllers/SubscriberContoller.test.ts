@@ -76,6 +76,7 @@ const mockEditorApi: EditorAPI = {
     onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -120,6 +121,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onViewModeChanged');
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
+    jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
 });
 
 afterEach(() => {
@@ -217,7 +219,7 @@ describe('SubscriberController', () => {
         );
         expect(mockEditorApi.onFontFamiliesChanged).toHaveBeenCalledTimes(1);
     });
-    it('Should be possible to onCharacterStylesChanged', async () => {
+    it('Should be possible to subscribe onCharacterStylesChanged', async () => {
         await mockedSubscriberController.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
         expect(mockEditorApi.onCharacterStylesChanged).toHaveBeenCalledTimes(1);
     });
@@ -343,7 +345,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 
-    it('should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
+    it('Should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
         const cornerRadius: CornerRadiusUpdateModel = { radiusAll: 5 };
         await mockedSubscriberController.onShapeCornerRadiusChanged(JSON.stringify(cornerRadius));
 
@@ -351,7 +353,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledWith(cornerRadius);
     });
 
-    it('should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
+    it('Should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
         const id: Id = '1';
         await mockedSubscriberController.onCropActiveFrameIdChanged(id);
 
@@ -359,7 +361,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledWith(id);
     });
 
-    it('should be possible to subscribe to onAsyncError', async () => {
+    it('Should be possible to subscribe to onAsyncError', async () => {
         const asyncError: AsyncError = { message: 'hello' };
         await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
 
@@ -486,5 +488,13 @@ describe('SubscriberController', () => {
 
             expect(result).toBe(null);
         });
+    });
+
+    it('should be possible to subscribe to onDataSourceIdChanged', async () => {
+        const connectorId: Id = '1';
+        await mockedSubscriberController.onDataSourceIdChanged(connectorId);
+
+        expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
     });
 });
