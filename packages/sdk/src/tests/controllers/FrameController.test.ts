@@ -67,7 +67,6 @@ const mockedEditorApi: EditorAPI = {
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
     enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -118,7 +117,6 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setImageSource');
     jest.spyOn(mockedEditorApi, 'enterCropMode');
     jest.spyOn(mockedEditorApi, 'applyCropMode');
-    jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
     jest.spyOn(mockedEditorApi, 'resetAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
@@ -440,12 +438,6 @@ describe('FrameController', () => {
     it('Should be possible to apply the current image crop to the frame', async () => {
         await mockedFrameController.applyCropMode();
         expect(mockedEditorApi.applyCropMode).toHaveBeenCalledTimes(1);
-    });
-
-    it('Should be possible to reset cropping mode on a specific frame', async () => {
-        await mockedFrameController.resetCropMode(id);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to cancel the current image crop', async () => {

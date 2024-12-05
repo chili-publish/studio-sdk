@@ -500,12 +500,12 @@ export class FrameController {
      * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
      * true, the frame's constrainProportions property cannot be changed and this method will return an error.
      *
-     * @param id the id of the frame that needs to get updated.
-     * @param constrainProportions The new constraint that you want to set to the frame.
+     * @param _id the id of the frame that needs to get updated.
+     * @param _constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setFrameConstrainProportions = async (id: Id, constrainProportions: boolean) => {
+    setFrameConstrainProportions = async (_id: Id, _constrainProportions: boolean) => {
         console.error('setFrameConstrainProportions is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -673,14 +673,23 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the currently applied crop mode and apply the last selected fit mode again.
-     * @param id the id of a specific image frame
-     * @returns
+     * @deprecated This method no longer has any effect. Use 'setFitMode' instead
      */
-    resetCropMode = async (id: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetCropMode(id).then((result) => getEditorResponseData<null>(result));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetCropMode = async (_id: Id) => {
+        console.error('resetCropMode is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetCropMode is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
     };
+
+    
 
     /**
      * This method will exit cropping mode without saving the applied crop.
