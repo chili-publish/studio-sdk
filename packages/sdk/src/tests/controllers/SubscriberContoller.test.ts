@@ -180,7 +180,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
-        await mockedSubscriberController.onPageSelectionChanged("a");
+        await mockedSubscriberController.onPageSelectionChanged('a');
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to the onStateChanged', async () => {
