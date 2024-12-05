@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../types/CommonTypes';
+import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
     DateRestriction,
@@ -9,7 +9,6 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
-    PrivateData,
     Variable,
     VariableType,
 } from '../types/VariableTypes';

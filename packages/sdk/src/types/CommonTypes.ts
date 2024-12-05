@@ -159,3 +159,5 @@ export interface ActionAsyncError extends AsyncErrorBase {
 }
 
 export type AsyncError = ActionAsyncError;
+
+export type PrivateData = Record<string, string>;

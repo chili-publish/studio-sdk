@@ -79,7 +79,6 @@ export type {
     RelativeDate,
     AbsoluteDate,
     ValueWithStyle,
-    PrivateData,
 } from './types/VariableTypes';
 export { VariableType, Day, Locale } from './types/VariableTypes';
 
@@ -103,6 +102,7 @@ export type {
     Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
+    PrivateData,
 } from './types/CommonTypes';
 export { ConnectorConfigValueType } from './types/CommonTypes';
 

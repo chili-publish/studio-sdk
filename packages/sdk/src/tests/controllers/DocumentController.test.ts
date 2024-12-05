@@ -62,9 +62,7 @@ describe('Document controller', () => {
             };
             await mockedDocumentController.createAndLoad(preset);
             expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledWith(
-               JSON.stringify(preset)
-            );
+            expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledWith(JSON.stringify(preset));
         });
     });
 });
