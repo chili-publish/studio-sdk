@@ -18,6 +18,7 @@ export {
     TextDirection,
     FlowDirection,
     FitMode,
+    FitModeAlignment,
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
     BarcodeSourceTypeEnum,
