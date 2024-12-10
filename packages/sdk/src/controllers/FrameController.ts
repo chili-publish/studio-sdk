@@ -778,7 +778,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrowSettingsEnabled = async (id: Id) => {
+    resetAutoGrowSettingsEnabled = async (_id: Id) => {
         console.error('resetAutoGrowSettingsEnabled is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -795,7 +795,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrowMinWidth = async (id: Id) => {
+    resetAutoGrowMinWidth = async (_id: Id) => {
         console.error('resetAutoGrowMinWidth is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -812,7 +812,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrowMaxWidth = async (id: Id) => {
+    resetAutoGrowMaxWidth = async (_id: Id) => {
         console.error('resetAutoGrowMaxWidth is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -829,7 +829,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrowMinHeight = async (id: Id) => {
+    resetAutoGrowMinHeight = async (_id: Id) => {
         console.error('resetAutoGrowMinHeight is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -846,7 +846,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrowMaxHeight = async (id: Id) => {
+    resetAutoGrowMaxHeight = async (_id: Id) => {
         console.error('resetAutoGrowMaxHeight is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -863,7 +863,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrowDirections = async (id: Id) => {
+    resetAutoGrowDirections = async (_id: Id) => {
         console.error('resetAutoGrowDirections is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -880,7 +880,7 @@ export class FrameController {
      * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    resetAutoGrow = async (id: Id) => {
+    resetAutoGrow = async (_id: Id) => {
         console.error('resetAutoGrow is not supported anymore');
 
         const res: EditorResponse<null> = {
