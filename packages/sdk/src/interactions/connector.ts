@@ -82,7 +82,7 @@ interface ConfigParameterTypes {
     onViewModeChanged: (viewMode: string) => void;
     onBarcodeValidationChanged: (validationResults: string) => void;
     onDataSourceIdChanged: (connectorId?: Id) => void;
-    onDocumentIssueListChanged: (documentIssueList: string) => void;
+    onDocumentIssueListEvent: (documentIssues: string) => void;
 }
 
 const Connect = (
@@ -158,7 +158,7 @@ const Connect = (
                 barcodeValidationChanged: params.onBarcodeValidationChanged,
                 selectedPageIdChanged: params.onSelectedPageIdChanged,
                 dataSourceIdChanged: params.onDataSourceIdChanged,
-                documentIssueListChanged: params.onDocumentIssueListChanged,
+                documentIssueListChanged: params.onDocumentIssueListEvent,
             },
         }),
     );

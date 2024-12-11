@@ -436,10 +436,10 @@ export class SubscriberController {
     /**
      * Listener on when the document issue list changed
      *
-     * @param documentIssueList Stringified object of the pages
+     * @param documentIssues Stringified object of the pages
      */
-    onDocumentIssueListChanged = (documentIssueList: string) => {
-        const callBack = this.config.onDocumentIssueListChanged;
-        callBack && callBack(JSON.parse(documentIssueList));
+    onDocumentIssueListEvent = (documentIssues: string) => {
+        const callBack = this.config.onDocumentIssueListEvent;
+        callBack && callBack(JSON.parse(documentIssues));
     };
 }

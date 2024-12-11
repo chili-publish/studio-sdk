@@ -71,7 +71,7 @@ export type ConfigType = {
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
     onDataSourceIdChanged?: (connectorId?: Id) => void;
-    onDocumentIssueListChanged?: (documentIssueList: DocumentIssue[]) => void;
+    onDocumentIssueListEvent?: (documentIssues: DocumentIssue[]) => void;
 
     enableNextSubscribers?: {
         onVariableListChanged: boolean;

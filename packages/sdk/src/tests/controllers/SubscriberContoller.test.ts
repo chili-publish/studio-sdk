@@ -79,7 +79,7 @@ const mockEditorApi: EditorAPI = {
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentIssueListEvent: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -125,7 +125,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
-    jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentIssueListEvent');
 });
 
 afterEach(() => {
@@ -506,9 +506,9 @@ describe('SubscriberController', () => {
         const documentIssues: DocumentIssue[] = [
             { fontId: 'fontId', name: 'fontName', type: DocumentIssueTypeEnum.fontLoading },
         ];
-        await mockedSubscriberController.onDocumentIssueListChanged(JSON.stringify(documentIssues));
+        await mockedSubscriberController.onDocumentIssueListEvent(JSON.stringify(documentIssues));
 
-        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledWith(documentIssues);
+        expect(mockEditorApi.onDocumentIssueListEvent).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDocumentIssueListEvent).toHaveBeenCalledWith(documentIssues);
     });
 });
