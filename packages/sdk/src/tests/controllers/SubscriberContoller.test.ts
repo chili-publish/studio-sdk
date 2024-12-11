@@ -5,6 +5,8 @@ import {
     ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
+    DocumentIssue,
+    DocumentIssueTypeEnum,
     Id,
     LayoutType,
     MeasurementUnit,
@@ -77,6 +79,7 @@ const mockEditorApi: EditorAPI = {
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentErrorsEvent: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -122,6 +125,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentErrorsEvent');
 });
 
 afterEach(() => {
@@ -180,7 +184,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
-        await mockedSubscriberController.onPageSelectionChanged("a");
+        await mockedSubscriberController.onPageSelectionChanged('a');
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to the onStateChanged', async () => {
@@ -496,5 +500,15 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
+    });
+
+    it('should be possible to subscribe to onDocumentIssueListChanged', async () => {
+        const documentIssues: DocumentIssue[] = [
+            { fontId: 'fontId', name: 'fontName', type: DocumentIssueTypeEnum.fontLoading },
+        ];
+        await mockedSubscriberController.onDocumentErrorsEvent(JSON.stringify(documentIssues));
+
+        expect(mockEditorApi.onDocumentErrorsEvent).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDocumentErrorsEvent).toHaveBeenCalledWith(documentIssues);
     });
 });

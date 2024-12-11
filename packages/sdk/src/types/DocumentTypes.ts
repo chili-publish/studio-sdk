@@ -1,6 +1,6 @@
 import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsOutroType } from './AnimationTypes';
 import { DocumentColor } from './ColorStyleTypes';
-import { Id } from './CommonTypes';
+import { ActionEventErrorData, Id } from './CommonTypes';
 import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutIntent, LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -10,6 +10,47 @@ import { DocumentAction } from './ActionTypes';
 import { ShapeProperties } from './ShapeTypes';
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
+
+export enum DocumentIssueTypeEnum {
+    overflow = 'overflow',
+    fontLoading = 'fontLoading',
+    actionRegister = 'actionRegister',
+    actionExecution = 'actionExecution',
+    actionCircular = 'actionCircular',
+}
+
+export type OverflowDocumentIssue = {
+    frameId: Id;
+    type: DocumentIssueTypeEnum.overflow;
+};
+
+export type FontLoadingDocumentIssue = {
+    fontId: string;
+    name: string;
+    type: DocumentIssueTypeEnum.fontLoading;
+};
+
+export type ActionExecutionDocumentIssue = {
+    actionId: string;
+    type: DocumentIssueTypeEnum.actionExecution;
+};
+
+export type ActionRegisterDocumentIssue = {
+    actionId: string;
+    type: DocumentIssueTypeEnum.actionRegister;
+};
+
+export type ActionCircularDocumentIssue = {
+    eventChain: ActionEventErrorData[];
+    type: DocumentIssueTypeEnum.actionCircular;
+};
+
+export type DocumentIssue =
+    | OverflowDocumentIssue
+    | FontLoadingDocumentIssue
+    | ActionExecutionDocumentIssue
+    | ActionRegisterDocumentIssue
+    | ActionCircularDocumentIssue;
 
 export type UndoState = {
     canUndo: boolean;

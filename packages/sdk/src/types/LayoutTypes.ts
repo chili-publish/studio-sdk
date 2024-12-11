@@ -87,7 +87,6 @@ export type LayoutPreset = {
     bleed?: BleedDeltaUpdate;
 };
 
-
 export enum PositionEnum {
     top = 'top',
     right = 'right',
@@ -113,5 +112,3 @@ export enum LayoutIntent {
     digitalStatic = 'digitalStatic',
     digitalAnimated = 'digitalAnimated',
 }
-
-
