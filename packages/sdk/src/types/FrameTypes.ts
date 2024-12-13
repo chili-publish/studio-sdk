@@ -258,6 +258,7 @@ export enum BlendMode {
 export enum FitMode {
     fit = 'fit',
     fill = 'fill',
+    smartCrop = 'smartCrop',
     manualCrop = 'manualCrop',
 }
 
