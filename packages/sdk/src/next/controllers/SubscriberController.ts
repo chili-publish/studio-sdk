@@ -24,4 +24,13 @@ export class SubscriberController {
     onVariableListChanged = (variablesJson: string) => {
         this.config.events.onVariableListChanged.trigger(JSON.parse(variablesJson));
     };
+
+    /**
+     * Listener on connectors, if this changes, this listener will get triggered with the updates
+     * @param connectors Stringified array of ConnectorInstance type
+     */
+    onConnectorsChanged = (connectors: string) => {
+        const callBack = this.config.onConnectorsChanged;
+        callBack && callBack(JSON.parse(connectors));
+    };
 }

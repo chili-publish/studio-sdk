@@ -152,6 +152,9 @@ function getImageVariableValue(variableName: string | Variable): string {
 /**
  * Sets the value of a variable by its name or variable object.
  *
+ * If the value is set on a ShortTextVariable, it must not contain any type of
+ * line breaks.
+ *
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {VariableValue} value - The new variable value (ensure correct types are used). Text variables should get a string value, Boolean variables should get a boolean value, List variables should get the item to select as a string.
  */
@@ -161,6 +164,9 @@ function setVariableValue(variableName: string | Variable, value: VariableValue)
 
 /**
  * Sets the value of a text variable by its name or variable object.
+ *
+ * If the value is set on a ShortTextVariable, it must not contain any type of
+ * line breaks.
  *
  * @param {string | Variable} variableName - The name of the variable to update.
  * @param {string} value - The new text variable value.
@@ -312,6 +318,26 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
 }
 
 /**
+ * Set the prefix of the variable.
+ *
+ * @param variableName The name of the variable or a variable object.
+ * @param {string | null | VariableValue} prefix The prefix to set or clear
+ */
+function setVariablePrefix(variableName: string | Variable, prefix: string | null) {
+    studio.variables.setPrefix(variableName, prefix);
+}
+
+/**
+ * Set the suffix of the variable.
+ *
+ * @param variableName The name of the variable or a variable object.
+ * @param {string | null | VariableValue} suffix The suffix to set or clear.
+ */
+function setVariableSuffix(variableName: string | Variable, suffix: string | null) {
+    studio.variables.setSuffix(variableName, suffix);
+}
+
+/**
  * Set decimal separator of the number variable.
  *
  * @param {string | Variable} variableName - The name of the number variable or a variable object.
@@ -322,6 +348,19 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
     const numberVar = getNumberVariable(variableName);
 
     numberVar.setDecimalSeparator(separator);
+}
+
+/**
+ * Set decimal places of the number variable.
+ *
+ * @param {string | Variable} variableName - The name of the number variable or a variable object.
+ *
+ * @param decimalPlaces The decimal places (`0`, `1`, `2`, `3`, `4`).
+ */
+function setNumberVariableDecimalPlaces(variableName: string | Variable, decimalPlaces: number) {
+    const numberVar = getNumberVariable(variableName);
+
+    numberVar.setDecimalPlaces(decimalPlaces);
 }
 
 /**

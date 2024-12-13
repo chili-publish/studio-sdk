@@ -1,10 +1,15 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
+    AnchorTargetEdgeType,
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FrameAnchorProperties,
+    FrameAnchorTarget,
+    FrameAnchorType,
     FrameTypeEnum,
     ImageSourceTypeEnum,
+    PageAnchorTarget,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -40,19 +45,13 @@ const mockedEditorApi: EditorAPI = {
     removeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     removeFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     resetFrame: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetFrameY: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetFrameHeight: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetFrameWidth: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetFrameRotation: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetFrameSize: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetFrameTransformation: async () => getEditorResponseData(castToEditorResponse(null)),
     resetImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
     removeImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
     selectFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     selectMultipleFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameName: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
-    setFrameConstrainProportions: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setMaxCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -70,8 +69,8 @@ const mockedEditorApi: EditorAPI = {
     applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -96,19 +95,13 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
     jest.spyOn(mockedEditorApi, 'removeFrames');
     jest.spyOn(mockedEditorApi, 'resetFrame');
-    jest.spyOn(mockedEditorApi, 'resetFrameX');
-    jest.spyOn(mockedEditorApi, 'resetFrameY');
-    jest.spyOn(mockedEditorApi, 'resetFrameHeight');
-    jest.spyOn(mockedEditorApi, 'resetFrameWidth');
-    jest.spyOn(mockedEditorApi, 'resetFrameRotation');
-    jest.spyOn(mockedEditorApi, 'resetFrameSize');
+    jest.spyOn(mockedEditorApi, 'resetFrameTransformation');
     jest.spyOn(mockedEditorApi, 'resetImageFrameFitMode');
     jest.spyOn(mockedEditorApi, 'removeImageSource');
     jest.spyOn(mockedEditorApi, 'selectFrames');
     jest.spyOn(mockedEditorApi, 'selectMultipleFrames');
     jest.spyOn(mockedEditorApi, 'setFrameName');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
-    jest.spyOn(mockedEditorApi, 'setFrameConstrainProportions');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
     jest.spyOn(mockedEditorApi, 'setMaxCopyfitting');
@@ -126,8 +119,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'applyCropMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
-    jest.spyOn(mockedEditorApi, 'resetAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
+    jest.spyOn(mockedEditorApi, 'setAnchorProperties');
 
     id = mockSelectFrame.id;
 });
@@ -280,38 +273,44 @@ describe('FrameController', () => {
 
     it("Should be possible to reset a frame's x position", async () => {
         await mockedFrameController.resetX(id);
-        expect(mockedEditorApi.resetFrameX).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameX).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
     });
 
     it("Should be possible to reset a frame's y position", async () => {
         await mockedFrameController.resetY(id);
-        expect(mockedEditorApi.resetFrameY).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameY).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to reset the frame rotation', async () => {
         await mockedFrameController.resetRotation(id);
-        expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameRotation).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to reset the frame height', async () => {
         await mockedFrameController.resetHeight(id);
-        expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameHeight).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(4);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to reset the frame width', async () => {
         await mockedFrameController.resetWidth(id);
-        expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameWidth).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(5);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to reset the frame size', async () => {
         await mockedFrameController.resetSize(id);
-        expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetFrameSize).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(6);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to reset the frame size', async () => {
+        await mockedFrameController.resetTransformation(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(7);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledWith(id);
     });
 
     it('Should be possible to reset the image frame fit mode', async () => {
@@ -338,10 +337,8 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
     });
 
-    it('Should be possible to set the frame to constrain proportions', async () => {
-        await mockedFrameController.setFrameConstrainProportions(id, true);
-        expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameConstrainProportions).toHaveBeenCalledWith(id, true);
+    it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {
+        await expect(mockedFrameController.setFrameConstrainProportions(id, true)).rejects.toThrow();
     });
 
     it('Should be possible to set the vertical alignment of a frame', async () => {
@@ -491,84 +488,6 @@ describe('ImageFrameSource manipulations', () => {
     });
 });
 
-describe('Auto grow resetting', () => {
-    it('should be possible to reset the auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrow(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                enabled: true,
-                minWidth: true,
-                maxWidth: true,
-                minHeight: true,
-                maxHeight: true,
-                directions: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the enabled auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowSettingsEnabled(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                enabled: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the minWidth auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMinWidth(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(3);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                minWidth: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the maxWidth auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMaxWidth(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(4);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                maxWidth: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the minHeight auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMinHeight(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(5);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                minHeight: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the maxHeight auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMaxHeight(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(6);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                maxHeight: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the directions auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowDirections(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(7);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                directions: true,
-            }),
-        );
-    });
-});
-
 describe('Auto grow updating', () => {
     it('should be possible to update the enabled auto grow setting', async () => {
         const enabled = true;
@@ -634,5 +553,45 @@ describe('Auto grow updating', () => {
             id,
             JSON.stringify({ directions: { value: directions } }),
         );
+    });
+});
+
+describe('Anchoring', () => {
+    it('should be possible to set the vertical anchor settings', async () => {
+        const anchorType = FrameAnchorType.startAndEnd;
+        const startTarget = new FrameAnchorTarget('target-id', AnchorTargetEdgeType.end);
+        const endTarget = new PageAnchorTarget();
+
+        await mockedFrameController.setVerticalAnchor(id, anchorType, startTarget, endTarget);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(1);
+
+        const expectedProperties: FrameAnchorProperties = {
+            horizontal: false,
+            type: anchorType,
+            target: startTarget,
+            endTarget: endTarget,
+        };
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(id, JSON.stringify(expectedProperties));
+    });
+
+    it('should be possible to set the horizontal anchor settings', async () => {
+        const anchorType = FrameAnchorType.center;
+        const startTarget = new FrameAnchorTarget('target-id', AnchorTargetEdgeType.start);
+
+        await mockedFrameController.setHorizontalAnchor(id, anchorType, startTarget);
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledTimes(2);
+
+        const expectedProperties: FrameAnchorProperties = {
+            horizontal: true,
+            type: anchorType,
+            target: startTarget,
+        };
+        expect(mockedEditorApi.setAnchorProperties).toHaveBeenCalledWith(id, JSON.stringify(expectedProperties));
+    });
+
+    it('should be possible to reset anchor settings', async () => {
+        await mockedFrameController.resetAnchoring(id);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetFrameTransformation).toHaveBeenLastCalledWith(id);
     });
 });

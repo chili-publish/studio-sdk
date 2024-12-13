@@ -38,12 +38,17 @@ export interface Variable {
     type: VariableType;
     parentId?: string;
     name: string;
-    label: string;
+    label?: string | null;
     isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
     occurrences: number;
+    placeholder?: string | null;
+    helpText?: string | null;
+    privateData: PrivateData;
 }
+
+export type PrivateData = Record<string, string>;
 
 export interface ImageVariable extends Variable {
     value?: ConnectorImageVariableSource;
@@ -57,6 +62,8 @@ export interface ListVariableItem {
 export interface ListVariable extends Variable {
     items: string[];
     selected?: string;
+    prefix?: ValueWithStyle;
+    suffix?: ValueWithStyle;
 }
 
 export interface BooleanVariable extends Variable {
@@ -65,6 +72,8 @@ export interface BooleanVariable extends Variable {
 
 export interface ShortTextVariable extends Variable {
     value: string;
+    prefix?: ValueWithStyle;
+    suffix?: ValueWithStyle;
 }
 
 export interface NumberVariable extends Variable {
@@ -77,6 +86,8 @@ export interface NumberVariable extends Variable {
     maxValue?: number;
     showStepper: boolean;
     stepSize: number;
+    prefix?: ValueWithStyle;
+    suffix?: ValueWithStyle;
 }
 
 export interface DateVariable extends Variable {
@@ -86,6 +97,8 @@ export interface DateVariable extends Variable {
     endDate?: DateRestriction;
     excludedDays: Day[];
     locale: Locale;
+    prefix?: ValueWithStyle;
+    suffix?: ValueWithStyle;
 }
 
 export type LongTextVariable = ShortTextVariable;
@@ -93,6 +106,11 @@ export type LongTextVariable = ShortTextVariable;
 export type GroupVariable = Variable;
 
 export type DateRestriction = RelativeDate | AbsoluteDate;
+
+export interface ValueWithStyle {
+    value?: string;
+    style?: string;
+}
 
 export interface RelativeDate {
     offset: number;
@@ -172,5 +190,20 @@ export interface NumberVariablePropertiesDeltaUpdate {
     };
     thousandsSeparator?: {
         value: string;
+    };
+}
+
+export interface PrefixSuffixDeltaUpdate {
+    prefix?: {
+        value: string | null;
+    };
+    suffix?: {
+        value: string | null;
+    };
+    prefixCharacterStyleId?: {
+        value: string | null;
+    };
+    suffixCharacterStyleId?: {
+        value: string | null;
     };
 }

@@ -2,6 +2,7 @@ import { Connection } from 'penpal';
 import { EditorAPI, RuntimeConfigType } from '../types/CommonTypes';
 import { SubscriberController } from './controllers/SubscriberController';
 import { VariableController } from './controllers/VariableController';
+import { ConnectorController } from './controllers/ConnectorController';
 
 /**
  * The next initiator is a split off on SDK level to tag next features.
@@ -23,6 +24,7 @@ export class NextInitiator {
 
     subscriber: SubscriberController;
     variable: VariableController;
+    connector: ConnectorController;
 
     /**
      * The next initiator is a split off on SDK level to tag next features
@@ -36,5 +38,6 @@ export class NextInitiator {
 
         this.subscriber = new SubscriberController(config);
         this.variable = new VariableController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI);
     }
 }

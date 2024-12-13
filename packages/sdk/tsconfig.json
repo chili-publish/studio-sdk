@@ -25,6 +25,8 @@
             // Alphabetically!!
             "src/index.ts",
             "src/controllers/*.ts",
+            "src/next/controllers/*.ts",
+            "src/next/NextInitiator.ts",
             "src/types/*.ts"
         ],
         "out": "docs",

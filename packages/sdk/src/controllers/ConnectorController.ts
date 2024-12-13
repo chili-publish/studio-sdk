@@ -1,16 +1,20 @@
 import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
-    ConnectorState,
-    ConnectorStateType,
+    ConnectorInstance,
+    ConnectorMappingDirection,
     ConnectorMappingType,
     ConnectorRegistration,
-    ConnectorInstance,
-    ConnectorType,
-    ConnectorMappingDirection,
-    EngineToConnectorMapping,
+    ConnectorState,
+    ConnectorStateType,
     ConnectorToEngineMapping,
+    ConnectorType,
+    EngineToConnectorMapping,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
+
+import * as Next from '../next/types/ConnectorTypes';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
@@ -31,12 +35,16 @@ export class ConnectorController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    #localConfig: Map<string, string>;
+    #connectorCompatibilityTools: ConnectorCompatibilityTools;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
         this.#editorAPI = editorAPI;
+        this.#localConfig = localConfig;
+        this.#connectorCompatibilityTools = new ConnectorCompatibilityTools();
     }
 
     /**
@@ -45,8 +53,21 @@ export class ConnectorController {
      * @returns connector
      */
     getById = async (id: Id) => {
+        // add backwards compatibility code
         const res = await this.#editorAPI;
-        return res.getConnectorById(id).then((result) => getEditorResponseData<ConnectorInstance>(result));
+        return res
+            .getConnectorById(id)
+            .then((result) => getEditorResponseData<Next.ConnectorInstance>(result))
+            .then((resp) => {
+                const update: EditorResponse<ConnectorInstance> = { ...resp, parsedData: null };
+                if (resp.parsedData) {
+                    update.parsedData = this.#connectorCompatibilityTools.makeSingleConnectorBackwardsCompatible(
+                        resp.parsedData,
+                        this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
+                    );
+                }
+                return update;
+            });
     };
 
     /**
@@ -55,8 +76,21 @@ export class ConnectorController {
      * @returns list of all available connectors of a 'ConnectorType'
      */
     getAllByType = async (type: ConnectorType) => {
+        // add backwards compatibility code
         const res = await this.#editorAPI;
-        return res.getConnectors(type).then((result) => getEditorResponseData<ConnectorInstance[]>(result));
+        return res
+            .getConnectors(type)
+            .then((result) => getEditorResponseData<Next.ConnectorInstance[]>(result))
+            .then((resp) => {
+                const update: EditorResponse<ConnectorInstance[]> = { ...resp, parsedData: null };
+                if (resp.parsedData) {
+                    update.parsedData = this.#connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
+                        resp.parsedData,
+                        this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
+                    );
+                }
+                return update;
+            });
     };
 
     /**
@@ -68,7 +102,13 @@ export class ConnectorController {
      */
     register = async (registration: ConnectorRegistration) => {
         const res = await this.#editorAPI;
-        return res.registerConnector(JSON.stringify(registration)).then((result) => getEditorResponseData<Id>(result));
+
+        const connectorRegistration =
+            this.#connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+
+        return res
+            .registerConnector(JSON.stringify(connectorRegistration))
+            .then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

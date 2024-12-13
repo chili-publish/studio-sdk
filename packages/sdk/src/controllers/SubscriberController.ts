@@ -1,7 +1,9 @@
 import { Id, RuntimeConfigType } from '../types/CommonTypes';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 import { ToolType } from '../utils/Enums';
 
 /**
@@ -19,6 +21,7 @@ export class SubscriberController {
      */
     constructor(config: RuntimeConfigType) {
         this.config = config;
+        this.localConfig = localConfig;
     }
 
     /**
@@ -134,8 +137,8 @@ export class SubscriberController {
     /**
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
-    onPageSelectionChanged = () => {
-        this.config.events.onPageSelectionChanged.trigger();
+    onPageSelectionChanged = (id: Id) => {
+        this.config.events.onPageSelectionChanged.trigger(id);
     };
 
     /**
@@ -271,9 +274,44 @@ export class SubscriberController {
      * @param connectors Stringified array of ConnectorInstance type
      */
     onConnectorsChanged = (connectors: string) => {
-        this.config.events.onConnectorsChanged.trigger(JSON.parse(connectors));
+        const callBack = this.config.onConnectorsChanged;
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const compatibleConnectors = connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
+            JSON.parse(connectors),
+            this.localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
+        );
+        callBack && callBack(compatibleConnectors);
     };
 
+    /**
+     * @experimental
+     * Listener on when the selectedPageID is changed.
+     * @param pageId Stringified pageId
+     */
+    onSelectedPageIdChanged = (pageId: string) => {
+        const callBack = this.config.onSelectedPageIdChanged;
+        callBack && callBack(pageId);
+    };
+
+    /**
+     * @experimental
+     * Listener on pages list, this listener will get triggered when the pages are updated.
+     * @param pages Stringified object of the pages
+     */
+    onPagesChanged = (pages: string) => {
+        const callBack = this.config.onPagesChanged;
+        callBack && callBack(JSON.parse(pages));
+    };
+
+    /**
+     * @experimental
+     * Listener on pages snapshots, this will fire when a page snapshot is invalidated and should be updated.
+     * @param page id of the page
+     */
+    onPageSnapshotInvalidated = (page: Id) => {
+        const callBack = this.config.onPageSnapshotInvalidated;
+        callBack && callBack(JSON.parse(page));
+    };
     /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
      * This will not emit anything if your document is a `template`.
@@ -330,5 +368,15 @@ export class SubscriberController {
      */
     onBarcodeValidationChanged = (validationResults: string) => {
         this.config.events.onBarcodeValidationChanged.trigger(JSON.parse(validationResults));
+    };
+
+    /**
+     * Listener on when the data source has changed
+     *
+     * @param connectorId the id of the data connector
+     */
+    onDataSourceIdChanged = (connectorId?: Id) => {
+        const callBack = this.config.onDataSourceIdChanged;
+        callBack && callBack(connectorId);
     };
 }

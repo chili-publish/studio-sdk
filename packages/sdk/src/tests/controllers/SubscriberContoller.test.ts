@@ -1,6 +1,9 @@
+import { SubscriberController } from '../../controllers/SubscriberController';
 import {
     ActionEditorEvent,
     BarcodeValidationResult,
+    ConnectorInstance,
+    ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
     Id,
@@ -9,13 +12,13 @@ import {
     ViewMode,
     Viewport,
 } from '../../index';
-import { SubscriberController } from '../../controllers/SubscriberController';
 import { mockFrameAnimation } from '../__mocks__/Animations';
 
 import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
-import { ToolType } from '../../utils/Enums';
+import * as Next from '../../next/types/ConnectorTypes';
+import { AsyncError, ConfigType } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -25,11 +28,12 @@ import {
     GrafxTokenAuthCredentials,
     RefreshedAuthCredendentials,
 } from '../../types/ConnectorTypes';
-import type { PageSize } from '../../types/PageTypes';
+import type { Page, PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
-import { AsyncError, ConfigType } from '../../types/CommonTypes';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ConfigHelper } from '../../utils/ConfigHelper';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { ToolType } from '../../utils/Enums';
+import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -59,6 +63,9 @@ const mockEditorApi: ConfigType = {
     onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedPageIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPagesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSnapshotInvalidated: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -68,9 +75,11 @@ const mockEditorApi: ConfigType = {
     onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewportRequested: () => null,
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
+    jest.spyOn(mockEditorApi, 'onAnimationChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
@@ -94,6 +103,9 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onZoomChanged');
     jest.spyOn(mockEditorApi, 'onActionsChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedPageIdChanged');
+    jest.spyOn(mockEditorApi, 'onPagesChanged');
+    jest.spyOn(mockEditorApi, 'onPageSnapshotInvalidated');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
@@ -103,7 +115,11 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onViewModeChanged');
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
-    mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
+    jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
+    mockedSubscriberController = new SubscriberController(
+        ConfigHelper.createRuntimeConfig(mockEditorApi),
+        mockLocalConfig,
+    );
     mockedAnimation = mockFrameAnimation;
 });
 
@@ -163,7 +179,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
-        await mockedSubscriberController.onPageSelectionChanged();
+        await mockedSubscriberController.onPageSelectionChanged('a');
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to the onStateChanged', async () => {
@@ -202,7 +218,7 @@ describe('SubscriberController', () => {
         );
         expect(mockEditorApi.onFontFamiliesChanged).toHaveBeenCalledTimes(1);
     });
-    it('Should be possible to onCharacterStylesChanged', async () => {
+    it('Should be possible to subscribe onCharacterStylesChanged', async () => {
         await mockedSubscriberController.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
         expect(mockEditorApi.onCharacterStylesChanged).toHaveBeenCalledTimes(1);
     });
@@ -237,6 +253,41 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(connectors));
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });
+    it('onConnectorsChanged migrates Next.ConnectorInstance', async () => {
+        const grafxSourceId = 'grafx-id';
+        // Can't mock it on EditorApi
+
+        const nextGrafxSource: Next.ConnectorGrafxRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            id: grafxSourceId,
+        };
+
+        const nextGrafxConnector: Next.ConnectorInstance = {
+            id: 'connector-id',
+            name: 'connector.name',
+            iconUrl: 'icon-url',
+            source: nextGrafxSource,
+        };
+
+        const grafxSource: ConnectorRegistration = {
+            source: ConnectorRegistrationSource.grafx,
+            url: `${mockBaseUrl}/connectors/${grafxSourceId}`,
+        };
+
+        const grafxConnector: ConnectorInstance = {
+            id: 'connector-id',
+            name: 'connector.name',
+            iconUrl: 'icon-url',
+            source: grafxSource,
+        };
+
+        const connectors = JSON.stringify([nextGrafxConnector]);
+        const expectedConnectors = JSON.stringify([grafxConnector]);
+
+        await mockedSubscriberController.onConnectorsChanged(connectors);
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(JSON.parse(expectedConnectors));
+        expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
+    });
     it('Should be possible to subscribe to onZoomChanged', async () => {
         await mockedSubscriberController.onZoomChanged(JSON.stringify(150));
         expect(mockEditorApi.onZoomChanged).toHaveBeenCalledTimes(1);
@@ -254,6 +305,25 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onActionsChanged(JSON.stringify(actions));
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledWith(actions);
+    });
+
+    it('Should be possible to subscribe to onSelectedPageIdChanged', async () => {
+        await mockedSubscriberController.onSelectedPageIdChanged('newid');
+        expect(mockEditorApi.onSelectedPageIdChanged).toHaveBeenCalledWith('newid');
+    });
+
+    it('should be possible to subscribe to onPagesChanged', async () => {
+        const pages: Page[] = [{ id: 'id', number: 1, isVisible: true, width: 123, height: 456 }];
+
+        await mockedSubscriberController.onPagesChanged(JSON.stringify(pages));
+        expect(mockEditorApi.onPagesChanged).toHaveBeenCalledWith(pages);
+    });
+
+    it('should be possible to subscribe to onPageSnapshotInvalidated', async () => {
+        const pageID: Id = '123';
+
+        await mockedSubscriberController.onPageSnapshotInvalidated(JSON.stringify(pageID));
+        expect(mockEditorApi.onPageSnapshotInvalidated).toHaveBeenCalledWith(pageID);
     });
 
     it('should be possible to subscribe to onPageSizeChanged', async () => {
@@ -274,7 +344,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 
-    it('should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
+    it('Should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
         const cornerRadius: CornerRadiusUpdateModel = { radiusAll: 5 };
         await mockedSubscriberController.onShapeCornerRadiusChanged(JSON.stringify(cornerRadius));
 
@@ -282,7 +352,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledWith(cornerRadius);
     });
 
-    it('should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
+    it('Should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
         const id: Id = '1';
         await mockedSubscriberController.onCropActiveFrameIdChanged(id);
 
@@ -290,7 +360,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledWith(id);
     });
 
-    it('should be possible to subscribe to onAsyncError', async () => {
+    it('Should be possible to subscribe to onAsyncError', async () => {
         const asyncError: AsyncError = { message: 'hello' };
         await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
 
@@ -398,7 +468,9 @@ describe('SubscriberController', () => {
                 onViewportRequested: jest.fn().mockReturnValue(viewport),
             });
 
-            const mockedSubscriberController = new SubscriberController(localMockConfig);
+            jest.spyOn(localMockConfig, 'onViewportRequested');
+
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = mockedSubscriberController.onViewportRequested();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -409,11 +481,22 @@ describe('SubscriberController', () => {
         });
 
         it('returns a null token if the listener is not defined', () => {
-            const mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig({}));
+            const mockedSubscriberController = new SubscriberController(
+                ConfigHelper.createRuntimeConfig({}),
+                new Map<string, string>(),
+            );
 
             const result = mockedSubscriberController.onViewportRequested();
 
             expect(result).toBe(null);
         });
+    });
+
+    it('should be possible to subscribe to onDataSourceIdChanged', async () => {
+        const connectorId: Id = '1';
+        await mockedSubscriberController.onDataSourceIdChanged(connectorId);
+
+        expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
     });
 });

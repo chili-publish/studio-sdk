@@ -1,6 +1,13 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout, MeasurementUnit, LayoutIntent, PositionEnum, BleedDeltaUpdate } from '../types/LayoutTypes';
+import {
+    Layout,
+    MeasurementUnit,
+    LayoutIntent,
+    PositionEnum,
+    BleedDeltaUpdate,
+    LayoutPreset,
+} from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
 
@@ -76,8 +83,15 @@ export class LayoutController {
      * @param parentId the id of a specific layout, being the parent
      * @returns id of new layout
      */
-    create = async (parentId: Id) => {
+    create = async (parentId: Id, presets?: LayoutPreset[]) => {
         const res = await this.#editorAPI;
+
+        if (presets?.length) {
+            return res
+                .addLayouts(parentId, JSON.stringify(presets))
+                .then((result) => getEditorResponseData<Id>(result));
+        }
+        
         return res.addLayout(parentId).then((result) => getEditorResponseData<Id>(result));
     };
 
@@ -187,7 +201,9 @@ export class LayoutController {
     };
 
     /**
+     * @deprecated
      * This method returns a UInt8Array containing a PNG encoded image of the currently selected layout.
+     * This method is deprecated, please use getSnapshot in the PageController
      * @returns UInt8Array snapshot of the current layout
      */
     getSelectedSnapshot = async () => {

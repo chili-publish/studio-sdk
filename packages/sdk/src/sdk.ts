@@ -1,43 +1,47 @@
 import { Connection } from 'penpal';
+import engineInfo from '../editor-engine.json';
+import packageInfo from '../package.json';
 import Connect from './interactions/Connector';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
-import packageInfo from '../package.json';
-import engineInfo from '../editor-engine.json';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
 import { DocumentType } from './types/DocumentTypes';
 
 import { ActionController } from './controllers/ActionController';
 import { AnimationController } from './controllers/AnimationController';
+import { BarcodeController } from './controllers/BarcodeController';
 import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
-import { ColorStyleController } from './controllers/ColorStyleController';
+import { ClipboardController } from './controllers/ClipboardController';
 import { ColorConversionController } from './controllers/ColorConversionController';
+import { ColorStyleController } from './controllers/ColorStyleController';
 import { ConfigurationController } from './controllers/ConfigurationController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { DataConnectorController } from './controllers/DataConnectorController';
+import { DataSourceController } from './controllers/DataSourceController';
 import { DebugController } from './controllers/DebugController';
 import { DocumentController } from './controllers/DocumentController';
 import { ExperimentController } from './controllers/ExperimentController';
 import { FontConnectorController } from './controllers/FontConnectorController';
 import { FontController } from './controllers/FontController';
 import { FrameController } from './controllers/FrameController';
+import { InfoController } from './controllers/InfoController';
 import { LayoutController } from './controllers/LayoutController';
 import { MediaConnectorController } from './controllers/MediaConnectorController';
 import { PageController } from './controllers/PageController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
+import { ShapeController } from './controllers/ShapeController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
 import { UtilsController } from './controllers/UtilsController';
 import { VariableController } from './controllers/VariableController';
-import { ShapeController } from './controllers/ShapeController';
-import { InfoController } from './controllers/InfoController';
-import { ClipboardController } from './controllers/ClipboardController';
-import { BarcodeController } from './controllers/BarcodeController';
-import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
+import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
+import { DataItemMappingTools } from './utils/DataItemMappingTools';
+import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 
 let connection: Connection;
 
@@ -61,6 +65,8 @@ export class SDK {
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
+    dataConnector: DataConnectorController;
+    dataSource: DataSourceController;
     animation: AnimationController;
     document: DocumentController;
     configuration: ConfigurationController;
@@ -84,6 +90,8 @@ export class SDK {
 
     private subscriber: SubscriberController;
     private enabledNextSubscribers: NextSubscribers | undefined;
+    private localConfig = new Map<string, string>();
+    private dataItemMappingTools = new DataItemMappingTools();
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -103,15 +111,18 @@ export class SDK {
         this.shape = new ShapeController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
-        this.connector = new ConnectorController(this.editorAPI);
+        this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
+        this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new ConfigurationController(this.editorAPI);
+
+        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.utils = new UtilsController();
-        this.subscriber = new SubscriberController(this.config);
+        this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
@@ -170,12 +181,16 @@ export class SDK {
                 onConnectorEvent: this.subscriber.onConnectorEvent,
                 onConnectorsChanged: this.subscriber.onConnectorsChanged,
                 onZoomChanged: this.subscriber.onZoomChanged,
+                onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
+                onPagesChanged: this.subscriber.onPagesChanged,
+                onPageSnapshotInvalidated: this.subscriber.onPageSnapshotInvalidated,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
                 onViewModeChanged: this.subscriber.onViewModeChanged,
                 onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
+                onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -191,7 +206,7 @@ export class SDK {
         this.barcode = new BarcodeController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
-        this.configuration = new ConfigurationController(this.editorAPI);
+        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.utils = new UtilsController();
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
@@ -203,7 +218,9 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.connector = new ConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
+        this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
+        this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);

@@ -1,129 +1,147 @@
 import { SDK } from './sdk';
 
-export { FramePropertyNames, LayoutPropertyNames, ToolType, DownloadFormats, EnvironmentType } from './utils/Enums';
+export { ConnectorHttpError } from './utils/EditorResponseData';
+export { DownloadFormats, EnvironmentType, FramePropertyNames, LayoutPropertyNames, ToolType } from './utils/enums';
 
 export {
-    SlideDirections,
-    ShakeDirections,
-    EaseTypes,
-    TweenTypes,
     BasicAnimationsEmphasisStyles,
+    EaseTypes,
+    ShakeDirections,
+    SlideDirections,
+    TweenTypes,
 } from './types/AnimationTypes';
-export { LayoutType, MeasurementUnit, LayoutIntent, PositionEnum } from './types/LayoutTypes';
-export {
-    BlendMode,
-    FrameTypeEnum,
-    VerticalAlign,
-    TextDirection,
-    FlowDirection,
-    FitMode,
-    UpdateZIndexMethod,
-    ImageSourceTypeEnum,
-    BarcodeSourceTypeEnum,
-    AutoGrowDirection,
-} from './types/FrameTypes';
 export { DocumentType } from './types/DocumentTypes';
+export {
+    AnchorTargetEdgeType,
+    AnchorTargetType,
+    AutoGrowDirection,
+    BarcodeSourceTypeEnum,
+    BlendMode,
+    FitMode,
+    FlowDirection,
+    FrameAnchorType,
+    FrameTypeEnum,
+    ImageSourceTypeEnum,
+    TextDirection,
+    UpdateZIndexMethod,
+    VerticalAlign,
+} from './types/FrameTypes';
+export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 
 export { ViewMode } from './types/ViewModeTypes';
 
+export { FrameAnchorTarget, PageAnchorTarget } from './types/FrameTypes';
 export type {
-    LayoutPropertiesType,
-    FrameProperties,
-    LayoutWithFrameProperties,
-    LayoutListItemType,
-    Layout,
-} from './types/LayoutTypes';
-export type {
-    FrameLayoutType,
-    FrameType,
-    Frame,
-    TextFrame,
-    ImageFrame,
-    ShapeFrame,
+    AnchorTarget,
+    AutoGrowSettings,
     BarcodeFrame,
     BarcodeSource,
-    BarcodeVariableSource,
     BarcodeTextSource,
+    BarcodeVariableSource,
+    CenterFrameAnchor,
+    EndFrameAnchor,
+    Frame,
+    FrameAnchor,
+    FrameLayoutType,
+    FrameType,
+    ImageFrame,
     ImageFrameSource,
-    ImageFrameVariableSource,
     ImageFrameUrlSource,
-    AutoGrowSettings,
+    ImageFrameVariableSource,
+    RelativeFrameAnchor,
+    ShapeFrame,
+    StartAndEndFrameAnchor,
+    StartFrameAnchor,
+    TextFrame,
 } from './types/FrameTypes';
 export type {
-    Variable,
+    FrameProperties,
+    Layout,
+    LayoutListItemType,
+    LayoutPreset,
+    LayoutPropertiesType,
+    LayoutWithFrameProperties,
+} from './types/LayoutTypes';
+
+export { Day, Locale, VariableType } from './types/VariableTypes';
+export type {
+    AbsoluteDate,
+    BooleanVariable,
+    ConnectorImageVariableSource,
+    DateRestriction,
+    DateVariable,
     GroupVariable,
     ImageVariable,
-    LongTextVariable,
-    ShortTextVariable,
     ListVariable,
     ListVariableItem,
-    BooleanVariable,
+    LongTextVariable,
     NumberVariable,
-    ConnectorImageVariableSource,
-    DateVariable,
-    DateRestriction,
+    PrivateData,
     RelativeDate,
-    AbsoluteDate,
+    ShortTextVariable,
+    ValueWithStyle,
+    Variable,
 } from './types/VariableTypes';
-export { VariableType, Day, Locale } from './types/VariableTypes';
 
-export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
+export type { Color, ColorUpdate, DocumentColor } from './types/ColorStyleTypes';
 
-export type { DocumentError } from './types/DocumentTypes';
 export type {
-    FrameAnimationType,
-    FrameAnimationPropertiesType,
-    EaseTweenCombinationType,
     AnimationPlaybackType,
     BasicAnimationsType,
+    EaseTweenCombinationType,
+    FrameAnimationPropertiesType,
+    FrameAnimationType,
 } from './types/AnimationTypes';
+export { ConnectorConfigValueType } from './types/CommonTypes';
 export type {
     ConfigType,
-    InitialStateType,
-    PageType,
-    EditorResponse,
-    SelectedLayoutFrame,
-    MetaData,
-    Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
-    ConnectorConfigValueType,
+    EditorResponse,
+    Id,
+    InitialStateType,
+    MetaData,
+    PageType,
+    SelectedLayoutFrame,
 } from './types/CommonTypes';
+export type { DocumentError } from './types/DocumentTypes';
 
 export type {
-    TextProperties,
-    SelectedTextStyle,
-    TextStyle,
     AppearanceProperties,
+    DisplayColor,
+    SelectedTextStyle,
+    TextProperties,
+    TextStyle,
     TextStyleUpdateType,
     UpdateStyleType,
-    DisplayColor,
 } from './types/TextStyleTypes';
 
-export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
-export type { ColorUsage, ColorUsageUpdate, ColorUsageType } from './types/ColorStyleTypes';
+export { ColorUsageType } from './types/ColorStyleTypes';
+export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
+export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 
 export type {
-    DocumentFontStyle,
-    DocumentFontFamily,
-    AddDocumentFontStyle,
     AddDocumentFontFamily,
+    AddDocumentFontStyle,
+    DocumentFontFamily,
+    DocumentFontStyle,
 } from './types/FontTypes';
 
-export {
-    SelectedTextStyleSections,
-    SelectedTextStyles,
-    FontWeights,
-    Alignment,
-    TextPosition,
-    Case,
-    Scripting,
-} from './types/TextStyleTypes';
 export { ColorType } from './types/ColorStyleTypes';
-export * from './types/MediaConnectorTypes';
-export * from './types/FontConnectorTypes';
 export * from './types/ConnectorTypes';
+export * from './types/DataConnectorTypes';
+export * from './types/FontConnectorTypes';
+export * from './types/MediaConnectorTypes';
+export {
+    Alignment,
+    Case,
+    FontWeights,
+    Scripting,
+    SelectedTextStyles,
+    SelectedTextStyleSections,
+    TextPosition,
+} from './types/TextStyleTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
@@ -134,5 +152,7 @@ export * from './types/ShapeTypes';
 export * from './types/BarcodeTypes';
 
 export type { Viewport } from './types/ViewportTypes';
+
+export * from './types/PageTypes';
 
 export default SDK;

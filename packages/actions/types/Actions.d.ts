@@ -247,6 +247,10 @@ declare module 'grafx-studio-actions' {
         export interface VariableMethods {
             /**
              * Sets the value of a variable
+             *
+             * If the value is some text to be set on a ShortTextVariable, it
+             * cannot contain any type of line breaks.
+             *
              * @param value the value
              * @returns
              */
@@ -272,6 +276,20 @@ declare module 'grafx-studio-actions' {
              * @returns
              */
             setVisible(isVisible: boolean | VariableValue): void;
+
+            /**
+             * Sets the prefix of a variable
+             *
+             * @param prefix the prefix to set
+             */
+            setPrefix(prefix: string | null): void;
+
+            /**
+             * Sets the suffix of a variable
+             *
+             * @param suffix the suffix to set
+             */
+            setSuffix(suffix: string | null): void;
         }
 
         /**
@@ -461,6 +479,19 @@ declare module 'grafx-studio-actions' {
              * @param separator the thousands separator
              */
             setThousandsSeparator(separator: NumberSeparator): void;
+
+            /**
+             * Sets decimal places of the number variable.
+             *
+             * @param decimalPlaces the decimal separator
+             * Possible values are:
+             * - 0
+             * - 1
+             * - 2
+             * - 3
+             * - 4
+             */
+            setDecimalPlaces(decimalPlaces: number): void;
         }
 
         /**
@@ -672,6 +703,22 @@ declare module 'grafx-studio-actions' {
              * @returns
              */
             setVisible(name: string | Variable, isVisible: boolean | VariableValue): void;
+
+            /**
+             * Sets the prefix of a variable
+             *
+             * @param name the variable name
+             * @param prefix the prefix to set
+             */
+            setPrefix(name: string | Variable, prefix: string | null): void;
+
+            /**
+             * Sets the suffix of a variable
+             *
+             * @param name the variable name
+             * @param suffix the suffix to set
+             */
+            setSuffix(name: string | Variable, suffix: string | null): void;
         }
 
         /**
