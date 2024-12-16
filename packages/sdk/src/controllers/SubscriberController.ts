@@ -433,13 +433,13 @@ export class SubscriberController {
         const callBack = this.config.onDataSourceIdChanged;
         callBack && callBack(connectorId);
     };
+
     /**
-     * Listener on when the document error list changed
-     *
-     * @param documentErrors Stringified object of the errors
+     * Listener on document issues, if this changes, this listener will get triggered with the updates
+     * @param documentIssues Stringified object of document issues
      */
-    onDocumentErrorsEvent = (documentErrors: string) => {
-        const callBack = this.config.onDocumentErrorsEvent;
-        callBack && callBack(JSON.parse(documentErrors));
+    onDocumentIssueListChanged = (documentIssues: string) => {
+        const callBack = this.config.onDocumentIssueListChanged;
+        callBack && callBack(JSON.parse(documentIssues));
     };
 }
