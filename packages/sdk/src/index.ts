@@ -1,7 +1,7 @@
 import { SDK } from './sdk';
 
 export { ConnectorHttpError } from './utils/EditorResponseData';
-export { DownloadFormats, EnvironmentType, FramePropertyNames, LayoutPropertyNames, ToolType } from './utils/enums';
+export { DownloadFormats, EnvironmentType, FramePropertyNames, LayoutPropertyNames, ToolType } from './utils/Enums';
 
 export {
     BasicAnimationsEmphasisStyles,
@@ -10,7 +10,6 @@ export {
     SlideDirections,
     TweenTypes,
 } from './types/AnimationTypes';
-export { DocumentType } from './types/DocumentTypes';
 export {
     AnchorTargetEdgeType,
     AnchorTargetType,
@@ -26,7 +25,9 @@ export {
     UpdateZIndexMethod,
     VerticalAlign,
 } from './types/FrameTypes';
-export { DocumentIssueTypeEnum, LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
+export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
+
+export { DocumentIssueTypeEnum, DocumentType } from './types/DocumentTypes';
 
 export { ViewMode } from './types/ViewModeTypes';
 
@@ -108,7 +109,6 @@ export type {
     ActionCircularDocumentIssue,
     ActionExecutionDocumentIssue,
     ActionRegisterDocumentIssue,
-    DocumentError,
     DocumentError,
     DocumentIssue,
     FontLoadingDocumentIssue,

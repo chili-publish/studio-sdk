@@ -19,7 +19,12 @@ export class SubscriberController {
     /**
      * @ignore
      */
-    constructor(config: RuntimeConfigType) {
+    private localConfig: Map<string, string>;
+
+    /**
+     * @ignore
+     */
+    constructor(config: RuntimeConfigType, localConfig: Map<string, string>) {
         this.config = config;
         this.localConfig = localConfig;
     }
@@ -274,13 +279,12 @@ export class SubscriberController {
      * @param connectors Stringified array of ConnectorInstance type
      */
     onConnectorsChanged = (connectors: string) => {
-        const callBack = this.config.onConnectorsChanged;
         const connectorCompatibilityTools = new ConnectorCompatibilityTools();
         const compatibleConnectors = connectorCompatibilityTools.makeMultipleConnectorsBackwardsCompatible(
             JSON.parse(connectors),
             this.localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl),
         );
-        callBack && callBack(compatibleConnectors);
+        this.config.events.onConnectorsChanged.trigger(compatibleConnectors);
     };
 
     /**
@@ -289,8 +293,7 @@ export class SubscriberController {
      * @param pageId Stringified pageId
      */
     onSelectedPageIdChanged = (pageId: string) => {
-        const callBack = this.config.onSelectedPageIdChanged;
-        callBack && callBack(pageId);
+        this.config.events.onSelectedPageIdChanged.trigger(pageId);
     };
 
     /**
@@ -299,8 +302,7 @@ export class SubscriberController {
      * @param pages Stringified object of the pages
      */
     onPagesChanged = (pages: string) => {
-        const callBack = this.config.onPagesChanged;
-        callBack && callBack(JSON.parse(pages));
+        this.config.events.onPagesChanged.trigger(JSON.parse(pages));
     };
 
     /**
@@ -309,8 +311,7 @@ export class SubscriberController {
      * @param page id of the page
      */
     onPageSnapshotInvalidated = (page: Id) => {
-        const callBack = this.config.onPageSnapshotInvalidated;
-        callBack && callBack(JSON.parse(page));
+        this.config.events.onPageSnapshotInvalidated.trigger(page);
     };
     /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
@@ -376,8 +377,7 @@ export class SubscriberController {
      * @param connectorId the id of the data connector
      */
     onDataSourceIdChanged = (connectorId?: Id) => {
-        const callBack = this.config.onDataSourceIdChanged;
-        callBack && callBack(connectorId);
+        this.config.events.onDataSourceIdChanged.trigger(connectorId);
     };
 
     /**
@@ -385,7 +385,6 @@ export class SubscriberController {
      * @param documentIssues Stringified object of document issues
      */
     onDocumentIssueListChanged = (documentIssues: string) => {
-        const callBack = this.config.onDocumentIssueListChanged;
-        callBack && callBack(JSON.parse(documentIssues));
+        this.config.events.onDocumentIssueListChanged.trigger(JSON.parse(documentIssues));
     };
 }

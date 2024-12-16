@@ -4,28 +4,28 @@ import { BarcodeFrameValidationResult } from '../types/BarcodeTypes';
 import { CharacterStyle } from '../types/CharacterStyleTypes';
 import { DocumentColor } from '../types/ColorStyleTypes';
 import {
-    ConfigType,
-    RuntimeConfigType,
-    SelectedLayoutFrame,
-    Id,
     AsyncError,
+    ConfigType,
+    Id,
     LogLevel,
     MaybePromise,
+    RuntimeConfigType,
+    SelectedLayoutFrame,
 } from '../types/CommonTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
-import { UndoState } from '../types/DocumentTypes';
+import { DocumentIssue, UndoState } from '../types/DocumentTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
-import { FrameLayoutType, Frame } from '../types/FrameTypes';
-import { LayoutPropertiesType, MeasurementUnit, LayoutListItemType } from '../types/LayoutTypes';
-import { PageSize } from '../types/PageTypes';
+import { Frame, FrameLayoutType } from '../types/FrameTypes';
+import { LayoutListItemType, LayoutPropertiesType, MeasurementUnit } from '../types/LayoutTypes';
+import { Page, PageSize } from '../types/PageTypes';
 import { ParagraphStyle } from '../types/ParagraphStyleTypes';
 import { CornerRadiusUpdateModel } from '../types/ShapeTypes';
 import { SelectedTextStyle } from '../types/TextStyleTypes';
 import { Variable } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { Viewport } from '../types/ViewportTypes';
-import { ToolType } from './Enums';
 import { EngineEvent } from './EngineEvent';
+import { ToolType } from './Enums';
 
 export class ConfigHelper {
     /**
@@ -36,9 +36,7 @@ export class ConfigHelper {
      */
     static createRuntimeConfig(config: ConfigType): RuntimeConfigType {
         // we need a reference to the clone object in the engineEvent, so we need to create the object in 2 steps
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const clone: RuntimeConfigType = { ...config };
+        const clone: RuntimeConfigType = { ...config } as RuntimeConfigType;
         clone.logging = {
             logLevel: config.logging?.logLevel || LogLevel.error,
             logger:
@@ -92,7 +90,7 @@ export class ConfigHelper {
                 () => clone.onSelectedFramesContentChanged,
                 clone.logging?.logger,
             ),
-            onPageSelectionChanged: new EngineEvent<() => MaybePromise<void>>(
+            onPageSelectionChanged: new EngineEvent<(id: Id) => MaybePromise<void>>(
                 () => clone.onPageSelectionChanged,
                 clone.logging?.logger,
             ),
@@ -168,6 +166,18 @@ export class ConfigHelper {
                 () => clone.onZoomChanged,
                 clone.logging?.logger,
             ),
+            onSelectedPageIdChanged: new EngineEvent<(pageId: Id) => MaybePromise<void>>(
+                () => clone.onSelectedPageIdChanged,
+                clone.logging.logger,
+            ),
+            onPagesChanged: new EngineEvent<(pages: Page[]) => MaybePromise<void>>(
+                () => clone.onPagesChanged,
+                clone.logging.logger,
+            ),
+            onPageSnapshotInvalidated: new EngineEvent<(pageId: Id) => MaybePromise<void>>(
+                () => clone.onPageSnapshotInvalidated,
+                clone.logging.logger,
+            ),
             onPageSizeChanged: new EngineEvent<(pageSize: PageSize) => MaybePromise<void>>(
                 () => clone.onPageSizeChanged,
                 clone.logging?.logger,
@@ -191,6 +201,14 @@ export class ConfigHelper {
             onBarcodeValidationChanged: new EngineEvent<
                 (validationResults: BarcodeFrameValidationResult[]) => MaybePromise<void>
             >(() => clone.onBarcodeValidationChanged, clone.logging?.logger),
+            onDataSourceIdChanged: new EngineEvent<(connectorId?: Id) => MaybePromise<void>>(
+                () => clone.onDataSourceIdChanged,
+                clone.logging.logger,
+            ),
+            onDocumentIssueListChanged: new EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>(
+                () => clone.onDocumentIssueListChanged,
+                clone.logging.logger,
+            ),
         };
         return clone;
     }

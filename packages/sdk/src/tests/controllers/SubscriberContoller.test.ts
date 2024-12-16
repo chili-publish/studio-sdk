@@ -20,7 +20,7 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 import * as Next from '../../next/types/ConnectorTypes';
-import { AsyncError, ConfigType } from '../../types/CommonTypes';
+import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -40,8 +40,8 @@ import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
 
-const mockEditorApi: ConfigType = {
-    onFrameAnimationsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+const mockEditorApi: EditorAPI = {
+    onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -53,6 +53,8 @@ const mockEditorApi: ConfigType = {
     onDocumentLoaded: async () => getEditorResponseData(castToEditorResponse(null)),
     onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedToolChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onAnimationPlaybackChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onUndoStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedLayoutFramesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedTextStyleChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onColorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -75,7 +77,7 @@ const mockEditorApi: ConfigType = {
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onViewportRequested: () => null,
+    onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -94,6 +96,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onDocumentLoaded');
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onSelectedToolChanged');
+    jest.spyOn(mockEditorApi, 'onAnimationPlaybackChanged');
+    jest.spyOn(mockEditorApi, 'onUndoStateChanged');
     jest.spyOn(mockEditorApi, 'onSelectedLayoutFramesChanged');
     jest.spyOn(mockEditorApi, 'onSelectedTextStyleChanged');
     jest.spyOn(mockEditorApi, 'onColorsChanged');
@@ -120,6 +124,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
+
     mockedSubscriberController = new SubscriberController(
         ConfigHelper.createRuntimeConfig(mockEditorApi),
         mockLocalConfig,
@@ -404,7 +409,7 @@ describe('SubscriberController', () => {
                     ),
             });
 
-            const mockedSubscriberController = new SubscriberController(localMockConfig);
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(grafxAuthRefreshRequest),
@@ -426,7 +431,7 @@ describe('SubscriberController', () => {
                     ),
             });
 
-            const mockedSubscriberController = new SubscriberController(localMockConfig);
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(anyAuthRefreshRequest),
@@ -440,7 +445,10 @@ describe('SubscriberController', () => {
         });
 
         it('returns a null token if the listener is not defined', async () => {
-            const mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig({}));
+            const mockedSubscriberController = new SubscriberController(
+                ConfigHelper.createRuntimeConfig({}),
+                new Map<string, string>(),
+            );
 
             const result = await mockedSubscriberController.onAuthExpired(JSON.stringify(grafxAuthRefreshRequest));
 

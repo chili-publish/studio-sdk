@@ -8,11 +8,11 @@ import { CharacterStyle } from './CharacterStyleTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
-import { DocumentType, UndoState } from './DocumentTypes';
+import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
-import { PageSize } from './PageTypes';
+import { Page, PageSize } from './PageTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
@@ -87,7 +87,7 @@ export type ManagedCallbacksConfigType = {
         onDocumentLoaded: EngineEvent<() => MaybePromise<void>>;
         onSelectedFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
         onSelectedFramesContentChanged: EngineEvent<(state: Frame[]) => MaybePromise<void>>;
-        onPageSelectionChanged: EngineEvent<() => MaybePromise<void>>;
+        onPageSelectionChanged: EngineEvent<(id: Id) => MaybePromise<void>>;
         onSelectedLayoutPropertiesChanged: EngineEvent<(state: LayoutPropertiesType) => MaybePromise<void>>;
         onSelectedLayoutUnitChanged: EngineEvent<(unit: MeasurementUnit) => MaybePromise<void>>;
         onScrubberPositionChanged: EngineEvent<(state: AnimationPlaybackType) => MaybePromise<void>>;
@@ -106,6 +106,9 @@ export type ManagedCallbacksConfigType = {
         onConnectorEvent: EngineEvent<(event: ConnectorEvent) => MaybePromise<void>>;
         onConnectorsChanged: EngineEvent<(connectors: ConnectorInstance[]) => MaybePromise<void>>;
         onZoomChanged: EngineEvent<(scaleFactor: number) => MaybePromise<void>>;
+        onSelectedPageIdChanged: EngineEvent<(pageId: Id) => MaybePromise<void>>;
+        onPagesChanged: EngineEvent<(pages: Page[]) => MaybePromise<void>>;
+        onPageSnapshotInvalidated: EngineEvent<(pageId: Id) => MaybePromise<void>>;
         onPageSizeChanged: EngineEvent<(pageSize: PageSize) => MaybePromise<void>>;
         onShapeCornerRadiusChanged: EngineEvent<(cornerRadius: CornerRadiusUpdateModel) => MaybePromise<void>>;
         onCropActiveFrameIdChanged: EngineEvent<(id?: Id) => MaybePromise<void>>;
@@ -114,6 +117,8 @@ export type ManagedCallbacksConfigType = {
         onBarcodeValidationChanged: EngineEvent<
             (validationResults: BarcodeFrameValidationResult[]) => MaybePromise<void>
         >;
+        onDataSourceIdChanged: EngineEvent<(connectorId?: Id) => MaybePromise<void>>;
+        onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
     };
 };
 
@@ -144,9 +149,20 @@ export type InitialCallbacksConfigType = {
     onDocumentLoaded?: () => void;
 
     /**
+     * @deprecated use `onSelectedFramesLayoutChanged` instead
+     *
+     */
+    onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
+
+    /**
      * @deprecated use `events.onSelectedFramesLayoutChanged` instead
      */
     onSelectedFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
+
+    /**
+     * @deprecated use `onSelectedFramesContentChanged` instead
+     */
+    onSelectedFrameContentChanged?: (state: Frame | null) => void;
 
     /**
      * @deprecated use `events.onSelectedFramesContentChanged` instead
@@ -156,7 +172,7 @@ export type InitialCallbacksConfigType = {
     /**
      * @deprecated use `events.onPageSelectionChanged` instead
      */
-    onPageSelectionChanged?: () => void;
+    onPageSelectionChanged?: (id: Id) => void;
 
     /**
      * @deprecated use `events.onSelectedLayoutPropertiesChanged` instead
@@ -249,6 +265,24 @@ export type InitialCallbacksConfigType = {
     onZoomChanged?: (scaleFactor: number) => void;
 
     /**
+     *
+     * @deprecated use `events.onSelectedPageIdChanged` instead
+     */
+    onSelectedPageIdChanged?: (pageId: Id) => void;
+
+    /**
+     *
+     * @deprecated use `events.onPagesChanged` instead
+     */
+    onPagesChanged?: (pages: Page[]) => void;
+
+    /**
+     *
+     * @deprecated use `events.onPageSnapshotInvalidated` instead
+     */
+    onPageSnapshotInvalidated?: (page: Id) => void;
+
+    /**
      * @deprecated use `events.onPageSizeChanged` instead
      */
     onPageSizeChanged?: (pageSize: PageSize) => void;
@@ -277,15 +311,16 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onBarcodeValidationChanged` instead
      */
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
+
     /**
-     * @deprecated use `onSelectedFramesLayoutChanged` instead
-     *
+     * @deprecated use `events.onDataSourceIdChanged` instead
      */
-    onSelectedFrameLayoutChanged?: (state: FrameLayoutType) => void;
+    onDataSourceIdChanged?: (connectorId?: Id) => void;
+
     /**
-     * @deprecated use `onSelectedFramesContentChanged` instead
+     * @deprecated use `events.onDocumentIssueListChanged` instead
      */
-    onSelectedFrameContentChanged?: (state: Frame | null) => void;
+    onDocumentIssueListChanged?: (documentIssues: DocumentIssue[]) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;
