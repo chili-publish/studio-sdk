@@ -1,4 +1,5 @@
 import { EditorAPI } from '../../../types/CommonTypes';
+import { ConfigHelper } from '../../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { ConnectorRegistrationSource } from '../../types/ConnectorTypes';
@@ -12,7 +13,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedSubscriberController = new SubscriberController(mockEditorApi);
+    mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
