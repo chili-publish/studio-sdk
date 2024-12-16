@@ -43,42 +43,27 @@ export class EngineCallbackHandler<T extends (...args: any[]) => any> extends En
     ): any {
         try {
             const result = callback(...args);
-
             // If the callback returns a promise, we need to await it
             if (result instanceof Promise) {
-                return result.catch((error) => {
-                    if (errorBehavior === CallbackErrorBehavior.log) {
-                        if (this.logger) {
-                            this.logger(LogLevel.error, LogCategory.event, `Error in callback ${key}: ${error}`);
-                        }
-                    } else if (errorBehavior === CallbackErrorBehavior.throw) {
-                        throw error;
-                    } else if (errorBehavior === CallbackErrorBehavior.remove) {
-                        this.callbacks.delete(key);
-                        if (this.logger) {
-                            this.logger(
-                                LogLevel.warn,
-                                LogCategory.event,
-                                `Removed callback ${key} due to error: ${error}`,
-                            );
-                        }
-                    }
-                });
+                return result.catch((error) => this.handleError(error, key, errorBehavior));
             }
-
             return result;
         } catch (error) {
-            if (errorBehavior === CallbackErrorBehavior.log) {
-                if (this.logger) {
-                    this.logger(LogLevel.error, LogCategory.event, `Error in callback ${key}: ${error}`);
-                }
-            } else if (errorBehavior === CallbackErrorBehavior.throw) {
-                throw error;
-            } else if (errorBehavior === CallbackErrorBehavior.remove) {
-                this.callbacks.delete(key);
-                if (this.logger) {
-                    this.logger(LogLevel.warn, LogCategory.event, `Removed callback ${key} due to error: ${error}`);
-                }
+            this.handleError(error, key, errorBehavior);
+        }
+    }
+
+    private handleError(error: unknown, key: string, errorBehavior: CallbackErrorBehavior) {
+        if (errorBehavior === CallbackErrorBehavior.log) {
+            if (this.logger) {
+                this.logger(LogLevel.error, LogCategory.event, `Error in callback ${key}: ${error}`);
+            }
+        } else if (errorBehavior === CallbackErrorBehavior.throw) {
+            throw error;
+        } else {
+            this.callbacks.delete(key);
+            if (this.logger) {
+                this.logger(LogLevel.warn, LogCategory.event, `Removed callback ${key} due to error: ${error}`);
             }
         }
     }
