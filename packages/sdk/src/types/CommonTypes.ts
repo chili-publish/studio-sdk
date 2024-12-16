@@ -5,7 +5,7 @@ import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
-import { DocumentType, UndoState } from './DocumentTypes';
+import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
@@ -71,6 +71,8 @@ export type ConfigType = {
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
     onDataSourceIdChanged?: (connectorId?: Id) => void;
+    onDocumentIssueListChanged?: (documentIssues: DocumentIssue[]) => void;
+
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
