@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CallbackErrorBehavior, LoggerFunction, LogLevel, LogCategory } from '../types/CommonTypes';
+import { CallbackErrorBehavior, LogCategory, LoggerFunction, LogLevel } from '../types/CommonTypes';
 import { EngineEventBase } from './EngineEventBase';
 
 export class EngineCallbackHandler<T extends (...args: any[]) => any> extends EngineEventBase {

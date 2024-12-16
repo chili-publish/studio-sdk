@@ -13,10 +13,10 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
-
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
+
+    mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
 
 afterEach(() => {
@@ -29,7 +29,7 @@ describe('Next.SubscriberController', () => {
             { id: '1', type: VariableType.group },
             { id: 'varList', type: VariableType.list, selected: 'Orange', items: ['Apple', 'Pear', 'Orange'] },
         ];
-        mockedSubscriberController.onVariableListChanged(JSON.stringify(variables));
+        await mockedSubscriberController.onVariableListChanged(JSON.stringify(variables));
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith(variables);
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledTimes(1);
     });
@@ -37,7 +37,7 @@ describe('Next.SubscriberController', () => {
     it('Should be possible to subscribe to onConnectorsChanged', async () => {
         const connectors = [{ id: 'id', name: 'name', source: ConnectorRegistrationSource.local }];
 
-        mockedSubscriberController.onConnectorsChanged(JSON.stringify(connectors));
+        await mockedSubscriberController.onConnectorsChanged(JSON.stringify(connectors));
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(connectors);
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });
