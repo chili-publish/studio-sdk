@@ -4,6 +4,7 @@ import {
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FitModeAlignment,
     FrameAnchorProperties,
     FrameAnchorTarget,
     FrameAnchorType,
@@ -52,6 +53,7 @@ const mockedEditorApi: EditorAPI = {
     selectMultipleFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameName: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    setImageFrameFitModeAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setMaxCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -102,6 +104,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'selectMultipleFrames');
     jest.spyOn(mockedEditorApi, 'setFrameName');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
+    jest.spyOn(mockedEditorApi, 'setImageFrameFitModeAlignment');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
     jest.spyOn(mockedEditorApi, 'setMaxCopyfitting');
@@ -336,6 +339,13 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
     });
+
+    it('Should be possible to set the image frame fit mode alignment', async () => {
+        await mockedFrameController.setImageFrameFitModeAlignment(id, FitModeAlignment.bottomCenter);
+        expect(mockedEditorApi.setImageFrameFitModeAlignment).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setImageFrameFitModeAlignment).toHaveBeenCalledWith(id, FitModeAlignment.bottomCenter);
+    });
+
 
     it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {
         await expect(mockedFrameController.setFrameConstrainProportions(id, true)).rejects.toThrow();
