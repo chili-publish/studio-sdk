@@ -26,7 +26,7 @@ export {
     UpdateZIndexMethod,
     VerticalAlign,
 } from './types/FrameTypes';
-export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
+export { DocumentIssueTypeEnum, LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 
 export { ViewMode } from './types/ViewModeTypes';
 
@@ -104,7 +104,16 @@ export type {
     PageType,
     SelectedLayoutFrame,
 } from './types/CommonTypes';
-export type { DocumentError } from './types/DocumentTypes';
+export type {
+    ActionCircularDocumentIssue,
+    ActionExecutionDocumentIssue,
+    ActionRegisterDocumentIssue,
+    DocumentError,
+    DocumentError,
+    DocumentIssue,
+    FontLoadingDocumentIssue,
+    OverflowDocumentIssue,
+} from './types/DocumentTypes';
 
 export type {
     AppearanceProperties,

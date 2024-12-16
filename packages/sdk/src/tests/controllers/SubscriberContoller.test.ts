@@ -6,6 +6,8 @@ import {
     ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
+    DocumentIssue,
+    DocumentIssueTypeEnum,
     Id,
     LayoutType,
     MeasurementUnit,
@@ -76,6 +78,7 @@ const mockEditorApi: ConfigType = {
     onViewportRequested: () => null,
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -116,6 +119,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
     mockedSubscriberController = new SubscriberController(
         ConfigHelper.createRuntimeConfig(mockEditorApi),
         mockLocalConfig,
@@ -498,5 +502,15 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
+    });
+
+    it('should be possible to subscribe to onDocumentIssueListChanged', async () => {
+        const documentIssues: DocumentIssue[] = [
+            { fontId: 'fontId', name: 'fontName', type: DocumentIssueTypeEnum.fontLoading },
+        ];
+        await mockedSubscriberController.onDocumentIssueListChanged(JSON.stringify(documentIssues));
+
+        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledWith(documentIssues);
     });
 });
