@@ -179,7 +179,13 @@ export class SDK {
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,
-                onConnectorsChanged: this.subscriber.onConnectorsChanged,
+                onConnectorsChanged: (state) => {
+                    if (this.enabledNextSubscribers?.onConnectorsChanged) {
+                        this.next.subscriber.onConnectorsChanged(state);
+                    } else {
+                        this.subscriber.onConnectorsChanged(state);
+                    }
+                },
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
                 onPagesChanged: this.subscriber.onPagesChanged,

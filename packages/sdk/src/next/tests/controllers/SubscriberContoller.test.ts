@@ -23,7 +23,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
-describe('SubscriberController', () => {
+describe('Next.SubscriberController', () => {
     it('Should be possible to subscribe to onVariableListChanged', async () => {
         const variables = [
             { id: '1', type: VariableType.group },

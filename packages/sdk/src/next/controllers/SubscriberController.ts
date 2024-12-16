@@ -30,7 +30,6 @@ export class SubscriberController {
      * @param connectors Stringified array of ConnectorInstance type
      */
     onConnectorsChanged = (connectors: string) => {
-        const callBack = this.config.onConnectorsChanged;
-        callBack && callBack(JSON.parse(connectors));
+        this.config.events.onConnectorsChanged.trigger(JSON.parse(connectors));
     };
 }
