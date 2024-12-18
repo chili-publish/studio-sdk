@@ -1,15 +1,26 @@
-import { CallbackErrorBehavior, LogLevel, LogCategory } from '../../types/CommonTypes';
+import { CallbackErrorBehavior, LogCategory, LogLevel } from '../../types/CommonTypes';
+import { Viewport } from '../../types/ViewportTypes';
+import { ConfigHelper } from '../../utils/ConfigHelper';
 import { EngineCallbackHandler } from '../../utils/EngineCallbackHandler';
 import { EngineEvent } from '../../utils/EngineEvent';
-import { ConfigHelper } from '../../utils/ConfigHelper';
 
 describe('EngineCallbackHandler', () => {
-    test('When handler has no value, we expect to return null', () => {
+    test('When handler has no value, we expect to return nothing', () => {
         const subscription = new EngineCallbackHandler(() => undefined);
 
         const result = subscription.trigger('arg1', 'arg2');
 
-        expect(result).toBeNull();
+        expect(result).toBeUndefined();
+    });
+
+    test('should execute the handler', () => {
+        const fn = jest.fn().mockReturnValue(42);
+        const subscription = new EngineCallbackHandler(() => fn);
+
+        const result = subscription.trigger('arg1', 'arg2');
+
+        expect(result).toEqual(42);
+        expect(fn).toHaveBeenCalledWith('arg1', 'arg2');
     });
 });
 
@@ -17,7 +28,7 @@ describe('EngineEvent with async callbacks', () => {
     let subscription: EngineEvent<(...args: unknown[]) => Promise<unknown>>;
 
     beforeEach(() => {
-        subscription = new EngineEvent();
+        subscription = new EngineEvent<(...args: unknown[]) => Promise<unknown>>(() => undefined);
     });
 
     test('should register and execute an async callback', async () => {
@@ -27,7 +38,7 @@ describe('EngineEvent with async callbacks', () => {
         const result = await subscription.trigger('arg1', 'arg2');
 
         expect(callback).toHaveBeenCalledWith('arg1', 'arg2');
-        expect(result).toBe('result');
+        expect(result).toBeUndefined();
     });
 
     test('should register multiple async callbacks and execute them', async () => {
@@ -40,7 +51,7 @@ describe('EngineEvent with async callbacks', () => {
 
         expect(callback1).toHaveBeenCalledWith('arg1', 'arg2');
         expect(callback2).toHaveBeenCalledWith('arg1', 'arg2');
-        expect(result).toBe('result2');
+        expect(result).toBeUndefined();
     });
 
     test('should handle legacy event handler', async () => {
@@ -51,7 +62,7 @@ describe('EngineEvent with async callbacks', () => {
         const result = await subscription.trigger('arg1', 'arg2');
 
         expect(legacyCallback).toHaveBeenCalledWith('arg1', 'arg2');
-        expect(result).toBe('result');
+        expect(result).toBeUndefined();
     });
 
     test('should execute all registered async callbacks including legacy handler', async () => {
@@ -69,15 +80,15 @@ describe('EngineEvent with async callbacks', () => {
         expect(legacyCallback).toHaveBeenCalledWith('arg1', 'arg2');
         expect(callback1).toHaveBeenCalledWith('arg1', 'arg2');
         expect(callback2).toHaveBeenCalledWith('arg1', 'arg2');
-        expect(result).toBe('result2');
+        expect(result).toBeUndefined();
     });
 });
 
-describe('EngineEvent', () => {
+describe('EngineEvent with sync callbacks', () => {
     let subscription: EngineEvent<(...args: unknown[]) => unknown>;
 
     beforeEach(() => {
-        subscription = new EngineEvent();
+        subscription = new EngineEvent(() => undefined);
     });
 
     test('should register and execute a callback', () => {
@@ -101,11 +112,11 @@ describe('EngineEvent', () => {
         expect(callback2).toHaveBeenCalledWith('arg1', 'arg2');
     });
 
-    test('should unsubscribe a callback by name', () => {
+    test('should unsubscribe from event listening', () => {
         const callback = jest.fn();
-        const callbackName = subscription.registerCallback(callback);
+        const unsubscribe = subscription.registerCallback(callback);
 
-        subscription.unsubscribeCallback(callbackName);
+        unsubscribe();
         subscription.trigger('arg1', 'arg2');
 
         expect(callback).not.toHaveBeenCalled();
@@ -194,10 +205,17 @@ describe('EventHelper', () => {
     });
     test('old (broken) workflow should remain intact', () => {
         let counter = 0;
+        let viewport: Viewport = {};
 
         const incomingConfig = {
             onActionsChanged: () => {
                 counter++;
+            },
+            onViewportRequested: () => {
+                viewport = {
+                    pageId: '222',
+                };
+                return viewport;
             },
         };
 
@@ -208,9 +226,17 @@ describe('EventHelper', () => {
         sdk.config.onActionsChanged = () => {
             counter = 100;
         };
+        sdk.config.onViewportRequested = () => {
+            viewport = {
+                pageId: '111',
+            };
+            return viewport;
+        };
         sdk.config.events.onActionsChanged.trigger([]);
+        sdk.config.handlers.onViewportRequested.trigger();
 
         expect(counter).toBe(100);
+        expect(viewport).toEqual({ pageId: '111' });
     });
 });
 
@@ -253,25 +279,6 @@ describe('EngineEvent Error Handling', () => {
         expect(errorCallback).toHaveBeenCalled();
     });
 
-    it('removes the callback when a callback errors out with REMOVE behavior', () => {
-        const engineEvent = new EngineEvent(() => undefined, mockLogger);
-        const errorCallback = jest.fn(() => {
-            throw new Error('Test Error');
-        });
-
-        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.remove);
-
-        engineEvent.trigger();
-
-        expect(mockLogger).toHaveBeenCalledWith(
-            LogLevel.warn,
-            LogCategory.event,
-            expect.stringContaining('Removed callback'),
-        );
-        expect(errorCallback).toHaveBeenCalled();
-        expect(() => engineEvent.trigger()).not.toThrow();
-    });
-
     it('executes legacy event handler if provided', () => {
         const legacyCallback = jest.fn();
         legacyEventHandler.mockReturnValue(legacyCallback);
@@ -291,19 +298,6 @@ describe('EngineEvent Error Handling', () => {
         });
 
         engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.log);
-
-        engineEvent.trigger();
-
-        expect(mockLogger).not.toHaveBeenCalled();
-    });
-
-    it('does not log if no logger provided for REMOVE behavior', () => {
-        const engineEvent = new EngineEvent(() => undefined);
-        const errorCallback = jest.fn(() => {
-            throw new Error('Test Error');
-        });
-
-        engineEvent.registerCallback(errorCallback, CallbackErrorBehavior.remove);
 
         engineEvent.trigger();
 

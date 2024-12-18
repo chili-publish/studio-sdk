@@ -64,17 +64,11 @@ export enum CallbackErrorBehavior {
      * Logs the error when encountering an error in a callback.
      */
     log = 'log',
-
-    /**
-     * Removes the callback when encountering an error in a callback.
-     */
-    remove = 'remove',
 }
 
 export type MaybePromise<T> = T | Promise<T>;
 
 export type ManagedCallbacksConfigType = {
-    errorBehavior: CallbackErrorBehavior;
     handlers: {
         onAuthExpired: EngineCallbackHandler<
             (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>

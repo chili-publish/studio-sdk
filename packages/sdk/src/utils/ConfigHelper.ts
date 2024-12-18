@@ -24,6 +24,7 @@ import { SelectedTextStyle } from '../types/TextStyleTypes';
 import { Variable } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { Viewport } from '../types/ViewportTypes';
+import { EngineCallbackHandler } from './EngineCallbackHandler';
 import { EngineEvent } from './EngineEvent';
 import { ToolType } from './Enums';
 
@@ -59,11 +60,10 @@ export class ConfigHelper {
                 }),
         };
         clone.handlers = {
-            onAuthExpired: new EngineEvent<(authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>>(
-                () => clone.onAuthExpired,
-                clone.logging?.logger,
-            ),
-            onViewportRequested: new EngineEvent<() => Viewport | null>(
+            onAuthExpired: new EngineCallbackHandler<
+                (authRefreshRequest: AuthRefreshRequest) => Promise<AuthCredentials | null>
+            >(() => clone.onAuthExpired, clone.logging?.logger),
+            onViewportRequested: new EngineCallbackHandler<() => Viewport | null>(
                 () => clone.onViewportRequested,
                 clone.logging?.logger,
             ),
