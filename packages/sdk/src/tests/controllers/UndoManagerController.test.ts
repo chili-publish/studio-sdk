@@ -15,6 +15,7 @@ describe('UndoManagerController', () => {
         redo: async () => getEditorResponseData(castToEditorResponse(null)),
         begin: async () => getEditorResponseData(castToEditorResponse(null)),
         beginIfNoneActive: async () => getEditorResponseData(castToEditorResponse(null)),
+        setCustomUndoData: async () => getEditorResponseData(castToEditorResponse(null)),
         end: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
@@ -24,6 +25,7 @@ describe('UndoManagerController', () => {
         jest.spyOn(mockEditorApi, 'undo');
         jest.spyOn(mockEditorApi, 'redo');
         jest.spyOn(mockEditorApi, 'begin');
+        jest.spyOn(mockEditorApi, 'setCustomUndoData');
         jest.spyOn(mockEditorApi, 'beginIfNoneActive');
         jest.spyOn(mockEditorApi, 'end');
     });
@@ -69,5 +71,14 @@ describe('UndoManagerController', () => {
         await mockedAdvancedUndoManagerController.beginIfNoneActive(operationName);
         expect(mockEditorApi.beginIfNoneActive).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.beginIfNoneActive).toHaveBeenCalledWith(operationName);
+    });
+
+    it('it sends the custom undo data', async () => {
+        const key = 'key';
+        const value = 'value';
+
+        await mockedUndoManagerController.addCustomData(key, value);
+        expect(mockEditorApi.setCustomUndoData).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setCustomUndoData).toHaveBeenCalledWith(key, value);
     });
 });

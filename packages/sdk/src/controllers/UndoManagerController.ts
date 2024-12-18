@@ -42,6 +42,19 @@ export class UndoManagerController {
     };
 
     /**
+     * This method adds custom data that will be saved and restored when undoing and redoing.
+     * Duplicate values are overwritten. The data is exposed via the onCustomUndoDataChanged event.
+     * 
+     * @param key The key of the custom data
+     * @param value The value of the custom data
+     * @returns 
+     */
+    addCustomData = async (key: string, value: string) => {
+        const res = await this.#editorAPI;
+        return res.setCustomUndoData(key, value).then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
      * Record any operations in the current scope. This will automatically begin
      * the undo operation. Once you leave the record scope, it will end the undo operation.
      * Even if you throw an exception inside the record scope it will still end it properly.
