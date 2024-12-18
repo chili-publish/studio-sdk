@@ -20,7 +20,10 @@ export class EngineEvent<T extends (...args: any[]) => void> extends EngineEvent
      * @returns The result of executing the callbacks.
      */
     trigger(...args: Parameters<T>): ReturnType<T> {
-        this.legacyHandler()?.(...args);
+        const handler = this.legacyHandler();
+        if (handler) {
+            this.createEventHandlerFn(handler, CallbackErrorBehavior.log)(...args);
+        }
         for (const callback of this.subscriptions) {
             callback(...args);
         }

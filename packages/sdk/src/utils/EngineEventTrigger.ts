@@ -5,7 +5,7 @@ export abstract class EngineEventTrigger<T extends (...args: any[]) => any> {
 
     abstract trigger(...args: Parameters<T>): ReturnType<T>;
 
-    protected createEventHandlerFn(callbackFn: T, errorBehavior: CallbackErrorBehavior = CallbackErrorBehavior.log): T {
+    protected createEventHandlerFn(callbackFn: T, errorBehavior: CallbackErrorBehavior): T {
         const wrapper: any = (...args: Parameters<T>) => {
             try {
                 const result = callbackFn(...args);

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoggerFunction } from '../types/CommonTypes';
+import { CallbackErrorBehavior, LoggerFunction } from '../types/CommonTypes';
 import { EngineEventTrigger } from './EngineEventTrigger';
 
 export class EngineCallbackHandler<T extends (...args: any[]) => any> extends EngineEventTrigger<T> {
@@ -13,6 +13,10 @@ export class EngineCallbackHandler<T extends (...args: any[]) => any> extends En
      * @returns The result of executing the callbacks.
      */
     trigger(...args: Parameters<T>): ReturnType<T> {
-        return this.handler()?.(...args);
+        const handler = this.handler();
+        if (handler) {
+            return this.createEventHandlerFn(handler, CallbackErrorBehavior.throw)(...args);
+        }
+        return undefined as ReturnType<T>;
     }
 }
