@@ -72,6 +72,7 @@ const mockEditorApi: EditorAPI = {
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCustomUndoDataChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -118,6 +119,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
+    jest.spyOn(mockEditorApi, 'onCustomUndoDataChanged');
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
@@ -347,6 +349,11 @@ describe('SubscriberController', () => {
     it('Should call trigger the UndoStateChanges subscriber when triggered', async () => {
         await mockedSubscriberController.onUndoStateChanged(JSON.stringify({ canRedo: false, canUndo: true }));
         expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call trigger the CustomUndoDataChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onCustomUndoDataChanged(JSON.stringify({ key: 'value' }));
+        expect(mockEditorApi.onCustomUndoDataChanged).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
