@@ -1,6 +1,6 @@
 import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Page } from '../types/PageTypes';
+import { Page, SnapshotSettings } from '../types/PageTypes';
 import { CallSender } from 'penpal';
 
 /**
@@ -101,13 +101,31 @@ export class PageController {
     };
 
     /**
+     * @deprecated Use 'getSnapshotWithSettings' instead
      * This method returns a UInt8Array containing a PNG encoded image of the page.
-     * @param pageId the id of a specific page
+     * @param pageId The id of a specific page.
+     * If not specified, selected page snapshot will be provided
      * @returns UInt8Array snapshot of the given page
      */
-    getSnapshot = async (pageId: Id) => {
+    getSnapshot = async (pageId?: Id) => {
         const res = await this.#blobAPI;
-        return res.getPageSnapshot(pageId).then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+        return res
+            .getPageSnapshotWithSettings(pageId, null)
+            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+    };
+
+    /**
+     * This method returns a UInt8Array containing a PNG encoded image of the page.
+     * @param pageId The id of a specific page.
+     * If not specified, selected page snapshot will be provided
+     * @param settings an object to specify desired snapshot properties, e.g., resolution
+     * @returns UInt8Array snapshot of the given page
+     */
+    getSnapshotWithSettings = async (pageId?: Id, settings?: SnapshotSettings) => {
+        const res = await this.#blobAPI;
+        return res
+            .getPageSnapshotWithSettings(pageId, JSON.stringify(settings))
+            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 
     /**
