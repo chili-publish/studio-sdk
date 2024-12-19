@@ -13,3 +13,7 @@ export type PageSize = {
     width: number;
     height: number;
 };
+
+export interface SnapshotSettings {
+    largestAxisSize?: number | null;
+}
