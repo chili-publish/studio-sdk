@@ -1,6 +1,7 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { PageController } from '../../controllers/PageController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { SnapshotSettings } from '../../types/PageTypes';
 
 let mockedPageController: PageController;
 
@@ -84,9 +85,11 @@ describe('PageController', () => {
     });
 
     it('Should call the getSnapshot method', async () => {
-        await mockedPageController.getSnapshot('1');
+        const settings = { largestAxisSize: 5 } as SnapshotSettings;
+
+        await mockedPageController.getSnapshot('1', settings);
         expect(mockEditorApi.getPageSnapshot).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getPageSnapshot).toHaveBeenCalledWith('1');
+        expect(mockEditorApi.getPageSnapshot).toHaveBeenCalledWith('1', JSON.stringify(settings));
     });
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
         await mockedPageController.setHeight('id', '4+2');
