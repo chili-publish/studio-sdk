@@ -1,5 +1,5 @@
 import { EditorAPI } from '../types/CommonTypes';
-import { ToolType } from '../utils/enums';
+import { ToolType } from '../utils/Enums';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**

@@ -1,4 +1,4 @@
-import * as ConnectorFunctions from '../../interactions/connector';
+import * as ConnectorFunctions from '../../interactions/Connector';
 
 const editorLink = 'https://test.test.net/';
 beforeEach(() => {
