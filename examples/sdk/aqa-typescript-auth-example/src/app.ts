@@ -23,7 +23,7 @@ async function handleRedirectCallback(auth0: Auth0Client) {
     (location.search.includes("code=") || location.search.includes("error="))
   ) {
     await auth0.handleRedirectCallback();
-    window.history.replaceState({}, document.title, window.location.origin);
+    window.history.replaceState({}, document.title, window.location.href);
     return await auth0.isAuthenticated();
   }
   return false;
