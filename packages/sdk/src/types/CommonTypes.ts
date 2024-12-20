@@ -50,6 +50,7 @@ export type ConfigType = {
     onVariableListChanged?: (variableList: Variable[]) => void;
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
+    onCustomUndoDataChanged?: (customData: Map<string,string>) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
     onSelectedTextStyleChanged?: (styles: SelectedTextStyle) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
