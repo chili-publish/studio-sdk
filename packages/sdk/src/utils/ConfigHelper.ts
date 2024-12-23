@@ -122,6 +122,10 @@ export class ConfigHelper {
                 () => clone.onUndoStackStateChanged,
                 clone.logging?.logger,
             ),
+            onCustomUndoDataChanged: new EngineEvent<(customData: Map<string, string>) => void>(
+                () => clone.onCustomUndoDataChanged,
+                clone.logging?.logger,
+            ),
             onSelectedLayoutFramesChanged: new EngineEvent<(frames: SelectedLayoutFrame[]) => MaybePromise<void>>(
                 () => clone.onSelectedLayoutFramesChanged,
                 clone.logging?.logger,

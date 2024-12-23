@@ -23,6 +23,7 @@ const mockConfig: RuntimeConfigType = ConfigHelper.createRuntimeConfig({
     onVariableListChanged: defaultMockReturn,
     onSelectedToolChanged: defaultMockReturn,
     onUndoStackStateChanged: jest.fn().mockResolvedValue({ success: true, status: 0 }),
+    onCustomUndoDataChanged: defaultMockReturn,
     onSelectedLayoutFramesChanged: defaultMockReturn,
     onSelectedTextStyleChanged: defaultMockReturn,
     onColorsChanged: defaultMockReturn,
