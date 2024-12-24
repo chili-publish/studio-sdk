@@ -219,13 +219,13 @@ export class SubscriberController {
 
     /**
      * Listener on custom undo data changes
-     * 
+     *
      * @param customData Stringified object of custom undo data
      */
     onCustomUndoDataChanged = (customData: string) => {
         const callBack = this.config.onCustomUndoDataChanged;
         callBack && callBack(JSON.parse(customData));
-    }
+    };
 
     /**
      * Listener on the state of the currently selected layout's frames, if this changes, this listener will get triggered with the updates
