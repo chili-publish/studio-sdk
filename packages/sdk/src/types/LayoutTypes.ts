@@ -40,6 +40,7 @@ export type LayoutWithFrameProperties = {
 export type Layout = {
     id: Id;
     name: string;
+    displayName?: string | null;
     parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
