@@ -83,7 +83,6 @@ interface ConfigParameterTypes {
     onBarcodeValidationChanged: (validationResults: string) => void;
     onDataSourceIdChanged: (connectorId?: Id) => void;
     onDocumentIssueListChanged: (documentIssues: string) => void;
-    onCustomUndoDataChanged: (customData: string) => void;
 }
 
 const Connect = (
