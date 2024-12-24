@@ -284,8 +284,8 @@ describe('LayoutController', () => {
             expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', null);
         });
     });
-  
-     it('should be possible to set private data', async () => {
+
+    it('should be possible to set private data', async () => {
         await mockedLayoutController.setPrivateData('1', { test: 'test' });
         expect(mockedEditorApi.setLayoutPrivateData).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayoutPrivateData).toHaveBeenCalledWith('1', '{"test":"test"}');

@@ -339,7 +339,7 @@ export class LayoutController {
         const res = await this.#editorAPI;
         return res.getLayoutPrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
     };
-  
+
     /**
      * Sets the display name for any layout
      * @param id the id of the layout to update
