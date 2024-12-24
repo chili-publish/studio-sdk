@@ -1,4 +1,4 @@
-import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
+import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     BleedDeltaUpdate,
@@ -317,6 +317,29 @@ export class LayoutController {
         return res.updateLayoutBleed(id, null).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * Sets the private data for any layout
+     * @param id the id of the layout to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: PrivateData) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutPrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any layout
+     * @param id the id of the layout
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutPrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+  
     /**
      * Sets the display name for any layout
      * @param id the id of the layout to update
