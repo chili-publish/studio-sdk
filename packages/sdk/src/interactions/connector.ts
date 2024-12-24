@@ -160,6 +160,7 @@ const Connect = (
                 selectedPageIdChanged: params.onSelectedPageIdChanged,
                 dataSourceIdChanged: params.onDataSourceIdChanged,
                 documentIssueListChanged: params.onDocumentIssueListChanged,
+                customUndoDataChanged: params.onCustomUndoDataChanged,
             },
         }),
     );
