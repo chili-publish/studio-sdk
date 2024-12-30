@@ -122,7 +122,7 @@ export class ConfigHelper {
                 () => clone.onUndoStackStateChanged,
                 clone.logging?.logger,
             ),
-            onCustomUndoDataChanged: new EngineEvent<(customData: Map<string, string>) => void>(
+            onCustomUndoDataChanged: new EngineEvent<(customData: Record<string, string>) => void>(
                 () => clone.onCustomUndoDataChanged,
                 clone.logging?.logger,
             ),

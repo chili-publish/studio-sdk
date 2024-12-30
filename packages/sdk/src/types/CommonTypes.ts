@@ -95,7 +95,7 @@ export type ManagedCallbacksConfigType = {
         onVariableListChanged: EngineEvent<(variableList: Variable[]) => MaybePromise<void>>;
         onSelectedToolChanged: EngineEvent<(tool: ToolType) => MaybePromise<void>>;
         onUndoStackStateChanged: EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>;
-        onCustomUndoDataChanged: EngineEvent<(customData: Map<string, string>) => void>;
+        onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => void>;
         onSelectedLayoutFramesChanged: EngineEvent<(frames: SelectedLayoutFrame[]) => MaybePromise<void>>;
         onSelectedTextStyleChanged: EngineEvent<(styles: SelectedTextStyle) => MaybePromise<void>>;
         onColorsChanged: EngineEvent<(colors: DocumentColor[]) => MaybePromise<void>>;
@@ -214,7 +214,7 @@ export type InitialCallbacksConfigType = {
      *
      * @deprecated use `events.onCustomUndoDataChanged` instead
      */
-    onCustomUndoDataChanged?: (customData: Map<string, string>) => void;
+    onCustomUndoDataChanged?: (customData: Record<string, string>) => void;
 
     /**
      * @deprecated use `events.onSelectedLayoutFramesChanged` instead
