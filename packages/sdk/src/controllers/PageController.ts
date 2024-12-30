@@ -70,13 +70,13 @@ export class PageController {
         return res.setPageIsVisible(pageId, isVisible).then((result) => getEditorResponseData<null>(result));
     };
 
-     /**
+    /**
      * @experimental
      * This method duplicates a certain page.
      * @param pageId the id of the page
      * @returns
      */
-     duplicate = async (pageId: Id) => {
+    duplicate = async (pageId: Id) => {
         const res = await this.#editorAPI;
         return res.duplicatePage(pageId).then((result) => getEditorResponseData<null>(result));
     };

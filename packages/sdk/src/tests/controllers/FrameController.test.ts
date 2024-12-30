@@ -68,7 +68,6 @@ const mockedEditorApi: EditorAPI = {
     enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -118,7 +117,6 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'enterCropMode');
     jest.spyOn(mockedEditorApi, 'applyCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
-    jest.spyOn(mockedEditorApi, 'resetAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
 
@@ -479,84 +477,6 @@ describe('ImageFrameSource manipulations', () => {
 
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, null);
-    });
-});
-
-describe('Auto grow resetting', () => {
-    it('should be possible to reset the auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrow(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetEnabled: true,
-                resetMinWidth: true,
-                resetMaxWidth: true,
-                resetMinHeight: true,
-                resetMaxHeight: true,
-                resetDirections: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the enabled auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowSettingsEnabled(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetEnabled: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the minWidth auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMinWidth(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(3);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetMinWidth: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the maxWidth auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMaxWidth(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(4);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetMaxWidth: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the minHeight auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMinHeight(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(5);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetMinHeight: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the maxHeight auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowMaxHeight(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(6);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetMaxHeight: true,
-            }),
-        );
-    });
-    it('should be possible to reset only the directions auto grow settings', async () => {
-        await mockedFrameController.resetAutoGrowDirections(id);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledTimes(7);
-        expect(mockedEditorApi.resetAutoGrowSettings).toHaveBeenCalledWith(
-            id,
-            JSON.stringify({
-                resetDirections: true,
-            }),
-        );
     });
 });
 

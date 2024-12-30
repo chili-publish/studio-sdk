@@ -183,15 +183,6 @@ export interface AutoGrowDeltaUpdate {
     };
 }
 
-export interface AutoGrowResetUpdate {
-    resetEnabled?: boolean;
-    resetMinWidth?: boolean;
-    resetMaxWidth?: boolean;
-    resetMinHeight?: boolean;
-    resetMaxHeight?: boolean;
-    resetDirections?: boolean;
-}
-
 export enum AutoGrowDirection {
     top = 'top',
     bottom = 'bottom',

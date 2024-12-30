@@ -15,7 +15,8 @@ const mockEditorApi: EditorAPI = {
     getPageSnapshot: async (id: unknown) => getEditorResponseData(castToEditorResponse([1])),
     selectPage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     duplicatePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
-    setPageIsVisible: async (id: unknown, isVisible: unknown) => getEditorResponseData(castToEditorResponse({id, isVisible})),
+    setPageIsVisible: async (id: unknown, isVisible: unknown) =>
+        getEditorResponseData(castToEditorResponse({ id, isVisible })),
     reorderPages: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
 };
 

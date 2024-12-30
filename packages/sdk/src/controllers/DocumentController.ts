@@ -62,8 +62,6 @@ export class DocumentController {
 
         const parsedDoc = JSON.stringify(preset);
 
-        return res
-            .createAndLoadDocument(parsedDoc)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.createAndLoadDocument(parsedDoc).then((result) => getEditorResponseData<null>(result));
     };
 }

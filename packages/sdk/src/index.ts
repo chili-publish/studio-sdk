@@ -26,7 +26,7 @@ export {
     FrameAnchorType,
     AnchorTargetEdgeType,
 } from './types/FrameTypes';
-export { DocumentType } from './types/DocumentTypes';
+export { DocumentType, DocumentIssueTypeEnum } from './types/DocumentTypes';
 
 export { ViewMode } from './types/ViewModeTypes';
 
@@ -79,13 +79,20 @@ export type {
     RelativeDate,
     AbsoluteDate,
     ValueWithStyle,
-    PrivateData,
 } from './types/VariableTypes';
 export { VariableType, Day, Locale } from './types/VariableTypes';
 
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 
-export type { DocumentError } from './types/DocumentTypes';
+export type {
+    DocumentError,
+    DocumentIssue,
+    OverflowDocumentIssue,
+    FontLoadingDocumentIssue,
+    ActionExecutionDocumentIssue,
+    ActionRegisterDocumentIssue,
+    ActionCircularDocumentIssue,
+} from './types/DocumentTypes';
 export type {
     FrameAnimationType,
     FrameAnimationPropertiesType,
@@ -103,6 +110,7 @@ export type {
     Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
+    PrivateData,
 } from './types/CommonTypes';
 export { ConnectorConfigValueType } from './types/CommonTypes';
 

@@ -5,7 +5,7 @@ import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { Variable } from './VariableTypes';
 import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
-import { DocumentType, UndoState } from './DocumentTypes';
+import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
@@ -50,6 +50,7 @@ export type ConfigType = {
     onVariableListChanged?: (variableList: Variable[]) => void;
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
+    onCustomUndoDataChanged?: (customData: Map<string,string>) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
     onSelectedTextStyleChanged?: (styles: SelectedTextStyle) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
@@ -71,6 +72,8 @@ export type ConfigType = {
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
     onDataSourceIdChanged?: (connectorId?: Id) => void;
+    onDocumentIssueListChanged?: (documentIssues: DocumentIssue[]) => void;
+
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
@@ -159,3 +162,5 @@ export interface ActionAsyncError extends AsyncErrorBase {
 }
 
 export type AsyncError = ActionAsyncError;
+
+export type PrivateData = Record<string, string>;
