@@ -247,8 +247,10 @@ export enum BlendMode {
 }
 
 export enum FitMode {
-    fit = 'fit',
     fill = 'fill',
+    fit = 'fit',
+    smartCrop = 'smartCrop',
+    manualCrop = 'manualCrop',
 }
 
 export enum UpdateZIndexMethod {
