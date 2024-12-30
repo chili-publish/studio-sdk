@@ -77,7 +77,6 @@ export type {
     ListVariableItem,
     LongTextVariable,
     NumberVariable,
-    PrivateData,
     RelativeDate,
     ShortTextVariable,
     ValueWithStyle,
@@ -103,6 +102,7 @@ export type {
     InitialStateType,
     MetaData,
     PageType,
+    PrivateData,
     SelectedLayoutFrame,
 } from './types/CommonTypes';
 export type {
