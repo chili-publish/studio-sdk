@@ -5,6 +5,8 @@ import {
     ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
+    DocumentIssue,
+    DocumentIssueTypeEnum,
     Id,
     LayoutType,
     MeasurementUnit,
@@ -70,6 +72,7 @@ const mockEditorApi: EditorAPI = {
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCustomUndoDataChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -77,6 +80,7 @@ const mockEditorApi: EditorAPI = {
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -115,6 +119,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
+    jest.spyOn(mockEditorApi, 'onCustomUndoDataChanged');
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
@@ -122,6 +127,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
 });
 
 afterEach(() => {
@@ -180,7 +186,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
-        await mockedSubscriberController.onPageSelectionChanged("a");
+        await mockedSubscriberController.onPageSelectionChanged('a');
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to the onStateChanged', async () => {
@@ -345,6 +351,11 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 
+    it('Should call trigger the CustomUndoDataChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onCustomUndoDataChanged(JSON.stringify({ key: 'value' }));
+        expect(mockEditorApi.onCustomUndoDataChanged).toHaveBeenCalledTimes(1);
+    });
+
     it('Should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
         const cornerRadius: CornerRadiusUpdateModel = { radiusAll: 5 };
         await mockedSubscriberController.onShapeCornerRadiusChanged(JSON.stringify(cornerRadius));
@@ -496,5 +507,15 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
+    });
+
+    it('should be possible to subscribe to onDocumentIssueListChanged', async () => {
+        const documentIssues: DocumentIssue[] = [
+            { fontId: 'fontId', name: 'fontName', type: DocumentIssueTypeEnum.fontLoading },
+        ];
+        await mockedSubscriberController.onDocumentIssueListChanged(JSON.stringify(documentIssues));
+
+        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledWith(documentIssues);
     });
 });

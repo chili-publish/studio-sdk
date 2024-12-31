@@ -1,6 +1,6 @@
 {
     "name": "actions",
-    "version": "1.17.2-rc.2",
+    "version": "1.18.1-rc.5",
     "apiVersion": "1.0",
     "license": "MIT",
     "scripts": {

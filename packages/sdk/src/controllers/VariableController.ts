@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../types/CommonTypes';
+import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
     DateRestriction,
@@ -9,7 +9,6 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
-    PrivateData,
     Variable,
     VariableType,
 } from '../types/VariableTypes';
@@ -322,7 +321,7 @@ export class VariableController {
      * @param label label of the variable
      * @returns
      */
-    setLabel = async (id: string, label: string) => {
+    setLabel = async (id: string, label: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariableLabel(id, label).then((result) => getEditorResponseData<null>(result));
     };
