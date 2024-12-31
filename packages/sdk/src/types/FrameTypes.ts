@@ -18,6 +18,7 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     isVisible: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
+    fitModeAlignment: PropertyState<FitModeAlignment>;
     hasImageCrop: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
@@ -251,6 +252,18 @@ export enum FitMode {
     fit = 'fit',
     smartCrop = 'smartCrop',
     manualCrop = 'manualCrop',
+}
+
+export enum FitModeAlignment {
+    topLeft = 'topLeft',
+    topCenter = 'topCenter',
+    topRight = 'topRight',
+    centerLeft = 'centerLeft',
+    center = 'center',
+    centerRight = 'centerRight',
+    bottomLeft = 'bottomLeft',
+    bottomCenter = 'bottomCenter',
+    bottomRight = 'bottomRight',
 }
 
 export enum UpdateZIndexMethod {
