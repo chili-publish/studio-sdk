@@ -30,7 +30,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
-describe('ConnectorController', () => {
+describe('Next.ConnectorController', () => {
     const connectorId = 'dam';
 
     it('Should call the getById method', async () => {
