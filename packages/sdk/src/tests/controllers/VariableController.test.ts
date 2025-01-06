@@ -5,11 +5,10 @@ import {
     ListVariable,
     ListVariableItem,
     Locale,
-    PrivateData,
     Variable,
     VariableType,
 } from '../../types/VariableTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, PrivateData } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 
