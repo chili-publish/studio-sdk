@@ -6,7 +6,7 @@ import {
     AutoGrowDirection,
     BlendMode,
     FitMode,
-    FitModeAlignment,
+    FitModePosition,
     FrameAnchorProperties,
     FrameAnchorType,
     FrameLayoutType,
@@ -330,7 +330,7 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the fitMode, alignment and crop properties of a specific frame to its original value
+     * This method will reset the fitMode, position and crop properties of a specific frame to its original value
      * @param id the id of the frame that needs to get reset
      * @returns
      */
@@ -495,14 +495,14 @@ export class FrameController {
     };
 
     /**
-     * This method will set the fit mode alignment property of a specified image frame.
+     * This method will set the fit mode position property of a specified image frame.
      * @param imageFrameId the id of the imageFrame that needs to get updated.
-     * @param alignment the new alignment that you want to set to the imageFrame.
+     * @param position the new position that you want to set to the imageFrame.
      * @returns
      */
-    setImageFrameFitModeAlignment = async (imageFrameId: Id, alignment: FitModeAlignment) => {
+    setImageFrameFitModePosition = async (imageFrameId: Id, position: FitModePosition) => {
         const res = await this.#editorAPI;
-        return res.setImageFrameFitModeAlignment(imageFrameId, alignment).then((result) => getEditorResponseData<null>(result));
+        return res.setImageFrameFitModePosition(imageFrameId, position).then((result) => getEditorResponseData<null>(result));
     };
     
     /**
