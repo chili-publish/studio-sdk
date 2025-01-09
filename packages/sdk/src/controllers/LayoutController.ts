@@ -346,7 +346,7 @@ export class LayoutController {
      * @param displayName the display name
      * @returns
      */
-    setDisplayName = async (id: string, displayName: string | null) => {
+    setDisplayName = async (id: string, displayName: string) => {
         const res = await this.#editorAPI;
         return res.setLayoutDisplayName(id, displayName).then((result) => getEditorResponseData<null>(result));
     };
