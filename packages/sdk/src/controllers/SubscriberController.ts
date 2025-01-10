@@ -455,7 +455,7 @@ export class SubscriberController {
 
     /**
      * Listener on engine editing mode, if this changes, this listener will get triggered with the updates
-     * @param documentIssues Stringified object of engine editing mode
+     * @param engineEditing Stringified object of engine editing mode
      */
     onEngineEditingModeChanged = (engineEditing: string) => {
         const callBack = this.config.onEngineEditingModeChanged;
