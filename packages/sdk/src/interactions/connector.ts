@@ -84,6 +84,7 @@ interface ConfigParameterTypes {
     onDataSourceIdChanged: (connectorId?: Id) => void;
     onDocumentIssueListChanged: (documentIssues: string) => void;
     onCustomUndoDataChanged: (customData: string) => void;
+    onEngineEditingModeChanged: (engineEditing: string) => void;
 }
 
 const Connect = (
@@ -161,6 +162,7 @@ const Connect = (
                 dataSourceIdChanged: params.onDataSourceIdChanged,
                 documentIssueListChanged: params.onDocumentIssueListChanged,
                 customUndoDataChanged: params.onCustomUndoDataChanged,
+                engineEditingModeChanged: params.onDocumentIssueListChanged,
             },
         }),
     );
