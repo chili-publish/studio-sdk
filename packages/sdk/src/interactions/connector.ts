@@ -162,7 +162,7 @@ const Connect = (
                 dataSourceIdChanged: params.onDataSourceIdChanged,
                 documentIssueListChanged: params.onDocumentIssueListChanged,
                 customUndoDataChanged: params.onCustomUndoDataChanged,
-                engineEditingModeChanged: params.onDocumentIssueListChanged,
+                engineEditingModeChanged: params.onEngineEditingModeChanged,
             },
         }),
     );
