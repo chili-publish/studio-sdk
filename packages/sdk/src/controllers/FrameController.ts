@@ -6,6 +6,7 @@ import {
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FitModePosition,
     FrameAnchorProperties,
     FrameAnchorType,
     FrameLayoutType,
@@ -329,7 +330,7 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the fitMode property of a specific frame to its original value
+     * This method will reset the fitMode, position and crop properties of a specific frame to its original value
      * @param id the id of the frame that needs to get reset
      * @returns
      */
@@ -493,6 +494,17 @@ export class FrameController {
         return res.setImageFrameFitMode(imageFrameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method will set the fit mode position property of a specified image frame.
+     * @param imageFrameId the id of the imageFrame that needs to get updated.
+     * @param position the new position that you want to set to the imageFrame.
+     * @returns
+     */
+    setImageFrameFitModePosition = async (imageFrameId: Id, position: FitModePosition) => {
+        const res = await this.#editorAPI;
+        return res.setImageFrameFitModePosition(imageFrameId, position).then((result) => getEditorResponseData<null>(result));
+    };
+    
     /**
      * @deprecated the constrain proportions setter is not supported anymore.
      *
@@ -672,7 +684,7 @@ export class FrameController {
     };
 
     /**
-     * @deprecated This method no longer has any effect. Use 'setFitMode' instead
+     * @deprecated This method no longer has any effect. Use 'setImageFrameFitMode' or 'resetImageFrameFitMode' instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     resetCropMode = async (_id: Id) => {
