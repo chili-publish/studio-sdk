@@ -1,12 +1,12 @@
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
-    Layout,
-    MeasurementUnit,
-    LayoutIntent,
-    PositionEnum,
     BleedDeltaUpdate,
+    Layout,
+    LayoutIntent,
     LayoutPreset,
+    MeasurementUnit,
+    PositionEnum,
 } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
@@ -338,5 +338,36 @@ export class LayoutController {
     getPrivateData = async (id: string) => {
         const res = await this.#editorAPI;
         return res.getLayoutPrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+
+    /**
+     * Sets the display name for any layout
+     * @param id the id of the layout to update
+     * @param displayName the display name
+     * @returns
+     */
+    setDisplayName = async (id: string, displayName: string) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutDisplayName(id, displayName).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the display name for any layout
+     * @param id the id of the layout
+     * @returns the display name
+     */
+    getDisplayName = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutDisplayName(id).then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * Resets the display name for any layout
+     * @param id the id of the layout to update
+     * @returns
+     */
+    resetDisplayName = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutDisplayName(id, null).then((result) => getEditorResponseData<null>(result));
     };
 }
