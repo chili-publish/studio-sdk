@@ -209,6 +209,10 @@ export class ConfigHelper {
                 () => clone.onDocumentIssueListChanged,
                 clone.logging.logger,
             ),
+            onCustomUndoDataChanged: new EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>(
+                () => clone.onCustomUndoDataChanged,
+                clone.logging.logger,
+            ),
         };
         return clone;
     }

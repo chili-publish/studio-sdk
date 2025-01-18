@@ -1,3 +1,4 @@
+import { PrivateData } from './CommonTypes';
 export interface ConnectorImageVariableSource {
     connectorId: string;
     /**
@@ -47,8 +48,6 @@ export interface Variable {
     helpText?: string | null;
     privateData: PrivateData;
 }
-
-export type PrivateData = Record<string, string>;
 
 export interface ImageVariable extends Variable {
     value?: ConnectorImageVariableSource;

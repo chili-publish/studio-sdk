@@ -316,6 +316,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onDocumentIssueListChanged` instead
      */
     onDocumentIssueListChanged?: (documentIssues: DocumentIssue[]) => void;
+
+    /**
+     * @deprecated use `events.onCustomUndoDataChanged` instead
+     */
+    onCustomUndoDataChanged?: (undoStackState: UndoState) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;
@@ -404,3 +409,5 @@ export interface ActionAsyncError extends AsyncErrorBase {
 }
 
 export type AsyncError = ActionAsyncError;
+
+export type PrivateData = Record<string, string>;
