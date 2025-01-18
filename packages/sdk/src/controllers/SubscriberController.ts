@@ -190,8 +190,7 @@ export class SubscriberController {
      * @param customData Stringified object of custom undo data
      */
     onCustomUndoDataChanged = (customData: string) => {
-        const callBack = this.config.onCustomUndoDataChanged;
-        callBack && callBack(JSON.parse(customData));
+        this.config.events.onCustomUndoDataChanged.trigger(JSON.parse(customData));
     };
 
     /**

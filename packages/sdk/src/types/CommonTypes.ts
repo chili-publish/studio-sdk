@@ -113,6 +113,7 @@ export type ManagedCallbacksConfigType = {
         >;
         onDataSourceIdChanged: EngineEvent<(connectorId?: Id) => MaybePromise<void>>;
         onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
+        onCustomUndoDataChanged: EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>;
     };
 };
 
