@@ -104,6 +104,7 @@ export type {
     MetaData,
     PageType,
     SelectedLayoutFrame,
+    PrivateData,
 } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
