@@ -18,6 +18,7 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     isVisible: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
+    fitModePosition: PropertyState<FitModePosition>;
     hasImageCrop: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
@@ -247,8 +248,22 @@ export enum BlendMode {
 }
 
 export enum FitMode {
-    fit = 'fit',
     fill = 'fill',
+    fit = 'fit',
+    smartCrop = 'smartCrop',
+    manualCrop = 'manualCrop',
+}
+
+export enum FitModePosition {
+    topLeft = 'topLeft',
+    topCenter = 'topCenter',
+    topRight = 'topRight',
+    centerLeft = 'centerLeft',
+    center = 'center',
+    centerRight = 'centerRight',
+    bottomLeft = 'bottomLeft',
+    bottomCenter = 'bottomCenter',
+    bottomRight = 'bottomRight',
 }
 
 export enum UpdateZIndexMethod {
