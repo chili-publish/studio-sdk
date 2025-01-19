@@ -209,7 +209,7 @@ export class ConfigHelper {
                 () => clone.onDocumentIssueListChanged,
                 clone.logging.logger,
             ),
-            onCustomUndoDataChanged: new EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>(
+            onCustomUndoDataChanged: new EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>(
                 () => clone.onCustomUndoDataChanged,
                 clone.logging.logger,
             ),

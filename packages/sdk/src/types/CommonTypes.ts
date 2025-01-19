@@ -113,7 +113,7 @@ export type ManagedCallbacksConfigType = {
         >;
         onDataSourceIdChanged: EngineEvent<(connectorId?: Id) => MaybePromise<void>>;
         onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
-        onCustomUndoDataChanged: EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>;
+        onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
     };
 };
 
@@ -320,7 +320,7 @@ export type InitialCallbacksConfigType = {
     /**
      * @deprecated use `events.onCustomUndoDataChanged` instead
      */
-    onCustomUndoDataChanged?: (undoStackState: UndoState) => void;
+    onCustomUndoDataChanged?: (customData: Record<string, string>) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;
