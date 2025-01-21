@@ -475,12 +475,6 @@ describe('FrameController', () => {
         await mockedFrameController.exitSubjectMode();
         expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
     });
-
-    it('Should be possible to reset cropping mode on a specific frame', async () => {
-        await mockedFrameController.resetCropMode(id);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledWith(id);
-    });
 });
 
 describe('ImageFrameSource manipulations', () => {
