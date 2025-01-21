@@ -191,6 +191,7 @@ export class SDK {
                 onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
                 onDocumentIssueListChanged: this.subscriber.onDocumentIssueListChanged,
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
+                onEngineEditingModeChanged: this.subscriber.onEngineEditingModeChanged,
             },
             this.setConnection,
             this.config.editorId,

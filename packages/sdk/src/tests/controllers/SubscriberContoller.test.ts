@@ -35,6 +35,7 @@ import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import * as Next from '../../next/types/ConnectorTypes';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
+import { EngineEditingMode } from '../../types/EngineEditingType';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -81,6 +82,7 @@ const mockEditorApi: EditorAPI = {
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onEngineEditingModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -128,6 +130,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
+    jest.spyOn(mockEditorApi, 'onEngineEditingModeChanged');
 });
 
 afterEach(() => {
@@ -517,5 +520,15 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledWith(documentIssues);
+    });
+
+    it('Should call onEngineEditingModeChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onEngineEditingModeChanged(
+            JSON.stringify([{ frameId: '1', mode: EngineEditingMode.frameSubjectArea }]),
+        );
+        expect(mockEditorApi.onEngineEditingModeChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onEngineEditingModeChanged).toHaveBeenCalledWith([
+            { frameId: '1', mode: EngineEditingMode.frameSubjectArea },
+        ]);
     });
 });

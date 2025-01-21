@@ -16,6 +16,7 @@ import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
+import { EngineEditing } from './EngineEditingType';
 
 export type Id = string;
 
@@ -73,6 +74,7 @@ export type ConfigType = {
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
     onDataSourceIdChanged?: (connectorId?: Id) => void;
     onDocumentIssueListChanged?: (documentIssues: DocumentIssue[]) => void;
+    onEngineEditingModeChanged?: (engineEditing: EngineEditing) => void;
 
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
