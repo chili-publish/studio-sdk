@@ -39,6 +39,8 @@ import { NextSubscribers } from './next';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 import { ConfigurationController } from './controllers/ConfigurationController';
 import { DataConnectorController } from './controllers/DataConnectorController';
+import { DataItemMappingTools } from './utils/DataItemMappingTools';
+import { DataSourceController } from './controllers/DataSourceController';
 
 let connection: Connection;
 
@@ -63,6 +65,7 @@ export class SDK {
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
     dataConnector: DataConnectorController;
+    dataSource: DataSourceController;
     animation: AnimationController;
     document: DocumentController;
     configuration: ConfigurationController;
@@ -87,6 +90,7 @@ export class SDK {
     private subscriber: SubscriberController;
     private enabledNextSubscribers: NextSubscribers | undefined;
     private localConfig = new Map<string, string>();
+    private dataItemMappingTools = new DataItemMappingTools();
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -108,7 +112,8 @@ export class SDK {
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.dataConnector = new DataConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
+        this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
 
@@ -174,12 +179,18 @@ export class SDK {
                 onConnectorEvent: this.subscriber.onConnectorEvent,
                 onConnectorsChanged: this.subscriber.onConnectorsChanged,
                 onZoomChanged: this.subscriber.onZoomChanged,
+                onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
+                onPagesChanged: this.subscriber.onPagesChanged,
+                onPageSnapshotInvalidated: this.subscriber.onPageSnapshotInvalidated,
                 onPageSizeChanged: this.subscriber.onPageSizeChanged,
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
                 onViewModeChanged: this.subscriber.onViewModeChanged,
                 onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
+                onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
+                onDocumentIssueListChanged: this.subscriber.onDocumentIssueListChanged,
+                onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -207,7 +218,8 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.dataConnector = new DataConnectorController(this.editorAPI);
+        this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
+        this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
         this.font = new FontController(this.editorAPI);

@@ -1,12 +1,12 @@
-import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
+import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
-    Layout,
-    MeasurementUnit,
-    LayoutIntent,
-    PositionEnum,
     BleedDeltaUpdate,
+    Layout,
+    LayoutIntent,
     LayoutPreset,
+    MeasurementUnit,
+    PositionEnum,
 } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
@@ -91,7 +91,7 @@ export class LayoutController {
                 .addLayouts(parentId, JSON.stringify(presets))
                 .then((result) => getEditorResponseData<Id>(result));
         }
-        
+
         return res.addLayout(parentId).then((result) => getEditorResponseData<Id>(result));
     };
 
@@ -201,7 +201,9 @@ export class LayoutController {
     };
 
     /**
+     * @deprecated
      * This method returns a UInt8Array containing a PNG encoded image of the currently selected layout.
+     * This method is deprecated, please use getSnapshot in the PageController
      * @returns UInt8Array snapshot of the current layout
      */
     getSelectedSnapshot = async () => {
@@ -313,5 +315,59 @@ export class LayoutController {
     resetBleedValues = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.updateLayoutBleed(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the private data for any layout
+     * @param id the id of the layout to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: PrivateData) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutPrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any layout
+     * @param id the id of the layout
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutPrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+
+    /**
+     * Sets the display name for any layout
+     * @param id the id of the layout to update
+     * @param displayName the display name
+     * @returns
+     */
+    setDisplayName = async (id: string, displayName: string) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutDisplayName(id, displayName).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the display name for any layout
+     * @param id the id of the layout
+     * @returns the display name
+     */
+    getDisplayName = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutDisplayName(id).then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * Resets the display name for any layout
+     * @param id the id of the layout to update
+     * @returns
+     */
+    resetDisplayName = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutDisplayName(id, null).then((result) => getEditorResponseData<null>(result));
     };
 }

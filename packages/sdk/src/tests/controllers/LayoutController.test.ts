@@ -33,6 +33,11 @@ const mockedEditorApi: EditorAPI = {
     setLayoutFillColorEnabled: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
     updateLayoutBleed: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutPrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
+    getLayoutPrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    getLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -61,6 +66,11 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetLayoutFillColor');
     jest.spyOn(mockedEditorApi, 'setLayoutFillColorEnabled');
     jest.spyOn(mockedEditorApi, 'updateLayoutBleed');
+    jest.spyOn(mockedEditorApi, 'setLayoutPrivateData');
+    jest.spyOn(mockedEditorApi, 'getLayoutPrivateData');
+    jest.spyOn(mockedEditorApi, 'setLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'getLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'resetLayoutDisplayName');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -273,5 +283,34 @@ describe('LayoutController', () => {
             expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', null);
         });
+    });
+
+    it('should be possible to set private data', async () => {
+        await mockedLayoutController.setPrivateData('1', { test: 'test' });
+        expect(mockedEditorApi.setLayoutPrivateData).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutPrivateData).toHaveBeenCalledWith('1', '{"test":"test"}');
+    });
+    it('should be possible to get private data', async () => {
+        await mockedLayoutController.getPrivateData('1');
+        expect(mockedEditorApi.getLayoutPrivateData).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getLayoutPrivateData).toHaveBeenCalledWith('1');
+    });
+
+    it('Should be possible to set the display name', async () => {
+        await mockedLayoutController.setDisplayName('1', 'new-name');
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledWith('1', 'new-name');
+    });
+
+    it('Should be possible to reset the display name', async () => {
+        await mockedLayoutController.resetDisplayName('1');
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledWith('1', null);
+    });
+
+    it('Should be possible to get the display name', async () => {
+        await mockedLayoutController.getDisplayName('1');
+        expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledWith('1');
     });
 });

@@ -22,6 +22,7 @@ const mockConfig: ConfigType = {
     onVariableListChanged: defaultMockReturn,
     onSelectedToolChanged: defaultMockReturn,
     onUndoStackStateChanged: jest.fn().mockResolvedValue({ success: true, status: 0 }),
+    onCustomUndoDataChanged: defaultMockReturn,
     onSelectedLayoutFramesChanged: defaultMockReturn,
     onSelectedTextStyleChanged: defaultMockReturn,
     onColorsChanged: defaultMockReturn,
@@ -32,6 +33,8 @@ const mockConfig: ConfigType = {
     onLayoutsChanged: defaultMockReturn,
     onConnectorEvent: defaultMockReturn,
     onZoomChanged: defaultMockReturn,
+    onSelectedPageIdChanged: defaultMockReturn,
+    onPagesChanged: defaultMockReturn,
     onPageSizeChanged: defaultMockReturn,
     onViewModeChanged: defaultMockReturn,
 };

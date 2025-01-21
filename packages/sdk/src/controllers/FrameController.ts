@@ -1,8 +1,14 @@
 import type { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
+    AnchorTarget,
+    AutoGrowDeltaUpdate,
+    AutoGrowDirection,
     BlendMode,
     FitMode,
+    FitModePosition,
+    FrameAnchorProperties,
+    FrameAnchorType,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
@@ -12,12 +18,6 @@ import {
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
     VerticalAlign,
-    AutoGrowDeltaUpdate,
-    AutoGrowDirection,
-    AutoGrowResetUpdate,
-    FrameAnchorType,
-    FrameAnchorProperties,
-    AnchorTarget,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -330,7 +330,7 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the fitMode property of a specific frame to its original value
+     * This method will reset the fitMode, position and crop properties of a specific frame to its original value
      * @param id the id of the frame that needs to get reset
      * @returns
      */
@@ -495,17 +495,28 @@ export class FrameController {
     };
 
     /**
+     * This method will set the fit mode position property of a specified image frame.
+     * @param imageFrameId the id of the imageFrame that needs to get updated.
+     * @param position the new position that you want to set to the imageFrame.
+     * @returns
+     */
+    setImageFrameFitModePosition = async (imageFrameId: Id, position: FitModePosition) => {
+        const res = await this.#editorAPI;
+        return res.setImageFrameFitModePosition(imageFrameId, position).then((result) => getEditorResponseData<null>(result));
+    };
+    
+    /**
      * @deprecated the constrain proportions setter is not supported anymore.
      *
      * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
      * true, the frame's constrainProportions property cannot be changed and this method will return an error.
      *
-     * @param id the id of the frame that needs to get updated.
-     * @param constrainProportions The new constraint that you want to set to the frame.
+     * @param _id the id of the frame that needs to get updated.
+     * @param _constrainProportions The new constraint that you want to set to the frame.
      * @returns
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setFrameConstrainProportions = async (id: Id, constrainProportions: boolean) => {
+    setFrameConstrainProportions = async (_id: Id, _constrainProportions: boolean) => {
         console.error('setFrameConstrainProportions is not supported anymore');
 
         const res: EditorResponse<null> = {
@@ -673,14 +684,23 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the currently applied crop mode and apply the last selected fit mode again.
-     * @param id the id of a specific image frame
-     * @returns
+     * @deprecated This method no longer has any effect. Use 'setImageFrameFitMode' or 'resetImageFrameFitMode' instead
      */
-    resetCropMode = async (id: Id) => {
-        const res = await this.#editorAPI;
-        return res.resetCropMode(id).then((result) => getEditorResponseData<null>(result));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetCropMode = async (_id: Id) => {
+        console.error('resetCropMode is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetCropMode is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
     };
+
+    
 
     /**
      * This method will exit cropping mode without saving the applied crop.
@@ -776,101 +796,122 @@ export class FrameController {
     };
 
     /**
-     * This method will reset the auto grow enabled property of a specified frame to its original value
-     * @param id the id of the frame that needs to get reset
-     * @returns
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
      */
-    resetAutoGrowSettingsEnabled = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { resetEnabled: true };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
-    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrowSettingsEnabled = async (_id: Id) => {
+        console.error('resetAutoGrowSettingsEnabled is not supported anymore');
 
-    /**
-     * This method will reset the auto grow minWidth property of a specified frame to its original value
-     * @param id the id of the frame that needs to get reset
-     * @returns
-     */
-    resetAutoGrowMinWidth = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { resetMinWidth: true };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the auto grow maxWidth property of a specified frame to its original value
-     * @param id the id of the frame that needs to get reset
-     * @returns
-     */
-    resetAutoGrowMaxWidth = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { resetMaxWidth: true };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the auto grow minHeight property of a specified frame to its original value
-     * @param id the id of the frame that needs to get reset
-     * @returns
-     */
-    resetAutoGrowMinHeight = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { resetMinHeight: true };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the auto grow maxHeight property of a specified frame to its original value
-     * @param id the id of the frame that needs to get reset
-     * @returns
-     */
-    resetAutoGrowMaxHeight = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { resetMaxHeight: true };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset the auto grow directions property of a specified frame to its original value
-     * @param id the id of the frame that needs to get reset
-     * @returns
-     */
-    resetAutoGrowDirections = async (id: Id) => {
-        const update: AutoGrowResetUpdate = { resetDirections: true };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will reset all auto grow properties of a specified frame to their original values
-     * @param id the id of the frame that needs to get reset
-     * @returns
-     */
-    resetAutoGrow = async (id: Id) => {
-        const update: AutoGrowResetUpdate = {
-            resetEnabled: true,
-            resetMinWidth: true,
-            resetMaxWidth: true,
-            resetMinHeight: true,
-            resetMaxHeight: true,
-            resetDirections: true,
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrowSettingsEnabled is not supported anymore',
+            parsedData: null,
         };
-        const res = await this.#editorAPI;
-        return res
-            .resetAutoGrowSettings(id, JSON.stringify(update))
-            .then((result) => getEditorResponseData<null>(result));
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrowMinWidth = async (_id: Id) => {
+        console.error('resetAutoGrowMinWidth is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrowMinWidth is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrowMaxWidth = async (_id: Id) => {
+        console.error('resetAutoGrowMaxWidth is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrowMaxWidth is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrowMinHeight = async (_id: Id) => {
+        console.error('resetAutoGrowMinHeight is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrowMinHeight is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrowMaxHeight = async (_id: Id) => {
+        console.error('resetAutoGrowMaxHeight is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrowMaxHeight is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrowDirections = async (_id: Id) => {
+        console.error('resetAutoGrowDirections is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrowDirections is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated This method no longer has any effect. Use `resetTransformation` instead
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resetAutoGrow = async (_id: Id) => {
+        console.error('resetAutoGrow is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'resetAutoGrow is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
     };
 
     private setAnchor = async (

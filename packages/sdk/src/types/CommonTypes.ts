@@ -1,20 +1,20 @@
 import { CallSender } from 'penpal';
+import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
-import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
+import { BarcodeFrameValidationResult } from './BarcodeTypes';
+import { CharacterStyle } from './CharacterStyleTypes';
+import { DocumentColor } from './ColorStyleTypes';
+import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
+import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
+import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
-import { Variable } from './VariableTypes';
-import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
-import { DocumentType, UndoState } from './DocumentTypes';
-import { DocumentColor } from './ColorStyleTypes';
+import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
+import { Page, PageSize } from './PageTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
-import { CharacterStyle } from './CharacterStyleTypes';
-import { BarcodeFrameValidationResult } from './BarcodeTypes';
-import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
-import { PageSize } from './PageTypes';
-import { SelectedTextStyle } from './TextStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
-import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
+import { SelectedTextStyle } from './TextStyleTypes';
+import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
 
 export type Id = string;
@@ -42,7 +42,7 @@ export type ConfigType = {
     documentType?: DocumentType;
     studioStyling?: StudioStyling;
     studioOptions?: StudioOptionsDeltaUpdate;
-    onPageSelectionChanged?: () => void;
+    onPageSelectionChanged?: (id: Id) => void;
     onSelectedLayoutPropertiesChanged?: (state: LayoutPropertiesType) => void;
     onSelectedLayoutUnitChanged?: (unit: MeasurementUnit) => void;
     onScrubberPositionChanged?: (state: AnimationPlaybackType) => void;
@@ -50,6 +50,7 @@ export type ConfigType = {
     onVariableListChanged?: (variableList: Variable[]) => void;
     onSelectedToolChanged?: (tool: ToolType) => void;
     onUndoStackStateChanged?: (undoStackState: UndoState) => void;
+    onCustomUndoDataChanged?: (customData: Record<string, string>) => void;
     onSelectedLayoutFramesChanged?: (frames: SelectedLayoutFrame[]) => void;
     onSelectedTextStyleChanged?: (styles: SelectedTextStyle) => void;
     onColorsChanged?: (colors: DocumentColor[]) => void;
@@ -61,12 +62,18 @@ export type ConfigType = {
     onConnectorEvent?: (event: ConnectorEvent) => void;
     onConnectorsChanged?: (connectors: ConnectorInstance[]) => void;
     onZoomChanged?: (scaleFactor: number) => void;
+    onSelectedPageIdChanged?: (pageId: Id) => void;
+    onPagesChanged?: (pages: Page[]) => void;
+    onPageSnapshotInvalidated?: (page: Id) => void;
     onPageSizeChanged?: (pageSize: PageSize) => void;
     onShapeCornerRadiusChanged?: (cornerRadius: CornerRadiusUpdateModel) => void;
     onCropActiveFrameIdChanged?: (id?: Id) => void;
     onAsyncError?: (asyncError: AsyncError) => void;
     onViewModeChanged?: (tool: ViewMode) => void;
     onBarcodeValidationChanged?: (validationResults: BarcodeFrameValidationResult[]) => void;
+    onDataSourceIdChanged?: (connectorId?: Id) => void;
+    onDocumentIssueListChanged?: (documentIssues: DocumentIssue[]) => void;
+
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
@@ -155,3 +162,5 @@ export interface ActionAsyncError extends AsyncErrorBase {
 }
 
 export type AsyncError = ActionAsyncError;
+
+export type PrivateData = Record<string, string>;

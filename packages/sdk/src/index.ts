@@ -18,6 +18,7 @@ export {
     TextDirection,
     FlowDirection,
     FitMode,
+    FitModePosition,
     UpdateZIndexMethod,
     ImageSourceTypeEnum,
     BarcodeSourceTypeEnum,
@@ -26,7 +27,7 @@ export {
     FrameAnchorType,
     AnchorTargetEdgeType,
 } from './types/FrameTypes';
-export { DocumentType } from './types/DocumentTypes';
+export { DocumentType, DocumentIssueTypeEnum } from './types/DocumentTypes';
 
 export { ViewMode } from './types/ViewModeTypes';
 
@@ -36,7 +37,7 @@ export type {
     LayoutWithFrameProperties,
     LayoutListItemType,
     Layout,
-    LayoutPreset
+    LayoutPreset,
 } from './types/LayoutTypes';
 export type {
     FrameLayoutType,
@@ -59,7 +60,7 @@ export type {
     StartFrameAnchor,
     EndFrameAnchor,
     StartAndEndFrameAnchor,
-    CenterFrameAnchor
+    CenterFrameAnchor,
 } from './types/FrameTypes';
 export { PageAnchorTarget, FrameAnchorTarget } from './types/FrameTypes';
 
@@ -79,13 +80,20 @@ export type {
     RelativeDate,
     AbsoluteDate,
     ValueWithStyle,
-    PrivateData,
 } from './types/VariableTypes';
 export { VariableType, Day, Locale } from './types/VariableTypes';
 
 export type { Color, DocumentColor, ColorUpdate } from './types/ColorStyleTypes';
 
-export type { DocumentError } from './types/DocumentTypes';
+export type {
+    DocumentError,
+    DocumentIssue,
+    OverflowDocumentIssue,
+    FontLoadingDocumentIssue,
+    ActionExecutionDocumentIssue,
+    ActionRegisterDocumentIssue,
+    ActionCircularDocumentIssue,
+} from './types/DocumentTypes';
 export type {
     FrameAnimationType,
     FrameAnimationPropertiesType,
@@ -103,6 +111,7 @@ export type {
     Id,
     ConnectorConfigOptions,
     ConnectorConfigValue,
+    PrivateData,
 } from './types/CommonTypes';
 export { ConnectorConfigValueType } from './types/CommonTypes';
 
@@ -141,6 +150,7 @@ export { ColorType } from './types/ColorStyleTypes';
 export * from './types/MediaConnectorTypes';
 export * from './types/FontConnectorTypes';
 export * from './types/ConnectorTypes';
+export * from './types/DataConnectorTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
@@ -151,5 +161,7 @@ export * from './types/ShapeTypes';
 export * from './types/BarcodeTypes';
 
 export type { Viewport } from './types/ViewportTypes';
+
+export * from './types/PageTypes';
 
 export default SDK;
