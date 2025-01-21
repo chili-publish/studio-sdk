@@ -4,6 +4,7 @@ import {
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FitModePosition,
     FrameAnchorProperties,
     FrameAnchorTarget,
     FrameAnchorType,
@@ -52,6 +53,7 @@ const mockedEditorApi: EditorAPI = {
     selectMultipleFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameName: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    setImageFrameFitModePosition: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setMaxCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -105,6 +107,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'selectMultipleFrames');
     jest.spyOn(mockedEditorApi, 'setFrameName');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
+    jest.spyOn(mockedEditorApi, 'setImageFrameFitModePosition');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
     jest.spyOn(mockedEditorApi, 'setMaxCopyfitting');
@@ -341,6 +344,12 @@ describe('FrameController', () => {
         await mockedFrameController.setImageFrameFitMode(id, FitMode.fit);
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
+    });
+
+    it('Should be possible to set the image frame fit mode position', async () => {
+        await mockedFrameController.setImageFrameFitModePosition(id, FitModePosition.bottomCenter);
+        expect(mockedEditorApi.setImageFrameFitModePosition).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setImageFrameFitModePosition).toHaveBeenCalledWith(id, FitModePosition.bottomCenter);
     });
 
     it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {

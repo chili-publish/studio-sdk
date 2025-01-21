@@ -1,5 +1,5 @@
 import { ColorUsage } from './ColorStyleTypes';
-import { Id, PropertyState } from './CommonTypes';
+import { Id, PrivateData, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
     id: Id;
@@ -40,6 +40,8 @@ export type LayoutWithFrameProperties = {
 export type Layout = {
     id: Id;
     name: string;
+    displayName?: string | null;
+    privateData: PrivateData;
     parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
