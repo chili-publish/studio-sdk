@@ -365,6 +365,11 @@ export interface PropertyState<T> {
     isReadOnly: boolean;
 }
 
+export interface HasOverrideState {
+    isOverride: boolean;
+    isReadOnly: boolean;
+}
+
 export interface SelectedLayoutFrame {
     id: Id;
     name: string;
