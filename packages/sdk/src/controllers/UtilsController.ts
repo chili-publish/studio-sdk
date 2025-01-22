@@ -1,6 +1,6 @@
 import { round } from '../utils/MathUtils';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { EnvironmentType } from '../utils/enums';
+import { EnvironmentType } from '../utils/Enums';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier
