@@ -1,5 +1,4 @@
 import { PrivateData } from './CommonTypes';
-
 export interface ConnectorImageVariableSource {
     connectorId: string;
     /**

@@ -1,4 +1,5 @@
 import { EditorAPI } from '../../../types/CommonTypes';
+import { ConfigHelper } from '../../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { ConnectorRegistrationSource } from '../../types/ConnectorTypes';
@@ -12,23 +13,23 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedSubscriberController = new SubscriberController(mockEditorApi);
-
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
+
+    mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
 
 afterEach(() => {
     jest.restoreAllMocks();
 });
 
-describe('SubscriberController', () => {
+describe('Next.SubscriberController', () => {
     it('Should be possible to subscribe to onVariableListChanged', async () => {
         const variables = [
             { id: '1', type: VariableType.group },
             { id: 'varList', type: VariableType.list, selected: 'Orange', items: ['Apple', 'Pear', 'Orange'] },
         ];
-        mockedSubscriberController.onVariableListChanged(JSON.stringify(variables));
+        await mockedSubscriberController.onVariableListChanged(JSON.stringify(variables));
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledWith(variables);
         expect(mockEditorApi.onVariableListChanged).toHaveBeenCalledTimes(1);
     });
@@ -36,7 +37,7 @@ describe('SubscriberController', () => {
     it('Should be possible to subscribe to onConnectorsChanged', async () => {
         const connectors = [{ id: 'id', name: 'name', source: ConnectorRegistrationSource.local }];
 
-        mockedSubscriberController.onConnectorsChanged(JSON.stringify(connectors));
+        await mockedSubscriberController.onConnectorsChanged(JSON.stringify(connectors));
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(connectors);
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
     });

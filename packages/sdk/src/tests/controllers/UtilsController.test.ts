@@ -1,5 +1,5 @@
 import { UtilsController } from '../../controllers/UtilsController';
-import { EnvironmentType } from '../../utils/enums';
+import { EnvironmentType } from '../../utils/Enums';
 import * as MathUtils from '../../utils/MathUtils';
 
 describe('UtilsController', () => {
