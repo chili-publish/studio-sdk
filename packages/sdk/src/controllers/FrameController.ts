@@ -173,6 +173,15 @@ export class FrameController {
     };
 
     /**
+     * This method will deselect all frames
+     * @returns
+     */
+    deselectAll = async () => {
+        const res = await this.#editorAPI;
+        return res.deselectFrames().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method changes the order of frames in the z-index list.
      * @param order the index in the list to move to
      * @param ids An array of all IDs you want to move to the given index
@@ -502,9 +511,11 @@ export class FrameController {
      */
     setImageFrameFitModePosition = async (imageFrameId: Id, position: FitModePosition) => {
         const res = await this.#editorAPI;
-        return res.setImageFrameFitModePosition(imageFrameId, position).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setImageFrameFitModePosition(imageFrameId, position)
+            .then((result) => getEditorResponseData<null>(result));
     };
-    
+
     /**
      * @deprecated the constrain proportions setter is not supported anymore.
      *
@@ -699,8 +710,6 @@ export class FrameController {
 
         return getEditorResponseData<null>(res);
     };
-
-    
 
     /**
      * This method will exit cropping mode without saving the applied crop.
