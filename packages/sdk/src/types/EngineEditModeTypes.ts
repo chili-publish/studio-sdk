@@ -1,11 +1,11 @@
 import { Id } from './CommonTypes';
 
-export type EngineEditing = {
+export type EngineEditMode = {
     frameId: Id | null;
-    mode: EngineEditingMode;
+    mode: EngineEditModeType;
 };
 
-export enum EngineEditingMode {
+export enum EngineEditModeType {
     normal = 'normal',
     textEdit = 'textEdit',
     customCrop = 'customCrop',
