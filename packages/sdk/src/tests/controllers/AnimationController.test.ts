@@ -1,4 +1,4 @@
-import { mockFrameAnimation } from '../__mocks__/animations';
+import { mockFrameAnimation } from '../__mocks__/Animations';
 import { FrameAnimationType } from '../../types/AnimationTypes';
 import { AnimationController } from '../../controllers/AnimationController';
 import { EditorAPI } from '../../types/CommonTypes';

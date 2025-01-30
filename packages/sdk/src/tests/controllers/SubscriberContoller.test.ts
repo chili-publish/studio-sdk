@@ -1,3 +1,4 @@
+import { SubscriberController } from '../../controllers/SubscriberController';
 import {
     ActionEditorEvent,
     BarcodeValidationResult,
@@ -13,13 +14,13 @@ import {
     ViewMode,
     Viewport,
 } from '../../index';
-import { SubscriberController } from '../../controllers/SubscriberController';
-import { mockFrameAnimation } from '../__mocks__/animations';
+import { mockFrameAnimation } from '../__mocks__/Animations';
 
 import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
-import { ToolType } from '../../utils/enums';
+import * as Next from '../../next/types/ConnectorTypes';
+import { AsyncError, EditorAPI } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -31,9 +32,9 @@ import {
 } from '../../types/ConnectorTypes';
 import type { Page, PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
-import { AsyncError, EditorAPI } from '../../types/CommonTypes';
+import { ConfigHelper } from '../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import * as Next from '../../next/types/ConnectorTypes';
+import { ToolType } from '../../utils/Enums';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 import { EngineEditModeType } from '../../types/EngineEditModeTypes';
 
@@ -86,9 +87,6 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedSubscriberController = new SubscriberController(mockEditorApi, mockLocalConfig);
-    mockedAnimation = mockFrameAnimation;
-
     jest.spyOn(mockEditorApi, 'onAnimationChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
@@ -131,6 +129,12 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
     jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
+
+    mockedSubscriberController = new SubscriberController(
+        ConfigHelper.createRuntimeConfig(mockEditorApi),
+        mockLocalConfig,
+    );
+    mockedAnimation = mockFrameAnimation;
 });
 
 afterEach(() => {
@@ -405,16 +409,17 @@ describe('SubscriberController', () => {
         it('returns the token defined by the callback', async () => {
             const refreshedToken = 'newToken';
 
-            const mockConfig = {
-                onAuthExpired() {
-                    return new Promise<AuthCredentials | null>((resolve) =>
-                        resolve(new GrafxTokenAuthCredentials(refreshedToken)),
-                    );
-                },
-            };
+            const localMockConfig = ConfigHelper.createRuntimeConfig({
+                onAuthExpired: jest
+                    .fn()
+                    .mockReturnValue(
+                        new Promise<AuthCredentials | null>((resolve) =>
+                            resolve(new GrafxTokenAuthCredentials(refreshedToken)),
+                        ),
+                    ),
+            });
 
-            jest.spyOn(mockConfig, 'onAuthExpired');
-            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(grafxAuthRefreshRequest),
@@ -423,19 +428,20 @@ describe('SubscriberController', () => {
             const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
 
             expect(resultAuth.token).toBe(refreshedToken);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(grafxAuthRefreshRequest);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledWith(grafxAuthRefreshRequest);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns the notification defined by the callback', async () => {
-            const mockConfig = {
-                onAuthExpired() {
-                    return new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials()));
-                },
-            };
+            const localMockConfig = ConfigHelper.createRuntimeConfig({
+                onAuthExpired: jest
+                    .fn()
+                    .mockReturnValue(
+                        new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials())),
+                    ),
+            });
 
-            jest.spyOn(mockConfig, 'onAuthExpired');
-            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(anyAuthRefreshRequest),
@@ -444,12 +450,15 @@ describe('SubscriberController', () => {
             const resultAuth = JSON.parse(resultJsonString!);
 
             expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(anyAuthRefreshRequest);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledWith(anyAuthRefreshRequest);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', async () => {
-            const mockedSubscriberController = new SubscriberController({}, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(
+                ConfigHelper.createRuntimeConfig({}),
+                new Map<string, string>(),
+            );
 
             const result = await mockedSubscriberController.onAuthExpired(JSON.stringify(grafxAuthRefreshRequest));
 
@@ -477,26 +486,27 @@ describe('SubscriberController', () => {
         it('returns the viewport defined by the callback', () => {
             const viewport: Viewport = { top: 0, left: 0, width: 100, height: 100, margin: 10 };
 
-            const mockConfig = {
-                onViewportRequested() {
-                    return viewport;
-                },
-            };
+            const localMockConfig = ConfigHelper.createRuntimeConfig({
+                onViewportRequested: jest.fn().mockReturnValue(viewport),
+            });
 
-            jest.spyOn(mockConfig, 'onViewportRequested');
+            jest.spyOn(localMockConfig, 'onViewportRequested');
 
-            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = mockedSubscriberController.onViewportRequested();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultViewport: Viewport = JSON.parse(resultJsonString!);
 
             expect(resultViewport).toStrictEqual(viewport);
-            expect(mockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
+            expect(localMockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', () => {
-            const mockedSubscriberController = new SubscriberController({}, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(
+                ConfigHelper.createRuntimeConfig({}),
+                new Map<string, string>(),
+            );
 
             const result = mockedSubscriberController.onViewportRequested();
 
