@@ -402,7 +402,6 @@ export class SubscriberController {
      * @param engineEditMode Stringified object of engine edit mode
      */
     onEngineEditModeChanged = (engineEditMode: string) => {
-        const callBack = this.config.onEngineEditModeChanged;
-        callBack && callBack(JSON.parse(engineEditMode));
+        this.config.events.onEngineEditModeChanged.trigger(JSON.parse(engineEditMode));
     };
 }
