@@ -40,7 +40,7 @@ const generateSnaps = async () => {
       itemTitle.textContent = layout.name;
   
       const itemImg = document.createElement("img");
-      const imgFromSDK = await window.SDK.layout.getSelectedSnapshot();
+      const imgFromSDK = await window.SDK.page.getSnapshot("0");
       const base64String = uint8ArrayToBase64(imgFromSDK);
   
       console.log(`data:image/png;base64,${base64String}`);
