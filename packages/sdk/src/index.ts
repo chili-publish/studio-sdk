@@ -165,4 +165,6 @@ export type { Viewport } from './types/ViewportTypes';
 
 export * from './types/PageTypes';
 
+export * from './types/EngineEditModeTypes';
+
 export default SDK;

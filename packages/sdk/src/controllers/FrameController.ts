@@ -695,6 +695,43 @@ export class FrameController {
     };
 
     /**
+     * This method will exit cropping mode without saving the applied crop.
+     * @returns
+     */
+    exitCropMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will make the specified image frame go into subject mode.
+     * @param id the id of a specific image frame
+     * @returns
+     */
+    enterSubjectMode = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterSubjectMode(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit subject mode while saving the applied subject area.
+     * @returns
+     */
+    applySubjectMode = async () => {
+        const res = await this.#editorAPI;
+        return res.applySubjectMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit subject mode without saving the applied subject area.
+     * @returns
+     */
+    exitSubjectMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelSubjectMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * @deprecated This method no longer has any effect. Use 'setImageFrameFitMode' or 'resetImageFrameFitMode' instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
