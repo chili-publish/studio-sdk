@@ -60,6 +60,7 @@ export type LayoutListItemType = {
     id: string;
     name: string;
     type: LayoutType;
+    availableForUser: boolean;
     parentId?: Id | null;
     childLayouts: Id[];
 };
