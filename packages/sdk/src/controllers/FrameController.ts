@@ -749,15 +749,6 @@ export class FrameController {
     };
 
     /**
-     * This method will exit cropping mode without saving the applied crop.
-     * @returns
-     */
-    exitCropMode = async () => {
-        const res = await this.#editorAPI;
-        return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * This method will enable auto grow on a specified frame.
      * @param id the id of the frame that needs to get updated
      * @param value the new value to be set to the frame.
