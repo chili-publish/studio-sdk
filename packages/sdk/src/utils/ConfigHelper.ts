@@ -14,6 +14,7 @@ import {
 } from '../types/CommonTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
 import { DocumentIssue, UndoState } from '../types/DocumentTypes';
+import { EngineEditMode } from '../types/EngineEditModeTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { Frame, FrameLayoutType } from '../types/FrameTypes';
 import { LayoutListItemType, LayoutPropertiesType, MeasurementUnit } from '../types/LayoutTypes';
@@ -211,6 +212,10 @@ export class ConfigHelper {
             ),
             onCustomUndoDataChanged: new EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>(
                 () => clone.onCustomUndoDataChanged,
+                clone.logging.logger,
+            ),
+            onEngineEditModeChanged: new EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>(
+                () => clone.onEngineEditModeChanged,
                 clone.logging.logger,
             ),
         };

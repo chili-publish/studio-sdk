@@ -396,4 +396,12 @@ export class SubscriberController {
     onDocumentIssueListChanged = (documentIssues: string) => {
         this.config.events.onDocumentIssueListChanged.trigger(JSON.parse(documentIssues));
     };
+
+    /**
+     * Listener on engine editing mode, if this changes, this listener will get triggered with the updates
+     * @param engineEditMode Stringified object of engine edit mode
+     */
+    onEngineEditModeChanged = (engineEditMode: string) => {
+        this.config.events.onEngineEditModeChanged.trigger(JSON.parse(engineEditMode));
+    };
 }
