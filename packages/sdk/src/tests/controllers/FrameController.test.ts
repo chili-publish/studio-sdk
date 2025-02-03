@@ -4,6 +4,7 @@ import {
     AutoGrowDirection,
     BlendMode,
     FitMode,
+    FitModePosition,
     FrameAnchorProperties,
     FrameAnchorTarget,
     FrameAnchorType,
@@ -52,6 +53,7 @@ const mockedEditorApi: EditorAPI = {
     selectMultipleFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameName: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    setImageFrameFitModePosition: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setMaxCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -67,8 +69,11 @@ const mockedEditorApi: EditorAPI = {
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
     enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
-    resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    enterSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    applySubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -102,6 +107,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'selectMultipleFrames');
     jest.spyOn(mockedEditorApi, 'setFrameName');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
+    jest.spyOn(mockedEditorApi, 'setImageFrameFitModePosition');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
     jest.spyOn(mockedEditorApi, 'setMaxCopyfitting');
@@ -117,8 +123,11 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setImageSource');
     jest.spyOn(mockedEditorApi, 'enterCropMode');
     jest.spyOn(mockedEditorApi, 'applyCropMode');
-    jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
+    jest.spyOn(mockedEditorApi, 'enterSubjectMode');
+    jest.spyOn(mockedEditorApi, 'applySubjectMode');
+    jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
+    jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
 
@@ -337,6 +346,12 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageFrameFitMode).toHaveBeenCalledWith(id, FitMode.fit);
     });
 
+    it('Should be possible to set the image frame fit mode position', async () => {
+        await mockedFrameController.setImageFrameFitModePosition(id, FitModePosition.bottomCenter);
+        expect(mockedEditorApi.setImageFrameFitModePosition).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setImageFrameFitModePosition).toHaveBeenCalledWith(id, FitModePosition.bottomCenter);
+    });
+
     it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {
         await expect(mockedFrameController.setFrameConstrainProportions(id, true)).rejects.toThrow();
     });
@@ -440,15 +455,25 @@ describe('FrameController', () => {
         expect(mockedEditorApi.applyCropMode).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to reset cropping mode on a specific frame', async () => {
-        await mockedFrameController.resetCropMode(id);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetCropMode).toHaveBeenCalledWith(id);
-    });
-
     it('Should be possible to cancel the current image crop', async () => {
         await mockedFrameController.exitCropMode();
         expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to enter subject mode on a specific frame', async () => {
+        await mockedFrameController.enterSubjectMode(id);
+        expect(mockedEditorApi.enterSubjectMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.enterSubjectMode).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to apply the current subject area to the frame', async () => {
+        await mockedFrameController.applySubjectMode();
+        expect(mockedEditorApi.applySubjectMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to cancel the current subject area', async () => {
+        await mockedFrameController.exitSubjectMode();
+        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
     });
 });
 

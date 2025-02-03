@@ -1,53 +1,54 @@
 import { Connection } from 'penpal';
-import Connect from './interactions/connector';
-import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
-import packageInfo from '../package.json';
 import engineInfo from '../editor-engine.json';
+import packageInfo from '../package.json';
+import Connect from './interactions/Connector';
+import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
-import type { ConfigType, EditorAPI } from './types/CommonTypes';
+import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
 import { DocumentType } from './types/DocumentTypes';
 
 import { ActionController } from './controllers/ActionController';
 import { AnimationController } from './controllers/AnimationController';
+import { BarcodeController } from './controllers/BarcodeController';
 import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
-import { ColorStyleController } from './controllers/ColorStyleController';
+import { ClipboardController } from './controllers/ClipboardController';
 import { ColorConversionController } from './controllers/ColorConversionController';
+import { ColorStyleController } from './controllers/ColorStyleController';
+import { ConfigurationController } from './controllers/ConfigurationController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { DataConnectorController } from './controllers/DataConnectorController';
+import { DataSourceController } from './controllers/DataSourceController';
 import { DebugController } from './controllers/DebugController';
 import { DocumentController } from './controllers/DocumentController';
 import { ExperimentController } from './controllers/ExperimentController';
 import { FontConnectorController } from './controllers/FontConnectorController';
 import { FontController } from './controllers/FontController';
 import { FrameController } from './controllers/FrameController';
+import { InfoController } from './controllers/InfoController';
 import { LayoutController } from './controllers/LayoutController';
 import { MediaConnectorController } from './controllers/MediaConnectorController';
 import { PageController } from './controllers/PageController';
 import { ParagraphStyleController } from './controllers/ParagraphStyleController';
+import { ShapeController } from './controllers/ShapeController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { TextStyleController } from './controllers/TextStyleController';
 import { ToolController } from './controllers/ToolController';
 import { UndoManagerController } from './controllers/UndoManagerController';
 import { UtilsController } from './controllers/UtilsController';
 import { VariableController } from './controllers/VariableController';
-import { ShapeController } from './controllers/ShapeController';
-import { InfoController } from './controllers/InfoController';
-import { ClipboardController } from './controllers/ClipboardController';
-import { BarcodeController } from './controllers/BarcodeController';
-import { NextInitiator } from './next/NextInitiator';
 import { NextSubscribers } from './next';
-import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
-import { ConfigurationController } from './controllers/ConfigurationController';
-import { DataConnectorController } from './controllers/DataConnectorController';
+import { NextInitiator } from './next/NextInitiator';
+import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
-import { DataSourceController } from './controllers/DataSourceController';
+import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 
 let connection: Connection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
 
 export class SDK {
-    config: ConfigType;
+    config: RuntimeConfigType;
     connection: Connection;
 
     /**
@@ -97,7 +98,8 @@ export class SDK {
      * @param config The configuration object where the SDK and editor can get configured
      */
     constructor(config: ConfigType) {
-        this.config = config;
+        this.config = ConfigHelper.createRuntimeConfig(config);
+
         this.connection = connection;
         this.editorAPI = connection?.promise.then((child) => {
             return child;
@@ -177,7 +179,13 @@ export class SDK {
                 onSelectedLayoutIdChanged: this.subscriber.onSelectedLayoutIdChanged,
                 onLayoutsChanged: this.subscriber.onLayoutsChanged,
                 onConnectorEvent: this.subscriber.onConnectorEvent,
-                onConnectorsChanged: this.subscriber.onConnectorsChanged,
+                onConnectorsChanged: (state) => {
+                    if (this.enabledNextSubscribers?.onConnectorsChanged) {
+                        this.next.subscriber.onConnectorsChanged(state);
+                    } else {
+                        this.subscriber.onConnectorsChanged(state);
+                    }
+                },
                 onZoomChanged: this.subscriber.onZoomChanged,
                 onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
                 onPagesChanged: this.subscriber.onPagesChanged,
@@ -191,6 +199,7 @@ export class SDK {
                 onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
                 onDocumentIssueListChanged: this.subscriber.onDocumentIssueListChanged,
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
+                onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
             },
             this.setConnection,
             this.config.editorId,
