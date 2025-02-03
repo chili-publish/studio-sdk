@@ -1,4 +1,4 @@
-import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
     DateRestriction,
@@ -11,6 +11,7 @@ import {
     PrefixSuffixDeltaUpdate,
     Variable,
     VariableType,
+    VariableVisibility,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
@@ -529,20 +530,23 @@ export class VariableController {
      * @param config visibility config
      * @returns
      */
-    setIsVisible = async (id: string, isVisible: boolean) => {
+    setVariableVisibility = async (id: string, config: VariableVisibility) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsVisible(id, isVisible).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableVisibility(id, JSON.stringify(config)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * @deprecated Use `setIsVisible` instead.
-     *
-     * This method sets isHidden flag for a variable
+     * This method sets which layouts are considered for variable visibility
+     * @param id variable id
+     * @param layoutIdList nullable layout id list.
+     * Pass null to reset to follow selected layout.
      * @returns
      */
-    setIsHidden = async (id: string, isHidden: boolean) => {
+    setLayoutsForVariableVisibility = async (id: string, layoutIdList?: Id[] | null) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsVisible(id, !isHidden).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setLayoutsForVariableVisibility(id, layoutIdList)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
