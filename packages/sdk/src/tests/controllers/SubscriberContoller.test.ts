@@ -53,6 +53,7 @@ const mockEditorApi: EditorAPI = {
     onStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentLoaded: async () => getEditorResponseData(castToEditorResponse(null)),
     onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onVariablesVisibilityChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedToolChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAnimationPlaybackChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -98,6 +99,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onStateChanged');
     jest.spyOn(mockEditorApi, 'onDocumentLoaded');
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
+    jest.spyOn(mockEditorApi, 'onVariablesVisibilityChanged');
     jest.spyOn(mockEditorApi, 'onSelectedToolChanged');
     jest.spyOn(mockEditorApi, 'onAnimationPlaybackChanged');
     jest.spyOn(mockEditorApi, 'onUndoStateChanged');
@@ -213,6 +215,12 @@ describe('SubscriberController', () => {
             { id: '1', type: VariableType.group },
             { id: 'varList', type: VariableType.list, selected: 'Orange', items: ['Apple', 'Pear', 'Orange'] },
         ]);
+    });
+    it('Should be possible to subscribe to onVariableListChanged', async () => {
+        await mockedSubscriberController.onVariablesVisibilityChanged('["1", "2", "3"]');
+
+        expect(mockEditorApi.onVariablesVisibilityChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onVariablesVisibilityChanged).toHaveBeenCalledWith(['1', '2', '3']);
     });
     it('Should be possible to subscribe to onSelectedLayoutFramesChanged', async () => {
         await mockedSubscriberController.onSelectedLayoutFramesChanged('5');

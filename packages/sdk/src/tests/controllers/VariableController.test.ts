@@ -7,6 +7,8 @@ import {
     Locale,
     Variable,
     VariableType,
+    VariableVisibilityType,
+    VariableVisibilityVisible,
 } from '../../types/VariableTypes';
 import { EditorAPI, PrivateData } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -28,7 +30,6 @@ describe('VariableController', () => {
         type: VariableType.image,
         name: '',
         label: '',
-        isVisible: true,
         isReadonly: false,
         isRequired: false,
         visibility: { type: VariableVisibilityType.visible },
@@ -48,7 +49,6 @@ describe('VariableController', () => {
         type: VariableType.list,
         name: '',
         label: '',
-        isVisible: true,
         isReadonly: false,
         isRequired: false,
         visibility: { type: VariableVisibilityType.visible },
@@ -76,7 +76,8 @@ describe('VariableController', () => {
         duplicateVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariables: async () => getEditorResponseData(castToEditorResponse(null)),
-        setVariableIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableVisibility: async () => getEditorResponseData(castToEditorResponse(null)),
+        setLayoutsForVariableVisibility: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsRequired: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsReadonly: async () => getEditorResponseData(castToEditorResponse(null)),
         ungroupVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -108,7 +109,8 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'duplicateVariable');
         jest.spyOn(mockEditorApi, 'moveVariable');
         jest.spyOn(mockEditorApi, 'moveVariables');
-        jest.spyOn(mockEditorApi, 'setVariableIsVisible');
+        jest.spyOn(mockEditorApi, 'setVariableVisibility');
+        jest.spyOn(mockEditorApi, 'setLayoutsForVariableVisibility');
         jest.spyOn(mockEditorApi, 'setVariableIsRequired');
         jest.spyOn(mockEditorApi, 'setVariableIsReadonly');
         jest.spyOn(mockEditorApi, 'ungroupVariable');
@@ -245,16 +247,18 @@ describe('VariableController', () => {
         expect(mockEditorApi.moveVariables).toHaveBeenCalledWith(['1'], '6', 0);
     });
 
-    it('set isVisible', async () => {
-        await mockedVariableController.setIsVisible('1', false);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledWith('1', false);
+    it('setVariableVisibility', async () => {
+        const visibility = { type: VariableVisibilityType.visible } as VariableVisibilityVisible;
+
+        await mockedVariableController.setVariableVisibility('1', visibility);
+        expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith('1', JSON.stringify(visibility));
     });
 
-    it('set isHidden', async () => {
-        await mockedVariableController.setIsHidden('1', false);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledWith('1', true);
+    it('setLayoutsForVariableVisibility', async () => {
+        await mockedVariableController.setLayoutsForVariableVisibility('0', ['6']);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith('0', ['6']);
     });
 
     it('set isRequired', async () => {
