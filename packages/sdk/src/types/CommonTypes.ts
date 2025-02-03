@@ -88,6 +88,7 @@ export type ManagedCallbacksConfigType = {
         onScrubberPositionChanged: EngineEvent<(state: AnimationPlaybackType) => MaybePromise<void>>;
         onFrameAnimationsChanged: EngineEvent<(animationState: FrameAnimationType[]) => MaybePromise<void>>;
         onVariableListChanged: EngineEvent<(variableList: Variable[]) => MaybePromise<void>>;
+        onVariablesVisibilityChanged: EngineEvent<(variableIdList: Id[]) => MaybePromise<void>>;
         onSelectedToolChanged: EngineEvent<(tool: ToolType) => MaybePromise<void>>;
         onUndoStackStateChanged: EngineEvent<(undoStackState: UndoState) => MaybePromise<void>>;
         onSelectedLayoutFramesChanged: EngineEvent<(frames: SelectedLayoutFrame[]) => MaybePromise<void>>;
@@ -195,6 +196,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onVariableListChanged` instead
      */
     onVariableListChanged?: (variableList: Variable[]) => void;
+
+    /**
+     * @deprecated use `events.onVariablesVisibilityChanged` instead
+     */
+    onVariablesVisibilityChanged?: (variableIdList: Id[]) => void;
 
     /**
      * @deprecated use `events.onSelectedToolChanged` instead
