@@ -248,19 +248,12 @@ declare module 'grafx-studio-actions' {
          */
         setRequired(value: boolean | VariableValue): void;
 
-        /**
-         * Set the visible state of a variable
-         * @param isVisible whether the variable is visible
-         * @returns
-         */
-        setVisible(isVisible: boolean | VariableValue): void;
-
-        /**
-         * Sets the prefix of a variable
-         *
-         * @param prefix the prefix to set
-         */
-        setPrefix(prefix: string | null): void;
+    /**
+     * Sets the prefix of a variable
+     *
+     * @param prefix the prefix to set
+     */
+    setPrefix(prefix: string | null): void;
 
         /**
          * Sets the suffix of a variable
@@ -297,16 +290,15 @@ declare module 'grafx-studio-actions' {
      */
     export type VariableValue = string | boolean | number;
 
-    export interface BaseVariable extends HasName {
-        readonly isVisible: boolean;
-        readonly isReadonly: boolean;
-        readonly isRequired: boolean;
-        readonly type: VariableType;
-        /**
-         * The value of the current variable
-         */
-        readonly value: VariableValue;
-    }
+  export interface BaseVariable extends HasName {
+    readonly isReadonly: boolean;
+    readonly isRequired: boolean;
+    readonly type: VariableType;
+    /**
+     * The value of the current variable
+     */
+    readonly value: VariableValue;
+  }
 
     export interface ShortTextVariable extends BaseVariable {
         readonly type: VariableType.shortText;
@@ -477,15 +469,15 @@ declare module 'grafx-studio-actions' {
         setVisible(name: string | Variable, isVisible: boolean | VariableValue): void;
     }
 
+  /**
+   * Controller responsible for manipulating layouts using Actions.
+   */
+  export interface LayoutsController {
     /**
-     * Controller responsible for manipulating layouts using Actions.
+     * Returns the selected layout
+     * @returns
      */
-    export interface LayoutsController {
-        /**
-         * Returns the selected layout
-         * @returns
-         */
-        getSelected(): LayoutWithMethods;
+    getSelected(): LayoutWithMethods;
 
         /**
          * Selects a layout by name
