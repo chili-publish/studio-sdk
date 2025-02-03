@@ -87,7 +87,7 @@ describe('PageController', () => {
         const settings = { largestAxisSize: 5 } as SnapshotSettings;
         await mockedPageController.getSnapshot('1', settings);
         expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', settings);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', JSON.stringify(settings));
     });
 
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
