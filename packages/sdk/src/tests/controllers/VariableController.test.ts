@@ -31,6 +31,7 @@ describe('VariableController', () => {
         isVisible: true,
         isReadonly: false,
         isRequired: false,
+        visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         value: {
             connectorId: connectorId,
@@ -50,6 +51,7 @@ describe('VariableController', () => {
         isVisible: true,
         isReadonly: false,
         isRequired: false,
+        visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],
