@@ -480,7 +480,53 @@ export class VariableController {
     };
 
     /**
+     * @deprecated the visibility setter is not supported anymore.
+     * Use `setVariableVisibility` instead.
      * This method sets isVisible flag for a variable
+     * @param _id variable id
+     * @param _isVisible visibility flag
+     * @returns
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setIsVisible = async (_id: string, _isVisible: boolean) => {
+        console.error('setIsVisible is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'setIsVisible is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * @deprecated the visibility setter is not supported anymore.
+     * Use `setVariableVisibility` instead.
+     * This method sets isHidden flag for a variable
+     * @param _id variable id
+     * @param _isHidden visibility flag
+     * @returns
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setIsHidden = async (_id: string, _isHidden: boolean) => {
+        console.error('setIsHidden is not supported anymore');
+
+        const res: EditorResponse<null> = {
+            success: false,
+            status: 0,
+            error: 'setIsHidden is not supported anymore',
+            parsedData: null,
+        };
+
+        return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * This method sets visibility config for a variable by id
+     * @param id variable id
+     * @param config visibility config
      * @returns
      */
     setIsVisible = async (id: string, isVisible: boolean) => {
