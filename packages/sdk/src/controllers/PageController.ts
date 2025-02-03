@@ -105,6 +105,7 @@ export class PageController {
      * @param pageId The id of a specific page.
      * If not specified, selected page snapshot will be provided
      * @param settings an object to specify desired snapshot properties, e.g., resolution
+     * If it's not provided, default settings will be applied, e.g., page resolution
      * @returns UInt8Array snapshot of the given page
      */
     getSnapshot = async (pageId?: Id, settings?: SnapshotSettings | null) => {
