@@ -104,8 +104,9 @@ export class PageController {
      * This method returns a UInt8Array containing a PNG encoded image of the page.
      * @param pageId The id of a specific page.
      * If not specified, selected page snapshot will be provided
-     * @param settings an object to specify desired snapshot properties, e.g., resolution
-     * If it's not provided, default settings will be applied, e.g., page resolution
+     * @param settings an object to specify desired snapshot properties, e.g., resolution.
+     * If it's not provided, default settings will be applied, e.g., page resolution.
+     * Limit for `largestAxisSize` is 1000 px
      * @returns UInt8Array snapshot of the given page
      */
     getSnapshot = async (pageId?: Id, settings?: SnapshotSettings | null) => {
