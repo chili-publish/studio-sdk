@@ -38,6 +38,7 @@ const mockedEditorApi: EditorAPI = {
     setLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
     getLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutSelectedByUser: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -71,6 +72,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setLayoutDisplayName');
     jest.spyOn(mockedEditorApi, 'getLayoutDisplayName');
     jest.spyOn(mockedEditorApi, 'resetLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'setLayoutSelectedByUser');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -312,5 +314,11 @@ describe('LayoutController', () => {
         await mockedLayoutController.getDisplayName('1');
         expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledWith('1');
+    });
+
+    it('Should be possible to set user selected layout', async () => {
+        await mockedLayoutController.setSelectedByUser('1', false);
+        expect(mockedEditorApi.setLayoutSelectedByUser).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutSelectedByUser).toHaveBeenCalledWith('1', false);
     });
 });

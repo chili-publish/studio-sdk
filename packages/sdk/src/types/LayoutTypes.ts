@@ -52,6 +52,7 @@ export type Layout = {
     bleed: PropertyState<LayoutBleed>;
     fillColor: PropertyState<ColorUsage>;
     fillColorEnabled: PropertyState<boolean>;
+    selectedByUser: boolean;
 };
 
 // used by onLayoutsChanged
@@ -59,6 +60,7 @@ export type LayoutListItemType = {
     id: string;
     name: string;
     type: LayoutType;
+    selectedByUser: boolean;
     parentId?: Id | null;
     childLayouts: Id[];
 };
