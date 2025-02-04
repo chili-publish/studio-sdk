@@ -59,6 +59,7 @@ export type Layout = {
 export type LayoutListItemType = {
     id: string;
     name: string;
+    displayName?: string | null;
     type: LayoutType;
     availableForUser: boolean;
     parentId?: Id | null;
