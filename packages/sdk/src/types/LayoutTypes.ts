@@ -52,13 +52,16 @@ export type Layout = {
     bleed: PropertyState<LayoutBleed>;
     fillColor: PropertyState<ColorUsage>;
     fillColorEnabled: PropertyState<boolean>;
+    availableForUser: boolean;
 };
 
 // used by onLayoutsChanged
 export type LayoutListItemType = {
     id: string;
     name: string;
+    displayName?: string | null;
     type: LayoutType;
+    availableForUser: boolean;
     parentId?: Id | null;
     childLayouts: Id[];
 };

@@ -38,6 +38,7 @@ const mockedEditorApi: EditorAPI = {
     setLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
     getLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutAvailableForUser: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -71,6 +72,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setLayoutDisplayName');
     jest.spyOn(mockedEditorApi, 'getLayoutDisplayName');
     jest.spyOn(mockedEditorApi, 'resetLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'setLayoutAvailableForUser');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -312,5 +314,11 @@ describe('LayoutController', () => {
         await mockedLayoutController.getDisplayName('1');
         expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledWith('1');
+    });
+
+    it('Should be possible to set layout availability', async () => {
+        await mockedLayoutController.setAvailableForUser('1', false);
+        expect(mockedEditorApi.setLayoutAvailableForUser).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutAvailableForUser).toHaveBeenCalledWith('1', false);
     });
 });
