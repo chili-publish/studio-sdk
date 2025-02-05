@@ -53,6 +53,7 @@ export type Layout = {
     fillColor: PropertyState<ColorUsage>;
     fillColorEnabled: PropertyState<boolean>;
     availableForUser: boolean;
+    resizableByUser: LayoutResizable;
 };
 
 // used by onLayoutsChanged
@@ -62,6 +63,7 @@ export type LayoutListItemType = {
     displayName?: string | null;
     type: LayoutType;
     availableForUser: boolean;
+    resizableByUser: LayoutResizable;
     parentId?: Id | null;
     childLayouts: Id[];
 };
@@ -117,3 +119,29 @@ export enum LayoutIntent {
     digitalStatic = 'digitalStatic',
     digitalAnimated = 'digitalAnimated',
 }
+
+export type LayoutResizable = {
+    enabled: boolean;
+    minWidth: string | null;
+    maxWidth: string | null;
+    minHeight: string | null;
+    maxHeight: string | null;
+};
+
+export type LayoutResizableUpdate = {
+    enabled?: {
+        value: boolean;
+    } | null;
+    minWidth?: {
+        value: string | null;
+    } | null;
+    maxWidth?: {
+        value: string | null;
+    } | null;
+    minHeight?: {
+        value: string | null;
+    } | null;
+    maxHeight?: {
+        value: string | null;
+    } | null;
+};

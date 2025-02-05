@@ -5,6 +5,7 @@ import {
     Layout,
     LayoutIntent,
     LayoutPreset,
+    LayoutResizableUpdate,
     MeasurementUnit,
     PositionEnum,
 } from '../types/LayoutTypes';
@@ -381,5 +382,19 @@ export class LayoutController {
     setAvailableForUser = async (id: Id, isAvailable: boolean) => {
         const res = await this.#editorAPI;
         return res.setLayoutAvailableForUser(id, isAvailable).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the layout size boundaries for end-users
+     *
+     * @param id The id of a specific layout
+     * @param layoutResizable the new layout size boundaries
+     * @returns
+     */
+    setLayoutResizableByUser = async (id: Id, layoutResizable: LayoutResizableUpdate) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutResizableByUser(id, JSON.stringify(layoutResizable))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

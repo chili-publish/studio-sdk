@@ -2,7 +2,14 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
-import { BleedDeltaUpdate, LayoutIntent, LayoutPreset, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
+import {
+    BleedDeltaUpdate,
+    LayoutIntent,
+    LayoutPreset,
+    LayoutResizableUpdate,
+    MeasurementUnit,
+    PositionEnum,
+} from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 let mockedLayoutController: LayoutController;
@@ -39,6 +46,7 @@ const mockedEditorApi: EditorAPI = {
     getLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutAvailableForUser: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutResizableByUser: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -73,6 +81,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getLayoutDisplayName');
     jest.spyOn(mockedEditorApi, 'resetLayoutDisplayName');
     jest.spyOn(mockedEditorApi, 'setLayoutAvailableForUser');
+    jest.spyOn(mockedEditorApi, 'setLayoutResizableByUser');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -320,5 +329,19 @@ describe('LayoutController', () => {
         await mockedLayoutController.setAvailableForUser('1', false);
         expect(mockedEditorApi.setLayoutAvailableForUser).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayoutAvailableForUser).toHaveBeenCalledWith('1', false);
+    });
+
+    it('Should be possible to set layout resizable', async () => {
+        const layoutResizableUpdate: LayoutResizableUpdate = {
+            enabled: { value: true },
+            minWidth: { value: '10 px' },
+            maxWidth: { value: '20 px' },
+            minHeight: { value: '10 px' },
+            maxHeight: { value: '20 px' },
+        };
+
+        await mockedLayoutController.setLayoutResizableByUser('1', layoutResizableUpdate);
+        expect(mockedEditorApi.setLayoutResizableByUser).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutResizableByUser).toBeCalledWith('1', JSON.stringify(layoutResizableUpdate));
     });
 });

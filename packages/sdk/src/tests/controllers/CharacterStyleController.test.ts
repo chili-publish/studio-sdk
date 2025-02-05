@@ -109,6 +109,7 @@ describe('CharacterStyleController', () => {
     it('Should call the updateCharacterStyle method', async () => {
         await mockedCharacterStyleController.update('5', updateCharacterStyle);
         expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledWith('5', JSON.stringify(updateCharacterStyle));
     });
 
     it('Should call the removeCharacterStyle method', async () => {
