@@ -382,4 +382,16 @@ export class LayoutController {
         const res = await this.#editorAPI;
         return res.setLayoutAvailableForUser(id, isAvailable).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will set the user selected layout
+     *
+     * @param id The id of a specific layout
+     * @param isSelected whether this layout is selected by end-users
+     * @returns
+     */
+    setSelectedByUser = async (id: Id, isSelected: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutSelectedByUser(id, isSelected).then((result) => getEditorResponseData<null>(result));
+    };
 }

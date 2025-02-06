@@ -53,6 +53,7 @@ export type Layout = {
     fillColor: PropertyState<ColorUsage>;
     fillColorEnabled: PropertyState<boolean>;
     availableForUser: boolean;
+    selectedByUser: boolean;
 };
 
 // used by onLayoutsChanged
@@ -62,6 +63,7 @@ export type LayoutListItemType = {
     displayName?: string | null;
     type: LayoutType;
     availableForUser: boolean;
+    selectedByUser: boolean;
     parentId?: Id | null;
     childLayouts: Id[];
 };
