@@ -122,10 +122,10 @@ export enum LayoutIntent {
 
 export type LayoutResizable = {
     enabled: boolean;
-    minWidth: string | null;
-    maxWidth: string | null;
-    minHeight: string | null;
-    maxHeight: string | null;
+    minWidth: number | null;
+    maxWidth: number | null;
+    minHeight: number | null;
+    maxHeight: number | null;
 };
 
 export type LayoutResizableUpdate = {
