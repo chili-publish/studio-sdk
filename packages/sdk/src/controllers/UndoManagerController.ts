@@ -71,6 +71,24 @@ export class UndoManagerController {
             await this.#advanced.end();
         }
     };
+
+    /**
+     * This method pauses the undo manager
+     * @returns
+     */
+    pause = async () => {
+        const res = await this.#editorAPI;
+        return res.pause().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method resumes the undo manager
+     * @returns
+     */
+    resume = async () => {
+        const res = await this.#editorAPI;
+        return res.resume().then((result) => getEditorResponseData<null>(result));
+    };
 }
 
 export class AdvancedUndoManagerController {
