@@ -391,7 +391,7 @@ export class LayoutController {
      * @param layoutResizable the new layout size boundaries
      * @returns
      */
-    setLayoutResizableByUser = async (id: Id, layoutResizable: LayoutResizableUpdate) => {
+    setResizableByUser = async (id: Id, layoutResizable: LayoutResizableUpdate) => {
         const res = await this.#editorAPI;
         return res
             .setLayoutResizableByUser(id, JSON.stringify(layoutResizable))

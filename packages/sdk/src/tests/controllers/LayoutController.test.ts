@@ -340,7 +340,7 @@ describe('LayoutController', () => {
             maxHeight: { value: '20 px' },
         };
 
-        await mockedLayoutController.setLayoutResizableByUser('1', layoutResizableUpdate);
+        await mockedLayoutController.setResizableByUser('1', layoutResizableUpdate);
         expect(mockedEditorApi.setLayoutResizableByUser).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayoutResizableByUser).toBeCalledWith('1', JSON.stringify(layoutResizableUpdate));
     });
