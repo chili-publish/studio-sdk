@@ -65,7 +65,6 @@ export type LayoutListItemType = {
     type: LayoutType;
     availableForUser: boolean;
     selectedByUser: boolean;
-    resizableByUser: LayoutResizable;
     parentId?: Id | null;
     childLayouts: Id[];
 };
