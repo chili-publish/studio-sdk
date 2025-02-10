@@ -139,7 +139,7 @@ const Connect = (
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
                 selectedToolChanged: params.onSelectedToolChanged,
                 variableListChanged: params.onVariableListChanged,
-                variablesVisibilityChanged: params.onVariableListChanged,
+                variablesVisibilityChanged: params.onVariablesVisibilityChanged,
                 undoStackStateChanged: params.onUndoStateChanged,
                 selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
                 selectedTextStyleChanged: params.onSelectedTextStyleChanged,
