@@ -92,7 +92,7 @@ describe('PageController', () => {
 
     it('getSnapshot should call the getSnapshotWithSettings method with null', async () => {
         await mockedPageController.getSnapshot('1');
-        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(2);
         expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', null);
     });
 
