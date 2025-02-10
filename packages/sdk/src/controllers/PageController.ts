@@ -112,7 +112,7 @@ export class PageController {
     getSnapshot = async (pageId?: Id, settings?: SnapshotSettings | null) => {
         const res = await this.#blobAPI;
         return res
-            .getPageSnapshotWithSettings(pageId, JSON.stringify(settings))
+            .getPageSnapshotWithSettings(pageId, settings == null ? null : JSON.stringify(settings))
             .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
     };
 

@@ -90,6 +90,12 @@ describe('PageController', () => {
         expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', JSON.stringify(settings));
     });
 
+    it('getSnapshot should call the getSnapshotWithSettings method with null', async () => {
+        await mockedPageController.getSnapshot('1');
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', null);
+    });
+
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
         await mockedPageController.setHeight('id', '4+2');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(2);
