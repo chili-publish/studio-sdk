@@ -43,6 +43,7 @@ export interface Variable {
     isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
+    isValueSet: boolean;
     occurrences: number;
     placeholder?: string | null;
     helpText?: string | null;

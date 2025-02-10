@@ -28,6 +28,7 @@ describe('Next.VariableController', () => {
         isVisible: true,
         isReadonly: false,
         isRequired: false,
+        isValueSet: true,
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],
