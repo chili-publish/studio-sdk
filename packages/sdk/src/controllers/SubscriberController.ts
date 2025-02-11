@@ -169,16 +169,6 @@ export class SubscriberController {
     };
 
     /**
-     * Listener on variables visibility changes
-     * @param variableIdListJson Stringified array of Variable id
-     */
-    onVariablesVisibilityChanged = (variableIdListJson: string) => {
-        const parsed = JSON.parse(variableIdListJson) as Id[];
-
-        this.config.events.onVariablesVisibilityChanged.trigger(parsed);
-    };
-
-    /**
      * Listener on when the tool has changed by the canvas
      * @param tool the string representation of a certain tool
      */

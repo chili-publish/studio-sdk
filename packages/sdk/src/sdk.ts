@@ -168,7 +168,6 @@ export class SDK {
                         this.subscriber.onVariableListChanged(state);
                     }
                 },
-                onVariablesVisibilityChanged: this.subscriber.onVariablesVisibilityChanged,
                 onSelectedToolChanged: this.subscriber.onSelectedToolChanged,
                 onUndoStateChanged: this.subscriber.onUndoStateChanged,
                 onSelectedLayoutFramesChanged: this.subscriber.onSelectedLayoutFramesChanged,

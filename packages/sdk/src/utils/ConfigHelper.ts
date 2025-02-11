@@ -115,10 +115,6 @@ export class ConfigHelper {
                 () => clone.onVariableListChanged,
                 clone.logging?.logger,
             ),
-            onVariablesVisibilityChanged: new EngineEvent<(variableIdList: Id[]) => MaybePromise<void>>(
-                () => clone.onVariablesVisibilityChanged,
-                clone.logging?.logger,
-            ),
             onSelectedToolChanged: new EngineEvent<(tool: ToolType) => MaybePromise<void>>(
                 () => clone.onSelectedToolChanged,
                 clone.logging?.logger,

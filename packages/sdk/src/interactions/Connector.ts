@@ -59,7 +59,6 @@ interface ConfigParameterTypes {
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
     onVariableListChanged: (state: string) => void;
-    onVariablesVisibilityChanged: (state: string) => void;
     onSelectedToolChanged: (state: string) => void;
     onUndoStateChanged: (state: string) => void;
     onSelectedLayoutFramesChanged: (state: string) => void;
@@ -139,7 +138,6 @@ const Connect = (
                 frameAnimationsChanged: params.onFrameAnimationsChanged,
                 selectedToolChanged: params.onSelectedToolChanged,
                 variableListChanged: params.onVariableListChanged,
-                variablesVisibilityChanged: params.onVariablesVisibilityChanged,
                 undoStackStateChanged: params.onUndoStateChanged,
                 selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
                 selectedTextStyleChanged: params.onSelectedTextStyleChanged,
