@@ -1,4 +1,4 @@
-import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
+import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
     DateRestriction,
@@ -12,6 +12,7 @@ import {
     Variable,
     VariableType,
     VariableVisibility,
+    VariableVisibilityType,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
@@ -481,47 +482,37 @@ export class VariableController {
     };
 
     /**
-     * @deprecated the visibility setter is not supported anymore.
-     * Use `setVariableVisibility` instead.
-     * This method sets isVisible flag for a variable
-     * @param _id variable id
-     * @param _isVisible visibility flag
+     * @deprecated Use `setVariableVisibility` instead.
+     * This method redirects to `setVariableVisibility` and sets visibility config for a variable by id.
+     * @param id variable id
+     * @param isVisible visibility flag
      * @returns
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setIsVisible = async (_id: string, _isVisible: boolean) => {
-        console.error('setIsVisible is not supported anymore');
+    setIsVisible = async (id: string, isVisible: boolean) => {
+        const res = await this.#editorAPI;
+        const config = isVisible
+            ? { type: VariableVisibilityType.visible }
+            : { type: VariableVisibilityType.invisible };
 
-        const res: EditorResponse<null> = {
-            success: false,
-            status: 0,
-            error: 'setIsVisible is not supported anymore',
-            parsedData: null,
-        };
-
-        return getEditorResponseData<null>(res);
+        return res
+            .setVariableVisibility(id, JSON.stringify(config))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * @deprecated the visibility setter is not supported anymore.
-     * Use `setVariableVisibility` instead.
-     * This method sets isHidden flag for a variable
-     * @param _id variable id
-     * @param _isHidden visibility flag
+     * @deprecated Use `setVariableVisibility` instead.
+     * This method redirects to `setVariableVisibility` and sets visibility config for a variable by id.
+     * @param id variable id
+     * @param isHidden visibility flag
      * @returns
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setIsHidden = async (_id: string, _isHidden: boolean) => {
-        console.error('setIsHidden is not supported anymore');
+    setIsHidden = async (id: string, isHidden: boolean) => {
+        const res = await this.#editorAPI;
+        const config = isHidden ? { type: VariableVisibilityType.invisible } : { type: VariableVisibilityType.visible };
 
-        const res: EditorResponse<null> = {
-            success: false,
-            status: 0,
-            error: 'setIsHidden is not supported anymore',
-            parsedData: null,
-        };
-
-        return getEditorResponseData<null>(res);
+        return res
+            .setVariableVisibility(id, JSON.stringify(config))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -532,7 +523,9 @@ export class VariableController {
      */
     setVariableVisibility = async (id: string, config: VariableVisibility) => {
         const res = await this.#editorAPI;
-        return res.setVariableVisibility(id, JSON.stringify(config)).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setVariableVisibility(id, JSON.stringify(config))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**

@@ -255,6 +255,44 @@ describe('VariableController', () => {
         expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith('1', JSON.stringify(visibility));
     });
 
+    describe('deprecated methods redirections', () => {
+        it('set isVisible: true', async () => {
+            await mockedVariableController.setIsVisible('1', true);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.visible }),
+            );
+        });
+
+        it('set isVisible: false', async () => {
+            await mockedVariableController.setIsVisible('1', false);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.invisible }),
+            );
+        });
+
+        it('set isHidden: true', async () => {
+            await mockedVariableController.setIsHidden('1', true);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.invisible }),
+            );
+        });
+
+        it('set isHidden: false', async () => {
+            await mockedVariableController.setIsHidden('1', false);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.visible }),
+            );
+        });
+    });
+
     it('setLayoutsForVariableVisibility', async () => {
         await mockedVariableController.setLayoutsForVariableVisibility('0', ['6']);
         expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(1);
