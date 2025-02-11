@@ -119,7 +119,7 @@ jobs:
       - name: execute commit script
         run: node ./.github/scripts/commit.js
 
-  update-versions:
+  update-version-management:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
