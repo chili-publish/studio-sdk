@@ -1,6 +1,7 @@
 import { EditorAPI } from '../../types/CommonTypes';
 import { PageController } from '../../controllers/PageController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { SnapshotSettings } from '../../types/PageTypes';
 
 let mockedPageController: PageController;
 
@@ -11,8 +12,7 @@ const mockEditorApi: EditorAPI = {
     setPageHeight: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     addPage: async () => getEditorResponseData(castToEditorResponse('frameID')),
     removePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getPageSnapshot: async (id: unknown) => getEditorResponseData(castToEditorResponse([1])),
+    getPageSnapshotWithSettings: async () => getEditorResponseData(castToEditorResponse([1])),
     selectPage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     duplicatePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageIsVisible: async (id: unknown, isVisible: unknown) =>
@@ -28,7 +28,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'setPageHeight');
     jest.spyOn(mockEditorApi, 'addPage');
     jest.spyOn(mockEditorApi, 'removePage');
-    jest.spyOn(mockEditorApi, 'getPageSnapshot');
+    jest.spyOn(mockEditorApi, 'getPageSnapshotWithSettings');
     jest.spyOn(mockEditorApi, 'selectPage');
     jest.spyOn(mockEditorApi, 'setPageIsVisible');
     jest.spyOn(mockEditorApi, 'duplicatePage');
@@ -83,11 +83,19 @@ describe('PageController', () => {
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4');
     });
 
-    it('Should call the getSnapshot method', async () => {
-        await mockedPageController.getSnapshot('1');
-        expect(mockEditorApi.getPageSnapshot).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getPageSnapshot).toHaveBeenCalledWith('1');
+    it('getSnapshot should call the getSnapshotWithSettings method', async () => {
+        const settings = { largestAxisSize: 5 } as SnapshotSettings;
+        await mockedPageController.getSnapshot('1', settings);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', JSON.stringify(settings));
     });
+
+    it('getSnapshot should call the getSnapshotWithSettings method with null', async () => {
+        await mockedPageController.getSnapshot('1');
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', null);
+    });
+
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
         await mockedPageController.setHeight('id', '4+2');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(2);
