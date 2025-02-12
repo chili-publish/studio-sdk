@@ -185,7 +185,7 @@ declare module "grafx-studio-actions" {
      */
     setSize(
       width: number | VariableValue,
-      height: number | VariableValue,
+      height: number | VariableValue
     ): void;
   }
 
@@ -206,9 +206,10 @@ declare module "grafx-studio-actions" {
   export interface LayoutMethods {
     /**
      * Selects this layout
+     * @param keepPageSize whether the page size should be kept, defaults to false
      * @returns
      */
-    select(): void;
+    select(keepPageSize?: boolean): void;
   }
 
   /**
@@ -347,7 +348,7 @@ declare module "grafx-studio-actions" {
     move(
       name: string | Frame,
       x: number | VariableValue,
-      y: number | VariableValue,
+      y: number | VariableValue
     ): void;
 
     /**
@@ -360,7 +361,7 @@ declare module "grafx-studio-actions" {
     resize(
       name: string | Frame,
       width: number | VariableValue,
-      height: number | VariableValue,
+      height: number | VariableValue
     ): void;
 
     /**
@@ -485,9 +486,13 @@ declare module "grafx-studio-actions" {
     /**
      * Selects a layout by name
      * @param layoutName the layout name to select
+     * @param keepPageSize whether the page size should be kept, defaults to false
      * @returns
      */
-    select(layoutName: string | Layout | VariableValue): void;
+    select(
+      layoutName: string | Layout | VariableValue,
+      keepPageSize?: boolean
+    ): void;
 
     /**
      * Returns all layouts in the document.
@@ -520,7 +525,7 @@ declare module "grafx-studio-actions" {
      */
     setSize(
       width: number | VariableValue,
-      height: number | VariableValue,
+      height: number | VariableValue
     ): void;
   }
 
@@ -556,7 +561,7 @@ declare module "grafx-studio-actions" {
      */
     copy(
       fromName: string | VariableValue,
-      toName: string | VariableValue,
+      toName: string | VariableValue
     ): void;
   }
 
@@ -572,7 +577,7 @@ declare module "grafx-studio-actions" {
      */
     copy(
       fromName: string | VariableValue,
-      toName: string | VariableValue,
+      toName: string | VariableValue
     ): void;
   }
 
@@ -588,7 +593,7 @@ declare module "grafx-studio-actions" {
      */
     copy(
       fromName: string | VariableValue,
-      toName: string | VariableValue,
+      toName: string | VariableValue
     ): void;
   }
 }
