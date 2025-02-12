@@ -489,14 +489,11 @@ export class VariableController {
      * @returns
      */
     setIsVisible = async (id: string, isVisible: boolean) => {
-        const res = await this.#editorAPI;
         const config = isVisible
             ? { type: VariableVisibilityType.visible }
             : { type: VariableVisibilityType.invisible };
 
-        return res
-            .setVariableVisibility(id, JSON.stringify(config))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.setVariableVisibility(id, config as VariableVisibility);
     };
 
     /**
@@ -507,12 +504,9 @@ export class VariableController {
      * @returns
      */
     setIsHidden = async (id: string, isHidden: boolean) => {
-        const res = await this.#editorAPI;
         const config = isHidden ? { type: VariableVisibilityType.invisible } : { type: VariableVisibilityType.visible };
 
-        return res
-            .setVariableVisibility(id, JSON.stringify(config))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.setVariableVisibility(id, config as VariableVisibility);
     };
 
     /**
