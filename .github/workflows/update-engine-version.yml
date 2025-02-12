@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       sdk_version:
-        description: 'SDK version to update (e.g. 1.17)'
+        description: 'SDK version to update (e.g. 1.17 or "latest")'
         required: true
         type: string
       engine_version:
@@ -32,18 +32,30 @@ jobs:
             const sdkVersion = '${{ inputs.sdk_version }}';
             const engineVersion = '${{ inputs.engine_version }}';
             
-            // Validate that the SDK version exists
-            if (!versions[sdkVersion]) {
-              console.error('SDK version ' + sdkVersion + ' not found in versions file');
-              process.exit(1);
-            }
-            
-            // Update engine version for the specified SDK version
-            versions[sdkVersion].engineVersion = engineVersion;
-            
-            // If this is the latest SDK version, also update the latest entry
-            if (versions.latest.sdkVersion.startsWith(sdkVersion)) {
+            if (sdkVersion === 'latest') {
+              // Get the major.minor version from the latest sdkVersion
+              const latestSdkVersion = versions.latest.sdkVersion;
+              const majorMinor = latestSdkVersion.split('.').slice(0, 2).join('.');
+              
+              // Update both latest and the corresponding version entry
               versions.latest.engineVersion = engineVersion;
+              versions[majorMinor].engineVersion = engineVersion;
+              
+              console.log('Updated engine version for latest and ' + majorMinor + ' to ' + engineVersion);
+            } else {
+              // Validate that the SDK version exists
+              if (!versions[sdkVersion]) {
+                console.error('SDK version ' + sdkVersion + ' not found in versions file');
+                process.exit(1);
+              }
+              
+              // Update engine version for the specified SDK version
+              versions[sdkVersion].engineVersion = engineVersion;
+              
+              // If this is the latest SDK version, also update the latest entry
+              if (versions.latest.sdkVersion.startsWith(sdkVersion)) {
+                versions.latest.engineVersion = engineVersion;
+              }
             }
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
