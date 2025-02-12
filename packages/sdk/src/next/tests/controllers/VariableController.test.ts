@@ -27,6 +27,7 @@ describe('Next.VariableController', () => {
         label: '',
         isReadonly: false,
         isRequired: false,
+        isVisible: true,
         visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
