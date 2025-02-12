@@ -1,4 +1,5 @@
 import { PrivateData } from './CommonTypes';
+
 export interface ConnectorImageVariableSource {
     connectorId: string;
     /**
@@ -40,7 +41,7 @@ export interface Variable {
     parentId?: string;
     name: string;
     label?: string | null;
-    isVisible: boolean;
+    visibility: VariableVisibility;
     isReadonly: boolean;
     isRequired: boolean;
     occurrences: number;
@@ -206,3 +207,83 @@ export interface PrefixSuffixDeltaUpdate {
         value: string | null;
     };
 }
+
+export enum VariableVisibilityType {
+    visible = 'visible',
+    invisible = 'invisible',
+    conditional = 'conditional',
+}
+
+export enum VariableVisibilityTargetType {
+    boolean = 'boolean',
+    text = 'text',
+    number = 'number',
+}
+
+export enum VariableVisibilityOperator {
+    equals = '=',
+    notEquals = '!=',
+    greaterThan = '>',
+    greaterThanOrEquals = '>=',
+    lessThan = '<',
+    lessThanOrEquals = '<=',
+}
+
+export interface VariableVisibilityBase {
+    type: VariableVisibilityType;
+}
+
+export interface VariableVisibilityVisible extends VariableVisibilityBase {
+    type: VariableVisibilityType.visible;
+}
+
+export interface VariableVisibilityInvisible extends VariableVisibilityBase {
+    type: VariableVisibilityType.invisible;
+}
+
+export interface VariableVisibilityConditional extends VariableVisibilityBase {
+    type: VariableVisibilityType.conditional;
+    layouts: VariableVisibilityLayout[];
+    variables: VariableWithValue[];
+}
+
+export type VariableVisibility =
+    | VariableVisibilityVisible
+    | VariableVisibilityInvisible
+    | VariableVisibilityConditional;
+
+export interface VariableVisibilityLayout {
+    layoutId: string;
+    includeChildren: boolean;
+}
+
+export interface VariableWithValue {
+    id: string;
+    value: VariableVisibilityConditionValue;
+}
+
+export interface VariableVisibilityConditionValueBase {
+    type: VariableVisibilityTargetType;
+}
+
+export interface VariableVisibilityConditionValueBoolean extends VariableVisibilityConditionValueBase {
+    type: VariableVisibilityTargetType.boolean;
+    value: boolean;
+}
+
+export interface VariableVisibilityConditionValueText extends VariableVisibilityConditionValueBase {
+    type: VariableVisibilityTargetType.text;
+    value: string;
+    operator: VariableVisibilityOperator;
+}
+
+export interface VariableVisibilityConditionValueNumber extends VariableVisibilityConditionValueBase {
+    type: VariableVisibilityTargetType.number;
+    value: number;
+    operator: VariableVisibilityOperator;
+}
+
+export type VariableVisibilityConditionValue =
+    | VariableVisibilityConditionValueBoolean
+    | VariableVisibilityConditionValueText
+    | VariableVisibilityConditionValueNumber;
