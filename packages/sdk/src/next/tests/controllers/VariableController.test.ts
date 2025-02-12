@@ -1,5 +1,5 @@
 import { VariableController } from '../../controllers/VariableController';
-import { ListVariableItem, Variable, VariableType } from '../../../types/VariableTypes';
+import { ListVariableItem, Variable, VariableType, VariableVisibilityType } from '../../../types/VariableTypes';
 import type { ListVariable } from '../../../next/types/VariableTypes';
 import { EditorAPI } from '../../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
@@ -25,9 +25,9 @@ describe('Next.VariableController', () => {
         type: VariableType.list,
         name: '',
         label: '',
-        isVisible: true,
         isReadonly: false,
         isRequired: false,
+        visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],

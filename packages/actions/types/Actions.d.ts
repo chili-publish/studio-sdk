@@ -368,10 +368,10 @@ declare module 'grafx-studio-actions' {
 
         export interface BaseVariable extends HasName {
             /**
+             * @deprecated the properly will no longer be used
              * Whether the variable is visible
              */
             readonly isVisible: boolean;
-
             /**
              * Whether the variable is read-only
              */
