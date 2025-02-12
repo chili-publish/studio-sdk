@@ -32,6 +32,7 @@ describe('VariableController', () => {
         label: '',
         isReadonly: false,
         isRequired: false,
+        isVisible: true,
         visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         value: {
@@ -51,6 +52,7 @@ describe('VariableController', () => {
         label: '',
         isReadonly: false,
         isRequired: false,
+        isVisible: true,
         visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
@@ -296,7 +298,14 @@ describe('VariableController', () => {
     it('setLayoutsForVariableVisibility', async () => {
         await mockedVariableController.setLayoutsForVariableVisibility(['6']);
         expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith(['6']);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith('[\"6\"]');
+    });
+
+    it('setLayoutsForVariableVisibility with null and undefined', async () => {
+        await mockedVariableController.setLayoutsForVariableVisibility(null);
+        await mockedVariableController.setLayoutsForVariableVisibility(undefined);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith(null);
     });
 
     it('set isRequired', async () => {
