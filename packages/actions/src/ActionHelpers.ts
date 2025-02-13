@@ -625,7 +625,7 @@ function getSelectedLayoutName(): string {
  * Selects a layout by its name or layout object.
  *
  * @param {string | Layout | VariableValue} layoutName - The name of the layout or a variable value holding the layout name or a layout object to select.
- * @param {boolean} [keepPageSize] - Whether the page size should be kept, defaults to false.
+ * @param {boolean} [keepPageSize=false] - Whether the page size should be kept, defaults to false.
  */
 function selectLayout(layoutName: string | Layout | VariableValue, keepPageSize?: boolean) {
     studio.layouts.select(layoutName, keepPageSize);
