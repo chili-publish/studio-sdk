@@ -531,7 +531,7 @@ export class VariableController {
     setLayoutsForVariableVisibility = async (layoutIdList?: Id[] | null) => {
         const res = await this.#editorAPI;
         return res
-            .setLayoutsForVariableVisibility(layoutIdList)
+            .setLayoutsForVariableVisibility(layoutIdList ? JSON.stringify(layoutIdList) : null)
             .then((result) => getEditorResponseData<null>(result));
     };
 
