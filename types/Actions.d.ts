@@ -206,7 +206,7 @@ declare module "grafx-studio-actions" {
   export interface LayoutMethods {
     /**
      * Selects this layout
-     * @param keepPageSize whether the page size should be kept, defaults to false
+     * @param {boolean} [keepPageSize] - whether the page size should be kept, defaults to false
      * @returns
      */
     select(keepPageSize?: boolean): void;
@@ -486,7 +486,8 @@ declare module "grafx-studio-actions" {
     /**
      * Selects a layout by name
      * @param layoutName the layout name to select
-     * @param keepPageSize whether the page size should be kept, defaults to false
+     * @param {boolean} [keepPageSize] - whether the page size should be kept,
+     * defaults to false
      * @returns
      */
     select(
