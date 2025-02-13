@@ -6,7 +6,7 @@ import {
     BleedDeltaUpdate,
     LayoutIntent,
     LayoutPreset,
-    LayoutResizableUpdate,
+    ResizableLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
 } from '../../types/LayoutTypes';
@@ -340,7 +340,7 @@ describe('LayoutController', () => {
     });
 
     it('Should be possible to set layout resizable', async () => {
-        const layoutResizableUpdate: LayoutResizableUpdate = {
+        const resizableLayoutPropertiesUpdate: ResizableLayoutPropertiesUpdate = {
             enabled: { value: true },
             minWidth: { value: '10 px' },
             maxWidth: { value: '20 px' },
@@ -348,8 +348,11 @@ describe('LayoutController', () => {
             maxHeight: { value: '20 px' },
         };
 
-        await mockedLayoutController.setResizableByUser('1', layoutResizableUpdate);
+        await mockedLayoutController.setResizableByUser('1', resizableLayoutPropertiesUpdate);
         expect(mockedEditorApi.setLayoutResizableByUser).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setLayoutResizableByUser).toBeCalledWith('1', JSON.stringify(layoutResizableUpdate));
+        expect(mockedEditorApi.setLayoutResizableByUser).toBeCalledWith(
+            '1',
+            JSON.stringify(resizableLayoutPropertiesUpdate),
+        );
     });
 });
