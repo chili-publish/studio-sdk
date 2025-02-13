@@ -219,7 +219,6 @@ export interface DocumentVariable extends Variable {
     parentId: Id;
     name: string;
     label: string;
-    isVisible: boolean;
     isReadonly: boolean;
     isRequired: boolean;
     value: string;

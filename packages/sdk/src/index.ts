@@ -66,7 +66,15 @@ export type {
     LayoutWithFrameProperties,
 } from './types/LayoutTypes';
 
-export { Day, Locale, VariableType } from './types/VariableTypes';
+export {
+    Day,
+    Locale,
+    VariableType,
+    VariableVisibilityTargetType,
+    VariableVisibilityType,
+    VariableVisibilityOperator,
+} from './types/VariableTypes';
+
 export type {
     AbsoluteDate,
     BooleanVariable,
@@ -83,6 +91,11 @@ export type {
     ShortTextVariable,
     ValueWithStyle,
     Variable,
+    VariableVisibility,
+    VariableVisibilityConditional,
+    VariableVisibilityConditionValue,
+    VariableVisibilityLayout,
+    VariableWithValue,
 } from './types/VariableTypes';
 
 export type { Color, ColorUpdate, DocumentColor } from './types/ColorStyleTypes';

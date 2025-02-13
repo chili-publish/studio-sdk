@@ -7,6 +7,8 @@ import {
     Locale,
     Variable,
     VariableType,
+    VariableVisibilityType,
+    VariableVisibilityVisible,
 } from '../../types/VariableTypes';
 import { EditorAPI, PrivateData } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -28,9 +30,10 @@ describe('VariableController', () => {
         type: VariableType.image,
         name: '',
         label: '',
-        isVisible: true,
         isReadonly: false,
         isRequired: false,
+        isVisible: true,
+        visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         value: {
             connectorId: connectorId,
@@ -47,9 +50,10 @@ describe('VariableController', () => {
         type: VariableType.list,
         name: '',
         label: '',
-        isVisible: true,
         isReadonly: false,
         isRequired: false,
+        isVisible: true,
+        visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],
@@ -74,7 +78,8 @@ describe('VariableController', () => {
         duplicateVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariables: async () => getEditorResponseData(castToEditorResponse(null)),
-        setVariableIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableVisibility: async () => getEditorResponseData(castToEditorResponse(null)),
+        setLayoutsForVariableVisibility: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsRequired: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsReadonly: async () => getEditorResponseData(castToEditorResponse(null)),
         ungroupVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -106,7 +111,8 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'duplicateVariable');
         jest.spyOn(mockEditorApi, 'moveVariable');
         jest.spyOn(mockEditorApi, 'moveVariables');
-        jest.spyOn(mockEditorApi, 'setVariableIsVisible');
+        jest.spyOn(mockEditorApi, 'setVariableVisibility');
+        jest.spyOn(mockEditorApi, 'setLayoutsForVariableVisibility');
         jest.spyOn(mockEditorApi, 'setVariableIsRequired');
         jest.spyOn(mockEditorApi, 'setVariableIsReadonly');
         jest.spyOn(mockEditorApi, 'ungroupVariable');
@@ -243,16 +249,63 @@ describe('VariableController', () => {
         expect(mockEditorApi.moveVariables).toHaveBeenCalledWith(['1'], '6', 0);
     });
 
-    it('set isVisible', async () => {
-        await mockedVariableController.setIsVisible('1', false);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledWith('1', false);
+    it('setVariableVisibility', async () => {
+        const visibility = { type: VariableVisibilityType.visible } as VariableVisibilityVisible;
+
+        await mockedVariableController.setVariableVisibility('1', visibility);
+        expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith('1', JSON.stringify(visibility));
     });
 
-    it('set isHidden', async () => {
-        await mockedVariableController.setIsHidden('1', false);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setVariableIsVisible).toHaveBeenCalledWith('1', true);
+    describe('deprecated methods redirections', () => {
+        it('set isVisible: true', async () => {
+            await mockedVariableController.setIsVisible('1', true);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.visible }),
+            );
+        });
+
+        it('set isVisible: false', async () => {
+            await mockedVariableController.setIsVisible('1', false);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.invisible }),
+            );
+        });
+
+        it('set isHidden: true', async () => {
+            await mockedVariableController.setIsHidden('1', true);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.invisible }),
+            );
+        });
+
+        it('set isHidden: false', async () => {
+            await mockedVariableController.setIsHidden('1', false);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.setVariableVisibility).toHaveBeenCalledWith(
+                '1',
+                JSON.stringify({ type: VariableVisibilityType.visible }),
+            );
+        });
+    });
+
+    it('setLayoutsForVariableVisibility', async () => {
+        await mockedVariableController.setLayoutsForVariableVisibility(['6']);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith('[\"6\"]');
+    });
+
+    it('setLayoutsForVariableVisibility with null and undefined', async () => {
+        await mockedVariableController.setLayoutsForVariableVisibility(null);
+        await mockedVariableController.setLayoutsForVariableVisibility(undefined);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith(null);
     });
 
     it('set isRequired', async () => {
