@@ -18,6 +18,7 @@ import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
+import { EngineEditMode } from './EngineEditModeTypes';
 
 export type Id = string;
 export type BaseConfigType = {
@@ -114,6 +115,7 @@ export type ManagedCallbacksConfigType = {
         onDataSourceIdChanged: EngineEvent<(connectorId?: Id) => MaybePromise<void>>;
         onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
         onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
+        onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
     };
 };
 
@@ -321,6 +323,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onCustomUndoDataChanged` instead
      */
     onCustomUndoDataChanged?: (customData: Record<string, string>) => void;
+
+    /**
+     * @deprecated use `events.onEngineEditModeChanged` instead
+     */
+    onEngineEditModeChanged?: (engineEditMode: EngineEditMode) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;

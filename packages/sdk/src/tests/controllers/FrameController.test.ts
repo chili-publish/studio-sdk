@@ -70,6 +70,10 @@ const mockedEditorApi: EditorAPI = {
     enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    enterSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    applySubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
@@ -120,6 +124,10 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'enterCropMode');
     jest.spyOn(mockedEditorApi, 'applyCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
+    jest.spyOn(mockedEditorApi, 'enterSubjectMode');
+    jest.spyOn(mockedEditorApi, 'applySubjectMode');
+    jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
+    jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
 
@@ -344,7 +352,6 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setImageFrameFitModePosition).toHaveBeenCalledWith(id, FitModePosition.bottomCenter);
     });
 
-
     it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {
         await expect(mockedFrameController.setFrameConstrainProportions(id, true)).rejects.toThrow();
     });
@@ -451,6 +458,22 @@ describe('FrameController', () => {
     it('Should be possible to cancel the current image crop', async () => {
         await mockedFrameController.exitCropMode();
         expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to enter subject mode on a specific frame', async () => {
+        await mockedFrameController.enterSubjectMode(id);
+        expect(mockedEditorApi.enterSubjectMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.enterSubjectMode).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to apply the current subject area to the frame', async () => {
+        await mockedFrameController.applySubjectMode();
+        expect(mockedEditorApi.applySubjectMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to cancel the current subject area', async () => {
+        await mockedFrameController.exitSubjectMode();
+        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
     });
 });
 

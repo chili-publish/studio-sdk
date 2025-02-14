@@ -5,6 +5,7 @@ import {
     Layout,
     LayoutIntent,
     LayoutPreset,
+    ResizableLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
 } from '../types/LayoutTypes';
@@ -369,5 +370,43 @@ export class LayoutController {
     resetDisplayName = async (id: string) => {
         const res = await this.#editorAPI;
         return res.setLayoutDisplayName(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the layout availability for end-users
+     *
+     * @param id The id of a specific layout
+     * @param isAvailable whether this layout is available for end-users
+     * @returns
+     */
+    setAvailableForUser = async (id: Id, isAvailable: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutAvailableForUser(id, isAvailable).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the user selected layout
+     *
+     * @param id The id of a specific layout
+     * @param isSelected whether this layout is selected by end-users
+     * @returns
+     */
+    setSelectedByUser = async (id: Id, isSelected: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutSelectedByUser(id, isSelected).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the layout size boundaries for end-users
+     *
+     * @param id The id of a specific layout
+     * @param resizableLayoutProperties the new layout size boundaries
+     * @returns
+     */
+    setResizableByUser = async (id: Id, resizableLayoutProperties: ResizableLayoutPropertiesUpdate) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutResizableByUser(id, JSON.stringify(resizableLayoutProperties))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

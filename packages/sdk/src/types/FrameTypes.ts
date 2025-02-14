@@ -20,6 +20,7 @@ export type FrameLayoutType = {
     fitMode: PropertyState<FitMode>;
     fitModePosition: PropertyState<FitModePosition>;
     hasImageCrop: PropertyState<boolean>;
+    hasFrameSubjectArea: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
@@ -63,7 +64,6 @@ export type ImageFrame = {
     type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
-    crop?: CropSettings | NoCropSettings;
 };
 
 export type ShapeFrame = {

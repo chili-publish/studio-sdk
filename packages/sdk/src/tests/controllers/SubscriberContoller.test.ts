@@ -36,6 +36,7 @@ import { ConfigHelper } from '../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ToolType } from '../../utils/Enums';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
+import { EngineEditModeType } from '../../types/EngineEditModeTypes';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -82,6 +83,7 @@ const mockEditorApi: EditorAPI = {
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -126,6 +128,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
+    jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
 
     mockedSubscriberController = new SubscriberController(
         ConfigHelper.createRuntimeConfig(mockEditorApi),
@@ -527,5 +530,15 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledWith(documentIssues);
+    });
+
+    it('Should call onEngineEditModeChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onEngineEditModeChanged(
+            JSON.stringify([{ frameId: '1', mode: EngineEditModeType.frameSubjectArea }]),
+        );
+        expect(mockEditorApi.onEngineEditModeChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onEngineEditModeChanged).toHaveBeenCalledWith([
+            { frameId: '1', mode: EngineEditModeType.frameSubjectArea },
+        ]);
     });
 });
