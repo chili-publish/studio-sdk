@@ -298,7 +298,7 @@ describe('VariableController', () => {
     it('setLayoutsForVariableVisibility', async () => {
         await mockedVariableController.setLayoutsForVariableVisibility(['6']);
         expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith('[\"6\"]');
+        expect(mockEditorApi.setLayoutsForVariableVisibility).toHaveBeenCalledWith('["6"]');
     });
 
     it('setLayoutsForVariableVisibility with null and undefined', async () => {
