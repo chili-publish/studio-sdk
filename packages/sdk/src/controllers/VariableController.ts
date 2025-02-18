@@ -524,15 +524,14 @@ export class VariableController {
 
     /**
      * This method sets which layouts are considered for variable visibility
-     * @param id variable id
      * @param layoutIdList nullable layout id list.
      * Pass null to reset to follow selected layout.
      * @returns
      */
-    setLayoutsForVariableVisibility = async (id: string, layoutIdList?: Id[] | null) => {
+    setLayoutsForVariableVisibility = async (layoutIdList?: Id[] | null) => {
         const res = await this.#editorAPI;
         return res
-            .setLayoutsForVariableVisibility(id, layoutIdList)
+            .setLayoutsForVariableVisibility(layoutIdList ? JSON.stringify(layoutIdList) : null)
             .then((result) => getEditorResponseData<null>(result));
     };
 

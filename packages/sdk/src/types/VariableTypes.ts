@@ -41,6 +41,7 @@ export interface Variable {
     parentId?: string;
     name: string;
     label?: string | null;
+    isVisible: boolean;
     visibility: VariableVisibility;
     isReadonly: boolean;
     isRequired: boolean;
