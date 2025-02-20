@@ -1,0 +1,68 @@
+name: Update Engine Version Management
+description: 'Update the engine version management file in case of an engine patch update'
+on:
+  workflow_dispatch:
+    inputs:
+      sdk_version:
+        description: 'SDK version to update (e.g. 1.17 or "latest")'
+        required: true
+        type: string
+      engine_version:
+        description: 'New engine version (e.g. 2.1.1)'
+        required: true
+        type: string
+
+jobs:
+  update-engine-version-management:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download and update versions file
+        run: |
+          # Create temporary directory
+          mkdir -p temp
+          # Download current versions file
+          curl -o temp/supported-versions.json https://studio-cdn.chiligrafx.com/shared/version-management/supported-versions.json
+          
+          # Create updated versions file using node
+          node -e "
+            const fs = require('fs');
+            const versions = require('./temp/supported-versions.json');
+            const sdkVersion = '${{ inputs.sdk_version }}';
+            const engineVersion = '${{ inputs.engine_version }}';
+            
+            if (sdkVersion === 'latest') {
+              // Get the major.minor version from the latest sdkVersion
+              const latestSdkVersion = versions.latest.sdkVersion;
+              const majorMinor = latestSdkVersion.split('.').slice(0, 2).join('.');
+              
+              // Update both latest and the corresponding version entry
+              versions.latest.engineVersion = engineVersion;
+              versions[majorMinor].engineVersion = engineVersion;
+              
+              console.log('Updated engine version for latest and ' + majorMinor + ' to ' + engineVersion);
+            } else {
+              // Validate that the SDK version exists
+              if (!versions[sdkVersion]) {
+                console.error('SDK version ' + sdkVersion + ' not found in versions file');
+                process.exit(1);
+              }
+              
+              // Update engine version for the specified SDK version
+              versions[sdkVersion].engineVersion = engineVersion;
+              
+              // If this is the latest SDK version, also update the latest entry
+              if (versions.latest.sdkVersion.startsWith(sdkVersion)) {
+                versions.latest.engineVersion = engineVersion;
+              }
+            }
+            
+            fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
+          "
+      
+      - name: Upload to Azure Blob Storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload --file temp/supported-versions.json --container-name shared --name version-management/supported-versions.json --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true 

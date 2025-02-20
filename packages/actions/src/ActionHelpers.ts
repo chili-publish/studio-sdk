@@ -226,17 +226,19 @@ function setImageVariableValue(variableName: string | Variable, value: string) {
 }
 
 /**
+ * @deprecated
  * Gets the visibility status of a variable by its name or variable object.
  *
  * @param {string | Variable} name - The name of the variable to check or a variable object.
  *
- * @returns {boolean} `true` if the variable is visible, `false` otherwise.
+ * @returns {boolean} `false` since this method is being deprecated.
  */
 function getVariableIsVisible(name: string | Variable): boolean {
-    return studio.variables.byName(name).isVisible;
+    return false;
 }
 
 /**
+ * @deprecated
  * Sets the visibility status of a variable by its name or variable object.
  *
  * @param {string | Variable} name - The name of the variable to update or a variable object.
