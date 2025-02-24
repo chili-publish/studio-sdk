@@ -4,17 +4,20 @@ import { castToEditorResponse, getEditorResponseData } from '../../../utils/Edit
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 import { VariableType } from '../../types/VariableTypes';
+import { PageSize } from '../../types/PageTypes';
 
 let mockedSubscriberController: SubscriberController;
 
 const mockEditorApi: EditorAPI = {
     onVariableListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
+    jest.spyOn(mockEditorApi, 'onPageSizeChanged');
 
     mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
@@ -40,5 +43,13 @@ describe('Next.SubscriberController', () => {
         await mockedSubscriberController.onConnectorsChanged(JSON.stringify(connectors));
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledWith(connectors);
         expect(mockEditorApi.onConnectorsChanged).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to subscribe to onPageSizeChanged', async () => {
+        const pageSize = { height: 100, width: 100 } as PageSize;
+
+        await mockedSubscriberController.onPageSizeChanged(JSON.stringify(pageSize));
+        expect(mockEditorApi.onPageSizeChanged).toHaveBeenCalledWith(pageSize);
+        expect(mockEditorApi.onPageSizeChanged).toHaveBeenCalledTimes(1);
     });
 });
