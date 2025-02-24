@@ -23,7 +23,7 @@ export class CanvasController {
      * This method fits the page to the given rectangle or the viewport available
      * Optional parameters `left`, `top`, `width` and `height` are needed to define the rectangle to fit the page to
      * If any or all of them aren't provided the page will fit the whole viewport available
-     * @param id the id of a specific page
+     * @param _id the id of a specific page
      * @param left
      * @param top
      * @param width
@@ -31,14 +31,17 @@ export class CanvasController {
      * @returns
      */
     zoomToPage = async (
-        id?: Id | null,
+        _id?: Id | null | undefined,
         left?: number | null,
         top?: number | null,
         width?: number | null,
         height?: number | null,
     ) => {
+        if (_id !== undefined) {
+            console.warn('id has no effect and will be deprecated in the future');
+        }
         const res = await this.#editorAPI;
-        return res.zoomToPage(id, left, top, width, height).then((result) => getEditorResponseData<null>(result));
+        return res.zoomToPage(left, top, width, height).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
