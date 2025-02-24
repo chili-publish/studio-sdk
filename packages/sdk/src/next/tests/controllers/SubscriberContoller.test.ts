@@ -1,10 +1,10 @@
 import { EditorAPI } from '../../../types/CommonTypes';
-import { ConfigHelper } from '../../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
 import { SubscriberController } from '../../controllers/SubscriberController';
 import { ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 import { VariableType } from '../../types/VariableTypes';
 import { PageSize } from '../../types/PageTypes';
+import { ConfigHelper } from '../../../utils/ConfigHelper';
 
 let mockedSubscriberController: SubscriberController;
 
@@ -19,6 +19,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
 
