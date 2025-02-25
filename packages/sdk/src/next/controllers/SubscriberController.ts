@@ -1,4 +1,4 @@
-import { RuntimeConfigType } from '../../types/CommonTypes';
+import { RuntimeConfigType } from '../types/CommonTypes';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
