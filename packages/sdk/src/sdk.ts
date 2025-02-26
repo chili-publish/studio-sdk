@@ -42,6 +42,7 @@ import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { RuntimeConfigType as NextRuntimeConfigType } from './next/types/CommonTypes';
 
 let connection: Connection;
 
@@ -137,7 +138,7 @@ export class SDK {
         this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
-        this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
+        this.next = new NextInitiator(this.config as unknown as NextRuntimeConfigType, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
     }
 
@@ -190,7 +191,13 @@ export class SDK {
                 onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
                 onPagesChanged: this.subscriber.onPagesChanged,
                 onPageSnapshotInvalidated: this.subscriber.onPageSnapshotInvalidated,
-                onPageSizeChanged: this.subscriber.onPageSizeChanged,
+                onPageSizeChanged: (state) => {
+                    if (this.enabledNextSubscribers?.onPageSizeChanged) {
+                        this.next.subscriber.onPageSizeChanged(state);
+                    } else {
+                        this.subscriber.onPageSizeChanged(state);
+                    }
+                },
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
@@ -237,7 +244,7 @@ export class SDK {
         this.shape = new ShapeController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
-        this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
+        this.next = new NextInitiator(this.config as unknown as NextRuntimeConfigType, this.connection, this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks

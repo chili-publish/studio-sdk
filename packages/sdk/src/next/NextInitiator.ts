@@ -1,8 +1,9 @@
 import { Connection } from 'penpal';
-import { EditorAPI, RuntimeConfigType } from '../types/CommonTypes';
+import { EditorAPI } from '../types/CommonTypes';
 import { SubscriberController } from './controllers/SubscriberController';
 import { VariableController } from './controllers/VariableController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { RuntimeConfigType } from './types/CommonTypes';
 
 /**
  * The next initiator is a split off on SDK level to tag next features.

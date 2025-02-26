@@ -1,7 +1,7 @@
 import { CanvasController } from '../../controllers/CanvasController';
 import { EditorAPI } from '../../types/CommonTypes';
 import { ViewMode } from '../../types/ViewModeTypes';
-import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedCanvasController: CanvasController;
 
@@ -30,13 +30,13 @@ describe('CanvasController', () => {
 
         await mockedCanvasController.zoomToPage(null, null, null, null, null);
         expect(mockEditorApi.zoomToPage).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.zoomToPage).toHaveBeenCalledWith(null, null, null, null, null);
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledWith(null, null, null, null);
     });
 
     it('should call zoomToPage function of EditorAPI with params included', async () => {
         await mockedCanvasController.zoomToPage('0', 300, 0, 700, 400);
         expect(mockEditorApi.zoomToPage).toHaveBeenCalledTimes(3);
-        expect(mockEditorApi.zoomToPage).toHaveBeenCalledWith('0', 300, 0, 700, 400);
+        expect(mockEditorApi.zoomToPage).toHaveBeenCalledWith(300, 0, 700, 400);
     });
 
     it('should call getZoomPercentage function of EditorAPI', async () => {
