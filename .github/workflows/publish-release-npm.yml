@@ -144,11 +144,13 @@ jobs:
           
           # Create updated versions file using node
           node -e "
+            const args = process.argv.slice(2);
             const fs = require('fs');
             const versions = require('./temp/supported-versions.json');
-            const sdkVersion = process.env.SDK_VERSION;
-            const engineVersion = process.env.ENGINE_VERSION;
-            const majorMinor = process.env.SDK_MAJOR_MINOR;
+            const sdkVersion = args[0];
+            const engineVersion = args[1];
+            const majorMinor = args[2];
+            console.log(sdkVersion, engineVersion, majorMinor);
             
             // Update latest entry
             versions.latest = {
@@ -163,7 +165,7 @@ jobs:
             };
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
-          "
+          " $SDK_VERSION $ENGINE_VERSION $SDK_MAJOR_MINOR
       
       - name: Upload to Azure Blob Storage
         uses: azure/CLI@v1
