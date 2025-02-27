@@ -271,6 +271,7 @@ declare module 'grafx-studio-actions' {
             setRequired(value: boolean | VariableValue): void;
 
             /**
+             * @deprecated
              * Set the visible state of a variable
              * @param isVisible whether the variable is visible
              * @returns
@@ -697,6 +698,7 @@ declare module 'grafx-studio-actions' {
             setRequired(name: string | Variable, value: boolean | VariableValue): void;
 
             /**
+             * @deprecated
              * Set the visible state of a variable
              * @param name the variable name
              * @param isVisible whether the variable is visible
