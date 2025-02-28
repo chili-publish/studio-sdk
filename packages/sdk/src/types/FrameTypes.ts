@@ -1,7 +1,7 @@
 // FramePropertiesDto
 import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZone } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
-import { Id, PropertyState } from './CommonTypes';
+import { HasOverrideState, Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
@@ -313,19 +313,19 @@ export type RelativeFrameAnchor = {
     end: PropertyState<number>;
     target: AnchorTarget;
     type: FrameAnchorType.relative;
-};
+} & HasOverrideState;
 
 export type StartFrameAnchor = {
     offset: PropertyState<number>;
     target: AnchorTarget;
     type: FrameAnchorType.start;
-};
+} & HasOverrideState;
 
 export type EndFrameAnchor = {
     offset: PropertyState<number>;
     target: AnchorTarget;
     type: FrameAnchorType.end;
-};
+} & HasOverrideState;
 
 export type StartAndEndFrameAnchor = {
     start: PropertyState<number>;
@@ -333,13 +333,13 @@ export type StartAndEndFrameAnchor = {
     end: PropertyState<number>;
     endTarget: AnchorTarget;
     type: FrameAnchorType.startAndEnd;
-};
+} & HasOverrideState;
 
 export type CenterFrameAnchor = {
     offset: PropertyState<number>;
     target: AnchorTarget;
     type: FrameAnchorType.center;
-};
+} & HasOverrideState;
 
 export type FrameAnchor =
     | RelativeFrameAnchor
