@@ -133,7 +133,7 @@ jobs:
           # Create temporary directory
           mkdir -p temp
           # Download current versions file
-          curl -o temp/supported-versions.json https://studio-cdn.chiligrafx.com/shared/version-management/supported-versions.json
+          curl -o temp/supported-versions.json https://stgrafxstudioprdpublic.blob.core.windows.net/shared/version-management/supported-versions.json
           
           # Get the SDK version from package.json
           SDK_VERSION=$(node -p "require('./package.json').version")
@@ -144,7 +144,7 @@ jobs:
           
           # Create updated versions file using node
           node -e "
-            const args = process.argv.slice(2);
+            const args = process.argv.slice(1);
             const fs = require('fs');
             const versions = require('./temp/supported-versions.json');
             const sdkVersion = args[0];
