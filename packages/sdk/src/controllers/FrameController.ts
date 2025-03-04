@@ -1018,4 +1018,14 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will reset the isVisible property of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @returns
+     */
+    resetVisibility = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.setFrameIsVisible(id, null).then((result) => getEditorResponseData<null>(result));
+    };
 }
