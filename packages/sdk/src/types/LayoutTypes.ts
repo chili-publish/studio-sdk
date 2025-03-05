@@ -45,6 +45,8 @@ export type Layout = {
     parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
+    layoutWidth: PropertyState<number>;
+    layoutHeight: PropertyState<number>;
     childLayouts: Id[];
     timelineLengthMs: PropertyState<number>;
     unit: PropertyState<MeasurementUnit>;
