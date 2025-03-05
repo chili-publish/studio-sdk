@@ -156,6 +156,7 @@ export class SDK {
                 onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFramesContentChanged: this.subscriber.onSelectedFramesContentChanged,
                 onSelectedFramesLayoutChanged: this.subscriber.onSelectedFramesLayoutChanged,
+                onAllFramesLayoutChanged: this.subscriber.onAllFramesLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
                 onSelectedLayoutUnitChanged: this.subscriber.onSelectedLayoutUnitChanged,
                 onPageSelectionChanged: this.subscriber.onPageSelectionChanged,
