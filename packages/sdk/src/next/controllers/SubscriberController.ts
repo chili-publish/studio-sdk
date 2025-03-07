@@ -32,4 +32,13 @@ export class SubscriberController {
     onConnectorsChanged = (connectors: string) => {
         this.config.events.onConnectorsChanged.trigger(JSON.parse(connectors));
     };
+
+    /**
+     * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
+     * This will not emit anything if your document is a `template`.
+     * @param pageSize Stringified object of the PageSize
+     */
+    onPageSizeChanged = (pageSize: string) => {
+        this.config.events.onPageSizeChanged.trigger(JSON.parse(pageSize));
+    };
 }
