@@ -414,12 +414,38 @@ interface AsyncErrorBase {
     message: string;
 }
 
-export interface ActionAsyncError extends AsyncErrorBase {
+export class ActionAsyncError implements AsyncErrorBase {
     id?: string;
     event?: ActionEditorEvent;
     eventChain?: ActionEventErrorData[];
+    message: string;
+
+    constructor(message: string, id?: string, event?: ActionEditorEvent, eventChain?: ActionEventErrorData[]) {
+        this.message = message;
+        this.id = id;
+        this.event = event;
+        this.eventChain = eventChain;
+    }
 }
 
-export type AsyncError = ActionAsyncError;
+export class AggregateAsyncError implements AsyncErrorBase {
+    count: number;
+    exceptions: EditorExceptionDto[];
+    message: string;
+
+    constructor(count: number, message: string, exceptions: EditorExceptionDto[]) {
+        this.count = count;
+        this.message = message;
+        this.exceptions = exceptions;
+    }
+}
+
+export interface EditorExceptionDto {
+    type: string;
+    code: number;
+    message: string;
+}
+
+export type AsyncError = ActionAsyncError | AggregateAsyncError;
 
 export type PrivateData = Record<string, string>;
