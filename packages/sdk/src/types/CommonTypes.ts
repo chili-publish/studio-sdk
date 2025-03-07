@@ -426,6 +426,17 @@ export interface ActionAsyncError extends AsyncErrorBase {
     eventChain?: ActionEventErrorData[];
 }
 
-export type AsyncError = ActionAsyncError;
+export interface AggregateAsyncError extends AsyncErrorBase {
+    count: number;
+    exceptions: EditorExceptionDto[];
+}
+
+export interface EditorExceptionDto {
+    type: string;
+    code: number;
+    message: string;
+}
+
+export type AsyncError = ActionAsyncError | AggregateAsyncError;
 
 export type PrivateData = Record<string, string>;
