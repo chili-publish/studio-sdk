@@ -14,11 +14,14 @@ const mockEditorApi = {
 };
 
 beforeEach(() => {
+    jest.spyOn(mockEditorApi, 'onVariableListChanged');
+    jest.spyOn(mockEditorApi, 'onConnectorsChanged');
+    jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
 
 afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
 });
 
 describe('Next.SubscriberController', () => {
