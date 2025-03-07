@@ -31,7 +31,7 @@ export class CanvasController {
      * @returns
      */
     zoomToPage = async (
-        _id?: Id | null | undefined,
+        _id?: Id | null,
         left?: number | null,
         top?: number | null,
         width?: number | null,
