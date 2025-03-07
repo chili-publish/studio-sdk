@@ -1,16 +1,11 @@
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
 import { SubscriberController } from '../../controllers/SubscriberController';
-import { ConnectorInstance, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
+import { ConnectorRegistrationSource } from '../../types/ConnectorTypes';
 import { VariableType } from '../../types/VariableTypes';
 import { PageSize } from '../../types/PageTypes';
-import { RuntimeConfigType } from '../../types/CommonTypes';
-import { EngineEvent } from '../../../utils/EngineEvent';
-import { Variable } from '../../../types/VariableTypes';
+import { ConfigHelper } from '../../../utils/ConfigHelper';
 
 let mockedSubscriberController: SubscriberController;
-let variableListChangedEvent: EngineEvent<(variables: Variable[]) => void>;
-let connectorsChangedEvent: EngineEvent<(connectors: ConnectorInstance[]) => void>;
-let pageSizeChangedEvent: EngineEvent<(pageSize: PageSize) => void>;
 
 const mockEditorApi = {
     onVariableListChanged: jest.fn(async () => getEditorResponseData(castToEditorResponse(null))),
@@ -19,19 +14,7 @@ const mockEditorApi = {
 };
 
 beforeEach(() => {
-    variableListChangedEvent = new EngineEvent(() => mockEditorApi.onVariableListChanged);
-    connectorsChangedEvent = new EngineEvent(() => mockEditorApi.onConnectorsChanged);
-    pageSizeChangedEvent = new EngineEvent(() => mockEditorApi.onPageSizeChanged);
-
-    const config = {
-        events: {
-            onVariableListChanged: variableListChangedEvent,
-            onConnectorsChanged: connectorsChangedEvent,
-            onPageSizeChanged: pageSizeChangedEvent,
-        },
-    } as RuntimeConfigType;
-
-    mockedSubscriberController = new SubscriberController(config);
+    mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
 
 afterEach(() => {
