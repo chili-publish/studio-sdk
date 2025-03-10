@@ -20,7 +20,7 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 import * as Next from '../../next/types/ConnectorTypes';
-import { AsyncError, EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -394,7 +394,7 @@ describe('SubscriberController', () => {
     });
 
     it('Should be possible to subscribe to onAsyncError', async () => {
-        const asyncError: AsyncError = { message: 'hello' };
+        const asyncError = { message: 'hello' };
         await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
 
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
