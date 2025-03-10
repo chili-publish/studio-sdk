@@ -442,6 +442,7 @@ export class DataRowAsyncError implements AsyncErrorBase {
         this.count = count;
         this.message = message;
         this.exceptions = exceptions;
+        Object.setPrototypeOf(this, DataRowAsyncError.prototype);
     }
 }
 
