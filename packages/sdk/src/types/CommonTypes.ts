@@ -417,16 +417,19 @@ export interface ActionEventErrorData {
 }
 
 interface AsyncErrorBase {
+    type: AsyncErrorType;
     message: string;
 }
 
 export class ActionAsyncError implements AsyncErrorBase {
+    type: AsyncErrorType;
     id?: string;
     event?: ActionEditorEvent;
     eventChain?: ActionEventErrorData[];
     message: string;
 
     constructor(message: string, id?: string, event?: ActionEditorEvent, eventChain?: ActionEventErrorData[]) {
+        this.type = AsyncErrorType.action;
         this.message = message;
         this.id = id;
         this.event = event;
@@ -434,24 +437,23 @@ export class ActionAsyncError implements AsyncErrorBase {
     }
 }
 
-export class AggregateAsyncError implements AsyncErrorBase {
+export class DataRowAsyncError implements AsyncErrorBase {
+    type: AsyncErrorType;
     count: number;
     exceptions: EditorExceptionDto[];
     message: string;
 
     constructor(count: number, message: string, exceptions: EditorExceptionDto[]) {
+        this.type = AsyncErrorType.dataRow;
         this.count = count;
         this.message = message;
         this.exceptions = exceptions;
     }
 }
 
-export enum AggregateErrorType {
+export enum AsyncErrorType {
+    action = 'action',
     dataRow = 'dataRow',
-}
-
-export class DataRowExceptions extends AggregateAsyncError {
-    type = AggregateErrorType.dataRow;
 }
 
 export interface EditorExceptionDto {
@@ -460,6 +462,6 @@ export interface EditorExceptionDto {
     message: string;
 }
 
-export type AsyncError = ActionAsyncError | AggregateAsyncError;
+export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;
