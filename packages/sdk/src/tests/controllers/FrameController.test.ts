@@ -626,4 +626,10 @@ describe('Anchoring', () => {
         expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameTransformation).toHaveBeenLastCalledWith(id);
     });
+
+    it('should be possible to reset a frame visibility', async () => {
+        await mockedFrameController.resetVisibility(id);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenLastCalledWith(id, null);
+    });
 });
