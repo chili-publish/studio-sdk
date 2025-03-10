@@ -1,0 +1,109 @@
+body {
+  font-family: arial, sans-serif;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  background-color: #ff0048;
+  text-align: center;
+  padding: 1rem 0;
+  color: white;
+}
+
+.container {
+  width: 0;
+  height: 0;
+}
+
+.editor-container {
+  width: 0;
+  height: 0;
+  min-height: 0;
+}
+
+.editor-container iframe {
+  height: 100%;
+  min-height: 100%;
+}
+
+.buttons-container {
+  padding: 0 2rem;
+  margin-top: 1rem;
+}
+
+.panels-container {
+  display: flex;
+  flex-direction: row;
+  padding: 0 2rem;
+  margin: 1rem 0;
+  justify-content: space-between;
+}
+
+
+.left-panel {
+  width: 75%;
+}
+
+.right-panel {
+  width: 25%;
+}
+
+#login {
+  margin: 16px auto;
+  display: flex;
+}
+
+#init-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+  gap: 20px;
+  margin: 8px 0;
+}
+
+input,
+label {
+  display: block;
+}
+
+#pr-label {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.layouts {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  background-color: #e0e0e0;
+  padding: 40px;
+}
+
+.layouts article {
+  width: 33%;
+  padding: 16px;
+}
+
+.layouts article h2 {
+  margin-bottom: 8px;
+}
+
+.layouts article img {
+  max-height: 500px;
+  object-fit: contain;
+}
+
+.variables {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  background-color: #eeeeee;
+  padding: 40px;
+}
+
+.panel {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
