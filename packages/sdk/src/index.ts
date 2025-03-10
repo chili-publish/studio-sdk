@@ -107,7 +107,7 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
-export { ConnectorConfigValueType } from './types/CommonTypes';
+export { ConnectorConfigValueType, DataRowAsyncError } from './types/CommonTypes';
 export type {
     ConfigType,
     ConnectorConfigOptions,
