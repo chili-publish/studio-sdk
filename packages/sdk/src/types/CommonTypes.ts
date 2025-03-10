@@ -440,6 +440,14 @@ export class AggregateAsyncError implements AsyncErrorBase {
     }
 }
 
+export enum AggregateErrorType {
+    dataRow = 'dataRow',
+}
+
+export class DataRowExceptions extends AggregateAsyncError {
+    type = AggregateErrorType.dataRow;
+}
+
 export interface EditorExceptionDto {
     type: string;
     code: number;
