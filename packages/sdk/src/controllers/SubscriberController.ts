@@ -371,7 +371,7 @@ export class SubscriberController {
     onAsyncError = (asyncError: string) => {
         const parsedError = JSON.parse(asyncError);
 
-        if (parsedError?.type === 'DataRow') {
+        if (parsedError?.type === 'dataRow') {
             const dataRowException = new DataRowExceptions(
                 parsedError.count,
                 parsedError.message,
