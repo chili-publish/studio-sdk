@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EditorAPI } from '../types/CommonTypes';
 import * as ws from 'ws';
 /**

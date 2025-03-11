@@ -1,4 +1,3 @@
-import { Connection } from 'penpal';
 import { EditorAPI, RuntimeConfigType } from '../types/CommonTypes';
 import { SubscriberController } from './controllers/SubscriberController';
 import { VariableController } from './controllers/VariableController';
