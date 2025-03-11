@@ -1,7 +1,7 @@
-import { Connection, connectToChild } from 'penpal';
+import { connectToChild } from 'penpal';
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
-import grpcProxy from './GrpcConnection';
+import wsProxy from './WebSocketConnection';
 
 export const validateEditorLink = (editorLink: string) => {
     const linkValidator = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w]+\/$/);
@@ -101,7 +101,7 @@ const Connect = (
     styling?: StudioStyling, 
 ) => {
     const isBrowser = typeof window !== 'undefined';
-    const connectionProvider = isBrowser ? new BrowserConnectionProvider() : new GrpcNodeConnectionProvider();
+    const connectionProvider = isBrowser ? new BrowserConnectionProvider() : new WebSocketNodeConnectionProvider();
     connectionProvider.createConnection(editorLink, params, setConnection, editorId, styling);
 };
 
@@ -109,10 +109,10 @@ interface IConnectionProvider {
     createConnection(editorLink: string, params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, editorId?: string, styling?: StudioStyling): void;
 }
 
-class GrpcNodeConnectionProvider implements IConnectionProvider {
+class WebSocketNodeConnectionProvider implements IConnectionProvider {
     createConnection(editorLink: string, params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, editorId = 'chili-editor', styling?: StudioStyling) {
         const connection = {
-            promise: Promise.resolve(new GrpcConnection(editorLink).editorApi),
+            promise: Promise.resolve(new WebSocketConnection(editorLink).editorApi),
             destroy: () => {
                 console.log('destroy');
             },
@@ -121,11 +121,11 @@ class GrpcNodeConnectionProvider implements IConnectionProvider {
     }
 }
 
-class GrpcConnection{
+class WebSocketConnection{
     editorApi: EditorAPI;
-    constructor(grpcAddress: string) {
+    constructor(wsAddress: string) {
         // e is a dynamic object, intercept all method calls and log them
-        this.editorApi = grpcProxy(grpcAddress);        
+        this.editorApi = wsProxy(wsAddress);        
     }
 }
 
