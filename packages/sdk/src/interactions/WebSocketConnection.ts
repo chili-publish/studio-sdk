@@ -1,3 +1,5 @@
+import { EditorAPI } from "../types/CommonTypes";
+import * as ws from 'ws'
 /**
  * WebSocket based proxy for remote procedure calls
  * Replaced the previous gRPC implementation with WebSockets
@@ -21,7 +23,7 @@ const wsProxy = (url: string) => {
     const pendingRequests = new Map<string, PendingRequest>();
 
     // WebSocket connection management
-    let wsConnection: WebSocket | null = null;
+    let wsConnection: ws.WebSocket | null = null;
     let connecting = false;
     const messageQueue: { command: any }[] = [];
     const waitingForConnection: Array<() => void> = [];
@@ -42,8 +44,7 @@ const wsProxy = (url: string) => {
         return new Promise<void>((resolve, reject) => {
             try {
                 // In Node.js environment, use the 'ws' package
-                const WebSocketClass = WebSocket;
-                wsConnection = new WebSocketClass(wsUrl);
+                wsConnection = new ws.WebSocket(wsUrl);
 
                 wsConnection.onopen = () => {
                     connecting = false;
@@ -60,9 +61,9 @@ const wsProxy = (url: string) => {
                     waitingForConnection.length = 0;
                 };
 
-                wsConnection.onmessage = (event: MessageEvent) => {
+                wsConnection.onmessage = (event: ws.MessageEvent) => {
                     try {
-                        const response = JSON.parse(event.data);
+                        const response = JSON.parse(event.data as string);
                         const request = pendingRequests.get(response.id);
                         if (request) {
                             const responseData = {
@@ -103,8 +104,9 @@ const wsProxy = (url: string) => {
     };
 
     // Create and return the proxy object
-    return new Proxy({} as any, {
-        get(target, prop, receiver) {
+    return new Proxy({} as EditorAPI, {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        get(target, prop, _receiver) {
             if (!(prop in target)) {
                 return async function (...args: any[]) {
                     try {

@@ -7,6 +7,7 @@ const program = new Command();
 
 // Create a connection to the gRPC service
 const sdk = new SDK({});
+sdk.loadEditor()
 
 program
     .name('studio-sdk-cli')

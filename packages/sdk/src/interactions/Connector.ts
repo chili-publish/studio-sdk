@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { connectToChild } from 'penpal';
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
@@ -110,7 +111,7 @@ interface IConnectionProvider {
 }
 
 class WebSocketNodeConnectionProvider implements IConnectionProvider {
-    createConnection(editorLink: string, params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, editorId = 'chili-editor', styling?: StudioStyling) {
+    createConnection(editorLink: string, _params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, _editorId = 'chili-editor', _styling?: StudioStyling) {
         const connection = {
             promise: Promise.resolve(new WebSocketConnection(editorLink).editorApi),
             destroy: () => {
