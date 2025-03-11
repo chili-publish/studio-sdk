@@ -99,48 +99,66 @@ const Connect = (
     params: ConfigParameterTypes,
     setConnection: (connection: StudioConnection) => void,
     editorId = 'chili-editor',
-    styling?: StudioStyling, 
+    styling?: StudioStyling,
 ) => {
     const isBrowser = typeof window !== 'undefined';
+    console.log('isBrowser', isBrowser);
     const connectionProvider = isBrowser ? new BrowserConnectionProvider() : new WebSocketNodeConnectionProvider();
     connectionProvider.createConnection(editorLink, params, setConnection, editorId, styling);
 };
 
 interface IConnectionProvider {
-    createConnection(editorLink: string, params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, editorId?: string, styling?: StudioStyling): void;
+    createConnection(
+        editorLink: string,
+        params: ConfigParameterTypes,
+        setConnection: (connection: StudioConnection) => void,
+        editorId?: string,
+        styling?: StudioStyling,
+    ): void;
 }
 
 class WebSocketNodeConnectionProvider implements IConnectionProvider {
-    createConnection(editorLink: string, _params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, _editorId = 'chili-editor', _styling?: StudioStyling) {
+    createConnection(
+        editorLink: string,
+        _params: ConfigParameterTypes,
+        setConnection: (connection: StudioConnection) => void,
+        _editorId = 'chili-editor',
+        _styling?: StudioStyling,
+    ) {
         const connection = {
             promise: Promise.resolve(new WebSocketConnection(editorLink).editorApi),
             destroy: () => {
                 console.log('destroy');
             },
-        }
+        };
         setConnection(connection as unknown as StudioConnection);
     }
 }
 
-class WebSocketConnection{
+class WebSocketConnection {
     editorApi: EditorAPI;
     constructor(wsAddress: string) {
         // e is a dynamic object, intercept all method calls and log them
-        this.editorApi = wsProxy(wsAddress);        
+        this.editorApi = wsProxy(wsAddress);
     }
 }
 
 class BrowserConnectionProvider implements IConnectionProvider {
-    createConnection(editorLink: string, params: ConfigParameterTypes, setConnection: (connection: StudioConnection) => void, editorId = 'chili-editor', styling?: StudioStyling) {
-
-        const editorSelectorId = `#${editorId}`; 
+    createConnection(
+        editorLink: string,
+        params: ConfigParameterTypes,
+        setConnection: (connection: StudioConnection) => void,
+        editorId = 'chili-editor',
+        styling?: StudioStyling,
+    ) {
+        const editorSelectorId = `#${editorId}`;
         const iframe = document.createElement('iframe');
         iframe.setAttribute('srcdoc', ' ');
         iframe.setAttribute('title', 'Chili-Editor');
         iframe.setAttribute('style', 'width: 100%; height: 100%;');
         iframe.setAttribute('frameBorder', '0');
         iframe.setAttribute('referrerpolicy', 'origin');
-    
+
         const setupNewFrame = () => {
             const iframeContainer = document.querySelector(editorSelectorId);
             if (iframeContainer) {
@@ -148,7 +166,7 @@ class BrowserConnectionProvider implements IConnectionProvider {
                 setupFrame(iframe, editorLink, styling);
             }
         };
-    
+
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             setupNewFrame();
         } else {
