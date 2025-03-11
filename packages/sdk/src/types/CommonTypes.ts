@@ -428,6 +428,7 @@ export class ActionAsyncError implements AsyncErrorBase {
         this.id = id;
         this.event = event;
         this.eventChain = eventChain;
+        Object.setPrototypeOf(this, ActionAsyncError.prototype);
     }
 }
 
