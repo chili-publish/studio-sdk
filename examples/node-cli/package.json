@@ -1,0 +1,23 @@
+{
+    "name": "@chili-publish/studio-sdk-node-cli-example",
+    "version": "1.0.0",
+    "description": "Example Node.js CLI application using the Studio SDK",
+    "private": true,
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "build": "tsc",
+        "dev": "ts-node src/index.ts"
+    },
+    "dependencies": {
+        "@chili-publish/studio-sdk": "file:../../packages/sdk",
+        "commander": "^11.0.0",
+        "inquirer": "^8.2.6"
+    },
+    "devDependencies": {
+        "@types/inquirer": "^8.2.6",
+        "@types/node": "^18.0.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.7.3"
+    }
+} 

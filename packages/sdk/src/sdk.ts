@@ -1,7 +1,6 @@
-import { Connection } from 'penpal';
 import engineInfo from '../editor-engine.json';
 import packageInfo from '../package.json';
-import Connect from './interactions/Connector';
+import Connect, { StudioConnection } from './interactions/Connector';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
@@ -43,13 +42,13 @@ import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 
-let connection: Connection;
+let connection: StudioConnection;
 
 const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
 
 export class SDK {
     config: RuntimeConfigType;
-    connection: Connection;
+    connection: StudioConnection;
 
     /**
      * @ignore
@@ -265,7 +264,7 @@ export class SDK {
         this.configuration.updateStudioOptions(this.config.studioOptions || defaultStudioOptions);
     };
 
-    setConnection = (newConnection: Connection) => {
+    setConnection = (newConnection: StudioConnection) => {
         connection = newConnection;
     };
 }

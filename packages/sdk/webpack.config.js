@@ -1,32 +1,23 @@
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+const commonConfig = require('./webpack.common');
 
-module.exports = (env) => ({
-    entry: path.resolve(__dirname, 'src', 'index.ts'),
+module.exports = (env) => merge(commonConfig, {
     output: {
-        path: path.resolve(__dirname, '_bundles'),
         filename: '[name].js',
         libraryTarget: 'umd',
-        library: 'StudioSDK',
         umdNamedDefine: true,
         globalObject: 'this',
     },
+    target: 'web',
     mode: env.env || 'development',
-    module: {
-        rules: [
-            {
-                test: /\.[jt]sx?$/,
-                use: ['ts-loader'],
-                exclude: [/node_modules/],
-            },
-        ],
-    },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+        fallback: {
+            '@grpc/grpc-js': false,
+            '@grpc/proto-loader': false,
+        }
     },
     externals: {
-        // Don't bundle react or react-dom
         react: {
             commonjs: 'react',
             commonjs2: 'react',
@@ -39,22 +30,23 @@ module.exports = (env) => ({
             amd: 'ReactDOM',
             root: 'ReactDOM',
         },
+        '@grpc/grpc-js': {
+            commonjs: '@grpc/grpc-js',
+            commonjs2: '@grpc/grpc-js',
+            amd: '@grpc/grpc-js',
+            root: '@grpc/grpc-js',
+        },
+        '@grpc/proto-loader': {
+            commonjs: '@grpc/proto-loader',
+            commonjs2: '@grpc/proto-loader',
+            amd: '@grpc/proto-loader',
+            root: '@grpc/proto-loader',
+        },
     },
     plugins: [
-        new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            openAnalyzer: false,
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+            Buffer: ['buffer', 'Buffer'],
         }),
     ],
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    mangle: false,
-                },
-            }),
-        ],
-    },
-    devtool: 'source-map',
 });

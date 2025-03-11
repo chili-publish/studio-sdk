@@ -8,6 +8,8 @@
     },
     "license": "MIT",
     "dependencies": {
+        "@grpc/grpc-js": "^1.12.6",
+        "@grpc/proto-loader": "^0.7.13",
         "penpal": "6.1.0"
     },
     "devDependencies": {
@@ -44,14 +46,15 @@
         "webpack": "^5.46.0",
         "webpack-bundle-analyzer": "^4.5.0",
         "webpack-cli": "^4.7.2",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^3.11.2",
+        "webpack-merge": "^5.10.0"
     },
     "engines": {
         "node": ">=18.0.0"
     },
     "scripts": {
         "clean": "shx rm -rf _bundles lib lib-esm next",
-        "build": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=production",
+        "build": "npm run build:browser && npm run build:node",
         "build:modules": "tsc && tsc -m es6 --outDir lib-esm ",
         "build:dev": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=development",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
@@ -64,18 +67,19 @@
         "make-badges": "node createCoverageBadge",
         "validate-licenses": "node validate_licenses.js",
         "build-docs-md": "npx typedoc --hideBreadcrumbs --out ./docs/md",
-        "build-docs-html": "npx typedoc --out ./docs/html --plugin none --readme ./src/README_HTML.md"
+        "build-docs-html": "npx typedoc --out ./docs/html --plugin none --readme ./src/README_HTML.md",
+        "build:browser": "webpack --config webpack.config.js",
+        "build:node": "webpack --config webpack.node.config.js"
     },
     "husky": {
         "hooks": {
             "pre-commit": "npm run format-staged"
         }
     },
-    "main": "./_bundles/main.js",
-    "module": "./_bundles/main.js",
+    "main": "./_bundles/main.node.js",
+    "module": "./_bundles/main.node.js",
     "browser": "./_bundles/main.js",
     "files": [
-        "lib/",
         "_bundles/",
         "README.md"
     ],
@@ -86,7 +90,6 @@
     "homepage": "https://github.com/chili-publish/studio-sdk#readme",
     "author": "chili-publish",
     "directories": {
-        "doc": "docs",
-        "lib": "lib"
+        "doc": "docs"
     }
 }

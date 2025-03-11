@@ -5,6 +5,7 @@ import { VariableController } from './controllers/VariableController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { PageController } from './controllers/PageController';
 import { CanvasController } from '../controllers/CanvasController';
+import { StudioConnection } from '../interactions/Connector';
 
 /**
  * The next initiator is a split off on SDK level to tag next features.
@@ -17,7 +18,7 @@ import { CanvasController } from '../controllers/CanvasController';
  */
 export class NextInitiator {
     private config: RuntimeConfigType;
-    private connection: Connection;
+    private connection: StudioConnection;
 
     /**
      * @ignore
@@ -35,7 +36,7 @@ export class NextInitiator {
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
      * @param config The configuration object where the SDK and editor can get configured
      */
-    constructor(config: RuntimeConfigType, connection: Connection, editorAPI: EditorAPI) {
+    constructor(config: RuntimeConfigType, connection: StudioConnection, editorAPI: EditorAPI) {
         this.config = config;
         this.connection = connection;
         this.editorAPI = editorAPI;
