@@ -7,7 +7,7 @@
     "scripts": {
         "start": "node src/index.js",
         "build": "tsc",
-        "dev": "ts-node src/index.ts"
+        "dev": "ts-node src/index.ts start -w http://localhost:3001"
     },
     "dependencies": {
         "@chili-publish/studio-sdk": "file:../../packages/sdk",
