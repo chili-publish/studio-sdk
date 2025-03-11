@@ -1,5 +1,5 @@
-import { EditorAPI } from "../types/CommonTypes";
-import * as ws from 'ws'
+import { EditorAPI } from '../types/CommonTypes';
+import * as ws from 'ws';
 /**
  * WebSocket based proxy for remote procedure calls
  * Replaced the previous gRPC implementation with WebSockets
@@ -35,7 +35,7 @@ const wsProxy = (url: string) => {
         }
 
         if (connecting) {
-            return new Promise<void>(resolve => {
+            return new Promise<void>((resolve) => {
                 waitingForConnection.push(resolve);
             });
         }
@@ -57,7 +57,7 @@ const wsProxy = (url: string) => {
                     }
                     // Resolve this promise and any waiting ones
                     resolve();
-                    waitingForConnection.forEach(callback => callback());
+                    waitingForConnection.forEach((callback) => callback());
                     waitingForConnection.length = 0;
                 };
 
@@ -68,7 +68,7 @@ const wsProxy = (url: string) => {
                         if (request) {
                             const responseData = {
                                 success: response.success,
-                                response: JSON.parse(response.responseJson)
+                                response: JSON.parse(response.responseJson),
                             };
                             request.resolve(responseData);
                             pendingRequests.delete(response.id);
@@ -91,7 +91,7 @@ const wsProxy = (url: string) => {
                     if (connecting) {
                         connecting = false;
                         reject(error);
-                        waitingForConnection.forEach(callback => callback());
+                        waitingForConnection.forEach((callback) => callback());
                         waitingForConnection.length = 0;
                     }
                     console.error('WebSocket error:', error);
@@ -117,7 +117,7 @@ const wsProxy = (url: string) => {
                         const command = {
                             id: commandId,
                             command: prop,
-                            argumentsJson: JSON.stringify(args)
+                            argumentsJson: JSON.stringify(args),
                         };
 
                         // Ensure we have a connection before sending
@@ -148,7 +148,7 @@ const wsProxy = (url: string) => {
                 };
             }
             return target[prop as string];
-        }
+        },
     });
 };
 

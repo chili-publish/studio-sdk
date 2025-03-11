@@ -67,4 +67,26 @@ npm start run-session
 - The CLI connects to `localhost:50051` by default
 - Make sure your Studio SDK service is running before using the CLI
 - The interactive session supports any command that the SDK provides
-- Commands in the interactive session should be space-separated (command arg1 arg2) 
+- Commands in the interactive session should be space-separated (command arg1 arg2)
+
+## Building the Linux Executable
+
+```bash
+# Build TypeScript files
+yarn build
+
+# Package into executable
+yarn package
+```
+
+This will create a Linux executable at `dist/bin/studio-sdk-node-cli-example`.
+
+## Running the Executable
+
+```bash
+# Execute directly
+./dist/bin/studio-sdk-node-cli-example
+
+# Or with parameters
+./dist/bin/studio-sdk-node-cli-example start -w http://localhost:3001
+```
