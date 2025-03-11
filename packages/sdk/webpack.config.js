@@ -1,14 +1,12 @@
-const webpack = require('webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-
 
 module.exports =(env) => ( {
     entry: './dist/esm/src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist/browser'),
-      filename: 'studio-sdk.js',
+      filename: 'main.js',
       library: 'StudioSDK',
       libraryTarget: 'umd',
       globalObject: 'this'

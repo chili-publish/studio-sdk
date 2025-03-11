@@ -76,9 +76,9 @@ jobs:
           path=packages/sdk/upload/latest
           versionpath=packages/sdk/upload/${{ github.event.release.name }}
           mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          cp -R packages/sdk/dist/* ${path%"/merge"}
           mkdir -p ${versionpath%"/merge"}
-          cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
+          cp -R packages/sdk/dist/* ${versionpath%"/merge"}
 
       - name: Copy to Azure Blob Storage
         uses: azure/CLI@v1
