@@ -19,7 +19,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedParagraphStyleController = new ParagraphStyleController(mockEditorApi);
+    mockedParagraphStyleController = new ParagraphStyleController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getParagraphStyles');
     jest.spyOn(mockEditorApi, 'getParagraphStyleById');
     jest.spyOn(mockEditorApi, 'createParagraphStyle');

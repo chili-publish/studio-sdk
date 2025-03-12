@@ -6,19 +6,25 @@
     "main": "src/index.js",
     "bin": "dist/index.js",
     "pkg": {
-        "targets": ["node18-linux-x64"],
+        "targets": [
+            "node18-linux-x64"
+        ],
         "outputPath": "dist/bin"
     },
     "scripts": {
         "start": "node src/index.js",
         "build": "tsc",
         "dev": "ts-node src/index.ts start -w http://localhost:3001",
-        "package": "pkg ."
+        "package": "pkg .",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "demo": "ts-node src/demo.ts"
     },
     "dependencies": {
         "@chili-publish/studio-sdk": "file:../../packages/sdk",
+        "@types/ws": "^8.18.0",
         "commander": "^11.0.0",
-        "inquirer": "^8.2.6"
+        "inquirer": "^8.2.6",
+        "ws": "^8.18.1"
     },
     "devDependencies": {
         "@types/inquirer": "^8.2.6",

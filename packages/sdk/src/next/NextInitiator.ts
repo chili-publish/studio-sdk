@@ -22,7 +22,7 @@ export class NextInitiator {
     /**
      * @ignore
      */
-    private editorAPI: EditorAPI;
+    private editorAPI: Promise<EditorAPI>;
 
     subscriber: SubscriberController;
     variable: VariableController;
@@ -35,7 +35,7 @@ export class NextInitiator {
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
      * @param config The configuration object where the SDK and editor can get configured
      */
-    constructor(config: RuntimeConfigType, connection: StudioConnection, editorAPI: EditorAPI) {
+    constructor(config: RuntimeConfigType, connection: StudioConnection, editorAPI: Promise<EditorAPI>) {
         this.config = config;
         this.connection = connection;
         this.editorAPI = editorAPI;

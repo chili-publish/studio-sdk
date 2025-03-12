@@ -23,7 +23,7 @@ const mockEditorApi: EditorAPI = {
 
 beforeEach(() => {
     mockedAnimation = mockFrameAnimation;
-    mockedAnimationController = new AnimationController(mockEditorApi);
+    mockedAnimationController = new AnimationController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getAnimationsOnSelectedLayout');
     jest.spyOn(mockEditorApi, 'getAnimationByFrameId');
     jest.spyOn(mockEditorApi, 'getAnimationsByLayoutId');

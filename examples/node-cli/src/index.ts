@@ -44,79 +44,83 @@ async function startREPL(websocketUrl: string) {
     console.log(chalk.green('Studio SDK REPL started'));
     console.log('Connected to WebSocket:', websocketUrl);
     console.log('Type "help" for instructions, "exit" to quit');
-    
-    // Initialize SDK with WebSocket URL
-    const sdk = new SDK({
-        editorLink: websocketUrl        
-    });
-    
-    // Store variables between commands
-    const context = { sdk };
-    sdk.loadEditor();
-    
-    while (true) {
-        try {
-            const { input } = await inquirer.prompt([
-                {
-                    type: 'input',
-                    name: 'input',
-                    message: 'sdk >',
-                    prefix: chalk.cyan('sdk >'),
+
+    try {
+        // Initialize SDK with WebSocket URL
+        const sdk = new SDK({
+            editorLink: websocketUrl
+        });
+        // Store variables between commands
+        sdk.loadEditor();
+        
+        const context = { sdk };
+
+        while (true) {
+            try {
+                const { input } = await inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'input',
+                        message: chalk.cyan('sdk >')
+                    }
+                ]);
+
+                const command = input.trim();
+                const commandLower = command.toLowerCase();
+
+                // Handle special commands
+                if (commandLower === 'exit' || commandLower === 'quit') {
+                    console.log(chalk.green('Goodbye!'));
+                    process.exit(0);
                 }
-            ]);
+                if (commandLower === 'clear') {
+                    console.clear();
+                    continue;
+                }
+                if (commandLower === 'help') {
+                    program.help();
+                    continue;
+                }
 
-            const command = input.trim();
-            const commandLower = command.toLowerCase();
-
-            // Handle special commands
-            if (commandLower === 'exit' || commandLower === 'quit') {
-                console.log(chalk.green('Goodbye!'));
-                process.exit(0);
-            }
-            if (commandLower === 'clear') {
-                console.clear();
-                continue;
-            }
-            if (commandLower === 'help') {
-                program.help();
-                continue;
-            }
-
-            // Execute the JavaScript statement
-            if (command) {
-                try {
-                    // Create a function context with sdk available
-                    const evalFunction = new Function('sdk', 'context', `
+                // Execute the JavaScript statement
+                if (command) {
+                    try {
+                        // Create a function context with sdk available
+                        const evalFunction = new Function('sdk', 'context', `
                         return (async () => {
+                            console.log('command', ${command});
                             ${command.includes('return') ? command : 'return ' + command};
                         })();
                     `);
 
-                    const result = await evalFunction(sdk, context);
-                    
-                    // Store result in context if it's an assignment
-                    if (command.includes('=')) {
-                        const varName = command.split('=')[0].trim();
-                        if (varName && !command.includes('==') && !command.includes('===') && !varName.includes(' ')) {
-                            //@ts-ignore
-                            context[varName] = result;
-                        }
-                    }
+                        const result = await evalFunction(sdk, context);
 
-                    // Display the command and result
-                    console.log(chalk.yellow('\nCommand:'), command);
-                    console.log(chalk.cyan('Result:'));
-                    console.log(formatResult(result));
-                    console.log(); // Empty line for readability
-                } catch (error) {
-                    console.log(chalk.yellow('\nCommand:'), command);
-                    console.error(chalk.red('Error:'), error);
-                    console.log();
+                        // Store result in context if it's an assignment
+                        if (command.includes('=')) {
+                            const varName = command.split('=')[0].trim();
+                            if (varName && !command.includes('==') && !command.includes('===') && !varName.includes(' ')) {
+                                //@ts-ignore
+                                context[varName] = result;
+                            }
+                        }
+
+                        // Display the command and result
+                        console.log(chalk.yellow('\nCommand:'), command);
+                        console.log(chalk.cyan('Result:'));
+                        console.log(formatResult(result));
+                        console.log(); // Empty line for readability
+                    } catch (error) {
+                        console.log(chalk.yellow('\nCommand:'), command);
+                        console.error(chalk.red('Error:'), (error as Error).message);
+                        console.log();
+                    }
                 }
+            } catch (error) {
+                console.error(chalk.red('REPL Error:'), (error as Error).message);
             }
-        } catch (error) {
-            console.error(chalk.red('REPL Error:'), error);
         }
+    } catch (error) {
+        console.error(chalk.red('REPL Error:'), (error as Error).message);
     }
 }
 

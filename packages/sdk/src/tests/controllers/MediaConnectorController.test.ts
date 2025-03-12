@@ -15,7 +15,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedMediaConnectorController = new MediaConnectorController(mockedEditorApi);
+    mockedMediaConnectorController = new MediaConnectorController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'mediaConnectorQuery');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDetail');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDownload');

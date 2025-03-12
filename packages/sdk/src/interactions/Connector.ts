@@ -126,7 +126,7 @@ class WebSocketNodeConnectionProvider implements IConnectionProvider {
         _styling?: StudioStyling,
     ) {
         const connection = {
-            promise: Promise.resolve(new WebSocketConnection(editorLink).editorApi),
+            promise: new WebSocketConnection(editorLink).editorApi,
             destroy: () => {
                 console.log('destroy');
             },
@@ -136,7 +136,7 @@ class WebSocketNodeConnectionProvider implements IConnectionProvider {
 }
 
 class WebSocketConnection {
-    editorApi: EditorAPI;
+    editorApi: Promise<EditorAPI>;
     constructor(wsAddress: string) {
         // e is a dynamic object, intercept all method calls and log them
         this.editorApi = wsProxy(wsAddress);
@@ -174,54 +174,57 @@ class BrowserConnectionProvider implements IConnectionProvider {
                 setupNewFrame();
             });
         }
+        const connection = connectToChild({
+            // The iframe to which a connection should be made
+            iframe,
+            // All the methods that we want to expose to the child should be inside the methods object
+            // f.e. stateChange(documentJson)
+            methods: {
+                actionsChanged: params.onActionsChanged,
+                stateChanged: params.onStateChanged,
+                documentLoaded: params.onDocumentLoaded,
+                authExpired: params.onAuthExpired,
+                viewportRequested: params.onViewportRequested,
+                selectedFramesContent: params.onSelectedFramesContentChanged,
+                selectedFramesLayout: params.onSelectedFramesLayoutChanged,
+                selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
+                openLayoutPropertiesPanel: params.onPageSelectionChanged,
+                selectedLayoutUnit: params.onSelectedLayoutUnitChanged,
+                scrubberPositionChanged: params.onScrubberPositionChanged,
+                frameAnimationsChanged: params.onFrameAnimationsChanged,
+                selectedToolChanged: params.onSelectedToolChanged,
+                variableListChanged: params.onVariableListChanged,
+                undoStackStateChanged: params.onUndoStateChanged,
+                selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
+                selectedTextStyleChanged: params.onSelectedTextStyleChanged,
+                colorsChanged: params.onColorsChanged,
+                paragraphStylesChanged: params.onParagraphStylesChanged,
+                characterStylesChanged: params.onCharacterStylesChanged,
+                fontFamiliesChanged: params.onFontFamiliesChanged,
+                selectedLayoutId: params.onSelectedLayoutIdChanged,
+                layoutListChanged: params.onLayoutsChanged,
+                connectorEvent: params.onConnectorEvent,
+                connectorsChanged: params.onConnectorsChanged,
+                zoomChanged: params.onZoomChanged,
+                pageSnapshotInvalidated: params.onPageSnapshotInvalidated,
+                pagesChanged: params.onPagesChanged,
+                pageSizeChanged: params.onPageSizeChanged,
+                shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
+                cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
+                asyncError: params.onAsyncError,
+                viewModeChanged: params.onViewModeChanged,
+                barcodeValidationChanged: params.onBarcodeValidationChanged,
+                selectedPageIdChanged: params.onSelectedPageIdChanged,
+                dataSourceIdChanged: params.onDataSourceIdChanged,
+                documentIssueListChanged: params.onDocumentIssueListChanged,
+                customUndoDataChanged: params.onCustomUndoDataChanged,
+                engineEditingModeChanged: params.onEngineEditModeChanged,
+            },
+        });
         setConnection(
-            connectToChild({
-                // The iframe to which a connection should be made
-                iframe,
-                // All the methods that we want to expose to the child should be inside the methods object
-                // f.e. stateChange(documentJson)
-                methods: {
-                    actionsChanged: params.onActionsChanged,
-                    stateChanged: params.onStateChanged,
-                    documentLoaded: params.onDocumentLoaded,
-                    authExpired: params.onAuthExpired,
-                    viewportRequested: params.onViewportRequested,
-                    selectedFramesContent: params.onSelectedFramesContentChanged,
-                    selectedFramesLayout: params.onSelectedFramesLayoutChanged,
-                    selectedLayoutProperties: params.onSelectedLayoutPropertiesChanged,
-                    openLayoutPropertiesPanel: params.onPageSelectionChanged,
-                    selectedLayoutUnit: params.onSelectedLayoutUnitChanged,
-                    scrubberPositionChanged: params.onScrubberPositionChanged,
-                    frameAnimationsChanged: params.onFrameAnimationsChanged,
-                    selectedToolChanged: params.onSelectedToolChanged,
-                    variableListChanged: params.onVariableListChanged,
-                    undoStackStateChanged: params.onUndoStateChanged,
-                    selectedLayoutFramesChanged: params.onSelectedLayoutFramesChanged,
-                    selectedTextStyleChanged: params.onSelectedTextStyleChanged,
-                    colorsChanged: params.onColorsChanged,
-                    paragraphStylesChanged: params.onParagraphStylesChanged,
-                    characterStylesChanged: params.onCharacterStylesChanged,
-                    fontFamiliesChanged: params.onFontFamiliesChanged,
-                    selectedLayoutId: params.onSelectedLayoutIdChanged,
-                    layoutListChanged: params.onLayoutsChanged,
-                    connectorEvent: params.onConnectorEvent,
-                    connectorsChanged: params.onConnectorsChanged,
-                    zoomChanged: params.onZoomChanged,
-                    pageSnapshotInvalidated: params.onPageSnapshotInvalidated,
-                    pagesChanged: params.onPagesChanged,
-                    pageSizeChanged: params.onPageSizeChanged,
-                    shapeCornerRadiusChanged: params.onShapeCornerRadiusChanged,
-                    cropActiveFrameIdChanged: params.onCropActiveFrameIdChanged,
-                    asyncError: params.onAsyncError,
-                    viewModeChanged: params.onViewModeChanged,
-                    barcodeValidationChanged: params.onBarcodeValidationChanged,
-                    selectedPageIdChanged: params.onSelectedPageIdChanged,
-                    dataSourceIdChanged: params.onDataSourceIdChanged,
-                    documentIssueListChanged: params.onDocumentIssueListChanged,
-                    customUndoDataChanged: params.onCustomUndoDataChanged,
-                    engineEditingModeChanged: params.onEngineEditModeChanged,
-                },
-            }) as unknown as StudioConnection,
+            {
+                ...connection
+            } as unknown as StudioConnection,
         );
     }
 }

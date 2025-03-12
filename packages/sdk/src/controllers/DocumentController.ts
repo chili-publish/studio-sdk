@@ -12,12 +12,12 @@ export class DocumentController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 
@@ -43,9 +43,16 @@ export class DocumentController {
      * @returns the document loaded inside of the canvas
      */
     load = async (doc: ChiliDocument | string, options: DocumentLoadOptions = { keepConnectors: false }) => {
+
+        console.log('load', doc, options);
+
         const res = await this.#editorAPI;
 
+        console.log('res', res);
+
         const parsedDoc = typeof doc !== 'string' ? JSON.stringify(doc) : doc;
+
+        console.log('parsedDoc', parsedDoc);
 
         return res
             .loadDocument(parsedDoc, JSON.stringify(options))

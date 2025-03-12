@@ -53,7 +53,7 @@ export class SDK {
     /**
      * @ignore
      */
-    editorAPI: EditorAPI;
+    editorAPI: Promise<EditorAPI>;
 
     action: ActionController;
     layout: LayoutController;
@@ -102,7 +102,7 @@ export class SDK {
         this.connection = connection;
         this.editorAPI = connection?.promise.then((child) => {
             return child;
-        }) as unknown as EditorAPI;
+        }) as unknown as Promise<EditorAPI>;
 
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
@@ -210,9 +210,7 @@ export class SDK {
             this.config.editorId,
             this.config.studioStyling,
         );
-        this.editorAPI = connection?.promise.then((editorAPI) => {
-            return editorAPI;
-        }) as unknown as EditorAPI;
+        this.editorAPI = connection?.promise;
 
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);

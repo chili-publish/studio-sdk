@@ -20,15 +20,15 @@ export class LayoutController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     #blobAPI: EditorRawAPI;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as EditorRawAPI;
     }
 
     /**

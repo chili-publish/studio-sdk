@@ -18,9 +18,9 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 class NumberVariable {
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 
@@ -120,9 +120,9 @@ class NumberVariable {
 }
 
 class DateVariable {
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 
@@ -213,7 +213,7 @@ export class VariableController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     number: NumberVariable;
     date: DateVariable;
@@ -221,7 +221,7 @@ export class VariableController {
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
         this.number = new NumberVariable(this.#editorAPI);
         this.date = new DateVariable(this.#editorAPI);

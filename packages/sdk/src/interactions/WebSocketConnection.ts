@@ -105,9 +105,32 @@ const wsProxy = (url: string) => {
     };
 
     // Create and return the proxy object
-    return new Proxy({} as EditorAPI, {
+    return Promise.resolve(new Proxy({} as EditorAPI, {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         get(target, prop, _receiver) {
+
+            // this was a pain to understand
+            if (prop === 'then') {
+                return undefined;
+            }
+
+            // big console message with all debug info, think really big about the console ascii art
+            console.log(`
+                ${'='.repeat(100)}
+                WebSocket Connection Debug Info
+                ${'='.repeat(100)}
+                URL: ${wsUrl}
+                Prop: ${prop?.toString()}
+                Connection State: ${wsConnection?.readyState}
+                Pending Requests: ${pendingRequests.size}
+                Message Queue: ${messageQueue.length}
+                Waiting for Connection: ${waitingForConnection.length}
+                ${'='.repeat(100)}
+            `);
+
+            // print call stack
+            console.trace('stack:');
+            
             if (!(prop in target)) {
                 return async function (...args: any[]) {
                     try {
@@ -150,7 +173,7 @@ const wsProxy = (url: string) => {
             }
             return target[prop as string];
         },
-    });
+    }));
 };
 
 export default wsProxy;

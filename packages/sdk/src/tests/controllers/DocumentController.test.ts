@@ -14,7 +14,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedDocumentController = new DocumentController(mockedEditorApi);
+    mockedDocumentController = new DocumentController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'getCurrentDocumentState');
     jest.spyOn(mockedEditorApi, 'loadDocument');
     jest.spyOn(mockedEditorApi, 'createAndLoadDocument');
