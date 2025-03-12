@@ -113,24 +113,7 @@ const wsProxy = (url: string) => {
             if (prop === 'then') {
                 return undefined;
             }
-
-            // big console message with all debug info, think really big about the console ascii art
-            console.log(`
-                ${'='.repeat(100)}
-                WebSocket Connection Debug Info
-                ${'='.repeat(100)}
-                URL: ${wsUrl}
-                Prop: ${prop?.toString()}
-                Connection State: ${wsConnection?.readyState}
-                Pending Requests: ${pendingRequests.size}
-                Message Queue: ${messageQueue.length}
-                Waiting for Connection: ${waitingForConnection.length}
-                ${'='.repeat(100)}
-            `);
-
-            // print call stack
-            console.trace('stack:');
-            
+                        
             if (!(prop in target)) {
                 return async function (...args: any[]) {
                     try {

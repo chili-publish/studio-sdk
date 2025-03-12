@@ -92,7 +92,7 @@ class DemoServer {
             default:
                 responseData = {
                     message: `Received command: ${command.command}`,
-                    args: JSON.parse(command.argumentsJson)
+                    args: command.argumentsJson
                 };
         }
 
