@@ -31,7 +31,7 @@ const wsProxy = (url: string) => {
 
     // Function to ensure WebSocket connection
     const ensureConnection = (): Promise<void> => {
-        if (wsConnection && wsConnection.readyState === WebSocket.OPEN) {
+        if (wsConnection && wsConnection.readyState === ws.WebSocket.OPEN) {
             return Promise.resolve();
         }
 
@@ -69,7 +69,7 @@ const wsProxy = (url: string) => {
                         if (request) {
                             const responseData = {
                                 success: response.success,
-                                response: JSON.parse(response.responseJson),
+                                response: response.data,
                             };
                             request.resolve(responseData);
                             pendingRequests.delete(response.id);
@@ -141,7 +141,7 @@ const wsProxy = (url: string) => {
                         const command = {
                             id: commandId,
                             command: prop,
-                            argumentsJson: JSON.stringify(args),
+                            arguments: args,
                         };
 
                         // Ensure we have a connection before sending
@@ -150,7 +150,7 @@ const wsProxy = (url: string) => {
                         return new Promise((resolve, reject) => {
                             pendingRequests.set(commandId, { resolve, reject });
 
-                            if (wsConnection && wsConnection.readyState === WebSocket.OPEN) {
+                            if (wsConnection && wsConnection.readyState === ws.WebSocket.OPEN) {
                                 wsConnection.send(JSON.stringify(command));
                             } else {
                                 // Queue the message if not yet connected

@@ -52,7 +52,7 @@
         "node": ">=18.0.0"
     },
     "scripts": {
-        "clean": "rm -rf dist",
+        "clean": "shx rm -rf dist",
         "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
         "build:node": "tsc --module commonjs --target es6 --outDir dist/cjs && tsc --module esnext --target es6 --outDir dist/esm",
         "build:bundle": "webpack --mode production",
