@@ -68,6 +68,9 @@ class REPL {
   private rl: any;
   private context: any = undefined;
   private historyOutput: string[] = []; // New array to store output history
+  private currentSuggestions: string[] = []; // Store current available suggestions
+  private suggestionIndex: number = -1; // Track current suggestion when cycling
+  private originalInput: string = ''; // Store the original input before tab completion
 
   constructor() { }
 
@@ -148,7 +151,7 @@ class REPL {
     // Note: No direct writing to stdout here; output is stored in historyOutput
   }
 
-  // Updated start method
+  // Updated start method with fixed tab completion
   async start(websocketUrl: string) {
     try {
       const sdk = new SDK({
@@ -194,24 +197,98 @@ class REPL {
           this.historyIndex = this.history.length;
           await this.evaluate(this.input);
           this.input = '';
+          this.currentSuggestions = []; // Reset suggestions
+          this.suggestionIndex = -1;
         }
-      } else if (str === '\u001b[A') { // Up arrow
-        if (this.historyIndex > 0) {
-          this.historyIndex--;
-          this.input = this.history[this.historyIndex];
+      } else if (str === '\t') { // Tab key for completion
+        // If this is the first tab press, store original input and get suggestions
+        if (this.currentSuggestions.length === 0) {
+          this.originalInput = this.input;
+          this.currentSuggestions = getSuggestions(this.input, this.context);
+          this.suggestionIndex = -1;
         }
-      } else if (str === '\u001b[B') { // Down arrow
-        if (this.historyIndex < this.history.length - 1) {
-          this.historyIndex++;
-          this.input = this.history[this.historyIndex];
-        } else {
-          this.input = '';
-          this.historyIndex = this.history.length;
+        
+        if (this.currentSuggestions.length > 0) {
+          // Increment suggestion index
+          this.suggestionIndex++;
+          
+          // If we've gone through all suggestions, cycle back to original input
+          if (this.suggestionIndex >= this.currentSuggestions.length) {
+            this.input = this.originalInput;
+            this.suggestionIndex = -1;
+            this.render();
+            return;
+          }
+          
+          // Get the selected suggestion
+          const suggestion = this.currentSuggestions[this.suggestionIndex];
+          
+          // Complete with the current suggestion
+          const parts = this.originalInput.split('.');
+          const lastPart = parts.pop() || '';
+          
+          // Handle function suggestions differently
+          if (suggestion.includes('(')) {
+            // For functions, extract just the name part (without params)
+            const funcName = suggestion.split('(')[0];
+            parts.push(funcName + '()');
+            
+            // Set the input and render immediately
+            this.input = parts.join('.');
+            this.render();
+            
+            // Position cursor inside the parentheses after rendering
+            readline.cursorTo(process.stdout, 2 + this.input.length - 1, process.stdout.rows - 1);
+          } else {
+            // For properties, add a dot if it's an object to continue chaining
+            const suggestionBase = suggestion;
+            let current = this.context;
+            
+            // Navigate to the parent object using original parts
+            for (const part of parts) {
+              if (current && typeof current === 'object' && part in current) {
+                current = current[part];
+              }
+            }
+            
+            // Check if the completed item is an object that can be further accessed
+            const completedItem = current?.[suggestionBase];
+            const needsDot = completedItem && typeof completedItem === 'object';
+            
+            parts.push(suggestion + (needsDot ? '.' : ''));
+            this.input = parts.join('.');
+          }
         }
+      } else if (str === '\u001b[A' || str === '\u001b[B') { // Up/Down arrows
+        if (str === '\u001b[A') { // Up arrow
+          if (this.historyIndex > 0) {
+            this.historyIndex--;
+            this.input = this.history[this.historyIndex];
+          }
+        } else if (str === '\u001b[B') { // Down arrow
+          if (this.historyIndex < this.history.length - 1) {
+            this.historyIndex++;
+            this.input = this.history[this.historyIndex];
+          } else {
+            this.input = '';
+            this.historyIndex = this.history.length;
+          }
+        }
+        
+        // Reset suggestions when navigating history
+        this.currentSuggestions = [];
+        this.suggestionIndex = -1;
+        this.originalInput = '';
       } else if (str === '\b' || str === '\u007f') { // Backspace
         this.input = this.input.slice(0, -1);
+        this.currentSuggestions = []; // Reset suggestions
+        this.suggestionIndex = -1;
+        this.originalInput = '';
       } else if (str.length === 1 && str >= ' ' && str <= '~') { // Printable chars
         this.input += str;
+        this.currentSuggestions = []; // Reset suggestions
+        this.suggestionIndex = -1;
+        this.originalInput = '';
       }
 
       this.render();
