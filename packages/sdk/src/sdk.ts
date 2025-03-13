@@ -1,6 +1,7 @@
 import engineInfo from '../editor-engine.json';
 import packageInfo from '../package.json';
-import Connect, { StudioConnection } from './interactions/Connector';
+import Connect from './interactions/Connector';
+import { StudioConnection } from './interactions/base/StudioConnection';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';

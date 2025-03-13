@@ -4,7 +4,7 @@ import { VariableController } from './controllers/VariableController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { PageController } from './controllers/PageController';
 import { CanvasController } from '../controllers/CanvasController';
-import { StudioConnection } from '../interactions/Connector';
+import { StudioConnection } from '../interactions/base/StudioConnection';
 
 /**
  * The next initiator is a split off on SDK level to tag next features.

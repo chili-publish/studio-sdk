@@ -43,7 +43,6 @@ export class DocumentController {
      * @returns the document loaded inside of the canvas
      */
     load = async (doc: ChiliDocument | string, options: DocumentLoadOptions = { keepConnectors: false }) => {
-
         console.log('load', doc, options);
 
         const res = await this.#editorAPI;

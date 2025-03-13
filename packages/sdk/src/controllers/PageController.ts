@@ -1,7 +1,6 @@
 import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Page, SnapshotSettings } from '../types/PageTypes';
-import { CallSender } from 'penpal';
 
 /**
  * The PageController is responsible for all communication regarding Pages.

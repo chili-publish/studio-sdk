@@ -9,7 +9,6 @@ import {
     MeasurementUnit,
     PositionEnum,
 } from '../types/LayoutTypes';
-import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
 
 /**

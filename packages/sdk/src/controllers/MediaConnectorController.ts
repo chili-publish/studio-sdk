@@ -7,7 +7,6 @@ import {
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
-import { CallSender } from 'penpal';
 import {
     Media,
     MediaConnectorCapabilities,

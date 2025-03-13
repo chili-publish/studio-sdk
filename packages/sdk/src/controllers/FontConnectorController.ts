@@ -2,7 +2,6 @@ import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaDa
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { DeprecatedMediaType, MediaType, QueryOptions, QueryPage } from '../types/ConnectorTypes';
 import { FontConnectorCapabilities, FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
-import { CallSender } from 'penpal';
 
 /**
  * The FontConnectorController is responsible for all communication regarding Font connectors.

@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EditorAPI } from '../types/CommonTypes';
 import * as ws from 'ws';
+
+export class WebSocketConnection {
+    editorApi: Promise<EditorAPI>;
+    constructor(wsAddress: string) {
+        // e is a dynamic object, intercept all method calls and log them
+        this.editorApi = wsProxy(wsAddress);
+    }
+}
+
 /**
  * WebSocket based proxy for remote procedure calls
  * Replaced the previous gRPC implementation with WebSockets
@@ -105,58 +114,59 @@ const wsProxy = (url: string) => {
     };
 
     // Create and return the proxy object
-    return Promise.resolve(new Proxy({} as EditorAPI, {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        get(target, prop, _receiver) {
+    return Promise.resolve(
+        new Proxy({} as EditorAPI, {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            get(target, prop, _receiver) {
+                // this was a pain to understand
+                if (prop === 'then') {
+                    return undefined;
+                }
 
-            // this was a pain to understand
-            if (prop === 'then') {
-                return undefined;
-            }
-                        
-            if (!(prop in target)) {
-                return async function (...args: any[]) {
-                    try {
-                        // Generate a unique ID for the command
-                        const commandId = Math.random().toString(36).substring(2);
+                if (!(prop in target)) {
+                    return async function (...args: any[]) {
+                        try {
+                            // Generate a unique ID for the command
+                            const commandId = Math.random().toString(36).substring(2);
 
-                        // Prepare the command
-                        const command = {
-                            id: commandId,
-                            command: prop,
-                            arguments: args,
-                        };
+                            // Prepare the command
+                            const command = {
+                                id: commandId,
+                                command: prop,
+                                arguments: args,
+                            };
 
-                        // Ensure we have a connection before sending
-                        await ensureConnection();
+                            // Ensure we have a connection before sending
+                            await ensureConnection();
 
-                        return new Promise((resolve, reject) => {
-                            pendingRequests.set(commandId, { resolve, reject });
+                            return new Promise((resolve, reject) => {
+                                pendingRequests.set(commandId, { resolve, reject });
 
-                            if (wsConnection && wsConnection.readyState === ws.WebSocket.OPEN) {
-                                wsConnection.send(JSON.stringify(command));
-                            } else {
-                                // Queue the message if not yet connected
-                                messageQueue.push({ command });
-                            }
-
-                            // Set timeout for requests
-                            setTimeout(() => {
-                                if (pendingRequests.has(commandId)) {
-                                    pendingRequests.delete(commandId);
-                                    reject(new Error('Request timeout'));
+                                if (wsConnection && wsConnection.readyState === ws.WebSocket.OPEN) {
+                                    wsConnection.send(JSON.stringify(command));
+                                } else {
+                                    // Queue the message if not yet connected
+                                    messageQueue.push({ command });
                                 }
-                            }, 30000); // 30 second timeout
-                        });
-                    } catch (error) {
-                        console.error('Error in WebSocket proxy call:', error);
-                        throw error;
-                    }
-                };
-            }
-            return target[prop as string];
-        },
-    }));
+
+                                // Set timeout for requests
+                                setTimeout(() => {
+                                    if (pendingRequests.has(commandId)) {
+                                        pendingRequests.delete(commandId);
+                                        reject(new Error('Request timeout'));
+                                    }
+                                }, 30000); // 30 second timeout
+                            });
+                        } catch (error) {
+                            console.error('Error in WebSocket proxy call:', error);
+                            throw error;
+                        }
+                    };
+                }
+                return target[prop as string];
+            },
+        }),
+    );
 };
 
 export default wsProxy;

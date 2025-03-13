@@ -16,7 +16,10 @@ const mockedEditorApi: EditorAPI = {
 const mockedDataItemMappingTools = new DataItemMappingTools();
 
 beforeEach(() => {
-    mockedDataConnectorController = new DataConnectorController(Promise.resolve(mockedEditorApi), mockedDataItemMappingTools);
+    mockedDataConnectorController = new DataConnectorController(
+        Promise.resolve(mockedEditorApi),
+        mockedDataItemMappingTools,
+    );
     jest.spyOn(mockedEditorApi, 'dataConnectorGetPage');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetModel');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetCapabilities');
