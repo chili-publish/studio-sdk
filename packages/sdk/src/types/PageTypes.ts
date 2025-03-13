@@ -9,6 +9,7 @@ export type Page = {
 };
 
 export type PageSize = {
+    /** @deprecated all pages are being updated simultaneously hence no id needed */
     id: Id;
     width: number;
     height: number;

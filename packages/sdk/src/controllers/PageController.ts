@@ -119,25 +119,33 @@ export class PageController {
     /**
      * This method will set the width of the page to a specific value.
      * This only works if the document is a project.
-     * @param pageId the id of a specific page
+     * @param _pageId the id of a specific page.
      * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
      * @returns
      */
-    setWidth = async (pageId: Id, width: string) => {
+    setWidth = async (_pageId: Id | undefined, width: string) => {
+        if (_pageId !== undefined) {
+            console.warn('pageId has no effect since all pages are being updated simultaneously.');
+        }
+
         const res = await this.#editorAPI;
-        return res.setPageWidth(pageId, width).then((result) => getEditorResponseData<null>(result));
+        return res.setPageWidth(width).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method will set the height of the page to a specific value.
      * This only works if the document is a project.
-     * @param id the id of a specific page
+     * @param _pageId the id of a specific page.
      * @param height the string value that will be calculated (f.e. 1+1 will result in 2). The notation is in pixels
      * @returns
      */
-    setHeight = async (id: Id, height: string) => {
+    setHeight = async (_pageId: Id | undefined, height: string) => {
+        if (_pageId !== undefined) {
+            console.warn('pageId has no effect since all pages are being updated simultaneously.');
+        }
+
         const res = await this.#editorAPI;
-        return res.setPageHeight(id, height).then((result) => getEditorResponseData<null>(result));
+        return res.setPageHeight(height).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

@@ -75,12 +75,12 @@ describe('PageController', () => {
     it('Should call the setWidth method', async () => {
         await mockedPageController.setWidth('id', '4');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4');
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('4');
     });
     it('Should call the setHeight method', async () => {
         await mockedPageController.setHeight('id', '4');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4');
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4');
     });
 
     it('getSnapshot should call the getSnapshotWithSettings method', async () => {
@@ -99,11 +99,21 @@ describe('PageController', () => {
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
         await mockedPageController.setHeight('id', '4+2');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4+2');
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4+2');
 
         await mockedPageController.setWidth('id', '4*3');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4*3');
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('4*3');
+    });
+
+    it('Should accept undefined for pageId in pageHeight and pageWidth methods', async () => {
+        await mockedPageController.setHeight(undefined, '4+2');
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(3);
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4+2');
+
+        await mockedPageController.setWidth(undefined, '4*3');
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(3);
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('4*3');
     });
 
     it('Should be possible to reorder the pages', async () => {
