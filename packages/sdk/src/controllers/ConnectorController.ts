@@ -252,6 +252,32 @@ export class ConnectorController {
             false,
         );
     };
+
+    setMappings = async (id: Id, mappings: Array<{ key: string; variable: string }>) => {
+        const res = await this.#editorAPI;
+        await this.waitToBeReady(id);
+        const { parsedData: engineToConnectorMappings } = await this.getMappings(
+            id,
+            ConnectorMappingDirection.engineToConnector,
+        );
+
+        const connectorToEngineMappings = mappings
+            .filter(({ key, variable }) => key !== '' && variable !== '')
+            .map(({ key, variable }) => ({
+                name: key,
+                value: variable,
+                direction: ConnectorMappingDirection.connectorToEngine,
+            }));
+
+        const combinedMappings = [
+            ...(engineToConnectorMappings as unknown as ConnectorToEngineMapping[]),
+            ...connectorToEngineMappings,
+        ];
+
+        const connectorConfigurator = new ConnectorConfigurator(id, res);
+        await connectorConfigurator.setMappings(combinedMappings);
+        return res.updateConnectorConfiguration(id).then((result) => getEditorResponseData<null>(result));
+    };
 }
 
 /**
