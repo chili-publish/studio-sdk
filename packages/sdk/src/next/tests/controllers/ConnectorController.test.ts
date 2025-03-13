@@ -10,6 +10,7 @@ import {
     ConnectorType,
     ConnectorUrlRegistration,
 } from '../../types/ConnectorTypes';
+import { ConnectorMappingDirection } from '../../../types/ConnectorTypes';
 
 let mockedConnectorController: ConnectorController;
 
@@ -17,6 +18,19 @@ const mockEditorApi: EditorAPI = {
     getConnectorById: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectors: async () => getEditorResponseData(castToEditorResponse(null)),
     registerConnector: async () => getEditorResponseData(castToEditorResponse(null)),
+    getConnectorState: async () => getEditorResponseData(castToEditorResponse({ id: '', type: 'ready' })),
+    getConnectorMappings: async () =>
+        getEditorResponseData(
+            castToEditorResponse([
+                {
+                    name: 'hasDiscount',
+                    value: false,
+                    direction: ConnectorMappingDirection.engineToConnector,
+                },
+            ]),
+        ),
+    setConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -24,6 +38,10 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'getConnectorById');
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');
+    jest.spyOn(mockEditorApi, 'getConnectorState');
+    jest.spyOn(mockEditorApi, 'getConnectorMappings');
+    jest.spyOn(mockEditorApi, 'setConnectorMappings');
+    jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
 });
 
 afterEach(() => {
@@ -81,5 +99,38 @@ describe('Next.ConnectorController', () => {
 
         expect(mockEditorApi.registerConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.registerConnector).toHaveBeenCalledWith(JSON.stringify(grafxRegistration));
+    });
+
+    it('Should be possible to set connector mappings', async () => {
+        await mockedConnectorController.setMappings(connectorId, [
+            {
+                key: 'data',
+                variable: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+            },
+            {
+                key: 'price',
+                variable: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+            },
+        ]);
+
+        expect(mockEditorApi.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
+            JSON.stringify({
+                name: 'hasDiscount',
+                value: false,
+                direction: ConnectorMappingDirection.engineToConnector,
+            }),
+            JSON.stringify({
+                name: 'data',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            }),
+            JSON.stringify({
+                name: 'price',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            }),
+        ]);
     });
 });
