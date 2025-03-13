@@ -442,7 +442,6 @@ export class ActionAsyncError implements AsyncErrorBase {
         this.id = id;
         this.event = event;
         this.eventChain = eventChain;
-        Object.setPrototypeOf(this, ActionAsyncError.prototype);
     }
 }
 
@@ -457,7 +456,6 @@ export class DataRowAsyncError implements AsyncErrorBase {
         this.count = count;
         this.message = message;
         this.exceptions = exceptions;
-        Object.setPrototypeOf(this, DataRowAsyncError.prototype);
     }
 }
 
