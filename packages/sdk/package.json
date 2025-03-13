@@ -78,13 +78,6 @@
         "require": "./dist/cjs/src/index.js",
         "browser": "./dist/browser/studio-sdk.min.js",
         "default": "./dist/cjs/src/index.js"
-      },
-      "./next": {
-        "node": "./dist/cjs/src/next/index.js",
-        "types": "./dist/types/src/next/index.d.ts",
-        "import": "./dist/esm/src/next/index.js",
-        "require": "./dist/cjs/src/next/index.js",
-        "default": "./dist/cjs/src/next/index.js"
       }
     },
     "sideEffects": false,
