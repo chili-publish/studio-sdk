@@ -25,6 +25,12 @@ module.exports =(env) => ( {
             amd: 'ReactDOM',
             root: 'ReactDOM',
         },
+        'ws': {
+            commonjs: 'ws',
+            commonjs2: 'ws',
+            amd: 'ws',
+            root: 'ws',
+        },
     },
     plugins: [
         new BundleAnalyzerPlugin({
