@@ -173,6 +173,15 @@ export class FrameController {
     };
 
     /**
+     * This method will deselect all frames
+     * @returns
+     */
+    deselectAll = async () => {
+        const res = await this.#editorAPI;
+        return res.deselectFrames().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method changes the order of frames in the z-index list.
      * @param order the index in the list to move to
      * @param ids An array of all IDs you want to move to the given index
