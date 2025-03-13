@@ -2,7 +2,7 @@ import { Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
 import { WebSocketNodeConnectionProvider } from './WebSocketNodeConnectionProvider';
 import { StudioConnection } from './base/StudioConnection';
-import { PenpalConnectionProvider } from './BrowserConnectionProvider';
+import { PenpalConnectionProvider } from './PenpalConnectionProvider';
 
 const Connect = (
     editorLink: string,

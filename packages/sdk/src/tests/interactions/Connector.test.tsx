@@ -1,4 +1,4 @@
-import * as PenpalFunction from '../../interactions/BrowserConnectionProvider';
+import * as PenpalFunction from '../../interactions/PenpalConnectionProvider';
 
 const editorLink = 'https://test.test.net/';
 beforeEach(() => {

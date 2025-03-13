@@ -6,7 +6,7 @@ A command-line interface for interacting with CHILI GraFx Studio via WebSockets.
 
 - Node.js >= 18.0.0
 - npm or yarn
-- A running Studio SDK gRPC service (default: localhost:50051)
+- A running Studio WebSocket server (example demo server included)
 
 ## Installation
 
@@ -27,77 +27,47 @@ npm run build
 
 ```bash
 # Start the interactive REPL with direct URL argument
-npm run start start ws://localhost:3001
+node ./dist/index.js start ws://localhost:3001
 
 # Or with the -w/--websocket option
-npm run start start -w ws://localhost:3001
-npm run start start --websocket ws://localhost:3001
+node ./dist/index.js start -w ws://localhost:3001
+node ./dist/index.js start --websocket ws://localhost:3001
 
-# Or if you install globally or use npx
-studio-sdk-cli start -w ws://localhost:3001
+# Start the demo server (in a separate terminal)
+node ./dist/demo-server.js
 ```
 
-### Available Commands
+## Demo Server
 
-1. Start interactive REPL:
-```bash
-# Using direct argument
-npm start start ws://localhost:3001
-
-# Using websocket option
-npm start start -w ws://localhost:3001
-```
-
-## Example Commands
+This example includes a WebSocket demo server that simulates a Studio connection for testing the CLI without a real Studio instance:
 
 ```bash
-# Check service health
-npm start health
+# Start the demo server on port 3001 (default)
+node ./dist/demo-server.js
 
-# Start interactive session
-npm start run-session
+# Optionally specify a port
+PORT=3002 node ./dist/demo-server.js
 ```
-
-## Notes
-
-- The CLI connects to `localhost:50051` by default
-- Make sure your Studio SDK service is running before using the CLI
-- The interactive session supports any command that the SDK provides
-- Commands in the interactive session should be space-separated (command arg1 arg2)
-
-## Building the Linux Executable
-
-```bash
-# Build TypeScript files
-yarn build
-
-# Package into executable
-yarn package
-```
-
-This will create a Linux executable at `dist/bin/studio-sdk-node-cli-example`.
-
-## Running the Executable
-
-```bash
-# Execute directly
-./dist/bin/studio-sdk-node-cli-example
-
-# Or with parameters
-./dist/bin/studio-sdk-node-cli-example start -w http://localhost:3001
-```
-
-## Commands
-
-- `start <websocketUrl>`: Connect to a Studio WebSocket and start an interactive REPL
 
 ## Interactive REPL Features
 
 - Command history (up/down arrow keys)
-- Auto-suggestions for SDK methods
-- Type inference for parameters
-- Supports both expressions and statements
-- Execute JavaScript expressions against the SDK instance
+- Tab completion for SDK methods and properties
+- Auto-suggestions for available commands
+- Support for JavaScript expressions and statements
+- Execute code against the connected SDK instance
+
+## REPL Usage Examples
+
+Once in the REPL, you can execute JavaScript expressions against the SDK:
+
+```javascript
+// Get document information
+sdk.document.load()
+
+// Chain methods
+sdk.document.page.getAll().then(pages => console.log(pages))
+```
 
 ## Command Reference
 
@@ -131,4 +101,3 @@ npm run build
 # Run the CLI
 node ./dist/index.js start -w ws://localhost:3001
 ```
-````

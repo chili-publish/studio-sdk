@@ -12,12 +12,10 @@
         "outputPath": "dist/bin"
     },
     "scripts": {
-        "start": "node dist/index.js start -w http://localhost:8080/ws",
         "build": "tsc",
         "dev": "ts-node src/index.ts start -w http://localhost:3001",
         "package": "pkg .",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "demo": "ts-node src/demo.ts"
+        "demo": "ts-node src/demo-server.ts"
     },
     "dependencies": {
         "@chili-publish/studio-sdk": "file:../../packages/sdk",
