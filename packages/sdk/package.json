@@ -72,9 +72,15 @@
     },
     "exports": {
       ".": {
+        "types": "./dist/types/src/index.d.ts",
         "import": "./dist/esm/src/index.js",
         "require": "./dist/cjs/src/index.js",
         "browser": "./dist/browser/studio-sdk.min.js"
+      },
+      "./next": {
+        "types": "./dist/types/src/next/index.d.ts",
+        "import": "./dist/esm/src/next/index.js",
+        "require": "./dist/cjs/src/next/index.js"
       }
     },
     "sideEffects": false,
@@ -90,7 +96,6 @@
     "files": [
       "dist"
     ],
-    "typings": "dist/types/src",
     "bugs": {
         "url": "https://github.com/chili-publish/studio-sdk/issues"
     },
