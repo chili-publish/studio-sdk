@@ -95,7 +95,7 @@ describe('VariableController', () => {
     };
 
     beforeEach(() => {
-        mockedVariableController = new VariableController(mockEditorApi);
+        mockedVariableController = new VariableController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'getVariableById');
         jest.spyOn(mockEditorApi, 'getVariableByName');
         jest.spyOn(mockEditorApi, 'getVariables');

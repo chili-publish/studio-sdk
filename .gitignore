@@ -12,10 +12,11 @@ dist/
 *.log
 lib/
 lib-esm/
-_bundles/
+dist/
 coverage/
 docs/
 packages/sdk/next
 packages/sdk/types
 
 examples/**/package-lock.json
+_bundles/

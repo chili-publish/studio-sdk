@@ -53,7 +53,7 @@ jobs:
         run: |
           path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
           cp -R packages/sdk/coverage/lcov-report/src packages/sdk/coverage/lcov-report/coverage.html packages/sdk/coverage/lcov-report/base.css packages/sdk/coverage/lcov-report/prettify.css ${path%"/merge"} &&
-          cp -R packages/sdk/_bundles packages/sdk/upload/dev-packages/$CI_PR_ID
+          cp -R packages/sdk/dist packages/sdk/upload/dev-packages/$CI_PR_ID
       - name: Copy to Azure Blob Storage
         uses: azure/CLI@v1
         with:

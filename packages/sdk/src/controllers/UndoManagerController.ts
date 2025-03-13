@@ -10,14 +10,14 @@ export class UndoManagerController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     #advanced: AdvancedUndoManagerController;
     #sdk: SDK;
 
     /**
      * @ignore
      */
-    constructor(children: EditorAPI, sdk: SDK) {
+    constructor(children: Promise<EditorAPI>, sdk: SDK) {
         this.#editorAPI = children;
         this.#sdk = sdk;
         this.#advanced = new AdvancedUndoManagerController(children);
@@ -95,12 +95,12 @@ export class AdvancedUndoManagerController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(children: EditorAPI) {
+    constructor(children: Promise<EditorAPI>) {
         this.#editorAPI = children;
     }
 

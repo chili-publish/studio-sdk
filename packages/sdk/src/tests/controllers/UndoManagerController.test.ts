@@ -22,8 +22,8 @@ describe('UndoManagerController', () => {
     };
 
     beforeEach(() => {
-        mockedUndoManagerController = new UndoManagerController(mockEditorApi, mockSDK);
-        mockedAdvancedUndoManagerController = new AdvancedUndoManagerController(mockEditorApi);
+        mockedUndoManagerController = new UndoManagerController(Promise.resolve(mockEditorApi), mockSDK);
+        mockedAdvancedUndoManagerController = new AdvancedUndoManagerController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'undo');
         jest.spyOn(mockEditorApi, 'redo');
         jest.spyOn(mockEditorApi, 'begin');

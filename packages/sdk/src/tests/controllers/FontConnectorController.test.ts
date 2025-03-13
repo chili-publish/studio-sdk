@@ -16,7 +16,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedFontConnectorController = new FontConnectorController(mockedEditorApi);
+    mockedFontConnectorController = new FontConnectorController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'fontConnectorQuery');
     jest.spyOn(mockedEditorApi, 'fontConnectorDownload');
     jest.spyOn(mockedEditorApi, 'fontConnectorPreview');

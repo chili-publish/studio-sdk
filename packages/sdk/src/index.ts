@@ -181,4 +181,6 @@ export * from './types/PageTypes';
 
 export * from './types/EngineEditModeTypes';
 
+export * as Next from './next';
+
 export default SDK;

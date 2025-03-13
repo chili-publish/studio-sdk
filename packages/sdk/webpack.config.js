@@ -2,31 +2,17 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-module.exports = (env) => ({
-    entry: path.resolve(__dirname, 'src', 'index.ts'),
+module.exports =(env) => ( {
+    entry: './dist/esm/src/index.js',
     output: {
-        path: path.resolve(__dirname, '_bundles'),
-        filename: '[name].js',
-        libraryTarget: 'umd',
-        library: 'StudioSDK',
-        umdNamedDefine: true,
-        globalObject: 'this',
+      path: path.resolve(__dirname, 'dist/browser'),
+      filename: 'main.js',
+      library: 'StudioSDK',
+      libraryTarget: 'umd',
+      globalObject: 'this'
     },
     mode: env.env || 'development',
-    module: {
-        rules: [
-            {
-                test: /\.[jt]sx?$/,
-                use: ['ts-loader'],
-                exclude: [/node_modules/],
-            },
-        ],
-    },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    },
     externals: {
-        // Don't bundle react or react-dom
         react: {
             commonjs: 'react',
             commonjs2: 'react',
@@ -39,6 +25,12 @@ module.exports = (env) => ({
             amd: 'ReactDOM',
             root: 'ReactDOM',
         },
+        'ws': {
+            commonjs: 'ws',
+            commonjs2: 'ws',
+            amd: 'ws',
+            root: 'ws',
+        },
     },
     plugins: [
         new BundleAnalyzerPlugin({
@@ -46,6 +38,12 @@ module.exports = (env) => ({
             openAnalyzer: false,
         }),
     ],
+    module: {
+        
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    },
     optimization: {
         minimize: true,
         minimizer: [

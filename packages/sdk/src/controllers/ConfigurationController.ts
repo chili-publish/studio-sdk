@@ -12,12 +12,12 @@ export abstract class ConfigurationController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    protected constructor(editorAPI: EditorAPI) {
+    protected constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 

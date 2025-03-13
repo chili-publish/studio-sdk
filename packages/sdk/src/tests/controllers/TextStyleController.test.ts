@@ -12,7 +12,7 @@ describe('TextStyleController', () => {
     };
 
     beforeEach(() => {
-        mockedTextStyleController = new TextStyleController(mockEditorApi);
+        mockedTextStyleController = new TextStyleController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'selectedTextStyleDeltaUpdate');
         jest.spyOn(mockEditorApi, 'selectedTextStyleClean');
         jest.spyOn(mockEditorApi, 'getSelectedTextStyle');

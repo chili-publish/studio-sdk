@@ -51,7 +51,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedLayoutController = new LayoutController(mockedEditorApi);
+    mockedLayoutController = new LayoutController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'getLayouts');
     jest.spyOn(mockedEditorApi, 'getLayoutById');
     jest.spyOn(mockedEditorApi, 'getLayoutByName');

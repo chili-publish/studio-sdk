@@ -1,7 +1,6 @@
 import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Page, SnapshotSettings } from '../types/PageTypes';
-import { CallSender } from 'penpal';
 
 /**
  * The PageController is responsible for all communication regarding Pages.
@@ -11,7 +10,7 @@ export class PageController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
@@ -21,9 +20,9 @@ export class PageController {
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as EditorRawAPI;
     }
 
     /**
