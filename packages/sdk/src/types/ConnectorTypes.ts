@@ -147,11 +147,6 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
     }
 }
 
-export type Mapping = {
-    key: string;
-    variable: string;
-};
-
 export type ConnectorState = {
     id: Id;
     type: ConnectorStateType;

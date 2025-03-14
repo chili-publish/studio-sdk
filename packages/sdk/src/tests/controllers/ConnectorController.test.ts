@@ -265,23 +265,40 @@ describe('ConnectorController', () => {
     it('Should be possible to set connector mappings', async () => {
         await mockedConnectorController.setMappings(connectorId, [
             {
-                key: 'data',
-                variable: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                name: 'data',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                direction: ConnectorMappingDirection.connectorToEngine,
             },
             {
-                key: 'price',
-                variable: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                name: 'price',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            },
+            {
+                name: 'hasDiscount',
+                value: true,
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
+                name: 'invalid value',
+                value: '',
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
+                name: '',
+                value: 'invalid name',
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
+                name: '',
+                value: '',
+                direction: ConnectorMappingDirection.engineToConnector,
             },
         ]);
 
         expect(mockEditorApi.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
-            JSON.stringify({
-                name: 'hasDiscount',
-                value: false,
-                direction: ConnectorMappingDirection.engineToConnector,
-            }),
             JSON.stringify({
                 name: 'data',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
@@ -291,6 +308,11 @@ describe('ConnectorController', () => {
                 name: 'price',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
                 direction: ConnectorMappingDirection.connectorToEngine,
+            }),
+            JSON.stringify({
+                name: 'hasDiscount',
+                value: true,
+                direction: ConnectorMappingDirection.engineToConnector,
             }),
         ]);
     });

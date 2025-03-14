@@ -9,7 +9,6 @@ import {
     ConnectorToEngineMapping,
     ConnectorType,
     EngineToConnectorMapping,
-    Mapping,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -260,25 +259,29 @@ export class ConnectorController {
      * @param mappings An array of mapping objects
      * @returns
      */
-    setMappings = async (id: Id, mappings: Mapping[]) => {
+    setMappings = async (id: Id, mappings: ConnectorMappingType[]) => {
         return await this.configure(id, async (config) => {
-            // get existing mappings
-            const { parsedData: engineToConnectorMappings } = await this.getMappings(
-                id,
-                ConnectorMappingDirection.engineToConnector,
-            );
-            if (engineToConnectorMappings) {
-                const connectorToEngineMappings = mappings
-                    .filter((i) => i.key !== '' && i.variable !== '')
-                    .map((m) => ({
-                        name: m.key,
-                        value: m.variable,
-                        direction: ConnectorMappingDirection.connectorToEngine,
-                    }));
-                // merge current mappings with new value
-                const combinedMappings = [...engineToConnectorMappings, ...connectorToEngineMappings];
-                await config.setMappings(combinedMappings);
-            }
+            // Retrieve all existing mappings
+            const { parsedData: existingMappings } = await this.getMappings(id);
+
+            // Filter out old mappings that are being replaced with new ones
+            const filteredMappings =
+                existingMappings?.filter(
+                    (mapping) =>
+                        !mappings.some(
+                            (newMapping) =>
+                                newMapping.name === mapping.name && newMapping.direction === mapping.direction,
+                        ),
+                ) ?? [];
+
+            // Filter out new mappings that have empty `name` or `value`
+            const validMappings = mappings.filter((i) => i.name !== '' && i.value !== '');
+
+            // Merge valid new mappings with the filtered existing mappings
+            const combinedMappings = [...filteredMappings, ...validMappings];
+
+            // Update the configuration with the resulted mappings
+            await config.setMappings(combinedMappings);
         });
     };
 }
