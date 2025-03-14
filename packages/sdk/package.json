@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-sdk",
-    "version": "1.21.1-rc.4",
+    "version": "1.21.1-rc.7",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
@@ -38,7 +38,7 @@
         "terser-webpack-plugin": "^5.2.4",
         "ts-jest": "^29.2.5",
         "ts-loader": "^9.3.1",
-        "typedoc": "^0.23.10",
+        "typedoc": "^0.27.9",
         "typedoc-plugin-markdown": "^3.13.4",
         "typescript": "^5.7.3",
         "webpack": "^5.46.0",
@@ -63,8 +63,8 @@
         "cover": "jest --coverage",
         "make-badges": "node createCoverageBadge",
         "validate-licenses": "node validate_licenses.js",
-        "build-docs-md": "npx typedoc --hideBreadcrumbs --out ./docs/md",
-        "build-docs-html": "npx typedoc --out ./docs/html --plugin none --readme ./src/README_HTML.md"
+        "build-docs-md": "npx typedoc --out ./docs/md",
+        "build-docs-html": "npx typedoc --out ./docs/html --readme ./src/README_HTML.md"
     },
     "husky": {
         "hooks": {
