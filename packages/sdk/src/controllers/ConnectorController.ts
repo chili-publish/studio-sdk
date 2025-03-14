@@ -9,6 +9,7 @@ import {
     ConnectorToEngineMapping,
     ConnectorType,
     EngineToConnectorMapping,
+    Mapping,
 } from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -253,30 +254,32 @@ export class ConnectorController {
         );
     };
 
-    setMappings = async (id: Id, mappings: Array<{ key: string; variable: string }>) => {
-        const res = await this.#editorAPI;
-        await this.waitToBeReady(id);
-        const { parsedData: engineToConnectorMappings } = await this.getMappings(
-            id,
-            ConnectorMappingDirection.engineToConnector,
-        );
-
-        const connectorToEngineMappings = mappings
-            .filter(({ key, variable }) => key !== '' && variable !== '')
-            .map(({ key, variable }) => ({
-                name: key,
-                value: variable,
-                direction: ConnectorMappingDirection.connectorToEngine,
-            }));
-
-        const combinedMappings = [
-            ...(engineToConnectorMappings as unknown as ConnectorToEngineMapping[]),
-            ...connectorToEngineMappings,
-        ];
-
-        const connectorConfigurator = new ConnectorConfigurator(id, res);
-        await connectorConfigurator.setMappings(combinedMappings);
-        return res.updateConnectorConfiguration(id).then((result) => getEditorResponseData<null>(result));
+    /**
+     * Sets the mappings for a given connector.
+     * @param id the id of your registered connector
+     * @param mappings An array of mapping objects
+     * @returns
+     */
+    setMappings = async (id: Id, mappings: Mapping[]) => {
+        return await this.configure(id, async (config) => {
+            // get existing mappings
+            const { parsedData: engineToConnectorMappings } = await this.getMappings(
+                id,
+                ConnectorMappingDirection.engineToConnector,
+            );
+            if (engineToConnectorMappings) {
+                const connectorToEngineMappings = mappings
+                    .filter((i) => i.key !== '' && i.variable !== '')
+                    .map((m) => ({
+                        name: m.key,
+                        value: m.variable,
+                        direction: ConnectorMappingDirection.connectorToEngine,
+                    }));
+                // merge current mappings with new value
+                const combinedMappings = [...engineToConnectorMappings, ...connectorToEngineMappings];
+                await config.setMappings(combinedMappings);
+            }
+        });
     };
 }
 
