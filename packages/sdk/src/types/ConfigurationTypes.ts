@@ -4,6 +4,7 @@ export enum WellKnownConfigurationKeys {
     GraFxStudioDocumentType = 'DOCUMENT_TYPE',
     GraFxStudioTemplateId = 'TEMPLATE_ID',
     GraFxStudioAuthToken = 'GRAFX_AUTH_TOKEN',
+    QueryCallCacheEnabled = 'ENABLE_QUERY_CALL_CACHE',
 }
 
 export type StudioStyling = {
