@@ -259,7 +259,8 @@ export class ConnectorController {
      * @param mappings An array of mapping objects
      * @returns
      */
-    setMappings = async (id: Id, mappings: ConnectorMappingType[]) => {
+    updateMappings = async (id: Id, mappings: ConnectorMappingType[]) => {
+
         return await this.configure(id, async (config) => {
             // Retrieve all existing mappings
             const { parsedData: existingMappings } = await this.getMappings(id);
