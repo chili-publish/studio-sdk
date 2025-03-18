@@ -77,6 +77,7 @@ const mockedEditorApi: EditorAPI = {
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    getFrameConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -132,6 +133,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
+    jest.spyOn(mockedEditorApi, 'getFrameConfiguration');
 
     id = mockSelectFrame.id;
 });
@@ -631,5 +633,11 @@ describe('Anchoring', () => {
         await mockedFrameController.resetVisibility(id);
         expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameIsVisible).toHaveBeenLastCalledWith(id, null);
+    });
+
+    it('should be possible to get frame configuration', async () => {
+        await mockedFrameController.getFrameConfiguration(id);
+        expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledWith(id);
     });
 });
