@@ -1041,7 +1041,7 @@ export class FrameController {
      * @param id the id of the frame to get the frame configuration for
      * @returns the frame's configuration
      */
-    getFrameConfiguration = async (id: Id) => {
+    getConfiguration = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getFrameConfiguration(id).then((result) => getEditorResponseData<FrameConfiguration>(result));
     };

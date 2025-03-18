@@ -636,7 +636,7 @@ describe('Anchoring', () => {
     });
 
     it('should be possible to get frame configuration', async () => {
-        await mockedFrameController.getFrameConfiguration(id);
+        await mockedFrameController.getConfiguration(id);
         expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledWith(id);
     });
