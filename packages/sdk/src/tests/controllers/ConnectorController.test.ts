@@ -263,7 +263,7 @@ describe('ConnectorController', () => {
     });
 
     it('Should be possible to set connector mappings', async () => {
-        await mockedConnectorController.setMappings(connectorId, [
+        await mockedConnectorController.updateMappings(connectorId, [
             {
                 name: 'data',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
