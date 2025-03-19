@@ -1,13 +1,5 @@
 import { CallSender } from 'penpal';
-import {
-    ActionEditorEvent,
-    ConnectorInstance,
-    DocumentAction,
-    DocumentFontFamily,
-    ToolType,
-    VariableType,
-    ViewMode,
-} from '..';
+import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
 import { EngineCallbackHandler } from '../utils/EngineCallbackHandler';
 import { EngineEvent } from '../utils/EngineEvent';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
@@ -466,16 +458,13 @@ export enum AsyncErrorType {
 
 export interface ExceptionContext {
     variableId?: Id;
-    variableType?: VariableType;
-    variableName?: string;
-    variableLabel?: string;
 }
 
 export interface EditorExceptionDto {
     type: string;
     code: number;
     message: string;
-    context: ExceptionContext;
+    context?: ExceptionContext;
 }
 
 export type AsyncError = ActionAsyncError | DataRowAsyncError;
