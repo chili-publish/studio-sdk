@@ -81,6 +81,7 @@ export type ManagedCallbacksConfigType = {
         onStateChanged: EngineEvent<() => MaybePromise<void>>;
         onDocumentLoaded: EngineEvent<() => MaybePromise<void>>;
         onSelectedFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
+        onFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
         onSelectedFramesContentChanged: EngineEvent<(state: Frame[]) => MaybePromise<void>>;
         onPageSelectionChanged: EngineEvent<(id: Id) => MaybePromise<void>>;
         onSelectedLayoutPropertiesChanged: EngineEvent<(state: LayoutPropertiesType) => MaybePromise<void>>;
@@ -155,6 +156,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onSelectedFramesLayoutChanged` instead
      */
     onSelectedFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
+
+    /**
+     * @deprecated use `events.onFramesLayoutChanged` instead
+     */
+    onFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
 
     /**
      * @deprecated use `onSelectedFramesContentChanged` instead
