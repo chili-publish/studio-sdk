@@ -75,9 +75,9 @@ export class SubscriberController {
      * Listener on the state of all frames, if this changes, this listener will get triggered with the updates
      * @param framesLayout Stringified array of FrameLayoutType objects
      */
-    onAllFramesLayoutChanged = (framesLayout: string) => {
+    onFramesLayoutChanged = (framesLayout: string) => {
         const frames = JSON.parse(framesLayout);
-        this.config.events.onAllFramesLayoutChanged.trigger(frames);
+        this.config.events.onFramesLayoutChanged.trigger(frames);
     };
 
     /**

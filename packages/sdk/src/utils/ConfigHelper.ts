@@ -87,8 +87,8 @@ export class ConfigHelper {
                 () => clone.onSelectedFramesLayoutChanged,
                 clone.logging?.logger,
             ),
-            onAllFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>(
-                () => clone.onAllFramesLayoutChanged,
+            onFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>(
+                () => clone.onFramesLayoutChanged,
                 clone.logging?.logger,
             ),
             onSelectedFramesContentChanged: new EngineEvent<(state: Frame[]) => MaybePromise<void>>(
