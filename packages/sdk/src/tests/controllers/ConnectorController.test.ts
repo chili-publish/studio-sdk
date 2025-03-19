@@ -54,7 +54,16 @@ const mockEditorApi: EditorAPI = {
     setConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     setConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
-    getConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
+    getConnectorMappings: async () =>
+        getEditorResponseData(
+            castToEditorResponse([
+                {
+                    name: 'hasDiscount',
+                    value: false,
+                    direction: ConnectorMappingDirection.engineToConnector,
+                },
+            ]),
+        ),
 };
 
 beforeEach(() => {
@@ -251,5 +260,60 @@ describe('ConnectorController', () => {
 
         expect(mockEditorApi.setConnectorOptions).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setConnectorOptions).toHaveBeenCalledWith(connectorId, JSON.stringify({ test: 'data' }));
+    });
+
+    it('Should be possible to set connector mappings', async () => {
+        await mockedConnectorController.updateMappings(connectorId, [
+            {
+                name: 'data',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            },
+            {
+                name: 'price',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            },
+            {
+                name: 'hasDiscount',
+                value: true,
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
+                name: 'invalid value',
+                value: '',
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
+                name: '',
+                value: 'invalid name',
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
+                name: '',
+                value: '',
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+        ]);
+
+        expect(mockEditorApi.updateConnectorConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setConnectorMappings).toHaveBeenCalledWith(connectorId, [
+            JSON.stringify({
+                name: 'data',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            }),
+            JSON.stringify({
+                name: 'price',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                direction: ConnectorMappingDirection.connectorToEngine,
+            }),
+            JSON.stringify({
+                name: 'hasDiscount',
+                value: true,
+                direction: ConnectorMappingDirection.engineToConnector,
+            }),
+        ]);
     });
 });
