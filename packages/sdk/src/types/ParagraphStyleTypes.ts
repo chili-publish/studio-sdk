@@ -1,6 +1,6 @@
-import { Alignment, Case, Scripting } from './TextStyleTypes';
 import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
+import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type ParagraphStyle = {
     id: Id;
@@ -27,7 +27,10 @@ export type ParagraphStyle = {
     textAlignLast: Alignment;
     textOverprint: boolean;
     color: ColorUsage;
+    strokeColor: ColorUsage;
     fillColorApplied: boolean;
+    strokeColorApplied: boolean;
+    strokeWidth: number;
     underline: boolean;
     lineThrough: boolean;
 };
@@ -74,6 +77,18 @@ export type ParagraphStyleUpdate = {
     };
     color: {
         value: ColorUsageUpdate;
+    };
+    fillColorApplied: {
+        value: boolean;
+    };
+    strokeColor: {
+        value: ColorUsageUpdate;
+    };
+    strokeColorApplied: {
+        value: boolean;
+    };
+    strokeWidth: {
+        value: string;
     };
     underline: {
         value: boolean;
