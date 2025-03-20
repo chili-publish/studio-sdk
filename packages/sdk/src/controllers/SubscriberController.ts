@@ -1,4 +1,4 @@
-import { Id, RuntimeConfigType } from '../types/CommonTypes';
+import { ActionAsyncError, DataRowAsyncError, Id, RuntimeConfigType } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
@@ -369,7 +369,28 @@ export class SubscriberController {
      * @param asyncError error triggered asynchronously
      */
     onAsyncError = (asyncError: string) => {
-        this.config.events.onAsyncError.trigger(JSON.parse(asyncError));
+        const parsedError = JSON.parse(asyncError);
+
+        if (parsedError?.type === 'dataRow') {
+            const dataRowException = new DataRowAsyncError(
+                parsedError.count,
+                parsedError.message,
+                parsedError.exceptions,
+            );
+
+            this.config.events.onAsyncError.trigger(dataRowException);
+        } else if (parsedError?.type === 'action') {
+            const actionException = new ActionAsyncError(
+                parsedError.message,
+                parsedError.id,
+                parsedError.event,
+                parsedError.eventChain,
+            );
+
+            this.config.events.onAsyncError.trigger(actionException);
+        } else {
+            this.config.events.onAsyncError.trigger(parsedError);
+        }
     };
 
     /**
