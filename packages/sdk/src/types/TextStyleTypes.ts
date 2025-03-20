@@ -1,5 +1,5 @@
-import { VerticalAlign } from './FrameTypes';
 import { ColorUsage } from './ColorStyleTypes';
+import { VerticalAlign } from './FrameTypes';
 
 export enum FontWeights {
     BOLD = 'Bold',
@@ -95,6 +95,10 @@ export interface SelectedTextStyle {
     textAlignLast?: HorizontalAlign;
     textOverprint?: boolean;
     color?: DisplayColor;
+    strokeColor?: DisplayColor;
+    fillColorApplied?: boolean;
+    strokeColorApplied?: boolean;
+    strokeWidth?: number;
     underline?: boolean;
     lineThrough?: boolean;
     hasLocalFormatting: boolean;
