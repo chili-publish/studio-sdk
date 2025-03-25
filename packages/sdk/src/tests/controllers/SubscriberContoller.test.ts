@@ -20,7 +20,7 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 import * as Next from '../../next/types/ConnectorTypes';
-import { AsyncError, EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -45,6 +45,7 @@ const mockEditorApi: EditorAPI = {
     onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFramesContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -90,6 +91,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onAnimationChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
+    jest.spyOn(mockEditorApi, 'onFramesLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesContentChanged');
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
@@ -165,6 +167,18 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledWith(undefined);
+    });
+    it('Should be possible to subscribe to onFramesLayoutChanged when a single frame is passed', async () => {
+        await mockedSubscriberController.onFramesLayoutChanged('[2]');
+
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledWith([2]);
+    });
+    it('Should be possible to subscribe to onFramesLayoutChanged when multiple frames are passed', async () => {
+        await mockedSubscriberController.onFramesLayoutChanged('[1,2]');
+
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledWith([1, 2]);
     });
     it('Should be possible to subscribe to onSelectedFramesContentChanged when a single frame is passed', async () => {
         await mockedSubscriberController.onSelectedFramesContentChanged('[2]');
@@ -380,7 +394,7 @@ describe('SubscriberController', () => {
     });
 
     it('Should be possible to subscribe to onAsyncError', async () => {
-        const asyncError: AsyncError = { message: 'hello' };
+        const asyncError = { message: 'hello' };
         await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
 
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);

@@ -12,6 +12,7 @@ const mockConfig: RuntimeConfigType = ConfigHelper.createRuntimeConfig({
     onDocumentLoaded: defaultMockReturn,
     onSelectedFrameLayoutChanged: defaultMockReturn,
     onSelectedFramesLayoutChanged: defaultMockReturn,
+    onFramesLayoutChanged: defaultMockReturn,
     onSelectedFrameContentChanged: defaultMockReturn,
     onSelectedFramesContentChanged: defaultMockReturn,
     editorLink: 'https://chili-editor-dev.azurewebsites.net/',

@@ -7,3 +7,5 @@ export type {
     ConnectorLocalRegistration,
     ConnectorInstance,
 } from './types/ConnectorTypes';
+
+export type { PageSize } from './types/PageTypes';

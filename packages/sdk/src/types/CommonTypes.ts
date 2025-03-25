@@ -81,6 +81,7 @@ export type ManagedCallbacksConfigType = {
         onStateChanged: EngineEvent<() => MaybePromise<void>>;
         onDocumentLoaded: EngineEvent<() => MaybePromise<void>>;
         onSelectedFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
+        onFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
         onSelectedFramesContentChanged: EngineEvent<(state: Frame[]) => MaybePromise<void>>;
         onPageSelectionChanged: EngineEvent<(id: Id) => MaybePromise<void>>;
         onSelectedLayoutPropertiesChanged: EngineEvent<(state: LayoutPropertiesType) => MaybePromise<void>>;
@@ -155,6 +156,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onSelectedFramesLayoutChanged` instead
      */
     onSelectedFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
+
+    /**
+     * @deprecated use `events.onFramesLayoutChanged` instead
+     */
+    onFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
 
     /**
      * @deprecated use `onSelectedFramesContentChanged` instead
@@ -411,15 +417,56 @@ export interface ActionEventErrorData {
 }
 
 interface AsyncErrorBase {
+    type: AsyncErrorType;
     message: string;
 }
 
-export interface ActionAsyncError extends AsyncErrorBase {
+export class ActionAsyncError implements AsyncErrorBase {
+    type: AsyncErrorType;
     id?: string;
     event?: ActionEditorEvent;
     eventChain?: ActionEventErrorData[];
+    message: string;
+
+    constructor(message: string, id?: string, event?: ActionEditorEvent, eventChain?: ActionEventErrorData[]) {
+        this.type = AsyncErrorType.action;
+        this.message = message;
+        this.id = id;
+        this.event = event;
+        this.eventChain = eventChain;
+    }
 }
 
-export type AsyncError = ActionAsyncError;
+export class DataRowAsyncError implements AsyncErrorBase {
+    type: AsyncErrorType;
+    count: number;
+    exceptions: EditorExceptionDto[];
+    message: string;
+
+    constructor(count: number, message: string, exceptions: EditorExceptionDto[]) {
+        this.type = AsyncErrorType.dataRow;
+        this.count = count;
+        this.message = message;
+        this.exceptions = exceptions;
+    }
+}
+
+export enum AsyncErrorType {
+    action = 'action',
+    dataRow = 'dataRow',
+}
+
+export interface ExceptionContext {
+    variableId?: Id;
+}
+
+export interface EditorExceptionDto {
+    type: string;
+    code: number;
+    message: string;
+    context?: ExceptionContext;
+}
+
+export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;

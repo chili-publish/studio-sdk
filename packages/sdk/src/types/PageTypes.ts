@@ -3,12 +3,13 @@ import { Id } from './CommonTypes';
 export type Page = {
     id: Id;
     number: number;
-    isVisible?: boolean;
-    width?: number;
-    height?: number;
+    isVisible: boolean;
+    width: number;
+    height: number;
 };
 
 export type PageSize = {
+    /** @deprecated all pages are being updated simultaneously hence no id needed */
     id: Id;
     width: number;
     height: number;

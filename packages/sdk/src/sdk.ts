@@ -156,6 +156,7 @@ export class SDK {
                 onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFramesContentChanged: this.subscriber.onSelectedFramesContentChanged,
                 onSelectedFramesLayoutChanged: this.subscriber.onSelectedFramesLayoutChanged,
+                onFramesLayoutChanged: this.subscriber.onFramesLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
                 onSelectedLayoutUnitChanged: this.subscriber.onSelectedLayoutUnitChanged,
                 onPageSelectionChanged: this.subscriber.onPageSelectionChanged,
@@ -190,7 +191,13 @@ export class SDK {
                 onSelectedPageIdChanged: this.subscriber.onSelectedPageIdChanged,
                 onPagesChanged: this.subscriber.onPagesChanged,
                 onPageSnapshotInvalidated: this.subscriber.onPageSnapshotInvalidated,
-                onPageSizeChanged: this.subscriber.onPageSizeChanged,
+                onPageSizeChanged: (state) => {
+                    if (this.enabledNextSubscribers?.onPageSizeChanged) {
+                        this.next.subscriber.onPageSizeChanged(state);
+                    } else {
+                        this.subscriber.onPageSizeChanged(state);
+                    }
+                },
                 onShapeCornerRadiusChanged: this.subscriber.onShapeCornerRadiusChanged,
                 onCropActiveFrameIdChanged: this.subscriber.onCropActiveFrameIdChanged,
                 onAsyncError: this.subscriber.onAsyncError,
