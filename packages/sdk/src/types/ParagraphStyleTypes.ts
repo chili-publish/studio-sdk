@@ -88,7 +88,7 @@ export type ParagraphStyleUpdate = {
         value: boolean;
     };
     strokeWidth: {
-        value: string;
+        value: number;
     };
     underline: {
         value: boolean;
