@@ -252,6 +252,38 @@ export class ConnectorController {
             false,
         );
     };
+
+    /**
+     * Updates the mappings for a given connector.
+     * @param id the id of your registered connector
+     * @param mappings An array of mapping objects
+     * @returns
+     */
+    updateMappings = async (id: Id, mappings: ConnectorMappingType[]) => {
+        return await this.configure(id, async (config) => {
+            // Retrieve all existing mappings
+            const { parsedData: existingMappings } = await this.getMappings(id);
+
+            // Filter out old mappings that are being replaced with new ones
+            const filteredMappings =
+                existingMappings?.filter(
+                    (mapping) =>
+                        !mappings.some(
+                            (newMapping) =>
+                                newMapping.name === mapping.name && newMapping.direction === mapping.direction,
+                        ),
+                ) ?? [];
+
+            // Filter out new mappings that have empty `name` or `value`
+            const validMappings = mappings.filter((i) => i.name !== '' && i.value !== '');
+
+            // Merge valid new mappings with the filtered existing mappings
+            const combinedMappings = [...filteredMappings, ...validMappings];
+
+            // Update the configuration with the resulted mappings
+            await config.setMappings(combinedMappings);
+        });
+    };
 }
 
 /**
