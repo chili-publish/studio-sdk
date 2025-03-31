@@ -51,7 +51,7 @@ export class UndoManagerController {
      */
     addCustomData = async (key: string, value: string) => {
         const res = await this.#editorAPI;
-        return res.setCustomUndoData(key, value).then((result) => getEditorResponseData<null>(result));
+        return res.setCustomUndoData(key, value, false).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
