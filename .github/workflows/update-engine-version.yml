@@ -11,14 +11,6 @@ on:
         description: 'New engine version (e.g. 2.1.1)'
         required: true
         type: string
-      environment:
-        description: 'Target environment (UAT or PROD)'
-        required: true
-        type: choice
-        default: 'UAT'
-        options:
-          - 'UAT'
-          - 'PROD'
 
 jobs:
   update-engine-version-management:
@@ -68,28 +60,9 @@ jobs:
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
           "
- 
-      - name: Azure Login action
-        uses: azure/login@v2
+      
+      - name: Upload to Azure Blob Storage
+        uses: azure/CLI@v1
         with:
-          creds: >-
-            {
-              "clientId": "${{ vars.SP_FRONTEND_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.SP_FRONTEND_CLIENT_SECRET }}",
-              "tenantId": "${{ vars.AZURE_TENANT_ID }}",
-              "subscriptionId": "${{ (inputs.environment == 'PROD') && vars.SUBSCRIPTION_ID_PROD || vars.SUBSCRIPTION_ID_UAT }}"
-            }
-      - name: Upload build
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
           inlineScript: |
-            cd apps/app
-            ls -la
-            az storage blob upload-batch \
-            --account-name ${{ (inputs.environment == 'PROD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }} \
-            --file temp/supported-versions.json 
-            --container-name shared 
-            --name version-management/supported-versions.json
-            --overwrite true \
-            --auth-mode login
+            az storage blob upload --file temp/supported-versions.json --container-name shared --name version-management/supported-versions.json --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true 
