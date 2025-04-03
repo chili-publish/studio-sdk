@@ -83,7 +83,7 @@ describe('UndoManagerController', () => {
 
         await mockedUndoManagerController.addCustomData(key, value);
         expect(mockEditorApi.setCustomUndoData).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setCustomUndoData).toHaveBeenCalledWith(key, value);
+        expect(mockEditorApi.setCustomUndoData).toHaveBeenCalledWith(key, value, false);
     });
 
     it('it pauses the undo manager', async () => {
