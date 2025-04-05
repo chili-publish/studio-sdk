@@ -264,6 +264,12 @@ export class SDK {
 
         // Update the engine with the specified options from the config or fall back to the defaults.
         this.configuration.updateStudioOptions(this.config.studioOptions || defaultStudioOptions);
+
+        // Whether the engine should cache query calls. This is disabled by default.
+        this.configuration.setValue(
+            WellKnownConfigurationKeys.QueryCallCacheEnabled,
+            this.config.enableQueryCallCache?.toString() || 'false',
+        );
     };
 
     setConnection = (newConnection: Connection) => {
