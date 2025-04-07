@@ -18,6 +18,7 @@ import {
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
     VerticalAlign,
+    FrameConfiguration,
 } from '../types/FrameTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
@@ -1027,5 +1028,21 @@ export class FrameController {
     resetVisibility = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.setFrameIsVisible(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will get the frame configuration for a specified frame.
+     *
+     * A frame configuration is a set of rules that define what is allowed to
+     * do with a given behavior of a frame.
+     *
+     * e.g. list of allowed frame targets for a specific anchor
+     *
+     * @param id the id of the frame to get the frame configuration for
+     * @returns the frame's configuration
+     */
+    getConfiguration = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getFrameConfiguration(id).then((result) => getEditorResponseData<FrameConfiguration>(result));
     };
 }

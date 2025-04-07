@@ -354,3 +354,13 @@ export type FrameAnchorProperties = {
     target: AnchorTarget;
     endTarget?: AnchorTarget | null;
 };
+
+export type AnchorConfiguration = {
+    allowedTypes: Set<FrameAnchorType>;
+    allowedFrameIds: Set<Id>;
+};
+
+export type FrameConfiguration = {
+    horizontal: AnchorConfiguration;
+    vertical: AnchorConfiguration;
+};
