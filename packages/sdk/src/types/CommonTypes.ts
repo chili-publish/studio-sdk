@@ -28,6 +28,11 @@ export type BaseConfigType = {
     documentType?: DocumentType;
     studioStyling?: StudioStyling;
     studioOptions?: StudioOptionsDeltaUpdate;
+    /**
+     * Whether the engine should cache query calls.
+     * When enabled it will cache the query calls regardless of the cache control headers.
+     */
+    enableQueryCallCache?: boolean;
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
