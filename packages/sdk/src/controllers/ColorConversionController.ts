@@ -26,6 +26,6 @@ export class ColorConversionController {
      */
     convertToRgb = async (color: Color) => {
         const res = await this.#editorAPI;
-        return res.colorToRgb(color).then((result) => getEditorResponseData<RGBColor>(result));
+        return res.colorToRgb(JSON.stringify(color)).then((result) => getEditorResponseData<RGBColor>(result));
     };
 }
