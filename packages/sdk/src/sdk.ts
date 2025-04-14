@@ -242,6 +242,7 @@ export class SDK {
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
+        this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
