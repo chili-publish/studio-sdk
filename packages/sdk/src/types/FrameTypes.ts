@@ -25,6 +25,8 @@ export type FrameLayoutType = {
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
     autoGrow: AutoGrowSettings;
+    isShowingCustomCroppedAsset: boolean;
+    hasCustomCroppedAsset: boolean;
 } | null;
 
 //Frame.image
@@ -363,4 +365,9 @@ export type AnchorConfiguration = {
 export type FrameConfiguration = {
     horizontal: AnchorConfiguration;
     vertical: AnchorConfiguration;
+};
+
+export enum CropType {
+    frameCrop = 'frameCrop',
+    assetCrop = 'assetCrop',
 };
