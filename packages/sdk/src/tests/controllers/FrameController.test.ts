@@ -3,6 +3,7 @@ import {
     AnchorTargetEdgeType,
     AutoGrowDirection,
     BlendMode,
+    CropType,
     FitMode,
     FitModePosition,
     FrameAnchorProperties,
@@ -456,7 +457,7 @@ describe('FrameController', () => {
     it('Should be possible to enter cropping mode on a specific frame', async () => {
         await mockedFrameController.enterCropMode(id);
         expect(mockedEditorApi.enterCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(id, CropType.frameCrop);
     });
 
     it('Should be possible to apply the current image crop to the frame', async () => {
