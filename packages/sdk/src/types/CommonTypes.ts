@@ -475,3 +475,9 @@ export interface EditorExceptionDto {
 export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;
+
+export interface FilePointer {
+    id: string;
+    url: string;
+    name: string;
+}

@@ -1,4 +1,4 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
+import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, FilePointer, Id, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaConnectorDownloadType,
@@ -6,6 +6,7 @@ import {
     MediaType,
     QueryOptions,
     QueryPage,
+    UploadValidationConfiguration,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
 import {
@@ -161,4 +162,35 @@ export class MediaConnectorController {
                 return deprecatedMediaDownloadType as unknown as MediaDownloadType;
         }
     }
+
+    /**
+     * Stage a file to the proxy for upload.
+     * @param files The Files or Blobs to stage.
+     * @returns Promise<FilePointer[]> referencing the staged data.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    stageFiles = async (files: File[] | Blob[], validationConfiguration: UploadValidationConfiguration): Promise<FilePointer[]> => {
+
+        return new Promise((resolve, reject) => {
+            // TODO: Implement stageFile
+            
+            reject(new Error('Not implemented'));
+        });
+    };
+
+        /**
+     * Invokes the upload on the connector, using the given staged pointer(s).
+     * @param connectorId The MediaConnector instance to use (just like download API).
+     * @param filePointers Array of FilePointer as staged by stageFile(s).
+     * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).
+     * @returns Promise<Media>
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
+        return new Promise((resolve, reject) => {
+            // TODO: Implement stageFile
+            
+            reject(new Error('Not implemented'));
+        });
+    };
 }

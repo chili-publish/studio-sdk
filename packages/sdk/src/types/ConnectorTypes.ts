@@ -302,3 +302,12 @@ export type AuthRefreshRequest = {
     type: AuthRefreshTypeEnum;
     headerValue: string | null;
 };
+
+
+export type UploadValidationConfiguration = {
+    minWidthPixels?: number,
+    maxWidthPixels?: number,
+    minHeightPixels?: number,
+    maxHeightPixels?: number,
+    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[],
+}
