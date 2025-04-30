@@ -12,6 +12,12 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
+export interface FilePointer { 
+    id: string;
+    url: string;
+    name: string;
+}
+
 export type QueryOptions = {
     sortOrder: string | null;
     collection: string | null;
@@ -21,11 +27,24 @@ export type QueryOptions = {
     sortBy: string | null;
 };
 
+export interface StudioFormData {
+    append(name: string, value: string | FilePointer): void;
+    set(name: string, value: string | FilePointer): void;
+    forEach(callback: (value: string | FilePointer, name: string) => void): void;
+    getFields(): Array<[string, string | FilePointer]>;
+}
+
+export type StudioFetchBody =
+  | string                             // JSON, text, base64, etc.
+  | FilePointer                        
+  | FilePointer[]                      
+  | StudioFormData;
+
 export interface ChiliRequestInit {
     /**
-     * A BodyInit object or null to set request's body.
+     * A StudioFetchBody object or null to set request's body.
      */
-    body?: string | null;
+    body?: StudioFetchBody | null;
     /**
      * A Headers object, an object literal, or an array of two-item arrays to set request's headers.
      */
@@ -69,11 +88,13 @@ export interface ChiliResponse extends ChiliBody {
 }
 
 export type ConnectorConfigValueType = 'text' | 'boolean';
+export type ConnectorConfigContextType = 'query' | 'upload';
 
 export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
     readonly type: ConnectorConfigValueType;
+    readonly context: ConnectorConfigContextType[];
 }
 
 /**
@@ -111,6 +132,16 @@ export interface ConnectorHttpErrorConstructor {
     readonly prototype: ConnectorHttpError;
 }
 
+export interface StudioFormDataConstructor {
+    new (): StudioFormData;
+
+    /**
+     * The prototype of StudioFormData.
+     */
+    readonly prototype: StudioFormData;
+}
+
 declare global {
     var ConnectorHttpError: ConnectorHttpErrorConstructor;
+    var StudioFormData : StudioFormDataConstructor;
 }
