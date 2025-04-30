@@ -16,6 +16,7 @@ export interface FilePointer {
     id: string;
     url: string;
     name: string;
+    type: 'filePointer';
 }
 
 export type QueryOptions = {
@@ -37,7 +38,6 @@ export interface StudioFormData {
 export type StudioFetchBody =
   | string                             // JSON, text, base64, etc.
   | FilePointer                        
-  | FilePointer[]                      
   | StudioFormData;
 
 export interface ChiliRequestInit {

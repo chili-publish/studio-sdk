@@ -480,4 +480,5 @@ export interface FilePointer {
     id: string;
     url: string;
     name: string;
+    type: 'filePointer';
 }
