@@ -17,6 +17,7 @@ const mockedEditorApi: EditorAPI = {
     mediaConnectorDownload: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    mediaConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 const mockedLocalConfig = new Map<string, string>();
@@ -29,6 +30,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetConfigurationOptions');
     jest.spyOn(mockedEditorApi, 'mediaConnectorQuery');
+    jest.spyOn(mockedEditorApi, 'mediaConnectorUpload');
 });
 
 afterEach(() => {
@@ -174,50 +176,8 @@ describe('MediaConnectorController - Stage and Upload', () => {
         await expect(mockedMediaConnectorController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Environment API URL is not set');
     });
     it('should call the upload method', async () => {
-        mockFetch.mockResolvedValue({
-            ok: true,
-            json: async () => ([{
-                mediaId: 'm123',
-            }]),
-        });
-        await mockedMediaConnectorController.upload(connectorId, [{
-            id: '123',
-            name: 'test.jpg',
-            url: 'https://test.com/test.jpg',
-        }], {});
-        expect(fetch).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledWith(
-            'ENVIRONMENT_API/connector/dam/proxy',
-            expect.objectContaining({
-                method: 'POST',
-                body: JSON.stringify({
-                    filePointers: [{
-                        id: '123',
-                        name: 'test.jpg',
-                        url: 'https://test.com/test.jpg',
-                    }],
-                    context: {},
-                }),
-                headers: {
-                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
-                }
-            })
-        );
-    });
-    it('should throw when upload is called without auth token', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
-        await expect(mockedMediaConnectorController.upload(connectorId, [{
-            id: '123',
-            name: 'test.jpg',
-            url: 'https://test.com/test.jpg',
-        }], {})).rejects.toThrow('GraFx Studio Auth Token is not set');
-    });
-    it('should throw when upload is called without environment api url', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
-        await expect(mockedMediaConnectorController.upload(connectorId, [{
-            id: '123',
-            name: 'test.jpg',
-            url: 'https://test.com/test.jpg',
-        }], {})).rejects.toThrow('GraFx Studio Environment API URL is not set');
+        await mockedMediaConnectorController.upload(connectorId, [{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }], {});
+        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledWith(connectorId, JSON.stringify([{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }]), JSON.stringify({}));
     });
 });

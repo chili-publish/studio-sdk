@@ -225,34 +225,9 @@ export class MediaConnectorController {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
-        const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
-        if (!envApiUrl) {
-            throw new Error('GraFx Studio Environment API URL is not set');
-        }
-
-        const proxyUrl = `${envApiUrl}connector/${connectorId}/proxy`;
-
-        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
-        if (!accessToken) {
-            throw new Error('GraFx Studio Auth Token is not set');
-        }
-
-        const response = await fetch(proxyUrl, {
-            method: 'POST',
-            body: JSON.stringify({
-                filePointers,
-                context,
-            }),
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to upload files');
-        }
-
-        const data = await response.json();
-        return data as Media[];
+        const res = await this.#editorAPI;
+        return res
+            .mediaConnectorUpload(connectorId, JSON.stringify(filePointers), JSON.stringify(context))
+            .then((result) => getEditorResponseData<Media[]>(result));
     };
 }
