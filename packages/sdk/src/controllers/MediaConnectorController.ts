@@ -16,6 +16,7 @@ import {
     MediaDownloadIntent,
     MediaDownloadType,
 } from '../types/MediaConnectorTypes';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -36,13 +37,16 @@ export class MediaConnectorController {
      */
     #editorAPI: EditorAPI;
     #blobAPI: EditorRawAPI;
+    #localConfig: Map<string, string>;
+
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
         this.#editorAPI = editorAPI;
         this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#localConfig = localConfig;
     }
 
     /**
@@ -169,13 +173,48 @@ export class MediaConnectorController {
      * @returns Promise<FilePointer[]> referencing the staged data.
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    stageFiles = async (files: File[] | Blob[], validationConfiguration: UploadValidationConfiguration): Promise<FilePointer[]> => {
+    stageFiles = async (files: File[] | Blob[], connectorId: Id, validationConfiguration?: UploadValidationConfiguration): Promise<FilePointer[]> => {
 
-        return new Promise((resolve, reject) => {
-            // TODO: Implement stageFile
-            
-            reject(new Error('Not implemented'));
+        // https://cp-qeb-191.cpstaging.online/grafx/api/v1/environment/cp-qeb-191/
+        const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
+        if (!envApiUrl) {
+            throw new Error('GraFx Studio Environment API URL is not set');
+        }
+
+        const stageUrl = `${envApiUrl}connector/${connectorId}/stage`;
+
+        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        if (!accessToken) {
+            throw new Error('GraFx Studio Auth Token is not set');
+        }
+
+        const formData = new FormData();
+        
+        // Add each file/blob to form data
+        files.forEach((file, idx) => {
+            const filename = file instanceof File ? file.name : `blob-${idx}`;
+            formData.append('files', file, filename);
         });
+
+        if (validationConfiguration) {
+            formData.append('validationConfiguration', JSON.stringify(validationConfiguration));
+        }
+
+        const response = await fetch(stageUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to stage files');
+        }
+
+        const data = await response.json();
+        return data as FilePointer[];
+
     };
 
         /**
