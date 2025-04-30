@@ -112,7 +112,7 @@ export class SDK {
         this.barcode = new BarcodeController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
-        this.mediaConnector = new MediaConnectorController(this.editorAPI, this.localConfig);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
@@ -121,7 +121,7 @@ export class SDK {
 
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
-        this.utils = new UtilsController();
+        this.utils = new UtilsController(this.localConfig);
         this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
@@ -223,7 +223,7 @@ export class SDK {
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
-        this.utils = new UtilsController();
+        this.utils = new UtilsController(this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
@@ -232,7 +232,7 @@ export class SDK {
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
-        this.mediaConnector = new MediaConnectorController(this.editorAPI, this.localConfig);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);

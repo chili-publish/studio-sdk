@@ -1,12 +1,21 @@
 import { round } from '../utils/MathUtils';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
+import { Id, FilePointer } from '../types/CommonTypes';
+import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import { UploadValidationConfiguration } from '../types/ConnectorTypes';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier
  * Methods inside this controller can be called by `window.SDK.utils.{method-name}`
  */
 export class UtilsController {
+    #localConfig: Map<string, string>;
+
+    constructor(localConfig: Map<string, string>) {
+        this.#localConfig = localConfig;
+    }
+
     /**
      * This method can round a value to a certain precision, default is 2
      * @param val the value that needs to be rounded
@@ -26,4 +35,54 @@ export class UtilsController {
         const host = type == EnvironmentType.SANDBOX ? 'chili-publish-sandbox' : 'chili-publish';
         return `https://${environment}.${host}.online/grafx/api/v${version}/environment/${environment}`;
     };
+
+    /**
+     * This method can help you stage a file to the CHILI GraFx Environment API for upload.
+     * @param files The Files or Blobs to stage.
+     * @returns Promise<FilePointer[]> referencing the staged data.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    stageFiles = async (files: File[] | Blob[], connectorId: Id, validationConfiguration?: UploadValidationConfiguration): Promise<FilePointer[]> => {
+
+        const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
+        if (!envApiUrl) {
+            throw new Error('GraFx Studio Environment API URL is not set');
+        }
+
+        const stageUrl = `${envApiUrl}connector/${connectorId}/stage`;
+
+        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        if (!accessToken) {
+            throw new Error('GraFx Studio Auth Token is not set');
+        }
+
+        const formData = new FormData();
+        
+        // Add each file/blob to form data
+        files.forEach((file, idx) => {
+            const filename = file instanceof File ? file.name : `blob-${idx}`;
+            formData.append('files', file, filename);
+        });
+
+        if (validationConfiguration) {
+            formData.append('validationConfiguration', JSON.stringify(validationConfiguration));
+        }
+
+        const response = await fetch(stageUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to stage files');
+        }
+
+        const data = await response.json();
+        return data as FilePointer[];
+
+    };
+
 }

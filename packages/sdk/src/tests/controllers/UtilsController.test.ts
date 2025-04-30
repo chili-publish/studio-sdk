@@ -1,19 +1,30 @@
 import { UtilsController } from '../../controllers/UtilsController';
+import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
 import { EnvironmentType } from '../../utils/Enums';
 import * as MathUtils from '../../utils/MathUtils';
 
+let mockedUtilsController: UtilsController;
+
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
+
+
+
+
+const mockedLocalConfig = new Map<string, string>();
+beforeEach(() => {
+    jest.spyOn(MathUtils, 'round');
+    mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
+    mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
+    mockedUtilsController = new UtilsController(mockedLocalConfig);
+
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+    mockFetch.mockClear();
+});
 describe('UtilsController', () => {
-    let mockedUtilsController: UtilsController;
-
-    beforeEach(() => {
-        mockedUtilsController = new UtilsController();
-        jest.spyOn(MathUtils, 'round');
-    });
-
-    afterEach(() => {
-        jest.restoreAllMocks();
-    });
-
     it('Makes round operation', async () => {
         const calc = await mockedUtilsController.round(15.123, 3);
         expect(calc.parsedData).toEqual(15.123);
@@ -40,5 +51,55 @@ describe('UtilsController', () => {
             environment: 'ft-nocool',
             version: '7',
         });
+    });
+
+    const connectorId = 'dam';
+    it('Should call the stageFiles method with a file', async () => {
+        mockFetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({
+                filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
+            }),
+        });
+        await mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {});
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+            'ENVIRONMENT_API/connector/dam/stage',
+            expect.objectContaining({
+                method: 'POST',
+                body: expect.any(FormData),
+                headers: {
+                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
+                }
+            })
+        );
+    });
+    it ('should call the stageFiles method with a blob', async () => {
+        mockFetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({
+                filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
+            }),
+        });
+        await mockedUtilsController.stageFiles([new Blob(['test'], { type: 'image/jpeg' })], connectorId, {});
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+            'ENVIRONMENT_API/connector/dam/stage',
+            expect.objectContaining({
+                method: 'POST',
+                body: expect.any(FormData),
+                headers: {
+                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
+                }
+            })
+        );
+    }); 
+    it ('should throw when stageFiles is called without auth token  ', async () => {
+        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        await expect(mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Auth Token is not set');
+    });
+    it ('should throw when stageFiles is called without environment api url', async () => {
+        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
+        await expect(mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Environment API URL is not set');
     });
 });

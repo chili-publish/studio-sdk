@@ -6,7 +6,6 @@ import {
     MediaType,
     QueryOptions,
     QueryPage,
-    UploadValidationConfiguration,
 } from '../types/ConnectorTypes';
 import { CallSender } from 'penpal';
 import {
@@ -16,7 +15,6 @@ import {
     MediaDownloadIntent,
     MediaDownloadType,
 } from '../types/MediaConnectorTypes';
-import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -37,16 +35,14 @@ export class MediaConnectorController {
      */
     #editorAPI: EditorAPI;
     #blobAPI: EditorRawAPI;
-    #localConfig: Map<string, string>;
 
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
+    constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
         this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
-        this.#localConfig = localConfig;
     }
 
     /**
@@ -167,57 +163,10 @@ export class MediaConnectorController {
         }
     }
 
-    /**
-     * Stage a file to the proxy for upload.
-     * @param files The Files or Blobs to stage.
-     * @returns Promise<FilePointer[]> referencing the staged data.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    stageFiles = async (files: File[] | Blob[], connectorId: Id, validationConfiguration?: UploadValidationConfiguration): Promise<FilePointer[]> => {
-
-        const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
-        if (!envApiUrl) {
-            throw new Error('GraFx Studio Environment API URL is not set');
-        }
-
-        const stageUrl = `${envApiUrl}connector/${connectorId}/stage`;
-
-        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
-        if (!accessToken) {
-            throw new Error('GraFx Studio Auth Token is not set');
-        }
-
-        const formData = new FormData();
-        
-        // Add each file/blob to form data
-        files.forEach((file, idx) => {
-            const filename = file instanceof File ? file.name : `blob-${idx}`;
-            formData.append('files', file, filename);
-        });
-
-        if (validationConfiguration) {
-            formData.append('validationConfiguration', JSON.stringify(validationConfiguration));
-        }
-
-        const response = await fetch(stageUrl, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to stage files');
-        }
-
-        const data = await response.json();
-        return data as FilePointer[];
-
-    };
-
+    
         /**
      * Invokes the upload on the connector, using the given staged pointer(s).
+     * If you want help with staging files, use the `stageFiles` method from the UtilsController.
      * @param connectorId The MediaConnector instance to use (just like download API).
      * @param filePointers Array of FilePointer as staged by stageFile(s).
      * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).

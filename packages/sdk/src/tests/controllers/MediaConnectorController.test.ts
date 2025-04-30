@@ -10,7 +10,6 @@ let mockedMediaConnectorController: MediaConnectorController;
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
-
 const mockedEditorApi: EditorAPI = {
     mediaConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -24,7 +23,7 @@ const mockedLocalConfig = new Map<string, string>();
 beforeEach(() => {
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
-    mockedMediaConnectorController = new MediaConnectorController(mockedEditorApi, mockedLocalConfig);
+    mockedMediaConnectorController = new MediaConnectorController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'mediaConnectorDetail');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDownload');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetCapabilities');
@@ -125,59 +124,19 @@ describe('MediaConnectorController', () => {
     });
 });
 
-describe('MediaConnectorController - Stage and Upload', () => {
+describe('MediaConnectorController - Upload', () => {
     const connectorId = 'dam';
-    it('Should call the stageFiles method with a file', async () => {
-        mockFetch.mockResolvedValue({
-            ok: true,
-            json: async () => ({
-                filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
-            }),
-        });
-        await mockedMediaConnectorController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {});
-        expect(fetch).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledWith(
-            'ENVIRONMENT_API/connector/dam/stage',
-            expect.objectContaining({
-                method: 'POST',
-                body: expect.any(FormData),
-                headers: {
-                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
-                }
-            })
-        );
-    });
-    it ('should call the stageFiles method with a blob', async () => {
-        mockFetch.mockResolvedValue({
-            ok: true,
-            json: async () => ({
-                filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
-            }),
-        });
-        await mockedMediaConnectorController.stageFiles([new Blob(['test'], { type: 'image/jpeg' })], connectorId, {});
-        expect(fetch).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledWith(
-            'ENVIRONMENT_API/connector/dam/stage',
-            expect.objectContaining({
-                method: 'POST',
-                body: expect.any(FormData),
-                headers: {
-                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
-                }
-            })
-        );
-    }); 
-    it ('should throw when stageFiles is called without auth token  ', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
-        await expect(mockedMediaConnectorController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Auth Token is not set');
-    });
-    it ('should throw when stageFiles is called without environment api url', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
-        await expect(mockedMediaConnectorController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Environment API URL is not set');
-    });
     it('should call the upload method', async () => {
-        await mockedMediaConnectorController.upload(connectorId, [{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }], {});
+        await mockedMediaConnectorController.upload(
+            connectorId,
+            [{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }],
+            {},
+        );
         expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledWith(connectorId, JSON.stringify([{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }]), JSON.stringify({}));
+        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledWith(
+            connectorId,
+            JSON.stringify([{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }]),
+            JSON.stringify({}),
+        );
     });
 });
