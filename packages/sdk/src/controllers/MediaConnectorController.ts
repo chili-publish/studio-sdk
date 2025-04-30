@@ -175,7 +175,6 @@ export class MediaConnectorController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     stageFiles = async (files: File[] | Blob[], connectorId: Id, validationConfiguration?: UploadValidationConfiguration): Promise<FilePointer[]> => {
 
-        // https://cp-qeb-191.cpstaging.online/grafx/api/v1/environment/cp-qeb-191/
         const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
         if (!envApiUrl) {
             throw new Error('GraFx Studio Environment API URL is not set');
@@ -222,14 +221,38 @@ export class MediaConnectorController {
      * @param connectorId The MediaConnector instance to use (just like download API).
      * @param filePointers Array of FilePointer as staged by stageFile(s).
      * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).
-     * @returns Promise<Media>
+     * @returns Promise<Media[]>
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
-        return new Promise((resolve, reject) => {
-            // TODO: Implement stageFile
-            
-            reject(new Error('Not implemented'));
+        const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
+        if (!envApiUrl) {
+            throw new Error('GraFx Studio Environment API URL is not set');
+        }
+
+        const proxyUrl = `${envApiUrl}connector/${connectorId}/proxy`;
+
+        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        if (!accessToken) {
+            throw new Error('GraFx Studio Auth Token is not set');
+        }
+
+        const response = await fetch(proxyUrl, {
+            method: 'POST',
+            body: JSON.stringify({
+                filePointers,
+                context,
+            }),
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
         });
+
+        if (!response.ok) {
+            throw new Error('Failed to upload files');
+        }
+
+        const data = await response.json();
+        return data as Media[];
     };
 }

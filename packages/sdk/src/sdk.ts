@@ -112,7 +112,7 @@ export class SDK {
         this.barcode = new BarcodeController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
-        this.mediaConnector = new MediaConnectorController(this.editorAPI);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI, this.localConfig);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
@@ -232,7 +232,7 @@ export class SDK {
         this.colorStyle = new ColorStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
-        this.mediaConnector = new MediaConnectorController(this.editorAPI);
+        this.mediaConnector = new MediaConnectorController(this.editorAPI, this.localConfig);
         this.fontConnector = new FontConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
