@@ -1,4 +1,4 @@
-import { VariableController } from '../../controllers/VariableController';
+import { ImageVariableController, VariableController } from '../../controllers/VariableController';
 import { ListVariableItem, Variable, VariableType, VariableVisibilityType } from '../../../types/VariableTypes';
 import type { ListVariable } from '../../../next/types/VariableTypes';
 import { EditorAPI } from '../../../types/CommonTypes';
@@ -145,5 +145,38 @@ describe('Next.VariableController', () => {
             JSON.stringify(grafxRegistration),
         );
         expect(response?.parsedData).toBe('newConnectorId');
+    });
+});
+
+describe('Next.VariableController.ImageVariableController', () => {
+    let mockedImageVariableController: ImageVariableController;
+
+    const variableId = 'variableId';
+
+    const mockEditorApi: EditorAPI = {
+        setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
+    };
+
+    beforeEach(() => {
+        mockedImageVariableController = new ImageVariableController(mockEditorApi);
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
+    });
+
+    it('set allow query', async () => {
+        const response = await mockedImageVariableController.setAllowQuery(variableId, true);
+
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledWith(variableId, true);
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it('set allow upload', async () => {
+        const response = await mockedImageVariableController.setAllowUpload(variableId, true);
+
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledWith(variableId, true);
+        expect(response?.parsedData).toBe(null);
     });
 });
