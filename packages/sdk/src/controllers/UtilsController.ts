@@ -41,7 +41,6 @@ export class UtilsController {
      * @param files The Files or Blobs to stage.
      * @returns Promise<FilePointer[]> referencing the staged data.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     stageFiles = async (files: File[] | Blob[], connectorId: Id, validationConfiguration?: UploadValidationConfiguration): Promise<FilePointer[]> => {
 
         const envApiUrl = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
