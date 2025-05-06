@@ -658,6 +658,28 @@ export class VariableController {
         return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
     };
 
+    /**
+     * This method sets the allowQuery flag for an image variable
+     * @param id the id of the variable
+     * @param allowQuery the allowQuery flag
+     * @returns
+     */
+    setAllowImageQuery = async (id: string, allowQuery: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowQuery(id, allowQuery).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the allowUpload flag for an image variable
+     * @param id the id of the variable
+     * @param allowUpload the allowUpload flag
+     * @returns
+     */
+    setAllowImageUpload = async (id: string, allowUpload: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);

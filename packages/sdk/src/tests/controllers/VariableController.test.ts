@@ -43,6 +43,8 @@ describe('VariableController', () => {
             },
         },
         privateData: {},
+        allowQuery: true,
+        allowUpload: true,
     };
 
     const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
@@ -92,6 +94,8 @@ describe('VariableController', () => {
         updateVariablePrefixSuffixProperties: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
         getVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(privateData)),
+        setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -125,6 +129,8 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'updateVariablePrefixSuffixProperties');
         jest.spyOn(mockEditorApi, 'setVariablePrivateData');
         jest.spyOn(mockEditorApi, 'getVariablePrivateData');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
     });
 
     it('get variable by id', async () => {
@@ -540,5 +546,17 @@ describe('VariableController', () => {
         expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledWith('1');
         expect(response?.parsedData).toStrictEqual(privateData);
+    });
+
+    it('sets the allowQuery flag for an image variable', async () => {
+        await mockedVariableController.setAllowImageQuery('1', true);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledWith('1', true);
+    });
+
+    it('sets the allowUpload flag for an image variable', async () => {
+        await mockedVariableController.setAllowImageUpload('1', true);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledWith('1', true);
     });
 });
