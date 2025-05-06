@@ -9,9 +9,12 @@ export interface MediaConnector {
         intent: DownloadIntent,
         context: Dictionary,
     ): Promise<ArrayBufferPointer>;
-    upload(filePointers: FilePointer[], context: Dictionary): Promise<Media[]>;
     getConfigurationOptions(): ConnectorConfigValue[] | null;
     getCapabilities(): MediaConnectorCapabilities;
+}
+
+export interface MediaConnectorUpload {
+    upload(filePointers: FilePointer[], context: Dictionary): Promise<Media[]>;
 }
 
 export type DownloadIntent = 'web' | 'print' | 'animation';
