@@ -15,8 +15,7 @@ export interface ConnectorRuntimeContext {
 export interface FilePointer { 
     id: string;
     url: string;
-    name: string;
-    type: 'filePointer';
+    name: string;    
 }
 
 export type QueryOptions = {
@@ -32,7 +31,7 @@ export interface StudioFormData {
     append(name: string, value: string | FilePointer): void;
     set(name: string, value: string | FilePointer): void;
     forEach(callback: (value: string | FilePointer, name: string) => void): void;
-    getFields(): Array<[string, string | FilePointer]>;
+    getFields(): Array<[string, string | FilePointer | FilePointer[] | string[]]>;
 }
 
 export type StudioFetchBody =
@@ -94,7 +93,7 @@ export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
     readonly type: ConnectorConfigValueType;
-    readonly context: ConnectorConfigContextType[];
+    readonly context?: ConnectorConfigContextType[];
 }
 
 /**
@@ -141,7 +140,17 @@ export interface StudioFormDataConstructor {
     readonly prototype: StudioFormData;
 }
 
+export interface FilePointerConstructor {
+    new (id: string, url: string, name: string): FilePointer;
+
+    /**
+     * The prototype of FilePointer.
+     */
+    readonly prototype: FilePointer;
+}
+
 declare global {
     var ConnectorHttpError: ConnectorHttpErrorConstructor;
     var StudioFormData : StudioFormDataConstructor;
+    var FilePointer: FilePointerConstructor;
 }
