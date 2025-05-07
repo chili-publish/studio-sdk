@@ -12,10 +12,10 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
-export interface FilePointer { 
+export interface FilePointer {
     id: string;
     url: string;
-    name: string;    
+    name: string;
 }
 
 export type QueryOptions = {
@@ -31,13 +31,13 @@ export interface StudioFormData {
     append(name: string, value: string | FilePointer): void;
     set(name: string, value: string | FilePointer): void;
     forEach(callback: (value: string | FilePointer, name: string) => void): void;
-    getFields(): Array<[string, string | FilePointer | FilePointer[] | string[]]>;
+    getFields(): Map<string, string | FilePointer | FilePointer[] | string[]>;
 }
 
 export type StudioFetchBody =
-  | string                             // JSON, text, base64, etc.
-  | FilePointer                        
-  | StudioFormData;
+    | string // JSON, text, base64, etc.
+    | FilePointer
+    | StudioFormData;
 
 export interface ChiliRequestInit {
     /**
@@ -151,6 +151,6 @@ export interface FilePointerConstructor {
 
 declare global {
     var ConnectorHttpError: ConnectorHttpErrorConstructor;
-    var StudioFormData : StudioFormDataConstructor;
+    var StudioFormData: StudioFormDataConstructor;
     var FilePointer: FilePointerConstructor;
 }
