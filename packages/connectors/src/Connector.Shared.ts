@@ -27,11 +27,13 @@ export type QueryOptions = {
     sortBy: string | null;
 };
 
+export type StudioFormDataValues = string | FilePointer | FilePointer[] | string[];
+
 export interface StudioFormData {
-    append(name: string, value: string | FilePointer): void;
-    set(name: string, value: string | FilePointer): void;
-    forEach(callback: (value: string | FilePointer, name: string) => void): void;
-    getFields(): Map<string, string | FilePointer | FilePointer[] | string[]>;
+    append(name: string, value: StudioFormDataValues): void;
+    set(name: string, value: StudioFormDataValues): void;
+    forEach(callback: (value: StudioFormDataValues, name: string) => void): void;
+    getFields(): Map<string, StudioFormDataValues>;
 }
 
 export type StudioFetchBody =
