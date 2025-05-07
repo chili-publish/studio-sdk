@@ -172,7 +172,6 @@ export class MediaConnectorController {
      * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).
      * @returns Promise<Media[]>
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
         const res = await this.#editorAPI;
         return res
