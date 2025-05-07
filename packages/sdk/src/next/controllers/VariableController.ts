@@ -13,12 +13,14 @@ export class VariableController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    image: ImageVariableController;
 
     /**
      * @ignore
      */
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
+        this.image = new ImageVariableController(editorAPI);
     }
 
     /**
@@ -86,5 +88,23 @@ export class VariableController {
         return res
             .setImageVariableConnector(id, JSON.stringify(registration))
             .then((result) => getEditorResponseData<Id>(result));
+    };
+}
+
+export class ImageVariableController {
+    #editorAPI: EditorAPI;
+
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    setAllowQuery = async (id: string, allowQuery: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowQuery(id, allowQuery).then((result) => getEditorResponseData<null>(result));
+    };
+
+    setAllowUpload = async (id: string, allowUpload: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
     };
 }
