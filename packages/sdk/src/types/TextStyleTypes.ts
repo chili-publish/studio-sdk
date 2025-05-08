@@ -135,11 +135,13 @@ export enum SelectedTextStyles {
     COLOR = 'color',
     FILL_COLOR_APPLIED = 'fillColorApplied',
     STROKE_COLOR = 'strokeColor',
+    STROKE_COLOR_APPLIED = 'strokeColorApplied',
     DROP_SHADOW_COLOR = 'dropShadowColor',
     BLEND_MODE = 'blendMode',
     OPACITY = 'opacity',
     TRACKING_RIGHT = 'trackingRight',
     BASELINE_SHIFT = 'baselineShiftValue',
+    STROKE_WIDTH = 'strokeWidth',
 }
 
 export interface UpdateStyleType {
