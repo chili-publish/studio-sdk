@@ -77,7 +77,7 @@ export type CharacterStyleUpdate = {
         value: boolean;
     };
     strokeWidth: {
-        value: number;
+        value: string;
     };
     underline: {
         value: boolean;
