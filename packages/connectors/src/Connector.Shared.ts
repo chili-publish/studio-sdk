@@ -37,8 +37,6 @@ export interface StudioFormData {
     get(name: string): StudioFormDataValue | null;
     getAll(name: string): StudioFormDataValue[];
     has(name: string): boolean;
-    keys(): string[];
-    values(): StudioFormDataValue[];
 }
 
 export type StudioFetchBody =
