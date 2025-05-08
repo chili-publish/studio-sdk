@@ -12,6 +12,12 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
+export interface FilePointer {
+    id: string;
+    url: string;
+    name: string;
+}
+
 export type QueryOptions = {
     sortOrder: string | null;
     collection: string | null;
@@ -21,11 +27,28 @@ export type QueryOptions = {
     sortBy: string | null;
 };
 
+export type StudioFormDataValue = string | FilePointer;
+
+export interface StudioFormData {
+    append(name: string, value: StudioFormDataValue, filename?: string): void;
+    set(name: string, value: StudioFormDataValue, filename?: string): void;
+    delete(name: string): void;
+    forEach(callback: (value: StudioFormDataValue, name: string) => void): void;
+    get(name: string): StudioFormDataValue | null;
+    getAll(name: string): StudioFormDataValue[];
+    has(name: string): boolean;
+}
+
+export type StudioFetchBody =
+    | string // JSON, text, base64, etc.
+    | FilePointer
+    | StudioFormData;
+
 export interface ChiliRequestInit {
     /**
-     * A BodyInit object or null to set request's body.
+     * A StudioFetchBody object or null to set request's body.
      */
-    body?: string | null;
+    body?: StudioFetchBody | null;
     /**
      * A Headers object, an object literal, or an array of two-item arrays to set request's headers.
      */
@@ -69,11 +92,13 @@ export interface ChiliResponse extends ChiliBody {
 }
 
 export type ConnectorConfigValueType = 'text' | 'boolean';
+export type ConnectorConfigContextType = 'query' | 'upload';
 
 export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
     readonly type: ConnectorConfigValueType;
+    readonly context?: ConnectorConfigContextType[];
 }
 
 /**
@@ -111,6 +136,26 @@ export interface ConnectorHttpErrorConstructor {
     readonly prototype: ConnectorHttpError;
 }
 
+export interface StudioFormDataConstructor {
+    new (): StudioFormData;
+
+    /**
+     * The prototype of StudioFormData.
+     */
+    readonly prototype: StudioFormData;
+}
+
+export interface FilePointerConstructor {
+    new (id: string, url: string, name: string): FilePointer;
+
+    /**
+     * The prototype of FilePointer.
+     */
+    readonly prototype: FilePointer;
+}
+
 declare global {
     var ConnectorHttpError: ConnectorHttpErrorConstructor;
+    var StudioFormData: StudioFormDataConstructor;
+    var FilePointer: FilePointerConstructor;
 }

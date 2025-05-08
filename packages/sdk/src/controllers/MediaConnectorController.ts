@@ -1,4 +1,4 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
+import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, FilePointer, Id, MetaData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     DeprecatedMediaConnectorDownloadType,
@@ -35,6 +35,7 @@ export class MediaConnectorController {
      */
     #editorAPI: EditorAPI;
     #blobAPI: EditorRawAPI;
+
 
     /**
      * @ignore
@@ -161,4 +162,20 @@ export class MediaConnectorController {
                 return deprecatedMediaDownloadType as unknown as MediaDownloadType;
         }
     }
+
+    
+        /**
+     * Invokes the upload on the connector, using the given staged pointer(s).
+     * If you want help with staging files, use the `stageFiles` method from the UtilsController.
+     * @param connectorId The MediaConnector instance to use (just like download API).
+     * @param filePointers Array of FilePointer as staged by stageFile(s).
+     * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).
+     * @returns Promise<Media[]>
+     */
+    upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
+        const res = await this.#editorAPI;
+        return res
+            .mediaConnectorUpload(connectorId, JSON.stringify(filePointers), JSON.stringify(context))
+            .then((result) => getEditorResponseData<Media[]>(result));
+    };
 }
