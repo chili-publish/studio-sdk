@@ -107,7 +107,7 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
         value: true,
     },
     strokeWidth: {
-        value: 0,
+        value: '0',
     },
     underline: {
         value: true,

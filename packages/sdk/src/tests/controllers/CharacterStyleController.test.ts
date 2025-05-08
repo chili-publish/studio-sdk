@@ -101,7 +101,7 @@ const updateCharacterStyle: CharacterStyleUpdate = {
         value: true,
     },
     strokeWidth: {
-        value: 1,
+        value: '1',
     },
     underline: {
         value: true,
