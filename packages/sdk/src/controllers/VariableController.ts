@@ -680,6 +680,28 @@ export class VariableController {
         return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method sets the minimum height for an image variable that will be uploaded
+     * @param id the id of the variable
+     * @param minHeight the minimum height
+     * @returns
+     */
+    setImageUploadMinHeight = async (id: string, minHeight: number) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableUploadMinHeight(id, minHeight).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the minimum width for an image variable that will be uploaded
+     * @param id the id of the variable
+     * @param minWidth the minimum width
+     * @returns
+     */
+    setImageUploadMinWidth = async (id: string, minWidth: number) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableUploadMinWidth(id, minWidth).then((result) => getEditorResponseData<null>(result));
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);
