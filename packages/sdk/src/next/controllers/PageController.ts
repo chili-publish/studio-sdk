@@ -46,15 +46,4 @@ export class PageController {
         const res = await this.#editorAPI;
         return res.setPageHeight(height).then((result) => getEditorResponseData<null>(result));
     };
-
-    /**
-     * Sets the width and height of the page to a specific value simultaneously.
-     * This only works if the document is a project.
-     * @param width the string value that will be calculated (f.e. 1+1 will result in 2). The default unit is in the current layout unit (e.g. px, mm, in)
-     * @param height the string value that will be calculated (f.e. 1+1 will result in 2). The default unit is in the current layout unit (e.g. px, mm, in)
-     */
-    setSize = async (width: string, height: string) => {
-        const res = await this.#editorAPI;
-        return res.setPageSize(width, height).then((result) => getEditorResponseData<null>(result));
-    };
 }
