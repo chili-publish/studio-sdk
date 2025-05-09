@@ -1,7 +1,7 @@
-import { EditorAPI } from '../../types/CommonTypes';
 import { PageController } from '../../controllers/PageController';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { EditorAPI } from '../../types/CommonTypes';
 import { SnapshotSettings } from '../../types/PageTypes';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedPageController: PageController;
 
@@ -10,6 +10,8 @@ const mockEditorApi: EditorAPI = {
     getPageById: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageWidth: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageHeight: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    setPageSize: async (width: unknown, height: unknown) =>
+        getEditorResponseData(castToEditorResponse({ width, height })),
     addPage: async () => getEditorResponseData(castToEditorResponse('frameID')),
     removePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     getPageSnapshotWithSettings: async () => getEditorResponseData(castToEditorResponse([1])),
@@ -26,6 +28,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'getPageById');
     jest.spyOn(mockEditorApi, 'setPageWidth');
     jest.spyOn(mockEditorApi, 'setPageHeight');
+    jest.spyOn(mockEditorApi, 'setPageSize');
     jest.spyOn(mockEditorApi, 'addPage');
     jest.spyOn(mockEditorApi, 'removePage');
     jest.spyOn(mockEditorApi, 'getPageSnapshotWithSettings');
@@ -81,6 +84,11 @@ describe('PageController', () => {
         await mockedPageController.setHeight('id', '4');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4');
+    });
+    it('Should call the setSize method', async () => {
+        await mockedPageController.setSize('4', '2');
+        expect(mockEditorApi.setPageSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setPageSize).toHaveBeenCalledWith('4', '2');
     });
 
     it('getSnapshot should call the getSnapshotWithSettings method', async () => {
