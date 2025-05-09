@@ -26,7 +26,7 @@ export type FrameLayoutType = {
     enableCopyfitting: PropertyState<boolean>;
     autoGrow: AutoGrowSettings;
     isShowingCustomCroppedAsset: boolean;
-    hasCustomCroppedAsset: boolean;
+    customCroppedAssetCount: number;
 } | null;
 
 //Frame.image
