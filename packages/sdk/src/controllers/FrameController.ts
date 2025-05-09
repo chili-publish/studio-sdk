@@ -1056,5 +1056,15 @@ export class FrameController {
     resetAssetCropOverride = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetAssetCropOverride(id).then((result) => getEditorResponseData<null>(result));
-    }
+    };
+
+    /**
+     * This method will reset all crop overrides for the specified frame
+     * @param id the id of the frame
+     * @returns
+     */
+    resetAllAssetCropOverrides = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAllAssetCropOverrides(id).then((result) => getEditorResponseData<null>(result));
+    };
 }

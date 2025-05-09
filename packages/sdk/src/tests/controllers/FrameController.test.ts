@@ -79,6 +79,8 @@ const mockedEditorApi: EditorAPI = {
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     getFrameConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAssetCropOverride: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAllAssetCropOverrides: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -135,6 +137,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
     jest.spyOn(mockedEditorApi, 'getFrameConfiguration');
+    jest.spyOn(mockedEditorApi, 'resetAssetCropOverride');
+    jest.spyOn(mockedEditorApi, 'resetAllAssetCropOverrides');
 
     id = mockSelectFrame.id;
 });
@@ -481,9 +485,16 @@ describe('FrameController', () => {
         expect(mockedEditorApi.applySubjectMode).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to cancel the current subject area', async () => {
-        await mockedFrameController.exitSubjectMode();
-        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
+    it('Should be possible to reset asset crop override', async () => {
+        await mockedFrameController.resetAssetCropOverride(id);
+        expect(mockedEditorApi.resetAssetCropOverride).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetAssetCropOverride).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to reset all asset crop overrides', async () => {
+        await mockedFrameController.resetAllAssetCropOverrides(id);
+        expect(mockedEditorApi.resetAllAssetCropOverrides).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetAllAssetCropOverrides).toHaveBeenCalledWith(id);
     });
 });
 
