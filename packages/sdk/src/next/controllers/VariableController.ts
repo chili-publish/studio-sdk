@@ -107,4 +107,14 @@ export class ImageVariableController {
         const res = await this.#editorAPI;
         return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
     };
+
+    setUploadMinHeight = async (id: string, minHeight: number) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableUploadMinHeight(id, minHeight).then((result) => getEditorResponseData<null>(result));
+    };
+
+    setUploadMinWidth = async (id: string, minWidth: number) => {
+        const res = await this.#editorAPI;  
+        return res.setImageVariableUploadMinWidth(id, minWidth).then((result) => getEditorResponseData<null>(result));
+    };
 }
