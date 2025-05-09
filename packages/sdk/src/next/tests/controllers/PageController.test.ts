@@ -1,6 +1,6 @@
 import { EditorAPI } from '../../../types/CommonTypes';
-import { PageController } from '../../controllers/PageController';
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
+import { PageController } from '../../controllers/PageController';
 
 let mockedPageController: PageController;
 
