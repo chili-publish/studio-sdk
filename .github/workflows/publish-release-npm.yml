@@ -72,9 +72,11 @@ jobs:
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
       - name: copy file branch
+        env:
+          RELEASE_NAME: ${{ github.event.release.name }}
         run: |
           path=packages/sdk/upload/latest
-          versionpath=packages/sdk/upload/${{ github.event.release.name }}
+          versionpath=packages/sdk/upload/$RELEASE_NAME
           mkdir -p ${path%"/merge"}
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
           mkdir -p ${versionpath%"/merge"}
