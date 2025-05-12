@@ -562,18 +562,6 @@ describe('VariableController', () => {
         expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledWith('1', true);
     });
 
-    it('sets the minimum height for an image variable that will be uploaded', async () => {
-        await mockedVariableController.setMinImageUploadHeight('1', 100);
-        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith('1', null, 100);
-    });
-
-    it('sets the minimum width for an image variable that will be uploaded', async () => {
-        await mockedVariableController.setMinImageUploadWidth('1', 100);
-        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith('1', 100, null);
-    });
-
     it('sets the minimum size (both width and height) for an image variable that will be uploaded', async () => {
         await mockedVariableController.setMinImageUploadSize('1', 100, 100);
         expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);

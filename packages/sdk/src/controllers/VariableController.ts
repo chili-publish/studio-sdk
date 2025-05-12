@@ -680,28 +680,6 @@ export class VariableController {
         return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
     };
 
-    /**
-     * This method sets the minimum height for an image variable that will be uploaded
-     * @param id the id of the variable
-     * @param minHeight the minimum height
-     * @returns
-     */
-    setMinImageUploadHeight = async (id: string, minHeight: number) => {
-        const res = await this.#editorAPI;
-        return res.setImageVariableUploadMinSize(id, null, minHeight).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method sets the minimum width for an image variable that will be uploaded
-     * @param id the id of the variable
-     * @param minWidth the minimum width
-     * @returns
-     */
-    setMinImageUploadWidth = async (id: string, minWidth: number) => {
-        const res = await this.#editorAPI;
-        return res.setImageVariableUploadMinSize(id, minWidth, null).then((result) => getEditorResponseData<null>(result));
-    };
-
     /**     
      * This method sets the minimum size (both width and height) for an image variable that will be uploaded
      * @param id the id of the variable
@@ -709,7 +687,7 @@ export class VariableController {
      * @param minHeight the minimum height
      * @returns
      */
-    setMinImageUploadSize = async (id: string, minWidth: number, minHeight: number) => {
+    setMinImageUploadSize = async (id: string, minWidth: number | null, minHeight: number | null) => {
         const res = await this.#editorAPI;
         return res.setImageVariableUploadMinSize(id, minWidth, minHeight).then((result) => getEditorResponseData<null>(result));
     };
