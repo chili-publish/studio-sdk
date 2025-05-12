@@ -70,9 +70,9 @@ export {
     Day,
     Locale,
     VariableType,
+    VariableVisibilityOperator,
     VariableVisibilityTargetType,
     VariableVisibilityType,
-    VariableVisibilityOperator,
 } from './types/VariableTypes';
 
 export type {
@@ -107,7 +107,12 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
-export { ConnectorConfigValueType, DataRowAsyncError, ActionAsyncError } from './types/CommonTypes';
+export {
+    ActionAsyncError,
+    ConnectorConfigContextType,
+    ConnectorConfigValueType,
+    DataRowAsyncError,
+} from './types/CommonTypes';
 export type {
     ConfigType,
     ConnectorConfigOptions,
@@ -117,8 +122,8 @@ export type {
     InitialStateType,
     MetaData,
     PageType,
-    SelectedLayoutFrame,
     PrivateData,
+    SelectedLayoutFrame,
 } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
