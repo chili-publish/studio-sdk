@@ -43,7 +43,7 @@ describe('Next.VariableController', () => {
         getVariables: async () => getEditorResponseData(castToEditorResponse(variables)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
-
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -53,6 +53,7 @@ describe('Next.VariableController', () => {
         jest.spyOn(mockEditorApi, 'getVariables');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
     });
 
     it('get variable by id', async () => {
@@ -157,16 +158,14 @@ describe('Next.VariableController.ImageVariableController', () => {
     const mockEditorApi: EditorAPI = {
         setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
-        setImageVariableUploadMinHeight: async () => getEditorResponseData(castToEditorResponse(null)),
-        setImageVariableUploadMinWidth: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
         mockedImageVariableController = new ImageVariableController(mockEditorApi);
         jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
         jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
-        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinHeight');
-        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinWidth');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
     });
 
     it('set allow query', async () => {
@@ -186,18 +185,26 @@ describe('Next.VariableController.ImageVariableController', () => {
     });
 
     it('set upload min height', async () => {
-        const response = await mockedImageVariableController.setUploadMinHeight(variableId, 100);
+        const response = await mockedImageVariableController.setMinUploadHeight(variableId, 100);
 
-        expect(mockEditorApi.setImageVariableUploadMinHeight).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableUploadMinHeight).toHaveBeenCalledWith(variableId, 100);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith(variableId, null, 100);
         expect(response?.parsedData).toBe(null);
     }); 
 
     it('set upload min width', async () => {
-        const response = await mockedImageVariableController.setUploadMinWidth(variableId, 100);
+        const response = await mockedImageVariableController.setMinUploadWidth(variableId, 100);
 
-        expect(mockEditorApi.setImageVariableUploadMinWidth).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableUploadMinWidth).toHaveBeenCalledWith(variableId, 100);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith(variableId, 100, null);
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it("sets the minimum size (both width and height) for an image variable that will be uploaded", async () => {
+        const response = await mockedImageVariableController.setMinUploadSize(variableId, 100, 100);
+
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith(variableId, 100, 100);
         expect(response?.parsedData).toBe(null);
     });
 });
