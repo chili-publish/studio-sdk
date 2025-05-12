@@ -8,16 +8,12 @@ let mockedUtilsController: UtilsController;
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
-
-
-
 const mockedLocalConfig = new Map<string, string>();
 beforeEach(() => {
     jest.spyOn(MathUtils, 'round');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
     mockedUtilsController = new UtilsController(mockedLocalConfig);
-
 });
 
 afterEach(() => {
@@ -61,20 +57,24 @@ describe('UtilsController', () => {
                 filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
             }),
         });
-        await mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {});
+        await mockedUtilsController.stageFiles(
+            [new File(['test'], 'test.jpg', { type: 'image/jpeg' })],
+            connectorId,
+            {},
+        );
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith(
-            'ENVIRONMENT_API/connector/dam/stage',
+            'ENVIRONMENT_API/connectors/dam/stage',
             expect.objectContaining({
                 method: 'POST',
                 body: expect.any(FormData),
                 headers: {
-                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
-                }
-            })
+                    Authorization: 'Bearer GRAFX_AUTH_TOKEN',
+                },
+            }),
         );
     });
-    it ('should call the stageFiles method with a blob', async () => {
+    it('should call the stageFiles method with a blob', async () => {
         mockFetch.mockResolvedValue({
             ok: true,
             json: async () => ({
@@ -84,22 +84,26 @@ describe('UtilsController', () => {
         await mockedUtilsController.stageFiles([new Blob(['test'], { type: 'image/jpeg' })], connectorId, {});
         expect(fetch).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledWith(
-            'ENVIRONMENT_API/connector/dam/stage',
+            'ENVIRONMENT_API/connectors/dam/stage',
             expect.objectContaining({
                 method: 'POST',
                 body: expect.any(FormData),
                 headers: {
-                    'Authorization': 'Bearer GRAFX_AUTH_TOKEN'
-                }
-            })
+                    Authorization: 'Bearer GRAFX_AUTH_TOKEN',
+                },
+            }),
         );
-    }); 
-    it ('should throw when stageFiles is called without auth token  ', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
-        await expect(mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Auth Token is not set');
     });
-    it ('should throw when stageFiles is called without environment api url', async () => {
+    it('should throw when stageFiles is called without auth token  ', async () => {
+        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        await expect(
+            mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
+        ).rejects.toThrow('GraFx Studio Auth Token is not set');
+    });
+    it('should throw when stageFiles is called without environment api url', async () => {
         mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
-        await expect(mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {})).rejects.toThrow('GraFx Studio Environment API URL is not set');
+        await expect(
+            mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
+        ).rejects.toThrow('GraFx Studio Environment API URL is not set');
     });
 });
