@@ -53,7 +53,7 @@ export class UtilsController {
             throw new Error('GraFx Studio Environment API URL is not set');
         }
 
-        const stageUrl = `${envApiUrl}connector/${remoteConnectorId}/stage`;
+        const stageUrl = `${envApiUrl}connectors/${remoteConnectorId}/stage`;
 
         const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
         if (!accessToken) {
