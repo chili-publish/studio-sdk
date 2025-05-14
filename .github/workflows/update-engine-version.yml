@@ -84,12 +84,10 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            cd apps/app
-            ls -la
             az storage blob upload-batch \
             --account-name ${{ (inputs.environment == 'PROD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }} \
-            --file temp/supported-versions.json 
-            --container-name shared 
-            --name version-management/supported-versions.json
+            --source temp/ \
+            --destination shared/version-management \
             --overwrite true \
             --auth-mode login
+            
