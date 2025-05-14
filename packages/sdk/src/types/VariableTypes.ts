@@ -55,8 +55,8 @@ export interface ImageVariable extends Variable {
     value?: ConnectorImageVariableSource;
     allowQuery: boolean;
     allowUpload: boolean;
-    uploadMinHeight?: number;
-    uploadMinWidth?: number;
+    uploadMinHeight?: number | null;
+    uploadMinWidth?: number | null;
 }
 
 export interface ListVariableItem {
