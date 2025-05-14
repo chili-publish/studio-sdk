@@ -127,7 +127,7 @@ export class ImageVariableController {
      * @param minHeight the minimum height
      * @returns
      */
-    setMinUploadSize = async (id: string, minWidth: number | null, minHeight: number | null) => {
+    setMinUploadSize = async (id: string, minWidth: string | null, minHeight: string | null) => {
         const res = await this.#editorAPI;
         return res.setImageVariableUploadMinSize(id, minWidth, minHeight).then((result) => getEditorResponseData<null>(result));
     };
