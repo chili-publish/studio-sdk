@@ -1,6 +1,11 @@
-export interface Dictionary {
-    [Key: string]: string | boolean;
-}
+import { Dictionary } from '@chili-studio/connector-types';
+
+export type {
+    ConnectorConfigValue,
+    ConnectorConfigValueType,
+    Dictionary,
+    QueryOptions,
+} from '@chili-studio/connector-types';
 
 export type ChiliPlatform = 'web' | 'server';
 
@@ -11,15 +16,6 @@ export interface ConnectorRuntimeContext {
     platform: ChiliPlatform;
     sdkVersion: string;
 }
-
-export type QueryOptions = {
-    sortOrder: string | null;
-    collection: string | null;
-    filter: string[] | null;
-    pageToken: string | null;
-    pageSize: number;
-    sortBy: string | null;
-};
 
 export interface ChiliRequestInit {
     /**
@@ -66,14 +62,6 @@ export interface ChiliResponse extends ChiliBody {
     readonly statusText: string;
     readonly type: 'basic' | 'cors' | 'default' | 'error' | 'opaque' | 'opaqueredirect';
     readonly url: string;
-}
-
-export type ConnectorConfigValueType = 'text' | 'boolean';
-
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
 }
 
 /**

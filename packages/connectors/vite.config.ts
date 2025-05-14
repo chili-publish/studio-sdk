@@ -3,10 +3,21 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
+    build: {
+        lib: {
+            entry: resolve(__dirname, 'src/index.ts'),
+            formats: ['es'],
+            fileName: 'index',
+        },
+        emptyOutDir: true,
+        minify: true,
+        sourcemap: false,
+        outDir: 'dist',
+    },
     plugins: [
         dts({
-            include: ['src/**/*', '../connector-types/src/**/*'],
-            outDir: 'lib',
+            include: ['src/**/*.ts', '../connector-types/src/**/*.ts'],
+            outDir: 'dist',
             rollupTypes: true,
             exclude: [
                 '**/*.test.ts',
@@ -18,23 +29,6 @@ export default defineConfig({
             ],
         }),
     ],
-    build: {
-        lib: {
-            entry: resolve(__dirname, 'src/index.ts'),
-            name: 'StudioSDK',
-            fileName: (format) => (format === 'es' ? 'main.es.js' : 'main.js'),
-            formats: ['es', 'umd'],
-        },
-        rollupOptions: {
-            output: {
-                exports: 'named',
-                extend: true,
-            },
-        },
-        sourcemap: true,
-        minify: true,
-        outDir: '_bundles',
-    },
     resolve: {
         alias: {
             '@chili-studio/connector-types': resolve(__dirname, '../connector-types/src'),

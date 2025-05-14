@@ -14,9 +14,12 @@
         "resolveJsonModule": true,
         "allowJs": true /* Allow javascript files to be compiled. Useful when migrating JS to TS */,
         "checkJs": true /* Report errors in .js files. Works in tandem with allowJs. */,
-        "sourceMap": true
+        "sourceMap": true,
+        "paths": {
+            "@chili-studio/connector-types": ["../connector-types/src"]
+        }
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "../connector-types/src/**/*"],
     "exclude": ["node_modules", "build"], // *** The files to not type check ***
     "typedocOptions": {
         "entryPoints": [

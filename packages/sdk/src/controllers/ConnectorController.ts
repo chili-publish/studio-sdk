@@ -1,8 +1,9 @@
-import { ConnectorOptions, EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorInstance,
     ConnectorMappingDirection,
     ConnectorMappingType,
+    ConnectorOptions,
     ConnectorRegistration,
     ConnectorState,
     ConnectorStateType,
@@ -13,8 +14,8 @@ import {
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 import * as Next from '../next/types/ConnectorTypes';
-import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 
 /**
  * The ConnectorController manages lifetime of all available connectors, regardless of the type, in the
