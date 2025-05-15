@@ -5,9 +5,10 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
     plugins: [
         dts({
-            include: ['src/**/*', '../connector-types/src/**/*'],
-            outDir: 'lib',
-            rollupTypes: true,
+            include: ['src/next/**/*'],
+            outDir: 'lib/next',
+            entryRoot: 'src/next',
+            rollupTypes: false,
             exclude: [
                 '**/*.test.ts',
                 '**/*.test.tsx',
@@ -20,8 +21,8 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/index.ts'),
-            name: 'StudioSDK',
+            entry: resolve(__dirname, 'src/next/index.ts'),
+            name: 'StudioSDKNext',
             fileName: (format) => (format === 'es' ? 'main.es.js' : 'main.js'),
             formats: ['es', 'umd'],
         },
@@ -33,7 +34,8 @@ export default defineConfig({
         },
         sourcemap: true,
         minify: true,
-        outDir: '_bundles',
+        outDir: '_bundles/next',
+        emptyOutDir: false,
     },
     resolve: {
         alias: {
