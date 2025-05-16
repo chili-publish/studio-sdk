@@ -25,6 +25,7 @@ export {
     TextDirection,
     UpdateZIndexMethod,
     VerticalAlign,
+    CropType,
 } from './types/FrameTypes';
 export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';

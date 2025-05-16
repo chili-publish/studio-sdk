@@ -1,14 +1,17 @@
+import { BarcodeType } from '../types/BarcodeTypes';
+import { ColorUsage } from '../types/ColorStyleTypes';
 import type { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     AnchorTarget,
     AutoGrowDeltaUpdate,
     AutoGrowDirection,
     BlendMode,
+    CropType,
     FitMode,
     FitModePosition,
     FrameAnchorProperties,
     FrameAnchorType,
+    FrameConfiguration,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
@@ -18,12 +21,10 @@ import {
     ImageSourceTypeEnum,
     UpdateZIndexMethod,
     VerticalAlign,
-    FrameConfiguration,
 } from '../types/FrameTypes';
-import { ColorUsage } from '../types/ColorStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
-import { BarcodeType } from '../types/BarcodeTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -679,11 +680,12 @@ export class FrameController {
     /**
      * This method will make the specified image frame go into cropping mode.
      * @param id the id of a specific image frame
+     * @param type the type of cropping mode to enter. Defaults to frameCrop.
      * @returns
      */
-    enterCropMode = async (id: Id) => {
+    enterCropMode = async (id: Id, type: CropType = CropType.frameCrop) => {
         const res = await this.#editorAPI;
-        return res.enterCropMode(id).then((result) => getEditorResponseData<null>(result));
+        return res.enterCropMode(id, type).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -1044,5 +1046,25 @@ export class FrameController {
     getConfiguration = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.getFrameConfiguration(id).then((result) => getEditorResponseData<FrameConfiguration>(result));
+    };
+
+    /**
+     * This method will set the crop override for the current asset for the specified frame
+     * @param id the id of the frame that holds the override to reset
+     * @returns
+     */
+    resetAssetCropOverride = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAssetCropOverride(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset all crop overrides for the specified frame
+     * @param id the id of the frame
+     * @returns
+     */
+    resetAllAssetCropOverrides = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAllAssetCropOverrides(id).then((result) => getEditorResponseData<null>(result));
     };
 }

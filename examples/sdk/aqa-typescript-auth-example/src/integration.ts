@@ -11,6 +11,7 @@ const executeSDK = async (accessToken: string) => {
   //@ts-ignore
   const SDK = new StudioSDK.default({
     editorId: "chili-editor-example",
+    editorLink: "https://stgrafxstudiodevpublic.blob.core.windows.net/editor/main-latest/web"
   });
 
   window.SDK = SDK;
