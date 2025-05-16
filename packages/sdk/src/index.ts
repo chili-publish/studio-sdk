@@ -71,9 +71,9 @@ export {
     Day,
     Locale,
     VariableType,
+    VariableVisibilityOperator,
     VariableVisibilityTargetType,
     VariableVisibilityType,
-    VariableVisibilityOperator,
 } from './types/VariableTypes';
 
 export type {
@@ -108,18 +108,15 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
-export { ConnectorConfigValueType, DataRowAsyncError, ActionAsyncError } from './types/CommonTypes';
+export { ActionAsyncError, DataRowAsyncError } from './types/CommonTypes';
 export type {
     ConfigType,
-    ConnectorConfigOptions,
-    ConnectorConfigValue,
     EditorResponse,
     Id,
     InitialStateType,
-    MetaData,
     PageType,
-    SelectedLayoutFrame,
     PrivateData,
+    SelectedLayoutFrame,
 } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
@@ -183,3 +180,5 @@ export * from './types/PageTypes';
 export * from './types/EngineEditModeTypes';
 
 export default SDK;
+
+export * as Next from './next';

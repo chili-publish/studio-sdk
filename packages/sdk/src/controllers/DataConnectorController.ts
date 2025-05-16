@@ -1,7 +1,14 @@
-import { ConnectorConfigOptions, EditorAPI, EditorResponse, MetaData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DataConnectorCapabilities, DataItem, DataModel, DataPage, PageConfig } from '../types/DataConnectorTypes';
+import { EditorAPI, EditorResponse } from '../types/CommonTypes';
+import { ConnectorConfigOptions, MetaData } from '../types/ConnectorTypes';
+import {
+    DataConnectorCapabilities,
+    DataModel,
+    DataPage,
+    EditorDataPage,
+    PageConfig,
+} from '../types/DataConnectorTypes';
 import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The DataConnectorController is responsible for all communication regarding Data connectors.
@@ -43,13 +50,13 @@ export class DataConnectorController {
         connectorId: string,
         config: PageConfig,
         context: MetaData = {},
-    ): Promise<EditorResponse<DataPage<DataItem>>> => {
+    ): Promise<EditorResponse<DataPage>> => {
         const res = await this.#editorAPI;
         return res
             .dataConnectorGetPage(connectorId, JSON.stringify(config), JSON.stringify(context))
-            .then((result) => getEditorResponseData<DataPage<EngineDataItem>>(result))
+            .then((result) => getEditorResponseData<EditorDataPage<EngineDataItem>>(result))
             .then((resp) => {
-                const update: EditorResponse<DataPage<DataItem>> = { ...resp, parsedData: null };
+                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
                     update.parsedData = {
                         data: resp.parsedData.data.map((e: EngineDataItem) =>

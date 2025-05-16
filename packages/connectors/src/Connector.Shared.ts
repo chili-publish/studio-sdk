@@ -1,8 +1,15 @@
-export interface Dictionary {
-    [Key: string]: string | boolean;
-}
+import { Dictionary, ConnectorConfigOptions as GenericConnectorConfigOptions, ConnectorConfigValue as GenericConnectorConfigValue } from '@chili-studio/connector-types';
+
+export type {
+    Dictionary,
+    QueryOptions
+} from '@chili-studio/connector-types';
 
 export type ChiliPlatform = 'web' | 'server';
+export type ConnectorConfigValueType = 'text' | 'boolean';
+
+export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType>
+export type ConnectorConfigOptions = GenericConnectorConfigOptions<ConnectorConfigValueType>;
 
 export interface ConnectorRuntimeContext {
     options: Dictionary;
@@ -11,15 +18,6 @@ export interface ConnectorRuntimeContext {
     platform: ChiliPlatform;
     sdkVersion: string;
 }
-
-export type QueryOptions = {
-    sortOrder: string | null;
-    collection: string | null;
-    filter: string[] | null;
-    pageToken: string | null;
-    pageSize: number;
-    sortBy: string | null;
-};
 
 export interface ChiliRequestInit {
     /**
@@ -66,51 +64,4 @@ export interface ChiliResponse extends ChiliBody {
     readonly statusText: string;
     readonly type: 'basic' | 'cors' | 'default' | 'error' | 'opaque' | 'opaqueredirect';
     readonly url: string;
-}
-
-export type ConnectorConfigValueType = 'text' | 'boolean';
-
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
-}
-
-/**
- * A custom HTTP error for connectors.
- *
- * This should be thrown when any of the connector methods
- * failed due to a non OK HTTP status code.
- *
- * The framework will be able to handle this error in a better way
- * versus throwing a generic `Error`.
- */
-export interface ConnectorHttpError extends Error {
-    /**
-     * The HTTP status code associated with the error.
-     */
-    readonly status: number;
-}
-
-/**
- * Interface for the constructor of ConnectorHttpError.
- */
-export interface ConnectorHttpErrorConstructor {
-    /**
-     * Creates a new ConnectorHttpError instance.
-     *
-     * @param status - The HTTP status code associated with the error.
-     * @param message - Optional error message.
-     * @returns A new instance of ConnectorHttpError.
-     */
-    new (status: number, message?: string): ConnectorHttpError;
-
-    /**
-     * The prototype of ConnectorHttpError.
-     */
-    readonly prototype: ConnectorHttpError;
-}
-
-declare global {
-    var ConnectorHttpError: ConnectorHttpErrorConstructor;
 }
