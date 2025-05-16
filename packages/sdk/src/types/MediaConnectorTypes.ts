@@ -6,6 +6,7 @@ export type MediaConnectorCapabilities = {
     detail: boolean;
     filtering: boolean;
     metadata?: boolean;
+    upload?: boolean;
 };
 
 export enum MediaDownloadType {

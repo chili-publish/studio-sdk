@@ -1,4 +1,4 @@
-import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, QueryOptions } from './Connector.Shared';
+import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, QueryOptions, FilePointer } from './Connector.Shared';
 
 export interface MediaConnector {
     detail(id: string, context: Dictionary): Promise<MediaDetail>;
@@ -11,6 +11,10 @@ export interface MediaConnector {
     ): Promise<ArrayBufferPointer>;
     getConfigurationOptions(): ConnectorConfigValue[] | null;
     getCapabilities(): MediaConnectorCapabilities;
+}
+
+export interface MediaConnectorUpload {
+    upload(filePointers: FilePointer[], context: Dictionary): Promise<Media[]>;
 }
 
 export type DownloadIntent = 'web' | 'print' | 'animation';
@@ -43,4 +47,5 @@ export type MediaConnectorCapabilities = {
     detail: boolean;
     filtering: boolean;
     metadata?: boolean;
+    upload?: boolean;
 };

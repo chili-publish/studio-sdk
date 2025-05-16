@@ -9,6 +9,7 @@ import { DocumentColor } from './ColorStyleTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
 import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
+import { EngineEditMode } from './EngineEditModeTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
@@ -18,7 +19,6 @@ import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
-import { EngineEditMode } from './EngineEditModeTypes';
 
 export type Id = string;
 export type BaseConfigType = {
@@ -408,10 +408,16 @@ export enum ConnectorConfigValueType {
     boolean = 'boolean',
 }
 
+export enum ConnectorConfigContextType {
+    query = 'query',
+    upload = 'upload',
+}
+
 export interface ConnectorConfigValue {
     readonly name: string;
     readonly displayName: string;
     readonly type: ConnectorConfigValueType;
+    readonly context?: ConnectorConfigContextType[];
 }
 
 export type ConnectorConfigOptions = ConnectorConfigValue[];
@@ -475,3 +481,9 @@ export interface EditorExceptionDto {
 export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;
+
+export interface FilePointer {
+    id: string;
+    url: string;
+    name: string;
+}
