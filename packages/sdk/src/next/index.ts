@@ -8,5 +8,4 @@ export type {
 export type { NextSubscribers } from './types/NextSubscribers';
 export type { ListVariable } from './types/VariableTypes';
 
-export { NextInitiator } from './NextInitiator';
 export type { PageSize } from './types/PageTypes';
