@@ -98,13 +98,37 @@ export class ImageVariableController {
         this.#editorAPI = editorAPI;
     }
 
+    /**
+     * This method sets the allow query for an image variable
+     * @param id the id of the variable
+     * @param allowQuery the allow query
+     * @returns
+     */
     setAllowQuery = async (id: string, allowQuery: boolean) => {
         const res = await this.#editorAPI;
         return res.setImageVariableAllowQuery(id, allowQuery).then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method sets the allow upload for an image variable
+     * @param id the id of the variable
+     * @param allowUpload the allow upload
+     * @returns
+     */
     setAllowUpload = async (id: string, allowUpload: boolean) => {
         const res = await this.#editorAPI;
         return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**     
+     * This method sets the minimum size (both width and height) for an image variable that will be uploaded
+     * @param id the id of the variable
+     * @param minWidth the minimum width
+     * @param minHeight the minimum height
+     * @returns
+     */
+    setMinUploadSize = async (id: string, minWidth: string | null, minHeight: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableUploadMinSize(id, minWidth, minHeight).then((result) => getEditorResponseData<null>(result));
     };
 }
