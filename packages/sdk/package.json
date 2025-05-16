@@ -45,8 +45,8 @@
     },
     "scripts": {
         "clean": "shx rm -rf _bundles lib",
-        "build": "yarn clean && vite build --config vite.config.main.ts && vite build --config vite.config.next.ts",
-        "build:dev": "yarn clean && vite build --mode development",
+        "build": "yarn clean && vite build && tsc && node scripts/postbuild.js",
+        "build:dev": "yarn clean && vite build --mode development && tsc && node scripts/postbuild.js",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
         "test": "jest",
@@ -64,30 +64,10 @@
             "pre-commit": "npm run format-staged"
         }
     },
-    "exports": {
-        ".": {
-            "types": "./lib/index.d.ts",
-            "import": "./_bundles/main.es.js",
-            "require": "./_bundles/main.js",
-            "browser": "./_bundles/main.js"
-        },
-        "./next": {
-            "types": "./lib/next/index.d.ts",
-            "import": "./_bundles/next/main.es.js",
-            "require": "./_bundles/next/main.js",
-            "browser": "./_bundles/next/main.js"
-        }
-    },
-    "typesVersions": {
-        "*": {
-            "*": [
-                "./lib/index.d.ts"
-            ],
-            "next": [
-                "./lib/next/index.d.ts"
-            ]
-        }
-    },
+    "main": "./_bundles/main.js",
+    "module": "./_bundles/main.es.js",
+    "browser": "./_bundles/main.js",
+    "types": "./lib/src/index.d.ts",
     "files": [
         "lib/",
         "_bundles/",

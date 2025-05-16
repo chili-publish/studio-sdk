@@ -6,12 +6,11 @@ export interface Media {
     id: string;
     name: string;
     relativePath: string;
-    type: number;
     metaData: Dictionary;
     extension?: string;
 }
 
-export interface MediaDetail extends Media {
+export interface BaseMediaDetail {
     width?: number;
     height?: number;
 }

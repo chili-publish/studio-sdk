@@ -15,7 +15,6 @@ lib-esm/
 _bundles/
 coverage/
 docs/
-packages/sdk/next
-packages/sdk/types
+packages/sdk/connector-types/
 
 examples/**/package-lock.json
