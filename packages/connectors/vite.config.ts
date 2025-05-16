@@ -1,6 +1,7 @@
+import { generateDtsBundle } from 'dts-bundle-generator';
+import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
 
 export default defineConfig({
     build: {
@@ -15,19 +16,27 @@ export default defineConfig({
         outDir: 'dist',
     },
     plugins: [
-        dts({
-            include: ['src/**/*.ts', '../connector-types/src/**/*.ts'],
-            outDir: 'dist',
-            rollupTypes: true,
-            exclude: [
-                '**/*.test.ts',
-                '**/*.test.tsx',
-                '**/*.spec.ts',
-                '**/*.spec.tsx',
-                '**/__tests__/**',
-                '**/__mocks__/**',
-            ],
-        }),
+        {
+            name: 'dts-bundle-generator',
+            closeBundle() {
+                const result = generateDtsBundle([
+                    {
+                        filePath: resolve(__dirname, 'src/index.ts'),
+                        output: {
+                            inlineDeclareGlobals: true,
+                            sortNodes: true,
+                            exportReferencedTypes: true,
+                            noBanner: true,
+                            respectPreserveConstEnum: true
+                        }
+                    }
+                ]);
+
+                if (result.length > 0) {
+                    writeFileSync(resolve(__dirname, 'dist/index.d.ts'), result[0]);
+                }
+            }
+        }
     ],
     resolve: {
         alias: {
