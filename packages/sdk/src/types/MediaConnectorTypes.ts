@@ -1,4 +1,4 @@
-import { BaseMediaDetail, Media as CoreMedia } from '@chili-studio/connector-types';
+import { Media as GenericMedia, MediaDetail as GenericMediaDetail } from '@chili-studio/connector-types';
 import { MediaType } from './ConnectorTypes';
 export type { MediaConnectorCapabilities } from '@chili-studio/connector-types';
 
@@ -15,5 +15,5 @@ export enum MediaDownloadIntent {
     animation = 'animation',
 }
 
-export type Media = CoreMedia & { type: MediaType };
-export type MediaDetail = BaseMediaDetail & Media;
+export type Media = GenericMedia<MediaType>;
+export type MediaDetail = GenericMediaDetail<MediaType>;

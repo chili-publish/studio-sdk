@@ -19,12 +19,10 @@ export type QueryPage<T> = {
     data: T[];
 };
 
-export type ConnectorConfigValueType = 'text' | 'boolean';
-
-export interface ConnectorConfigValue {
+export interface ConnectorConfigValue<Type> {
     readonly name: string;
     readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
+    readonly type: Type;
 }
 
-export type ConnectorConfigOptions = ConnectorConfigValue[];
+export type ConnectorConfigOptions<Type> = ConnectorConfigValue<Type>[];

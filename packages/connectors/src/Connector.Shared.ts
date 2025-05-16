@@ -1,13 +1,15 @@
-import { Dictionary } from '@chili-studio/connector-types';
+import { Dictionary, ConnectorConfigOptions as GenericConnectorConfigOptions, ConnectorConfigValue as GenericConnectorConfigValue } from '@chili-studio/connector-types';
 
 export type {
-    ConnectorConfigValue,
-    ConnectorConfigValueType,
     Dictionary,
-    QueryOptions,
+    QueryOptions
 } from '@chili-studio/connector-types';
 
 export type ChiliPlatform = 'web' | 'server';
+export type ConnectorConfigValueType = 'text' | 'boolean';
+
+export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType>
+export type ConnectorConfigOptions = GenericConnectorConfigOptions<ConnectorConfigValueType>;
 
 export interface ConnectorRuntimeContext {
     options: Dictionary;

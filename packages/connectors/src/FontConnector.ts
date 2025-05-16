@@ -1,12 +1,11 @@
 import {
-    ConnectorConfigOptions,
     Dictionary,
     FontConnectorCapabilities,
     FontFamilyPage,
     FontStyle,
     QueryOptions,
 } from '@chili-studio/connector-types';
-import { ArrayBufferPointer } from './Connector.Shared';
+import { ArrayBufferPointer, ConnectorConfigOptions } from './Connector.Shared';
 
 export type { FontConnectorCapabilities, FontFamily, FontFamilyPage, FontStyle } from '@chili-studio/connector-types';
 

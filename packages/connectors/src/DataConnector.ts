@@ -1,12 +1,11 @@
 import {
-    ConnectorConfigOptions,
     DataConnectorCapabilities,
     DataModel,
     DataPage,
     Dictionary,
     PageConfig,
 } from '@chili-studio/connector-types';
-import { ConnectorRuntimeContext } from './Connector.Shared';
+import { ConnectorConfigOptions, ConnectorRuntimeContext } from './Connector.Shared';
 
 export type {
     DataConnectorCapabilities,
@@ -14,7 +13,7 @@ export type {
     DataModel,
     DataModelProperty,
     DataPage,
-    PageConfig,
+    PageConfig
 } from '@chili-studio/connector-types';
 
 export interface DataConnector {

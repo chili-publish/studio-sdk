@@ -1,19 +1,18 @@
-import { Dictionary, QueryPage } from './Connector.Shared';
+import { Dictionary } from './Connector.Shared';
 
-export type MediaPage = QueryPage<Media>;
-
-export interface Media {
+export interface Media<MediaType> {
     id: string;
     name: string;
     relativePath: string;
     metaData: Dictionary;
     extension?: string;
+    type: MediaType;
 }
 
-export interface BaseMediaDetail {
+export type MediaDetail<MediaType> = Media<MediaType> & {
     width?: number;
     height?: number;
-}
+};
 
 export type MediaConnectorCapabilities = {
     query: boolean;

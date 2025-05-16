@@ -1,7 +1,12 @@
-import type { Dictionary as ContextDictionary, QueryPage as QueryResult } from '@chili-studio/connector-types';
+import type {
+    Dictionary as ContextDictionary,
+    ConnectorConfigOptions as GenericConnectorConfigOptions,
+    ConnectorConfigValue as GenericConnectorConfigValue,
+    QueryPage as QueryResult,
+} from '@chili-studio/connector-types';
 import { Id } from './CommonTypes';
 
-export type { ConnectorConfigOptions, ConnectorConfigValue, QueryOptions } from '@chili-studio/connector-types';
+export type { QueryOptions } from '@chili-studio/connector-types';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -39,6 +44,9 @@ export enum ConnectorConfigValueType {
     text = 'text',
     boolean = 'boolean',
 }
+
+export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType>;
+export type ConnectorConfigOptions = GenericConnectorConfigOptions<ConnectorConfigValueType>;
 
 interface ConnectorRegistrationBase {
     /**

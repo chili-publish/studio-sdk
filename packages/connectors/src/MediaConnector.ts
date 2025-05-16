@@ -1,15 +1,14 @@
 import {
-    BaseMediaDetail,
-    ConnectorConfigOptions,
-    Media as CoreMedia,
     Dictionary,
+    Media as GenericMedia,
+    MediaDetail as GenericMediaDetail,
     MediaConnectorCapabilities,
-    MediaPage,
     QueryOptions,
+    QueryPage,
 } from '@chili-studio/connector-types';
-import { ArrayBufferPointer } from './Connector.Shared';
+import { ArrayBufferPointer, ConnectorConfigOptions } from './Connector.Shared';
 
-export type { MediaConnectorCapabilities, MediaPage } from '@chili-studio/connector-types';
+export type { MediaConnectorCapabilities } from '@chili-studio/connector-types';
 
 export interface MediaConnector {
     detail(id: string, context: Dictionary): Promise<MediaDetail>;
@@ -26,6 +25,8 @@ export interface MediaConnector {
 
 export type DownloadIntent = 'web' | 'print' | 'animation';
 export type DownloadType = 'thumbnail' | 'mediumres' | 'highres' | 'fullres' | 'original';
+export type MediaType = 0 | 1;
 
-export type Media = CoreMedia & { type: number};
-export type MediaDetail = BaseMediaDetail & Media;
+type MediaPage = QueryPage<Media>;
+export type Media = GenericMedia<MediaType>;
+export type MediaDetail = GenericMediaDetail<MediaType>;
