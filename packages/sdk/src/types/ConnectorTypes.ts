@@ -303,11 +303,10 @@ export type AuthRefreshRequest = {
     headerValue: string | null;
 };
 
-
 export type UploadValidationConfiguration = {
-    minWidthPixels?: number,
-    maxWidthPixels?: number,
-    minHeightPixels?: number,
-    maxHeightPixels?: number,
-    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[],
-}
+    minWidthPixels?: number | null;
+    maxWidthPixels?: number | null;
+    minHeightPixels?: number | null;
+    maxHeightPixels?: number | null;
+    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[];
+};
