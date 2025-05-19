@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       sdk_version:
-        description: 'SDK version to update (e.g. 1.17 or "latest")'
+        description: 'SDK version to update or add (e.g. 1.17 or latest)'
         required: true
         type: string
       engine_version:
@@ -19,6 +19,11 @@ on:
         options:
           - 'UAT'
           - 'PROD'
+      update_latest:
+        description: 'Also update the "latest" entry with this SDK/engine version?'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   update-engine-version-management:
@@ -37,9 +42,10 @@ jobs:
           node -e "
             const fs = require('fs');
             const versions = require('./temp/supported-versions.json');
-            const sdkVersion = '${{ inputs.sdk_version }}';
-            const engineVersion = '${{ inputs.engine_version }}';
-            
+            const sdkVersion = process.env['SDK_VERSION'] || '${{ inputs.sdk_version }}';
+            const engineVersion = process.env['ENGINE_VERSION'] || '${{ inputs.engine_version }}';
+            const updateLatest = (process.env['UPDATE_LATEST'] === 'true' || process.env['UPDATE_LATEST'] === true || '${{ inputs.update_latest }}' === 'true' || '${{ inputs.update_latest }}' === true);
+
             if (sdkVersion === 'latest') {
               // Get the major.minor version from the latest sdkVersion
               const latestSdkVersion = versions.latest.sdkVersion;
@@ -51,18 +57,25 @@ jobs:
               
               console.log('Updated engine version for latest and ' + majorMinor + ' to ' + engineVersion);
             } else {
-              // Validate that the SDK version exists
+              // Add or update the SDK version entry
               if (!versions[sdkVersion]) {
-                console.error('SDK version ' + sdkVersion + ' not found in versions file');
-                process.exit(1);
+                // Add new SDK version
+                versions[sdkVersion] = {
+                  sdkVersion: sdkVersion,
+                  engineVersion: engineVersion
+                };
+                console.log('Added new SDK version ' + sdkVersion + ' with engine version ' + engineVersion);
+              } else {
+                // Update engine version for the specified SDK version
+                versions[sdkVersion].engineVersion = engineVersion;
+                console.log('Updated engine version for SDK version ' + sdkVersion + ' to ' + engineVersion);
               }
               
-              // Update engine version for the specified SDK version
-              versions[sdkVersion].engineVersion = engineVersion;
-              
-              // If this is the latest SDK version, also update the latest entry
-              if (versions.latest.sdkVersion.startsWith(sdkVersion)) {
+              // Optionally update the latest entry
+              if (updateLatest) {
+                versions.latest.sdkVersion = sdkVersion;
                 versions.latest.engineVersion = engineVersion;
+                console.log('Updated latest entry to SDK version ' + sdkVersion + ' and engine version ' + engineVersion);
               }
             }
             
