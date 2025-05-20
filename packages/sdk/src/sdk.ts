@@ -45,7 +45,8 @@ import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator
 
 let connection: Connection;
 
-const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
+const ENGINE_DOMAIN = process.env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com';
+const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}/web`;
 
 export class SDK {
     config: RuntimeConfigType;
