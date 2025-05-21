@@ -47,7 +47,7 @@ module.exports = (env) => ({
             openAnalyzer: false,
         }),
         new webpack.DefinePlugin({
-            __ENGINE_DOMAIN__: JSON.stringify(process.env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com')
+            __ENGINE_DOMAIN__: JSON.stringify(env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com')
         }),
     ],
     optimization: {
