@@ -43,10 +43,11 @@ import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 
-let connection: Connection;
-
-const ENGINE_DOMAIN = process.env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com';
+declare const __ENGINE_DOMAIN__: string;
+const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
 const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}/web`;
+
+let connection: Connection;
 
 export class SDK {
     config: RuntimeConfigType;

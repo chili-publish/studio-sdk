@@ -29,7 +29,7 @@ jobs:
       - name: install dependencies
         run: yarn install
       - name: build code
-        run: yarn build
+        run: yarn build:uat
         env:
           ENGINE_DOMAIN: studio-cdn.chiligrafx-uat.com
       - name: publish sdk build

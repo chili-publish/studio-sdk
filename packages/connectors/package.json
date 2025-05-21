@@ -12,6 +12,7 @@
     },
     "scripts": {
         "build": "tsc",
+        "build:uat": "tsc",
         "prepare-upload": "yarn build && yarn pack && mkdir ./upload/connectors/ -p && cp *.tgz ./upload/connectors/"
     }
 }
