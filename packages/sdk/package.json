@@ -52,7 +52,9 @@
     "scripts": {
         "clean": "shx rm -rf _bundles lib lib-esm next",
         "build": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=production",
+        "build:uat": "yarn clean && yarn build:modules:uat && webpack --config webpack.config.js --env env=production --env EDITOR_DOMAIN=studio-cdn.chiligrafx-uat.com",
         "build:modules": "tsc && tsc -m es6 --outDir lib-esm ",
+        "build:modules:uat": "tsc && tsc -m es6 --outDir lib-esm --env EDITOR_DOMAIN=studio-cdn.chiligrafx-uat.com",
         "build:dev": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=development",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
