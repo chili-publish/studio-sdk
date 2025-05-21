@@ -16,6 +16,7 @@
     },
     "scripts": {
         "build": "vite build",
+        "build:uat": "vite build",
         "prepare-upload": "yarn build && yarn pack && mkdir ./upload/connectors/ -p && cp *.tgz ./upload/connectors/"
     }
 }

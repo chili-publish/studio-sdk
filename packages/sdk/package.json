@@ -46,6 +46,7 @@
     "scripts": {
         "clean": "shx rm -rf _bundles lib",
         "build": "yarn clean && vite build && tsc && node scripts/postbuild.js",
+        "build:uat": "yarn clean && vite build --mode uat && tsc && node scripts/postbuild.js",
         "build:dev": "yarn clean && vite build --mode development && tsc && node scripts/postbuild.js",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
