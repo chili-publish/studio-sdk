@@ -1,6 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const webpack = require('webpack');
 
 module.exports = (env) => ({
     entry: path.resolve(__dirname, 'src', 'index.ts'),
@@ -44,6 +45,9 @@ module.exports = (env) => ({
         new BundleAnalyzerPlugin({
             analyzerMode: 'static',
             openAnalyzer: false,
+        }),
+        new webpack.DefinePlugin({
+            __ENGINE_DOMAIN__: JSON.stringify(env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com')
         }),
     ],
     optimization: {
