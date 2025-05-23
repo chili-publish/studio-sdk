@@ -108,7 +108,16 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
+<<<<<<< HEAD
 export { ActionAsyncError, DataRowAsyncError } from './types/CommonTypes';
+=======
+export {
+    ActionAsyncError,
+    ConnectorConfigContextType,
+    ConnectorConfigValueType,
+    DataRowAsyncError,
+} from './types/CommonTypes';
+>>>>>>> abcb41a ([Feature] Media connector upload (#605))
 export type {
     ConfigType,
     EditorResponse,

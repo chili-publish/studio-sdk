@@ -308,5 +308,25 @@ export type AuthRefreshRequest = {
     headerValue: string | null;
 };
 
+<<<<<<< HEAD
 export type ConnectorOptions = ContextDictionary;
 export type MetaData = ContextDictionary;
+=======
+export type UploadValidationConfiguration = {
+    minWidthPixels?: number | null;
+    maxWidthPixels?: number | null;
+    minHeightPixels?: number | null;
+    maxHeightPixels?: number | null;
+    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[];
+};
+
+export enum UploadAssetValidationErrorType {
+    minDimension = 'minDimension',
+}
+
+export class UploadAssetValidationError extends Error {
+    constructor(message: string, public type: UploadAssetValidationErrorType) {
+        super(message);
+    }
+}
+>>>>>>> abcb41a ([Feature] Media connector upload (#605))
