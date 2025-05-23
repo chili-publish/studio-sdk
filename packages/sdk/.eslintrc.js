@@ -38,6 +38,7 @@ module.exports = {
         'linebreak-style': 0,
         'object-curly-newline': 0,
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+        'import/no-unresolved': ['error', { ignore: ['@chili-studio/connector-types'] }],
         'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }],
         'max-len': 0,
         'no-shadow': 0,
