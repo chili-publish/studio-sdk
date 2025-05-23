@@ -69,7 +69,16 @@ export class UtilsController {
         });
 
         if (validationConfiguration) {
-            formData.append('validationJson', JSON.stringify(validationConfiguration));
+            formData.append(
+                'validationJson',
+                JSON.stringify({
+                    allowedMimeTypes: validationConfiguration.mimeTypes,
+                    minDimensions: {
+                        width: validationConfiguration.minWidthPixels,
+                        height: validationConfiguration.minHeightPixels,
+                    },
+                }),
+            );
         }
 
         const response = await fetch(stageUrl, {
