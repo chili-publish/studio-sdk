@@ -394,37 +394,6 @@ export interface SelectedLayoutFrame {
     type: FrameTypeEnum;
     isVisible: boolean;
 }
-<<<<<<< HEAD
-=======
-
-export interface MetaData {
-    [key: string]: string | boolean;
-}
-
-export interface ConnectorOptions {
-    [key: string]: string | boolean;
-}
-
-export enum ConnectorConfigValueType {
-    text = 'text',
-    boolean = 'boolean',
-}
-
-export enum ConnectorConfigContextType {
-    query = 'query',
-    upload = 'upload',
-}
-
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
-    readonly context?: ConnectorConfigContextType[];
-}
-
-export type ConnectorConfigOptions = ConnectorConfigValue[];
-
->>>>>>> abcb41a ([Feature] Media connector upload (#605))
 export interface ActionEventErrorData {
     event: ActionEditorEvent;
     actionIds: Id[];
@@ -484,9 +453,3 @@ export interface EditorExceptionDto {
 export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;
-
-export interface FilePointer {
-    id: string;
-    url: string;
-    name: string;
-}

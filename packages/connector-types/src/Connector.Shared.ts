@@ -19,10 +19,16 @@ export type QueryPage<T> = {
     data: T[];
 };
 
-export interface ConnectorConfigValue<Type> {
+export interface ConnectorConfigValue<Type, ContextType> {
     readonly name: string;
     readonly displayName: string;
     readonly type: Type;
+    readonly context?: ContextType[];
 }
 
-export type ConnectorConfigOptions<Type> = ConnectorConfigValue<Type>[];
+export type ConnectorConfigOptions<Type, ContextType> = ConnectorConfigValue<Type, ContextType>[];
+export interface FilePointer {
+    id: string;
+    url: string;
+    name: string;
+}

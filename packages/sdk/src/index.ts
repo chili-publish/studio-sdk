@@ -16,6 +16,7 @@ export {
     AutoGrowDirection,
     BarcodeSourceTypeEnum,
     BlendMode,
+    CropType,
     FitMode,
     FitModePosition,
     FlowDirection,
@@ -25,7 +26,6 @@ export {
     TextDirection,
     UpdateZIndexMethod,
     VerticalAlign,
-    CropType,
 } from './types/FrameTypes';
 export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
@@ -108,16 +108,7 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
-<<<<<<< HEAD
 export { ActionAsyncError, DataRowAsyncError } from './types/CommonTypes';
-=======
-export {
-    ActionAsyncError,
-    ConnectorConfigContextType,
-    ConnectorConfigValueType,
-    DataRowAsyncError,
-} from './types/CommonTypes';
->>>>>>> abcb41a ([Feature] Media connector upload (#605))
 export type {
     ConfigType,
     EditorResponse,

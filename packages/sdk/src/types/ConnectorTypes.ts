@@ -45,8 +45,16 @@ export enum ConnectorConfigValueType {
     boolean = 'boolean',
 }
 
-export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType>;
-export type ConnectorConfigOptions = GenericConnectorConfigOptions<ConnectorConfigValueType>;
+export enum ConnectorConfigContextType {
+    query = 'query',
+    upload = 'upload',
+}
+
+export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType, ConnectorConfigContextType>;
+export type ConnectorConfigOptions = GenericConnectorConfigOptions<
+    ConnectorConfigValueType,
+    ConnectorConfigContextType
+>;
 
 interface ConnectorRegistrationBase {
     /**
@@ -308,10 +316,9 @@ export type AuthRefreshRequest = {
     headerValue: string | null;
 };
 
-<<<<<<< HEAD
 export type ConnectorOptions = ContextDictionary;
 export type MetaData = ContextDictionary;
-=======
+
 export type UploadValidationConfiguration = {
     minWidthPixels?: number | null;
     maxWidthPixels?: number | null;
@@ -329,4 +336,3 @@ export class UploadAssetValidationError extends Error {
         super(message);
     }
 }
->>>>>>> abcb41a ([Feature] Media connector upload (#605))
