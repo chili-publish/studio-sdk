@@ -30,7 +30,10 @@ export interface MediaConnectorUpload {
 
 export type DownloadIntent = 'web' | 'print' | 'animation';
 export type DownloadType = 'thumbnail' | 'mediumres' | 'highres' | 'fullres' | 'original';
-export type MediaType = 0 | 1;
+
+export type FileType = 0;
+export type FolderType = 1;
+export type MediaType = FileType | FolderType;
 
 export type MediaPage = QueryPage<Media>;
 export type Media = GenericMedia<MediaType>;
