@@ -1,5 +1,6 @@
 import { UtilsController } from '../../controllers/UtilsController';
 import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
+import { UploadAssetValidationError, UploadAssetValidationErrorType } from '../../types/ConnectorTypes';
 import { EnvironmentType } from '../../utils/Enums';
 import * as MathUtils from '../../utils/MathUtils';
 
@@ -92,6 +93,20 @@ describe('UtilsController', () => {
                     Authorization: 'Bearer GRAFX_AUTH_TOKEN',
                 },
             }),
+        );
+    });
+    it('Should throw an "UploadAssetValidationError" exception when file is too small', async () => {
+        mockFetch.mockResolvedValue({
+            ok: false,
+            status: 422,
+            json: async () => ({
+                message: 'File is too small',
+            }),
+        });
+        await expect(
+            mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
+        ).rejects.toThrow(
+            new UploadAssetValidationError('File is too small', UploadAssetValidationErrorType.minDimension),
         );
     });
     it('should throw when stageFiles is called without auth token  ', async () => {

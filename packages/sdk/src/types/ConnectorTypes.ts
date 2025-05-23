@@ -310,3 +310,13 @@ export type UploadValidationConfiguration = {
     maxHeightPixels?: number | null;
     mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[];
 };
+
+export enum UploadAssetValidationErrorType {
+    minDimension = 'minDimension',
+}
+
+export class UploadAssetValidationError extends Error {
+    constructor(message: string, public type: UploadAssetValidationErrorType) {
+        super(message);
+    }
+}

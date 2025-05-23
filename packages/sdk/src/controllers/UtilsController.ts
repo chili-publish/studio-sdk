@@ -1,6 +1,10 @@
 import { FilePointer, Id } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
-import { UploadValidationConfiguration } from '../types/ConnectorTypes';
+import {
+    UploadAssetValidationError,
+    UploadAssetValidationErrorType,
+    UploadValidationConfiguration,
+} from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
 import { round } from '../utils/MathUtils';
@@ -88,6 +92,11 @@ export class UtilsController {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
+
+        if (response.status === 422) {
+            const data = await response.json();
+            throw new UploadAssetValidationError(data.message, UploadAssetValidationErrorType.minDimension);
+        }
 
         if (!response.ok) {
             throw new Error('Failed to stage files');
