@@ -69,7 +69,7 @@ export class UtilsController {
         });
 
         if (validationConfiguration) {
-            formData.append('validationConfiguration', JSON.stringify(validationConfiguration));
+            formData.append('validationJson', JSON.stringify(validationConfiguration));
         }
 
         const response = await fetch(stageUrl, {
