@@ -6,7 +6,7 @@ import type {
 } from '@chili-studio/connector-types';
 import { Id } from './CommonTypes';
 
-export type { QueryOptions } from '@chili-studio/connector-types';
+export type { FilePointer, QueryOptions } from '@chili-studio/connector-types';
 
 export enum DeprecatedMediaType {
     file = 0,

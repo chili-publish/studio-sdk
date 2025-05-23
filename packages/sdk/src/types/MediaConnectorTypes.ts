@@ -1,6 +1,6 @@
 import { Media as GenericMedia, MediaDetail as GenericMediaDetail } from '@chili-studio/connector-types';
 import { MediaType } from './ConnectorTypes';
-export type { FilePointer, MediaConnectorCapabilities } from '@chili-studio/connector-types';
+export type { MediaConnectorCapabilities } from '@chili-studio/connector-types';
 
 export enum MediaDownloadType {
     thumbnail = 'thumbnail',

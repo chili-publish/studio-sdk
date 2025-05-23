@@ -4,13 +4,13 @@ import {
     ConnectorConfigOptions,
     DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
+    FilePointer,
     MediaType,
     MetaData,
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
 import {
-    FilePointer,
     Media,
     MediaConnectorCapabilities,
     MediaDetail,

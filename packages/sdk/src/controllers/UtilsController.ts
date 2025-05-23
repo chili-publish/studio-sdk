@@ -1,7 +1,7 @@
-import { FilePointer } from '@chili-studio/connector-types';
 import { Id } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import {
+    FilePointer,
     UploadAssetValidationError,
     UploadAssetValidationErrorType,
     UploadValidationConfiguration,

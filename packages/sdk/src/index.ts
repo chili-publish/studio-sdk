@@ -8,7 +8,7 @@ export {
     EaseTypes,
     ShakeDirections,
     SlideDirections,
-    TweenTypes,
+    TweenTypes
 } from './types/AnimationTypes';
 export {
     AnchorTargetEdgeType,
@@ -25,7 +25,7 @@ export {
     ImageSourceTypeEnum,
     TextDirection,
     UpdateZIndexMethod,
-    VerticalAlign,
+    VerticalAlign
 } from './types/FrameTypes';
 export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
@@ -56,7 +56,7 @@ export type {
     ShapeFrame,
     StartAndEndFrameAnchor,
     StartFrameAnchor,
-    TextFrame,
+    TextFrame
 } from './types/FrameTypes';
 export type {
     FrameProperties,
@@ -64,7 +64,7 @@ export type {
     LayoutListItemType,
     LayoutPreset,
     LayoutPropertiesType,
-    LayoutWithFrameProperties,
+    LayoutWithFrameProperties
 } from './types/LayoutTypes';
 
 export {
@@ -73,7 +73,7 @@ export {
     VariableType,
     VariableVisibilityOperator,
     VariableVisibilityTargetType,
-    VariableVisibilityType,
+    VariableVisibilityType
 } from './types/VariableTypes';
 
 export type {
@@ -96,7 +96,7 @@ export type {
     VariableVisibilityConditional,
     VariableVisibilityConditionValue,
     VariableVisibilityLayout,
-    VariableWithValue,
+    VariableWithValue
 } from './types/VariableTypes';
 
 export type { Color, ColorUpdate, DocumentColor } from './types/ColorStyleTypes';
@@ -106,7 +106,7 @@ export type {
     BasicAnimationsType,
     EaseTweenCombinationType,
     FrameAnimationPropertiesType,
-    FrameAnimationType,
+    FrameAnimationType
 } from './types/AnimationTypes';
 export { ActionAsyncError, DataRowAsyncError } from './types/CommonTypes';
 export type {
@@ -116,7 +116,7 @@ export type {
     InitialStateType,
     PageType,
     PrivateData,
-    SelectedLayoutFrame,
+    SelectedLayoutFrame
 } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
@@ -125,7 +125,7 @@ export type {
     DocumentError,
     DocumentIssue,
     FontLoadingDocumentIssue,
-    OverflowDocumentIssue,
+    OverflowDocumentIssue
 } from './types/DocumentTypes';
 
 export type {
@@ -135,7 +135,7 @@ export type {
     TextProperties,
     TextStyle,
     TextStyleUpdateType,
-    UpdateStyleType,
+    UpdateStyleType
 } from './types/TextStyleTypes';
 
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
@@ -147,7 +147,7 @@ export type {
     AddDocumentFontFamily,
     AddDocumentFontStyle,
     DocumentFontFamily,
-    DocumentFontStyle,
+    DocumentFontStyle
 } from './types/FontTypes';
 
 export { ColorType } from './types/ColorStyleTypes';
@@ -162,7 +162,7 @@ export {
     Scripting,
     SelectedTextStyles,
     SelectedTextStyleSections,
-    TextPosition,
+    TextPosition
 } from './types/TextStyleTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
