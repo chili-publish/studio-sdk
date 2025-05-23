@@ -302,3 +302,21 @@ export type AuthRefreshRequest = {
     type: AuthRefreshTypeEnum;
     headerValue: string | null;
 };
+
+export type UploadValidationConfiguration = {
+    minWidthPixels?: number | null;
+    maxWidthPixels?: number | null;
+    minHeightPixels?: number | null;
+    maxHeightPixels?: number | null;
+    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[];
+};
+
+export enum UploadAssetValidationErrorType {
+    minDimension = 'minDimension',
+}
+
+export class UploadAssetValidationError extends Error {
+    constructor(message: string, public type: UploadAssetValidationErrorType) {
+        super(message);
+    }
+}
