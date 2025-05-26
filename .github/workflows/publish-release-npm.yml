@@ -129,7 +129,7 @@ jobs:
       - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: 20
       - name: Download and update versions file
         run: |
           # Create temporary directory
