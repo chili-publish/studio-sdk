@@ -1,4 +1,6 @@
 name: Trigger the automated tests
+permissions:
+  contents: read
 on:
   pull_request:
     types: [labeled]
