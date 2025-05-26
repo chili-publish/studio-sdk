@@ -3,12 +3,11 @@ on:
   push:
     branches:
       - main
+env:
+  NODE_VERSION: 20
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,10 +20,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
       - name: install dependencies
@@ -33,5 +32,48 @@ jobs:
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
+      - name: bump version
+        uses: phips28/gh-action-bump-version@v11.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+        with:
+          version-type: "prerelease"
+          skip-commit: "true"
+          skip-tag: "true"
+          preid: alfa
+      - name: execute local js script
+        run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
+      - name: publish sdk build
+        run: node cicd.js sdk,connectors yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+      # execute commit script
+      - name: execute commit script
+        run: node ./.github/scripts/commit.js
+      - name: get new npm version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: copy file branch
+        run: |
+          path=packages/sdk/upload/latest
+          versionpath=packages/sdk/upload/${{ steps.package-version.outputs.current-version}}
+          mkdir -p ${path%"/merge"}
+          cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          mkdir -p ${versionpath%"/merge"}
+          cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
+      - name: Copy to Azure Blob Storage (SDK)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+      - name: prepare for actions upload
+        run: |
+          node cicd.js actions node scripts/prepare-release.mjs
+      - name: Copy to Azure Blob Storage (Actions)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
