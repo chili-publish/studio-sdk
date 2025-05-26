@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [20]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,13 +33,13 @@ jobs:
         run: yarn cover
       - name: bump version locally
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            git config --global user.name 'github-actions[bot]'
-            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-            git fetch origin
-            git checkout -B main origin/main
-            npm version patch
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git fetch origin
+          git checkout -B main origin/main
+          npm version patch --git-tag-version=false
       - name: run readmeUpdater
         run: yarn make-badges
       - name: execute local js script
@@ -65,7 +65,7 @@ jobs:
       - name: publish sdk build
         run: node cicd.js sdk,connectors yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}    
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
       - name: execute commit script
         run: node ./.github/scripts/commit.js
       - name: get new npm version
@@ -100,22 +100,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [20]
     needs: build
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v3
         with:
-            token: ${{ secrets.PACKAGE_SECRET }}
+          token: ${{ secrets.PACKAGE_SECRET }}
       - name: Bump version
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            git config --global user.name 'github-actions[bot]'
-            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-            git fetch origin
-            git checkout -B main origin/main
-            npm version prepatch
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git fetch origin
+          git checkout -B main origin/main
+          npm version prepatch --git-tag-version=false
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: execute commit script
@@ -136,17 +136,17 @@ jobs:
           mkdir -p temp
           # Download current versions file
           curl -o temp/supported-versions.json https://stgrafxstudioprdpublic.blob.core.windows.net/shared/version-management/supported-versions.json
-          
+
           # Get the SDK version from package.json
           SDK_VERSION=$(node -p "require('./package.json').version")
           # Strip everything after the patch version to get only major.minor.patch
           SDK_VERSION=$(echo $SDK_VERSION | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+")
-          
+
           SDK_MAJOR_MINOR=$(echo $SDK_VERSION | cut -d. -f1,2)
-          
+
           # Get engine version from editor-engine.json and convert latest to 0
           ENGINE_VERSION=$(node -p "require('./packages/sdk/editor-engine.json').current.replace('.latest', '.0')")
-          
+
           # Create updated versions file using node
           node -e "
             const args = process.argv.slice(1);
@@ -171,7 +171,7 @@ jobs:
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
           " $SDK_VERSION $ENGINE_VERSION $SDK_MAJOR_MINOR
-      
+
       - name: Upload to Azure Blob Storage
         uses: azure/CLI@v1
         with:
