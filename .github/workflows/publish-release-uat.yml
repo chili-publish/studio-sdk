@@ -29,7 +29,7 @@ jobs:
       - name: install dependencies
         run: yarn install
       - name: bump version
-        uses: phips28/gh-action-bump-version@master
+        uses: phips28/gh-action-bump-version@v11.0.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
