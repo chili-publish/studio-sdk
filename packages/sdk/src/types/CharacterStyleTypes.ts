@@ -22,7 +22,10 @@ export type CharacterStyle = {
     lineHeight?: number;
     textOverprint?: boolean;
     color: ColorUsage;
+    strokeColor: ColorUsage;
     fillColorApplied?: boolean | null;
+    strokeColorApplied?: boolean | null;
+    strokeWidth?: number;
     underline: boolean;
     lineThrough: boolean;
 };
@@ -63,6 +66,18 @@ export type CharacterStyleUpdate = {
     };
     color: {
         value: ColorUsageUpdate;
+    };
+    fillColorApplied: {
+        value: boolean;
+    };
+    strokeColor: {
+        value: ColorUsageUpdate;
+    };
+    strokeColorApplied: {
+        value: boolean;
+    };
+    strokeWidth: {
+        value: string;
     };
     underline: {
         value: boolean;
