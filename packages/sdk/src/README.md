@@ -40,11 +40,6 @@ const sdk = new StudioSDK({
 });
 ```
 
-## The document
-
-We have made an effort to type the document that is used by the editor-engine as ChiliDocument.
-You can find the entire definition [on this page](interfaces/types_DocumentTypes.ChiliDocument.md).
-
 ## Enums, Types, Interfaces and general Methods
 
 If you want to check out some types, interfaces and general methods, you can find them all bundled [under the modules page](modules).
