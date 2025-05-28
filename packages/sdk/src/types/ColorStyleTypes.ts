@@ -102,7 +102,7 @@ export type DocumentColor = {
 
 export type ColorUsageUpdate = {
     /**
-     * Reference to the stylekit color, can only be used if it is a stylekit color.
+     * Reference to the brand kit color, can only be used if it is a brand kit color.
      */
     id?: Id;
     /**
@@ -122,7 +122,7 @@ export type ColorUsageUpdate = {
 
 export type ColorUsage = {
     /**
-     * Reference to the stylekit color, can only be used if it is a stylekit color.
+     * Reference to the brand kit color, can only be used if it is a brand kit color.
      */
     id?: Id;
     /**
@@ -142,7 +142,13 @@ export enum ColorUsageType {
      */
     local = 'local',
     /**
-     * THe color is referencing a stylekit color
+     * The color is referencing a document color
      */
-    stylekit = 'stylekit',
+    brandKit = 'brandKit',
+    /**
+     * @deprecated use brandKit instead
+     *
+     * The color is referencing a brand kit color
+     */
+    stylekit = 'brandKit',
 }
