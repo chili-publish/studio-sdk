@@ -1,4 +1,15 @@
-import { ArrayBufferPointer, ConnectorConfigValue, Dictionary, QueryOptions, FilePointer } from './Connector.Shared';
+import {
+    Dictionary,
+    FilePointer,
+    Media as GenericMedia,
+    MediaDetail as GenericMediaDetail,
+    MediaConnectorCapabilities,
+    QueryOptions,
+    QueryPage,
+} from '@chili-studio/connector-types';
+import { ArrayBufferPointer, ConnectorConfigOptions } from './Connector.Shared';
+
+export type { FilePointer, MediaConnectorCapabilities } from '@chili-studio/connector-types';
 
 export interface MediaConnector {
     detail(id: string, context: Dictionary): Promise<MediaDetail>;
@@ -9,7 +20,7 @@ export interface MediaConnector {
         intent: DownloadIntent,
         context: Dictionary,
     ): Promise<ArrayBufferPointer>;
-    getConfigurationOptions(): ConnectorConfigValue[] | null;
+    getConfigurationOptions(): ConnectorConfigOptions | null;
     getCapabilities(): MediaConnectorCapabilities;
 }
 
@@ -20,32 +31,10 @@ export interface MediaConnectorUpload {
 export type DownloadIntent = 'web' | 'print' | 'animation';
 export type DownloadType = 'thumbnail' | 'mediumres' | 'highres' | 'fullres' | 'original';
 
-export interface MediaPage {
-    pageSize: number;
-    data: Media[];
-    links: {
-        nextPage: string;
-    };
-}
+export type FileType = 0;
+export type FolderType = 1;
+export type MediaType = FileType | FolderType;
 
-export interface Media {
-    id: string;
-    name: string;
-    relativePath: string;
-    type: number;
-    metaData: Dictionary;
-    extension?: string;
-}
-
-export interface MediaDetail extends Media {
-    width?: number;
-    height?: number;
-}
-
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
-    metadata?: boolean;
-    upload?: boolean;
-};
+export type MediaPage = QueryPage<Media>;
+export type Media = GenericMedia<MediaType>;
+export type MediaDetail = GenericMediaDetail<MediaType>;
