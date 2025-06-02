@@ -47,6 +47,8 @@ jobs:
         run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
+        env:
+          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN}}
       - name: publish sdk build
         run: node cicd.js sdk,connectors yarn publish
         env:
