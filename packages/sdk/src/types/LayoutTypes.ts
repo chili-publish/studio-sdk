@@ -3,17 +3,20 @@ import { Id, PrivateData, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
     id: Id;
-    width: { value: number; isOverride: boolean };
-    height: { value: number; isOverride: boolean };
-    timelineLengthMs: { value: number; isOverride: boolean };
-    resizableByUser: {
-        enabled: boolean;
-        minWidth?: number;
-        maxWidth?: number;
-        minHeight?: number;
-        maxHeight?: number;
-    };
-    [key: string]: number | string | Record<string, unknown>;
+    name: string;
+    displayName: string | null;
+    width: PropertyState<number>;
+    height: PropertyState<number>;
+    animated: PropertyState<boolean>;
+    intent: PropertyState<LayoutIntent>;
+    unit: PropertyState<MeasurementUnit>;
+    fillColor: PropertyState<ColorUsage>;
+    fillColorEnabled: PropertyState<boolean>;
+    bleed: PropertyState<LayoutBleed | undefined>;
+    availableForUser: boolean;
+    selectedByUser: boolean;
+    timelineLengthMs: PropertyState<number>;
+    resizableByUser: ResizableLayoutProperties;
 } | null;
 
 export type FrameProperties = {
@@ -132,10 +135,10 @@ export enum LayoutIntent {
 
 export type ResizableLayoutProperties = {
     enabled: boolean;
-    minWidth: number | null;
-    maxWidth: number | null;
-    minHeight: number | null;
-    maxHeight: number | null;
+    minWidth?: number | null;
+    maxWidth?: number | null;
+    minHeight?: number | null;
+    maxHeight?: number | null;
 };
 
 export type ResizableLayoutPropertiesUpdate = {
