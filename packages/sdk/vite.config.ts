@@ -5,6 +5,10 @@ import dts from 'vite-plugin-dts';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
 
+    const engineDomain = env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com';
+
+    console.info(`Engine domain: ${engineDomain}`);
+
     return {
         plugins: [
             dts({
@@ -23,7 +27,7 @@ export default defineConfig(({ mode }) => {
             }),
         ],
         define: {
-            __ENGINE_DOMAIN__: JSON.stringify(env.ENGINE_DOMAIN || 'studio-cdn.chiligrafx.com'),
+            __ENGINE_DOMAIN__: JSON.stringify(engineDomain),
         },
         build: {
             lib: {

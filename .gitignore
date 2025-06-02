@@ -17,4 +17,8 @@ coverage/
 docs/
 packages/sdk/connector-types/
 
+# Environment config files
+.env
+.env.*
+
 examples/**/package-lock.json

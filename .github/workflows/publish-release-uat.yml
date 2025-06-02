@@ -7,6 +7,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: uat
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,7 +46,7 @@ jobs:
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: build code
-        run: yarn build:uat
+        run: yarn build
         env:
           ENGINE_DOMAIN: studio-cdn.chiligrafx-uat.com
       - name: publish sdk build
