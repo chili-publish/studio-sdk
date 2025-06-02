@@ -18,7 +18,7 @@ By doing this, we can introduce breaking changes without disrupting your integra
 import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';
 ```
 
-NOTE: the above import method is deprecated and will be removed in next major release. Consider to use root import with `Next` namespace instead
+NOTE: the above import method is deprecated and will be removed in next major release. Consider using root import with the `Next` namespace instead
 
 ```ts
 import type { Next } '@chili-publish/studio-sdk/';
