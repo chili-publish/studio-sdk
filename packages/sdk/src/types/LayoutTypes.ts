@@ -6,6 +6,13 @@ export type LayoutPropertiesType = {
     width: { value: number; isOverride: boolean };
     height: { value: number; isOverride: boolean };
     timelineLengthMs: { value: number; isOverride: boolean };
+    resizableByUser: {
+        enabled: boolean;
+        minWidth?: number;
+        maxWidth?: number;
+        minHeight?: number;
+        maxHeight?: number;
+    };
     [key: string]: number | string | Record<string, unknown>;
 } | null;
 
