@@ -15,7 +15,7 @@ export type LayoutPropertiesType = {
     bleed: PropertyState<LayoutBleed | undefined>;
     availableForUser: boolean;
     selectedByUser: boolean;
-    timelineLengthMs: PropertyState<number>;
+    timelineLengthMs: PropertyState<number | undefined>;
     resizableByUser: ResizableLayoutProperties;
 } | null;
 
