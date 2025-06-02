@@ -21,7 +21,7 @@ import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';
 NOTE: the above import method is deprecated and will be removed in next major release. Consider using root import with the `Next` namespace instead
 
 ```ts
-import type { Next } '@chili-publish/studio-sdk/';
+import type { Next } '@chili-publish/studio-sdk';
 
 const variable: Next.ListVariable = {...}
 ```
