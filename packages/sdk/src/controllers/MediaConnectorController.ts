@@ -1,13 +1,15 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, FilePointer, Id, MetaData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
+import { CallSender } from 'penpal';
+import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
+    ConnectorConfigOptions,
     DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
+    FilePointer,
     MediaType,
+    MetaData,
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
-import { CallSender } from 'penpal';
 import {
     Media,
     MediaConnectorCapabilities,
@@ -15,6 +17,7 @@ import {
     MediaDownloadIntent,
     MediaDownloadType,
 } from '../types/MediaConnectorTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -35,7 +38,6 @@ export class MediaConnectorController {
      */
     #editorAPI: EditorAPI;
     #blobAPI: EditorRawAPI;
-
 
     /**
      * @ignore
@@ -163,8 +165,7 @@ export class MediaConnectorController {
         }
     }
 
-    
-        /**
+    /**
      * Invokes the upload on the connector, using the given staged pointer(s).
      * If you want help with staging files, use the `stageFiles` method from the UtilsController.
      * @param connectorId The MediaConnector instance to use (just like download API).

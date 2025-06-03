@@ -19,11 +19,9 @@
         "@babel/runtime": "^7.14.8",
         "@inthepocket/npm-license-scraper": "^2.3.0",
         "@testing-library/jest-dom": "^5.14.1",
+        "@types/jest": "^29.5.0",
         "@typescript-eslint/eslint-plugin": "^5.36.0",
         "@typescript-eslint/parser": "^5.36.0",
-        "babel-loader": "^8.2.2",
-        "babel-preset-env": "^1.7.0",
-        "clean-webpack-plugin": "^4.0.0-alpha.0",
         "eslint": "^7.31.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "^2.23.4",
@@ -35,27 +33,20 @@
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1",
         "shx": "^0.3.3",
-        "terser-webpack-plugin": "^5.2.4",
         "ts-jest": "^29.2.5",
-        "ts-loader": "^9.3.1",
         "typedoc": "^0.27.9",
         "typedoc-plugin-markdown": "^3.13.4",
         "typescript": "^5.7.3",
-        "webpack": "^5.46.0",
-        "webpack-bundle-analyzer": "^4.5.0",
-        "webpack-cli": "^4.7.2",
-        "webpack-dev-server": "^3.11.2"
+        "vite": "^5.0.0",
+        "vite-plugin-dts": "^4.5.3"
     },
     "engines": {
         "node": ">=18.0.0"
     },
     "scripts": {
-        "clean": "shx rm -rf _bundles lib lib-esm next",
-        "build": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=production",
-        "build:uat": "yarn clean && yarn build:modules:uat && webpack --config webpack.config.js --env env=production --env ENGINE_DOMAIN=studio-cdn.chiligrafx-uat.com",
-        "build:modules": "tsc && tsc -m es6 --outDir lib-esm ",
-        "build:modules:uat": "tsc && tsc -m es6 --outDir lib-esm",
-        "build:dev": "yarn clean && yarn build:modules && webpack --config webpack.config.js --env env=development",
+        "clean": "shx rm -rf _bundles lib",
+        "build": "yarn clean && vite build && tsc && node scripts/postbuild.js",
+        "build:dev": "yarn clean && vite build --mode development && tsc && node scripts/postbuild.js",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
         "test": "jest",
@@ -74,14 +65,15 @@
         }
     },
     "main": "./_bundles/main.js",
-    "module": "./_bundles/main.js",
+    "module": "./_bundles/main.es.js",
     "browser": "./_bundles/main.js",
+    "types": "./lib/src/index.d.ts",
     "files": [
         "lib/",
+        "connector-types/",
         "_bundles/",
         "README.md"
     ],
-    "typings": "lib/src/",
     "bugs": {
         "url": "https://github.com/chili-publish/studio-sdk/issues"
     },
