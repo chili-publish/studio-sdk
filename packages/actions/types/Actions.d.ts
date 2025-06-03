@@ -56,7 +56,7 @@ declare module 'grafx-studio-actions' {
         /**
          * An interface representing the API for working with actions.
          * Provides access to objects for manipulating frames, variables,
-         * layouts, page and stylekit properties.
+         * layouts, page and brand kit properties.
          */
         export interface ActionApi {
             /** An object for manipulating frames */
@@ -67,8 +67,12 @@ declare module 'grafx-studio-actions' {
             layouts: LayoutsController;
             /** An object for manipulating the pages */
             pages: PageController;
-            /** An object for manipulating stylekit items */
-            stylekit: Stylekit;
+            /** 
+             * @deprecated Use `studio.brandKit` instead. 
+             * An object for manipulating brand kit items */
+            stylekit: BrandKit;
+            /** An object for manipulating brand kit items */
+            brandKit: BrandKit;
         }
 
         /**
@@ -775,31 +779,31 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         *  Grouping stylekit entities.
+         *  Grouping brand kit entities.
          */
-        export interface Stylekit {
+        export interface BrandKit {
             /**
-             * An object to manipulate stylekit colors.
+             * An object to manipulate brand kit colors.
              */
-            readonly colors: StylekitColorsController;
+            readonly colors: BrandKitColorsController;
 
             /**
-             * An object to manipulate stylekit paragraph styles.
+             * An object to manipulate brand kit paragraph styles.
              */
-            readonly paragraphStyles: StylekitParagraphStylesController;
+            readonly paragraphStyles: BrandKitParagraphStylesController;
 
             /**
-             * An object to manipulate stylekit character styles.
+             * An object to manipulate brand kit character styles.
              */
-            readonly characterStyles: StylekitChacterStylesController;
+            readonly characterStyles: BrandKitChacterStylesController;
         }
 
         /**
-         * Controller for manipulating stylekit colors.
+         * Controller for manipulating brand kit colors.
          */
-        export interface StylekitColorsController {
+        export interface BrandKitColorsController {
             /**
-             * Copies a stylekit color
+             * Copies a brand kit color
              * @param fromName the color to use as source
              * @param toName the color to copy it to
              * @returns
@@ -808,9 +812,9 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Controller for manipulating stylekit paragraph styles.
+         * Controller for manipulating brand kit paragraph styles.
          */
-        export interface StylekitParagraphStylesController {
+        export interface BrandKitParagraphStylesController {
             /**
              * Copies a paragraph style
              * @param fromName the paragraph style to use as source
@@ -821,9 +825,9 @@ declare module 'grafx-studio-actions' {
         }
 
         /**
-         * Controller for manipulating stylekit character styles.
+         * Controller for manipulating brand kit character styles.
          */
-        export interface StylekitChacterStylesController {
+        export interface BrandKitChacterStylesController {
             /**
              * Copies a character style
              * @param fromName the character style to use as source

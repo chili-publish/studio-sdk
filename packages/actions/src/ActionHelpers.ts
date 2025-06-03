@@ -660,31 +660,31 @@ function setPageSize(width: number | VariableValue, height: number | VariableVal
 }
 
 /**
- * Copy a stylekit color.
+ * Copy a brand kit color.
  *
  * @param {string} from - The name of the source character style.
  * @param {string} to - The name of the target character style.
  */
 function copyColorFromTo(from: string, to: string) {
-    studio.stylekit.colors.copy(from, to);
+    studio.brandKit.colors.copy(from, to);
 }
 
 /**
- * Copy a stylekit paragraph style.
+ * Copy a brand kit paragraph style.
  *
  * @param {string} from - The name of the source character style.
  * @param {string} to - The name of the target character style.
  */
 function copyParagraphStyleFromTo(from: string, to: string) {
-    studio.stylekit.paragraphStyles.copy(from, to);
+    studio.brandKit.paragraphStyles.copy(from, to);
 }
 
 /**
- * Copy a stylekit character style.
+ * Copy a brand kit character style.
  *
  * @param {string} from - The name of the source character style.
  * @param {string} to - The name of the target character style.
  */
 function copyCharacterStyleFromTo(from: string, to: string) {
-    studio.stylekit.characterStyles.copy(from, to);
+    studio.brandKit.characterStyles.copy(from, to);
 }
