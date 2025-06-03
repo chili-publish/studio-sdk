@@ -1,18 +1,21 @@
 {
     "name": "@chili-publish/studio-connectors",
-    "version": "1.25.1",
+    "version": "1.25.2-alfa.0",
     "types": "dist/index.d.ts",
+    "type": "module",
     "files": [
         "dist"
     ],
     "license": "MIT",
     "devDependencies": {
         "prettier": "^3.0.3",
-        "typescript": "^5.2.2"
+        "typescript": "^5.2.2",
+        "vite": "^6.3.5",
+        "@types/node": "^22.15.18",
+        "dts-bundle-generator": "^9.0.0"
     },
     "scripts": {
-        "build": "tsc",
-        "build:uat": "tsc",
+        "build": "vite build",
         "prepare-upload": "yarn build && yarn pack && mkdir ./upload/connectors/ -p && cp *.tgz ./upload/connectors/"
     }
 }

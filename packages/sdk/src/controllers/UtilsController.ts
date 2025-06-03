@@ -1,6 +1,7 @@
-import { FilePointer, Id } from '../types/CommonTypes';
+import { Id } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import {
+    FilePointer,
     UploadAssetValidationError,
     UploadAssetValidationErrorType,
     UploadValidationConfiguration,

@@ -1,8 +1,15 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DeprecatedMediaType, MediaType, QueryOptions, QueryPage } from '../types/ConnectorTypes';
-import { FontConnectorCapabilities, FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
 import { CallSender } from 'penpal';
+import { EditorAPI, EditorRawAPI, EditorResponse } from '../types/CommonTypes';
+import {
+    ConnectorConfigOptions,
+    DeprecatedMediaType,
+    MediaType,
+    MetaData,
+    QueryOptions,
+    QueryPage,
+} from '../types/ConnectorTypes';
+import { FontConnectorCapabilities, FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The FontConnectorController is responsible for all communication regarding Font connectors.
