@@ -53,6 +53,35 @@ export class BrandKitController {
     private undoManagerController: UndoManagerController;
 
     /**
+     * This method returns the current brand kit id.
+     * @returns current brand kit id
+     */
+    getId = async () => {
+        const res = await this.#editorAPI;
+        return res.getBrandKitId().then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method returns the current brand kit version.
+     * @returns current brand kit version
+     */
+    getVersion = async () => {
+        const res = await this.#editorAPI;
+        return res.getBrandKitVersion().then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method updates both the brand kit id and version.
+     * @param id - The new brand kit id
+     * @param version - The new brand kit version
+     * @returns
+     */
+    updateIdAndVersion = async (id: string, version: string) => {
+        const res = await this.#editorAPI;
+        return res.updateBrandKitIdAndVersion(id, version).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * @experimental This method returns the local brandkit
      * @returns brandkit with all assigned resources
      */

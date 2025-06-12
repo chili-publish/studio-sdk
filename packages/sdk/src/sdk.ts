@@ -10,6 +10,7 @@ import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 import { AnimationController } from './controllers/AnimationController';
 import { BarcodeController } from './controllers/BarcodeController';
+import { BrandKitController } from './controllers/BrandKitController';
 import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { ClipboardController } from './controllers/ClipboardController';
@@ -42,7 +43,6 @@ import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
-import { BrandKitController } from './controllers/BrandKitController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
