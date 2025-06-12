@@ -7,9 +7,9 @@ import {
     ConnectorGrafxRegistration,
     ConnectorLocalRegistration,
     ConnectorRegistrationSource,
+    ConnectorType,
     ConnectorUrlRegistration,
 } from '../../types/ConnectorTypes';
-import { ConnectorType } from '../../../types/ConnectorTypes';
 
 let mockedConnectorController: ConnectorController;
 
@@ -30,7 +30,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
-describe('ConnectorController', () => {
+describe('Next.ConnectorController', () => {
     const connectorId = 'dam';
 
     it('Should call the getById method', async () => {

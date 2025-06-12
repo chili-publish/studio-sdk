@@ -1,5 +1,5 @@
-import { VariableController } from '../../controllers/VariableController';
-import { ListVariableItem, Variable, VariableType } from '../../../types/VariableTypes';
+import { ImageVariableController, VariableController } from '../../controllers/VariableController';
+import { ListVariableItem, Variable, VariableType, VariableVisibilityType } from '../../../types/VariableTypes';
 import type { ListVariable } from '../../../next/types/VariableTypes';
 import { EditorAPI } from '../../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../../utils/EditorResponseData';
@@ -25,9 +25,10 @@ describe('Next.VariableController', () => {
         type: VariableType.list,
         name: '',
         label: '',
-        isVisible: true,
         isReadonly: false,
         isRequired: false,
+        isVisible: true,
+        visibility: { type: VariableVisibilityType.visible },
         occurrences: 0,
         selected: { value: 'abc', displayValue: 'A-B-C' },
         items: [{ value: 'abc', displayValue: 'A-B-C' }],
@@ -42,6 +43,7 @@ describe('Next.VariableController', () => {
         getVariables: async () => getEditorResponseData(castToEditorResponse(variables)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -51,6 +53,7 @@ describe('Next.VariableController', () => {
         jest.spyOn(mockEditorApi, 'getVariables');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setImageVariableConnector');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
     });
 
     it('get variable by id', async () => {
@@ -144,5 +147,48 @@ describe('Next.VariableController', () => {
             JSON.stringify(grafxRegistration),
         );
         expect(response?.parsedData).toBe('newConnectorId');
+    });
+});
+
+describe('Next.VariableController.ImageVariableController', () => {
+    let mockedImageVariableController: ImageVariableController;
+
+    const variableId = 'variableId';
+
+    const mockEditorApi: EditorAPI = {
+        setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
+    };
+
+    beforeEach(() => {
+        mockedImageVariableController = new ImageVariableController(mockEditorApi);
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
+    });
+
+    it('set allow query', async () => {
+        const response = await mockedImageVariableController.setAllowQuery(variableId, true);
+
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledWith(variableId, true);
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it('set allow upload', async () => {
+        const response = await mockedImageVariableController.setAllowUpload(variableId, true);
+
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledWith(variableId, true);
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it('sets the minimum size (both width and height) for an image variable that will be uploaded', async () => {
+        const response = await mockedImageVariableController.setMinUploadSize(variableId, '100', '100');
+
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith(variableId, '100', '100');
+        expect(response?.parsedData).toBe(null);
     });
 });

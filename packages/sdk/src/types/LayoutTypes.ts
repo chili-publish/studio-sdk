@@ -1,12 +1,22 @@
 import { ColorUsage } from './ColorStyleTypes';
-import { Id, PropertyState } from './CommonTypes';
+import { Id, PrivateData, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
     id: Id;
-    width: { value: number; isOverride: boolean };
-    height: { value: number; isOverride: boolean };
-    timelineLengthMs: { value: number; isOverride: boolean };
-    [key: string]: number | string | Record<string, unknown>;
+    name: string;
+    displayName: string | null;
+    width: PropertyState<number>;
+    height: PropertyState<number>;
+    animated: PropertyState<boolean>;
+    intent: PropertyState<LayoutIntent>;
+    unit: PropertyState<MeasurementUnit>;
+    fillColor: PropertyState<ColorUsage>;
+    fillColorEnabled: PropertyState<boolean>;
+    bleed: PropertyState<LayoutBleed | undefined>;
+    availableForUser: boolean;
+    selectedByUser: boolean;
+    timelineLengthMs: PropertyState<number | undefined>;
+    resizableByUser: ResizableLayoutProperties;
 } | null;
 
 export type FrameProperties = {
@@ -40,9 +50,13 @@ export type LayoutWithFrameProperties = {
 export type Layout = {
     id: Id;
     name: string;
+    displayName?: string | null;
+    privateData: PrivateData;
     parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
+    layoutWidth: PropertyState<number>;
+    layoutHeight: PropertyState<number>;
     childLayouts: Id[];
     timelineLengthMs: PropertyState<number>;
     unit: PropertyState<MeasurementUnit>;
@@ -50,13 +64,19 @@ export type Layout = {
     bleed: PropertyState<LayoutBleed>;
     fillColor: PropertyState<ColorUsage>;
     fillColorEnabled: PropertyState<boolean>;
+    availableForUser: boolean;
+    selectedByUser: boolean;
+    resizableByUser: ResizableLayoutProperties;
 };
 
 // used by onLayoutsChanged
 export type LayoutListItemType = {
     id: string;
     name: string;
+    displayName?: string | null;
     type: LayoutType;
+    availableForUser: boolean;
+    selectedByUser: boolean;
     parentId?: Id | null;
     childLayouts: Id[];
 };
@@ -75,6 +95,16 @@ export type BleedDeltaUpdate = {
     right?: string;
     bottom?: string;
     areBleedValuesCombined?: boolean;
+};
+
+export type LayoutPreset = {
+    name: string;
+    intent: LayoutIntent;
+    unit: MeasurementUnit;
+    width: string;
+    height: string;
+    duration?: number;
+    bleed?: BleedDeltaUpdate;
 };
 
 export enum PositionEnum {
@@ -102,3 +132,29 @@ export enum LayoutIntent {
     digitalStatic = 'digitalStatic',
     digitalAnimated = 'digitalAnimated',
 }
+
+export type ResizableLayoutProperties = {
+    enabled: boolean;
+    minWidth?: number | null;
+    maxWidth?: number | null;
+    minHeight?: number | null;
+    maxHeight?: number | null;
+};
+
+export type ResizableLayoutPropertiesUpdate = {
+    enabled?: {
+        value: boolean;
+    } | null;
+    minWidth?: {
+        value: string | null;
+    } | null;
+    maxWidth?: {
+        value: string | null;
+    } | null;
+    minHeight?: {
+        value: string | null;
+    } | null;
+    maxHeight?: {
+        value: string | null;
+    } | null;
+};

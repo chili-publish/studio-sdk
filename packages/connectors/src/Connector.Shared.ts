@@ -1,8 +1,15 @@
-export interface Dictionary {
-    [Key: string]: string | boolean;
-}
+import { Dictionary, FilePointer, ConnectorConfigOptions as GenericConnectorConfigOptions, ConnectorConfigValue as GenericConnectorConfigValue } from '@chili-studio/connector-types';
+
+export type {
+    Dictionary, FilePointer, QueryOptions
+} from '@chili-studio/connector-types';
 
 export type ChiliPlatform = 'web' | 'server';
+export type ConnectorConfigValueType = 'text' | 'boolean';
+export type ConnectorConfigContextType = 'query' | 'upload';
+
+export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType, ConnectorConfigContextType>;
+export type ConnectorConfigOptions = GenericConnectorConfigOptions<ConnectorConfigValueType, ConnectorConfigContextType>;
 
 export interface ConnectorRuntimeContext {
     options: Dictionary;
@@ -12,20 +19,30 @@ export interface ConnectorRuntimeContext {
     sdkVersion: string;
 }
 
-export type QueryOptions = {
-    sortOrder: string | null;
-    collection: string | null;
-    filter: string[] | null;
-    pageToken: string | null;
-    pageSize: number;
-    sortBy: string | null;
-};
+export type StudioFormDataValue = string | FilePointer;
+/**
+ * A class that represents a form data object.
+ * This class is used to create a form data object that can be used to send data to the server.
+ */
+export interface StudioFormData {
+    append(name: string, value: StudioFormDataValue, filename?: string): void;
+    set(name: string, value: StudioFormDataValue, filename?: string): void;
+    delete(name: string): void;
+    forEach(callback: (value: StudioFormDataValue, name: string) => void): void;
+    get(name: string): StudioFormDataValue | null;
+    getAll(name: string): StudioFormDataValue[];
+    has(name: string): boolean;
+}
 
+export type StudioFetchBody =
+    | string // JSON, text, base64, etc.
+    | FilePointer
+    | StudioFormData;
 export interface ChiliRequestInit {
     /**
-     * A BodyInit object or null to set request's body.
+     * A StudioFetchBody object or null to set request's body.
      */
-    body?: string | null;
+    body?: StudioFetchBody | null;
     /**
      * A Headers object, an object literal, or an array of two-item arrays to set request's headers.
      */
@@ -68,14 +85,6 @@ export interface ChiliResponse extends ChiliBody {
     readonly url: string;
 }
 
-export type ConnectorConfigValueType = 'text' | 'boolean';
-
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
-}
-
 /**
  * A custom HTTP error for connectors.
  *
@@ -90,27 +99,4 @@ export interface ConnectorHttpError extends Error {
      * The HTTP status code associated with the error.
      */
     readonly status: number;
-}
-
-/**
- * Interface for the constructor of ConnectorHttpError.
- */
-export interface ConnectorHttpErrorConstructor {
-    /**
-     * Creates a new ConnectorHttpError instance.
-     *
-     * @param status - The HTTP status code associated with the error.
-     * @param message - Optional error message.
-     * @returns A new instance of ConnectorHttpError.
-     */
-    new (status: number, message?: string): ConnectorHttpError;
-
-    /**
-     * The prototype of ConnectorHttpError.
-     */
-    readonly prototype: ConnectorHttpError;
-}
-
-declare global {
-    var ConnectorHttpError: ConnectorHttpErrorConstructor;
 }

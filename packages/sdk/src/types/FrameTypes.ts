@@ -1,12 +1,14 @@
 // FramePropertiesDto
 import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZone } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
-import { Id, PropertyState } from './CommonTypes';
+import { HasOverrideState, Id, PropertyState } from './CommonTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
     id: Id;
     layoutId: Id;
+    horizontal: FrameAnchor;
+    vertical: FrameAnchor;
     x: PropertyState<number>;
     y: PropertyState<number>;
     width: PropertyState<number>;
@@ -16,11 +18,15 @@ export type FrameLayoutType = {
     scaleY: PropertyState<number>;
     isVisible: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
+    fitModePosition: PropertyState<FitModePosition>;
     hasImageCrop: PropertyState<boolean>;
+    hasFrameSubjectArea: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
     autoGrow: AutoGrowSettings;
+    isShowingCustomCroppedAsset: boolean;
+    customCroppedAssetCount: number;
 } | null;
 
 //Frame.image
@@ -31,8 +37,6 @@ export type FrameType = {
     // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
 };
 
 export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
@@ -62,9 +66,6 @@ export type ImageFrame = {
     type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
-    crop?: CropSettings | NoCropSettings;
 };
 
 export type ShapeFrame = {
@@ -72,8 +73,6 @@ export type ShapeFrame = {
     name: string;
     type: FrameTypeEnum.shape;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
     shapeProperties: {
         enableFill: boolean;
         fillColor: ColorUsage;
@@ -108,8 +107,6 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
 };
 
 export type BarcodeFrame = {
@@ -117,8 +114,6 @@ export type BarcodeFrame = {
     name: string;
     type: FrameTypeEnum.barcode;
     blendMode: BlendMode;
-    constrainProportions: boolean;
-    constrainProportionsReadOnly: boolean;
     barcodeProperties: {
         enableBackground: boolean;
         backgroundColor: ColorUsage;
@@ -191,15 +186,6 @@ export interface AutoGrowDeltaUpdate {
     };
 }
 
-export interface AutoGrowResetUpdate {
-    resetEnabled?: boolean;
-    resetMinWidth?: boolean;
-    resetMaxWidth?: boolean;
-    resetMinHeight?: boolean;
-    resetMaxHeight?: boolean;
-    resetDirections?: boolean;
-}
-
 export enum AutoGrowDirection {
     top = 'top',
     bottom = 'bottom',
@@ -264,8 +250,22 @@ export enum BlendMode {
 }
 
 export enum FitMode {
-    fit = 'fit',
     fill = 'fill',
+    fit = 'fit',
+    smartCrop = 'smartCrop',
+    manualCrop = 'manualCrop',
+}
+
+export enum FitModePosition {
+    topLeft = 'topLeft',
+    topCenter = 'topCenter',
+    topRight = 'topRight',
+    centerLeft = 'centerLeft',
+    center = 'center',
+    centerRight = 'centerRight',
+    bottomLeft = 'bottomLeft',
+    bottomCenter = 'bottomCenter',
+    bottomRight = 'bottomRight',
 }
 
 export enum UpdateZIndexMethod {
@@ -274,3 +274,100 @@ export enum UpdateZIndexMethod {
     bringForward = 'bringForward',
     sendBackward = 'sendBackward',
 }
+
+export enum FrameAnchorType {
+    relative = 'relative',
+    start = 'start',
+    end = 'end',
+    startAndEnd = 'startAndEnd',
+    center = 'center',
+}
+
+export enum AnchorTargetType {
+    page = 'page',
+    frame = 'frame',
+}
+
+export enum AnchorTargetEdgeType {
+    start = 'start',
+    end = 'end',
+    center = 'center',
+}
+
+export class PageAnchorTarget {
+    type = AnchorTargetType.page;
+}
+
+export class FrameAnchorTarget {
+    frameId: Id;
+    edge: AnchorTargetEdgeType;
+    type = AnchorTargetType.frame;
+
+    constructor(id: Id, edge: AnchorTargetEdgeType) {
+        (this.frameId = id), (this.edge = edge);
+    }
+}
+
+export type AnchorTarget = PageAnchorTarget | FrameAnchorTarget;
+
+export type RelativeFrameAnchor = {
+    start: PropertyState<number>;
+    end: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.relative;
+} & HasOverrideState;
+
+export type StartFrameAnchor = {
+    offset: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.start;
+} & HasOverrideState;
+
+export type EndFrameAnchor = {
+    offset: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.end;
+} & HasOverrideState;
+
+export type StartAndEndFrameAnchor = {
+    start: PropertyState<number>;
+    startTarget: AnchorTarget;
+    end: PropertyState<number>;
+    endTarget: AnchorTarget;
+    type: FrameAnchorType.startAndEnd;
+} & HasOverrideState;
+
+export type CenterFrameAnchor = {
+    offset: PropertyState<number>;
+    target: AnchorTarget;
+    type: FrameAnchorType.center;
+} & HasOverrideState;
+
+export type FrameAnchor =
+    | RelativeFrameAnchor
+    | StartFrameAnchor
+    | EndFrameAnchor
+    | StartAndEndFrameAnchor
+    | CenterFrameAnchor;
+
+export type FrameAnchorProperties = {
+    horizontal: boolean;
+    type: FrameAnchorType;
+    target: AnchorTarget;
+    endTarget?: AnchorTarget | null;
+};
+
+export type AnchorConfiguration = {
+    allowedTypes: Set<FrameAnchorType>;
+    allowedFrameIds: Set<Id>;
+};
+
+export type FrameConfiguration = {
+    horizontal: AnchorConfiguration;
+    vertical: AnchorConfiguration;
+};
+
+export enum CropType {
+    frameCrop = 'frameCrop',
+    assetCrop = 'assetCrop',
+};

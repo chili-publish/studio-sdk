@@ -1,9 +1,10 @@
-import { ConfigType } from '../../types/CommonTypes';
+import { RuntimeConfigType } from '../../types/CommonTypes';
 import { DocumentType } from '../../types/DocumentTypes';
+import { ConfigHelper } from '../../utils/ConfigHelper';
 
 export const defaultMockReturn = jest.fn().mockResolvedValue({ success: true, status: 0 });
 
-const mockConfig: ConfigType = {
+const mockConfig: RuntimeConfigType = ConfigHelper.createRuntimeConfig({
     onActionsChanged: defaultMockReturn,
     onStateChanged: defaultMockReturn,
     onAuthExpired: defaultMockReturn,
@@ -11,6 +12,7 @@ const mockConfig: ConfigType = {
     onDocumentLoaded: defaultMockReturn,
     onSelectedFrameLayoutChanged: defaultMockReturn,
     onSelectedFramesLayoutChanged: defaultMockReturn,
+    onFramesLayoutChanged: defaultMockReturn,
     onSelectedFrameContentChanged: defaultMockReturn,
     onSelectedFramesContentChanged: defaultMockReturn,
     editorLink: 'https://chili-editor-dev.azurewebsites.net/',
@@ -22,6 +24,7 @@ const mockConfig: ConfigType = {
     onVariableListChanged: defaultMockReturn,
     onSelectedToolChanged: defaultMockReturn,
     onUndoStackStateChanged: jest.fn().mockResolvedValue({ success: true, status: 0 }),
+    onCustomUndoDataChanged: defaultMockReturn,
     onSelectedLayoutFramesChanged: defaultMockReturn,
     onSelectedTextStyleChanged: defaultMockReturn,
     onColorsChanged: defaultMockReturn,
@@ -32,7 +35,9 @@ const mockConfig: ConfigType = {
     onLayoutsChanged: defaultMockReturn,
     onConnectorEvent: defaultMockReturn,
     onZoomChanged: defaultMockReturn,
+    onSelectedPageIdChanged: defaultMockReturn,
+    onPagesChanged: defaultMockReturn,
     onPageSizeChanged: defaultMockReturn,
     onViewModeChanged: defaultMockReturn,
-};
+});
 export default mockConfig;

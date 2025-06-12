@@ -2,7 +2,14 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { LayoutController } from '../../controllers/LayoutController';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectPage } from '../__mocks__/FrameProperties';
-import { BleedDeltaUpdate, LayoutIntent, MeasurementUnit, PositionEnum } from '../../types/LayoutTypes';
+import {
+    BleedDeltaUpdate,
+    LayoutIntent,
+    LayoutPreset,
+    ResizableLayoutPropertiesUpdate,
+    MeasurementUnit,
+    PositionEnum,
+} from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 let mockedLayoutController: LayoutController;
@@ -15,6 +22,7 @@ const mockedEditorApi: EditorAPI = {
     getSelectedLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     removeLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     addLayout: async () => getEditorResponseData(castToEditorResponse(null)),
+    addLayouts: async () => getEditorResponseData(castToEditorResponse(null)),
     renameLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     selectLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateLayout: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -32,6 +40,14 @@ const mockedEditorApi: EditorAPI = {
     setLayoutFillColorEnabled: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayoutFillColor: async () => getEditorResponseData(castToEditorResponse(null)),
     updateLayoutBleed: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutPrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
+    getLayoutPrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    getLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayoutDisplayName: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutAvailableForUser: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutSelectedByUser: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutResizableByUser: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -42,6 +58,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getSelectedLayout');
     jest.spyOn(mockedEditorApi, 'removeLayout');
     jest.spyOn(mockedEditorApi, 'addLayout');
+    jest.spyOn(mockedEditorApi, 'addLayouts');
     jest.spyOn(mockedEditorApi, 'renameLayout');
     jest.spyOn(mockedEditorApi, 'selectLayout');
     jest.spyOn(mockedEditorApi, 'duplicateLayout');
@@ -59,6 +76,14 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetLayoutFillColor');
     jest.spyOn(mockedEditorApi, 'setLayoutFillColorEnabled');
     jest.spyOn(mockedEditorApi, 'updateLayoutBleed');
+    jest.spyOn(mockedEditorApi, 'setLayoutPrivateData');
+    jest.spyOn(mockedEditorApi, 'getLayoutPrivateData');
+    jest.spyOn(mockedEditorApi, 'setLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'getLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'resetLayoutDisplayName');
+    jest.spyOn(mockedEditorApi, 'setLayoutAvailableForUser');
+    jest.spyOn(mockedEditorApi, 'setLayoutSelectedByUser');
+    jest.spyOn(mockedEditorApi, 'setLayoutResizableByUser');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -92,7 +117,32 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.removeLayout).toHaveBeenCalledWith('1');
     });
-    it('Should be possible to create a layout', async () => {
+    it('Should be possible to create a layout with a preset', async () => {
+        const preset: LayoutPreset = {
+            name: 'name',
+            intent: LayoutIntent.print,
+            unit: MeasurementUnit.mm,
+            width: '100 mm',
+            height: '200 mm',
+            duration: 5000,
+            bleed: {
+                left: '3 mm',
+                right: '2 mm',
+                bottom: '1 mm',
+                top: '0 mm',
+                areBleedValuesCombined: false,
+            },
+        };
+
+        await mockedLayoutController.create('1', [preset]);
+
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addLayouts).toHaveBeenCalledWith(
+            '1',
+            '[{"name":"name","intent":"print","unit":"mm","width":"100 mm","height":"200 mm","duration":5000,"bleed":{"left":"3 mm","right":"2 mm","bottom":"1 mm","top":"0 mm","areBleedValuesCombined":false}}]',
+        );
+    });
+    it('Should be possible to create a layout without a preset', async () => {
         await mockedLayoutController.create('1');
         expect(mockedEditorApi.addLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addLayout).toHaveBeenCalledWith('1');
@@ -246,5 +296,63 @@ describe('LayoutController', () => {
             expect(mockedEditorApi.updateLayoutBleed).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateLayoutBleed).toBeCalledWith('1', null);
         });
+    });
+
+    it('should be possible to set private data', async () => {
+        await mockedLayoutController.setPrivateData('1', { test: 'test' });
+        expect(mockedEditorApi.setLayoutPrivateData).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutPrivateData).toHaveBeenCalledWith('1', '{"test":"test"}');
+    });
+    it('should be possible to get private data', async () => {
+        await mockedLayoutController.getPrivateData('1');
+        expect(mockedEditorApi.getLayoutPrivateData).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getLayoutPrivateData).toHaveBeenCalledWith('1');
+    });
+
+    it('Should be possible to set the display name', async () => {
+        await mockedLayoutController.setDisplayName('1', 'new-name');
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledWith('1', 'new-name');
+    });
+
+    it('Should be possible to reset the display name', async () => {
+        await mockedLayoutController.resetDisplayName('1');
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutDisplayName).toHaveBeenCalledWith('1', null);
+    });
+
+    it('Should be possible to get the display name', async () => {
+        await mockedLayoutController.getDisplayName('1');
+        expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getLayoutDisplayName).toHaveBeenCalledWith('1');
+    });
+
+    it('Should be possible to set layout availability', async () => {
+        await mockedLayoutController.setAvailableForUser('1', false);
+        expect(mockedEditorApi.setLayoutAvailableForUser).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutAvailableForUser).toHaveBeenCalledWith('1', false);
+    });
+
+    it('Should be possible to set user selected layout', async () => {
+        await mockedLayoutController.setSelectedByUser('1', false);
+        expect(mockedEditorApi.setLayoutSelectedByUser).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutSelectedByUser).toHaveBeenCalledWith('1', false);
+    });
+
+    it('Should be possible to set layout resizable', async () => {
+        const resizableLayoutPropertiesUpdate: ResizableLayoutPropertiesUpdate = {
+            enabled: { value: true },
+            minWidth: { value: '10 px' },
+            maxWidth: { value: '20 px' },
+            minHeight: { value: '10 px' },
+            maxHeight: { value: '20 px' },
+        };
+
+        await mockedLayoutController.setResizableByUser('1', resizableLayoutPropertiesUpdate);
+        expect(mockedEditorApi.setLayoutResizableByUser).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutResizableByUser).toBeCalledWith(
+            '1',
+            JSON.stringify(resizableLayoutPropertiesUpdate),
+        );
     });
 });

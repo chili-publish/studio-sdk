@@ -226,17 +226,19 @@ function setImageVariableValue(variableName: string | Variable, value: string) {
 }
 
 /**
+ * @deprecated
  * Gets the visibility status of a variable by its name or variable object.
  *
  * @param {string | Variable} name - The name of the variable to check or a variable object.
  *
- * @returns {boolean} `true` if the variable is visible, `false` otherwise.
+ * @returns {boolean} `false` since this method is being deprecated.
  */
 function getVariableIsVisible(name: string | Variable): boolean {
-    return studio.variables.byName(name).isVisible;
+    return false;
 }
 
 /**
+ * @deprecated
  * Sets the visibility status of a variable by its name or variable object.
  *
  * @param {string | Variable} name - The name of the variable to update or a variable object.
@@ -348,6 +350,19 @@ function setNumberVariableDecimalSeparator(variableName: string | Variable, sepa
     const numberVar = getNumberVariable(variableName);
 
     numberVar.setDecimalSeparator(separator);
+}
+
+/**
+ * Set decimal places of the number variable.
+ *
+ * @param {string | Variable} variableName - The name of the number variable or a variable object.
+ *
+ * @param decimalPlaces The decimal places (`0`, `1`, `2`, `3`, `4`).
+ */
+function setNumberVariableDecimalPlaces(variableName: string | Variable, decimalPlaces: number) {
+    const numberVar = getNumberVariable(variableName);
+
+    numberVar.setDecimalPlaces(decimalPlaces);
 }
 
 /**
@@ -610,9 +625,10 @@ function getSelectedLayoutName(): string {
  * Selects a layout by its name or layout object.
  *
  * @param {string | Layout | VariableValue} layoutName - The name of the layout or a variable value holding the layout name or a layout object to select.
+ * @param {boolean} [keepPageSize=false] - Whether the page size should be kept, defaults to false.
  */
-function selectLayout(layoutName: string | Layout | VariableValue) {
-    studio.layouts.select(layoutName);
+function selectLayout(layoutName: string | Layout | VariableValue, keepPageSize?: boolean) {
+    studio.layouts.select(layoutName, keepPageSize);
 }
 
 /**

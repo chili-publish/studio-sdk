@@ -1,6 +1,14 @@
-import type { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
+import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { Layout, MeasurementUnit, LayoutIntent, PositionEnum, BleedDeltaUpdate } from '../types/LayoutTypes';
+import {
+    BleedDeltaUpdate,
+    Layout,
+    LayoutIntent,
+    LayoutPreset,
+    ResizableLayoutPropertiesUpdate,
+    MeasurementUnit,
+    PositionEnum,
+} from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
 
@@ -76,8 +84,15 @@ export class LayoutController {
      * @param parentId the id of a specific layout, being the parent
      * @returns id of new layout
      */
-    create = async (parentId: Id) => {
+    create = async (parentId: Id, presets?: LayoutPreset[]) => {
         const res = await this.#editorAPI;
+
+        if (presets?.length) {
+            return res
+                .addLayouts(parentId, JSON.stringify(presets))
+                .then((result) => getEditorResponseData<Id>(result));
+        }
+
         return res.addLayout(parentId).then((result) => getEditorResponseData<Id>(result));
     };
 
@@ -187,7 +202,9 @@ export class LayoutController {
     };
 
     /**
+     * @deprecated
      * This method returns a UInt8Array containing a PNG encoded image of the currently selected layout.
+     * This method is deprecated, please use getSnapshot in the PageController
      * @returns UInt8Array snapshot of the current layout
      */
     getSelectedSnapshot = async () => {
@@ -299,5 +316,97 @@ export class LayoutController {
     resetBleedValues = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.updateLayoutBleed(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the private data for any layout
+     * @param id the id of the layout to update
+     * @param privateData the private data
+     * @returns
+     */
+    setPrivateData = async (id: string, privateData: PrivateData) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutPrivateData(id, JSON.stringify(privateData))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the private data for any layout
+     * @param id the id of the layout
+     * @returns the private data
+     */
+    getPrivateData = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutPrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+
+    /**
+     * Sets the display name for any layout
+     * @param id the id of the layout to update
+     * @param displayName the display name
+     * @returns
+     */
+    setDisplayName = async (id: string, displayName: string) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutDisplayName(id, displayName).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Gets the display name for any layout
+     * @param id the id of the layout
+     * @returns the display name
+     */
+    getDisplayName = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutDisplayName(id).then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * Resets the display name for any layout
+     * @param id the id of the layout to update
+     * @returns
+     */
+    resetDisplayName = async (id: string) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutDisplayName(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the layout availability for end-users
+     *
+     * @param id The id of a specific layout
+     * @param isAvailable whether this layout is available for end-users
+     * @returns
+     */
+    setAvailableForUser = async (id: Id, isAvailable: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutAvailableForUser(id, isAvailable).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the user selected layout
+     *
+     * @param id The id of a specific layout
+     * @param isSelected whether this layout is selected by end-users
+     * @returns
+     */
+    setSelectedByUser = async (id: Id, isSelected: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setLayoutSelectedByUser(id, isSelected).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the layout size boundaries for end-users
+     *
+     * @param id The id of a specific layout
+     * @param resizableLayoutProperties the new layout size boundaries
+     * @returns
+     */
+    setResizableByUser = async (id: Id, resizableLayoutProperties: ResizableLayoutPropertiesUpdate) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutResizableByUser(id, JSON.stringify(resizableLayoutProperties))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

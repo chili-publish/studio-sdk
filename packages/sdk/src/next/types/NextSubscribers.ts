@@ -1,3 +1,5 @@
 export interface NextSubscribers {
-    onVariableListChanged: boolean;
+    onVariableListChanged?: boolean;
+    onConnectorsChanged?: boolean;
+    onPageSizeChanged?: boolean;
 }

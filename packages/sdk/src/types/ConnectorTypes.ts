@@ -1,4 +1,12 @@
+import type {
+    Dictionary as ContextDictionary,
+    ConnectorConfigOptions as GenericConnectorConfigOptions,
+    ConnectorConfigValue as GenericConnectorConfigValue,
+    QueryPage as QueryResult,
+} from '@chili-studio/connector-types';
 import { Id } from './CommonTypes';
+
+export type { FilePointer, QueryOptions } from '@chili-studio/connector-types';
 
 export enum DeprecatedMediaType {
     file = 0,
@@ -18,6 +26,7 @@ export enum MediaType {
 export enum ConnectorType {
     media = 'media',
     fonts = 'fonts',
+    data = 'data',
 }
 
 export enum SortBy {
@@ -31,28 +40,21 @@ export enum SortOrder {
     descending = 'desc',
 }
 
-export type QueryOptions = {
-    filter?: string[] | null;
-    collection?: string | null;
-    pageToken?: string | null;
-    pageSize?: number | null;
-    sortBy?: SortBy | null;
-    sortOrder?: SortOrder | null;
-};
+export enum ConnectorConfigValueType {
+    text = 'text',
+    boolean = 'boolean',
+}
 
-export type FontConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    preview: boolean;
-    filtering: boolean;
-};
+export enum ConnectorConfigContextType {
+    query = 'query',
+    upload = 'upload',
+}
 
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
-    metadata?: boolean;
-};
+export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType, ConnectorConfigContextType>;
+export type ConnectorConfigOptions = GenericConnectorConfigOptions<
+    ConnectorConfigValueType,
+    ConnectorConfigContextType
+>;
 
 interface ConnectorRegistrationBase {
     /**
@@ -111,7 +113,7 @@ export enum ConnectorRegistrationSource {
 
 export interface EngineToConnectorMapping {
     name: string;
-    value: string | boolean;
+    value: ContextDictionary[keyof ContextDictionary];
     direction: ConnectorMappingDirection.engineToConnector;
 }
 
@@ -170,10 +172,8 @@ export type ConnectorEvent = {
     type: ConnectorEventType;
 };
 
-export type QueryPage<T> = {
-    pageSize: number;
+export type QueryPage<T> = Omit<QueryResult<T>, 'links'> & {
     nextPageToken?: string;
-    data: T[];
 };
 
 export enum ConnectorMappingSource {
@@ -315,3 +315,24 @@ export type AuthRefreshRequest = {
     type: AuthRefreshTypeEnum;
     headerValue: string | null;
 };
+
+export type ConnectorOptions = ContextDictionary;
+export type MetaData = ContextDictionary;
+
+export type UploadValidationConfiguration = {
+    minWidthPixels?: number | null;
+    maxWidthPixels?: number | null;
+    minHeightPixels?: number | null;
+    maxHeightPixels?: number | null;
+    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[];
+};
+
+export enum UploadAssetValidationErrorType {
+    minDimension = 'minDimension',
+}
+
+export class UploadAssetValidationError extends Error {
+    constructor(message: string, public type: UploadAssetValidationErrorType) {
+        super(message);
+    }
+}

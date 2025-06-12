@@ -16,6 +16,7 @@ const mockedEditorApi: EditorAPI = {
     getTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
     setTextByFrameId: async () => getEditorResponseData(castToEditorResponse(null)),
     selectTextById: async () => getEditorResponseData(castToEditorResponse(null)),
+    setCustomUndoData: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -28,6 +29,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getTextByFrameId');
     jest.spyOn(mockedEditorApi, 'setTextByFrameId');
     jest.spyOn(mockedEditorApi, 'selectTextById');
+    jest.spyOn(mockedEditorApi, 'setCustomUndoData');
 
     frameId = mockSelectFrame.id;
 });
@@ -85,5 +87,24 @@ describe('ExperimentController', () => {
         await mockedExperimentController.selectText(frameId, startIndex, length);
         expect(mockedEditorApi.selectTextById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.selectTextById).toHaveBeenCalledWith(frameId, startIndex, length);
+    });
+
+    it('Should call setCustomUndoData of EditorAPI successfully', async () => {
+        const key = 'testKey';
+        const value = 'testValue';
+        const skipEvent = true;
+
+        await mockedExperimentController.addCustomUndoData(key, value, skipEvent);
+        expect(mockedEditorApi.setCustomUndoData).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setCustomUndoData).toHaveBeenCalledWith(key, value, skipEvent);
+    });
+
+    it('Should call setCustomUndoData of EditorAPI with default skipEvent value', async () => {
+        const key = 'testKey';
+        const value = 'testValue';
+
+        await mockedExperimentController.addCustomUndoData(key, value);
+        expect(mockedEditorApi.setCustomUndoData).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.setCustomUndoData).toHaveBeenCalledWith(key, value, false);
     });
 });

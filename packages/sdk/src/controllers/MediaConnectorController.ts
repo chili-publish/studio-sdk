@@ -1,26 +1,35 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
+import { CallSender } from 'penpal';
+import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
+    ConnectorConfigOptions,
     DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
-    MediaConnectorCapabilities,
+    FilePointer,
     MediaType,
+    MetaData,
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
-import { CallSender } from 'penpal';
-import { Media, MediaDownloadIntent, MediaDetail, MediaDownloadType } from '../types/MediaConnectorTypes';
+import {
+    Media,
+    MediaConnectorCapabilities,
+    MediaDetail,
+    MediaDownloadIntent,
+    MediaDownloadType,
+} from '../types/MediaConnectorTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
  * Methods inside this controller can be called by `window.SDK.mediaConnector.{method-name}`
  *
- * The way CHILI Studio handles different sources of media is called 'MediaConnectors'. A MediaConnectors is an
- * implementation of a set of capabilities we need to interact with a certain Digital Asset Management system.
- * In essence a connector is the combination of a Javascript snippet and some metadata. The Javascript snippet
- * is loaded in the studio engine using a sandboxed Javascript execution engine (QuickJs). This allows us to
- * execute the media connector both on web using webassembly and on the server side during e.g. animation output
- * generation.
+ * The way GraFx Studio handles different sources of media is called 'MediaConnector'.
+ * A MediaConnector is an implementation of a set of capabilities we need
+ * to interact with a certain Digital Asset Management system.
+ * In essence, a connector is the combination of a JavaScript snippet and some metadata.
+ * The JavaScript snippet is loaded in the studio engine using a sandboxed JavaScript execution engine (QuickJs).
+ * This allows us to execute the media connector
+ * both on web using webassembly and on the server side during e.g. animation output generation.
  * This controller is an interface to the running connector instance inside the studio engine.
  */
 export class MediaConnectorController {
@@ -155,4 +164,19 @@ export class MediaConnectorController {
                 return deprecatedMediaDownloadType as unknown as MediaDownloadType;
         }
     }
+
+    /**
+     * Invokes the upload on the connector, using the given staged pointer(s).
+     * If you want help with staging files, use the `stageFiles` method from the UtilsController.
+     * @param connectorId The MediaConnector instance to use (just like download API).
+     * @param filePointers Array of FilePointer as staged by stageFile(s).
+     * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).
+     * @returns Promise<Media[]>
+     */
+    upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
+        const res = await this.#editorAPI;
+        return res
+            .mediaConnectorUpload(connectorId, JSON.stringify(filePointers), JSON.stringify(context))
+            .then((result) => getEditorResponseData<Media[]>(result));
+    };
 }

@@ -3,28 +3,27 @@ on:
   push:
     branches:
       - main
+env:
+  NODE_VERSION: 20
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18]
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PACKAGE_SECRET }}
       - name: Check cache
         id: cache
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: packages/sdk/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
       - name: install dependencies
@@ -33,22 +32,18 @@ jobs:
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
-      - name: run readmeUpdater
-        run: yarn make-badges
       - name: bump version
-        uses: phips28/gh-action-bump-version@master
+        uses: phips28/gh-action-bump-version@v11.0.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
         with:
-          version-type:  'prerelease'
+          version-type: "prerelease"
           skip-commit: "true"
           skip-tag: "true"
-
-      # execute local js script
+          preid: alfa
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
-
       - name: build code
         run: yarn build
       - name: publish sdk build
@@ -69,7 +64,6 @@ jobs:
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
           mkdir -p ${versionpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
-
       - name: Copy to Azure Blob Storage (SDK)
         uses: azure/CLI@v1
         with:

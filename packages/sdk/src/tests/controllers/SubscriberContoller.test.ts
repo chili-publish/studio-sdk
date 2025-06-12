@@ -1,3 +1,4 @@
+import { SubscriberController } from '../../controllers/SubscriberController';
 import {
     ActionEditorEvent,
     BarcodeValidationResult,
@@ -5,19 +6,21 @@ import {
     ConnectorRegistration,
     ConnectorRegistrationSource,
     DocumentAction,
+    DocumentIssue,
+    DocumentIssueTypeEnum,
     Id,
     LayoutType,
     MeasurementUnit,
     ViewMode,
     Viewport,
 } from '../../index';
-import { SubscriberController } from '../../controllers/SubscriberController';
-import { mockFrameAnimation } from '../__mocks__/animations';
+import { mockFrameAnimation } from '../__mocks__/Animations';
 
 import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
-import { ToolType } from '../../utils/enums';
+import * as Next from '../../next/types/ConnectorTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -27,12 +30,13 @@ import {
     GrafxTokenAuthCredentials,
     RefreshedAuthCredendentials,
 } from '../../types/ConnectorTypes';
-import type { PageSize } from '../../types/PageTypes';
+import type { Page, PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
-import { AsyncError, EditorAPI } from '../../types/CommonTypes';
+import { ConfigHelper } from '../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import * as Next from '../../next/types/ConnectorTypes';
+import { ToolType } from '../../utils/Enums';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
+import { EngineEditModeType } from '../../types/EngineEditModeTypes';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -41,6 +45,7 @@ const mockEditorApi: EditorAPI = {
     onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onFramesLayoutChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFrameContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onSelectedFramesContentChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSelectionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -64,24 +69,29 @@ const mockEditorApi: EditorAPI = {
     onConnectorsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onZoomChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onActionsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedPageIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPagesChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onPageSnapshotInvalidated: async () => getEditorResponseData(castToEditorResponse(null)),
     onPageSizeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onScrubberPositionChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onUndoStackStateChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCustomUndoDataChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onShapeCornerRadiusChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCropActiveFrameIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onAsyncError: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
-    mockedSubscriberController = new SubscriberController(mockEditorApi, mockLocalConfig);
-    mockedAnimation = mockFrameAnimation;
-
     jest.spyOn(mockEditorApi, 'onAnimationChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesLayoutChanged');
+    jest.spyOn(mockEditorApi, 'onFramesLayoutChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFrameContentChanged');
     jest.spyOn(mockEditorApi, 'onSelectedFramesContentChanged');
     jest.spyOn(mockEditorApi, 'onPageSelectionChanged');
@@ -105,15 +115,28 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onZoomChanged');
     jest.spyOn(mockEditorApi, 'onActionsChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedPageIdChanged');
+    jest.spyOn(mockEditorApi, 'onPagesChanged');
+    jest.spyOn(mockEditorApi, 'onPageSnapshotInvalidated');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
     jest.spyOn(mockEditorApi, 'onScrubberPositionChanged');
     jest.spyOn(mockEditorApi, 'onUndoStackStateChanged');
+    jest.spyOn(mockEditorApi, 'onCustomUndoDataChanged');
     jest.spyOn(mockEditorApi, 'onShapeCornerRadiusChanged');
     jest.spyOn(mockEditorApi, 'onCropActiveFrameIdChanged');
     jest.spyOn(mockEditorApi, 'onAsyncError');
     jest.spyOn(mockEditorApi, 'onViewModeChanged');
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
+    jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
+    jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
+    jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
+
+    mockedSubscriberController = new SubscriberController(
+        ConfigHelper.createRuntimeConfig(mockEditorApi),
+        mockLocalConfig,
+    );
+    mockedAnimation = mockFrameAnimation;
 });
 
 afterEach(() => {
@@ -145,6 +168,18 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onSelectedFrameLayoutChanged).toHaveBeenCalledWith(undefined);
     });
+    it('Should be possible to subscribe to onFramesLayoutChanged when a single frame is passed', async () => {
+        await mockedSubscriberController.onFramesLayoutChanged('[2]');
+
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledWith([2]);
+    });
+    it('Should be possible to subscribe to onFramesLayoutChanged when multiple frames are passed', async () => {
+        await mockedSubscriberController.onFramesLayoutChanged('[1,2]');
+
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onFramesLayoutChanged).toHaveBeenCalledWith([1, 2]);
+    });
     it('Should be possible to subscribe to onSelectedFramesContentChanged when a single frame is passed', async () => {
         await mockedSubscriberController.onSelectedFramesContentChanged('[2]');
         expect(mockEditorApi.onSelectedFramesContentChanged).toHaveBeenCalledTimes(1);
@@ -172,7 +207,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onSelectedLayoutUnitChanged).toHaveBeenCalledWith(MeasurementUnit.mm);
     });
     it('Should be possible to subscribe to onPageSelectionChanged', async () => {
-        await mockedSubscriberController.onPageSelectionChanged();
+        await mockedSubscriberController.onPageSelectionChanged('a');
         expect(mockEditorApi.onPageSelectionChanged).toHaveBeenCalledTimes(1);
     });
     it('Should be possible to subscribe to the onStateChanged', async () => {
@@ -211,7 +246,7 @@ describe('SubscriberController', () => {
         );
         expect(mockEditorApi.onFontFamiliesChanged).toHaveBeenCalledTimes(1);
     });
-    it('Should be possible to onCharacterStylesChanged', async () => {
+    it('Should be possible to subscribe onCharacterStylesChanged', async () => {
         await mockedSubscriberController.onCharacterStylesChanged(JSON.stringify([{ id: 1, name: 'C1' }]));
         expect(mockEditorApi.onCharacterStylesChanged).toHaveBeenCalledTimes(1);
     });
@@ -300,6 +335,25 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onActionsChanged).toHaveBeenCalledWith(actions);
     });
 
+    it('Should be possible to subscribe to onSelectedPageIdChanged', async () => {
+        await mockedSubscriberController.onSelectedPageIdChanged('newid');
+        expect(mockEditorApi.onSelectedPageIdChanged).toHaveBeenCalledWith('newid');
+    });
+
+    it('should be possible to subscribe to onPagesChanged', async () => {
+        const pages: Page[] = [{ id: 'id', number: 1, isVisible: true, width: 123, height: 456 }];
+
+        await mockedSubscriberController.onPagesChanged(JSON.stringify(pages));
+        expect(mockEditorApi.onPagesChanged).toHaveBeenCalledWith(pages);
+    });
+
+    it('should be possible to subscribe to onPageSnapshotInvalidated', async () => {
+        const pageID: Id = '123';
+
+        await mockedSubscriberController.onPageSnapshotInvalidated(JSON.stringify(pageID));
+        expect(mockEditorApi.onPageSnapshotInvalidated).toHaveBeenCalledWith(pageID);
+    });
+
     it('should be possible to subscribe to onPageSizeChanged', async () => {
         const pageSize: PageSize = { id: 'id', width: 123, height: 456 };
 
@@ -318,7 +372,12 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onUndoStackStateChanged).toHaveBeenCalledTimes(1);
     });
 
-    it('should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
+    it('Should call trigger the CustomUndoDataChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onCustomUndoDataChanged(JSON.stringify({ key: 'value' }));
+        expect(mockEditorApi.onCustomUndoDataChanged).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to subscribe to onShapeCornerRadiusChanged', async () => {
         const cornerRadius: CornerRadiusUpdateModel = { radiusAll: 5 };
         await mockedSubscriberController.onShapeCornerRadiusChanged(JSON.stringify(cornerRadius));
 
@@ -326,7 +385,7 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onShapeCornerRadiusChanged).toHaveBeenCalledWith(cornerRadius);
     });
 
-    it('should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
+    it('Should be possible to subscribe to onCropActiveFrameIdChanged', async () => {
         const id: Id = '1';
         await mockedSubscriberController.onCropActiveFrameIdChanged(id);
 
@@ -334,8 +393,8 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onCropActiveFrameIdChanged).toHaveBeenCalledWith(id);
     });
 
-    it('should be possible to subscribe to onAsyncError', async () => {
-        const asyncError: AsyncError = { message: 'hello' };
+    it('Should be possible to subscribe to onAsyncError', async () => {
+        const asyncError = { message: 'hello' };
         await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
 
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
@@ -364,16 +423,17 @@ describe('SubscriberController', () => {
         it('returns the token defined by the callback', async () => {
             const refreshedToken = 'newToken';
 
-            const mockConfig = {
-                onAuthExpired() {
-                    return new Promise<AuthCredentials | null>((resolve) =>
-                        resolve(new GrafxTokenAuthCredentials(refreshedToken)),
-                    );
-                },
-            };
+            const localMockConfig = ConfigHelper.createRuntimeConfig({
+                onAuthExpired: jest
+                    .fn()
+                    .mockReturnValue(
+                        new Promise<AuthCredentials | null>((resolve) =>
+                            resolve(new GrafxTokenAuthCredentials(refreshedToken)),
+                        ),
+                    ),
+            });
 
-            jest.spyOn(mockConfig, 'onAuthExpired');
-            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(grafxAuthRefreshRequest),
@@ -382,19 +442,20 @@ describe('SubscriberController', () => {
             const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
 
             expect(resultAuth.token).toBe(refreshedToken);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(grafxAuthRefreshRequest);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledWith(grafxAuthRefreshRequest);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns the notification defined by the callback', async () => {
-            const mockConfig = {
-                onAuthExpired() {
-                    return new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials()));
-                },
-            };
+            const localMockConfig = ConfigHelper.createRuntimeConfig({
+                onAuthExpired: jest
+                    .fn()
+                    .mockReturnValue(
+                        new Promise<AuthCredentials | null>((resolve) => resolve(new RefreshedAuthCredendentials())),
+                    ),
+            });
 
-            jest.spyOn(mockConfig, 'onAuthExpired');
-            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(anyAuthRefreshRequest),
@@ -403,12 +464,15 @@ describe('SubscriberController', () => {
             const resultAuth = JSON.parse(resultJsonString!);
 
             expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledWith(anyAuthRefreshRequest);
-            expect(mockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledWith(anyAuthRefreshRequest);
+            expect(localMockConfig.onAuthExpired).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', async () => {
-            const mockedSubscriberController = new SubscriberController({}, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(
+                ConfigHelper.createRuntimeConfig({}),
+                new Map<string, string>(),
+            );
 
             const result = await mockedSubscriberController.onAuthExpired(JSON.stringify(grafxAuthRefreshRequest));
 
@@ -436,30 +500,59 @@ describe('SubscriberController', () => {
         it('returns the viewport defined by the callback', () => {
             const viewport: Viewport = { top: 0, left: 0, width: 100, height: 100, margin: 10 };
 
-            const mockConfig = {
-                onViewportRequested() {
-                    return viewport;
-                },
-            };
+            const localMockConfig = ConfigHelper.createRuntimeConfig({
+                onViewportRequested: jest.fn().mockReturnValue(viewport),
+            });
 
-            jest.spyOn(mockConfig, 'onViewportRequested');
+            jest.spyOn(localMockConfig, 'onViewportRequested');
 
-            const mockedSubscriberController = new SubscriberController(mockConfig, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = mockedSubscriberController.onViewportRequested();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const resultViewport: Viewport = JSON.parse(resultJsonString!);
 
             expect(resultViewport).toStrictEqual(viewport);
-            expect(mockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
+            expect(localMockConfig.onViewportRequested).toHaveBeenCalledTimes(1);
         });
 
         it('returns a null token if the listener is not defined', () => {
-            const mockedSubscriberController = new SubscriberController({}, new Map<string, string>());
+            const mockedSubscriberController = new SubscriberController(
+                ConfigHelper.createRuntimeConfig({}),
+                new Map<string, string>(),
+            );
 
             const result = mockedSubscriberController.onViewportRequested();
 
             expect(result).toBe(null);
         });
+    });
+
+    it('should be possible to subscribe to onDataSourceIdChanged', async () => {
+        const connectorId: Id = '1';
+        await mockedSubscriberController.onDataSourceIdChanged(connectorId);
+
+        expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
+    });
+
+    it('should be possible to subscribe to onDocumentIssueListChanged', async () => {
+        const documentIssues: DocumentIssue[] = [
+            { fontId: 'fontId', name: 'fontName', type: DocumentIssueTypeEnum.fontLoading },
+        ];
+        await mockedSubscriberController.onDocumentIssueListChanged(JSON.stringify(documentIssues));
+
+        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onDocumentIssueListChanged).toHaveBeenCalledWith(documentIssues);
+    });
+
+    it('Should call onEngineEditModeChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onEngineEditModeChanged(
+            JSON.stringify([{ frameId: '1', mode: EngineEditModeType.frameSubjectArea }]),
+        );
+        expect(mockEditorApi.onEngineEditModeChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onEngineEditModeChanged).toHaveBeenCalledWith([
+            { frameId: '1', mode: EngineEditModeType.frameSubjectArea },
+        ]);
     });
 });

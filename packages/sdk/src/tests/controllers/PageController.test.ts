@@ -1,5 +1,6 @@
-import { EditorAPI } from '../../types/CommonTypes';
 import { PageController } from '../../controllers/PageController';
+import { EditorAPI } from '../../types/CommonTypes';
+import { SnapshotSettings } from '../../types/PageTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedPageController: PageController;
@@ -9,6 +10,16 @@ const mockEditorApi: EditorAPI = {
     getPageById: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageWidth: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageHeight: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    setPageSize: async (width: unknown, height: unknown) =>
+        getEditorResponseData(castToEditorResponse({ width, height })),
+    addPage: async () => getEditorResponseData(castToEditorResponse('frameID')),
+    removePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    getPageSnapshotWithSettings: async () => getEditorResponseData(castToEditorResponse([1])),
+    selectPage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    duplicatePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    setPageIsVisible: async (id: unknown, isVisible: unknown) =>
+        getEditorResponseData(castToEditorResponse({ id, isVisible })),
+    reorderPages: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
 };
 
 beforeEach(() => {
@@ -17,12 +28,44 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'getPageById');
     jest.spyOn(mockEditorApi, 'setPageWidth');
     jest.spyOn(mockEditorApi, 'setPageHeight');
+    jest.spyOn(mockEditorApi, 'setPageSize');
+    jest.spyOn(mockEditorApi, 'addPage');
+    jest.spyOn(mockEditorApi, 'removePage');
+    jest.spyOn(mockEditorApi, 'getPageSnapshotWithSettings');
+    jest.spyOn(mockEditorApi, 'selectPage');
+    jest.spyOn(mockEditorApi, 'setPageIsVisible');
+    jest.spyOn(mockEditorApi, 'duplicatePage');
+    jest.spyOn(mockEditorApi, 'reorderPages');
 });
 
 afterAll(() => {
     jest.restoreAllMocks();
 });
 describe('PageController', () => {
+    it('Should call the add method', async () => {
+        await mockedPageController.add();
+        expect(mockEditorApi.addPage).toHaveBeenCalledTimes(1);
+    });
+    it('Should call the remove method', async () => {
+        await mockedPageController.remove('1');
+        expect(mockEditorApi.removePage).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.removePage).toHaveBeenCalledWith('1');
+    });
+    it('Should call the select method', async () => {
+        await mockedPageController.select('1');
+        expect(mockEditorApi.selectPage).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.selectPage).toHaveBeenCalledWith('1');
+    });
+    it('Should call the duplicate method', async () => {
+        await mockedPageController.duplicate('1');
+        expect(mockEditorApi.duplicatePage).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.duplicatePage).toHaveBeenCalledWith('1');
+    });
+    it('Should call the setVisibility method', async () => {
+        await mockedPageController.setVisibility('1', true);
+        expect(mockEditorApi.setPageIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setPageIsVisible).toHaveBeenCalledWith('1', true);
+    });
     it('Should call the getPages method', async () => {
         await mockedPageController.getAll();
         expect(mockEditorApi.getPages).toHaveBeenCalledTimes(1);
@@ -35,21 +78,55 @@ describe('PageController', () => {
     it('Should call the setWidth method', async () => {
         await mockedPageController.setWidth('id', '4');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4');
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('4');
     });
     it('Should call the setHeight method', async () => {
         await mockedPageController.setHeight('id', '4');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4');
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4');
+    });
+    it('Should call the setSize method', async () => {
+        await mockedPageController.setSize('4', '2');
+        expect(mockEditorApi.setPageSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setPageSize).toHaveBeenCalledWith('4', '2');
+    });
+
+    it('getSnapshot should call the getSnapshotWithSettings method', async () => {
+        const settings = { largestAxisSize: 5 } as SnapshotSettings;
+        await mockedPageController.getSnapshot('1', settings);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', JSON.stringify(settings));
+    });
+
+    it('getSnapshot should call the getSnapshotWithSettings method with null', async () => {
+        await mockedPageController.getSnapshot('1');
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(2);
+        expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', null);
     });
 
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
         await mockedPageController.setHeight('id', '4+2');
         expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('id', '4+2');
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4+2');
 
         await mockedPageController.setWidth('id', '4*3');
         expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(2);
-        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('id', '4*3');
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('4*3');
+    });
+
+    it('Should accept undefined for pageId in pageHeight and pageWidth methods', async () => {
+        await mockedPageController.setHeight(undefined, '4+2');
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledTimes(3);
+        expect(mockEditorApi.setPageHeight).toHaveBeenCalledWith('4+2');
+
+        await mockedPageController.setWidth(undefined, '4*3');
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledTimes(3);
+        expect(mockEditorApi.setPageWidth).toHaveBeenCalledWith('4*3');
+    });
+
+    it('Should be possible to reorder the pages', async () => {
+        await mockedPageController.move(1, ['id']);
+        expect(mockEditorApi.reorderPages).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.reorderPages).toHaveBeenCalledWith(1, ['id']);
     });
 });

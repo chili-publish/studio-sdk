@@ -1,8 +1,10 @@
 import { Connection } from 'penpal';
-import { ConfigType, EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, RuntimeConfigType } from '../types/CommonTypes';
 import { SubscriberController } from './controllers/SubscriberController';
 import { VariableController } from './controllers/VariableController';
 import { ConnectorController } from './controllers/ConnectorController';
+import { PageController } from './controllers/PageController';
+import { CanvasController } from '../controllers/CanvasController';
 
 /**
  * The next initiator is a split off on SDK level to tag next features.
@@ -14,7 +16,7 @@ import { ConnectorController } from './controllers/ConnectorController';
  * this can be referenced in your application as @chili-publish/studio-sdk/lib/src/next
  */
 export class NextInitiator {
-    private config: ConfigType;
+    private config: RuntimeConfigType;
     private connection: Connection;
 
     /**
@@ -25,13 +27,15 @@ export class NextInitiator {
     subscriber: SubscriberController;
     variable: VariableController;
     connector: ConnectorController;
+    page: PageController;
+    canvas: CanvasController;
 
     /**
      * The next initiator is a split off on SDK level to tag next features
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
      * @param config The configuration object where the SDK and editor can get configured
      */
-    constructor(config: ConfigType, connection: Connection, editorAPI: EditorAPI) {
+    constructor(config: RuntimeConfigType, connection: Connection, editorAPI: EditorAPI) {
         this.config = config;
         this.connection = connection;
         this.editorAPI = editorAPI;
@@ -39,5 +43,7 @@ export class NextInitiator {
         this.subscriber = new SubscriberController(config);
         this.variable = new VariableController(this.editorAPI);
         this.connector = new ConnectorController(this.editorAPI);
+        this.page = new PageController(this.editorAPI);
+        this.canvas = new CanvasController(this.editorAPI);
     }
 }

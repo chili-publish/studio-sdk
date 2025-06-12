@@ -1,4 +1,4 @@
-import { EditorAPI, Id } from '../types/CommonTypes';
+import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
     DateRestriction,
@@ -9,9 +9,10 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
-    PrivateData,
     Variable,
     VariableType,
+    VariableVisibility,
+    VariableVisibilityType,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
@@ -322,7 +323,7 @@ export class VariableController {
      * @param label label of the variable
      * @returns
      */
-    setLabel = async (id: string, label: string) => {
+    setLabel = async (id: string, label: string | null) => {
         const res = await this.#editorAPI;
         return res.setVariableLabel(id, label).then((result) => getEditorResponseData<null>(result));
     };
@@ -481,23 +482,57 @@ export class VariableController {
     };
 
     /**
-     * This method sets isVisible flag for a variable
+     * @deprecated Use `setVariableVisibility` instead.
+     * This method redirects to `setVariableVisibility` and sets visibility config for a variable by id.
+     * @param id variable id
+     * @param isVisible visibility flag
      * @returns
      */
     setIsVisible = async (id: string, isVisible: boolean) => {
-        const res = await this.#editorAPI;
-        return res.setVariableIsVisible(id, isVisible).then((result) => getEditorResponseData<null>(result));
+        const config = isVisible
+            ? { type: VariableVisibilityType.visible }
+            : { type: VariableVisibilityType.invisible };
+
+        return this.setVariableVisibility(id, config as VariableVisibility);
     };
 
     /**
-     * @deprecated Use `setIsVisible` instead.
-     *
-     * This method sets isHidden flag for a variable
+     * @deprecated Use `setVariableVisibility` instead.
+     * This method redirects to `setVariableVisibility` and sets visibility config for a variable by id.
+     * @param id variable id
+     * @param isHidden visibility flag
      * @returns
      */
     setIsHidden = async (id: string, isHidden: boolean) => {
+        const config = isHidden ? { type: VariableVisibilityType.invisible } : { type: VariableVisibilityType.visible };
+
+        return this.setVariableVisibility(id, config as VariableVisibility);
+    };
+
+    /**
+     * This method sets visibility config for a variable by id
+     * @param id variable id
+     * @param config visibility config
+     * @returns
+     */
+    setVariableVisibility = async (id: string, config: VariableVisibility) => {
         const res = await this.#editorAPI;
-        return res.setVariableIsVisible(id, !isHidden).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setVariableVisibility(id, JSON.stringify(config))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets which layouts are considered for variable visibility
+     * @param layoutIdList nullable layout id list.
+     * Pass null to reset to follow selected layout.
+     * @returns
+     */
+    setLayoutsForVariableVisibility = async (layoutIdList?: Id[] | null) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutsForVariableVisibility(layoutIdList ? JSON.stringify(layoutIdList) : null)
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -621,6 +656,40 @@ export class VariableController {
     getPrivateData = async (id: string) => {
         const res = await this.#editorAPI;
         return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+
+    /**
+     * This method sets the allowQuery flag for an image variable
+     * @param id the id of the variable
+     * @param allowQuery the allowQuery flag
+     * @returns
+     */
+    setAllowImageQuery = async (id: string, allowQuery: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowQuery(id, allowQuery).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the allowUpload flag for an image variable
+     * @param id the id of the variable
+     * @param allowUpload the allowUpload flag
+     * @returns
+     */
+    setAllowImageUpload = async (id: string, allowUpload: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**     
+     * This method sets the minimum size (both width and height) for an image variable that will be uploaded
+     * @param id the id of the variable
+     * @param minWidth the minimum width
+     * @param minHeight the minimum height
+     * @returns
+     */
+    setMinImageUploadSize = async (id: string, minWidth: string | null, minHeight: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableUploadMinSize(id, minWidth, minHeight).then((result) => getEditorResponseData<null>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {

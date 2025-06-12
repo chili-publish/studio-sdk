@@ -81,6 +81,28 @@ const updateCharacterStyle: CharacterStyleUpdate = {
             type: ColorUsageType.local,
         },
     },
+    strokeColor: {
+        value: {
+            color: {
+                type: ColorType.rgb,
+                r: 255,
+                g: 0,
+                b: 0,
+            },
+            opacity: 0.5,
+            isApplied: true,
+            type: ColorUsageType.local,
+        },
+    },
+    fillColorApplied: {
+        value: true,
+    },
+    strokeColorApplied: {
+        value: true,
+    },
+    strokeWidth: {
+        value: '1',
+    },
     underline: {
         value: true,
     },
@@ -109,6 +131,7 @@ describe('CharacterStyleController', () => {
     it('Should call the updateCharacterStyle method', async () => {
         await mockedCharacterStyleController.update('5', updateCharacterStyle);
         expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledWith('5', JSON.stringify(updateCharacterStyle));
     });
 
     it('Should call the removeCharacterStyle method', async () => {

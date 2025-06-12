@@ -219,9 +219,11 @@ declare module 'grafx-studio-actions' {
         export interface LayoutMethods {
             /**
              * Selects this layout
+             * @param {boolean} [keepPageSize=false] whether the page size should be
+             * kept, defaults to false
              * @returns
              */
-            select(): void;
+            select(keepPageSize?: boolean): void;
         }
 
         /**
@@ -368,10 +370,10 @@ declare module 'grafx-studio-actions' {
 
         export interface BaseVariable extends HasName {
             /**
+             * @deprecated the properly will no longer be used
              * Whether the variable is visible
              */
             readonly isVisible: boolean;
-
             /**
              * Whether the variable is read-only
              */
@@ -479,6 +481,19 @@ declare module 'grafx-studio-actions' {
              * @param separator the thousands separator
              */
             setThousandsSeparator(separator: NumberSeparator): void;
+
+            /**
+             * Sets decimal places of the number variable.
+             *
+             * @param decimalPlaces the decimal separator
+             * Possible values are:
+             * - 0
+             * - 1
+             * - 2
+             * - 3
+             * - 4
+             */
+            setDecimalPlaces(decimalPlaces: number): void;
         }
 
         /**
@@ -721,9 +736,11 @@ declare module 'grafx-studio-actions' {
             /**
              * Selects a layout by name
              * @param layoutName the layout name to select
+             * @param {boolean} [keepPageSize=false] whether the page size should be
+             * kept, defaults to false
              * @returns
              */
-            select(layoutName: string | Layout | VariableValue): void;
+            select(layoutName: string | Layout | VariableValue, keepPageSize?:boolean): void;
 
             /**
              * Returns all layouts in the document.
