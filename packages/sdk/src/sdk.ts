@@ -10,6 +10,7 @@ import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 import { AnimationController } from './controllers/AnimationController';
 import { BarcodeController } from './controllers/BarcodeController';
+import { BrandKitController } from './controllers/BrandKitController';
 import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { ClipboardController } from './controllers/ClipboardController';
@@ -64,6 +65,7 @@ export class SDK {
     shape: ShapeController;
     /** @experimental */
     barcode: BarcodeController;
+    brandKit: BrandKitController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
@@ -112,6 +114,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
+        this.brandKit = new BrandKitController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
@@ -222,6 +225,7 @@ export class SDK {
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
+        this.brandKit = new BrandKitController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
