@@ -1,13 +1,13 @@
+import { DocumentAction } from './ActionTypes';
 import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsOutroType } from './AnimationTypes';
+import { CharacterStyle } from './CharacterStyleTypes';
 import { DocumentColor } from './ColorStyleTypes';
 import { ActionEventErrorData, Id } from './CommonTypes';
 import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutIntent, LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
-import { Variable } from './VariableTypes';
-import { CharacterStyle } from './CharacterStyleTypes';
-import { DocumentAction } from './ActionTypes';
 import { ShapeProperties } from './ShapeTypes';
+import { Variable } from './VariableTypes';
 
 export type DocumentError = { error: Record<string, unknown>; code: number };
 
@@ -62,6 +62,8 @@ export type UndoState = {
 export type OperationName = { translationKey: number; name: string };
 
 /**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ *
  * This type should give a clear indication of how the JSON document is structured. This could help you with building a test document yourself.
  */
 export interface ChiliDocument {
@@ -74,12 +76,18 @@ export interface ChiliDocument {
     actions: DocumentAction[];
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface DocumentPage {
     id: string;
     number: number;
     frames: (ImageFrame | TextFrame | ShapeFrame)[];
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface DocumentFrame {
     id: string;
     name: string;
@@ -87,14 +95,23 @@ export interface DocumentFrame {
     blendMode: BlendMode;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ImageFrame extends DocumentFrame {
     src: ImageFrameUrlSource | ImageFrameConnectorSource | ImageFrameVariableSource;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ShapeFrame extends DocumentFrame {
     shapeProperties: ShapeProperties;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface TextFrame extends DocumentFrame {
     textContent: string;
     paddingLeft: number;
@@ -112,29 +129,46 @@ export interface TextFrame extends DocumentFrame {
     hasClippingPath: boolean;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export enum ImageFrameSourceType {
     url = 'url',
     assetProvider = 'assetProvider',
     variable = 'variable',
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ImageFrameSource {
     type: ImageFrameSourceType;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ImageFrameUrlSource extends ImageFrameSource {
     url: string;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ImageFrameConnectorSource extends ImageFrameSource {
     id: string;
     assetId: string;
 }
 
-export interface ImageFrameVariableSource extends ImageFrameSource {
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */ export interface ImageFrameVariableSource extends ImageFrameSource {
     id: string;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface Layout {
     id: string;
     name: string;
@@ -149,6 +183,9 @@ export interface Layout {
     intent?: LayoutIntent;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface TopLayout extends Layout {
     frameAnimations: FrameAnimation[];
     timelineLengthMs: number;
@@ -158,14 +195,24 @@ export interface TopLayout extends Layout {
     height: number;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ChildLayout extends Layout {
     parentId: Id;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export enum FramePropertiesType {
     top = 'top',
     child = 'child',
 }
+
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface FrameProperty {
     id: Id;
     x?: number;
@@ -180,7 +227,14 @@ export interface FrameProperty {
     type: FramePropertiesType;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export type ChildFrameProperty = FrameProperty;
+
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface TopFrameProperty extends FrameProperty {
     x: number;
     y: number;
@@ -193,6 +247,9 @@ export interface TopFrameProperty extends FrameProperty {
     isVisible: boolean;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface FrameAnimation {
     id: Id;
     from: number;
@@ -200,21 +257,36 @@ export interface FrameAnimation {
     basicAnimations: BasicAnimations;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface BasicAnimations {
     intro?: BasicAnimationsIntroType;
     emphasis?: BasicAnimationsEmphasisType;
     outro?: BasicAnimationsOutroType;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface DocumentStylekit {
     colors: DocumentColor[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export type DocumentCharacterStyle = CharacterStyle;
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export type DocumentParagraphStyle = ParagraphStyle;
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface DocumentVariable extends Variable {
     parentId: Id;
     name: string;
@@ -230,12 +302,21 @@ export enum DocumentType {
     template = 'template',
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface DocumentProperties {
     type: DocumentType;
 }
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export type TemplateDocumentProperties = DocumentProperties;
 
+/**
+ * @deprecated This is no longer kept up to date and will be removed in the future.
+ */
 export interface ProjectDocumentProperties extends DocumentProperties {
     templateId: string;
 }
