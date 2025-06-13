@@ -12,6 +12,7 @@ export enum ColorType {
     spot = 'spot',
     spotCMYK = 'spotCMYK',
     spotRGB = 'spotRGB',
+    spotHEX = 'spotHEX',
 }
 
 export type RGBColor = {

@@ -1,1 +1,1 @@
-declare const __ENGINE_DOMAIN__: string; 
+declare const __ENGINE_DOMAIN__: string;
