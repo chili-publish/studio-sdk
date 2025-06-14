@@ -1,5 +1,13 @@
 import { Id } from './CommonTypes';
 
+export enum APIColorType {
+    rgb = 'rgb',
+    hex = 'hex',
+    cmyk = 'cmyk',
+    spotCmyk = 'spotCmyk',
+    spotRgb = 'spotRgb',
+    spotHex = 'spotHex',
+}
 export enum ColorType {
     rgb = 'rgb',
     hex = 'hex',

@@ -36,6 +36,9 @@ export type ParagraphStyle = {
 };
 
 export type ParagraphStyleUpdate = {
+    fontKey: {
+        value: string;
+    };
     fontSize: {
         value: number;
     };

@@ -1,19 +1,18 @@
-import { ColorType } from './ColorStyleTypes';
-import { Id } from './CommonTypes';
-import { Case, Scripting } from './TextStyleTypes';
+import { APIColorType, ColorType } from './ColorStyleTypes';
+import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type RGB = { r: number; g: number; b: number };
 export type CMYK = { c: number; m: number; y: number; k: number };
 
 type BaseBrandKitColor = { name: string; guid: string };
 
-type RGBColorValue = BaseBrandKitColor & { value: RGB; type: ColorType.rgb };
-type CMYKColorValue = BaseBrandKitColor & { value: CMYK; type: ColorType.cmyk };
-type HEXColorValue = BaseBrandKitColor & { value: string; type: ColorType.hex };
+type RGBColorValue = BaseBrandKitColor & { value: RGB; type: APIColorType.rgb };
+type CMYKColorValue = BaseBrandKitColor & { value: CMYK; type: APIColorType.cmyk };
+type HEXColorValue = BaseBrandKitColor & { value: string; type: APIColorType.hex };
 
-type SpotRGBColorValue = BaseBrandKitColor & { displayValue: RGB; value: string; type: ColorType.spotRGB };
-type SpotCMYKColorValue = BaseBrandKitColor & { displayValue: CMYK; value: string; type: ColorType.spotCMYK };
-type SpotHEXColorValue = BaseBrandKitColor & { displayValue: string; value: string; type: ColorType.spotHEX };
+export type SpotRGBColorValue = BaseBrandKitColor & { displayValue: RGB; value: string; type: APIColorType.spotRgb };
+export type SpotCMYKColorValue = BaseBrandKitColor & { displayValue: CMYK; value: string; type: APIColorType.spotCmyk };
+export type SpotHEXColorValue = BaseBrandKitColor & { displayValue: string; value: string; type: APIColorType.spotHex };
 
 export type BrandKitColor =
     | RGBColorValue
@@ -62,6 +61,8 @@ export type BrandKitParagraphStyle = {
     trackingLeft?: number;
     trackingRight: number;
 
+    textAlign: Alignment;
+
     textIndent?: string;
 
     baselineShiftValue?: string;
@@ -81,10 +82,10 @@ export type BrandKitMedia = {
     mediaConnectorId: string;
 };
 
-export type BrandKit = {
-    id: Id;
-    name: string;
-    dateCreated: string;
+export type APIBrandKit = {
+    // id: Id;
+    // name: string;
+    // dateCreated: string;
     fonts: BrandKitFont[];
     colors: BrandKitColor[];
     characterStyles: BrandKitCharacterStyle[];
@@ -96,5 +97,6 @@ export type StudioBrandKit = {
     id?: string;
     name?: string;
     location: 'remote' | 'local';
-    brandKit: BrandKit;
+    fontConnectorId: string;
+    brandKit: APIBrandKit;
 };
