@@ -117,17 +117,18 @@ export class BrandKitController {
                     );
 
                     if (!fontStyles?.[0]) throw new Error(`No font styles for family ID: ${font.fontFamilyId}`);
-
+                    console.log('localFontId');
                     const { parsedData: localFontId } = await this.fontController.addFontFamily(fontConnectorId, {
                         name: fontStyles[0].familyName,
                         fontFamilyId: font.fontFamilyId,
                     });
 
                     if (localFontId) guidFontFamilyIdMap.set(font.fontFamilyBrandKitGuid, localFontId);
+                    return localFontId;
                 });
                 await Promise.all(fontsPromises);
-                const { parsedData: allLocalFonts } = await this.fontController.getFontFamilies();
 
+                const { parsedData: allLocalFonts } = await this.fontController.getFontFamilies();
                 // paragraphStyles
                 const paragraphStylePromises = (studioBrandKit.brandKit.paragraphStyles || []).map(async (style) => {
                     const { parsedData: styleId } = await this.paragraphStyleController.create();

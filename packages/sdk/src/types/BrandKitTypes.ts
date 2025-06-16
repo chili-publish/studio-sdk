@@ -95,10 +95,14 @@ export type APIBrandKit = {
     media: BrandKitMedia[];
 };
 
+export enum StudioBrandKitLocationEnum {
+    remote = 'remote',
+    local = 'local',
+}
 export type StudioBrandKit = {
     id?: string;
     name?: string;
-    location: 'remote' | 'local';
+    location: StudioBrandKitLocationEnum;
     fontConnectorId: string;
     brandKit: APIBrandKit;
 };

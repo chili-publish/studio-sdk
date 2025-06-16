@@ -1,3 +1,5 @@
+import { StudioBrandKitLocationEnum } from '../../types/BrandKitTypes';
+
 export const mockColors = [
     {
         id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
@@ -436,3 +438,144 @@ export const mockParagraphStyles = [
         lineThrough: false,
     },
 ];
+
+export const mockStudioBrandKit = {
+    fontConnectorId: 'fontConnectorId',
+    location: StudioBrandKitLocationEnum.local,
+    brandKit: {
+        id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
+        name: 'BrandkitTest1',
+        dateCreated: '2025-06-12T12:10:29.354877',
+        fonts: [
+            {
+                fontFamilyId: 'af0dc036-8867-4f63-9b03-933944a1a1fa',
+                fontFamilyBrandKitGuid: '29d22ca1-ae25-4f04-a1fd-0ca2fd35011d',
+            },
+            {
+                fontFamilyId: '30b500bf-b310-4063-aa6d-66523f180f4f',
+                fontFamilyBrandKitGuid: '4564ea03-193a-40df-82b7-e7705e6c19ee',
+            },
+            {
+                fontFamilyId: '5ccf0078-93f4-415a-979d-619cc22796f9',
+                fontFamilyBrandKitGuid: '9d4c4d88-b194-463f-8100-8cbd78d14c2a',
+            },
+            {
+                fontFamilyId: 'e444c0ea-21fc-4486-ac81-0d417299dfac',
+                fontFamilyBrandKitGuid: 'a118cc4e-0380-4177-8d58-4fe1383e0272',
+            },
+            {
+                fontFamilyId: '8114862e-88f2-4c25-92cb-b8aca3d8c899',
+                fontFamilyBrandKitGuid: 'a8cf4d2d-1140-4b9a-92a4-a646d5865792',
+            },
+            {
+                fontFamilyId: '5063d67e-f9a4-4b04-b168-6b7011386af9',
+                fontFamilyBrandKitGuid: 'e8fff284-6c9f-4fb9-a1a0-8b807f9bcbd3',
+            },
+        ],
+        colors: [
+            {
+                value: 'Color 5 - Spot RGB',
+                displayValue: {
+                    r: 224,
+                    g: 179,
+                    b: 215,
+                    a: 1,
+                    spotName: 'Color 5 - Spot RGB',
+                },
+                name: 'Color 5',
+                type: 'spotRgb',
+                guid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
+            },
+            {
+                value: 'Color 4- SPOT cmyk',
+                displayValue: {
+                    c: 0,
+                    m: 0,
+                    y: 0,
+                    k: 0.19069767441860466,
+                    spotName: 'Color 4- SPOT cmyk',
+                },
+                name: 'Color 4',
+                type: 'spotCmyk',
+                guid: '88dd8c03-5995-4d1a-bf11-c3b0431fb124',
+            },
+            {
+                value: '#6cb29d',
+                displayValue: null,
+                name: 'Color 2',
+                type: 'hex',
+                guid: 'a1900046-8bc3-46b4-8b13-65ab0cdc9b34',
+            },
+            {
+                value: {
+                    c: 0.14883720930232558,
+                    k: 0.13953488372093023,
+                    m: 0,
+                    y: 0.6511627906976745,
+                    spotName: 'Color 3',
+                },
+                displayValue: null,
+                name: 'Color 3',
+                type: 'cmyk',
+                guid: 'ae0325ba-ecd8-46e3-b549-71f39ac54bb4',
+            },
+            {
+                value: 'Color 6 -Spot hex',
+                displayValue: '#b1e0b4',
+                name: 'Color 6',
+                type: 'spotHex',
+                guid: 'b0af6818-4030-48ef-b486-d5a080ac1b23',
+            },
+            {
+                value: {
+                    a: 1,
+                    b: 84,
+                    g: 84,
+                    r: 222,
+                },
+                displayValue: null,
+                name: 'Color 1',
+                type: 'rgb',
+                guid: 'c549f25b-7ed9-4930-8e19-44289aa14245',
+            },
+        ],
+        characterStyles: [
+            {
+                name: 'Character style 22',
+                brandKitFontFamilyGuid: 'a8cf4d2d-1140-4b9a-92a4-a646d5865792',
+                fontStyleId: '517fdc5d-21f9-4815-a5c1-f018d612e770',
+                fillColorApplied: false,
+                fontSize: 2,
+                subSuperScript: 'superscript',
+                brandKitColorGuid: 'ae0325ba-ecd8-46e3-b549-71f39ac54bb4',
+            },
+        ],
+        paragraphStyles: [
+            {
+                name: 'Paragraph style 1',
+                textAlign: 'left',
+                brandKitColorGuid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
+                brandKitFontFamilyGuid: '29d22ca1-ae25-4f04-a1fd-0ca2fd35011d',
+                fontStyleId: '8cb18f2f-56a9-4f9e-bbb2-c7687ead7ef8',
+                fontSize: 1,
+                lineHeight: 0,
+                trackingRight: 0,
+                fillColorApplied: true,
+            },
+        ],
+        media: [
+            {
+                name: 'd0ff2bf4-e9a6-4fff-b378-1d1c554bba56_Final_template story_1080x1920.png',
+                mediaId: 'bb7de06a-0c70-4ca1-97a0-892351ed8444',
+            },
+            {
+                name: 'c9aaa676-a6c0-4a3e-aa67-afdb2f1359f8_bg-hk-25.jpg',
+                mediaId: '62000e62-55e2-4ef7-8486-c722c913aa88',
+            },
+            {
+                name: '0f0e652c-86da-41b7-b312-e487c3e58fa0_bg-hk-25.jpg',
+                mediaId: 'f6a50d37-a859-4c07-b915-0bb0f43c6c6b',
+            },
+        ],
+    },
+};
