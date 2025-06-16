@@ -455,22 +455,6 @@ export const mockStudioBrandKit = {
                 fontFamilyId: '30b500bf-b310-4063-aa6d-66523f180f4f',
                 fontFamilyBrandKitGuid: '4564ea03-193a-40df-82b7-e7705e6c19ee',
             },
-            {
-                fontFamilyId: '5ccf0078-93f4-415a-979d-619cc22796f9',
-                fontFamilyBrandKitGuid: '9d4c4d88-b194-463f-8100-8cbd78d14c2a',
-            },
-            {
-                fontFamilyId: 'e444c0ea-21fc-4486-ac81-0d417299dfac',
-                fontFamilyBrandKitGuid: 'a118cc4e-0380-4177-8d58-4fe1383e0272',
-            },
-            {
-                fontFamilyId: '8114862e-88f2-4c25-92cb-b8aca3d8c899',
-                fontFamilyBrandKitGuid: 'a8cf4d2d-1140-4b9a-92a4-a646d5865792',
-            },
-            {
-                fontFamilyId: '5063d67e-f9a4-4b04-b168-6b7011386af9',
-                fontFamilyBrandKitGuid: 'e8fff284-6c9f-4fb9-a1a0-8b807f9bcbd3',
-            },
         ],
         colors: [
             {
@@ -505,38 +489,6 @@ export const mockStudioBrandKit = {
                 name: 'Color 2',
                 type: 'hex',
                 guid: 'a1900046-8bc3-46b4-8b13-65ab0cdc9b34',
-            },
-            {
-                value: {
-                    c: 0.14883720930232558,
-                    k: 0.13953488372093023,
-                    m: 0,
-                    y: 0.6511627906976745,
-                    spotName: 'Color 3',
-                },
-                displayValue: null,
-                name: 'Color 3',
-                type: 'cmyk',
-                guid: 'ae0325ba-ecd8-46e3-b549-71f39ac54bb4',
-            },
-            {
-                value: 'Color 6 -Spot hex',
-                displayValue: '#b1e0b4',
-                name: 'Color 6',
-                type: 'spotHex',
-                guid: 'b0af6818-4030-48ef-b486-d5a080ac1b23',
-            },
-            {
-                value: {
-                    a: 1,
-                    b: 84,
-                    g: 84,
-                    r: 222,
-                },
-                displayValue: null,
-                name: 'Color 1',
-                type: 'rgb',
-                guid: 'c549f25b-7ed9-4930-8e19-44289aa14245',
             },
         ],
         characterStyles: [
