@@ -6,9 +6,9 @@ export type CMYK = { c: number; m: number; y: number; k: number };
 
 type BaseBrandKitColor = { name: string; guid: string };
 
-type RGBColorValue = BaseBrandKitColor & { value: RGB; type: APIColorType.rgb };
-type CMYKColorValue = BaseBrandKitColor & { value: CMYK; type: APIColorType.cmyk };
-type HEXColorValue = BaseBrandKitColor & { value: string; type: APIColorType.hex };
+export type RGBColorValue = BaseBrandKitColor & { value: RGB; type: APIColorType.rgb };
+export type CMYKColorValue = BaseBrandKitColor & { value: CMYK; type: APIColorType.cmyk };
+export type HEXColorValue = BaseBrandKitColor & { value: string; type: APIColorType.hex };
 
 export type SpotRGBColorValue = BaseBrandKitColor & { displayValue: RGB; value: string; type: APIColorType.spotRgb };
 export type SpotCMYKColorValue = BaseBrandKitColor & { displayValue: CMYK; value: string; type: APIColorType.spotCmyk };

@@ -58,10 +58,10 @@ export class BrandKitController {
      * @returns brandkit with all assigned resources
      */
     get = async () => {
-        const colors = this.colorStyleController.getAll();
-        const fonts = this.fontController.getFontFamilies();
-        const characterStyles = this.characterStyleController.getAll();
-        const paragraphStyles = this.paragraphStyleController.getAll();
+        const colors = await this.colorStyleController.getAll();
+        const fonts = await this.fontController.getFontFamilies();
+        const characterStyles = await this.characterStyleController.getAll();
+        const paragraphStyles = await this.paragraphStyleController.getAll();
 
         const studioBrandKit = {
             brandKit: {
@@ -94,12 +94,14 @@ export class BrandKitController {
         // colors
         const localColorGuidsMap = new Map<string, string>();
         const colorsPromises = (studioBrandKit.brandKit.colors || []).map(async (color) => {
-            const localColor = await this.colorStyleController.create();
-            const colorData: DocumentColor = localColor.data ? JSON.parse(localColor.data) : null;
+            const localColorResponse = await this.colorStyleController.create();
+            const localColorId = localColorResponse.parsedData as string;
 
-            localColorGuidsMap.set(color.guid, colorData.id);
+            localColorGuidsMap.set(color.guid, localColorId);
+            const localColor = mapBrandKitColorToLocal(color);
+            console.log('localcolor', localColor);
 
-            return this.colorStyleController.update(colorData.id, mapBrandKitColorToLocal(color));
+            return this.colorStyleController.update(localColorId, localColor);
         });
 
         await Promise.all(colorsPromises);
@@ -107,12 +109,12 @@ export class BrandKitController {
 
         // fonts
 
-        const localFontGuidsMap = new Map<string, FontStyle[]>();
+        const guidFontStylesMap = new Map<string, FontStyle[]>();
         const fontsPromises = (studioBrandKit.brandKit.fonts || []).map(async (font) => {
             const fontConnectorData = await this.fontConnectorController.detail(fontConnectorId, font.fontFamilyId);
             const fontStyles: FontStyle[] = fontConnectorData.data ? JSON.parse(fontConnectorData.data) : null;
 
-            localFontGuidsMap.set(font.fontFamilyBrandKitGuid, fontStyles);
+            guidFontStylesMap.set(font.fontFamilyBrandKitGuid, fontStyles);
 
             this.fontController.addFontFamily(fontConnectorId, {
                 name: fontStyles[0].familyName,
@@ -120,6 +122,7 @@ export class BrandKitController {
             });
         });
 
+        console.log('guidFontStylesMap', guidFontStylesMap);
         await Promise.all(fontsPromises);
 
         const paragraphStylePromises = (studioBrandKit.brandKit.paragraphStyles || []).map(async (style) => {
@@ -127,7 +130,7 @@ export class BrandKitController {
             const styleData: DocumentParagraphStyle = localStyle.data ? JSON.parse(localStyle.data) : null;
 
             const localColorId = localColorGuidsMap.get(style.brandKitColorGuid);
-            const fontStyleList: FontStyle[] | undefined = localFontGuidsMap.get(style.brandKitFontFamilyGuid);
+            const fontStyleList: FontStyle[] | undefined = guidFontStylesMap.get(style.brandKitFontFamilyGuid);
 
             const localColor = (localColors.parsedData || []).find((color) => color.id === localColorId);
             const fontKey = (fontStyleList || []).find((item) => item.id === style.fontStyleId)?.id;
@@ -146,7 +149,7 @@ export class BrandKitController {
 
             const localColorId = style.brandKitColorGuid ? localColorGuidsMap.get(style.brandKitColorGuid) : null;
             const fontStyleList = style.brandKitFontFamilyGuid
-                ? localFontGuidsMap.get(style.brandKitFontFamilyGuid)
+                ? guidFontStylesMap.get(style.brandKitFontFamilyGuid)
                 : [];
 
             const localColor = (localColors.parsedData || []).find((color) => color.id === localColorId);

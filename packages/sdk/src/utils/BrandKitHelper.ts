@@ -4,6 +4,7 @@ import {
     BrandKitColor,
     BrandKitParagraphStyle,
     CMYK,
+    HEXColorValue,
     RGB,
     SpotCMYKColorValue,
     SpotHEXColorValue,
@@ -33,6 +34,7 @@ const isSpotColor = (color: Color): color is SpotColorRGB | SpotColorCMYK | Spot
     isSpotHexColor(color) || isSpotRgbColor(color) || isSpotCmykColor(color);
 
 const isBranKitSpotHexColor = (color: BrandKitColor): color is SpotHEXColorValue => color.type === APIColorType.spotHex;
+const isBranKitHexColor = (color: BrandKitColor): color is HEXColorValue => color.type === APIColorType.hex;
 
 const isBrandKitSpotColor = (
     color: BrandKitColor,
@@ -62,7 +64,7 @@ export const mapToStudioBrandKit = (internalBrandKit: BrandKitInternal): APIBran
             return {
                 ...style,
                 fontStyleId: style.fontStyle,
-                brandKitColorGuid: style.color.id, ///
+                brandKitColorGuid: style.color.id as string, ///
                 brandKitFontFamilyGuid: style.fontKey, ///
             };
         }),
@@ -78,13 +80,14 @@ export const mapBrandKitColorToLocal = (color: BrandKitColor): ColorUpdate => {
     if (isBrandKitSpotColor(color)) {
         return {
             ...(isBranKitSpotHexColor(color) && { value: color.displayValue }),
-            ...(!isBranKitSpotHexColor(color) && { ...color }),
+            ...(!isBranKitSpotHexColor(color) && { ...color.displayValue }),
             spotName: color.value,
             type: internalColorType,
         } as ColorUpdate;
     }
     return {
-        ...color,
+        ...(isBranKitHexColor(color) && { value: color.value }),
+        ...(!isBranKitHexColor(color) && { ...color.value }),
         type: internalColorType,
     } as ColorUpdate;
 };
