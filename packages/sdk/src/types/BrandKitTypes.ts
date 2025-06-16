@@ -1,4 +1,6 @@
-import { APIColorType, ColorType } from './ColorStyleTypes';
+import { APIColorType, DocumentColor } from './ColorStyleTypes';
+import { DocumentCharacterStyle, DocumentParagraphStyle } from './DocumentTypes';
+import { DocumentFontFamily } from './FontTypes';
 import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type RGB = { r: number; g: number; b: number };
@@ -99,4 +101,11 @@ export type StudioBrandKit = {
     location: 'remote' | 'local';
     fontConnectorId: string;
     brandKit: APIBrandKit;
+};
+
+export type BrandKitInternal = {
+    colors: DocumentColor[];
+    fonts: DocumentFontFamily[];
+    characterStyles: DocumentCharacterStyle[];
+    paragraphStyles: DocumentParagraphStyle[];
 };

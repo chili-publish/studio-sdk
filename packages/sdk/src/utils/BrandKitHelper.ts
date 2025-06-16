@@ -2,10 +2,9 @@ import {
     APIBrandKit,
     BrandKitCharacterStyle,
     BrandKitColor,
+    BrandKitInternal,
     BrandKitParagraphStyle,
-    CMYK,
     HEXColorValue,
-    RGB,
     SpotCMYKColorValue,
     SpotHEXColorValue,
     SpotRGBColorValue,
@@ -22,7 +21,6 @@ import {
     SpotColorHEX,
     SpotColorRGB,
 } from '../types/ColorStyleTypes';
-import { DocumentCharacterStyle, DocumentParagraphStyle } from '../types/DocumentTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { ParagraphStyleUpdate } from '../types/ParagraphStyleTypes';
 
@@ -41,12 +39,6 @@ const isBrandKitSpotColor = (
 ): color is SpotRGBColorValue | SpotCMYKColorValue | SpotHEXColorValue =>
     color.type === APIColorType.spotRgb || color.type === APIColorType.spotCmyk || color.type === APIColorType.spotHex;
 
-type BrandKitInternal = {
-    colors: DocumentColor[];
-    fonts: DocumentFontFamily[];
-    characterStyles: DocumentCharacterStyle[];
-    paragraphStyles: DocumentParagraphStyle[];
-};
 export const mapToStudioBrandKit = (internalBrandKit: BrandKitInternal): APIBrandKit => {
     return {
         colors: internalBrandKit.colors.map((color) => {
@@ -97,7 +89,7 @@ export const mapBrandKitStyleToLocal = <
     R extends ParagraphStyleUpdate | CharacterStyleUpdate,
 >(
     style: T,
-    localColor: DocumentColor,
+    localColor?: DocumentColor,
     fontKey?: string,
 ): R => {
     const styleUpdate = Object.keys(style).reduce((acc, key) => {
@@ -106,14 +98,16 @@ export const mapBrandKitStyleToLocal = <
 
     return {
         ...styleUpdate,
-        color: {
-            value: {
-                id: localColor.id,
-                color: localColor.color,
-                type: ColorUsageType.brandKit,
-                isApplied: style.fillColorApplied,
+        ...(localColor && {
+            color: {
+                value: {
+                    id: localColor.id,
+                    color: localColor.color,
+                    type: ColorUsageType.brandKit,
+                    isApplied: style.fillColorApplied,
+                },
             },
-        },
+        }),
         fontKey: {
             value: fontKey,
         },
@@ -153,3 +147,15 @@ const mapToLocalColorType = (type: APIColorType): ColorType => {
             return ColorType.spotHEX;
     }
 };
+
+export const getColorById = (colors: DocumentColor[] | null, id: string | undefined) =>
+    (colors || []).find((color) => color.id === id);
+
+export const getFontKey = (
+    fonts: DocumentFontFamily[] | null,
+    familyId: string | undefined,
+    styleId: string | undefined,
+) =>
+    (fonts || [])
+        .find((font) => font.id === familyId)
+        ?.fontStyles.find((fontStyle) => fontStyle.fontStyleId === styleId)?.id;
