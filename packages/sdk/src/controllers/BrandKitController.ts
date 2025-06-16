@@ -68,10 +68,10 @@ export class BrandKitController {
 
         const studioBrandKit = {
             brandKit: {
-                colors,
-                fonts,
-                characterStyles,
-                paragraphStyles,
+                colors: colors.parsedData,
+                fonts: fonts.parsedData,
+                paragraphStyles: paragraphStyles.parsedData,
+                characterStyles: characterStyles.parsedData,
             },
         };
         const editorResponse = {
