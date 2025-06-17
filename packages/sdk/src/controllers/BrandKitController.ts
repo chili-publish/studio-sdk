@@ -1,4 +1,4 @@
-import SDK, { CharacterStyleUpdate, ParagraphStyleUpdate } from '..';
+import SDK, { CharacterStyleUpdate, DocumentColor, DocumentFontFamily, ParagraphStyleUpdate } from '..';
 import {
     BrandKitCharacterStyle,
     BrandKitInternal,
@@ -85,123 +85,6 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method updates a brandkit and all related resources assigned to it
-     * @param studioBrandKit the content of the brandkit
-     * @returns
-     */
-    set = async (studioBrandKit: StudioBrandKit) => {
-        const fontConnectorId = studioBrandKit.fontConnectorId;
-        const localColorGuidsMap = new Map<string, string>();
-        const guidFontFamilyIdMap = new Map<string, string>();
-
-        this.undoManagerController.record('brandkit.set', async (sdk) => {
-            try {
-                // colors
-                const colorsPromises = (studioBrandKit.brandKit.colors || []).map(async (color) => {
-                    const { parsedData: localColorId } = await this.colorStyleController.create();
-
-                    if (!localColorId) return;
-                    localColorGuidsMap.set(color.guid, localColorId);
-                    const localColor = mapBrandKitColorToLocal(color);
-
-                    return this.colorStyleController.update(localColorId, localColor);
-                });
-                await Promise.all(colorsPromises);
-                const { parsedData: allLocalColors = [] } = await this.colorStyleController.getAll();
-
-                // fonts
-                const fontsPromises = (studioBrandKit.brandKit.fonts || []).map(async (font) => {
-                    const { parsedData: fontStyles = [] } = await this.fontConnectorController.detail(
-                        fontConnectorId,
-                        font.fontFamilyId,
-                    );
-
-                    if (!fontStyles?.[0]) throw new Error(`No font styles for family ID: ${font.fontFamilyId}`);
-                    const { parsedData: localFontId } = await this.fontController.addFontFamily(fontConnectorId, {
-                        name: fontStyles[0].familyName,
-                        fontFamilyId: font.fontFamilyId,
-                    });
-
-                    if (localFontId) guidFontFamilyIdMap.set(font.fontFamilyBrandKitGuid, localFontId);
-                    return localFontId;
-                });
-                await Promise.all(fontsPromises);
-
-                const { parsedData: allLocalFonts } = await this.fontController.getFontFamilies();
-                // paragraphStyles
-                const paragraphStylePromises = (studioBrandKit.brandKit.paragraphStyles || []).map(async (style) => {
-                    const { parsedData: styleId } = await this.paragraphStyleController.create();
-
-                    if (!styleId) throw new Error(`Paragraph style could not be created: ${style.name}`);
-
-                    const localColorId = localColorGuidsMap.get(style.brandKitColorGuid);
-                    const fontFamilyId = guidFontFamilyIdMap.get(style.brandKitFontFamilyGuid);
-                    const fontKey = getFontKey(allLocalFonts, fontFamilyId, style.fontStyleId);
-
-                    if (!fontFamilyId || !fontKey)
-                        throw new Error(
-                            `Paragraph style could not be created with an empty font family: ${style.name}`,
-                        );
-
-                    const localColor = getColorById(allLocalColors, localColorId);
-                    if (!localColor)
-                        throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
-
-                    const paragraphStyleUpdate = mapBrandKitStyleToLocal<BrandKitParagraphStyle, ParagraphStyleUpdate>(
-                        style,
-                        localColor,
-                        `${fontKey}fff`,
-                    );
-                    return this.paragraphStyleController.update(styleId, paragraphStyleUpdate);
-                });
-                await Promise.all(paragraphStylePromises);
-                const { parsedData: allParagraphStyles } = await this.paragraphStyleController.getAll();
-                // characterStyles
-                const characterStylePromises = (studioBrandKit.brandKit.characterStyles || []).map(async (style) => {
-                    const { parsedData: styleId } = await this.characterStyleController.create();
-
-                    if (!styleId) throw new Error(`Character style could not be created: ${style.name}`);
-
-                    const localColorId = style.brandKitColorGuid
-                        ? localColorGuidsMap.get(style.brandKitColorGuid)
-                        : undefined;
-                    const fontFamilyId = style.brandKitFontFamilyGuid
-                        ? guidFontFamilyIdMap.get(style.brandKitFontFamilyGuid)
-                        : undefined;
-                    const localColor = getColorById(allLocalColors, localColorId);
-                    const fontKey = getFontKey(allLocalFonts, fontFamilyId, style.fontStyleId);
-
-                    const characterStyleUpdate = mapBrandKitStyleToLocal<BrandKitCharacterStyle, CharacterStyleUpdate>(
-                        style,
-                        localColor,
-                        fontKey,
-                    );
-                    return this.characterStyleController.update(styleId, characterStyleUpdate);
-                });
-
-                await Promise.all(characterStylePromises);
-                const { parsedData: allCharacterStyles } = await this.characterStyleController.getAll();
-
-                return Promise.resolve(
-                    getEditorResponseData<BrandKitInternal>({
-                        success: true,
-                        status: 200,
-                        parsedData: {
-                            colors: allLocalColors,
-                            fonts: allLocalFonts,
-                            paragraphStyles: allParagraphStyles,
-                            characterStyles: allCharacterStyles,
-                        },
-                    }),
-                );
-            } catch (err) {
-                sdk.undoManager.undo();
-                throw err;
-            }
-        });
-    };
-
-    /**
      * @experimental This method removes a brandkit and all related resources assigned to it
      * @param characterStyleId the id of a specific character style
      * @returns
@@ -239,4 +122,161 @@ export class BrandKitController {
             }
         });
     };
+
+    /**
+     * @experimental This method updates a brandkit and all related resources assigned to it
+     * @param studioBrandKit the content of the brandkit
+     * @returns
+     */
+    set = async (studioBrandKit: StudioBrandKit) => {
+        this.undoManagerController.record('brandkit.set', async (sdk) => {
+            try {
+                const localColorGuidMap = await this.setColors(studioBrandKit);
+                const localFontGuidMap = await this.setFonts(studioBrandKit);
+
+                const { parsedData: localColors = [] } = await this.colorStyleController.getAll();
+                const { parsedData: localFonts } = await this.fontController.getFontFamilies();
+
+                await this.setParagraphStyles(studioBrandKit, {
+                    localColors,
+                    localFonts,
+                    localColorGuidMap,
+                    localFontGuidMap,
+                });
+
+                await this.setCharacterStyles(studioBrandKit, {
+                    localColors,
+                    localFonts,
+                    localColorGuidMap,
+                    localFontGuidMap,
+                });
+
+                const { parsedData: allParagraphStyles } = await this.paragraphStyleController.getAll();
+                const { parsedData: allCharacterStyles } = await this.characterStyleController.getAll();
+
+                return Promise.resolve(
+                    getEditorResponseData<BrandKitInternal>({
+                        success: true,
+                        status: 200,
+                        parsedData: {
+                            colors: localColors,
+                            fonts: localFonts,
+                            paragraphStyles: allParagraphStyles,
+                            characterStyles: allCharacterStyles,
+                        },
+                    }),
+                );
+            } catch (err) {
+                sdk.undoManager.undo();
+                throw err;
+            }
+        });
+    };
+
+    private async setColors(studioBrandKit: StudioBrandKit) {
+        const localColorGuidsMap = new Map<string, string>();
+
+        for (const color of studioBrandKit.brandKit.colors || []) {
+            const { parsedData: localColorId } = await this.colorStyleController.create();
+
+            if (!localColorId) continue;
+            localColorGuidsMap.set(color.guid, localColorId);
+            const localColor = mapBrandKitColorToLocal(color);
+
+            await this.colorStyleController.rename(localColorId, color.name);
+            await this.colorStyleController.update(localColorId, localColor);
+        }
+        return localColorGuidsMap;
+    }
+
+    private async setFonts(studioBrandKit: StudioBrandKit) {
+        const fontConnectorId = studioBrandKit.fontConnectorId;
+        const guidFontFamilyIdMap = new Map<string, string>();
+
+        const fontsPromises = (studioBrandKit.brandKit.fonts || []).map(async (font) => {
+            const { parsedData: fontStyles = [] } = await this.fontConnectorController.detail(
+                fontConnectorId,
+                font.fontFamilyId,
+            );
+
+            if (!fontStyles?.[0]) throw new Error(`No font styles for family ID: ${font.fontFamilyId}`);
+            const { parsedData: localFontId } = await this.fontController.addFontFamily(fontConnectorId, {
+                name: fontStyles[0].familyName,
+                fontFamilyId: font.fontFamilyId,
+            });
+
+            if (localFontId) guidFontFamilyIdMap.set(font.fontFamilyBrandKitGuid, localFontId);
+            return localFontId;
+        });
+        await Promise.all(fontsPromises);
+
+        return guidFontFamilyIdMap;
+    }
+
+    private async setParagraphStyles(
+        studioBrandKit: StudioBrandKit,
+        resources: {
+            localFonts: DocumentFontFamily[] | null;
+            localColors: DocumentColor[] | null;
+            localColorGuidMap: Map<string, string>;
+            localFontGuidMap: Map<string, string>;
+        },
+    ) {
+        const { localColors, localFonts, localColorGuidMap, localFontGuidMap } = resources;
+        for (const style of studioBrandKit.brandKit.paragraphStyles || []) {
+            const { parsedData: styleId } = await this.paragraphStyleController.create();
+
+            if (!styleId) throw new Error(`Paragraph style could not be created: ${style.name}`);
+
+            const localColorId = localColorGuidMap.get(style.brandKitColorGuid);
+            const fontFamilyId = localFontGuidMap.get(style.brandKitFontFamilyGuid);
+            const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
+
+            if (!fontFamilyId || !fontKey)
+                throw new Error(`Paragraph style could not be created with an empty font family: ${style.name}`);
+
+            const localColor = getColorById(localColors, localColorId);
+            if (!localColor) throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
+
+            const paragraphStyleUpdate = mapBrandKitStyleToLocal<BrandKitParagraphStyle, ParagraphStyleUpdate>(
+                style,
+                localColor,
+                `${fontKey}`,
+            );
+            await this.paragraphStyleController.rename(styleId, style.name);
+            await this.paragraphStyleController.update(styleId, paragraphStyleUpdate);
+        }
+    }
+
+    private async setCharacterStyles(
+        studioBrandKit: StudioBrandKit,
+        resources: {
+            localFonts: DocumentFontFamily[] | null;
+            localColors: DocumentColor[] | null;
+            localColorGuidMap: Map<string, string>;
+            localFontGuidMap: Map<string, string>;
+        },
+    ) {
+        const { localColors, localFonts, localColorGuidMap, localFontGuidMap } = resources;
+        for (const style of studioBrandKit.brandKit.characterStyles || []) {
+            const { parsedData: styleId } = await this.characterStyleController.create();
+
+            if (!styleId) throw new Error(`Character style could not be created: ${style.name}`);
+
+            const localColorId = style.brandKitColorGuid ? localColorGuidMap.get(style.brandKitColorGuid) : undefined;
+            const fontFamilyId = style.brandKitFontFamilyGuid
+                ? localFontGuidMap.get(style.brandKitFontFamilyGuid)
+                : undefined;
+            const localColor = getColorById(localColors, localColorId);
+            const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
+
+            const characterStyleUpdate = mapBrandKitStyleToLocal<BrandKitCharacterStyle, CharacterStyleUpdate>(
+                style,
+                localColor,
+                fontKey,
+            );
+            await this.characterStyleController.rename(styleId, style.name);
+            await this.characterStyleController.update(styleId, characterStyleUpdate);
+        }
+    }
 }

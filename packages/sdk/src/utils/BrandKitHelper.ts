@@ -92,6 +92,7 @@ export const mapBrandKitStyleToLocal = <
     localColor?: DocumentColor,
     fontKey?: string,
 ): R => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { brandKitColorGuid, brandKitFontFamilyGuid, fontStyleId, ...styleUpdateObject } = style;
     const styleUpdate = Object.keys(styleUpdateObject).reduce((acc, key) => {
         return { ...acc, [key]: { value: style[key as keyof T] } };

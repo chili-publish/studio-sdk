@@ -34,6 +34,7 @@ describe('BrandKitController', () => {
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
             createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
             updateColor: async (data) => getEditorResponseData(castToEditorResponse(data)),
+            renameColor: async (data) => getEditorResponseData(castToEditorResponse(data)),
 
             getFontFamilies: async () => getEditorResponseData(castToEditorResponse(mockFonts)),
             addFontFamily: jest.fn().mockResolvedValue(getEditorResponseData(castToEditorResponse(mockFontFamilyId))),
@@ -45,11 +46,13 @@ describe('BrandKitController', () => {
             removeCharacterStyle: async () => getEditorResponseData(castToEditorResponse(null)),
             createCharacterStyle: async () => getEditorResponseData(castToEditorResponse(mockCharacterStyleId)),
             updateCharacterStyle: async (data) => getEditorResponseData(castToEditorResponse(data)),
+            renameCharacterStyle: async (data) => getEditorResponseData(castToEditorResponse(data)),
 
             getParagraphStyles: async () => getEditorResponseData(castToEditorResponse(mockParagraphStyles)),
             removeParagraphStyle: async () => getEditorResponseData(castToEditorResponse(null)),
             createParagraphStyle: async () => getEditorResponseData(castToEditorResponse(mockParagraphStyleId)),
             updateParagraphStyle: async (data) => getEditorResponseData(castToEditorResponse(data)),
+            renameParagraphStyle: async (data) => getEditorResponseData(castToEditorResponse(data)),
 
             beginIfNoneActive: async () => getEditorResponseData(castToEditorResponse(null)),
 
@@ -61,6 +64,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'removeColor');
         jest.spyOn(mockEditorApi, 'createColor');
         jest.spyOn(mockEditorApi, 'updateColor');
+        jest.spyOn(mockEditorApi, 'renameColor');
 
         jest.spyOn(mockEditorApi, 'getFontFamilies');
         jest.spyOn(mockEditorApi, 'addFontFamily');
@@ -71,11 +75,13 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'createCharacterStyle');
         jest.spyOn(mockEditorApi, 'removeCharacterStyle');
         jest.spyOn(mockEditorApi, 'updateCharacterStyle');
+        jest.spyOn(mockEditorApi, 'renameCharacterStyle');
 
         jest.spyOn(mockEditorApi, 'getParagraphStyles');
         jest.spyOn(mockEditorApi, 'createParagraphStyle');
         jest.spyOn(mockEditorApi, 'removeParagraphStyle');
         jest.spyOn(mockEditorApi, 'updateParagraphStyle');
+        jest.spyOn(mockEditorApi, 'renameParagraphStyle');
 
         jest.spyOn(mockEditorApi, 'beginIfNoneActive');
         jest.spyOn(mockEditorApi, 'end');
