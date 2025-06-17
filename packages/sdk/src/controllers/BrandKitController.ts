@@ -1,10 +1,5 @@
 import SDK, { CharacterStyleUpdate, DocumentColor, DocumentFontFamily, ParagraphStyleUpdate } from '..';
-import {
-    BrandKitCharacterStyle,
-    BrandKitInternal,
-    BrandKitParagraphStyle,
-    StudioBrandKit,
-} from '../types/BrandKitTypes';
+import { BrandKitCharacterStyle, BrandKitParagraphStyle, StudioBrandKit } from '../types/BrandKitTypes';
 import { EditorAPI } from '../types/CommonTypes';
 import { getColorById, getFontKey, mapBrandKitColorToLocal, mapBrandKitStyleToLocal } from '../utils/BrandKitHelper';
 import { getEditorResponseData } from '../utils/EditorResponseData';
@@ -109,17 +104,17 @@ export class BrandKitController {
             ?.map((font) => font.id)
             .map(this.fontController.removeFontFamily);
 
-        return this.undoManagerController.record('brandKit.remove', async (sdk) => {
-            try {
+        try {
+            await this.undoManagerController.record('brandKit.remove', async () => {
                 await Promise.all(removeColorsPromises);
                 await Promise.all(removeParagraphStylesPromises);
                 await Promise.all(removeCharacterStylesPromises);
                 await Promise.all(removeFontFamiliesPromises);
-            } catch (err) {
-                sdk.undoManager.undo();
-                throw err;
-            }
-        });
+            });
+        } catch (err) {
+            this.undoManagerController.undo();
+            throw err;
+        }
     };
 
     /**
@@ -128,8 +123,10 @@ export class BrandKitController {
      * @returns
      */
     set = async (studioBrandKit: StudioBrandKit) => {
-        this.undoManagerController.record('brandKit.set', async (sdk) => {
-            try {
+        try {
+            let result;
+
+            await this.undoManagerController.record('brandKit.set', async () => {
                 const localColorGuidMap = await this.setColors(studioBrandKit);
                 const localFontGuidMap = await this.setFonts(studioBrandKit);
 
@@ -153,23 +150,23 @@ export class BrandKitController {
                 const { parsedData: allParagraphStyles } = await this.paragraphStyleController.getAll();
                 const { parsedData: allCharacterStyles } = await this.characterStyleController.getAll();
 
-                return Promise.resolve(
-                    getEditorResponseData<BrandKitInternal>({
-                        success: true,
-                        status: 200,
-                        parsedData: {
-                            colors: localColors,
-                            fonts: localFonts,
-                            paragraphStyles: allParagraphStyles,
-                            characterStyles: allCharacterStyles,
-                        },
-                    }),
-                );
-            } catch (err) {
-                sdk.undoManager.undo();
-                throw err;
-            }
-        });
+                result = {
+                    success: true,
+                    status: 200,
+                    parsedData: {
+                        colors: localColors,
+                        fonts: localFonts,
+                        paragraphStyles: allParagraphStyles,
+                        characterStyles: allCharacterStyles,
+                    },
+                };
+            });
+
+            return Promise.resolve(result);
+        } catch (err) {
+            this.undoManagerController.undo();
+            throw err;
+        }
     };
 
     private async setColors(studioBrandKit: StudioBrandKit) {
