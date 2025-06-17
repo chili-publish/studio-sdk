@@ -117,7 +117,6 @@ export class BrandKitController {
                     );
 
                     if (!fontStyles?.[0]) throw new Error(`No font styles for family ID: ${font.fontFamilyId}`);
-                    console.log('localFontId');
                     const { parsedData: localFontId } = await this.fontController.addFontFamily(fontConnectorId, {
                         name: fontStyles[0].familyName,
                         fontFamilyId: font.fontFamilyId,
@@ -151,7 +150,7 @@ export class BrandKitController {
                     const paragraphStyleUpdate = mapBrandKitStyleToLocal<BrandKitParagraphStyle, ParagraphStyleUpdate>(
                         style,
                         localColor,
-                        fontKey,
+                        `${fontKey}fff`,
                     );
                     return this.paragraphStyleController.update(styleId, paragraphStyleUpdate);
                 });

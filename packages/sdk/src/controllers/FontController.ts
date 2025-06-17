@@ -27,9 +27,8 @@ export class FontController {
      */
     addFontFamily = async (connectorId: Id, fontFamily: AddDocumentFontFamily) => {
         const res = await this.#editorAPI;
-        return res
-            .addFontFamily(connectorId, JSON.stringify(fontFamily))
-            .then((result) => getEditorResponseData<null>(result));
+        const addF = res.addFontFamily(connectorId, JSON.stringify(fontFamily));
+        return addF.then((result) => getEditorResponseData<null>(result));
     };
 
     /**

@@ -12,27 +12,31 @@ import {
     mockStudioBrandKit,
 } from '../__mocks__/Brandkit';
 import { CMYK, RGB, StudioBrandKit } from '../../types/BrandKitTypes';
-import { ColorType } from '../../types/ColorStyleTypes';
+import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
 const mockFontFamilyName = 'Minion Pro';
 const mockParagraphStyleId = 'paragraphStyleId';
 const mockCharacterStyleId = 'characterStyleId';
+const mockFontFamilyId = '614e0cba-37d3-45a7-b9af-ddf2bf76f7db';
+const mockColorId = '1111-2222-3333-4444-5555';
+
+const flushPromises = () => {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+};
+
 describe('BrandKitController', () => {
     let mockBrandKitController: BrandKitController;
     let mockEditorApi: EditorAPI;
-
     beforeEach(() => {
         const mockSDK = new SDK(mockConfig);
         mockEditorApi = {
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
-            createColor: async () =>
-                getEditorResponseData(castToEditorResponse('25e0d0f3-23e5-4c14-9578-2ca4bf3130b5')),
+            createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
             updateColor: async (data) => getEditorResponseData(castToEditorResponse(data)),
 
             getFontFamilies: async () => getEditorResponseData(castToEditorResponse(mockFonts)),
-            addFontFamily: async () =>
-                getEditorResponseData(castToEditorResponse('614e0cba-37d3-45a7-b9af-ddf2bf76f7db')),
+            addFontFamily: jest.fn().mockResolvedValue(getEditorResponseData(castToEditorResponse(mockFontFamilyId))),
             removeFontFamily: async () => getEditorResponseData(castToEditorResponse(null)),
             fontConnectorDetail: async () =>
                 getEditorResponseData(castToEditorResponse([{ familyName: mockFontFamilyName }])),
@@ -81,8 +85,9 @@ describe('BrandKitController', () => {
     });
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
+
     it('Should call the get method', async () => {
         const response = await mockBrandKitController.get();
         expect(mockEditorApi.getColors).toHaveBeenCalledTimes(1);
@@ -141,11 +146,18 @@ describe('BrandKitController', () => {
     });
 
     it('Should successfully set brandkit content', async () => {
+        const mockColor = mockColors[10];
+        const fontKey = mockFonts.find((font) => font.id === mockFontFamilyId)?.fontStyles[0].id;
+
         const colors = mockStudioBrandKit.brandKit.colors;
         const fontfamilies = mockStudioBrandKit.brandKit.fonts;
         const connectorId = mockStudioBrandKit.fontConnectorId;
+        const paragraphStyle = mockStudioBrandKit.brandKit.paragraphStyles[0];
+        const characterStyle = mockStudioBrandKit.brandKit.characterStyles[0];
 
         await mockBrandKitController.set(mockStudioBrandKit as unknown as StudioBrandKit);
+
+        await flushPromises();
 
         expect(mockEditorApi.createColor).toHaveBeenCalledTimes(mockStudioBrandKit.brandKit.colors.length);
         expect(mockEditorApi.updateColor).toHaveBeenCalledTimes(mockStudioBrandKit.brandKit.colors.length);
@@ -180,5 +192,50 @@ describe('BrandKitController', () => {
         );
 
         expect(mockEditorApi.createParagraphStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateParagraphStyle).toHaveBeenCalledWith(
+            mockParagraphStyleId,
+            expect.stringContaining(
+                JSON.stringify({
+                    name: { value: paragraphStyle.name },
+                    textAlign: { value: paragraphStyle.textAlign },
+                    fontSize: { value: paragraphStyle.fontSize },
+                    lineHeight: { value: paragraphStyle.lineHeight },
+                    trackingRight: { value: paragraphStyle.trackingRight },
+                    fillColorApplied: { value: paragraphStyle.fillColorApplied },
+                    color: {
+                        value: {
+                            id: mockColorId,
+                            color: mockColor.color,
+                            type: ColorUsageType.brandKit,
+                            isApplied: true,
+                        },
+                    },
+                    fontKey: { value: fontKey },
+                }),
+            ),
+        );
+
+        expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledWith(
+            mockCharacterStyleId,
+            expect.stringContaining(
+                JSON.stringify({
+                    name: { value: characterStyle.name },
+                    fillColorApplied: { value: characterStyle.fillColorApplied },
+                    fontSize: { value: characterStyle.fontSize },
+                    subSuperScript: { value: characterStyle.subSuperScript },
+                    lineHeight: { value: characterStyle.lineHeight },
+                    color: {
+                        value: {
+                            id: mockColorId,
+                            color: mockColor.color,
+                            type: ColorUsageType.brandKit,
+                            isApplied: false,
+                        },
+                    },
+                    fontKey: { value: null },
+                }),
+            ),
+        );
     });
 });

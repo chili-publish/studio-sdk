@@ -92,7 +92,8 @@ export const mapBrandKitStyleToLocal = <
     localColor?: DocumentColor,
     fontKey?: string,
 ): R => {
-    const styleUpdate = Object.keys(style).reduce((acc, key) => {
+    const { brandKitColorGuid, brandKitFontFamilyGuid, fontStyleId, ...styleUpdateObject } = style;
+    const styleUpdate = Object.keys(styleUpdateObject).reduce((acc, key) => {
         return { ...acc, [key]: { value: style[key as keyof T] } };
     }, {});
 
@@ -104,12 +105,12 @@ export const mapBrandKitStyleToLocal = <
                     id: localColor.id,
                     color: localColor.color,
                     type: ColorUsageType.brandKit,
-                    isApplied: style.fillColorApplied,
+                    isApplied: styleUpdateObject.fillColorApplied,
                 },
             },
         }),
         fontKey: {
-            value: fontKey,
+            value: fontKey ?? null,
         },
     } as unknown as R;
 };
