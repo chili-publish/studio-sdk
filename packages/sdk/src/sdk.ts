@@ -89,7 +89,7 @@ export class SDK {
     colorConversion: ColorConversionController;
     info: InfoController;
     clipboard: ClipboardController;
-    brandkit: BrandKitController;
+    brandKit: BrandKitController;
     next: NextInitiator;
 
     private subscriber: SubscriberController;
@@ -136,7 +136,7 @@ export class SDK {
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
-        this.brandkit = new BrandKitController(this.editorAPI, this);
+        this.brandKit = new BrandKitController(this.editorAPI, this);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.colorConversion = new ColorConversionController(this.editorAPI);
@@ -250,7 +250,7 @@ export class SDK {
         this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
-        this.brandkit = new BrandKitController(this.editorAPI, this);
+        this.brandKit = new BrandKitController(this.editorAPI, this);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version

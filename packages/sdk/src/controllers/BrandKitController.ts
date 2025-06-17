@@ -18,7 +18,7 @@ import { UndoManagerController } from './UndoManagerController';
 
 /**
  * The BrandKitController is responsible for all communication regarding Brand Kits.
- * Methods inside this controller can be called by `window.SDK.brandkit.{method-name}`
+ * Methods inside this controller can be called by `window.SDK.brandKit.{method-name}`
  */
 
 export class BrandKitController {
@@ -85,8 +85,7 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method removes a brandkit and all related resources assigned to it
-     * @param characterStyleId the id of a specific character style
+     * @experimental This method removes a brand kit and all related resources assigned to it
      * @returns
      */
     remove = async () => {
@@ -110,7 +109,7 @@ export class BrandKitController {
             ?.map((font) => font.id)
             .map(this.fontController.removeFontFamily);
 
-        return this.undoManagerController.record('brandkit.remove', async (sdk) => {
+        return this.undoManagerController.record('brandKit.remove', async (sdk) => {
             try {
                 await Promise.all(removeColorsPromises);
                 await Promise.all(removeParagraphStylesPromises);
@@ -124,12 +123,12 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method updates a brandkit and all related resources assigned to it
-     * @param studioBrandKit the content of the brandkit
+     * @experimental This method updates a brand kit and all related resources assigned to it
+     * @param studioBrandKit the content of the brand kit
      * @returns
      */
     set = async (studioBrandKit: StudioBrandKit) => {
-        this.undoManagerController.record('brandkit.set', async (sdk) => {
+        this.undoManagerController.record('brandKit.set', async (sdk) => {
             try {
                 const localColorGuidMap = await this.setColors(studioBrandKit);
                 const localFontGuidMap = await this.setFonts(studioBrandKit);
