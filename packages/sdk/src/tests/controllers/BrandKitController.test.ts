@@ -3,7 +3,6 @@ import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorR
 import { BrandKitController } from '../../controllers/BrandKitController';
 // eslint-disable-next-line import/no-named-as-default
 import SDK from '../../sdk';
-import mockConfig from '../__mocks__/Config';
 import {
     mockCharacterStyles,
     mockColors,
@@ -13,6 +12,13 @@ import {
 } from '../__mocks__/Brandkit';
 import { CMYK, RGB, StudioBrandKit } from '../../types/BrandKitTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
+import { FontController } from '../../controllers/FontController';
+import { ColorStyleController } from '../../controllers/ColorStyleController';
+import { MediaConnectorController } from '../../controllers/MediaConnectorController';
+import { CharacterStyleController } from '../../controllers/CharacterStyleController';
+import { ParagraphStyleController } from '../../controllers/ParagraphStyleController';
+import { UndoManagerController } from '../../controllers/UndoManagerController';
+import { FontConnectorController } from '../../controllers/FontConnectorController';
 
 const mockFontFamilyName = 'Minion Pro';
 const mockParagraphStyleId = 'paragraphStyleId';
@@ -28,7 +34,6 @@ describe('BrandKitController', () => {
     let mockBrandKitController: BrandKitController;
     let mockEditorApi: EditorAPI;
     beforeEach(() => {
-        const mockSDK = new SDK(mockConfig);
         mockEditorApi = {
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -86,6 +91,24 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'beginIfNoneActive');
         jest.spyOn(mockEditorApi, 'end');
         jest.spyOn(mockEditorApi, 'undo');
+
+        const fontController = new FontController(mockEditorApi);
+        const fontConnectorController = new FontConnectorController(mockEditorApi);
+        const colorStyleController = new ColorStyleController(mockEditorApi);
+        const mediaController = new MediaConnectorController(mockEditorApi);
+        const characterStyleController = new CharacterStyleController(mockEditorApi);
+        const paragraphStyleController = new ParagraphStyleController(mockEditorApi);
+
+        const mockSDK: SDK = {
+            editorAPI: mockEditorApi,
+            colorStyle: colorStyleController,
+            font: fontController,
+            fontConnector: fontConnectorController,
+            mediaConnector: mediaController,
+            characterStyle: characterStyleController,
+            paragraphStyle: paragraphStyleController,
+        } as SDK;
+        mockSDK.undoManager = new UndoManagerController(mockEditorApi, mockSDK);
 
         mockBrandKitController = new BrandKitController(mockEditorApi, mockSDK);
     });

@@ -136,7 +136,6 @@ export class SDK {
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
-        this.brandKit = new BrandKitController(this.editorAPI, this);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.colorConversion = new ColorConversionController(this.editorAPI);
@@ -144,6 +143,7 @@ export class SDK {
         this.clipboard = new ClipboardController(this.editorAPI);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
+        this.brandKit = new BrandKitController(this.editorAPI, this);
     }
 
     /**

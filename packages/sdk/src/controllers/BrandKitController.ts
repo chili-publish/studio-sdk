@@ -5,7 +5,6 @@ import { getColorById, getFontKey, mapBrandKitColorToLocal, mapBrandKitStyleToLo
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
 import { ColorStyleController } from './ColorStyleController';
-import { FontConnectorController } from './FontConnectorController';
 import { FontController } from './FontController';
 import { MediaConnectorController } from './MediaConnectorController';
 import { ParagraphStyleController } from './ParagraphStyleController';
@@ -27,21 +26,18 @@ export class BrandKitController {
      */
     constructor(editorAPI: EditorAPI, sdk: SDK) {
         this.#editorAPI = editorAPI;
-        this.colorStyleController = new ColorStyleController(this.#editorAPI);
-        this.fontController = new FontController(this.#editorAPI);
-        this.fontConnectorController = new FontConnectorController(this.#editorAPI);
-        this.mediaController = new MediaConnectorController(this.#editorAPI);
-        this.paragraphStyleController = new ParagraphStyleController(this.#editorAPI);
-        this.characterStyleController = new CharacterStyleController(this.#editorAPI);
+        this.colorStyleController = sdk.colorStyle;
+        this.fontController = sdk.font;
+        this.mediaController = sdk.mediaConnector;
+        this.paragraphStyleController = sdk.paragraphStyle;
+        this.characterStyleController = sdk.characterStyle;
 
-        this.undoManagerController = new UndoManagerController(this.#editorAPI, sdk);
+        this.undoManagerController = sdk.undoManager;
     }
 
     private colorStyleController: ColorStyleController;
 
     private fontController: FontController;
-
-    private fontConnectorController: FontConnectorController;
 
     private mediaController: MediaConnectorController;
 
@@ -104,18 +100,18 @@ export class BrandKitController {
         const fontsList = fonts.parsedData || [];
 
         try {
-            await this.undoManagerController.record('brandKit.remove', async () => {
+            await this.undoManagerController.record('brandKit.remove', async (sdk) => {
                 for (const color of colorsList) {
-                    await this.colorStyleController.remove(color.id);
+                    await sdk.colorStyle.remove(color.id);
                 }
                 for (const style of paragraphStylesList) {
-                    await this.paragraphStyleController.remove(style.id);
+                    await sdk.paragraphStyle.remove(style.id);
                 }
                 for (const style of characterStylesList) {
-                    await this.characterStyleController.remove(style.id);
+                    await sdk.characterStyle.remove(style.id);
                 }
                 for (const font of fontsList) {
-                    await this.fontController.removeFontFamily(font.id);
+                    await sdk.font.removeFontFamily(font.id);
                 }
             });
         } catch (err) {
@@ -133,29 +129,29 @@ export class BrandKitController {
         try {
             let result;
 
-            await this.undoManagerController.record('brandKit.set', async () => {
-                const localColorGuidMap = await this.setColors(studioBrandKit);
-                const localFontGuidMap = await this.setFonts(studioBrandKit);
+            await this.undoManagerController.record('brandKit.set', async (sdk) => {
+                const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
+                const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
 
-                const { parsedData: localColors = [] } = await this.colorStyleController.getAll();
-                const { parsedData: localFonts } = await this.fontController.getFontFamilies();
+                const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
+                const { parsedData: localFonts } = await sdk.font.getFontFamilies();
 
-                await this.setParagraphStyles(studioBrandKit, {
+                await this.setParagraphStyles(studioBrandKit, sdk, {
                     localColors,
                     localFonts,
                     localColorGuidMap,
                     localFontGuidMap,
                 });
 
-                await this.setCharacterStyles(studioBrandKit, {
+                await this.setCharacterStyles(studioBrandKit, sdk, {
                     localColors,
                     localFonts,
                     localColorGuidMap,
                     localFontGuidMap,
                 });
 
-                const { parsedData: allParagraphStyles } = await this.paragraphStyleController.getAll();
-                const { parsedData: allCharacterStyles } = await this.characterStyleController.getAll();
+                const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
+                const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
 
                 result = {
                     success: true,
@@ -176,34 +172,31 @@ export class BrandKitController {
         }
     };
 
-    private async setColors(studioBrandKit: StudioBrandKit) {
+    private async setColors(studioBrandKit: StudioBrandKit, SDK: SDK) {
         const localColorGuidsMap = new Map<string, string>();
 
         for (const color of studioBrandKit.brandKit.colors || []) {
-            const { parsedData: localColorId } = await this.colorStyleController.create();
+            const { parsedData: localColorId } = await SDK.colorStyle.create();
 
             if (!localColorId) continue;
             localColorGuidsMap.set(color.guid, localColorId);
             const localColor = mapBrandKitColorToLocal(color);
 
-            await this.colorStyleController.rename(localColorId, color.name);
-            await this.colorStyleController.update(localColorId, localColor);
+            await SDK.colorStyle.rename(localColorId, color.name);
+            await SDK.colorStyle.update(localColorId, localColor);
         }
         return localColorGuidsMap;
     }
 
-    private async setFonts(studioBrandKit: StudioBrandKit) {
+    private async setFonts(studioBrandKit: StudioBrandKit, SDK: SDK) {
         const fontConnectorId = studioBrandKit.fontConnectorId;
         const guidFontFamilyIdMap = new Map<string, string>();
 
         for (const font of studioBrandKit.brandKit.fonts || []) {
-            const { parsedData: fontStyles = [] } = await this.fontConnectorController.detail(
-                fontConnectorId,
-                font.fontFamilyId,
-            );
+            const { parsedData: fontStyles = [] } = await SDK.fontConnector.detail(fontConnectorId, font.fontFamilyId);
 
             if (!fontStyles?.[0]) throw new Error(`No font styles for family ID: ${font.fontFamilyId}`);
-            const { parsedData: localFontId } = await this.fontController.addFontFamily(fontConnectorId, {
+            const { parsedData: localFontId } = await SDK.font.addFontFamily(fontConnectorId, {
                 name: fontStyles[0].familyName,
                 fontFamilyId: font.fontFamilyId,
             });
@@ -216,6 +209,7 @@ export class BrandKitController {
 
     private async setParagraphStyles(
         studioBrandKit: StudioBrandKit,
+        SDK: SDK,
         resources: {
             localFonts: DocumentFontFamily[] | null;
             localColors: DocumentColor[] | null;
@@ -235,7 +229,7 @@ export class BrandKitController {
             const localColor = getColorById(localColors, localColorId);
             if (!localColor) throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
 
-            const { parsedData: styleId } = await this.paragraphStyleController.create();
+            const { parsedData: styleId } = await SDK.paragraphStyle.create();
 
             const paragraphStyleUpdate = mapBrandKitStyleToLocal<BrandKitParagraphStyle, ParagraphStyleUpdate>(
                 style,
@@ -244,14 +238,15 @@ export class BrandKitController {
             );
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            await this.paragraphStyleController.rename(styleId!, style.name);
+            await SDK.paragraphStyle.rename(styleId!, style.name);
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            await this.paragraphStyleController.update(styleId!, paragraphStyleUpdate);
+            await SDK.paragraphStyle.update(styleId!, paragraphStyleUpdate);
         }
     }
 
     private async setCharacterStyles(
         studioBrandKit: StudioBrandKit,
+        SDK: SDK,
         resources: {
             localFonts: DocumentFontFamily[] | null;
             localColors: DocumentColor[] | null;
@@ -268,7 +263,7 @@ export class BrandKitController {
             const localColor = getColorById(localColors, localColorId);
             const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
 
-            const { parsedData: styleId } = await this.characterStyleController.create();
+            const { parsedData: styleId } = await SDK.characterStyle.create();
 
             const characterStyleUpdate = mapBrandKitStyleToLocal<BrandKitCharacterStyle, CharacterStyleUpdate>(
                 style,
@@ -276,9 +271,9 @@ export class BrandKitController {
                 fontKey,
             );
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            await this.characterStyleController.rename(styleId!, style.name);
+            await SDK.characterStyle.rename(styleId!, style.name);
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            await this.characterStyleController.update(styleId!, characterStyleUpdate);
+            await SDK.characterStyle.update(styleId!, characterStyleUpdate);
         }
     }
 }
