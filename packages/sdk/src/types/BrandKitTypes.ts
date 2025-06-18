@@ -66,14 +66,14 @@ export type BrandKitParagraphStyle = {
 
     textAlign: Alignment;
 
-    textIndent?: string;
+    textIndent: string;
 
-    baselineShiftValue?: string;
+    baselineShiftValue: string;
     lineHeight: number;
-    textOverprint?: boolean;
+    textOverprint: boolean;
 
     brandKitColorGuid: string;
-    fillColorApplied?: boolean;
+    fillColorApplied: boolean;
 
     underline: boolean;
     lineThrough: boolean;
