@@ -56,10 +56,17 @@ export class BrandKitController {
      * @returns brandkit with all assigned resources
      */
     get = async () => {
-        const colors = await this.colorStyleController.getAll();
-        const fonts = await this.fontController.getFontFamilies();
-        const characterStyles = await this.characterStyleController.getAll();
-        const paragraphStyles = await this.paragraphStyleController.getAll();
+        const colorsPromise = this.colorStyleController.getAll();
+        const fontsPromise = this.fontController.getFontFamilies();
+        const characterStylesPromise = this.characterStyleController.getAll();
+        const paragraphStylesPromise = this.paragraphStyleController.getAll();
+
+        const [colors, fonts, paragraphStyles, characterStyles] = await Promise.all([
+            colorsPromise,
+            fontsPromise,
+            characterStylesPromise,
+            paragraphStylesPromise,
+        ]);
 
         const studioBrandKit = {
             brandKit: {
@@ -76,7 +83,7 @@ export class BrandKitController {
             status: 200,
         };
 
-        return Promise.resolve(getEditorResponseData<StudioBrandKit>(editorResponse));
+        return getEditorResponseData<StudioBrandKit>(editorResponse);
     };
 
     /**
@@ -85,31 +92,31 @@ export class BrandKitController {
      */
     remove = async () => {
         const colors = await this.colorStyleController.getAll();
-        const removeColorsPromises = (colors.parsedData || [])
-            ?.map((color) => color.id)
-            .map(this.colorStyleController.remove);
+        const colorsList = colors.parsedData || [];
 
         const paragraphStyles = await this.paragraphStyleController.getAll();
-        const removeParagraphStylesPromises = (paragraphStyles.parsedData || [])
-            ?.map((style) => style.id)
-            .map(this.paragraphStyleController.remove);
+        const paragraphStylesList = paragraphStyles.parsedData || [];
 
         const characterStyles = await this.characterStyleController.getAll();
-        const removeCharacterStylesPromises = (characterStyles.parsedData || [])
-            ?.map((style) => style.id)
-            .map(this.characterStyleController.remove);
+        const characterStylesList = characterStyles.parsedData || [];
 
         const fonts = await this.fontController.getFontFamilies();
-        const removeFontFamiliesPromises = (fonts.parsedData || [])
-            ?.map((font) => font.id)
-            .map(this.fontController.removeFontFamily);
+        const fontsList = fonts.parsedData || [];
 
         try {
             await this.undoManagerController.record('brandKit.remove', async () => {
-                await Promise.all(removeColorsPromises);
-                await Promise.all(removeParagraphStylesPromises);
-                await Promise.all(removeCharacterStylesPromises);
-                await Promise.all(removeFontFamiliesPromises);
+                for (const color of colorsList) {
+                    await this.colorStyleController.remove(color.id);
+                }
+                for (const style of paragraphStylesList) {
+                    await this.paragraphStyleController.remove(style.id);
+                }
+                for (const style of characterStylesList) {
+                    await this.characterStyleController.remove(style.id);
+                }
+                for (const font of fontsList) {
+                    await this.fontController.removeFontFamily(font.id);
+                }
             });
         } catch (err) {
             this.undoManagerController.undo();
@@ -162,7 +169,7 @@ export class BrandKitController {
                 };
             });
 
-            return Promise.resolve(result);
+            return result;
         } catch (err) {
             this.undoManagerController.undo();
             throw err;
@@ -189,7 +196,7 @@ export class BrandKitController {
         const fontConnectorId = studioBrandKit.fontConnectorId;
         const guidFontFamilyIdMap = new Map<string, string>();
 
-        const fontsPromises = (studioBrandKit.brandKit.fonts || []).map(async (font) => {
+        for (const font of studioBrandKit.brandKit.fonts || []) {
             const { parsedData: fontStyles = [] } = await this.fontConnectorController.detail(
                 fontConnectorId,
                 font.fontFamilyId,
@@ -202,9 +209,7 @@ export class BrandKitController {
             });
 
             if (localFontId) guidFontFamilyIdMap.set(font.fontFamilyBrandKitGuid, localFontId);
-            return localFontId;
-        });
-        await Promise.all(fontsPromises);
+        }
 
         return guidFontFamilyIdMap;
     }
@@ -220,10 +225,6 @@ export class BrandKitController {
     ) {
         const { localColors, localFonts, localColorGuidMap, localFontGuidMap } = resources;
         for (const style of studioBrandKit.brandKit.paragraphStyles || []) {
-            const { parsedData: styleId } = await this.paragraphStyleController.create();
-
-            if (!styleId) throw new Error(`Paragraph style could not be created: ${style.name}`);
-
             const localColorId = localColorGuidMap.get(style.brandKitColorGuid);
             const fontFamilyId = localFontGuidMap.get(style.brandKitFontFamilyGuid);
             const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
@@ -234,13 +235,18 @@ export class BrandKitController {
             const localColor = getColorById(localColors, localColorId);
             if (!localColor) throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
 
+            const { parsedData: styleId } = await this.paragraphStyleController.create();
+
             const paragraphStyleUpdate = mapBrandKitStyleToLocal<BrandKitParagraphStyle, ParagraphStyleUpdate>(
                 style,
                 localColor,
                 `${fontKey}`,
             );
-            await this.paragraphStyleController.rename(styleId, style.name);
-            await this.paragraphStyleController.update(styleId, paragraphStyleUpdate);
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            await this.paragraphStyleController.rename(styleId!, style.name);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            await this.paragraphStyleController.update(styleId!, paragraphStyleUpdate);
         }
     }
 
@@ -255,10 +261,6 @@ export class BrandKitController {
     ) {
         const { localColors, localFonts, localColorGuidMap, localFontGuidMap } = resources;
         for (const style of studioBrandKit.brandKit.characterStyles || []) {
-            const { parsedData: styleId } = await this.characterStyleController.create();
-
-            if (!styleId) throw new Error(`Character style could not be created: ${style.name}`);
-
             const localColorId = style.brandKitColorGuid ? localColorGuidMap.get(style.brandKitColorGuid) : undefined;
             const fontFamilyId = style.brandKitFontFamilyGuid
                 ? localFontGuidMap.get(style.brandKitFontFamilyGuid)
@@ -266,13 +268,17 @@ export class BrandKitController {
             const localColor = getColorById(localColors, localColorId);
             const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
 
+            const { parsedData: styleId } = await this.characterStyleController.create();
+
             const characterStyleUpdate = mapBrandKitStyleToLocal<BrandKitCharacterStyle, CharacterStyleUpdate>(
                 style,
                 localColor,
                 fontKey,
             );
-            await this.characterStyleController.rename(styleId, style.name);
-            await this.characterStyleController.update(styleId, characterStyleUpdate);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            await this.characterStyleController.rename(styleId!, style.name);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            await this.characterStyleController.update(styleId!, characterStyleUpdate);
         }
     }
 }

@@ -1,8 +1,6 @@
 import {
-    APIBrandKit,
     BrandKitCharacterStyle,
     BrandKitColor,
-    BrandKitInternal,
     BrandKitParagraphStyle,
     HEXColorValue,
     SpotCMYKColorValue,
@@ -10,76 +8,38 @@ import {
     SpotRGBColorValue,
 } from '../types/BrandKitTypes';
 import { CharacterStyleUpdate } from '../types/CharacterStyleTypes';
-import {
-    APIColorType,
-    Color,
-    ColorType,
-    ColorUpdate,
-    ColorUsageType,
-    DocumentColor,
-    SpotColorCMYK,
-    SpotColorHEX,
-    SpotColorRGB,
-} from '../types/ColorStyleTypes';
+import { APIColorType, ColorType, ColorUpdate, ColorUsageType, DocumentColor } from '../types/ColorStyleTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { ParagraphStyleUpdate } from '../types/ParagraphStyleTypes';
 
-const isSpotHexColor = (color: Color): color is SpotColorHEX => color.type === ColorType.spotHEX;
-const isSpotRgbColor = (color: Color): color is SpotColorRGB => color.type === ColorType.spotRGB;
-const isSpotCmykColor = (color: Color): color is SpotColorCMYK => color.type === ColorType.spotCMYK;
+const isBrandKitHexColor = (color: BrandKitColor): color is HEXColorValue => color.type === APIColorType.hex;
 
-const isSpotColor = (color: Color): color is SpotColorRGB | SpotColorCMYK | SpotColorHEX =>
-    isSpotHexColor(color) || isSpotRgbColor(color) || isSpotCmykColor(color);
-
-const isBranKitSpotHexColor = (color: BrandKitColor): color is SpotHEXColorValue => color.type === APIColorType.spotHex;
-const isBranKitHexColor = (color: BrandKitColor): color is HEXColorValue => color.type === APIColorType.hex;
+const isBrandKitSpotHexColor = (color: BrandKitColor): color is SpotHEXColorValue =>
+    color.type === APIColorType.spotHex;
+const isBrandKitSpotRgbColor = (color: BrandKitColor): color is SpotRGBColorValue =>
+    color.type === APIColorType.spotRgb;
+const isBrandKitSpotCmykColor = (color: BrandKitColor): color is SpotRGBColorValue =>
+    color.type === APIColorType.spotCmyk;
 
 const isBrandKitSpotColor = (
     color: BrandKitColor,
 ): color is SpotRGBColorValue | SpotCMYKColorValue | SpotHEXColorValue =>
-    color.type === APIColorType.spotRgb || color.type === APIColorType.spotCmyk || color.type === APIColorType.spotHex;
-
-export const mapToStudioBrandKit = (internalBrandKit: BrandKitInternal): APIBrandKit => {
-    return {
-        colors: internalBrandKit.colors.map((color) => {
-            const colorInfo = color.color;
-            return {
-                guid: color.id,
-                name: color.name,
-                type: mapToAPIColorType(colorInfo.type),
-                value: isSpotColor(colorInfo) ? colorInfo.spotName : colorInfo,
-                ...(isSpotHexColor(colorInfo) && { displayValue: colorInfo.value }),
-                ...(isSpotColor(colorInfo) && !isSpotHexColor(colorInfo) && { displayValue: colorInfo }),
-            } as BrandKitColor;
-        }),
-        paragraphStyles: internalBrandKit.paragraphStyles.map((style) => {
-            return {
-                ...style,
-                fontStyleId: style.fontStyle,
-                brandKitColorGuid: style.color.id as string, ///
-                brandKitFontFamilyGuid: style.fontKey, ///
-            };
-        }),
-        characterStyles: [],
-        fonts: [],
-        media: [],
-    };
-};
+    isBrandKitSpotRgbColor(color) || isBrandKitSpotCmykColor(color) || isBrandKitSpotHexColor(color);
 
 export const mapBrandKitColorToLocal = (color: BrandKitColor): ColorUpdate => {
     const internalColorType: ColorType = mapToLocalColorType(color.type);
 
     if (isBrandKitSpotColor(color)) {
         return {
-            ...(isBranKitSpotHexColor(color) && { value: color.displayValue }),
-            ...(!isBranKitSpotHexColor(color) && { ...color.displayValue }),
+            ...(isBrandKitSpotHexColor(color) && { value: color.displayValue }),
+            ...(!isBrandKitSpotHexColor(color) && { ...color.displayValue }),
             spotName: color.value,
             type: internalColorType,
         } as ColorUpdate;
     }
     return {
-        ...(isBranKitHexColor(color) && { value: color.value }),
-        ...(!isBranKitHexColor(color) && { ...color.value }),
+        ...(isBrandKitHexColor(color) && { value: color.value }),
+        ...(!isBrandKitHexColor(color) && { ...color.value }),
         type: internalColorType,
     } as ColorUpdate;
 };
@@ -116,23 +76,6 @@ export const mapBrandKitStyleToLocal = <
     } as unknown as R;
 };
 
-const mapToAPIColorType = (type: ColorType) => {
-    switch (type) {
-        case ColorType.rgb:
-            return APIColorType.rgb;
-        case ColorType.cmyk:
-            return APIColorType.cmyk;
-        case ColorType.hex:
-            return APIColorType.hex;
-        case ColorType.spotRGB:
-            return APIColorType.spotRgb;
-        case ColorType.spotCMYK:
-            return APIColorType.spotCmyk;
-        case ColorType.spotHEX:
-            return APIColorType.spotHex;
-    }
-};
-
 const mapToLocalColorType = (type: APIColorType): ColorType => {
     switch (type) {
         case APIColorType.rgb:
@@ -150,14 +93,18 @@ const mapToLocalColorType = (type: APIColorType): ColorType => {
     }
 };
 
-export const getColorById = (colors: DocumentColor[] | null, id: string | undefined) =>
-    (colors || []).find((color) => color.id === id);
+export const getColorById = (colors: DocumentColor[] | null, id: string | undefined) => {
+    if (colors === null || id === undefined) return;
+    return (colors || []).find((color) => color.id === id);
+};
 
 export const getFontKey = (
     fonts: DocumentFontFamily[] | null,
     familyId: string | undefined,
     styleId: string | undefined,
-) =>
-    (fonts || [])
+) => {
+    if (fonts === null || familyId === undefined || styleId === undefined) return;
+    return (fonts || [])
         .find((font) => font.id === familyId)
         ?.fontStyles.find((fontStyle) => fontStyle.fontStyleId === styleId)?.id;
+};

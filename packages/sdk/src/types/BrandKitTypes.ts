@@ -1,4 +1,5 @@
 import { APIColorType, DocumentColor } from './ColorStyleTypes';
+import { Id } from './CommonTypes';
 import { DocumentCharacterStyle, DocumentParagraphStyle } from './DocumentTypes';
 import { DocumentFontFamily } from './FontTypes';
 import { Alignment, Case, Scripting } from './TextStyleTypes';
@@ -85,9 +86,9 @@ export type BrandKitMedia = {
 };
 
 export type APIBrandKit = {
-    // id: Id;
-    // name: string;
-    // dateCreated: string;
+    id: Id;
+    name: string;
+    dateCreated: string;
     fonts: BrandKitFont[];
     colors: BrandKitColor[];
     characterStyles: BrandKitCharacterStyle[];
