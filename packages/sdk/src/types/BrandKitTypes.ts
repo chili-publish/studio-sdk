@@ -59,9 +59,9 @@ export type BrandKitParagraphStyle = {
     fontStyleId: string;
     fontSize: number;
     typographicCase: Case;
-    kerningOn?: boolean;
+    kerningOn: boolean;
     subSuperScript: Scripting;
-    trackingLeft?: number;
+    trackingLeft: number;
     trackingRight: number;
 
     textAlign: Alignment;
