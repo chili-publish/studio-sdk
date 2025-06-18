@@ -64,8 +64,8 @@ export class BrandKitController {
         const [colors, fonts, paragraphStyles, characterStyles] = await Promise.all([
             colorsPromise,
             fontsPromise,
-            characterStylesPromise,
             paragraphStylesPromise,
+            characterStylesPromise,
         ]);
 
         const studioBrandKit = {

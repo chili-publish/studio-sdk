@@ -101,8 +101,8 @@ export enum StudioBrandKitLocationEnum {
     local = 'local',
 }
 export type StudioBrandKit = {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
     location: StudioBrandKitLocationEnum;
     fontConnectorId: string;
     brandKit: APIBrandKit;
