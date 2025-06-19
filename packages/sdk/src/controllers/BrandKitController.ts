@@ -1,6 +1,11 @@
 import SDK, { CharacterStyleUpdate, DocumentColor, DocumentFontFamily, ParagraphStyleUpdate } from '..';
-import { BrandKitCharacterStyle, BrandKitParagraphStyle, StudioBrandKit } from '../types/BrandKitTypes';
-import { EditorAPI } from '../types/CommonTypes';
+import {
+    BrandKitCharacterStyle,
+    BrandKitInternal,
+    BrandKitParagraphStyle,
+    StudioBrandKit,
+} from '../types/BrandKitTypes';
+import { EditorAPI, EditorResponse } from '../types/CommonTypes';
 import { getColorById, getFontKey, mapBrandKitColorToLocal, mapBrandKitStyleToLocal } from '../utils/BrandKitHelper';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
@@ -127,7 +132,11 @@ export class BrandKitController {
      */
     set = async (studioBrandKit: StudioBrandKit) => {
         try {
-            let result;
+            let result: EditorResponse<BrandKitInternal> = {
+                success: true,
+                status: 200,
+                parsedData: { colors: [], fonts: [], paragraphStyles: [], characterStyles: [] },
+            };
 
             await this.undoManagerController.record('brandKit.set', async (sdk) => {
                 const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
@@ -157,10 +166,10 @@ export class BrandKitController {
                     success: true,
                     status: 200,
                     parsedData: {
-                        colors: localColors,
-                        fonts: localFonts,
-                        paragraphStyles: allParagraphStyles,
-                        characterStyles: allCharacterStyles,
+                        colors: localColors || [],
+                        fonts: localFonts || [],
+                        paragraphStyles: allParagraphStyles || [],
+                        characterStyles: allCharacterStyles || [],
                     },
                 };
             });
