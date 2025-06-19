@@ -167,6 +167,26 @@ export {
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
+export type {
+    APIBrandKit,
+    StudioBrandKit,
+    BrandKitColor,
+    BrandKitFont,
+    BrandKitParagraphStyle,
+    BrandKitCharacterStyle,
+    BrandKitMedia,
+    RGBColorValue,
+    HEXColorValue,
+    CMYKColorValue,
+    SpotRGBColorValue,
+    SpotHEXColorValue,
+    SpotCMYKColorValue,
+    RGB,
+    CMYK,
+} from './types/BrandKitTypes';
+
+export { StudioBrandKitLocationEnum } from './types/BrandKitTypes';
+
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
