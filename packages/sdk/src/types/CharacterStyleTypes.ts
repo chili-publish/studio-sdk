@@ -31,58 +31,58 @@ export type CharacterStyle = {
 };
 
 export type CharacterStyleUpdate = {
-    fontKey: {
+    fontKey?: {
         value: string;
     };
-    fontSize: {
+    fontSize?: {
         value: number;
     };
-    typographicCase: {
+    typographicCase?: {
         value: Case;
     };
-    kerningOn: {
+    kerningOn?: {
         value: boolean;
     };
-    subSuperScript: {
+    subSuperScript?: {
         value: Scripting;
     };
-    trackingLeft: {
+    trackingLeft?: {
         value: number;
     };
-    trackingRight: {
+    trackingRight?: {
         value: number;
     };
-    textIndent: {
+    textIndent?: {
         value: string;
     };
-    baselineShiftValue: {
+    baselineShiftValue?: {
         value: string;
     };
-    lineHeight: {
+    lineHeight?: {
         value: number;
     };
-    textOverprint: {
+    textOverprint?: {
         value: boolean;
     };
-    color: {
+    color?: {
         value: ColorUsageUpdate;
     };
-    fillColorApplied: {
+    fillColorApplied?: {
         value: boolean;
     };
-    strokeColor: {
+    strokeColor?: {
         value: ColorUsageUpdate;
     };
-    strokeColorApplied: {
+    strokeColorApplied?: {
         value: boolean;
     };
-    strokeWidth: {
+    strokeWidth?: {
         value: string;
     };
-    underline: {
+    underline?: {
         value: boolean;
     };
-    lineThrough: {
+    lineThrough?: {
         value: boolean;
     };
 };

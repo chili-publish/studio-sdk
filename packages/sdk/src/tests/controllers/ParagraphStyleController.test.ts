@@ -35,6 +35,9 @@ afterAll(() => {
 });
 
 const updateParagraphStyle: ParagraphStyleUpdate = {
+    fontKey: {
+        value: 'fontKey',
+    },
     fontSize: {
         value: 15.0,
     },

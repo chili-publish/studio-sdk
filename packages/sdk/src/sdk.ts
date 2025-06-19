@@ -42,6 +42,7 @@ import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { BrandKitController } from './controllers/BrandKitController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -88,6 +89,7 @@ export class SDK {
     colorConversion: ColorConversionController;
     info: InfoController;
     clipboard: ClipboardController;
+    brandKit: BrandKitController;
     next: NextInitiator;
 
     private subscriber: SubscriberController;
@@ -141,6 +143,7 @@ export class SDK {
         this.clipboard = new ClipboardController(this.editorAPI);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
+        this.brandKit = new BrandKitController(this.editorAPI, this);
     }
 
     /**
@@ -247,6 +250,7 @@ export class SDK {
         this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
+        this.brandKit = new BrandKitController(this.editorAPI, this);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version

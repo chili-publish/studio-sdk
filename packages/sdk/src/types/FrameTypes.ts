@@ -370,4 +370,4 @@ export type FrameConfiguration = {
 export enum CropType {
     frameCrop = 'frameCrop',
     assetCrop = 'assetCrop',
-};
+}
