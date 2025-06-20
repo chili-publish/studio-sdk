@@ -38,6 +38,11 @@ describe('BrandKitController', () => {
             getBrandKitId: async () => getEditorResponseData(castToEditorResponse('test-brand-kit-id')),
             getBrandKitVersion: async () => getEditorResponseData(castToEditorResponse('2025-06-12T12:10:29.354877')),
             updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
+            getBrandKitMedias: async () => getEditorResponseData(castToEditorResponse([])),
+            addBrandKitMedia: async () => getEditorResponseData(castToEditorResponse('media-id-123')),
+            updateBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
+            renameBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
+            removeBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
             createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
@@ -71,6 +76,12 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'getBrandKitId');
         jest.spyOn(mockEditorApi, 'getBrandKitVersion');
         jest.spyOn(mockEditorApi, 'updateBrandKitIdAndVersion');
+
+        jest.spyOn(mockEditorApi, 'getBrandKitMedias');
+        jest.spyOn(mockEditorApi, 'addBrandKitMedia');
+        jest.spyOn(mockEditorApi, 'updateBrandKitMedia');
+        jest.spyOn(mockEditorApi, 'renameBrandKitMedia');
+        jest.spyOn(mockEditorApi, 'removeBrandKitMedia');
 
         jest.spyOn(mockEditorApi, 'getColors');
         jest.spyOn(mockEditorApi, 'removeColor');
@@ -302,5 +313,51 @@ describe('BrandKitController', () => {
             mockStudioBrandKit.id,
             mockStudioBrandKit.brandKit.lastModifiedDate,
         );
+    });
+
+    it('Should call getBrandKitMedias of EditorAPI successfully', async () => {
+        await mockBrandKitController.getMedias();
+        expect(mockEditorApi.getBrandKitMedias).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call addBrandKitMedia of EditorAPI successfully', async () => {
+        const name = 'test-media';
+        const assetId = 'asset-123';
+        const remoteConnectorId = 'connector-456';
+
+        await mockBrandKitController.addMedia(name, assetId, remoteConnectorId);
+
+        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledWith(name, assetId, remoteConnectorId);
+        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call updateBrandKitMedia of EditorAPI successfully', async () => {
+        const id = 'media-id-123';
+        const assetId = 'new-asset-456';
+        const remoteConnectorId = 'new-connector-789';
+
+        await mockBrandKitController.updateMedia(id, assetId, remoteConnectorId);
+
+        expect(mockEditorApi.updateBrandKitMedia).toHaveBeenCalledWith(id, assetId, remoteConnectorId);
+        expect(mockEditorApi.updateBrandKitMedia).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call renameBrandKitMedia of EditorAPI successfully', async () => {
+        const id = 'media-id-123';
+        const newName = 'new-media-name';
+
+        await mockBrandKitController.renameMedia(id, newName);
+
+        expect(mockEditorApi.renameBrandKitMedia).toHaveBeenCalledWith(id, newName);
+        expect(mockEditorApi.renameBrandKitMedia).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call removeBrandKitMedia of EditorAPI successfully', async () => {
+        const id = 'media-id-123';
+
+        await mockBrandKitController.removeMedia(id);
+
+        expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledWith(id);
+        expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledTimes(1);
     });
 });
