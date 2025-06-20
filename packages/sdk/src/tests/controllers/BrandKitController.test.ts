@@ -35,6 +35,9 @@ describe('BrandKitController', () => {
     let mockEditorApi: EditorAPI;
     beforeEach(() => {
         mockEditorApi = {
+            getBrandKitId: async () => getEditorResponseData(castToEditorResponse('test-brand-kit-id')),
+            getBrandKitVersion: async () => getEditorResponseData(castToEditorResponse('1.0.0')),
+            updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
             createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
@@ -64,6 +67,10 @@ describe('BrandKitController', () => {
             undo: async () => getEditorResponseData(castToEditorResponse(null)),
             end: async () => getEditorResponseData(castToEditorResponse(null)),
         };
+
+        jest.spyOn(mockEditorApi, 'getBrandKitId');
+        jest.spyOn(mockEditorApi, 'getBrandKitVersion');
+        jest.spyOn(mockEditorApi, 'updateBrandKitIdAndVersion');
 
         jest.spyOn(mockEditorApi, 'getColors');
         jest.spyOn(mockEditorApi, 'removeColor');
@@ -115,6 +122,26 @@ describe('BrandKitController', () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
+    });
+
+    it('Should call getBrandKitId of EditorAPI successfully', async () => {
+        await mockBrandKitController.getId();
+        expect(mockEditorApi.getBrandKitId).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call getBrandKitVersion of EditorAPI successfully', async () => {
+        await mockBrandKitController.getVersion();
+        expect(mockEditorApi.getBrandKitVersion).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call updateBrandKitIdAndVersion of EditorAPI successfully', async () => {
+        const testId = 'test-brand-kit-id';
+        const testVersion = '1.0.0';
+
+        await mockBrandKitController.updateIdAndVersion(testId, testVersion);
+
+        expect(mockEditorApi.updateBrandKitIdAndVersion).toHaveBeenCalledWith(testId, testVersion);
+        expect(mockEditorApi.updateBrandKitIdAndVersion).toHaveBeenCalledTimes(1);
     });
 
     it('Should call the get method', async () => {
