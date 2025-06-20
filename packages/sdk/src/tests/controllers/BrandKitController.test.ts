@@ -297,5 +297,10 @@ describe('BrandKitController', () => {
                 }),
             ),
         );
+
+        expect(mockEditorApi.updateBrandKitIdAndVersion).toHaveBeenCalledWith(
+            mockStudioBrandKit.id,
+            mockStudioBrandKit.brandKit.lastModifiedDate,
+        );
     });
 });

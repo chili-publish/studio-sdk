@@ -281,9 +281,11 @@ export const mockParagraphStyles = [
 ];
 
 export const mockStudioBrandKit = {
+    id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
     fontConnectorId: 'fontConnectorId',
     brandKit: {
         id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
+        lastModifiedDate: '2025-06-12T12:10:29.354877',
         name: 'BrandkitTest1',
         dateCreated: '2025-06-12T12:10:29.354877',
         fonts: [
