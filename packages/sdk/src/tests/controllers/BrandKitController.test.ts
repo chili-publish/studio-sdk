@@ -36,7 +36,7 @@ describe('BrandKitController', () => {
     beforeEach(() => {
         mockEditorApi = {
             getBrandKitId: async () => getEditorResponseData(castToEditorResponse('test-brand-kit-id')),
-            getBrandKitVersion: async () => getEditorResponseData(castToEditorResponse('1.0.0')),
+            getBrandKitVersion: async () => getEditorResponseData(castToEditorResponse('2025-06-12T12:10:29.354877')),
             updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -118,6 +118,7 @@ describe('BrandKitController', () => {
         mockSDK.undoManager = new UndoManagerController(mockEditorApi, mockSDK);
 
         mockBrandKitController = new BrandKitController(mockEditorApi, mockSDK);
+        mockSDK.brandKit = mockBrandKitController;
     });
 
     afterEach(() => {
@@ -154,7 +155,10 @@ describe('BrandKitController', () => {
         expect(response).toEqual(
             expect.objectContaining({
                 data: JSON.stringify({
+                    id: 'test-brand-kit-id',
                     brandKit: {
+                        id: 'test-brand-kit-id',
+                        lastModifiedDate: '2025-06-12T12:10:29.354877',
                         colors: mockColors,
                         fonts: mockFonts,
                         paragraphStyles: mockParagraphStyles,

@@ -89,6 +89,7 @@ export type APIBrandKit = {
     id: Id;
     name: string;
     dateCreated: string;
+    lastModifiedDate: string;
     fonts: BrandKitFont[];
     colors: BrandKitColor[];
     characterStyles: BrandKitCharacterStyle[];
@@ -96,19 +97,16 @@ export type APIBrandKit = {
     media: BrandKitMedia[];
 };
 
-export enum StudioBrandKitLocationEnum {
-    remote = 'remote',
-    local = 'local',
-}
 export type StudioBrandKit = {
     id: string;
     name: string;
-    location: StudioBrandKitLocationEnum;
     fontConnectorId: string;
     brandKit: APIBrandKit;
 };
 
 export type BrandKitInternal = {
+    id: string;
+    version: string;
     colors: DocumentColor[];
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];

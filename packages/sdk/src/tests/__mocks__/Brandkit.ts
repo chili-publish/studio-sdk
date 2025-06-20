@@ -1,5 +1,3 @@
-import { StudioBrandKitLocationEnum } from '../../types/BrandKitTypes';
-
 export const mockColors = [
     {
         id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
@@ -284,7 +282,6 @@ export const mockParagraphStyles = [
 
 export const mockStudioBrandKit = {
     fontConnectorId: 'fontConnectorId',
-    location: StudioBrandKitLocationEnum.local,
     brandKit: {
         id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
         name: 'BrandkitTest1',

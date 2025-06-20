@@ -86,6 +86,9 @@ export class BrandKitController {
      * @returns brandkit with all assigned resources
      */
     get = async () => {
+        const brandKitId = await this.getId();
+        const brandKitVersion = await this.getVersion();
+
         const colorsPromise = this.colorStyleController.getAll();
         const fontsPromise = this.fontController.getFontFamilies();
         const characterStylesPromise = this.characterStyleController.getAll();
@@ -99,7 +102,10 @@ export class BrandKitController {
         ]);
 
         const studioBrandKit = {
+            id: brandKitId.parsedData,
             brandKit: {
+                id: brandKitId.parsedData,
+                lastModifiedDate: brandKitVersion.parsedData,
                 colors: colors.parsedData,
                 fonts: fonts.parsedData,
                 paragraphStyles: paragraphStyles.parsedData,
@@ -164,7 +170,14 @@ export class BrandKitController {
             let result: EditorResponse<BrandKitInternal> = {
                 success: true,
                 status: 200,
-                parsedData: { colors: [], fonts: [], paragraphStyles: [], characterStyles: [] },
+                parsedData: {
+                    id: studioBrandKit.id,
+                    version: studioBrandKit.brandKit.lastModifiedDate,
+                    colors: [],
+                    fonts: [],
+                    paragraphStyles: [],
+                    characterStyles: [],
+                },
             };
 
             await this.undoManagerController.record('brandKit.set', async (sdk) => {
@@ -190,11 +203,14 @@ export class BrandKitController {
 
                 const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
                 const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
+                await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
 
                 result = {
                     success: true,
                     status: 200,
                     parsedData: {
+                        id: studioBrandKit.id,
+                        version: studioBrandKit.brandKit.lastModifiedDate,
                         colors: localColors || [],
                         fonts: localFonts || [],
                         paragraphStyles: allParagraphStyles || [],
