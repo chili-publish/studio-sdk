@@ -185,8 +185,6 @@ export type {
     CMYK,
 } from './types/BrandKitTypes';
 
-export { StudioBrandKitLocationEnum } from './types/BrandKitTypes';
-
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
