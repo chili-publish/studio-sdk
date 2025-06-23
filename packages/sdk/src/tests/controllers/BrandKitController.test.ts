@@ -38,7 +38,7 @@ describe('BrandKitController', () => {
             getBrandKitId: async () => getEditorResponseData(castToEditorResponse('test-brand-kit-id')),
             getBrandKitVersion: async () => getEditorResponseData(castToEditorResponse('2025-06-12T12:10:29.354877')),
             updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
-            getBrandKitMedias: async () => getEditorResponseData(castToEditorResponse([])),
+            getAllBrandKitMedia: async () => getEditorResponseData(castToEditorResponse([])),
             addBrandKitMedia: async () => getEditorResponseData(castToEditorResponse('media-id-123')),
             updateBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
             renameBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -77,7 +77,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'getBrandKitVersion');
         jest.spyOn(mockEditorApi, 'updateBrandKitIdAndVersion');
 
-        jest.spyOn(mockEditorApi, 'getBrandKitMedias');
+        jest.spyOn(mockEditorApi, 'getAllBrandKitMedia');
         jest.spyOn(mockEditorApi, 'addBrandKitMedia');
         jest.spyOn(mockEditorApi, 'updateBrandKitMedia');
         jest.spyOn(mockEditorApi, 'renameBrandKitMedia');
@@ -315,9 +315,9 @@ describe('BrandKitController', () => {
         );
     });
 
-    it('Should call getBrandKitMedias of EditorAPI successfully', async () => {
-        await mockBrandKitController.getMedias();
-        expect(mockEditorApi.getBrandKitMedias).toHaveBeenCalledTimes(1);
+    it('Should call getAllBrandKitMedia of EditorAPI successfully', async () => {
+        await mockBrandKitController.getAllMedia();
+        expect(mockEditorApi.getAllBrandKitMedia).toHaveBeenCalledTimes(1);
     });
 
     it('Should call addBrandKitMedia of EditorAPI successfully', async () => {

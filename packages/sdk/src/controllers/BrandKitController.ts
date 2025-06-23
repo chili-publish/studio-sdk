@@ -127,9 +127,9 @@ export class BrandKitController {
      * This method returns all media items in the brand kit
      * @returns list of media items in the brand kit
      */
-    getMedias = async () => {
+    getAllMedia = async () => {
         const res = await this.#editorAPI;
-        return res.getBrandKitMedias().then((result) => getEditorResponseData<BrandKitMedia[]>(result));
+        return res.getAllBrandKitMedia().then((result) => getEditorResponseData<BrandKitMedia[]>(result));
     };
 
     /**
