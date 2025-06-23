@@ -135,50 +135,50 @@ export class BrandKitController {
     /**
      * This method adds a media item to the brand kit
      * @param name - The name of the media item
-     * @param assetId - The asset ID of the media item
      * @param remoteConnectorId - The remote connector ID
-     * @returns the ID of the created media item
+     * @param assetId - The asset ID of the media item
+     * @returns
      */
-    addMedia = async (name: string, assetId: string, remoteConnectorId: Id) => {
+    addMedia = async (name: string, remoteConnectorId: Id, assetId: string) => {
         const res = await this.#editorAPI;
         return res
-            .addBrandKitMedia(name, assetId, remoteConnectorId)
+            .addBrandKitMedia(name, remoteConnectorId, assetId)
             .then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * This method updates an existing media item in the brand kit
-     * @param id - The ID of the media item to update
-     * @param assetId - The new asset ID
+     * @param name - The name of the media item to update
      * @param remoteConnectorId - The new remote connector ID
+     * @param assetId - The new asset ID
      * @returns
      */
-    updateMedia = async (id: Id, assetId: string, remoteConnectorId: Id) => {
+    updateMedia = async (name: string, remoteConnectorId: Id, assetId: string) => {
         const res = await this.#editorAPI;
         return res
-            .updateBrandKitMedia(id, assetId, remoteConnectorId)
+            .updateBrandKitMedia(name, remoteConnectorId, assetId)
             .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method renames an existing media item in the brand kit
-     * @param id - The ID of the media item to rename
+     * @param name - The name of the media item to rename
      * @param newName - The new name for the media item
      * @returns
      */
-    renameMedia = async (id: Id, newName: string) => {
+    renameMedia = async (name: string, newName: string) => {
         const res = await this.#editorAPI;
-        return res.renameBrandKitMedia(id, newName).then((result) => getEditorResponseData<null>(result));
+        return res.renameBrandKitMedia(name, newName).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
      * This method removes a media item from the brand kit
-     * @param id - The ID of the media item to remove
+     * @param name - The name of the media item to remove
      * @returns
      */
-    removeMedia = async (id: Id) => {
+    removeMedia = async (name: string) => {
         const res = await this.#editorAPI;
-        return res.removeBrandKitMedia(id).then((result) => getEditorResponseData<null>(result));
+        return res.removeBrandKitMedia(name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

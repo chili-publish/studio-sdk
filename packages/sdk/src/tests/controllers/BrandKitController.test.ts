@@ -325,39 +325,39 @@ describe('BrandKitController', () => {
         const assetId = 'asset-123';
         const remoteConnectorId = 'connector-456';
 
-        await mockBrandKitController.addMedia(name, assetId, remoteConnectorId);
+        await mockBrandKitController.addMedia(name, remoteConnectorId, assetId);
 
-        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledWith(name, assetId, remoteConnectorId);
+        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledWith(name, remoteConnectorId, assetId);
         expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledTimes(1);
     });
 
     it('Should call updateBrandKitMedia of EditorAPI successfully', async () => {
-        const id = 'media-id-123';
+        const name = 'media-id-123';
         const assetId = 'new-asset-456';
         const remoteConnectorId = 'new-connector-789';
 
-        await mockBrandKitController.updateMedia(id, assetId, remoteConnectorId);
+        await mockBrandKitController.updateMedia(name, remoteConnectorId, assetId);
 
-        expect(mockEditorApi.updateBrandKitMedia).toHaveBeenCalledWith(id, assetId, remoteConnectorId);
+        expect(mockEditorApi.updateBrandKitMedia).toHaveBeenCalledWith(name, remoteConnectorId, assetId);
         expect(mockEditorApi.updateBrandKitMedia).toHaveBeenCalledTimes(1);
     });
 
     it('Should call renameBrandKitMedia of EditorAPI successfully', async () => {
-        const id = 'media-id-123';
+        const name = 'media-id-123';
         const newName = 'new-media-name';
 
-        await mockBrandKitController.renameMedia(id, newName);
+        await mockBrandKitController.renameMedia(name, newName);
 
-        expect(mockEditorApi.renameBrandKitMedia).toHaveBeenCalledWith(id, newName);
+        expect(mockEditorApi.renameBrandKitMedia).toHaveBeenCalledWith(name, newName);
         expect(mockEditorApi.renameBrandKitMedia).toHaveBeenCalledTimes(1);
     });
 
     it('Should call removeBrandKitMedia of EditorAPI successfully', async () => {
-        const id = 'media-id-123';
+        const name = 'media-id-123';
 
-        await mockBrandKitController.removeMedia(id);
+        await mockBrandKitController.removeMedia(name);
 
-        expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledWith(id);
+        expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledWith(name);
         expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledTimes(1);
     });
 });
