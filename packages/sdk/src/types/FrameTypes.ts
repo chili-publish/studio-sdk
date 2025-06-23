@@ -52,12 +52,21 @@ export type ImageFrameUrlSource = {
 };
 
 export type ImageFrameConnectorSource = {
+    type: ImageSourceTypeEnum.connector;
     assetId: Id;
     id: Id;
-    type: ImageSourceTypeEnum.connector;
 };
 
-export type ImageFrameSource = ImageFrameConnectorSource | ImageFrameVariableSource | ImageFrameUrlSource;
+export type ImageFrameBrandkitSource = {
+    type: ImageSourceTypeEnum.brandkit;
+    name: string;
+};
+
+export type ImageFrameSource =
+    | ImageFrameConnectorSource
+    | ImageFrameVariableSource
+    | ImageFrameUrlSource
+    | ImageFrameBrandkitSource;
 
 // used by new getter methods
 export type ImageFrame = {
@@ -197,6 +206,7 @@ export enum ImageSourceTypeEnum {
     url = 'url',
     variable = 'variable',
     connector = 'connector',
+    brandkit = 'brandkit',
 }
 
 export enum FrameTypeEnum {
