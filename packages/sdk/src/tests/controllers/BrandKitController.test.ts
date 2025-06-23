@@ -87,7 +87,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'renameBrandKitMedia');
         jest.spyOn(mockEditorApi, 'removeBrandKitMedia');
 
-        jest.spyOn(mockEditorApi, 'getBrandKitMedias');
+        jest.spyOn(mockEditorApi, 'getAllBrandKitMedia');
         jest.spyOn(mockEditorApi, 'addBrandKitMedia');
         jest.spyOn(mockEditorApi, 'updateBrandKitMedia');
         jest.spyOn(mockEditorApi, 'renameBrandKitMedia');
