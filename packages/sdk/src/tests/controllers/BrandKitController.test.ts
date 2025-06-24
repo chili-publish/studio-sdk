@@ -37,7 +37,9 @@ describe('BrandKitController', () => {
         mockEditorApi = {
             getBrandKitId: async () => getEditorResponseData(castToEditorResponse('test-brand-kit-id')),
             getBrandKitVersion: async () => getEditorResponseData(castToEditorResponse('2025-06-12T12:10:29.354877')),
+            getBrandKitName: async () => getEditorResponseData(castToEditorResponse('Test Brand Kit')),
             updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
+            renameBrandKit: async () => getEditorResponseData(castToEditorResponse(null)),
             getAllBrandKitMedia: async () => getEditorResponseData(castToEditorResponse([])),
             addBrandKitMedia: async () => getEditorResponseData(castToEditorResponse('media-id-123')),
             updateBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -75,7 +77,9 @@ describe('BrandKitController', () => {
 
         jest.spyOn(mockEditorApi, 'getBrandKitId');
         jest.spyOn(mockEditorApi, 'getBrandKitVersion');
+        jest.spyOn(mockEditorApi, 'getBrandKitName');
         jest.spyOn(mockEditorApi, 'updateBrandKitIdAndVersion');
+        jest.spyOn(mockEditorApi, 'renameBrandKit');
 
         jest.spyOn(mockEditorApi, 'getAllBrandKitMedia');
         jest.spyOn(mockEditorApi, 'addBrandKitMedia');
@@ -154,6 +158,20 @@ describe('BrandKitController', () => {
 
         expect(mockEditorApi.updateBrandKitIdAndVersion).toHaveBeenCalledWith(testId, testVersion);
         expect(mockEditorApi.updateBrandKitIdAndVersion).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call getBrandKitName of EditorAPI successfully', async () => {
+        await mockBrandKitController.getName();
+        expect(mockEditorApi.getBrandKitName).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call renameBrandKit of EditorAPI successfully', async () => {
+        const newName = 'New Brand Kit Name';
+
+        await mockBrandKitController.rename(newName);
+
+        expect(mockEditorApi.renameBrandKit).toHaveBeenCalledWith(newName);
+        expect(mockEditorApi.renameBrandKit).toHaveBeenCalledTimes(1);
     });
 
     it('Should call the get method', async () => {
