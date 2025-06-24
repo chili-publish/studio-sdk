@@ -72,6 +72,25 @@ export class BrandKitController {
     };
 
     /**
+     * This method returns the current brand kit name.
+     * @returns current brand kit name
+     */
+    getName = async () => {
+        const res = await this.#editorAPI;
+        return res.getBrandKitName().then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method renames the brand kit.
+     * @param newName - The new name for the brand kit
+     * @returns
+     */
+    rename = async (newName: string) => {
+        const res = await this.#editorAPI;
+        return res.renameBrandKit(newName).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method updates both the brand kit id and version.
      * @param id - The new brand kit id
      * @param version - The new brand kit version
