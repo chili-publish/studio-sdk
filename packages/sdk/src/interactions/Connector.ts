@@ -25,6 +25,16 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
             <!--  use this property to pass the StudioStyling to the engine -->
             <meta name="studio-styling" content='${stylingJson}'>
         </head>
+        <style>
+        html, body, flt-glass-pane, flt-scene-host {
+            overscroll-behavior-x: none !important;
+            touch-action: pan-y !important;
+        }
+    
+        flt-scene-host * {
+            touch-action: pan-y !important;
+        }
+        </style>
         <body>
             <script>                
             </script>
@@ -33,7 +43,6 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
             <script>
                 initializeStudioEngine({
                     assetBase: '${link}',
-                    entryPointUrl: '${link}main.dart.js',
                 });
             </script>
         </body>
