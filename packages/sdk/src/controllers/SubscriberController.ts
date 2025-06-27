@@ -326,10 +326,10 @@ export class SubscriberController {
     /**
      * @experimental
      * Listener on pages snapshots, this will fire when a page snapshot is invalidated and should be updated.
-     * @param page id of the page
+     * @param pageId id of the page
      */
-    onPageSnapshotInvalidated = (page: Id) => {
-        this.config.events.onPageSnapshotInvalidated.trigger(JSON.parse(page));
+    onPageSnapshotInvalidated = (pageId: Id) => {
+        this.config.events.onPageSnapshotInvalidated.trigger(pageId);
     };
     /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.

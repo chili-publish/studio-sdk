@@ -75,7 +75,7 @@ interface ConfigParameterTypes {
     onZoomChanged: (scaleFactor: string) => void;
     onSelectedPageIdChanged: (pageId: string) => void;
     onPagesChanged: (pages: string) => void;
-    onPageSnapshotInvalidated: (pageId: string) => void;
+    onPageSnapshotInvalidated: (pageId: Id) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;

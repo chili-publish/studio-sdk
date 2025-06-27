@@ -288,7 +288,7 @@ export type InitialCallbacksConfigType = {
      *
      * @deprecated use `events.onPageSnapshotInvalidated` instead
      */
-    onPageSnapshotInvalidated?: (page: Id) => void;
+    onPageSnapshotInvalidated?: (pageId: Id) => void;
 
     /**
      * @deprecated use `events.onPageSizeChanged` instead
