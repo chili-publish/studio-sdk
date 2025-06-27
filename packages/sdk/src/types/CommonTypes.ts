@@ -19,6 +19,7 @@ import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
+import { BrandKitMedia } from './BrandKitTypes';
 
 export type Id = string;
 export type BaseConfigType = {
@@ -122,6 +123,7 @@ export type ManagedCallbacksConfigType = {
         onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
         onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
+        onBrandKitMediaChanged: EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>;
     };
 };
 
@@ -339,6 +341,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onEngineEditModeChanged` instead
      */
     onEngineEditModeChanged?: (engineEditMode: EngineEditMode) => void;
+
+    /**
+     * @deprecated use `events.onBrandKitMediaChanged` instead
+     */
+    onBrandKitMediaChanged?: (brandKitMedia: BrandKitMedia[]) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;
