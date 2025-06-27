@@ -88,6 +88,7 @@ interface ConfigParameterTypes {
     onDocumentIssueListChanged: (documentIssues: string) => void;
     onCustomUndoDataChanged: (customData: string) => void;
     onEngineEditModeChanged: (engineEditMode: string) => void;
+    onBrandKitMediaChanged: (brandKitMedia: string) => void;
 }
 
 const Connect = (
@@ -167,6 +168,7 @@ const Connect = (
                 documentIssueListChanged: params.onDocumentIssueListChanged,
                 customUndoDataChanged: params.onCustomUndoDataChanged,
                 engineEditingModeChanged: params.onEngineEditModeChanged,
+                brandKitMediaChanged: params.onBrandKitMediaChanged,
             },
         }),
     );

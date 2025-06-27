@@ -28,6 +28,7 @@ import { Viewport } from '../types/ViewportTypes';
 import { EngineCallbackHandler } from './EngineCallbackHandler';
 import { EngineEvent } from './EngineEvent';
 import { ToolType } from './Enums';
+import { BrandKitMedia } from '../types/BrandKitTypes';
 
 export class ConfigHelper {
     /**
@@ -220,6 +221,10 @@ export class ConfigHelper {
             ),
             onEngineEditModeChanged: new EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>(
                 () => clone.onEngineEditModeChanged,
+                clone.logging.logger,
+            ),
+            onBrandKitMediaChanged: new EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>(
+                () => clone.onBrandKitMediaChanged,
                 clone.logging.logger,
             ),
         };
