@@ -111,4 +111,5 @@ export type BrandKitInternal = {
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
+    media: BrandKitMedia[];
 };
