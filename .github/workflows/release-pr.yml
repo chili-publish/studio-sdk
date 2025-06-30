@@ -98,12 +98,20 @@ jobs:
           echo "Version bumped to: $NEW_VERSION"
           echo "Branch will be renamed to: $BRANCH_NAME"
 
-      - name: Commit version bump
+          # Commit the version bump
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add package.json yarn.lock || true
+          git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
+          echo "Committed version bump to temp branch: $(git branch --show-current)"
+
+      - name: Commit version bump (for updates)
+        if: steps.vars.outputs.is_update == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add package.json yarn.lock || true
-          git commit -m "chore: bump version to ${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }} [skip ci]"
+          git commit -m "chore: bump version to ${{ steps.vars.outputs.new_version }} [skip ci]"
           echo "Committed version bump to branch: $(git branch --show-current)"
 
       - name: Rename temp branch to final name (for new releases)
