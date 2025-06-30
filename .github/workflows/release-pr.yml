@@ -90,7 +90,7 @@ jobs:
 
       - name: Push branch
         run: |
-          git push origin HEAD:${{ steps.vars.outputs.branch_name }}
+          git push origin HEAD:refs/heads/${{ steps.vars.outputs.branch_name }}
 
       - name: Create or update PR
         id: pr
