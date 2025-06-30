@@ -425,9 +425,8 @@ export class BrandKitController {
     }
 
     private async setMedia(studioBrandKit: StudioBrandKit) {
-        const mediaPromises = (studioBrandKit.brandKit.media || []).map((media) =>
-            this.addMedia(media.name, media.mediaConnectorId, media.mediaId),
-        );
-        await Promise.all(mediaPromises);
+        for (const media of studioBrandKit.brandKit.media || []) {
+            await this.addMedia(media.name, media.mediaConnectorId, media.mediaId);
+        }
     }
 }
