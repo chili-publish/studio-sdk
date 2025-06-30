@@ -420,7 +420,7 @@ export class BrandKitController {
 
     private async setMedia(studioBrandKit: StudioBrandKit) {
         const mediaPromises = (studioBrandKit.brandKit.media || []).map((media) =>
-            this.addMedia(media.name, media.remoteConnectorId, media.assetId),
+            this.addMedia(media.name, media.mediaConnectorId, media.mediaId),
         );
         await Promise.all(mediaPromises);
     }

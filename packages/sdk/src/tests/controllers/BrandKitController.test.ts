@@ -315,11 +315,11 @@ describe('BrandKitController', () => {
             ),
         );
 
-        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledTimes(mockStudioBrandKit.brandKit.media.length);
+        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledTimes(media.length);
         expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledWith(
             media[0].name,
-            media[0].remoteConnectorId,
-            media[0].assetId,
+            media[0].mediaConnectorId,
+            media[0].mediaId,
         );
         expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledWith(
