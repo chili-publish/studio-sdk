@@ -1,0 +1,211 @@
+name: Create or Update Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Release type (uat or prd)"
+        required: true
+        type: choice
+        options:
+          - uat
+          - prd
+      version_type:
+        description: "Version increment (major, minor, patch)"
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      source_branch:
+        description: "Existing release branch to update (optional)"
+        required: false
+        type: string
+  # Temporary trigger for testing - remove after testing
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/release-pr.yml"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # Safety check: Don't run on main branch
+    if: github.ref != 'refs/heads/main'
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      release_type: ${{ github.event.inputs.release_type || 'uat' }}
+      version_type: ${{ github.event.inputs.version_type || 'patch' }}
+      source_branch: ${{ github.event.inputs.source_branch || '' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Get current version
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Determine branch and version
+        id: vars
+        run: |
+          if [ -z "${{ env.source_branch }}" ]; then
+            # Creating a new release branch
+            TEMP_BRANCH="temp-release-$(date +%s)"
+            echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_OUTPUT
+            echo "is_update=false" >> $GITHUB_OUTPUT
+          else
+            # Updating an existing release branch
+            git fetch origin ${{ env.source_branch }}
+            git checkout ${{ env.source_branch }}
+            if [ "${{ env.release_type }}" = "uat" ]; then
+              NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+            else
+              NEW_VERSION=$(npm version patch --git-tag-version=false)
+            fi
+            echo "branch_name=${{ env.source_branch }}" >> $GITHUB_OUTPUT
+            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            echo "is_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create temp branch and bump version (for new releases)
+        id: create_branch
+        if: steps.vars.outputs.is_update == 'false'
+        run: |
+          # Create temp branch
+          git checkout -b ${{ steps.vars.outputs.temp_branch }}
+          echo "Created temp branch: ${{ steps.vars.outputs.temp_branch }}"
+
+          # Show initial state
+          echo "Initial package.json version:"
+          cat package.json | grep '"version"'
+
+          # Bump version
+          if [ "${{ env.release_type }}" = "uat" ]; then
+            NEW_VERSION=$(npm version ${{ env.version_type }} --preid=rc --git-tag-version=false)
+            BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
+          else
+            NEW_VERSION=$(npm version ${{ env.version_type }} --git-tag-version=false)
+            BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//')"
+          fi
+
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Version bumped to: $NEW_VERSION"
+          echo "Branch will be renamed to: $BRANCH_NAME"
+
+          # Show updated state
+          echo "Updated package.json version:"
+          cat package.json | grep '"version"'
+
+          # Show git status before commit
+          echo "Git status before commit:"
+          git status
+
+          # Commit the version bump
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add package.json yarn.lock || true
+          echo "Git status after add:"
+          git status
+          git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
+          echo "Committed version bump to temp branch: $(git branch --show-current)"
+
+          # Show final state
+          echo "Git log after commit:"
+          git log --oneline -2
+          echo "Final package.json version:"
+          cat package.json | grep '"version"'
+
+      - name: Commit version bump (for updates)
+        if: steps.vars.outputs.is_update == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add package.json yarn.lock || true
+          git commit -m "chore: bump version to ${{ steps.vars.outputs.new_version }} [skip ci]"
+          echo "Committed version bump to branch: $(git branch --show-current)"
+
+      - name: Rename temp branch to final name (for new releases)
+        if: steps.vars.outputs.is_update == 'false'
+        run: |
+          echo "Before rename - current branch: $(git branch --show-current)"
+          echo "Before rename - git log:"
+          git log --oneline -2
+          git branch -m ${{ steps.vars.outputs.temp_branch }} ${{ steps.create_branch.outputs.branch_name }}
+          echo "Renamed branch from ${{ steps.vars.outputs.temp_branch }} to ${{ steps.create_branch.outputs.branch_name }}"
+          echo "After rename - current branch: $(git branch --show-current)"
+          echo "After rename - git log:"
+          git log --oneline -2
+
+      - name: Push branch
+        run: |
+          echo "Current branch: $(git branch --show-current)"
+          echo "Git status:"
+          git status
+          echo "Git log (last 3 commits):"
+          git log --oneline -3
+          BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }}"
+          echo "Pushing to branch: $BRANCH_NAME"
+          git push -u origin $BRANCH_NAME
+          echo "Push completed successfully"
+
+      - name: Create or update PR
+        id: pr
+        run: |
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head ${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }} --json number,url -q '.[0].url' 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            # Update existing PR
+            echo "pull-request-url=$EXISTING_PR" >> $GITHUB_OUTPUT
+            echo "PR already exists: $EXISTING_PR"
+          else
+            # Create new PR
+            PR_URL=$(gh pr create \
+              --head ${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }} \
+              --base ${{ github.event.repository.default_branch }} \
+              --title "Release ${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }}" \
+              --body "Automated release PR for ${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }}" \
+              --label ${{ env.release_type }})
+            echo "pull-request-url=$PR_URL" >> $GITHUB_OUTPUT
+            echo "Created new PR: $PR_URL"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dismiss previous approvals (if updating)
+        if: steps.vars.outputs.is_update == 'true'
+        run: |
+          BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }}"
+          PR_NUMBER=$(gh pr list --head $BRANCH_NAME --json number -q '.[0].number')
+          if [ -n "$PR_NUMBER" ]; then
+            gh api -X POST repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews/dismissals \
+              -f message="Approvals dismissed due to version update"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Send Teams notification
+      - name: Notify Teams
+        run: |
+          BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }}"
+          NEW_VERSION="${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }}"
+          payload=$(cat <<EOF
+          {
+              "text": "🚀 Release PR created/updated: ${{ steps.pr.outputs.pull-request-url }}\n\nRelease Type: ${{ env.release_type }}\nVersion: $NEW_VERSION\nBranch: $BRANCH_NAME"
+          }
+          EOF
+          )
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "https://prod-99.westeurope.logic.azure.com:443/workflows/e47919c9301a4d0893124469d80f6cf2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0WZGySneST3jpYyoLplgpKDXPoZU4NEe2zSufLVzsFo"
