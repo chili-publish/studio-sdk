@@ -28,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     # Safety check: Don't run on main branch
     if: github.ref != 'refs/heads/main'
+    permissions:
+      contents: read
+      pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
