@@ -108,8 +108,8 @@ jobs:
       - name: Rename temp branch to final name (for new releases)
         if: steps.vars.outputs.is_update == 'false'
         run: |
-          git branch -m ${{ steps.vars.outputs.branch_name }}
-          echo "Renamed branch to: ${{ steps.vars.outputs.branch_name }}"
+          git branch -m ${{ steps.vars.outputs.temp_branch }} ${{ steps.vars.outputs.branch_name }}
+          echo "Renamed branch from ${{ steps.vars.outputs.temp_branch }} to ${{ steps.vars.outputs.branch_name }}"
 
       - name: Push branch
         run: |
