@@ -89,6 +89,7 @@ jobs:
         if: steps.vars.outputs.is_update == 'false'
         run: |
           git checkout -b ${{ steps.vars.outputs.branch_name }}
+          echo "Created and switched to branch: ${{ steps.vars.outputs.branch_name }}"
 
       - name: Commit version bump
         run: |
@@ -96,11 +97,13 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add package.json yarn.lock || true
           git commit -m "chore: bump version to ${{ steps.vars.outputs.new_version }} [skip ci]"
+          echo "Committed version bump to branch: $(git branch --show-current)"
 
       - name: Push branch
         run: |
+          echo "Current branch: $(git branch --show-current)"
           echo "Pushing to branch: ${{ steps.vars.outputs.branch_name }}"
-          git push origin ${{ steps.vars.outputs.branch_name }}:refs/heads/${{ steps.vars.outputs.branch_name }}
+          git push -u origin ${{ steps.vars.outputs.branch_name }}
           echo "Push completed successfully"
 
       - name: Create or update PR
