@@ -121,8 +121,11 @@ jobs:
         run: |
           payload=$(cat <<EOF
           {
-            "text": "🚀 Release PR created/updated: ${{ steps.pr.outputs.pull-request-url }}\n\nRelease Type: ${{ env.release_type }}\nVersion: ${{ steps.vars.outputs.new_version }}\nBranch: ${{ steps.vars.outputs.branch_name }}"
+              "text": "🚀 Release PR created/updated: ${{ steps.pr.outputs.pull-request-url }}\n\nRelease Type: ${{ env.release_type }}\nVersion: ${{ steps.vars.outputs.new_version }}\nBranch: ${{ steps.vars.outputs.branch_name }}"
           }
           EOF
           )
-          curl -H "Content-Type: application/json" -d "$payload" https://prod-99.westeurope.logic.azure.com:443/workflows/e47919c9301a4d0893124469d80f6cf2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0WZGySneST3jpYyoLplgpKDXPoZU4NEe2zSufLVzsFo
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "https://prod-99.westeurope.logic.azure.com:443/workflows/e47919c9301a4d0893124469d80f6cf2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0WZGySneST3jpYyoLplgpKDXPoZU4NEe2zSufLVzsFo"
