@@ -22,10 +22,6 @@ on:
         description: "Existing release branch to update (optional)"
         required: false
         type: string
-  # Temporary trigger for testing - remove after testing
-  pull_request:
-    branches: [main]
-    paths: [".github/workflows/release-pr.yml"]
 
 jobs:
   release:
@@ -34,9 +30,6 @@ jobs:
     if: github.ref != 'refs/heads/main'
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      release_type: ${{ github.event.inputs.release_type || 'uat' }}
-      version_type: ${{ github.event.inputs.version_type || 'patch' }}
-      source_branch: ${{ github.event.inputs.source_branch || '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -57,21 +50,21 @@ jobs:
       - name: Determine branch and version
         id: vars
         run: |
-          if [ -z "${{ env.source_branch }}" ]; then
+          if [ -z "${{ github.event.inputs.source_branch }}" ]; then
             # Creating a new release branch
             TEMP_BRANCH="temp-release-$(date +%s)"
             echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_OUTPUT
             echo "is_update=false" >> $GITHUB_OUTPUT
           else
             # Updating an existing release branch
-            git fetch origin ${{ env.source_branch }}
-            git checkout ${{ env.source_branch }}
-            if [ "${{ env.release_type }}" = "uat" ]; then
+            git fetch origin ${{ github.event.inputs.source_branch }}
+            git checkout ${{ github.event.inputs.source_branch }}
+            if [ "${{ github.event.inputs.release_type }}" = "uat" ]; then
               NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
             else
               NEW_VERSION=$(npm version patch --git-tag-version=false)
             fi
-            echo "branch_name=${{ env.source_branch }}" >> $GITHUB_OUTPUT
+            echo "branch_name=${{ github.event.inputs.source_branch }}" >> $GITHUB_OUTPUT
             echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
             echo "is_update=true" >> $GITHUB_OUTPUT
           fi
@@ -89,11 +82,11 @@ jobs:
           cat package.json | grep '"version"'
 
           # Bump version
-          if [ "${{ env.release_type }}" = "uat" ]; then
-            NEW_VERSION=$(npm version ${{ env.version_type }} --preid=rc --git-tag-version=false)
+          if [ "${{ github.event.inputs.release_type }}" = "uat" ]; then
+            NEW_VERSION=$(npm version ${{ github.event.inputs.version_type }} --preid=rc --git-tag-version=false)
             BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
           else
-            NEW_VERSION=$(npm version ${{ env.version_type }} --git-tag-version=false)
+            NEW_VERSION=$(npm version ${{ github.event.inputs.version_type }} --git-tag-version=false)
             BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//')"
           fi
 
@@ -175,7 +168,7 @@ jobs:
               --base ${{ github.event.repository.default_branch }} \
               --title "Release ${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }}" \
               --body "Automated release PR for ${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }}" \
-              --label ${{ env.release_type }})
+              --label ${{ github.event.inputs.release_type }})
             echo "pull-request-url=$PR_URL" >> $GITHUB_OUTPUT
             echo "Created new PR: $PR_URL"
           fi
@@ -203,7 +196,7 @@ jobs:
 
           payload=$(cat <<EOF
           {
-              "text": "🚀 **Release PR Created/Updated**\n\n**PR Link:** $PR_URL\n\n**Release Type:** ${{ env.release_type }}\n**Version:** $NEW_VERSION\n**Branch:** $BRANCH_NAME\n\nPlease review and approve the release PR."
+              "text": "🚀 **Release PR Created/Updated**\n\n**PR Link:** $PR_URL\n\n**Release Type:** ${{ github.event.inputs.release_type }}\n**Version:** $NEW_VERSION\n**Branch:** $BRANCH_NAME\n\nPlease review and approve the release PR."
           }
           EOF
           )
