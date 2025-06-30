@@ -108,28 +108,33 @@ export class BrandKitController {
     get = async () => {
         const brandKitId = await this.getId();
         const brandKitVersion = await this.getVersion();
+        const brandKitName = await this.getName();
 
         const colorsPromise = this.colorStyleController.getAll();
         const fontsPromise = this.fontController.getFontFamilies();
         const characterStylesPromise = this.characterStyleController.getAll();
         const paragraphStylesPromise = this.paragraphStyleController.getAll();
+        const mediaPromise = this.getAllMedia();
 
-        const [colors, fonts, paragraphStyles, characterStyles] = await Promise.all([
+        const [colors, fonts, paragraphStyles, characterStyles, media] = await Promise.all([
             colorsPromise,
             fontsPromise,
             paragraphStylesPromise,
             characterStylesPromise,
+            mediaPromise,
         ]);
 
         const studioBrandKit = {
             id: brandKitId.parsedData,
             brandKit: {
                 id: brandKitId.parsedData,
+                name: brandKitName.parsedData,
                 lastModifiedDate: brandKitVersion.parsedData,
                 colors: colors.parsedData,
                 fonts: fonts.parsedData,
                 paragraphStyles: paragraphStyles.parsedData,
                 characterStyles: characterStyles.parsedData,
+                media: media.parsedData,
             },
         };
         const editorResponse = {
@@ -255,6 +260,7 @@ export class BrandKitController {
                     fonts: [],
                     paragraphStyles: [],
                     characterStyles: [],
+                    media: [],
                 },
             };
 
@@ -278,9 +284,11 @@ export class BrandKitController {
                     localColorGuidMap,
                     localFontGuidMap,
                 });
+                await this.setMedia(studioBrandKit);
 
                 const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
                 const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
+                const { parsedData: allMedia } = await this.getAllMedia();
                 await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
 
                 result = {
@@ -293,6 +301,7 @@ export class BrandKitController {
                         fonts: localFonts || [],
                         paragraphStyles: allParagraphStyles || [],
                         characterStyles: allCharacterStyles || [],
+                        media: allMedia || [],
                     },
                 };
             });
@@ -407,5 +416,12 @@ export class BrandKitController {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             await sdk.characterStyle.update(styleId!, characterStyleUpdate);
         }
+    }
+
+    private async setMedia(studioBrandKit: StudioBrandKit) {
+        const mediaPromises = (studioBrandKit.brandKit.media || []).map((media) =>
+            this.addMedia(media.name, media.remoteConnectorId, media.assetId),
+        );
+        await Promise.all(mediaPromises);
     }
 }

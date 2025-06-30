@@ -9,6 +9,7 @@ import {
     mockFonts,
     mockParagraphStyles,
     mockStudioBrandKit,
+    mockMedia,
 } from '../__mocks__/Brandkit';
 import { CMYK, RGB, StudioBrandKit } from '../../types/BrandKitTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
@@ -40,7 +41,7 @@ describe('BrandKitController', () => {
             getBrandKitName: async () => getEditorResponseData(castToEditorResponse('Test Brand Kit')),
             updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
             renameBrandKit: async () => getEditorResponseData(castToEditorResponse(null)),
-            getAllBrandKitMedia: async () => getEditorResponseData(castToEditorResponse([])),
+            getAllBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(mockMedia)),
             addBrandKitMedia: async () => getEditorResponseData(castToEditorResponse('media-id-123')),
             updateBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
             renameBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -186,6 +187,7 @@ describe('BrandKitController', () => {
         expect(mockEditorApi.getFontFamilies).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getAllBrandKitMedia).toHaveBeenCalledTimes(1);
 
         expect(response).toEqual(
             expect.objectContaining({
@@ -193,11 +195,13 @@ describe('BrandKitController', () => {
                     id: 'test-brand-kit-id',
                     brandKit: {
                         id: 'test-brand-kit-id',
+                        name: 'Test Brand Kit',
                         lastModifiedDate: '2025-06-12T12:10:29.354877',
                         colors: mockColors,
                         fonts: mockFonts,
                         paragraphStyles: mockParagraphStyles,
                         characterStyles: mockCharacterStyles,
+                        media: mockMedia,
                     },
                 }),
             }),
@@ -249,6 +253,7 @@ describe('BrandKitController', () => {
         const connectorId = mockStudioBrandKit.fontConnectorId;
         const paragraphStyle = mockStudioBrandKit.brandKit.paragraphStyles[0];
         const characterStyle = mockStudioBrandKit.brandKit.characterStyles[0];
+        const media = mockStudioBrandKit.brandKit.media;
 
         await mockBrandKitController.set(mockStudioBrandKit as unknown as StudioBrandKit);
 
@@ -310,6 +315,12 @@ describe('BrandKitController', () => {
             ),
         );
 
+        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledTimes(mockStudioBrandKit.brandKit.media.length);
+        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledWith(
+            media[0].name,
+            media[0].remoteConnectorId,
+            media[0].assetId,
+        );
         expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledWith(
             mockCharacterStyleId,
