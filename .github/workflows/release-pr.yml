@@ -35,7 +35,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       release_type: ${{ github.event.inputs.release_type || 'uat' }}
-      version_type: ${{ github.event.inputs.version_type || 'patch' }}
+      version_type: ${{ github.event.inputs.version_type || 'minor' }}
       source_branch: ${{ github.event.inputs.source_branch || '' }}
     steps:
       - name: Checkout code
