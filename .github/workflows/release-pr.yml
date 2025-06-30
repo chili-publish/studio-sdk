@@ -61,10 +61,12 @@ jobs:
             # Creating a new release branch
             if [ "${{ env.release_type }}" = "uat" ]; then
               NEW_VERSION=$(npm version ${{ env.version_type }} --preid=rc --git-tag-version=false)
-              BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/-rc.*//')"
+              # Remove 'v' prefix and '-rc.*' suffix for branch name
+              BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
             else
               NEW_VERSION=$(npm version ${{ env.version_type }} --git-tag-version=false)
-              BRANCH_NAME="release/$NEW_VERSION"
+              # Remove 'v' prefix for branch name
+              BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//')"
             fi
             echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
             echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
@@ -83,6 +85,11 @@ jobs:
             echo "is_update=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Create branch (for new releases)
+        if: steps.vars.outputs.is_update == 'false'
+        run: |
+          git checkout -b ${{ steps.vars.outputs.branch_name }}
+
       - name: Commit version bump
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -92,7 +99,9 @@ jobs:
 
       - name: Push branch
         run: |
-          git push origin HEAD:refs/heads/${{ steps.vars.outputs.branch_name }}
+          echo "Pushing to branch: ${{ steps.vars.outputs.branch_name }}"
+          git push origin ${{ steps.vars.outputs.branch_name }}:refs/heads/${{ steps.vars.outputs.branch_name }}
+          echo "Push completed successfully"
 
       - name: Create or update PR
         id: pr
