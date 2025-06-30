@@ -178,7 +178,7 @@ export type InitialCallbacksConfigType = {
     onSelectedFramesContentChanged?: (state: Frame[]) => void;
 
     /**
-     * @deprecated use `events.onPageSelectionChanged` instead
+     * @deprecated use `onSelectedPageIdChanged` instead
      */
     onPageSelectionChanged?: (id: Id) => void;
 

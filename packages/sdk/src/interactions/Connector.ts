@@ -56,6 +56,9 @@ interface ConfigParameterTypes {
     onFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
+    /**
+     * @deprecated use `onSelectedPageIdChanged` instead
+     */
     onPageSelectionChanged: (id: Id) => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;

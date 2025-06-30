@@ -149,6 +149,7 @@ export class SubscriberController {
     };
 
     /**
+     * @deprecated use `onSelectedPageIdChanged` instead
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
     onPageSelectionChanged = (id: Id) => {
