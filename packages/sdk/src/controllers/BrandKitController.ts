@@ -222,6 +222,9 @@ export class BrandKitController {
         const fonts = await this.fontController.getFontFamilies();
         const fontsList = fonts.parsedData || [];
 
+        const media = await this.getAllMedia();
+        const mediaList = media.parsedData || [];
+
         try {
             await this.undoManagerController.record('brandKit.remove', async (sdk) => {
                 for (const color of colorsList) {
@@ -235,6 +238,9 @@ export class BrandKitController {
                 }
                 for (const font of fontsList) {
                     await sdk.font.removeFontFamily(font.id);
+                }
+                for (const media of mediaList) {
+                    await this.removeMedia(media.name);
                 }
             });
         } catch (err) {
