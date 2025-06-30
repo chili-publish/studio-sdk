@@ -59,17 +59,8 @@ jobs:
         run: |
           if [ -z "${{ env.source_branch }}" ]; then
             # Creating a new release branch
-            if [ "${{ env.release_type }}" = "uat" ]; then
-              NEW_VERSION=$(npm version ${{ env.version_type }} --preid=rc --git-tag-version=false)
-              # Remove 'v' prefix and '-rc.*' suffix for branch name
-              BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
-            else
-              NEW_VERSION=$(npm version ${{ env.version_type }} --git-tag-version=false)
-              # Remove 'v' prefix for branch name
-              BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//')"
-            fi
-            echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            TEMP_BRANCH="temp-release-$(date +%s)"
+            echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_OUTPUT
             echo "is_update=false" >> $GITHUB_OUTPUT
           else
             # Updating an existing release branch
@@ -85,11 +76,26 @@ jobs:
             echo "is_update=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create branch (for new releases)
+      - name: Create temp branch and bump version (for new releases)
         if: steps.vars.outputs.is_update == 'false'
         run: |
-          git checkout -b ${{ steps.vars.outputs.branch_name }}
-          echo "Created and switched to branch: ${{ steps.vars.outputs.branch_name }}"
+          # Create temp branch
+          git checkout -b ${{ steps.vars.outputs.temp_branch }}
+          echo "Created temp branch: ${{ steps.vars.outputs.temp_branch }}"
+
+          # Bump version
+          if [ "${{ env.release_type }}" = "uat" ]; then
+            NEW_VERSION=$(npm version ${{ env.version_type }} --preid=rc --git-tag-version=false)
+            BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
+          else
+            NEW_VERSION=$(npm version ${{ env.version_type }} --git-tag-version=false)
+            BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//')"
+          fi
+
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Version bumped to: $NEW_VERSION"
+          echo "Branch will be renamed to: $BRANCH_NAME"
 
       - name: Commit version bump
         run: |
@@ -98,6 +104,12 @@ jobs:
           git add package.json yarn.lock || true
           git commit -m "chore: bump version to ${{ steps.vars.outputs.new_version }} [skip ci]"
           echo "Committed version bump to branch: $(git branch --show-current)"
+
+      - name: Rename temp branch to final name (for new releases)
+        if: steps.vars.outputs.is_update == 'false'
+        run: |
+          git branch -m ${{ steps.vars.outputs.branch_name }}
+          echo "Renamed branch to: ${{ steps.vars.outputs.branch_name }}"
 
       - name: Push branch
         run: |
