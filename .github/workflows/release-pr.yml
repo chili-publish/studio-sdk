@@ -199,9 +199,11 @@ jobs:
         run: |
           BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }}"
           NEW_VERSION="${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }}"
+          PR_URL="${{ steps.pr.outputs.pull-request-url }}"
+
           payload=$(cat <<EOF
           {
-              "text": "🚀 Release PR created/updated: ${{ steps.pr.outputs.pull-request-url }}\n\nRelease Type: ${{ env.release_type }}\nVersion: $NEW_VERSION\nBranch: $BRANCH_NAME"
+              "text": "🚀 **Release PR Created/Updated**\n\n**PR Link:** $PR_URL\n\n**Release Type:** ${{ env.release_type }}\n**Version:** $NEW_VERSION\n**Branch:** $BRANCH_NAME\n\nPlease review and approve the release PR."
           }
           EOF
           )
