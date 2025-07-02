@@ -78,11 +78,6 @@ jobs:
         run: |
           # Create temp branch
           git checkout -b ${{ steps.vars.outputs.temp_branch }}
-          echo "Created temp branch: ${{ steps.vars.outputs.temp_branch }}"
-
-          # Show initial state
-          echo "Initial package.json version:"
-          cat package.json | grep '"version"'
 
           # Bump version
           if [ "${{ github.event.inputs.release_type }}" = "uat" ]; then
@@ -95,62 +90,22 @@ jobs:
 
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "Version bumped to: $NEW_VERSION"
-          echo "Branch will be renamed to: $BRANCH_NAME"
 
-          # Show updated state
-          echo "Updated package.json version:"
-          cat package.json | grep '"version"'
-
-          # Show git status before commit
-          echo "Git status before commit:"
-          git status
-
-          # Commit the version bump
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add package.json yarn.lock || true
-          echo "Git status after add:"
-          git status
-          git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
-          echo "Committed version bump to temp branch: $(git branch --show-current)"
-
-          # Show final state
-          echo "Git log after commit:"
-          git log --oneline -2
-          echo "Final package.json version:"
-          cat package.json | grep '"version"'
-
-      - name: Commit version bump (for updates)
-        if: steps.vars.outputs.is_update == 'true'
+      - name: Commit version bump
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add package.json yarn.lock || true
-          git commit -m "chore: bump version to ${{ steps.vars.outputs.new_version }} [skip ci]"
-          echo "Committed version bump to branch: $(git branch --show-current)"
+          git commit -m "chore: bump version to ${{ steps.create_branch.outputs.new_version || steps.vars.outputs.new_version }} [skip ci]"
 
       - name: Rename temp branch to final name (for new releases)
         if: steps.vars.outputs.is_update == 'false'
         run: |
-          echo "Before rename - current branch: $(git branch --show-current)"
-          echo "Before rename - git log:"
-          git log --oneline -2
           git branch -m ${{ steps.vars.outputs.temp_branch }} ${{ steps.create_branch.outputs.branch_name }}
-          echo "Renamed branch from ${{ steps.vars.outputs.temp_branch }} to ${{ steps.create_branch.outputs.branch_name }}"
-          echo "After rename - current branch: $(git branch --show-current)"
-          echo "After rename - git log:"
-          git log --oneline -2
 
       - name: Push branch
         run: |
-          echo "Current branch: $(git branch --show-current)"
-          echo "Git status:"
-          git status
-          echo "Git log (last 3 commits):"
-          git log --oneline -3
           BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || steps.vars.outputs.branch_name }}"
-          echo "Pushing to branch: $BRANCH_NAME"
           git push -u origin $BRANCH_NAME
           echo "Push completed successfully"
 
