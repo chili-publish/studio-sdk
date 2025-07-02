@@ -166,7 +166,7 @@ jobs:
     # Safety check: Don't run on main branch
     if: github.ref != 'refs/heads/main'
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
