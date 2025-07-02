@@ -71,7 +71,7 @@
 #         run: |
 #           # Bump version first (package.json changes but not committed)
 #           if [ "${{ github.event.inputs.release_type }}" = "uat" ]; then
-#             NEW_VERSION=$(npm version ${{ github.event.inputs.version_type }} --preid=rc --git-tag-version=false)
+#             NEW_VERSION=$(npm version pre${{ github.event.inputs.version_type }} --preid=rc --git-tag-version=false)
 #             BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
 #           else
 #             NEW_VERSION=$(npm version ${{ github.event.inputs.version_type }} --git-tag-version=false)
@@ -210,7 +210,7 @@ jobs:
         run: |
           # Bump version first (package.json changes but not committed)
           if [ "${{ env.RELEASE_TYPE }}" = "uat" ]; then
-            NEW_VERSION=$(npm version ${{ env.VERSION_TYPE }} --preid=rc --git-tag-version=false)
+            NEW_VERSION=$(npm version pre${{ env.VERSION_TYPE }} --preid=rc --git-tag-version=false)
             BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
           else
             NEW_VERSION=$(npm version ${{ env.VERSION_TYPE }} --git-tag-version=false)
