@@ -262,6 +262,7 @@ export class BrandKitController {
                 parsedData: {
                     id: studioBrandKit.id,
                     version: studioBrandKit.brandKit.lastModifiedDate,
+                    name: studioBrandKit.brandKit.name,
                     colors: [],
                     fonts: [],
                     paragraphStyles: [],
@@ -296,6 +297,7 @@ export class BrandKitController {
                 const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
                 const { parsedData: allMedia } = await this.getAllMedia();
                 await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
+                await sdk.brandKit.rename(studioBrandKit.brandKit.name);
 
                 result = {
                     success: true,
@@ -303,6 +305,7 @@ export class BrandKitController {
                     parsedData: {
                         id: studioBrandKit.id,
                         version: studioBrandKit.brandKit.lastModifiedDate,
+                        name: studioBrandKit.brandKit.name,
                         colors: localColors || [],
                         fonts: localFonts || [],
                         paragraphStyles: allParagraphStyles || [],
