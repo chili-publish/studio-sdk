@@ -113,6 +113,7 @@ export type StudioBrandKit = {
 export type BrandKitInternal = {
     id: string;
     version: string;
+    name: string;
     colors: DocumentColor[];
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
