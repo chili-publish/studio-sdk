@@ -26,8 +26,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    # Safety check: Don't run on main branch
-    if: github.ref != 'refs/heads/main'
     permissions:
       contents: read
       pull-requests: write
@@ -49,6 +47,13 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Error if main branch specified
+        if: github.event.inputs.source_branch == 'main'
+        run: |
+          echo "❌ Error: Cannot use 'main' as source_branch. Main branch should be updated directly."
+          echo "💡 Tip: Leave source_branch empty to create a new release branch, or specify an existing release branch to update it."
+          exit 1
 
       - name: Update existing release branch
         id: update_branch
@@ -103,8 +108,10 @@ jobs:
           EXISTING_PR=$(gh pr list --head ${{ steps.create_branch.outputs.branch_name || github.event.inputs.source_branch }} --json number,url -q '.[0].url' 2>/dev/null || echo "")
 
           if [ -n "$EXISTING_PR" ]; then
-            # Update existing PR
+            # Update existing PR - extract number from URL
+            PR_NUMBER=$(echo "$EXISTING_PR" | sed 's/.*\/pull\///')
             echo "pull-request-url=$EXISTING_PR" >> $GITHUB_OUTPUT
+            echo "pull-request-number=$PR_NUMBER" >> $GITHUB_OUTPUT
             echo "PR already exists: $EXISTING_PR"
           else
             # Create new PR
@@ -114,7 +121,10 @@ jobs:
               --title "Release ${{ steps.create_branch.outputs.new_version || steps.update_branch.outputs.new_version }}" \
               --body "Automated release PR for ${{ steps.create_branch.outputs.new_version || steps.update_branch.outputs.new_version }}" \
               --label ${{ github.event.inputs.release_type }})
+            # Extract number from new PR URL
+            PR_NUMBER=$(echo "$PR_URL" | sed 's/.*\/pull\///')
             echo "pull-request-url=$PR_URL" >> $GITHUB_OUTPUT
+            echo "pull-request-number=$PR_NUMBER" >> $GITHUB_OUTPUT
             echo "Created new PR: $PR_URL"
           fi
         env:
@@ -123,8 +133,7 @@ jobs:
       - name: Dismiss previous approvals (if updating)
         if: github.event.inputs.source_branch != ''
         run: |
-          BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || github.event.inputs.source_branch }}"
-          PR_NUMBER=$(gh pr list --head $BRANCH_NAME --json number -q '.[0].number')
+          PR_NUMBER="${{ steps.pr.outputs.pull-request-number }}"
           if [ -n "$PR_NUMBER" ]; then
             gh api -X POST repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews/dismissals \
               -f message="Approvals dismissed due to version update"
@@ -148,4 +157,4 @@ jobs:
           curl --request POST \
           --header "Content-Type: application/json" \
           --data "$payload" \
-          "https://prod-99.westeurope.logic.azure.com:443/workflows/e47919c9301a4d0893124469d80f6cf2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=0WZGySneST3jpYyoLplgpKDXPoZU4NEe2zSufLVzsFo"
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
