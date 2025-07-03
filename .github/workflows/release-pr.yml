@@ -113,6 +113,10 @@ jobs:
             echo "pull-request-url=$EXISTING_PR" >> $GITHUB_OUTPUT
             echo "pull-request-number=$PR_NUMBER" >> $GITHUB_OUTPUT
             echo "PR already exists: $EXISTING_PR"
+            
+            # Update PR label to match current release type
+            gh pr edit $PR_NUMBER --remove-label uat --remove-label prd --add-label ${{ github.event.inputs.release_type }}
+            echo "Updated PR label to: ${{ github.event.inputs.release_type }}"
           else
             # Create new PR
             PR_URL=$(gh pr create \
