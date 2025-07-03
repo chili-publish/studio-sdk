@@ -139,25 +139,20 @@ export class BrandKitController {
         const fonts = await this.fontController.getFontFamilies();
         const fontsList = fonts.parsedData || [];
 
-        try {
-            await this.undoManagerController.record('brandKit.remove', async (sdk) => {
-                for (const color of colorsList) {
-                    await sdk.colorStyle.remove(color.id);
-                }
-                for (const style of paragraphStylesList) {
-                    await sdk.paragraphStyle.remove(style.id);
-                }
-                for (const style of characterStylesList) {
-                    await sdk.characterStyle.remove(style.id);
-                }
-                for (const font of fontsList) {
-                    await sdk.font.removeFontFamily(font.id);
-                }
-            });
-        } catch (err) {
-            this.undoManagerController.undo();
-            throw err;
-        }
+        await this.undoManagerController.record('brandKit.remove', async (sdk) => {
+            for (const color of colorsList) {
+                await sdk.colorStyle.remove(color.id);
+            }
+            for (const style of paragraphStylesList) {
+                await sdk.paragraphStyle.remove(style.id);
+            }
+            for (const style of characterStylesList) {
+                await sdk.characterStyle.remove(style.id);
+            }
+            for (const font of fontsList) {
+                await sdk.font.removeFontFamily(font.id);
+            }
+        });
     };
 
     /**
@@ -166,64 +161,59 @@ export class BrandKitController {
      * @returns
      */
     set = async (studioBrandKit: StudioBrandKit) => {
-        try {
-            let result: EditorResponse<BrandKitInternal> = {
+        let result: EditorResponse<BrandKitInternal> = {
+            success: true,
+            status: 200,
+            parsedData: {
+                id: studioBrandKit.id,
+                version: studioBrandKit.brandKit.lastModifiedDate,
+                colors: [],
+                fonts: [],
+                paragraphStyles: [],
+                characterStyles: [],
+            },
+        };
+
+        await this.undoManagerController.record('brandKit.set', async (sdk) => {
+            const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
+            const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
+
+            const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
+            const { parsedData: localFonts } = await sdk.font.getFontFamilies();
+
+            await this.setParagraphStyles(studioBrandKit, sdk, {
+                localColors,
+                localFonts,
+                localColorGuidMap,
+                localFontGuidMap,
+            });
+
+            await this.setCharacterStyles(studioBrandKit, sdk, {
+                localColors,
+                localFonts,
+                localColorGuidMap,
+                localFontGuidMap,
+            });
+
+            const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
+            const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
+            await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
+
+            result = {
                 success: true,
                 status: 200,
                 parsedData: {
                     id: studioBrandKit.id,
                     version: studioBrandKit.brandKit.lastModifiedDate,
-                    colors: [],
-                    fonts: [],
-                    paragraphStyles: [],
-                    characterStyles: [],
+                    colors: localColors || [],
+                    fonts: localFonts || [],
+                    paragraphStyles: allParagraphStyles || [],
+                    characterStyles: allCharacterStyles || [],
                 },
             };
+        });
 
-            await this.undoManagerController.record('brandKit.set', async (sdk) => {
-                const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
-                const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
-
-                const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
-                const { parsedData: localFonts } = await sdk.font.getFontFamilies();
-
-                await this.setParagraphStyles(studioBrandKit, sdk, {
-                    localColors,
-                    localFonts,
-                    localColorGuidMap,
-                    localFontGuidMap,
-                });
-
-                await this.setCharacterStyles(studioBrandKit, sdk, {
-                    localColors,
-                    localFonts,
-                    localColorGuidMap,
-                    localFontGuidMap,
-                });
-
-                const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
-                const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
-                await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
-
-                result = {
-                    success: true,
-                    status: 200,
-                    parsedData: {
-                        id: studioBrandKit.id,
-                        version: studioBrandKit.brandKit.lastModifiedDate,
-                        colors: localColors || [],
-                        fonts: localFonts || [],
-                        paragraphStyles: allParagraphStyles || [],
-                        characterStyles: allCharacterStyles || [],
-                    },
-                };
-            });
-
-            return result;
-        } catch (err) {
-            this.undoManagerController.undo();
-            throw err;
-        }
+        return result;
     };
 
     private async setColors(studioBrandKit: StudioBrandKit, sdk: SDK) {
