@@ -280,6 +280,19 @@ export const mockParagraphStyles = [
     },
 ];
 
+export const mockMedia = [
+    {
+        name: 'd0ff2bf4-e9a6-4fff-b378-1d1c554bba56_Final_template story_1080x1920.png',
+        remoteConnectorId: 'grafxmedia',
+        assetId: 'bb7de06a-0c70-4ca1-97a0-892351ed8444',
+    },
+    {
+        name: 'c9aaa676-a6c0-4a3e-aa67-afdb2f1359f8_bg-hk-25.jpg',
+        remoteConnectorId: 'grafxmedia',
+        assetId: '62000e62-55e2-4ef7-8486-c722c913aa88',
+    },
+];
+
 export const mockStudioBrandKit = {
     id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
     fontConnectorId: 'fontConnectorId',
@@ -361,14 +374,17 @@ export const mockStudioBrandKit = {
         media: [
             {
                 name: 'd0ff2bf4-e9a6-4fff-b378-1d1c554bba56_Final_template story_1080x1920.png',
+                mediaConnectorId: 'grafxmedia',
                 mediaId: 'bb7de06a-0c70-4ca1-97a0-892351ed8444',
             },
             {
                 name: 'c9aaa676-a6c0-4a3e-aa67-afdb2f1359f8_bg-hk-25.jpg',
+                mediaConnectorId: 'grafxmedia',
                 mediaId: '62000e62-55e2-4ef7-8486-c722c913aa88',
             },
             {
                 name: '0f0e652c-86da-41b7-b312-e487c3e58fa0_bg-hk-25.jpg',
+                mediaConnectorId: 'grafxmedia',
                 mediaId: 'f6a50d37-a859-4c07-b915-0bb0f43c6c6b',
             },
         ],

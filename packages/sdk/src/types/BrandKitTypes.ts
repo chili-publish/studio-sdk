@@ -85,6 +85,12 @@ export type BrandKitMedia = {
     assetId: Id;
 };
 
+export type APIBrandKitMedia = {
+    name: string;
+    mediaConnectorId: Id;
+    mediaId: Id;
+};
+
 export type APIBrandKit = {
     id: Id;
     name: string;
@@ -94,7 +100,7 @@ export type APIBrandKit = {
     colors: BrandKitColor[];
     characterStyles: BrandKitCharacterStyle[];
     paragraphStyles: BrandKitParagraphStyle[];
-    media: BrandKitMedia[];
+    media: APIBrandKitMedia[];
 };
 
 export type StudioBrandKit = {
@@ -107,8 +113,10 @@ export type StudioBrandKit = {
 export type BrandKitInternal = {
     id: string;
     version: string;
+    name: string;
     colors: DocumentColor[];
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
+    media: BrandKitMedia[];
 };
