@@ -55,6 +55,9 @@ interface ConfigParameterTypes {
     onFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
+    /**
+     * @deprecated use `onSelectedPageIdChanged` instead
+     */
     onPageSelectionChanged: (id: Id) => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
@@ -74,7 +77,7 @@ interface ConfigParameterTypes {
     onZoomChanged: (scaleFactor: string) => void;
     onSelectedPageIdChanged: (pageId: string) => void;
     onPagesChanged: (pages: string) => void;
-    onPageSnapshotInvalidated: (pageId: string) => void;
+    onPageSnapshotInvalidated: (pageId: Id) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;

@@ -29,22 +29,22 @@ export class PageController {
     /**
      * @experimental
      * This method adds a new page.
-     * @returns
+     * @returns the id of the new page
      */
     add = async () => {
         const res = await this.#editorAPI;
-        return res.addPage().then((result) => getEditorResponseData<null>(result));
+        return res.addPage().then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
      * @experimental
      * This method removes a certain page.
      * @param pageId the id of the page
-     * @returns
+     * @returns the id of the current active page
      */
     remove = async (pageId: Id) => {
         const res = await this.#editorAPI;
-        return res.removePage(pageId).then((result) => getEditorResponseData<null>(result));
+        return res.removePage(pageId).then((result) => getEditorResponseData<Id>(result));
     };
 
     /**

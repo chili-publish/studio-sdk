@@ -348,10 +348,8 @@ describe('SubscriberController', () => {
     });
 
     it('should be possible to subscribe to onPageSnapshotInvalidated', async () => {
-        const pageID: Id = '123';
-
-        await mockedSubscriberController.onPageSnapshotInvalidated(JSON.stringify(pageID));
-        expect(mockEditorApi.onPageSnapshotInvalidated).toHaveBeenCalledWith(pageID);
+        await mockedSubscriberController.onPageSnapshotInvalidated('123');
+        expect(mockEditorApi.onPageSnapshotInvalidated).toHaveBeenCalledWith('123');
     });
 
     it('should be possible to subscribe to onPageSizeChanged', async () => {
