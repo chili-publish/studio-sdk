@@ -29,11 +29,10 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
             <script>                
             </script>
             <script src="${link}init.js" async></script>
-            <script src="${link}init_engine.js"></script>
+            <script src="${link}flutter_bootstrap.js"></script>
             <script>
                 initializeStudioEngine({
                     assetBase: '${link}',
-                    entryPointUrl: '${link}main.dart.js',
                 });
             </script>
         </body>
