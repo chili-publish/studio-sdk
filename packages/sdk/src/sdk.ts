@@ -212,6 +212,7 @@ export class SDK {
                 onDocumentIssueListChanged: this.subscriber.onDocumentIssueListChanged,
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
                 onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
+                onBrandKitMediaChanged: this.subscriber.onBrandKitMediaChanged,
             },
             this.setConnection,
             this.config.editorId,

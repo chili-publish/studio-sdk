@@ -2,10 +2,11 @@ import SDK, { CharacterStyleUpdate, DocumentColor, DocumentFontFamily, Paragraph
 import {
     BrandKitCharacterStyle,
     BrandKitInternal,
+    BrandKitMedia,
     BrandKitParagraphStyle,
     StudioBrandKit,
 } from '../types/BrandKitTypes';
-import { EditorAPI, EditorResponse } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
 import { getColorById, getFontKey, mapBrandKitColorToLocal, mapBrandKitStyleToLocal } from '../utils/BrandKitHelper';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
@@ -71,6 +72,25 @@ export class BrandKitController {
     };
 
     /**
+     * This method returns the current brand kit name.
+     * @returns current brand kit name
+     */
+    getName = async () => {
+        const res = await this.#editorAPI;
+        return res.getBrandKitName().then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method renames the brand kit.
+     * @param newName - The new name for the brand kit
+     * @returns
+     */
+    rename = async (newName: string) => {
+        const res = await this.#editorAPI;
+        return res.renameBrandKit(newName).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method updates both the brand kit id and version.
      * @param id - The new brand kit id
      * @param version - The new brand kit version
@@ -120,6 +140,64 @@ export class BrandKitController {
         };
 
         return getEditorResponseData<StudioBrandKit>(editorResponse);
+    };
+
+    /**
+     * This method returns all media items in the brand kit
+     * @returns list of media items in the brand kit
+     */
+    getAllMedia = async () => {
+        const res = await this.#editorAPI;
+        return res.getAllBrandKitMedia().then((result) => getEditorResponseData<BrandKitMedia[]>(result));
+    };
+
+    /**
+     * This method adds a media item to the brand kit
+     * @param name - The name of the media item
+     * @param remoteConnectorId - The remote connector ID
+     * @param assetId - The asset ID of the media item
+     * @returns
+     */
+    addMedia = async (name: string, remoteConnectorId: Id, assetId: string) => {
+        const res = await this.#editorAPI;
+        return res
+            .addBrandKitMedia(name, remoteConnectorId, assetId)
+            .then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * This method updates an existing media item in the brand kit
+     * @param name - The name of the media item to update
+     * @param remoteConnectorId - The new remote connector ID
+     * @param assetId - The new asset ID
+     * @returns
+     */
+    updateMedia = async (name: string, remoteConnectorId: Id, assetId: string) => {
+        const res = await this.#editorAPI;
+        return res
+            .updateBrandKitMedia(name, remoteConnectorId, assetId)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method renames an existing media item in the brand kit
+     * @param name - The name of the media item to rename
+     * @param newName - The new name for the media item
+     * @returns
+     */
+    renameMedia = async (name: string, newName: string) => {
+        const res = await this.#editorAPI;
+        return res.renameBrandKitMedia(name, newName).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method removes a media item from the brand kit
+     * @param name - The name of the media item to remove
+     * @returns
+     */
+    removeMedia = async (name: string) => {
+        const res = await this.#editorAPI;
+        return res.removeBrandKitMedia(name).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
