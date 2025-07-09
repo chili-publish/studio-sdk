@@ -41,4 +41,12 @@ export class SubscriberController {
     onPageSizeChanged = (pageSize: string) => {
         this.config.events.onPageSizeChanged.trigger(JSON.parse(pageSize));
     };
+
+    /**
+     * Listener on engine edit mode, if this changes, this listener will get triggered with the updates
+     * @param engineEditMode Stringified boolean of the EngineEditMode
+     */
+    onEngineEditModeChanged = (engineEditMode: string) => {
+        this.config.events.onEngineEditModeChanged.trigger(JSON.parse(engineEditMode));
+    };
 }

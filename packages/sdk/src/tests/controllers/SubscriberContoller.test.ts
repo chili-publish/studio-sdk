@@ -85,6 +85,7 @@ const mockEditorApi: EditorAPI = {
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -131,6 +132,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
     jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
+    jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
 
     mockedSubscriberController = new SubscriberController(
         ConfigHelper.createRuntimeConfig(mockEditorApi),
@@ -552,5 +554,11 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onEngineEditModeChanged).toHaveBeenCalledWith([
             { frameId: '1', mode: EngineEditModeType.frameSubjectArea },
         ]);
+    });
+
+    it('Should call onBrandKitMediaChanged subscriber when triggered', async () => {
+        await mockedSubscriberController.onBrandKitMediaChanged(JSON.stringify({}));
+        expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalled();
+        expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalledWith({});
     });
 });

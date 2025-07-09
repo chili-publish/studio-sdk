@@ -81,8 +81,8 @@ export type BrandKitParagraphStyle = {
 
 export type BrandKitMedia = {
     name: string;
-    mediaId: string;
-    mediaConnectorId: string;
+    remoteConnectorId: Id;
+    assetId: Id;
 };
 
 export type APIBrandKit = {
