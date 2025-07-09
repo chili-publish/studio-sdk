@@ -60,7 +60,7 @@ export class UndoManagerController {
      * Even if you throw an exception inside the record scope it will still end it properly.
      * @returns
      */
-    record = async (operationName: string, undoOperationCallback: (sdk: SDK) => void) => {
+    record = async (operationName: string, undoOperationCallback: (sdk: SDK) => Promise<void>) => {
         try {
             await this.#advanced.beginIfNoneActive(operationName);
 
