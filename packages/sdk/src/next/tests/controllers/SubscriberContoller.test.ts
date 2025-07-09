@@ -18,7 +18,6 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onVariableListChanged');
     jest.spyOn(mockEditorApi, 'onConnectorsChanged');
     jest.spyOn(mockEditorApi, 'onPageSizeChanged');
-    jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
     mockedSubscriberController = new SubscriberController(ConfigHelper.createRuntimeConfig(mockEditorApi));
 });
 
@@ -51,13 +50,5 @@ describe('Next.SubscriberController', () => {
         await mockedSubscriberController.onPageSizeChanged(JSON.stringify(pageSize));
         expect(mockEditorApi.onPageSizeChanged).toHaveBeenCalledWith(pageSize);
         expect(mockEditorApi.onPageSizeChanged).toHaveBeenCalledTimes(1);
-    });
-
-    it('Should be possible to subscribe to onBrandKitMediaChanged', async () => {
-        const brandKitMedia = [{ name: 'test-media', remoteConnectorId: 'connector-1', assetId: 'asset-1' }];
-
-        await mockedSubscriberController.onBrandKitMediaChanged(JSON.stringify(brandKitMedia));
-        expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalledWith(brandKitMedia);
-        expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalledTimes(1);
     });
 });
