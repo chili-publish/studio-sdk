@@ -1,0 +1,174 @@
+name: Create or Update Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Release type (uat or prd)"
+        required: true
+        type: choice
+        options:
+          - uat
+          - prd
+      version_type:
+        description: "Version increment (major, minor, patch)"
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      source_branch:
+        description: "Existing release branch to update (optional)"
+        required: false
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Get current version
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Error if main branch specified
+        if: github.event.inputs.source_branch == 'main'
+        run: |
+          echo "❌ Error: Cannot use 'main' as source_branch. Main branch should be updated directly."
+          echo "💡 Tip: Leave source_branch empty to create a new release branch, or specify an existing release branch to update it."
+          exit 1
+
+      - name: Update existing release branch
+        id: update_branch
+        if: github.event.inputs.source_branch != ''
+        run: |
+          git fetch origin ${{ github.event.inputs.source_branch }}
+          git checkout ${{ github.event.inputs.source_branch }}
+          if [ "${{ github.event.inputs.release_type }}" = "uat" ]; then
+            NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+          else
+            NEW_VERSION=$(npm version patch --git-tag-version=false)
+          fi
+          echo "branch_name=${{ github.event.inputs.source_branch }}" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create new release branch
+        if: github.event.inputs.source_branch == ''
+        id: create_branch
+        run: |
+          # Bump version first (package.json changes but not committed)
+          if [ "${{ github.event.inputs.release_type }}" = "uat" ]; then
+            NEW_VERSION=$(npm version pre${{ github.event.inputs.version_type }} --preid=rc --git-tag-version=false)
+            BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//' | sed 's/-rc.*//')"
+          else
+            NEW_VERSION=$(npm version ${{ github.event.inputs.version_type }} --git-tag-version=false)
+            BRANCH_NAME="release/$(echo $NEW_VERSION | sed 's/^v//')"
+          fi
+
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+          # Create branch with the correct name
+          git checkout -b $BRANCH_NAME
+
+      - name: Commit version bump
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add package.json yarn.lock || true
+          git commit -m "chore: bump version to ${{ steps.create_branch.outputs.new_version || steps.update_branch.outputs.new_version }} [skip ci]"
+
+      - name: Push branch
+        run: |
+          BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || github.event.inputs.source_branch }}"
+          git push -u origin $BRANCH_NAME
+          echo "Push completed successfully"
+
+      - name: Create or update PR
+        id: pr
+        run: |
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head ${{ steps.create_branch.outputs.branch_name || github.event.inputs.source_branch }} --json number,url -q '.[0].url' 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            # Update existing PR - extract number from URL
+            PR_NUMBER=$(echo "$EXISTING_PR" | sed 's/.*\/pull\///')
+            echo "pull-request-url=$EXISTING_PR" >> $GITHUB_OUTPUT
+            echo "pull-request-number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "PR already exists: $EXISTING_PR"
+            
+            # Update PR label to match current release type
+            HAS_UAT_LABEL=$(gh pr view $PR_NUMBER --json labels -q '.labels[].name' | grep -q "uat" && echo "true" || echo "false")
+            HAS_PRD_LABEL=$(gh pr view $PR_NUMBER --json labels -q '.labels[].name' | grep -q "prd" && echo "true" || echo "false")
+            
+            if [ "${{ github.event.inputs.release_type }}" = "uat" ] && [ "$HAS_UAT_LABEL" = "false" ]; then
+              gh pr edit $PR_NUMBER --remove-label prd --add-label uat
+              echo "Updated PR label to: uat"
+            elif [ "${{ github.event.inputs.release_type }}" = "prd" ] && [ "$HAS_PRD_LABEL" = "false" ]; then
+              gh pr edit $PR_NUMBER --remove-label uat --add-label prd
+              echo "Updated PR label to: prd"
+            else
+              echo "PR already has correct label: ${{ github.event.inputs.release_type }}"
+            fi
+          else
+            # Create new PR
+            PR_URL=$(gh pr create \
+              --head ${{ steps.create_branch.outputs.branch_name || github.event.inputs.source_branch }} \
+              --base ${{ github.event.repository.default_branch }} \
+              --title "Release ${{ steps.create_branch.outputs.new_version || steps.update_branch.outputs.new_version }}" \
+              --body "Automated release PR for ${{ steps.create_branch.outputs.new_version || steps.update_branch.outputs.new_version }}" \
+              --label ${{ github.event.inputs.release_type }})
+            # Extract number from new PR URL
+            PR_NUMBER=$(echo "$PR_URL" | sed 's/.*\/pull\///')
+            echo "pull-request-url=$PR_URL" >> $GITHUB_OUTPUT
+            echo "pull-request-number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "Created new PR: $PR_URL"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dismiss previous approvals (if updating)
+        if: github.event.inputs.source_branch != ''
+        run: |
+          PR_NUMBER="${{ steps.pr.outputs.pull-request-number }}"
+          if [ -n "$PR_NUMBER" ]; then
+            gh api -X POST repos/${{ github.repository }}/pulls/$PR_NUMBER/reviews/dismissals \
+              -f message="Approvals dismissed due to version update"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Send Teams notification
+      - name: Notify Teams
+        run: |
+          BRANCH_NAME="${{ steps.create_branch.outputs.branch_name || github.event.inputs.source_branch }}"
+          NEW_VERSION="${{ steps.create_branch.outputs.new_version || steps.update_branch.outputs.new_version  }}"
+          PR_URL="${{ steps.pr.outputs.pull-request-url }}"
+
+          payload=$(cat <<EOF
+          {
+              "text": "🚀 **Release PR Created/Updated**\n\n**PR Link:** $PR_URL\n\n**Release Type:** ${{ github.event.inputs.release_type }}\n**Version:** $NEW_VERSION\n**Branch:** $BRANCH_NAME\n\nPlease review and approve the release PR."
+          }
+          EOF
+          )
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
