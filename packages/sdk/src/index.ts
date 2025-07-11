@@ -169,6 +169,7 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 export type {
     APIBrandKit,
+    APIBrandKitMedia,
     StudioBrandKit,
     BrandKitColor,
     BrandKitFont,

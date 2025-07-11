@@ -108,28 +108,33 @@ export class BrandKitController {
     get = async () => {
         const brandKitId = await this.getId();
         const brandKitVersion = await this.getVersion();
+        const brandKitName = await this.getName();
 
         const colorsPromise = this.colorStyleController.getAll();
         const fontsPromise = this.fontController.getFontFamilies();
         const characterStylesPromise = this.characterStyleController.getAll();
         const paragraphStylesPromise = this.paragraphStyleController.getAll();
+        const mediaPromise = this.getAllMedia();
 
-        const [colors, fonts, paragraphStyles, characterStyles] = await Promise.all([
+        const [colors, fonts, paragraphStyles, characterStyles, media] = await Promise.all([
             colorsPromise,
             fontsPromise,
             paragraphStylesPromise,
             characterStylesPromise,
+            mediaPromise,
         ]);
 
         const studioBrandKit = {
             id: brandKitId.parsedData,
             brandKit: {
                 id: brandKitId.parsedData,
+                name: brandKitName.parsedData,
                 lastModifiedDate: brandKitVersion.parsedData,
                 colors: colors.parsedData,
                 fonts: fonts.parsedData,
                 paragraphStyles: paragraphStyles.parsedData,
                 characterStyles: characterStyles.parsedData,
+                media: media.parsedData,
             },
         };
         const editorResponse = {
@@ -217,6 +222,9 @@ export class BrandKitController {
         const fonts = await this.fontController.getFontFamilies();
         const fontsList = fonts.parsedData || [];
 
+        const media = await this.getAllMedia();
+        const mediaList = media.parsedData || [];
+
         try {
             await this.undoManagerController.record('brandKit.remove', async (sdk) => {
                 for (const color of colorsList) {
@@ -230,6 +238,9 @@ export class BrandKitController {
                 }
                 for (const font of fontsList) {
                     await sdk.font.removeFontFamily(font.id);
+                }
+                for (const media of mediaList) {
+                    await this.removeMedia(media.name);
                 }
             });
         } catch (err) {
@@ -251,10 +262,12 @@ export class BrandKitController {
                 parsedData: {
                     id: studioBrandKit.id,
                     version: studioBrandKit.brandKit.lastModifiedDate,
+                    name: studioBrandKit.brandKit.name,
                     colors: [],
                     fonts: [],
                     paragraphStyles: [],
                     characterStyles: [],
+                    media: [],
                 },
             };
 
@@ -278,10 +291,13 @@ export class BrandKitController {
                     localColorGuidMap,
                     localFontGuidMap,
                 });
+                await this.setMedia(studioBrandKit);
 
                 const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
                 const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
+                const { parsedData: allMedia } = await this.getAllMedia();
                 await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
+                await sdk.brandKit.rename(studioBrandKit.brandKit.name);
 
                 result = {
                     success: true,
@@ -289,10 +305,12 @@ export class BrandKitController {
                     parsedData: {
                         id: studioBrandKit.id,
                         version: studioBrandKit.brandKit.lastModifiedDate,
+                        name: studioBrandKit.brandKit.name,
                         colors: localColors || [],
                         fonts: localFonts || [],
                         paragraphStyles: allParagraphStyles || [],
                         characterStyles: allCharacterStyles || [],
+                        media: allMedia || [],
                     },
                 };
             });
@@ -406,6 +424,12 @@ export class BrandKitController {
             await sdk.characterStyle.rename(styleId!, style.name);
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             await sdk.characterStyle.update(styleId!, characterStyleUpdate);
+        }
+    }
+
+    private async setMedia(studioBrandKit: StudioBrandKit) {
+        for (const media of studioBrandKit.brandKit.media || []) {
+            await this.addMedia(media.name, media.mediaConnectorId, media.mediaId);
         }
     }
 }
