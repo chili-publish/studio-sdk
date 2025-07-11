@@ -225,28 +225,23 @@ export class BrandKitController {
         const media = await this.getAllMedia();
         const mediaList = media.parsedData || [];
 
-        try {
-            await this.undoManagerController.record('brandKit.remove', async (sdk) => {
-                for (const color of colorsList) {
-                    await sdk.colorStyle.remove(color.id);
-                }
-                for (const style of paragraphStylesList) {
-                    await sdk.paragraphStyle.remove(style.id);
-                }
-                for (const style of characterStylesList) {
-                    await sdk.characterStyle.remove(style.id);
-                }
-                for (const font of fontsList) {
-                    await sdk.font.removeFontFamily(font.id);
-                }
-                for (const media of mediaList) {
-                    await this.removeMedia(media.name);
-                }
-            });
-        } catch (err) {
-            this.undoManagerController.undo();
-            throw err;
-        }
+        await this.undoManagerController.record('brandKit.remove', async (sdk) => {
+            for (const color of colorsList) {
+                await sdk.colorStyle.remove(color.id);
+            }
+            for (const style of paragraphStylesList) {
+                await sdk.paragraphStyle.remove(style.id);
+            }
+            for (const style of characterStylesList) {
+                await sdk.characterStyle.remove(style.id);
+            }
+            for (const font of fontsList) {
+                await sdk.font.removeFontFamily(font.id);
+            }
+            for (const media of mediaList) {
+                await this.removeMedia(media.name);
+            }
+        });
     };
 
     /**
@@ -255,71 +250,66 @@ export class BrandKitController {
      * @returns
      */
     set = async (studioBrandKit: StudioBrandKit) => {
-        try {
-            let result: EditorResponse<BrandKitInternal> = {
+        let result: EditorResponse<BrandKitInternal> = {
+            success: true,
+            status: 200,
+            parsedData: {
+                id: studioBrandKit.id,
+                version: studioBrandKit.brandKit.lastModifiedDate,
+                name: studioBrandKit.brandKit.name,
+                colors: [],
+                fonts: [],
+                paragraphStyles: [],
+                characterStyles: [],
+                media: [],
+            },
+        };
+
+        await this.undoManagerController.record('brandKit.set', async (sdk) => {
+            const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
+            const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
+
+            const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
+            const { parsedData: localFonts } = await sdk.font.getFontFamilies();
+
+            await this.setParagraphStyles(studioBrandKit, sdk, {
+                localColors,
+                localFonts,
+                localColorGuidMap,
+                localFontGuidMap,
+            });
+
+            await this.setCharacterStyles(studioBrandKit, sdk, {
+                localColors,
+                localFonts,
+                localColorGuidMap,
+                localFontGuidMap,
+            });
+            await this.setMedia(studioBrandKit);
+
+            const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
+            const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
+            const { parsedData: allMedia } = await this.getAllMedia();
+            await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
+            await sdk.brandKit.rename(studioBrandKit.brandKit.name);
+
+            result = {
                 success: true,
                 status: 200,
                 parsedData: {
                     id: studioBrandKit.id,
                     version: studioBrandKit.brandKit.lastModifiedDate,
                     name: studioBrandKit.brandKit.name,
-                    colors: [],
-                    fonts: [],
-                    paragraphStyles: [],
-                    characterStyles: [],
-                    media: [],
+                    colors: localColors || [],
+                    fonts: localFonts || [],
+                    paragraphStyles: allParagraphStyles || [],
+                    characterStyles: allCharacterStyles || [],
+                    media: allMedia || [],
                 },
             };
+        });
 
-            await this.undoManagerController.record('brandKit.set', async (sdk) => {
-                const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
-                const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
-
-                const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
-                const { parsedData: localFonts } = await sdk.font.getFontFamilies();
-
-                await this.setParagraphStyles(studioBrandKit, sdk, {
-                    localColors,
-                    localFonts,
-                    localColorGuidMap,
-                    localFontGuidMap,
-                });
-
-                await this.setCharacterStyles(studioBrandKit, sdk, {
-                    localColors,
-                    localFonts,
-                    localColorGuidMap,
-                    localFontGuidMap,
-                });
-                await this.setMedia(studioBrandKit);
-
-                const { parsedData: allParagraphStyles } = await sdk.paragraphStyle.getAll();
-                const { parsedData: allCharacterStyles } = await sdk.characterStyle.getAll();
-                const { parsedData: allMedia } = await this.getAllMedia();
-                await sdk.brandKit.updateIdAndVersion(studioBrandKit.id, studioBrandKit.brandKit.lastModifiedDate);
-                await sdk.brandKit.rename(studioBrandKit.brandKit.name);
-
-                result = {
-                    success: true,
-                    status: 200,
-                    parsedData: {
-                        id: studioBrandKit.id,
-                        version: studioBrandKit.brandKit.lastModifiedDate,
-                        name: studioBrandKit.brandKit.name,
-                        colors: localColors || [],
-                        fonts: localFonts || [],
-                        paragraphStyles: allParagraphStyles || [],
-                        characterStyles: allCharacterStyles || [],
-                        media: allMedia || [],
-                    },
-                };
-            });
-
-            return result;
-        } catch (err) {
-            this.undoManagerController.undo();
-            throw err;
-        }
+        return result;
     };
 
     private async setColors(studioBrandKit: StudioBrandKit, sdk: SDK) {
