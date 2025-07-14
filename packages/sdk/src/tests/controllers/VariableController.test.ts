@@ -97,6 +97,7 @@ describe('VariableController', () => {
         setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableRemoveParagraphIfEmpty: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -133,6 +134,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
         jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
         jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
+        jest.spyOn(mockEditorApi, 'setVariableRemoveParagraphIfEmpty');
     });
 
     it('get variable by id', async () => {
@@ -320,6 +322,12 @@ describe('VariableController', () => {
         await mockedVariableController.setIsRequired('1', true);
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledWith('1', true);
+    });
+
+    it('set removeParagraphOnEmpty', async () => {
+        await mockedVariableController.setRemoveParagraphOnEmpty('1', true);
+        expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledWith('1', true);
     });
 
     it('set isReadonly', async () => {

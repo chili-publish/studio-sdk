@@ -545,6 +545,17 @@ export class VariableController {
     };
 
     /**
+     * This method sets removeParagraphOnEmpty flag for a variable
+     * @returns
+     */
+    setRemoveParagraphOnEmpty = async (id: string, removeParagraphOnEmpty: boolean) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariableRemoveParagraphIfEmpty(id, removeParagraphOnEmpty)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method sets isReadonly flag for a variable
      * @returns
      */
