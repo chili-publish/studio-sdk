@@ -52,7 +52,7 @@ describe('UndoManagerController', () => {
         let dummy = false;
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        await mockedUndoManagerController.record('my undo operation', (_) => {
+        await mockedUndoManagerController.record('my undo operation', async (_) => {
             dummy = true;
         });
 

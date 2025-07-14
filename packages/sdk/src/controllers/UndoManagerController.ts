@@ -60,15 +60,16 @@ export class UndoManagerController {
      * Even if you throw an exception inside the record scope it will still end it properly.
      * @returns
      */
-    record = async (operationName: string, undoOperationCallback: (sdk: SDK) => void) => {
+    record = async (operationName: string, undoOperationCallback: (sdk: SDK) => Promise<void>) => {
         try {
             await this.#advanced.beginIfNoneActive(operationName);
 
             await undoOperationCallback(this.#sdk);
-        } catch (error) {
-            throw error;
-        } finally {
+
             await this.#advanced.end();
+        } catch (error) {
+            await this.#advanced.abort();
+            throw error;
         }
     };
 
@@ -132,5 +133,15 @@ export class AdvancedUndoManagerController {
     end = async () => {
         const res = await this.#editorAPI;
         return res.end().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Aborts the currently active recording operation.
+     * If there is no recording operation currently running this will throw an exception.
+     * @returns
+     */
+    abort = async () => {
+        const res = await this.#editorAPI;
+        return res.abort().then((result) => getEditorResponseData<null>(result));
     };
 }
