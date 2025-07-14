@@ -66,7 +66,6 @@ export interface ListVariableItem {
 
 export interface ListVariable extends Variable {
     items: string[];
-    removeParagraphOnEmpty: boolean;
     selected?: string;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
@@ -78,7 +77,7 @@ export interface BooleanVariable extends Variable {
 
 export interface ShortTextVariable extends Variable {
     value: string;
-    removeParagraphOnEmpty: boolean;
+    removeParagraphIfEmpty: boolean;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
 }
@@ -99,7 +98,7 @@ export interface NumberVariable extends Variable {
 
 export interface DateVariable extends Variable {
     value?: string;
-    removeParagraphOnEmpty: boolean;
+    removeParagraphIfEmpty: boolean;
     displayFormat: string;
     startDate?: DateRestriction;
     endDate?: DateRestriction;
