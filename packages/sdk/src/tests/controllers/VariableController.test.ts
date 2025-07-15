@@ -324,8 +324,8 @@ describe('VariableController', () => {
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledWith('1', true);
     });
 
-    it('set removeParagraphOnEmpty', async () => {
-        await mockedVariableController.setRemoveParagraphOnEmpty('1', true);
+    it('set removeParagraphIfEmpty', async () => {
+        await mockedVariableController.setRemoveParagraphIfEmpty('1', true);
         expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledWith('1', true);
     });
