@@ -45,6 +45,7 @@ describe('VariableController', () => {
         privateData: {},
         allowQuery: true,
         allowUpload: true,
+        context: {},
     };
 
     const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
@@ -97,6 +98,7 @@ describe('VariableController', () => {
         setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableContext: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -133,6 +135,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
         jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
         jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
+        jest.spyOn(mockEditorApi, 'setImageVariableContext');
     });
 
     it('get variable by id', async () => {
@@ -566,5 +569,12 @@ describe('VariableController', () => {
         await mockedVariableController.setMinImageUploadSize('1', '100', '100');
         expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith('1', '100', '100');
+    });
+
+    it('sets the context for an image variable', async () => {
+        const context = { key1: 'value1', key2: true, key3: 'value3' };
+        await mockedVariableController.setImageVariableContext('1', context);
+        expect(mockEditorApi.setImageVariableContext).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableContext).toHaveBeenCalledWith('1', JSON.stringify(context));
     });
 });

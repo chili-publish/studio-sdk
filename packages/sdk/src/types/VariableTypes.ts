@@ -57,6 +57,7 @@ export interface ImageVariable extends Variable {
     allowUpload: boolean;
     uploadMinHeight?: number | null;
     uploadMinWidth?: number | null;
+    context: Record<string, string | boolean>;
 }
 
 export interface ListVariableItem {

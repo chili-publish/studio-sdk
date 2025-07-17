@@ -694,6 +694,19 @@ export class VariableController {
             .then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * This method sets the context for an image variable
+     * @param id the id of the variable
+     * @param context the context record containing key-value pairs
+     * @returns
+     */
+    setImageVariableContext = async (id: string, context: Record<string, string | boolean>) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageVariableContext(id, JSON.stringify(context))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);
