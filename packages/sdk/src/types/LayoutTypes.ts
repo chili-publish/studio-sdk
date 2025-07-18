@@ -67,6 +67,7 @@ export type Layout = {
     availableForUser: boolean;
     selectedByUser: boolean;
     resizableByUser: ResizableLayoutProperties;
+    aspectRatioByUser: AspectRatioLayoutProperties;
 };
 
 // used by onLayoutsChanged
@@ -155,6 +156,32 @@ export type ResizableLayoutPropertiesUpdate = {
         value: string | null;
     } | null;
     maxHeight?: {
+        value: string | null;
+    } | null;
+};
+
+export type AspectRatioLayoutProperties = {
+    enabled: boolean;
+    minAspectRatioWidth?: number | null;
+    minAspectRatioHeight?: number | null;
+    maxAspectRatioWidth?: number | null;
+    maxAspectRatioHeight?: number | null;
+};
+
+export type AspectRatioLayoutPropertiesUpdate = {
+    enabled?: {
+        value: boolean;
+    } | null;
+    minAspectRatioWidth?: {
+        value: string | null;
+    } | null;
+    minAspectRatioHeight?: {
+        value: string | null;
+    } | null;
+    maxAspectRatioWidth?: {
+        value: string | null;
+    } | null;
+    maxAspectRatioHeight?: {
         value: string | null;
     } | null;
 };

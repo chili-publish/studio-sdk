@@ -7,6 +7,7 @@ import {
     LayoutIntent,
     LayoutPreset,
     ResizableLayoutPropertiesUpdate,
+    AspectRatioLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
 } from '../../types/LayoutTypes';
@@ -48,6 +49,7 @@ const mockedEditorApi: EditorAPI = {
     setLayoutAvailableForUser: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutSelectedByUser: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutResizableByUser: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayoutAspectRatio: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -84,6 +86,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setLayoutAvailableForUser');
     jest.spyOn(mockedEditorApi, 'setLayoutSelectedByUser');
     jest.spyOn(mockedEditorApi, 'setLayoutResizableByUser');
+    jest.spyOn(mockedEditorApi, 'setLayoutAspectRatio');
 
     mockId = mockSelectPage.layoutId;
 });
@@ -353,6 +356,23 @@ describe('LayoutController', () => {
         expect(mockedEditorApi.setLayoutResizableByUser).toBeCalledWith(
             '1',
             JSON.stringify(resizableLayoutPropertiesUpdate),
+        );
+    });
+
+    it('Should be possible to set the layout aspect ratio', async () => {
+        const aspectRatioLayoutPropertiesUpdate: AspectRatioLayoutPropertiesUpdate = {
+            enabled: { value: true },
+            minAspectRatioWidth: { value: '16' },
+            minAspectRatioHeight: { value: '9' },
+            maxAspectRatioWidth: { value: '4' },
+            maxAspectRatioHeight: { value: '3' },
+        };
+
+        await mockedLayoutController.setAspectRatio('1', aspectRatioLayoutPropertiesUpdate);
+        expect(mockedEditorApi.setLayoutAspectRatio).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayoutAspectRatio).toBeCalledWith(
+            '1',
+            JSON.stringify(aspectRatioLayoutPropertiesUpdate),
         );
     });
 });
