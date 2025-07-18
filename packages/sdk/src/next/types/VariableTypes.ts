@@ -2,6 +2,7 @@ import { ListVariableItem, ValueWithStyle, Variable } from '../../types/Variable
 
 export interface ListVariable extends Variable {
     items: ListVariableItem[];
+    removeParagraphIfEmpty: boolean;
     selected?: ListVariableItem;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
