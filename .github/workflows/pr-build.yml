@@ -39,6 +39,12 @@ jobs:
         if: always()
         with:
           files: packages/sdk/coverage/**/*.xml
+      - name: SonarQube analysis
+        uses: docker://sonarsource/sonar-scanner-cli:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
       - name: build code
         run: yarn build
       - name: validate sdk examples
