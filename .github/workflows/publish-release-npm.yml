@@ -83,8 +83,8 @@ jobs:
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
           mkdir -p ${minorlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
-          mkdir -p ${patchpath%"/merge"}
-          cp -R packages/sdk/_bundles/* ${patchpath%"/merge"}
+          mkdir -p ${patchlatestpath%"/merge"}
+          cp -R packages/sdk/_bundles/* ${patchlatestpath%"/merge"}
           
 
       - name: Copy to Azure Blob Storage
