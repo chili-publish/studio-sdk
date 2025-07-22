@@ -75,11 +75,17 @@ jobs:
           RELEASE_NAME: ${{ github.event.release.name }}
         run: |
           path=packages/sdk/upload/latest
-          versionpath=packages/sdk/upload/$RELEASE_NAME
+          minorversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+")
+          patchversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+" | cut -d. -f3)
+          minorlatestpath=packages/sdk/upload/$minorversion/latest
+          patchlatestpath=packages/sdk/upload/$minorversion/$patchversion/latest
           mkdir -p ${path%"/merge"}
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
-          mkdir -p ${versionpath%"/merge"}
-          cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
+          mkdir -p ${minorlatestpath%"/merge"}
+          cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
+          mkdir -p ${patchpath%"/merge"}
+          cp -R packages/sdk/_bundles/* ${patchpath%"/merge"}
+          
 
       - name: Copy to Azure Blob Storage
         uses: azure/CLI@v1
