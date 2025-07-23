@@ -1,3 +1,4 @@
+import { Dictionary } from '@chili-studio/connector-types';
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import { ListVariableItem, Variable } from '../../types/VariableTypes';
 import { getEditorResponseData } from '../../utils/EditorResponseData';
@@ -131,6 +132,19 @@ export class ImageVariableController {
         const res = await this.#editorAPI;
         return res
             .setImageVariableUploadMinSize(id, minWidth, minHeight)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the context for an image variable
+     * @param id the id of the variable
+     * @param context the context dictionary containing key-value pairs
+     * @returns
+     */
+    setContext = async (id: string, context: Dictionary) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageVariableContext(id, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
