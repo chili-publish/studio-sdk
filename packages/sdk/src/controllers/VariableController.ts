@@ -697,10 +697,10 @@ export class VariableController {
     /**
      * This method sets the context for an image variable
      * @param id the id of the variable
-     * @param context the context record containing key-value pairs
+     * @param context the context dictionary containing key-value pairs
      * @returns
      */
-    setImageVariableContext = async (id: string, context: Record<string, string | boolean>) => {
+    setImageVariableContext = async (id: string, context: { [key: string]: string | boolean }) => {
         const res = await this.#editorAPI;
         return res
             .setImageVariableContext(id, JSON.stringify(context))
