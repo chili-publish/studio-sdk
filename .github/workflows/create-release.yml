@@ -33,13 +33,12 @@ jobs:
             echo "is_release_branch=true" >> $GITHUB_OUTPUT
             echo "✅ Branch $HEAD_REF is a release branch"
           else
-            echo "is_release_branch=false" >> $GITHUB_OUTPUT
-            echo "⏭️ Branch $HEAD_REF is not a release branch, skipping"
-            exit 0
+            echo "❌ Error: Branch $HEAD_REF is not a release branch"
+            echo "This workflow is only for release branches (release/*)"
+            exit 1
           fi
 
       - name: Check if PR is ready to merge
-        if: steps.check_release_branch.outputs.is_release_branch == 'true'
         id: check_merge_ready
         run: |
           # Get PR details to check merge requirements
@@ -57,17 +56,16 @@ jobs:
             echo "merge_ready=true" >> $GITHUB_OUTPUT
             echo "✅ PR is ready to merge and create release"
           else
-            echo "merge_ready=false" >> $GITHUB_OUTPUT
-            echo "⏳ PR is not ready to merge yet"
+            echo "❌ Error: PR is not ready to merge"
             echo "   - Mergeable: $MERGEABLE"
             echo "   - Merge State: $MERGE_STATE"
             echo "   - Review Decision: $REVIEW_DECISION"
-            exit 0  # Exit gracefully, don't fail the workflow
+            echo "Please ensure PR is approved and ready to merge before creating release"
+            exit 1
           fi
 
       - name: Get PR information
         id: pr_info
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           # Get PR labels to determine release type
           PR_LABELS=$(gh pr view ${{ github.event.pull_request.number }} --json labels -q '.labels[].name' | tr '\n' ' ')
@@ -87,7 +85,6 @@ jobs:
 
       - name: Get release version
         id: version_info
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           # Get version from package.json in the release branch
           git checkout $HEAD_REF
@@ -103,7 +100,6 @@ jobs:
 
       - name: Get previous version
         id: previous_version
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           # Get the most recent git tag as previous version
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
@@ -117,7 +113,6 @@ jobs:
 
       - name: Generate release notes
         id: release_notes
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           PREVIOUS_TAG="${{ steps.previous_version.outputs.previous_tag }}"
           CURRENT_TAG="${{ steps.version_info.outputs.tag_name }}"
@@ -169,7 +164,6 @@ jobs:
           cat release_notes.md
 
       - name: Create git tag
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           TAG_NAME="${{ steps.version_info.outputs.tag_name }}"
           git config --global user.name 'github-actions[bot]'
@@ -180,7 +174,6 @@ jobs:
 
       - name: Create GitHub release
         id: create_release
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           TAG_NAME="${{ steps.version_info.outputs.tag_name }}"
           RELEASE_TYPE="${{ steps.pr_info.outputs.release_type }}"
@@ -204,7 +197,6 @@ jobs:
           echo "Created GitHub release: $RELEASE_URL"
 
       - name: Notify Teams
-        if: steps.check_release_branch.outputs.is_release_branch == 'true' && steps.check_merge_ready.outputs.merge_ready == 'true'
         run: |
           RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
           VERSION="${{ steps.version_info.outputs.version }}"
