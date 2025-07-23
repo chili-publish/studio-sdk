@@ -1,3 +1,4 @@
+import { Dictionary } from '@chili-studio/connector-types';
 import { PrivateData } from './CommonTypes';
 
 export interface ConnectorImageVariableSource {
@@ -57,6 +58,7 @@ export interface ImageVariable extends Variable {
     allowUpload: boolean;
     uploadMinHeight?: number | null;
     uploadMinWidth?: number | null;
+    context: Dictionary;
 }
 
 export interface ListVariableItem {
