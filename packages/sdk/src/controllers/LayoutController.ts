@@ -6,6 +6,7 @@ import {
     LayoutIntent,
     LayoutPreset,
     ResizableLayoutPropertiesUpdate,
+    AspectRatioLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
 } from '../types/LayoutTypes';
@@ -407,6 +408,20 @@ export class LayoutController {
         const res = await this.#editorAPI;
         return res
             .setLayoutResizableByUser(id, JSON.stringify(resizableLayoutProperties))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the aspect ratio of a specific layout.
+     *
+     * @param id The id of a specific layout
+     * @param aspectRatio The aspect ratio that will be used for the layout
+     * @returns
+     */
+    setAspectRatio = async (id: Id, aspectRatio: AspectRatioLayoutPropertiesUpdate) => {
+        const res = await this.#editorAPI;
+        return res
+            .setLayoutAspectRatio(id, JSON.stringify(aspectRatio))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
