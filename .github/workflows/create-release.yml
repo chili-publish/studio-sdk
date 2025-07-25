@@ -101,8 +101,23 @@ jobs:
       - name: Get previous version
         id: previous_version
         run: |
-          # Get the most recent git tag as previous version
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          # Get all tags and filter by release type
+          ALL_TAGS=$(git tag --sort=-version:refname)
+
+          if [ "${{ steps.pr_info.outputs.is_uat }}" = "true" ]; then
+            # For UAT releases, find the latest rc tag
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$' | head -1)
+            if [ -z "$PREVIOUS_TAG" ]; then
+              # If no rc tags found, look for production tags
+              PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+            fi
+            echo "Looking for latest rc tag for UAT release"
+          else
+            # For production releases, find the latest production tag
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+            echo "Looking for latest production tag for PRD release"
+          fi
+
           if [ -z "$PREVIOUS_TAG" ]; then
             echo "No previous tags found, this appears to be the first release"
             echo "previous_tag=" >> $GITHUB_OUTPUT
