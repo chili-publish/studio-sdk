@@ -126,75 +126,22 @@ jobs:
             echo "Previous tag: $PREVIOUS_TAG"
           fi
 
-      - name: Generate release notes
-        id: release_notes
-        run: |
-          PREVIOUS_TAG="${{ steps.previous_version.outputs.previous_tag }}"
-          CURRENT_TAG="${{ steps.version_info.outputs.tag_name }}"
-          IS_UAT="${{ steps.pr_info.outputs.is_uat }}"
-
-          # Get commits for the release notes
-          if [ -z "$PREVIOUS_TAG" ]; then
-            # First release - get all commits
-            RELEASE_NOTES=$(git log --oneline --no-merges | head -20)
-            CHANGELOG_RANGE="initial...$CURRENT_TAG"
-          else
-            # Get commits between previous tag and current HEAD
-            RELEASE_NOTES=$(git log --oneline --no-merges ${PREVIOUS_TAG}..HEAD)
-            CHANGELOG_RANGE="${PREVIOUS_TAG}...$CURRENT_TAG"
-          fi
-
-          # Transform the release title based on release type
-          if [ "$IS_UAT" = "true" ]; then
-            # UAT release: convert alfa to rc (e.g., 1.27.0-alfa.0 -> 1.27.0-rc.0)
-            RELEASE_TITLE=$(echo "$CURRENT_TAG" | sed 's/-alfa\./-rc./')
-          else
-            # Production release: remove rc suffix (e.g., 1.27.0-rc.0 -> 1.27.0)
-            RELEASE_TITLE=$(echo "$CURRENT_TAG" | sed 's/-rc\.[0-9]*$//')
-          fi
-
-          echo "release_title=$RELEASE_TITLE" >> $GITHUB_OUTPUT
-
-          # Start building the release notes
-          echo "$RELEASE_TITLE" > release_notes.md
-          echo "" >> release_notes.md
-          echo "What's Changed" >> release_notes.md
-
-          if [ -n "$RELEASE_NOTES" ]; then
-            # Format each commit line with proper indentation
-            while IFS= read -r line; do
-              if [ -n "$line" ]; then
-                echo "    $line" >> release_notes.md
-              fi
-            done <<< "$RELEASE_NOTES"
-          else
-            echo "    - No changes detected" >> release_notes.md
-          fi
-
-          # Add changelog link
-          echo "" >> release_notes.md
-          echo "Full Changelog: $CHANGELOG_RANGE" >> release_notes.md
-
-          echo "Generated release notes:"
-          cat release_notes.md
-
       - name: Create GitHub release
         id: create_release
         run: |
           TAG_NAME="${{ steps.version_info.outputs.tag_name }}"
           RELEASE_TYPE="${{ steps.pr_info.outputs.release_type }}"
-          RELEASE_TITLE="${{ steps.release_notes.outputs.release_title }}"
+          RELEASE_TITLE="${{ steps.release_title.outputs.release_title }}"
 
-          # Create the release using GitHub CLI with automatic tag creation
           if [ "$RELEASE_TYPE" = "prerelease" ]; then
             gh release create $TAG_NAME \
               --title "$RELEASE_TITLE" \
-              --notes-file release_notes.md \
+              --generate-notes \
               --prerelease
           else
             gh release create $TAG_NAME \
               --title "$RELEASE_TITLE" \
-              --notes-file release_notes.md
+              --generate-notes
           fi
 
           # Get the release URL
