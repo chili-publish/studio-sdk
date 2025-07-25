@@ -178,15 +178,6 @@ jobs:
           echo "Generated release notes:"
           cat release_notes.md
 
-      - name: Create git tag
-        run: |
-          TAG_NAME="${{ steps.version_info.outputs.tag_name }}"
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git tag -a $TAG_NAME -m "Release $TAG_NAME"
-          git push origin $TAG_NAME
-          echo "Created and pushed tag: $TAG_NAME"
-
       - name: Create GitHub release
         id: create_release
         run: |
@@ -194,7 +185,7 @@ jobs:
           RELEASE_TYPE="${{ steps.pr_info.outputs.release_type }}"
           RELEASE_TITLE="${{ steps.release_notes.outputs.release_title }}"
 
-          # Create the release using GitHub CLI
+          # Create the release using GitHub CLI with automatic tag creation
           if [ "$RELEASE_TYPE" = "prerelease" ]; then
             gh release create $TAG_NAME \
               --title "$RELEASE_TITLE" \
@@ -209,7 +200,8 @@ jobs:
           # Get the release URL
           RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
           echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-          echo "Created GitHub release: $RELEASE_URL"
+          echo "Created GitHub release with automatic tag: $TAG_NAME"
+          echo "Release URL: $RELEASE_URL"
 
       - name: Notify Teams
         run: |
