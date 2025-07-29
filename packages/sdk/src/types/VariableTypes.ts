@@ -77,6 +77,7 @@ export interface BooleanVariable extends Variable {
 
 export interface ShortTextVariable extends Variable {
     value: string;
+    removeParagraphIfEmpty: boolean;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
 }
@@ -97,6 +98,7 @@ export interface NumberVariable extends Variable {
 
 export interface DateVariable extends Variable {
     value?: string;
+    removeParagraphIfEmpty: boolean;
     displayFormat: string;
     startDate?: DateRestriction;
     endDate?: DateRestriction;
