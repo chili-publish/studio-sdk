@@ -139,7 +139,18 @@ export type ResizableLayoutProperties = {
     maxWidth?: number | null;
     minHeight?: number | null;
     maxHeight?: number | null;
+    constrainProportions?: boolean | null;
+    constraintMode?: ConstraintMode | null;
+    minAspectRatioWidth?: number | null;
+    minAspectRatioHeight?: number | null;
+    maxAspectRatioWidth?: number | null;
+    maxAspectRatioHeight?: number | null;
 };
+
+export enum ConstraintMode {
+    locked = 'locked',
+    range = 'range',
+}
 
 export type ResizableLayoutPropertiesUpdate = {
     enabled?: {
@@ -156,5 +167,23 @@ export type ResizableLayoutPropertiesUpdate = {
     } | null;
     maxHeight?: {
         value: string | null;
+    } | null;
+    constrainProportions?: {
+        value: boolean | null;
+    } | null;
+    constraintMode?: {
+        value: ConstraintMode | null;
+    } | null;
+    minAspectRatioWidth?: {
+        value: number | null;
+    } | null;
+    minAspectRatioHeight?: {
+        value: number | null;
+    } | null;
+    maxAspectRatioWidth?: {
+        value: number | null;
+    } | null;
+    maxAspectRatioHeight?: {
+        value: number | null;
     } | null;
 };
