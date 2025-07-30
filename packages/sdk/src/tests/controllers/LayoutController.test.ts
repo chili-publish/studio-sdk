@@ -9,6 +9,7 @@ import {
     ResizableLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
+    ConstraintMode,
 } from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 
@@ -346,6 +347,12 @@ describe('LayoutController', () => {
             maxWidth: { value: '20 px' },
             minHeight: { value: '10 px' },
             maxHeight: { value: '20 px' },
+            constrainProportions: { value: true },
+            constraintMode: { value: ConstraintMode.range },
+            minAspectRatioWidth: { value: 16 },
+            minAspectRatioHeight: { value: 9 },
+            maxAspectRatioWidth: { value: 4 },
+            maxAspectRatioHeight: { value: 3 },
         };
 
         await mockedLayoutController.setResizableByUser('1', resizableLayoutPropertiesUpdate);
