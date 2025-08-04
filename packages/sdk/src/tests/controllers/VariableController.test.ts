@@ -41,6 +41,9 @@ describe('VariableController', () => {
             resolved: {
                 mediaId: 'resolved-brush-id',
             },
+            context: {
+                searchInUploadFolder: true,
+            },
         },
         privateData: {},
         allowQuery: true,

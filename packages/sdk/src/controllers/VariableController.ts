@@ -417,6 +417,9 @@ export class VariableController {
      *
      * If the value is some text to be set on a ShortTextVariable, it must not
      * contain any type of line breaks.
+     * 
+     * If the value is passing a context on an image variable value, it will be
+     * available from the connector.
      *
      * @param id the id of the variable
      * @param value the new value of the variable
