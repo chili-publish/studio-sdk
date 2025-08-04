@@ -347,7 +347,6 @@ describe('LayoutController', () => {
             maxWidth: { value: '20 px' },
             minHeight: { value: '10 px' },
             maxHeight: { value: '20 px' },
-            constrainProportions: { value: true },
             constraintMode: { value: ConstraintMode.range },
             minAspectRatioWidth: { value: 16 },
             minAspectRatioHeight: { value: 9 },
