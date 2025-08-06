@@ -100,6 +100,7 @@ describe('VariableController', () => {
         setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableConnectorContext: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableRemoveParagraphIfEmpty: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
@@ -137,6 +138,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
         jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
         jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
+        jest.spyOn(mockEditorApi, 'setImageVariableConnectorContext');
         jest.spyOn(mockEditorApi, 'setVariableRemoveParagraphIfEmpty');
     });
 
@@ -577,5 +579,12 @@ describe('VariableController', () => {
         await mockedVariableController.setMinImageUploadSize('1', '100', '100');
         expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith('1', '100', '100');
+    });
+
+    it('sets the connector context for an image variable', async () => {
+        const context = { searchInUploadFolder: true, category: 'logos' };
+        await mockedVariableController.setImageVariableConnectorContext('1', context);
+        expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledWith('1', JSON.stringify(context));
     });
 });
