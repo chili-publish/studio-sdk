@@ -195,6 +195,24 @@ export interface AutoGrowDeltaUpdate {
     };
 }
 
+export interface ShadowSettingsDeltaUpdate {
+    distance?: {
+        value: string;
+    };
+    angleDegrees?: {
+        value: number;
+    };
+    blurRadius?: {
+        value: number;
+    };
+    enabled?: {
+        value: boolean;
+    };
+    color?: {
+        value: ColorUsage;
+    };
+}
+
 export enum AutoGrowDirection {
     top = 'top',
     bottom = 'bottom',
