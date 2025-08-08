@@ -19,6 +19,7 @@ import {
     ImageFrameSource,
     ImageFrameUrlSource,
     ImageSourceTypeEnum,
+    ShadowSettingsDeltaUpdate,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../types/FrameTypes';
@@ -952,6 +953,76 @@ export class FrameController {
         };
 
         return getEditorResponseData<null>(res);
+    };
+
+    /**
+     * This method will enable shadow on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setShadowEnabled = async (id: Id, value: boolean) => {
+        const update: ShadowSettingsDeltaUpdate = { enabled: { value: value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the distance for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new distance value to be set
+     * @returns
+     */
+    setShadowDistance = async (id: Id, value: string) => {
+        const update: ShadowSettingsDeltaUpdate = { distance: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the angle in degrees for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new angle value to be set
+     * @returns
+     */
+    setShadowAngleDegrees = async (id: Id, value: number) => {
+        const update: ShadowSettingsDeltaUpdate = { angleDegrees: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the blur radius for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new blur radius value to be set
+     * @returns
+     */
+    setShadowBlurRadius = async (id: Id, value: number) => {
+        const update: ShadowSettingsDeltaUpdate = { blurRadius: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the color for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new color value to be set
+     * @returns
+     */
+    setShadowColor = async (id: Id, value: ColorUsage) => {
+        const update: ShadowSettingsDeltaUpdate = { color: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     private setAnchor = async (

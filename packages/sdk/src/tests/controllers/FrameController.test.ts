@@ -1,3 +1,6 @@
+import { FrameController } from '../../controllers/FrameController';
+import { BarcodeType } from '../../types/BarcodeTypes';
+import { ColorUsage, ColorUsageType } from '../../types/ColorStyleTypes';
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
     AnchorTargetEdgeType,
@@ -15,12 +18,10 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
-import { FrameController } from '../../controllers/FrameController';
+import { ShapeType } from '../../types/ShapeTypes';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { ShapeType } from '../../types/ShapeTypes';
-import { BarcodeType } from '../../types/BarcodeTypes';
 
 let id: Id;
 
@@ -77,6 +78,7 @@ const mockedEditorApi: EditorAPI = {
     cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     getFrameConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAssetCropOverride: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -135,6 +137,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
+    jest.spyOn(mockedEditorApi, 'updateShadowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
     jest.spyOn(mockedEditorApi, 'getFrameConfiguration');
     jest.spyOn(mockedEditorApi, 'resetAssetCropOverride');
@@ -598,6 +601,67 @@ describe('Auto grow updating', () => {
         expect(mockedEditorApi.updateAutoGrowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ directions: { value: directions } }),
+        );
+    });
+});
+
+describe('Shadow settings updating', () => {
+    it('should be possible to update the enabled shadow setting', async () => {
+        const enabled = true;
+
+        await mockedFrameController.setShadowEnabled(id, enabled);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ enabled: { value: enabled } }),
+        );
+    });
+
+    it('should be possible to update the distance shadow setting', async () => {
+        const distance = '10';
+
+        await mockedFrameController.setShadowDistance(id, distance);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ distance: { value: distance } }),
+        );
+    });
+
+    it('should be possible to update the angle degrees shadow setting', async () => {
+        const angleDegrees = 45;
+
+        await mockedFrameController.setShadowAngleDegrees(id, angleDegrees);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ angleDegrees: { value: angleDegrees } }),
+        );
+    });
+
+    it('should be possible to update the blur radius shadow setting', async () => {
+        const blurRadius = 5;
+
+        await mockedFrameController.setShadowBlurRadius(id, blurRadius);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(4);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ blurRadius: { value: blurRadius } }),
+        );
+    });
+
+    it('should be possible to update the color shadow setting', async () => {
+        const color: ColorUsage = {
+            id: 'color-id',
+            type: ColorUsageType.brandKit,
+            opacity: 100,
+        };
+
+        await mockedFrameController.setShadowColor(id, color);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(5);
+        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ color: { value: color } }),
         );
     });
 });
