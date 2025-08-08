@@ -140,10 +140,13 @@ export type ResizableLayoutProperties = {
     minHeight?: number | null;
     maxHeight?: number | null;
     constraintMode?: ConstraintMode | null;
-    minAspectRatioWidth?: number | null;
-    minAspectRatioHeight?: number | null;
-    maxAspectRatioWidth?: number | null;
-    maxAspectRatioHeight?: number | null;
+    minAspect?: LayoutAspect | null;
+    maxAspect?: LayoutAspect | null;
+};
+
+export type LayoutAspect = {
+    width: number;
+    height: number;
 };
 
 export enum ConstraintMode {
@@ -171,16 +174,10 @@ export type ResizableLayoutPropertiesUpdate = {
     constraintMode?: {
         value: ConstraintMode | null;
     } | null;
-    minAspectRatioWidth?: {
-        value: number | null;
+    minAspect?: {
+        value: LayoutAspect | null;
     } | null;
-    minAspectRatioHeight?: {
-        value: number | null;
-    } | null;
-    maxAspectRatioWidth?: {
-        value: number | null;
-    } | null;
-    maxAspectRatioHeight?: {
-        value: number | null;
+    maxAspect?: {
+        value: LayoutAspect | null;
     } | null;
 };
