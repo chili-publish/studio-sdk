@@ -348,10 +348,8 @@ describe('LayoutController', () => {
             minHeight: { value: '10 px' },
             maxHeight: { value: '20 px' },
             constraintMode: { value: ConstraintMode.range },
-            minAspectRatioWidth: { value: 16 },
-            minAspectRatioHeight: { value: 9 },
-            maxAspectRatioWidth: { value: 4 },
-            maxAspectRatioHeight: { value: 3 },
+            minAspect: { value: { width: 16, height: 9 } },
+            maxAspect: { value: { width: 4, height: 3 } },
         };
 
         await mockedLayoutController.setResizableByUser('1', resizableLayoutPropertiesUpdate);
