@@ -965,7 +965,7 @@ export class FrameController {
         const update: ShadowSettingsDeltaUpdate = { enabled: { value: value } };
         const res = await this.#editorAPI;
         return res
-            .updateShadowSettings(id, JSON.stringify(update))
+            .updateFrameShadowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -979,7 +979,7 @@ export class FrameController {
         const update: ShadowSettingsDeltaUpdate = { distance: { value } };
         const res = await this.#editorAPI;
         return res
-            .updateShadowSettings(id, JSON.stringify(update))
+            .updateFrameShadowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -993,7 +993,7 @@ export class FrameController {
         const update: ShadowSettingsDeltaUpdate = { angleDegrees: { value } };
         const res = await this.#editorAPI;
         return res
-            .updateShadowSettings(id, JSON.stringify(update))
+            .updateFrameShadowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -1007,7 +1007,7 @@ export class FrameController {
         const update: ShadowSettingsDeltaUpdate = { blurRadius: { value } };
         const res = await this.#editorAPI;
         return res
-            .updateShadowSettings(id, JSON.stringify(update))
+            .updateFrameShadowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -1021,7 +1021,7 @@ export class FrameController {
         const update: ShadowSettingsDeltaUpdate = { color: { value } };
         const res = await this.#editorAPI;
         return res
-            .updateShadowSettings(id, JSON.stringify(update))
+            .updateFrameShadowSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
     };
 

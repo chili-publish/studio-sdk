@@ -78,7 +78,7 @@ const mockedEditorApi: EditorAPI = {
     cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
-    updateShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateFrameShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     getFrameConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAssetCropOverride: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -137,7 +137,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
-    jest.spyOn(mockedEditorApi, 'updateShadowSettings');
+    jest.spyOn(mockedEditorApi, 'updateFrameShadowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
     jest.spyOn(mockedEditorApi, 'getFrameConfiguration');
     jest.spyOn(mockedEditorApi, 'resetAssetCropOverride');
@@ -610,8 +610,8 @@ describe('Shadow settings updating', () => {
         const enabled = true;
 
         await mockedFrameController.setShadowEnabled(id, enabled);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ enabled: { value: enabled } }),
         );
@@ -621,8 +621,8 @@ describe('Shadow settings updating', () => {
         const distance = '10';
 
         await mockedFrameController.setShadowDistance(id, distance);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(2);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ distance: { value: distance } }),
         );
@@ -632,8 +632,8 @@ describe('Shadow settings updating', () => {
         const angleDegrees = 45;
 
         await mockedFrameController.setShadowAngleDegrees(id, angleDegrees);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(3);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ angleDegrees: { value: angleDegrees } }),
         );
@@ -643,8 +643,8 @@ describe('Shadow settings updating', () => {
         const blurRadius = 5;
 
         await mockedFrameController.setShadowBlurRadius(id, blurRadius);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(4);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(4);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ blurRadius: { value: blurRadius } }),
         );
@@ -658,8 +658,8 @@ describe('Shadow settings updating', () => {
         };
 
         await mockedFrameController.setShadowColor(id, color);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledTimes(5);
-        expect(mockedEditorApi.updateShadowSettings).toHaveBeenCalledWith(
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(5);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ color: { value: color } }),
         );
