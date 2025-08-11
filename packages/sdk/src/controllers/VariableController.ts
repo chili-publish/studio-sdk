@@ -1,5 +1,6 @@
 import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
+import { Dictionary } from '@chili-studio/connector-types';
 import {
     DateRestriction,
     DateVariablePropertiesDeltaUpdate,
@@ -417,6 +418,9 @@ export class VariableController {
      *
      * If the value is some text to be set on a ShortTextVariable, it must not
      * contain any type of line breaks.
+     * 
+     * If the value is passing a context on an image variable value, it will be
+     * available from the connector.
      *
      * @param id the id of the variable
      * @param value the new value of the variable
@@ -592,6 +596,19 @@ export class VariableController {
         return res
             .setImageVariableConnector(id, JSON.stringify(connectorRegistration))
             .then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * This method sets the connector context for an image variable
+     * @param id the id of the image variable to update
+     * @param context the context dictionary
+     * @returns
+     */
+    setImageVariableConnectorContext = async (id: string, context: Dictionary) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageVariableConnectorContext(id, JSON.stringify(context))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
