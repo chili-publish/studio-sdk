@@ -1,3 +1,4 @@
+import { Dictionary } from '@chili-studio/connector-types';
 import { PrivateData } from './CommonTypes';
 
 export interface ConnectorImageVariableSource {
@@ -11,6 +12,11 @@ export interface ConnectorImageVariableSource {
      * the actual resolved media Id.
      */
     resolved?: ResolvedMedia;
+
+    /**
+     * The context of the variable that will be passed to the connector
+     */
+    context: Dictionary;
 }
 
 /**
