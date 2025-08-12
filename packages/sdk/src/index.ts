@@ -28,7 +28,7 @@ export {
     VerticalAlign,
 } from './types/FrameTypes';
 export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum, ConstraintMode } from './types/LayoutTypes';
-export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
+export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate, LayoutAspect } from './types/LayoutTypes';
 
 export { DocumentIssueTypeEnum, DocumentType } from './types/DocumentTypes';
 
