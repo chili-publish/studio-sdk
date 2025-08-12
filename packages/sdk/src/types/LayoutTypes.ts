@@ -145,8 +145,8 @@ export type ResizableLayoutProperties = {
 };
 
 export type LayoutAspect = {
-    width: number;
-    height: number;
+    horizontal: number;
+    vertical: number;
 };
 
 export enum ConstraintMode {
