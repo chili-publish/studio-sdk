@@ -7,14 +7,13 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    # Only run when PR is approved
-    if: github.event.review.state == 'approved'
+    # Only run when PR is approved AND branch is a release branch
+    if: github.event.review.state == 'approved' && startsWith(github.head_ref, 'release/')
     permissions:
       contents: write
       pull-requests: read
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      HEAD_REF: ${{ github.head_ref }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,18 +24,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - name: Check if release branch
-        id: check_release_branch
-        run: |
-          if [[ "$HEAD_REF" == release/* ]]; then
-            echo "is_release_branch=true" >> $GITHUB_OUTPUT
-            echo "✅ Branch $HEAD_REF is a release branch"
-          else
-            echo "❌ Error: Branch $HEAD_REF is not a release branch"
-            echo "This workflow is only for release branches (release/*)"
-            exit 1
-          fi
 
       - name: Check if PR is ready to merge
         id: check_merge_ready
@@ -87,7 +74,7 @@ jobs:
         id: version_info
         run: |
           # Get version from package.json in the release branch
-          git checkout $HEAD_REF
+          git checkout ${{ github.head_ref }}
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -166,7 +153,7 @@ jobs:
 
           payload=$(cat <<EOF
           {
-              "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** $HEAD_REF\n\nRelease has been automatically created and is now available."
+              "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** ${{ github.head_ref }}\n\nRelease has been automatically created and is now available."
           }
           EOF
           )
