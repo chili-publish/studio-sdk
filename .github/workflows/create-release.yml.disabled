@@ -1,0 +1,168 @@
+name: Create GitHub Release
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    # Only run when PR meets all merge requirements AND branch is a release branch
+    if: |
+      startsWith(github.head_ref, 'release/') &&
+      github.event.pull_request.mergeable == true &&
+      github.event.pull_request.mergeable_state == 'clean' &&
+      github.event.pull_request.review_decision == 'approved'
+    permissions:
+      contents: write
+      pull-requests: read
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Check if PR is ready to merge
+        id: check_merge_ready
+        run: |
+          # Get PR details to check merge requirements
+          PR_INFO=$(gh pr view ${{ github.event.pull_request.number }} --json mergeable,mergeStateStatus,reviewDecision)
+          MERGEABLE=$(echo "$PR_INFO" | jq -r '.mergeable')
+          MERGE_STATE=$(echo "$PR_INFO" | jq -r '.mergeStateStatus')
+          REVIEW_DECISION=$(echo "$PR_INFO" | jq -r '.reviewDecision')
+
+          echo "PR mergeable: $MERGEABLE"
+          echo "Merge state: $MERGE_STATE"
+          echo "Review decision: $REVIEW_DECISION"
+
+          # Check if PR is ready to merge
+          if [ "$MERGEABLE" = "MERGEABLE" ] && [ "$MERGE_STATE" = "CLEAN" ] && [ "$REVIEW_DECISION" = "APPROVED" ]; then
+            echo "merge_ready=true" >> $GITHUB_OUTPUT
+            echo "✅ PR is ready to merge and create release"
+          else
+            echo "❌ Error: PR is not ready to merge"
+            echo "   - Mergeable: $MERGEABLE"
+            echo "   - Merge State: $MERGE_STATE"
+            echo "   - Review Decision: $REVIEW_DECISION"
+            echo "Please ensure PR is approved and ready to merge before creating release"
+            exit 1
+          fi
+
+      - name: Get PR information
+        id: pr_info
+        run: |
+          # Get PR labels to determine release type
+          PR_LABELS=$(gh pr view ${{ github.event.pull_request.number }} --json labels -q '.labels[].name' | tr '\n' ' ')
+          echo "pr_labels=$PR_LABELS" >> $GITHUB_OUTPUT
+
+          # Check if it's UAT or PRD release
+          if echo "$PR_LABELS" | grep -q "uat"; then
+            echo "release_type=prerelease" >> $GITHUB_OUTPUT
+            echo "is_uat=true" >> $GITHUB_OUTPUT
+          elif echo "$PR_LABELS" | grep -q "prd"; then
+            echo "release_type=latest" >> $GITHUB_OUTPUT
+            echo "is_uat=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Error: PR must have either 'uat' or 'prd' label"
+            exit 1
+          fi
+
+      - name: Get release version
+        id: version_info
+        run: |
+          # Get version from package.json in the release branch
+          git checkout ${{ github.head_ref }}
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Create git tag name (remove 'v' prefix if present)
+          TAG_NAME=$(echo $VERSION | sed 's/^v//')
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+          echo "Release version: $VERSION"
+          echo "Tag name: $TAG_NAME"
+
+      - name: Get previous version
+        id: previous_version
+        run: |
+          # Get all tags and filter by release type
+          ALL_TAGS=$(git tag --sort=-version:refname)
+
+          if [ "${{ steps.pr_info.outputs.is_uat }}" = "true" ]; then
+            # For UAT releases, find the latest rc tag
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$' | head -1)
+            if [ -z "$PREVIOUS_TAG" ]; then
+              # If no rc tags found, look for production tags
+              PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+            fi
+            echo "Looking for latest rc tag for UAT release"
+          else
+            # For production releases, find the latest production tag
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+            echo "Looking for latest production tag for PRD release"
+          fi
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "No previous tags found, this appears to be the first release"
+            echo "previous_tag=" >> $GITHUB_OUTPUT
+          else
+            echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+            echo "Previous tag: $PREVIOUS_TAG"
+          fi
+
+      - name: Create GitHub release
+        id: create_release
+        run: |
+          TAG_NAME="${{ steps.version_info.outputs.tag_name }}"
+          RELEASE_TYPE="${{ steps.pr_info.outputs.release_type }}"
+          RELEASE_TITLE="${{ steps.release_title.outputs.release_title }}"
+
+          if [ "$RELEASE_TYPE" = "prerelease" ]; then
+            gh release create $TAG_NAME \
+              --title "$RELEASE_TITLE" \
+              --generate-notes \
+              --prerelease
+          else
+            gh release create $TAG_NAME \
+              --title "$RELEASE_TITLE" \
+              --generate-notes
+          fi
+
+          # Get the release URL
+          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+          echo "Created GitHub release with automatic tag: $TAG_NAME"
+          echo "Release URL: $RELEASE_URL"
+
+      - name: Notify Teams
+        run: |
+          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+          VERSION="${{ steps.version_info.outputs.version }}"
+          RELEASE_TYPE="${{ steps.pr_info.outputs.release_type }}"
+
+          if [ "$RELEASE_TYPE" = "prerelease" ]; then
+            TYPE_EMOJI="🧪"
+            TYPE_TEXT="UAT"
+          else
+            TYPE_EMOJI="🎉"
+            TYPE_TEXT="Production"
+          fi
+
+          payload=$(cat <<EOF
+          {
+              "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** ${{ github.head_ref }}\n\nRelease has been automatically created and is now available."
+          }
+          EOF
+          )
+
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
