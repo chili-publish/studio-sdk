@@ -7,8 +7,12 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    # Only run when PR is approved AND branch is a release branch
-    if: github.event.review.state == 'approved' && startsWith(github.head_ref, 'release/')
+    # Only run when PR meets all merge requirements AND branch is a release branch
+    if: |
+      startsWith(github.head_ref, 'release/') &&
+      github.event.pull_request.mergeable == true &&
+      github.event.pull_request.mergeable_state == 'clean' &&
+      github.event.pull_request.review_decision == 'approved'
     permissions:
       contents: write
       pull-requests: read
