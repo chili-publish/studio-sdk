@@ -90,6 +90,55 @@ export class UndoManagerController {
         const res = await this.#editorAPI;
         return res.resume().then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * Advanced undo manager functionality for manually controlling undo operations.
+     * This will start a new undo operation.
+     * This will throw an exception when there is already an undo operation recording.
+     * @experimental This method is experimental and may change in future versions.
+     * @returns
+     */
+    advanced = {
+        /**
+         * This will start a new undo operation.
+         * This will throw an exception when there is already an undo operation recording.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        begin: async (operationName: string) => {
+            return this.#advanced.begin(operationName);
+        },
+
+        /**
+         * This will start a new undo operation if there is no other undo operation recording.
+         * This does not throw.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        beginIfNoneActive: async (operationName: string) => {
+            return this.#advanced.beginIfNoneActive(operationName);
+        },
+
+        /**
+         * Ends the currently active recording operation.
+         * If there is no recording operation currently running this will throw an exception.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        end: async () => {
+            return this.#advanced.end();
+        },
+
+        /**
+         * Aborts the currently active recording operation.
+         * If there is no recording operation currently running this will throw an exception.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        abort: async () => {
+            return this.#advanced.abort();
+        },
+    };
 }
 
 export class AdvancedUndoManagerController {
