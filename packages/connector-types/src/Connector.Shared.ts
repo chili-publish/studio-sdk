@@ -24,6 +24,7 @@ export interface ConnectorConfigValue<Type, ContextType> {
     readonly displayName: string;
     readonly type: Type;
     readonly context?: ContextType[];
+    readonly helpText?: string;
 }
 
 export type ConnectorConfigOptions<Type, ContextType> = ConnectorConfigValue<Type, ContextType>[];
