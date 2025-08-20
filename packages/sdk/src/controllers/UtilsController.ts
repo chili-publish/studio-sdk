@@ -1,4 +1,4 @@
-import { Id } from '../types/CommonTypes';
+import type { EditorAPI, Id } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import {
     FilePointer,
@@ -6,6 +6,7 @@ import {
     UploadAssetValidationErrorType,
     UploadValidationConfiguration,
 } from '../types/ConnectorTypes';
+import { MeasurementUnit } from '../types/LayoutTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
 import { round } from '../utils/MathUtils';
@@ -15,9 +16,17 @@ import { round } from '../utils/MathUtils';
  * Methods inside this controller can be called by `window.SDK.utils.{method-name}`
  */
 export class UtilsController {
+    /**
+     * @ignore
+     */
+    #editorAPI: EditorAPI;
     #localConfig: Map<string, string>;
 
-    constructor(localConfig: Map<string, string>) {
+    /**
+     * @ignore
+     */
+    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
+        this.#editorAPI = editorAPI;
         this.#localConfig = localConfig;
     }
 
@@ -105,5 +114,26 @@ export class UtilsController {
 
         const data = await response.json();
         return data as FilePointer[];
+    };
+
+    /**
+     * Evaluates a unit expression and returns its value as a number in the
+     * specified conversionUnit, or in the current layout measurement unit if
+     * conversionUnit is not provided.
+     *
+     * Returns null if unitExpression is null, empty, or cannot be evaluated.
+     *
+     * Example:
+     * ```
+     * const value = await SDK.utils.unitEvaluate('10cm', MeasurementUnit.px);
+     * // value is the numeric value in px
+     * ```
+     *
+     * @param unitExpression The unit expression to evaluate (e.g., "10px", "5mm + 2cm", null)
+     * @param conversionUnit Optional target unit for conversion. If not provided, uses the current layout measurement unit.
+     * @returns The evaluated result as a number, or null if the expression cannot be evaluated
+     */
+    unitEvaluate = async (unitExpression: string | null, conversionUnit?: MeasurementUnit) => {
+        return this.#editorAPI.unitEvaluate(unitExpression, conversionUnit).then((result) => getEditorResponseData<number | null>(result));
     };
 }
