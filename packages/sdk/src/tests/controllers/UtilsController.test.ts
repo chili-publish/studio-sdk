@@ -1,7 +1,10 @@
 import { UtilsController } from '../../controllers/UtilsController';
 import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
 import { UploadAssetValidationError, UploadAssetValidationErrorType } from '../../types/ConnectorTypes';
+import { MeasurementUnit } from '../../types/LayoutTypes';
 import { EnvironmentType } from '../../utils/Enums';
+import { EditorAPI } from '../../types/CommonTypes';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import * as MathUtils from '../../utils/MathUtils';
 
 let mockedUtilsController: UtilsController;
@@ -9,12 +12,16 @@ let mockedUtilsController: UtilsController;
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
+const mockedEditorApi: EditorAPI = {
+    unitEvaluate: jest.fn().mockResolvedValue(castToEditorResponse(null)),
+};
+
 const mockedLocalConfig = new Map<string, string>();
 beforeEach(() => {
     jest.spyOn(MathUtils, 'round');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
-    mockedUtilsController = new UtilsController(mockedLocalConfig);
+    mockedUtilsController = new UtilsController(mockedEditorApi, mockedLocalConfig);
 });
 
 afterEach(() => {
@@ -120,5 +127,17 @@ describe('UtilsController', () => {
         await expect(
             mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
         ).rejects.toThrow('GraFx Studio Environment API URL is not set');
+    });
+
+    it('evaluates unit expression with conversion unit', async () => {
+        const result = await mockedUtilsController.unitEvaluate('10cm', MeasurementUnit.px);
+        
+        expect(mockedEditorApi.unitEvaluate).toHaveBeenCalledWith('10cm', MeasurementUnit.px);
+    });
+
+    it('evaluates unit expression without conversion unit', async () => {
+        const result = await mockedUtilsController.unitEvaluate('10px');
+        
+        expect(mockedEditorApi.unitEvaluate).toHaveBeenCalledWith('10px', undefined);
     });
 });
