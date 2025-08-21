@@ -125,7 +125,7 @@ export class SDK {
 
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
-        this.utils = new UtilsController(this.localConfig);
+        this.utils = new UtilsController(this.editorAPI, this.localConfig);
         this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
@@ -229,7 +229,7 @@ export class SDK {
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
-        this.utils = new UtilsController(this.localConfig);
+        this.utils = new UtilsController(this.editorAPI, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
