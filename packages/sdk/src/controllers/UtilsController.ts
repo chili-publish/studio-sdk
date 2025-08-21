@@ -134,6 +134,8 @@ export class UtilsController {
      * @returns The evaluated result as a number, or null if the expression cannot be evaluated
      */
     unitEvaluate = async (unitExpression: string | null, conversionUnit?: MeasurementUnit) => {
-        return this.#editorAPI.unitEvaluate(unitExpression, conversionUnit).then((result) => getEditorResponseData<number | null>(result));
+        return this.#editorAPI
+            .unitEvaluate(unitExpression, conversionUnit)
+            .then((result) => getEditorResponseData<number | null>(result));
     };
 }

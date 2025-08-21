@@ -4,7 +4,7 @@ import { UploadAssetValidationError, UploadAssetValidationErrorType } from '../.
 import { MeasurementUnit } from '../../types/LayoutTypes';
 import { EnvironmentType } from '../../utils/Enums';
 import { EditorAPI } from '../../types/CommonTypes';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { castToEditorResponse } from '../../utils/EditorResponseData';
 import * as MathUtils from '../../utils/MathUtils';
 
 let mockedUtilsController: UtilsController;
@@ -130,14 +130,14 @@ describe('UtilsController', () => {
     });
 
     it('evaluates unit expression with conversion unit', async () => {
-        const result = await mockedUtilsController.unitEvaluate('10cm', MeasurementUnit.px);
-        
+        await mockedUtilsController.unitEvaluate('10cm', MeasurementUnit.px);
+
         expect(mockedEditorApi.unitEvaluate).toHaveBeenCalledWith('10cm', MeasurementUnit.px);
     });
 
     it('evaluates unit expression without conversion unit', async () => {
-        const result = await mockedUtilsController.unitEvaluate('10px');
-        
+        await mockedUtilsController.unitEvaluate('10px');
+
         expect(mockedEditorApi.unitEvaluate).toHaveBeenCalledWith('10px', undefined);
     });
 });
