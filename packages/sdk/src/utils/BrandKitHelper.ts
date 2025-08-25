@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     BrandKitCharacterStyle,
     BrandKitColor,
@@ -50,10 +51,18 @@ export const mapBrandKitStyleToLocal = <
 >(
     style: T,
     localColor?: DocumentColor,
+    localStrokeColor?: DocumentColor,
     fontKey?: string,
 ): R => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { brandKitColorGuid, brandKitFontFamilyGuid, fontStyleId, ...styleUpdateObject } = style;
+    const {
+        brandKitColorGuid,
+        brandKitFontFamilyGuid,
+        fontStyleId,
+        textStrokeColorGuid,
+        textStrokeColorApplied,
+        textStrokeWidth,
+        ...styleUpdateObject
+    } = style;
     const styleUpdate = Object.keys(styleUpdateObject).reduce((acc, key) => {
         return { ...acc, [key]: { value: style[key as keyof T] } };
     }, {});
@@ -68,6 +77,25 @@ export const mapBrandKitStyleToLocal = <
                     type: ColorUsageType.brandKit,
                     isApplied: styleUpdateObject.fillColorApplied,
                 },
+            },
+        }),
+        ...(localStrokeColor && {
+            strokeColor: {
+                value: {
+                    id: localStrokeColor.id,
+                    color: localStrokeColor.color,
+                    type: ColorUsageType.brandKit,
+                    isApplied: textStrokeColorApplied || false,
+                },
+            },
+            strokeColorApplied: {
+                value: textStrokeColorApplied || false,
+            },
+            strokeWidth: {
+                value:
+                    textStrokeWidth !== undefined && textStrokeWidth !== null
+                        ? textStrokeWidth.toString()
+                        : textStrokeWidth,
             },
         }),
         fontKey: {

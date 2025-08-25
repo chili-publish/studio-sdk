@@ -360,6 +360,8 @@ export class BrandKitController {
         const { localColors, localFonts, localColorGuidMap, localFontGuidMap } = resources;
         for (const style of studioBrandKit.brandKit.paragraphStyles || []) {
             const localColorId = localColorGuidMap.get(style.brandKitColorGuid);
+            const localStrokeColorId = localColorGuidMap.get(style.textStrokeColorGuid);
+
             const fontFamilyId = localFontGuidMap.get(style.brandKitFontFamilyGuid);
             const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
 
@@ -367,13 +369,17 @@ export class BrandKitController {
                 throw new Error(`Paragraph style could not be created with an empty font family: ${style.name}`);
 
             const localColor = getColorById(localColors, localColorId);
-            if (!localColor) throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
+            const localStrokeColor = getColorById(localColors, localStrokeColorId);
+
+            if (!localColor || !localStrokeColor)
+                throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
 
             const { parsedData: styleId } = await sdk.paragraphStyle.create();
 
             const paragraphStyleUpdate = mapBrandKitStyleToLocal<BrandKitParagraphStyle, ParagraphStyleUpdate>(
                 style,
                 localColor,
+                localStrokeColor,
                 `${fontKey}`,
             );
 
@@ -397,10 +403,15 @@ export class BrandKitController {
         const { localColors, localFonts, localColorGuidMap, localFontGuidMap } = resources;
         for (const style of studioBrandKit.brandKit.characterStyles || []) {
             const localColorId = style.brandKitColorGuid ? localColorGuidMap.get(style.brandKitColorGuid) : undefined;
+            const localStrokeColorId = style.textStrokeColorGuid
+                ? localColorGuidMap.get(style.textStrokeColorGuid)
+                : undefined;
+
             const fontFamilyId = style.brandKitFontFamilyGuid
                 ? localFontGuidMap.get(style.brandKitFontFamilyGuid)
                 : undefined;
             const localColor = getColorById(localColors, localColorId);
+            const localStrokeColor = getColorById(localColors, localStrokeColorId);
             const fontKey = getFontKey(localFonts, fontFamilyId, style.fontStyleId);
 
             const { parsedData: styleId } = await sdk.characterStyle.create();
@@ -408,6 +419,7 @@ export class BrandKitController {
             const characterStyleUpdate = mapBrandKitStyleToLocal<BrandKitCharacterStyle, CharacterStyleUpdate>(
                 style,
                 localColor,
+                localStrokeColor,
                 fontKey,
             );
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

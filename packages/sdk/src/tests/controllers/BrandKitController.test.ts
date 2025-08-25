@@ -74,6 +74,7 @@ describe('BrandKitController', () => {
 
             undo: async () => getEditorResponseData(castToEditorResponse(null)),
             end: async () => getEditorResponseData(castToEditorResponse(null)),
+            abort: async () => getEditorResponseData(castToEditorResponse(null)),
         };
 
         jest.spyOn(mockEditorApi, 'getBrandKitId');
@@ -114,6 +115,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'beginIfNoneActive');
         jest.spyOn(mockEditorApi, 'end');
         jest.spyOn(mockEditorApi, 'undo');
+        jest.spyOn(mockEditorApi, 'abort');
 
         const fontController = new FontController(mockEditorApi);
         const fontConnectorController = new FontConnectorController(mockEditorApi);
@@ -304,6 +306,16 @@ describe('BrandKitController', () => {
                             isApplied: true,
                         },
                     },
+                    strokeColor: {
+                        value: {
+                            id: mockColorId,
+                            color: mockColor.color,
+                            type: ColorUsageType.brandKit,
+                            isApplied: true,
+                        },
+                    },
+                    strokeColorApplied: { value: true },
+                    strokeWidth: { value: '7' },
                     fontKey: { value: fontKey },
                 }),
             ),
