@@ -33,6 +33,7 @@ export type ParagraphStyle = {
     strokeWidth: number;
     underline: boolean;
     lineThrough: boolean;
+
 };
 
 export type ParagraphStyleUpdate = {
@@ -99,4 +100,36 @@ export type ParagraphStyleUpdate = {
     lineThrough?: {
         value: boolean;
     };
+    bulletListStyle?: {
+        value: BulletListStyle;
+    };
+    numericListStyle?: {
+        value: NumericListStyle;
+    };
+    bulletListBulletMarks?: {
+        value: string[];
+    };
+    bulletListLeftIndent?: {
+        value: string;
+    };
+    bulletListTextIndent?: {
+        value: string;
+    };
+    bulletListCharacterStyleId?: {
+        value?: string;
+    };
 };
+
+export type BulletListStyle = {
+    bulletMarks: string[];
+    leftIndent: string;
+    textIndent: string;
+    characterStyleId?: string;
+}
+
+
+export type NumericListStyle = {
+    leftIndent: string;
+    textIndent: string;
+    characterStyleId?: string;
+}
