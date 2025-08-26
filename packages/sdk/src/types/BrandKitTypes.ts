@@ -82,7 +82,7 @@ export type BrandKitParagraphStyle = {
 
     textStrokeColorGuid: string;
     textStrokeColorApplied: boolean;
-    textStrokeWidth?: number;
+    textStrokeWidth: number;
 
     underline: boolean;
     lineThrough: boolean;
