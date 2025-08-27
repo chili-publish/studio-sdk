@@ -104,7 +104,6 @@ describe('Next.VariableController', () => {
             ]).map((item) => JSON.stringify(item)),
         );
     });
-
 });
 
 describe('Next.VariableController.ImageVariableController', () => {
@@ -158,7 +157,10 @@ describe('Next.VariableController.ImageVariableController', () => {
         const response = await mockedImageVariableController.setConnectorContext(variableId, context);
 
         expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledWith(variableId, JSON.stringify(context));
+        expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledWith(
+            variableId,
+            JSON.stringify(context),
+        );
         expect(response?.parsedData).toBe(null);
     });
 

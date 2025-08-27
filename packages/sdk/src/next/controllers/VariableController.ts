@@ -71,7 +71,6 @@ export class VariableController {
             )
             .then((result) => getEditorResponseData<null>(result));
     };
-
 }
 
 export class ImageVariableController {

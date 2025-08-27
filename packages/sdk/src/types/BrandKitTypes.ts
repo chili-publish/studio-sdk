@@ -49,6 +49,11 @@ export type BrandKitCharacterStyle = {
 
     brandKitColorGuid?: string;
     fillColorApplied?: boolean;
+
+    textStrokeColorGuid?: string | null;
+    textStrokeColorApplied?: boolean | null;
+    textStrokeWidth?: number | null;
+
     underline?: boolean;
     lineThrough?: boolean;
 };
@@ -74,6 +79,10 @@ export type BrandKitParagraphStyle = {
 
     brandKitColorGuid: string;
     fillColorApplied: boolean;
+
+    textStrokeColorGuid: string;
+    textStrokeColorApplied: boolean;
+    textStrokeWidth: number;
 
     underline: boolean;
     lineThrough: boolean;
