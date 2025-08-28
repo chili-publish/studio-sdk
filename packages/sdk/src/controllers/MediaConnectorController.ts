@@ -88,16 +88,12 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    download = async (
-        id: Id,
-        mediaId: Id,
-        downloadType: MediaDownloadType,
-        context: MetaData = {},
-    ): Promise<Uint8Array> => {
+    download = async (id: Id, mediaId: Id, downloadType: MediaDownloadType, context: MetaData = {}) => {
         const compatibleDownloadType = this.parseDeprecatedMediaDownloadType(
             downloadType as unknown as DeprecatedMediaConnectorDownloadType,
         ) as MediaDownloadType;
         const res = await this.#blobAPI;
+
         return res
             .mediaConnectorDownload(
                 id,
@@ -106,7 +102,29 @@ export class MediaConnectorController {
                 MediaDownloadIntent.web,
                 JSON.stringify(context),
             )
-            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+            .then((result) => {
+                // Handle binary data (Uint8Array) directly
+                if (result instanceof Uint8Array) {
+                    return getEditorResponseData<Uint8Array>(
+                        {
+                            success: true,
+                            status: 200,
+                            data: result,
+                            parsedData: result,
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } as any as EditorResponse<Uint8Array>,
+                        false, // do not parse the response
+                    );
+                }
+
+                // Handle structured response (EditorResponse)
+                if (typeof result === 'object' && result !== null && 'success' in result) {
+                    return getEditorResponseData<Uint8Array>(result as EditorResponse<Uint8Array>);
+                }
+
+                // Unexpected response type - throw error
+                throw new Error(`Unexpected response type: ${typeof result}.`);
+            });
     };
 
     /**
