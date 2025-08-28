@@ -371,7 +371,7 @@ export class BrandKitController {
             const localColor = getColorById(localColors, localColorId);
             const localStrokeColor = getColorById(localColors, localStrokeColorId);
 
-            if (!localColor || !localStrokeColor)
+            if (!localColor)
                 throw new Error(`Paragraph style could not be created with an empty color: ${style.name}`);
 
             const { parsedData: styleId } = await sdk.paragraphStyle.create();
