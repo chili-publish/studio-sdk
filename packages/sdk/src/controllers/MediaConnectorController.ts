@@ -109,9 +109,10 @@ export class MediaConnectorController {
                         {
                             success: true,
                             status: 200,
-                            data: null, // Binary data is handled via parsedData
+                            data: result,
                             parsedData: result,
-                        },
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } as any as EditorResponse<Uint8Array>,
                         false, // do not parse the response
                     );
                 }
