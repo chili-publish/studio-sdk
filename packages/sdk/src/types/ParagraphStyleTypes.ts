@@ -33,7 +33,6 @@ export type ParagraphStyle = {
     strokeWidth: number;
     underline: boolean;
     lineThrough: boolean;
-
 };
 
 export type ParagraphStyleUpdate = {
@@ -125,11 +124,11 @@ export type BulletListStyle = {
     leftIndent: string;
     textIndent: string;
     characterStyleId?: string;
-}
+};
 
 
 export type NumericListStyle = {
     leftIndent: string;
     textIndent: string;
     characterStyleId?: string;
-}
+};

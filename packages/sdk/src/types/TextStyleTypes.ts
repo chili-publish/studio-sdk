@@ -102,8 +102,7 @@ export interface SelectedTextStyle {
     underline?: boolean;
     lineThrough?: boolean;
     hasLocalFormatting: boolean;
-
-    markedListType: MarkedListType;
+    markedListType?: MarkedListType;
     markedListGroup?: string;
     markedListLevel?: number;
 }
