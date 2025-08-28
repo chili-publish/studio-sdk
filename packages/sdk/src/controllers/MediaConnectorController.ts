@@ -88,17 +88,12 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    download = async (
-        id: Id,
-        mediaId: Id,
-        downloadType: MediaDownloadType,
-        context: MetaData = {},
-    )=> {
+    download = async (id: Id, mediaId: Id, downloadType: MediaDownloadType, context: MetaData = {}) => {
         const compatibleDownloadType = this.parseDeprecatedMediaDownloadType(
             downloadType as unknown as DeprecatedMediaConnectorDownloadType,
         ) as MediaDownloadType;
         const res = await this.#blobAPI;
-        // .then((result) => getEditorResponseData<null>(result));
+
         return res
             .mediaConnectorDownload(
                 id,
@@ -108,15 +103,19 @@ export class MediaConnectorController {
                 JSON.stringify(context),
             )
             .then((result) => {
-                if ('success' in (result as EditorResponse<null>)) {
-                    return getEditorResponseData<null>(result as EditorResponse<null>)
+                if (result instanceof Uint8Array) {
+                    return getEditorResponseData<Uint8Array>(
+                        {
+                            success: true,
+                            status: 200,
+                            data: result,
+                        } as any as EditorResponse<Uint8Array>,
+                        // do not parse the response
+                        false,
+                    );
                 } else {
-                    const editorResponseWrapper = {
-                        success: true,
-                        status: 200,
-                        parsedData: result,
-                    }
-                    return editorResponseWrapper;
+                    // throw exception when response is not of type Uint8Array
+                    return getEditorResponseData<Uint8Array>(result as EditorResponse<Uint8Array>);
                 }
             });
     };
