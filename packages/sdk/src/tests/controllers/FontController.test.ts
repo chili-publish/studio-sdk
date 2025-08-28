@@ -1,7 +1,8 @@
-import { FontController } from '../../controllers/FontController';
-import { EditorAPI } from '../../types/CommonTypes';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { AddDocumentFontFamily, AddDocumentFontStyle } from '../../types/FontTypes';
+import {FontController} from '../../controllers/FontController';
+import {EditorAPI} from '../../types/CommonTypes';
+import {castToEditorResponse, getEditorResponseData} from '../../utils/EditorResponseData';
+import {AddDocumentFontFamily, AddDocumentFontStyle, CharacterPreviewStyle} from '../../types/FontTypes';
+import {ColorType, RGBColor} from "../../types/ColorStyleTypes";
 
 let mockedFontController: FontController;
 
@@ -19,6 +20,7 @@ const mockedEditorApi: EditorAPI = {
     isFontFamilyUsed: async () => getEditorResponseData(castToEditorResponse(null)),
     isFontStyleUsed: async () => getEditorResponseData(castToEditorResponse(null)),
     moveFontFamilies: async () => getEditorResponseData(castToEditorResponse(null)),
+    getPreviewsOfCharacterStrings: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -36,6 +38,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'isFontFamilyUsed');
     jest.spyOn(mockedEditorApi, 'isFontStyleUsed');
     jest.spyOn(mockedEditorApi, 'moveFontFamilies');
+    jest.spyOn(mockedEditorApi, 'getPreviewsOfCharacterStrings');
 });
 
 afterAll(() => {
@@ -146,5 +149,15 @@ describe('FontController', () => {
         await mockedFontController.moveFontFamilies(order, ids);
         expect(mockedEditorApi.moveFontFamilies).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.moveFontFamilies).toHaveBeenCalledWith(order, ids);
+    });
+
+    it('calls getPreviewsOfCharacterStrings method', async () => {
+        const characters = ['.', ',', '-'];
+        const color: RGBColor = {r: 0, g: 0, b: 0, type: ColorType.rgb};
+        const style: CharacterPreviewStyle = {fontStyleId: 'fontStyle', color: color};
+
+        await mockedFontController.getPreviewsOfCharacterStrings(characters, style);
+        expect(mockedEditorApi.getPreviewsOfCharacterStrings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getPreviewsOfCharacterStrings).toHaveBeenCalledWith(characters, style);
     });
 });
