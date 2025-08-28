@@ -103,20 +103,26 @@ export class MediaConnectorController {
                 JSON.stringify(context),
             )
             .then((result) => {
+                // Handle binary data (Uint8Array) directly
                 if (result instanceof Uint8Array) {
                     return getEditorResponseData<Uint8Array>(
                         {
                             success: true,
                             status: 200,
-                            data: result,
-                        } as any as EditorResponse<Uint8Array>,
-                        // do not parse the response
-                        false,
+                            data: null, // Binary data is handled via parsedData
+                            parsedData: result,
+                        },
+                        false, // do not parse the response
                     );
-                } else {
-                    // throw exception when response is not of type Uint8Array
+                }
+
+                // Handle structured response (EditorResponse)
+                if (typeof result === 'object' && result !== null && 'success' in result) {
                     return getEditorResponseData<Uint8Array>(result as EditorResponse<Uint8Array>);
                 }
+
+                // Unexpected response type - throw error
+                throw new Error(`Unexpected response type: ${typeof result}.`);
             });
     };
 
