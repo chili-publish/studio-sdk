@@ -1,6 +1,7 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import { ListVariableItem, Variable } from '../../types/VariableTypes';
 import { getEditorResponseData } from '../../utils/EditorResponseData';
+import { Dictionary } from '@chili-studio/connector-types';
 
 import {
     ConnectorGrafxRegistration,
@@ -70,25 +71,6 @@ export class VariableController {
             )
             .then((result) => getEditorResponseData<null>(result));
     };
-
-    /**
-     * This method sets the image variable connector. Setting a connector will
-     * automatically remove the assetId linked to the connector if present.
-     * If a connector was the source of the variable, it will be unregistered.
-     * @param id The id of the image variable to update
-     * @param registration registration object containing all details about the connector
-     * @returns The new id of the connector
-     */
-    setImageVariableConnector = async (
-        id: string,
-        registration: ConnectorLocalRegistration | ConnectorGrafxRegistration | ConnectorUrlRegistration,
-    ) => {
-        const res = await this.#editorAPI;
-
-        return res
-            .setImageVariableConnector(id, JSON.stringify(registration))
-            .then((result) => getEditorResponseData<Id>(result));
-    };
 }
 
 export class ImageVariableController {
@@ -131,6 +113,38 @@ export class ImageVariableController {
         const res = await this.#editorAPI;
         return res
             .setImageVariableUploadMinSize(id, minWidth, minHeight)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the image variable connector. Setting a connector will
+     * automatically remove the assetId linked to the connector if present.
+     * If a connector was the source of the variable, it will be unregistered.
+     * @param id The id of the image variable to update
+     * @param registration registration object containing all details about the connector
+     * @returns The new id of the connector
+     */
+    setConnector = async (
+        id: string,
+        registration: ConnectorLocalRegistration | ConnectorGrafxRegistration | ConnectorUrlRegistration,
+    ) => {
+        const res = await this.#editorAPI;
+
+        return res
+            .setImageVariableConnector(id, JSON.stringify(registration))
+            .then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * This method sets the connector context for an image variable
+     * @param id the id of the variable
+     * @param context the context dictionary
+     * @returns
+     */
+    setConnectorContext = async (id: string, context: Dictionary) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageVariableConnectorContext(id, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
