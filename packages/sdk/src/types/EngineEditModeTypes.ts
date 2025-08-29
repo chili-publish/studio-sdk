@@ -11,4 +11,5 @@ export enum EngineEditModeType {
     customCrop = 'customCrop',
     frameSubjectArea = 'frameSubjectArea',
     perAssetCrop = 'perAssetCrop',
+    gradient = 'gradient',
 }
