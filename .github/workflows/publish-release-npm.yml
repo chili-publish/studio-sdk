@@ -45,28 +45,28 @@ jobs:
       #   run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
-      - name: publish sdk build
-        run: |
-          # Get the full reference of the release
-          ref=${{ github.ref }}
-          # Remove the refs/tags/ prefix
-          tag=${ref#refs/tags/}
-          stripped_tag=${tag%-*}
-          node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
+      # - name: publish sdk build
+      #   run: |
+      #     # Get the full reference of the release
+      #     ref=${{ github.ref }}
+      #     # Remove the refs/tags/ prefix
+      #     tag=${ref#refs/tags/}
+      #     stripped_tag=${tag%-*}
+      #     node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      - name: Use Node ${{ env.NODE_VERSION }} for dev release
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@chili-publish"
-      - name: publish sdk build
-        run: node cicd.js sdk,connectors yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
-      - name: execute commit script
-        run: node ./.github/scripts/commit.js
+      # - name: Use Node ${{ env.NODE_VERSION }} for dev release
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     registry-url: "https://npm.pkg.github.com"
+      #     scope: "@chili-publish"
+      # - name: publish sdk build
+      #   run: node cicd.js sdk,connectors yarn publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+      # - name: execute commit script
+      #   run: node ./.github/scripts/commit.js
       - name: get new npm version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
