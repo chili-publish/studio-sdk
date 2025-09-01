@@ -599,15 +599,16 @@ export class VariableController {
     };
 
     /**
-     * This method sets the connector context for an image variable
+     * This method sets the value of an image variable along with its context in a single atomic operation
      * @param id the id of the image variable to update
+     * @param value the new value of the image variable
      * @param context the context dictionary
      * @returns
      */
-    setImageVariableConnectorContext = async (id: string, context: Dictionary) => {
+    setImageVariableValueWithContext = async (id: string, value: string | null, context: Dictionary) => {
         const res = await this.#editorAPI;
         return res
-            .setImageVariableConnectorContext(id, JSON.stringify(context))
+            .setImageVariableValueWithContext(id, value, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
     };
 
