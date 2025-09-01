@@ -21,6 +21,7 @@ export interface CornerRadiusUpdateModel {
     bottomLeft?: number;
     topRight?: number;
     bottomRight?: number;
+    allCornersSame?: boolean;
 }
 
 export interface CornerRadiusNone {
