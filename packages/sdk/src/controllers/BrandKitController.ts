@@ -281,7 +281,7 @@ export class BrandKitController {
 
         await this.undoManagerController.record('brandKit.set', async (sdk) => {
             const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
-            const localGradientGuidMap = await this.setGradients(studioBrandKit, sdk);
+            await this.setGradients(studioBrandKit, sdk);
             const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
 
             const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
@@ -345,7 +345,8 @@ export class BrandKitController {
         return localColorGuidsMap;
     }
 
-    private async setGradients(studioBrandKit: StudioBrandKit, sdk: SDK) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    private async setGradients(_studioBrandKit: StudioBrandKit, _sdk: SDK) {
         const localGradientsGuidsMap = new Map<string, string>();
 
         // TODO FE team :)
