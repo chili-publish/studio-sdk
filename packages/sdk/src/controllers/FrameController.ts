@@ -23,6 +23,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../types/FrameTypes';
+import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
@@ -1165,5 +1166,47 @@ export class FrameController {
     resetAllAssetCropOverrides = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetAllAssetCropOverrides(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will enable/disable gradient on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setGradientApplied = async (id: Id, value: boolean) => {
+        const update: GradientDeltaUpdate = { isApplied: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will update (or set) the local gradient on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setLocalGradient = async (id: Id, value: GradientUpdate) => {
+        const update: GradientDeltaUpdate = { gradient: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will update (or set) the frame to use the provided brand kit gradient
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setBrandKitGradient = async (id: Id, value: Id) => {
+        const update: GradientDeltaUpdate = { id: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

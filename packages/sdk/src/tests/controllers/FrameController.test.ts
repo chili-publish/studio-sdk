@@ -18,6 +18,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
+import { GradientType } from '../../types/GradientStyleTypes';
 import { ShapeType } from '../../types/ShapeTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
@@ -86,6 +87,7 @@ const mockedEditorApi: EditorAPI = {
     getFrameConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAssetCropOverride: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAllAssetCropOverrides: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateFrameGradientSettings: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -148,6 +150,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getFrameConfiguration');
     jest.spyOn(mockedEditorApi, 'resetAssetCropOverride');
     jest.spyOn(mockedEditorApi, 'resetAllAssetCropOverrides');
+    jest.spyOn(mockedEditorApi, 'updateFrameGradientSettings');
 
     id = mockSelectFrame.id;
 });
@@ -742,5 +745,39 @@ describe('Anchoring', () => {
         await mockedFrameController.getConfiguration(id);
         expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledWith(id);
+    });
+
+    it('should be possible to enable/disable gradients on a frame', async () => {
+        const enabled = true;
+        await mockedFrameController.setGradientApplied(id, enabled);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ isApplied: enabled }),
+        );
+    });
+
+    it('should be possible to set the gradient to a brand kit gradient', async () => {
+        const gradientId = 'gradient-id';
+        await mockedFrameController.setBrandKitGradient(id, gradientId);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ id: gradientId }),
+        );
+    });
+
+    it('should be possible to set the gradient to a local gradient', async () => {
+        const gradient = {
+            stops: [],
+            colors: [],
+            type: GradientType.linear,
+        };
+        await mockedFrameController.setLocalGradient(id, gradient);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ gradient: gradient }),
+        );
     });
 });
