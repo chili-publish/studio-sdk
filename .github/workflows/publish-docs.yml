@@ -26,9 +26,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     strategy:
       matrix:
         node-version: [18]

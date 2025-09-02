@@ -25,9 +25,7 @@ on:
 
 jobs:
   release:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     permissions:
       contents: read
       pull-requests: write

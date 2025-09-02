@@ -6,9 +6,7 @@ env:
   NODE_VERSION: 20
 jobs:
   build:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     environment: uat
     steps:
       - uses: actions/checkout@v4
@@ -69,9 +67,7 @@ jobs:
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
 
   update-version-management:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     needs: [build]
     steps:
       - uses: actions/checkout@v4

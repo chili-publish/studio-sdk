@@ -6,9 +6,7 @@ env:
   NODE_VERSION: 20
 jobs:
   build:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     steps:
       - uses: actions/checkout@v4
         with:
@@ -103,9 +101,7 @@ jobs:
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
 
   update-version-management:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     needs: [build]
     steps:
       - uses: actions/checkout@v4
@@ -161,9 +157,7 @@ jobs:
           inlineScript: |
             az storage blob upload --file temp/supported-versions.json --container-name shared --name version-management/supported-versions.json --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
   bump-version:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     needs: [update-version-management]
     steps:
       - uses: actions/checkout@v4

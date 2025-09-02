@@ -7,9 +7,7 @@ env:
   NODE_VERSION: 20
 jobs:
   build:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     steps:
       - uses: actions/checkout@v4
         with:

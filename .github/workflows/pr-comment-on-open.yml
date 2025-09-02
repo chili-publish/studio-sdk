@@ -4,9 +4,7 @@ on:
     types: [opened]
 jobs:
   comment:
-    runs-on:
-      group: k8s-runners-default
-      labels: default
+    runs-on: k8s-rss-default
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v4
