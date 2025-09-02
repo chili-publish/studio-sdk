@@ -1199,7 +1199,7 @@ export class FrameController {
     /**
      * This method will update (or set) the frame to use the provided brand kit gradient
      * @param id the id of the frame that needs to get updated
-     * @param value the new value to be set to the frame.
+     * @param value the id of an existing brandkit gradient
      * @returns
      */
     setBrandKitGradient = async (id: Id, value: Id) => {
