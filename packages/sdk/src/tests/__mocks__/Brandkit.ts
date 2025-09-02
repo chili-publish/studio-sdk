@@ -131,7 +131,7 @@ export const mockGradients = [
             colors: [],
             stops: [],
         },
-    }
+    },
 ];
 
 export const mockFonts = [
