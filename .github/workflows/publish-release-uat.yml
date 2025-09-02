@@ -32,19 +32,6 @@ jobs:
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
-      - name: bump version locally
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin
-          git checkout -B main origin/main
-          npm version prerelease --git-tag-version=false --preid=rc
-      - name: run readmeUpdater
-        run: yarn make-badges
-      - name: execute local js script
-        run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
         env:
@@ -78,9 +65,6 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-      # execute commit script
-      - name: execute commit script
-        run: node ./.github/scripts/commit.js
 
   update-version-management:
     runs-on: ubuntu-latest
