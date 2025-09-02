@@ -1,5 +1,5 @@
 name: Update Engine Version Management
-description: 'Update the engine version management file in case of an engine patch update'
+description: "Update the engine version management file in case of an engine patch update"
 on:
   workflow_dispatch:
     inputs:
@@ -8,31 +8,33 @@ on:
         required: true
         type: string
       engine_version:
-        description: 'New engine version (e.g. 2.1.1)'
+        description: "New engine version (e.g. 2.1.1)"
         required: true
         type: string
       environment:
-        description: 'Target environment (UAT or PROD)'
+        description: "Target environment (UAT or PROD)"
         required: true
         type: choice
-        default: 'UAT'
+        default: "UAT"
         options:
-          - 'UAT'
-          - 'PROD'
+          - "UAT"
+          - "PROD"
 
 jobs:
   update-engine-version-management:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: k8s-runners-default
+      labels: default
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Download and update versions file
         run: |
           # Create temporary directory
           mkdir -p temp
           # Download current versions file
           curl -o temp/supported-versions.json https://studio-cdn.chiligrafx.com/shared/version-management/supported-versions.json
-          
+
           # Create updated versions file using node
           node -e "
             const fs = require('fs');
@@ -68,7 +70,7 @@ jobs:
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
           "
- 
+
       - name: Azure Login action
         uses: azure/login@v2
         with:
@@ -90,4 +92,3 @@ jobs:
             --destination shared/version-management \
             --overwrite true \
             --auth-mode login
-            

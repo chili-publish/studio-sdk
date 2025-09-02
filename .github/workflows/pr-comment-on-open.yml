@@ -4,7 +4,9 @@ on:
     types: [opened]
 jobs:
   comment:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: k8s-runners-default
+      labels: default
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v4

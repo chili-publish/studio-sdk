@@ -6,7 +6,9 @@ env:
   NODE_VERSION: 20
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: k8s-runners-default
+      labels: default
     steps:
       - uses: actions/checkout@v4
         with:
@@ -85,7 +87,6 @@ jobs:
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
           mkdir -p ${patchlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${patchlatestpath%"/merge"}
-          
 
       - name: Copy to Azure Blob Storage
         uses: azure/CLI@v1
@@ -102,7 +103,9 @@ jobs:
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
 
   update-version-management:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: k8s-runners-default
+      labels: default
     needs: [build]
     steps:
       - uses: actions/checkout@v4
@@ -158,7 +161,9 @@ jobs:
           inlineScript: |
             az storage blob upload --file temp/supported-versions.json --container-name shared --name version-management/supported-versions.json --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
   bump-version:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: k8s-runners-default
+      labels: default
     needs: [update-version-management]
     steps:
       - uses: actions/checkout@v4
