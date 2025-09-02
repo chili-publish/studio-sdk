@@ -17,7 +17,7 @@ import {
     MediaDownloadIntent,
     MediaDownloadType,
 } from '../types/MediaConnectorTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
+import { getEditorResponseData, throwEditorResponseError } from '../utils/EditorResponseData';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -105,21 +105,12 @@ export class MediaConnectorController {
             .then((result) => {
                 // Handle binary data (Uint8Array) directly
                 if (result instanceof Uint8Array) {
-                    return getEditorResponseData<Uint8Array>(
-                        {
-                            success: true,
-                            status: 200,
-                            data: result,
-                            parsedData: result,
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        } as any as EditorResponse<Uint8Array>,
-                        false, // do not parse the response
-                    );
+                    return result;
                 }
 
-                // Handle structured response (EditorResponse)
-                if (typeof result === 'object' && result !== null && 'success' in result) {
-                    return getEditorResponseData<Uint8Array>(result as EditorResponse<Uint8Array>);
+                // Handle structured response (EditorResponse) for non-success cases
+                if (typeof result === 'object' && result !== null && 'success' in result && !result.success) {
+                    throwEditorResponseError(result as EditorResponse<null>);
                 }
 
                 // Unexpected response type - throw error
