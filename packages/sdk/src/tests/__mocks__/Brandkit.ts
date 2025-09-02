@@ -122,6 +122,18 @@ export const mockColors = [
     },
 ];
 
+export const mockGradients = [
+    {
+        id: '2222-3333-4444-5555-6666',
+        name: 'Gradient 1',
+        gradient: {
+            type: 'linear',
+            colors: [],
+            stops: [],
+        },
+    }
+];
+
 export const mockFonts = [
     {
         id: '53a6590a-4d1c-4f4b-be01-445f4fdb9be8',

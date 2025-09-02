@@ -43,6 +43,7 @@ import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { GradientStyleController } from './controllers/GradientStyleController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -83,6 +84,7 @@ export class SDK {
     paragraphStyle: ParagraphStyleController;
     characterStyle: CharacterStyleController;
     colorStyle: ColorStyleController;
+    gradientStyle: GradientStyleController;
     font: FontController;
     experiment: ExperimentController;
     canvas: CanvasController;
@@ -133,6 +135,7 @@ export class SDK {
         // To be renamed textSelection > textStyle
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
+        this.gradientStyle = new GradientStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
