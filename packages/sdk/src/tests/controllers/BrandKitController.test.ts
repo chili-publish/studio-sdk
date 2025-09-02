@@ -6,6 +6,7 @@ import SDK from '../../sdk';
 import {
     mockCharacterStyles,
     mockColors,
+    mockGradients,
     mockFonts,
     mockParagraphStyles,
     mockStudioBrandKit,
@@ -20,12 +21,14 @@ import { CharacterStyleController } from '../../controllers/CharacterStyleContro
 import { ParagraphStyleController } from '../../controllers/ParagraphStyleController';
 import { UndoManagerController } from '../../controllers/UndoManagerController';
 import { FontConnectorController } from '../../controllers/FontConnectorController';
+import { GradientStyleController } from '../../controllers/GradientStyleController';
 
 const mockFontFamilyName = 'Minion Pro';
 const mockParagraphStyleId = 'paragraphStyleId';
 const mockCharacterStyleId = 'characterStyleId';
 const mockFontFamilyId = '614e0cba-37d3-45a7-b9af-ddf2bf76f7db';
 const mockColorId = '1111-2222-3333-4444-5555';
+const mockGradientId = '2222-3333-4444-5555-6666';
 
 const flushPromises = () => {
     return new Promise((resolve) => setTimeout(resolve, 0));
@@ -51,6 +54,12 @@ describe('BrandKitController', () => {
             createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
             updateColor: async (data) => getEditorResponseData(castToEditorResponse(data)),
             renameColor: async (data) => getEditorResponseData(castToEditorResponse(data)),
+
+            getGradients: async () => getEditorResponseData(castToEditorResponse(mockGradients)),
+            removeGradient: async () => getEditorResponseData(castToEditorResponse(null)),
+            createGradient: async () => getEditorResponseData(castToEditorResponse(mockGradientId)),
+            updateGradient: async (data) => getEditorResponseData(castToEditorResponse(data)),
+            renameGradient: async (data) => getEditorResponseData(castToEditorResponse(data)),
 
             getFontFamilies: async () => getEditorResponseData(castToEditorResponse(mockFonts)),
             addFontFamily: jest.fn().mockResolvedValue(getEditorResponseData(castToEditorResponse(mockFontFamilyId))),
@@ -95,6 +104,12 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'updateColor');
         jest.spyOn(mockEditorApi, 'renameColor');
 
+        jest.spyOn(mockEditorApi, 'getGradients');
+        jest.spyOn(mockEditorApi, 'removeGradient');
+        jest.spyOn(mockEditorApi, 'createGradient');
+        jest.spyOn(mockEditorApi, 'updateGradient');
+        jest.spyOn(mockEditorApi, 'renameGradient');
+
         jest.spyOn(mockEditorApi, 'getFontFamilies');
         jest.spyOn(mockEditorApi, 'addFontFamily');
         jest.spyOn(mockEditorApi, 'removeFontFamily');
@@ -120,6 +135,7 @@ describe('BrandKitController', () => {
         const fontController = new FontController(mockEditorApi);
         const fontConnectorController = new FontConnectorController(mockEditorApi);
         const colorStyleController = new ColorStyleController(mockEditorApi);
+        const gradientStyleController = new GradientStyleController(mockEditorApi);
         const mediaController = new MediaConnectorController(mockEditorApi);
         const characterStyleController = new CharacterStyleController(mockEditorApi);
         const paragraphStyleController = new ParagraphStyleController(mockEditorApi);
@@ -127,6 +143,7 @@ describe('BrandKitController', () => {
         const mockSDK: SDK = {
             editorAPI: mockEditorApi,
             colorStyle: colorStyleController,
+            gradientStyle: gradientStyleController,
             font: fontController,
             fontConnector: fontConnectorController,
             mediaConnector: mediaController,
@@ -180,6 +197,7 @@ describe('BrandKitController', () => {
     it('Should call the get method', async () => {
         const response = await mockBrandKitController.get();
         expect(mockEditorApi.getColors).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getGradients).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getFontFamilies).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
@@ -194,6 +212,7 @@ describe('BrandKitController', () => {
                         name: 'Test Brand Kit',
                         lastModifiedDate: '2025-06-12T12:10:29.354877',
                         colors: mockColors,
+                        gradients: mockGradients,
                         fonts: mockFonts,
                         paragraphStyles: mockParagraphStyles,
                         characterStyles: mockCharacterStyles,
