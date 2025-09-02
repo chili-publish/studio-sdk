@@ -1,5 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { GradientType, GradientUpdate, DocumentGradient } from '../types/GradientStyleTypes';
+import { GradientUpdate, DocumentGradient } from '../types/GradientStyleTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
