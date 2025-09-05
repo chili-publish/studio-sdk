@@ -102,6 +102,9 @@ export interface SelectedTextStyle {
     underline?: boolean;
     lineThrough?: boolean;
     hasLocalFormatting: boolean;
+    markedListType?: MarkedListType;
+    markedListGroup?: string;
+    markedListLevel?: number;
 }
 
 export enum HorizontalAlign {
@@ -109,6 +112,12 @@ export enum HorizontalAlign {
     center = 'center',
     right = 'right',
     justify = 'justify',
+}
+
+export enum MarkedListType {
+    none = 'none',
+    bullet = 'bullet',
+    number = 'number',
 }
 
 export enum SelectedTextStyleSections {
