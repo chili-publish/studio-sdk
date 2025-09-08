@@ -1,5 +1,5 @@
 import { Id } from './CommonTypes';
-import {Color} from "./ColorStyleTypes";
+import { Color } from "./ColorStyleTypes";
 
 export type DocumentFontStyle = {
     id: Id;
