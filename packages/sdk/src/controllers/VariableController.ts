@@ -725,6 +725,17 @@ export class VariableController {
             .then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * Sets the "don't break" flag for a short text variable. When set to true, the variable will not be split across lines.
+     * @param id the id of the variable
+     * @param isDontBreak the value "don't break" flag
+     * @returns
+     */
+    setIsDontBreak = async (id: string, isDontBreak: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setVariableIsDontBreak(id, isDontBreak).then((result) => getEditorResponseData<null>(result));
+    };
+
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
         return variables.map((variable) => {
             return this.makeVariableBackwardsCompatible(variable);

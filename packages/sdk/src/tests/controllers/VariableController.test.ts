@@ -102,6 +102,7 @@ describe('VariableController', () => {
         setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableValueWithContext: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableRemoveParagraphIfEmpty: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -140,6 +141,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
         jest.spyOn(mockEditorApi, 'setImageVariableValueWithContext');
         jest.spyOn(mockEditorApi, 'setVariableRemoveParagraphIfEmpty');
+        jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
     });
 
     it('get variable by id', async () => {
@@ -586,5 +588,11 @@ describe('VariableController', () => {
         await mockedVariableController.setImageVariableValueWithContext('1', '2', context);
         expect(mockEditorApi.setImageVariableValueWithContext).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableValueWithContext).toHaveBeenCalledWith('1', '2', JSON.stringify(context));
+    });
+
+    it('sets the dontBreak flag for a variable', async () => {
+        await mockedVariableController.setIsDontBreak('1', true);
+        expect(mockEditorApi.setVariableIsDontBreak).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableIsDontBreak).toHaveBeenCalledWith('1', true);
     });
 });
