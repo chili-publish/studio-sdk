@@ -17,6 +17,7 @@ describe('UndoManagerController', () => {
         beginIfNoneActive: async () => getEditorResponseData(castToEditorResponse(null)),
         setCustomUndoData: async () => getEditorResponseData(castToEditorResponse(null)),
         end: async () => getEditorResponseData(castToEditorResponse(null)),
+        abort: async () => getEditorResponseData(castToEditorResponse(null)),
         pause: async () => getEditorResponseData(castToEditorResponse(null)),
         resume: async () => getEditorResponseData(castToEditorResponse(null)),
     };
@@ -30,6 +31,7 @@ describe('UndoManagerController', () => {
         jest.spyOn(mockEditorApi, 'setCustomUndoData');
         jest.spyOn(mockEditorApi, 'beginIfNoneActive');
         jest.spyOn(mockEditorApi, 'end');
+        jest.spyOn(mockEditorApi, 'abort');
         jest.spyOn(mockEditorApi, 'pause');
         jest.spyOn(mockEditorApi, 'resume');
     });
@@ -92,7 +94,35 @@ describe('UndoManagerController', () => {
     });
 
     it('it resumes the undo manager', async () => {
-        await mockedUndoManagerController.pause();
-        expect(mockEditorApi.pause).toHaveBeenCalledTimes(1);
+        await mockedUndoManagerController.resume();
+        expect(mockEditorApi.resume).toHaveBeenCalledTimes(1);
+    });
+
+    describe('advanced methods', () => {
+        it('begins an operation through advanced.begin', async () => {
+            const operationName = 'operationName';
+
+            await mockedUndoManagerController.advanced.begin(operationName);
+            expect(mockEditorApi.begin).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.begin).toHaveBeenCalledWith(operationName);
+        });
+
+        it('begins an operation if none is active through advanced.beginIfNoneActive', async () => {
+            const operationName = 'operationName';
+
+            await mockedUndoManagerController.advanced.beginIfNoneActive(operationName);
+            expect(mockEditorApi.beginIfNoneActive).toHaveBeenCalledTimes(1);
+            expect(mockEditorApi.beginIfNoneActive).toHaveBeenCalledWith(operationName);
+        });
+
+        it('ends the currently active recording operation through advanced.end', async () => {
+            await mockedUndoManagerController.advanced.end();
+            expect(mockEditorApi.end).toHaveBeenCalledTimes(1);
+        });
+
+        it('aborts the currently active recording operation through advanced.abort', async () => {
+            await mockedUndoManagerController.advanced.abort();
+            expect(mockEditorApi.abort).toHaveBeenCalledTimes(1);
+        });
     });
 });
