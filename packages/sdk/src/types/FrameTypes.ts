@@ -75,6 +75,7 @@ export type ImageFrame = {
     type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type ShapeFrame = {
@@ -95,6 +96,7 @@ export type ShapeFrame = {
         cornerRadius: CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
         sides?: number;
     };
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type TextFrame = {
@@ -116,6 +118,7 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type BarcodeFrame = {
@@ -138,6 +141,7 @@ export type BarcodeFrame = {
     };
     src?: BarcodeSource;
     barcodeType: BarcodeType;
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type BarcodeSource = BarcodeVariableSource | BarcodeTextSource;
@@ -192,6 +196,32 @@ export interface AutoGrowDeltaUpdate {
     };
     directions?: {
         value: Array<AutoGrowDirection>;
+    };
+}
+
+export type DropShadowSettings = {
+    enabled: boolean;
+    distance: number;
+    angleDegrees: number;
+    blurRadius: number;
+    color: ColorUsage;
+};
+
+export interface ShadowSettingsDeltaUpdate {
+    distance?: {
+        value: string;
+    };
+    angleDegrees?: {
+        value: number;
+    };
+    blurRadius?: {
+        value: number;
+    };
+    enabled?: {
+        value: boolean;
+    };
+    color?: {
+        value: ColorUsage;
     };
 }
 

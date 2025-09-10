@@ -38,6 +38,7 @@ export { FrameAnchorTarget, PageAnchorTarget } from './types/FrameTypes';
 export type {
     AnchorTarget,
     AutoGrowSettings,
+    DropShadowSettings,
     BarcodeFrame,
     BarcodeSource,
     BarcodeTextSource,
