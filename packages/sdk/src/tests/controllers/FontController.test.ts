@@ -1,8 +1,8 @@
-import {FontController} from '../../controllers/FontController';
-import {EditorAPI} from '../../types/CommonTypes';
-import {castToEditorResponse, getEditorResponseData} from '../../utils/EditorResponseData';
-import {AddDocumentFontFamily, AddDocumentFontStyle, CharacterPreviewStyle} from '../../types/FontTypes';
-import {ColorType, RGBColor} from "../../types/ColorStyleTypes";
+import { FontController } from '../../controllers/FontController';
+import { EditorAPI } from '../../types/CommonTypes';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { AddDocumentFontFamily, AddDocumentFontStyle, CharacterPreviewStyle } from '../../types/FontTypes';
+import { ColorType, RGBColor } from '../../types/ColorStyleTypes';
 
 let mockedFontController: FontController;
 
@@ -153,8 +153,8 @@ describe('FontController', () => {
 
     it('calls getPreviewsOfCharacterStrings method', async () => {
         const characters = ['.', ',', '-'];
-        const color: RGBColor = {r: 0, g: 0, b: 0, type: ColorType.rgb};
-        const style: CharacterPreviewStyle = {fontStyleId: 'fontStyle', color: color};
+        const color: RGBColor = { r: 0, g: 0, b: 0, type: ColorType.rgb };
+        const style: CharacterPreviewStyle = { fontStyleId: 'fontStyle', color: color };
 
         await mockedFontController.getPreviewsOfCharacterStrings(characters, style);
         expect(mockedEditorApi.getPreviewsOfCharacterStrings).toHaveBeenCalledTimes(1);
