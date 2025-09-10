@@ -728,7 +728,7 @@ export class VariableController {
     /**
      * Sets the "don't break" flag for a short text variable. When set to true, the variable will not be split across lines.
      * @param id the id of the variable
-     * @param isDontBreak the value "don't break" flag
+     * @param isDontBreak the value of the "don't break" flag
      * @returns
      */
     setIsDontBreak = async (id: string, isDontBreak: boolean) => {
