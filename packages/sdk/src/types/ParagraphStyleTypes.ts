@@ -122,14 +122,19 @@ export type ParagraphStyleUpdate = {
 };
 
 export type BulletListStyle = {
+    /**
+     * Array of bullet marks for each level
+     * The index of the array is the level of the bullet list
+     * The value of the array is the bullet mark
+     */
     bulletMarks: string[];
-    leftIndent: string;
-    textIndent: string;
+    leftIndent: number;
+    textIndent: number;
     characterStyleId?: string;
 };
 
 export type NumericListStyle = {
-    leftIndent: string;
-    textIndent: string;
+    leftIndent: number;
+    textIndent: number;
     characterStyleId?: string;
 };
