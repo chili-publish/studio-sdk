@@ -172,7 +172,7 @@ export class FontController {
     getPreviewsOfCharacterStrings = async (characters: string[], characterPreviewStyle: CharacterPreviewStyle) => {
         const res = await this.#editorAPI;
         return res
-            .getPreviewsOfCharacterStrings(characters, characterPreviewStyle)
+            .getPreviewsOfCharacterStrings(characters, JSON.stringify(characterPreviewStyle))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
