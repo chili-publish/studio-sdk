@@ -101,12 +101,6 @@ export type ParagraphStyleUpdate = {
     lineThrough?: {
         value: boolean;
     };
-    bulletListStyle?: {
-        value: BulletListStyle;
-    };
-    numericListStyle?: {
-        value: NumericListStyle;
-    };
     bulletListBulletMarks?: {
         value: string[];
     };
@@ -124,8 +118,8 @@ export type ParagraphStyleUpdate = {
 export type BulletListStyle = {
     /**
      * Array of bullet marks for each level
-     * The index of the array is the level of the bullet list
-     * The value of the array is the bullet mark
+     * The position of the item in the array is the level of the bullet list
+     * The value of the item is the bullet mark
      */
     bulletMarks: string[];
     leftIndent: number;
