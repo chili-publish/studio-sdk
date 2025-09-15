@@ -2,6 +2,7 @@ import { EditorAPI, Id } from '../types/CommonTypes';
 import {
     AddDocumentFontFamily,
     AddDocumentFontStyle,
+    CharacterPreview,
     CharacterPreviewStyle,
     DocumentFontFamily,
     DocumentFontStyle,
@@ -168,11 +169,12 @@ export class FontController {
      * This method returns SVG graphics for requested characters used as bullets
      * @param characters the list of characters to render as SVG
      * @param characterPreviewStyle style to generate characters preview
+     * @returns An object with the characters as keys and the SVG graphics as values
      */
     getPreviewsOfCharacterStrings = async (characters: string[], characterPreviewStyle: CharacterPreviewStyle) => {
         const res = await this.#editorAPI;
         return res
             .getPreviewsOfCharacterStrings(characters, JSON.stringify(characterPreviewStyle))
-            .then((result) => getEditorResponseData<null>(result));
+            .then((result) => getEditorResponseData<CharacterPreview>(result));
     };
 }

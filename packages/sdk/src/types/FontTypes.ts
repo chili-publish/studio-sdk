@@ -1,5 +1,5 @@
 import { Id } from './CommonTypes';
-import { Color } from "./ColorStyleTypes";
+import { Color } from './ColorStyleTypes';
 
 export type DocumentFontStyle = {
     id: Id;
@@ -30,8 +30,8 @@ export type AddDocumentFontFamily = {
 };
 
 export type CharacterPreviewStyle = {
-    fontStyleId: string,
-    color: Color
-}
+    fontStyleId: string;
+    color: Color;
+};
 
-
+export type CharacterPreview = Record<string, string>;
