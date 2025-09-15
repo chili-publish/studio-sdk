@@ -158,6 +158,6 @@ describe('FontController', () => {
 
         await mockedFontController.getPreviewsOfCharacterStrings(characters, style);
         expect(mockedEditorApi.getPreviewsOfCharacterStrings).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.getPreviewsOfCharacterStrings).toHaveBeenCalledWith(characters, style);
+        expect(mockedEditorApi.getPreviewsOfCharacterStrings).toHaveBeenCalledWith(characters, JSON.stringify(style));
     });
 });
