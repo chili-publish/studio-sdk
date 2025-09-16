@@ -34,4 +34,4 @@ export type CharacterPreviewStyle = {
     color: Color;
 };
 
-export type CharacterPreview = Record<string, string>;
+export type CharacterPreview = Record<string, string | null>;
