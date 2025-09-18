@@ -149,7 +149,6 @@ export type {
     AddDocumentFontStyle,
     DocumentFontFamily,
     DocumentFontStyle,
-    CharacterPreview,
 } from './types/FontTypes';
 
 export { ColorType } from './types/ColorStyleTypes';
