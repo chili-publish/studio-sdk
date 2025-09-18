@@ -151,6 +151,9 @@ export enum SelectedTextStyles {
     TRACKING_RIGHT = 'trackingRight',
     BASELINE_SHIFT = 'baselineShiftValue',
     STROKE_WIDTH = 'strokeWidth',
+    MARKED_LIST_TYPE = 'markedListType',
+    MARKED_LIST_GROUP = 'markedListGroup',
+    MARKED_LIST_LEVEL = 'markedListLevel',
 }
 
 export interface UpdateStyleType {
