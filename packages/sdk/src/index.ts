@@ -164,6 +164,7 @@ export {
     SelectedTextStyles,
     SelectedTextStyleSections,
     TextPosition,
+    MarkedListType,
 } from './types/TextStyleTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
