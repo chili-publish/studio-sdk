@@ -25,6 +25,10 @@ export type GradientUsage = LinearGradientUsage;
 
 export type LinearGradientUsage = {
     /**
+     * Indicates if the gradient will be applied or not.
+     */
+    enabled: boolean;
+    /**
      * Reference to the brand kit color, can only be used if it is a brand kit color.
      */
     id?: Id;
