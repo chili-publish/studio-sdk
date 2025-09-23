@@ -149,6 +149,7 @@ export type {
     AddDocumentFontStyle,
     DocumentFontFamily,
     DocumentFontStyle,
+    CharacterPreview,
 } from './types/FontTypes';
 
 export { ColorType } from './types/ColorStyleTypes';
@@ -164,6 +165,7 @@ export {
     SelectedTextStyles,
     SelectedTextStyleSections,
     TextPosition,
+    MarkedListType,
 } from './types/TextStyleTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
