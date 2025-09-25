@@ -27,8 +27,8 @@ export {
     UpdateZIndexMethod,
     VerticalAlign,
 } from './types/FrameTypes';
-export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
-export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
+export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum, ConstraintMode } from './types/LayoutTypes';
+export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate, LayoutAspect } from './types/LayoutTypes';
 
 export { DocumentIssueTypeEnum, DocumentType } from './types/DocumentTypes';
 
@@ -38,6 +38,7 @@ export { FrameAnchorTarget, PageAnchorTarget } from './types/FrameTypes';
 export type {
     AnchorTarget,
     AutoGrowSettings,
+    DropShadowSettings,
     BarcodeFrame,
     BarcodeSource,
     BarcodeTextSource,

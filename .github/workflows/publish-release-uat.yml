@@ -78,7 +78,6 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-      # execute commit script
       - name: execute commit script
         run: node ./.github/scripts/commit.js
 

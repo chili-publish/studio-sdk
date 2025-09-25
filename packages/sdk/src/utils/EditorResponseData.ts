@@ -3,25 +3,29 @@ import type { EditorResponse } from '../types/CommonTypes';
 // This is an error code from the engine exception table, do not change
 const connectorHttpErrorErrorCode = 404075;
 
+export function throwEditorResponseError(response: EditorResponse<unknown>) {
+    const parsedError = response.error ?? 'Yikes, something went wrong';
+    const parsedCause = {
+        cause: {
+            name: String(response.status),
+            message: response.error ?? 'Yikes, something went wrong',
+        },
+    };
+
+    if (response.status === connectorHttpErrorErrorCode) {
+        const parsedErrorData = JSON.parse(response.data as string);
+        const httpStatusCode = parsedErrorData['statusCode'] as number;
+
+        throw new ConnectorHttpError(httpStatusCode, parsedError, parsedCause);
+    } else {
+        throw new Error(parsedError, parsedCause);
+    }
+}
+
 export function getEditorResponseData<T>(response: EditorResponse<unknown>, parse = true): EditorResponse<T> {
     try {
         if (!response.success) {
-            const parsedError = response.error ?? 'Yikes, something went wrong';
-            const parsedCause = {
-                cause: {
-                    name: String(response.status),
-                    message: response.error ?? 'Yikes, something went wrong',
-                },
-            };
-
-            if (response.status === connectorHttpErrorErrorCode) {
-                const parsedErrorData = JSON.parse(response.data as string);
-                const httpStatusCode = parsedErrorData['statusCode'] as number;
-
-                throw new ConnectorHttpError(httpStatusCode, parsedError, parsedCause);
-            } else {
-                throw new Error(parsedError, parsedCause);
-            }
+            throwEditorResponseError(response);
         }
         const dataShouldBeParsed = response.data && parse;
         return {
