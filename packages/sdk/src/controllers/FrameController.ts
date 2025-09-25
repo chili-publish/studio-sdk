@@ -736,6 +736,34 @@ export class FrameController {
     };
 
     /**
+     * This method will make the specified shape frame go into gradient mode.
+     * @param id the id of a specific shape frame
+     * @returns
+     */
+    enterGradientMode = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterGradientMode(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit gradient mode while saving the applied gradient.
+     * @returns
+     */
+    applyGradientMode = async () => {
+        const res = await this.#editorAPI;
+        return res.applyGradientMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit gradient mode without saving the applied gradient.
+     * @returns
+     */
+    cancelGradientMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelGradientMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * @deprecated This method no longer has any effect. Use 'setImageFrameFitMode' or 'resetImageFrameFitMode' instead
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
