@@ -2,6 +2,7 @@ import { APIColorType, DocumentColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 import { DocumentCharacterStyle, DocumentParagraphStyle } from './DocumentTypes';
 import { DocumentFontFamily } from './FontTypes';
+import { DocumentGradient } from './GradientStyleTypes';
 import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type RGB = { r: number; g: number; b: number };
@@ -124,6 +125,7 @@ export type BrandKitInternal = {
     version: string;
     name: string;
     colors: DocumentColor[];
+    gradients: DocumentGradient[];
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
