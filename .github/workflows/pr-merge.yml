@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - test-merge-workflow # Add test branch for testing
 env:
   NODE_VERSION: 20
 jobs:

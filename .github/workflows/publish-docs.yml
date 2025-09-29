@@ -45,8 +45,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ steps.get-gh-app-installation-access-token.outputs.gh-app-installation-access-token }}
       - name: Check cache
         id: cache
         uses: actions/cache@v4
