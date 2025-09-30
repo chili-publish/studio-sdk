@@ -166,6 +166,7 @@ export class FontController {
     };
 
     /**
+     * @experimental This method is experimental and may be changed in the future.
      * This method returns SVG graphics for requested characters used as bullets
      * @param characters the list of characters to render as SVG
      * @param characterPreviewStyle style to generate characters preview

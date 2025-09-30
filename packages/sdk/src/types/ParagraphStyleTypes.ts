@@ -33,7 +33,13 @@ export type ParagraphStyle = {
     strokeWidth: number;
     underline: boolean;
     lineThrough: boolean;
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
     bulletListStyle: BulletListStyle;
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
     numericListStyle: NumericListStyle;
 };
 
@@ -101,15 +107,27 @@ export type ParagraphStyleUpdate = {
     lineThrough?: {
         value: boolean;
     };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
     bulletListBulletMarks?: {
         value: string[];
     };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
     bulletListLeftIndent?: {
         value: string;
     };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
     bulletListTextIndent?: {
         value: string;
     };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
     bulletListCharacterStyleId?: {
         value?: string;
     };
