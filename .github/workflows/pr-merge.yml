@@ -17,7 +17,7 @@ jobs:
           app-id: ${{ vars.GH_APP_INSTALL_ID_CHILI_REPO_ACTIONS }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
           owner: ${{ github.repository_owner }}
-          repositories: chili-publish/studio-sdk
+          repositories: studio-sdk
 
       - uses: actions/checkout@v4
         with:
