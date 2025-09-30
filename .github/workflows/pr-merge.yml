@@ -47,7 +47,7 @@ jobs:
       - name: bump version
         uses: phips28/gh-action-bump-version@v11.0.7
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.get-gh-app-installation-access-token.outputs.token }}
           NODE_AUTH_TOKEN: ${{ steps.get-gh-app-installation-access-token.outputs.token }}
         with:
           version-type: "prerelease"
