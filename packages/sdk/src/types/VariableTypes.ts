@@ -86,6 +86,7 @@ export interface ShortTextVariable extends Variable {
     removeParagraphIfEmpty: boolean;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
+    isDontBreak: boolean;
 }
 
 export interface NumberVariable extends Variable {
