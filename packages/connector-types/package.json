@@ -1,6 +1,6 @@
 {
     "name": "@chili-studio/connector-types",
-    "version": "1.31.1-alfa.3",
+    "version": "1.31.1-alfa.4",
     "private": true,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
