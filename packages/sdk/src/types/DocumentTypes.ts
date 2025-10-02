@@ -300,6 +300,7 @@ export interface DocumentVariable extends Variable {
 export enum DocumentType {
     project = 'project',
     template = 'template',
+    component = 'component',
 }
 
 /**
