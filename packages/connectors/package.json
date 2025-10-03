@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-connectors",
-    "version": "1.31.0-rc.0",
+    "version": "1.31.1-alfa.4",
     "types": "dist/index.d.ts",
     "type": "module",
     "files": [
@@ -10,7 +10,7 @@
     "devDependencies": {
         "prettier": "^3.0.3",
         "typescript": "^5.2.2",
-        "vite": "^6.3.5",
+        "vite": "^6.3.6",
         "@types/node": "^22.15.18",
         "dts-bundle-generator": "^9.0.0"
     },
