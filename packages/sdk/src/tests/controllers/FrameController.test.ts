@@ -76,6 +76,9 @@ const mockedEditorApi: EditorAPI = {
     enterSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applySubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    enterGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    applyGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    cancelGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateFrameShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -135,6 +138,9 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'enterSubjectMode');
     jest.spyOn(mockedEditorApi, 'applySubjectMode');
     jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
+    jest.spyOn(mockedEditorApi, 'enterGradientMode');
+    jest.spyOn(mockedEditorApi, 'applyGradientMode');
+    jest.spyOn(mockedEditorApi, 'cancelGradientMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateFrameShadowSettings');
@@ -486,6 +492,27 @@ describe('FrameController', () => {
     it('Should be possible to apply the current subject area to the frame', async () => {
         await mockedFrameController.applySubjectMode();
         expect(mockedEditorApi.applySubjectMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to exit subject mode without saving the applied subject area', async () => {
+        await mockedFrameController.exitSubjectMode();
+        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to enter gradient mode on a specific frame', async () => {
+        await mockedFrameController.enterGradientMode(id);
+        expect(mockedEditorApi.enterGradientMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.enterGradientMode).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to apply the current gradient to the frame', async () => {
+        await mockedFrameController.applyGradientMode();
+        expect(mockedEditorApi.applyGradientMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to cancel gradient mode without saving the applied gradient', async () => {
+        await mockedFrameController.cancelGradientMode();
+        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to reset asset crop override', async () => {
