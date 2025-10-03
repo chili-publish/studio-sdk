@@ -27,8 +27,8 @@ export {
     UpdateZIndexMethod,
     VerticalAlign,
 } from './types/FrameTypes';
-export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum, ConstraintMode } from './types/LayoutTypes';
-export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate, LayoutAspect } from './types/LayoutTypes';
+export { ConstraintMode, LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
+export type { LayoutAspect, ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
 
 export { DocumentIssueTypeEnum, DocumentType } from './types/DocumentTypes';
 
@@ -142,6 +142,8 @@ export type {
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
 export { ColorUsageType } from './types/ColorStyleTypes';
 export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
+export { GradientUsageType } from './types/GradientStyleTypes';
+export type { DocumentGradient, GradientDefinition, GradientUpdate } from './types/GradientStyleTypes';
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 
 export type {
@@ -156,6 +158,7 @@ export { ColorType } from './types/ColorStyleTypes';
 export * from './types/ConnectorTypes';
 export * from './types/DataConnectorTypes';
 export * from './types/FontConnectorTypes';
+export { GradientType } from './types/GradientStyleTypes';
 export * from './types/MediaConnectorTypes';
 export {
     Alignment,
@@ -173,20 +176,20 @@ export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 export type {
     APIBrandKit,
     APIBrandKitMedia,
-    StudioBrandKit,
+    BrandKitCharacterStyle,
     BrandKitColor,
     BrandKitFont,
-    BrandKitParagraphStyle,
-    BrandKitCharacterStyle,
     BrandKitMedia,
-    RGBColorValue,
-    HEXColorValue,
-    CMYKColorValue,
-    SpotRGBColorValue,
-    SpotHEXColorValue,
-    SpotCMYKColorValue,
-    RGB,
+    BrandKitParagraphStyle,
     CMYK,
+    CMYKColorValue,
+    HEXColorValue,
+    RGB,
+    RGBColorValue,
+    SpotCMYKColorValue,
+    SpotHEXColorValue,
+    SpotRGBColorValue,
+    StudioBrandKit,
 } from './types/BrandKitTypes';
 
 export * from './types/ActionTypes';

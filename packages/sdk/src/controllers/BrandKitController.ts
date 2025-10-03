@@ -12,6 +12,7 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
 import { ColorStyleController } from './ColorStyleController';
 import { FontController } from './FontController';
+import { GradientStyleController } from './GradientStyleController';
 import { MediaConnectorController } from './MediaConnectorController';
 import { ParagraphStyleController } from './ParagraphStyleController';
 import { UndoManagerController } from './UndoManagerController';
@@ -33,6 +34,7 @@ export class BrandKitController {
     constructor(editorAPI: EditorAPI, sdk: SDK) {
         this.#editorAPI = editorAPI;
         this.colorStyleController = sdk.colorStyle;
+        this.gradientStyleController = sdk.gradientStyle;
         this.fontController = sdk.font;
         this.mediaController = sdk.mediaConnector;
         this.paragraphStyleController = sdk.paragraphStyle;
@@ -42,6 +44,8 @@ export class BrandKitController {
     }
 
     private colorStyleController: ColorStyleController;
+
+    private gradientStyleController: GradientStyleController;
 
     private fontController: FontController;
 
@@ -111,13 +115,15 @@ export class BrandKitController {
         const brandKitName = await this.getName();
 
         const colorsPromise = this.colorStyleController.getAll();
+        const gradientPromise = this.gradientStyleController.getAll();
         const fontsPromise = this.fontController.getFontFamilies();
         const characterStylesPromise = this.characterStyleController.getAll();
         const paragraphStylesPromise = this.paragraphStyleController.getAll();
         const mediaPromise = this.getAllMedia();
 
-        const [colors, fonts, paragraphStyles, characterStyles, media] = await Promise.all([
+        const [colors, gradients, fonts, paragraphStyles, characterStyles, media] = await Promise.all([
             colorsPromise,
+            gradientPromise,
             fontsPromise,
             paragraphStylesPromise,
             characterStylesPromise,
@@ -131,6 +137,7 @@ export class BrandKitController {
                 name: brandKitName.parsedData,
                 lastModifiedDate: brandKitVersion.parsedData,
                 colors: colors.parsedData,
+                gradients: gradients.parsedData,
                 fonts: fonts.parsedData,
                 paragraphStyles: paragraphStyles.parsedData,
                 characterStyles: characterStyles.parsedData,
@@ -213,6 +220,9 @@ export class BrandKitController {
         const colors = await this.colorStyleController.getAll();
         const colorsList = colors.parsedData || [];
 
+        const gradients = await this.gradientStyleController.getAll();
+        const gradientsList = gradients.parsedData || [];
+
         const paragraphStyles = await this.paragraphStyleController.getAll();
         const paragraphStylesList = paragraphStyles.parsedData || [];
 
@@ -228,6 +238,9 @@ export class BrandKitController {
         await this.undoManagerController.record('brandKit.remove', async (sdk) => {
             for (const color of colorsList) {
                 await sdk.colorStyle.remove(color.id);
+            }
+            for (const gradient of gradientsList) {
+                await sdk.gradientStyle.remove(gradient.id);
             }
             for (const style of paragraphStylesList) {
                 await sdk.paragraphStyle.remove(style.id);
@@ -258,6 +271,7 @@ export class BrandKitController {
                 version: studioBrandKit.brandKit.lastModifiedDate,
                 name: studioBrandKit.brandKit.name,
                 colors: [],
+                gradients: [],
                 fonts: [],
                 paragraphStyles: [],
                 characterStyles: [],
@@ -267,9 +281,11 @@ export class BrandKitController {
 
         await this.undoManagerController.record('brandKit.set', async (sdk) => {
             const localColorGuidMap = await this.setColors(studioBrandKit, sdk);
+            await this.setGradients(studioBrandKit, sdk);
             const localFontGuidMap = await this.setFonts(studioBrandKit, sdk);
 
             const { parsedData: localColors = [] } = await sdk.colorStyle.getAll();
+            const { parsedData: localGradients = [] } = await sdk.gradientStyle.getAll();
             const { parsedData: localFonts } = await sdk.font.getFontFamilies();
 
             await this.setParagraphStyles(studioBrandKit, sdk, {
@@ -301,6 +317,7 @@ export class BrandKitController {
                     version: studioBrandKit.brandKit.lastModifiedDate,
                     name: studioBrandKit.brandKit.name,
                     colors: localColors || [],
+                    gradients: localGradients || [],
                     fonts: localFonts || [],
                     paragraphStyles: allParagraphStyles || [],
                     characterStyles: allCharacterStyles || [],
@@ -326,6 +343,15 @@ export class BrandKitController {
             await sdk.colorStyle.update(localColorId, localColor);
         }
         return localColorGuidsMap;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    private async setGradients(_studioBrandKit: StudioBrandKit, _sdk: SDK) {
+        const localGradientsGuidsMap = new Map<string, string>();
+
+        // TODO FE team :)
+
+        return localGradientsGuidsMap;
     }
 
     private async setFonts(studioBrandKit: StudioBrandKit, sdk: SDK) {
