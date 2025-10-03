@@ -27,6 +27,7 @@ export enum ConnectorType {
     media = 'media',
     fonts = 'fonts',
     data = 'data',
+    components = 'components',
 }
 
 export enum SortBy {

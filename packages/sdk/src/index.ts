@@ -156,6 +156,7 @@ export { ColorType } from './types/ColorStyleTypes';
 export * from './types/ConnectorTypes';
 export * from './types/DataConnectorTypes';
 export * from './types/FontConnectorTypes';
+export * from './types/ComponentConnectorTypes';
 export * from './types/MediaConnectorTypes';
 export {
     Alignment,
