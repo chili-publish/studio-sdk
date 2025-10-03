@@ -43,6 +43,7 @@ import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { ComponentConnectorController } from './controllers/ComponentConnectorController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -68,6 +69,10 @@ export class SDK {
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
+    /**
+     * @experimental This controller is still experimental and might change in future releases.
+     */
+    componentConnector: ComponentConnectorController;
     dataConnector: DataConnectorController;
     dataSource: DataSourceController;
     animation: AnimationController;
@@ -118,6 +123,7 @@ export class SDK {
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.componentConnector = new ComponentConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.animation = new AnimationController(this.editorAPI);
@@ -240,6 +246,7 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.componentConnector = new ComponentConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
