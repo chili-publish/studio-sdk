@@ -2,7 +2,7 @@ import { CallSender } from 'penpal';
 import { EditorAPI, EditorRawAPI, EditorResponse } from '../types/CommonTypes';
 import { Component, ComponentConnectorCapabilities, ComponentPreviewType } from '../types/ComponentConnectorTypes';
 import { ConnectorConfigOptions, MetaData, QueryOptions, QueryPage } from '../types/ConnectorTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
+import { getEditorResponseData, throwEditorResponseError } from '../utils/EditorResponseData';
 
 /**
  * @experimental This controller is still experimental and might change in future releases.
@@ -70,7 +70,20 @@ export class ComponentConnectorController {
         const res = await this.#blobAPI;
         return res
             .componentConnectorPreview(connectorId, componentId, previewType, JSON.stringify(context))
-            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+            .then((result) => {
+                // Handle binary data (Uint8Array) directly
+                if (result instanceof Uint8Array) {
+                    return result;
+                }
+
+                // Handle structured response (EditorResponse) for non-success cases
+                if (typeof result === 'object' && result !== null && 'success' in result && !result.success) {
+                    throwEditorResponseError(result as EditorResponse<null>);
+                }
+
+                // Unexpected response type - throw error
+                throw new Error(`Unexpected response type: ${typeof result}.`);
+            });
     };
 
     /**
