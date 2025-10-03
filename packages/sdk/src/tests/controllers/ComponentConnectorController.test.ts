@@ -1,16 +1,14 @@
 import { ComponentConnectorController } from '../../controllers/ComponentConnectorController';
 import { SortBy, SortOrder } from '../../types/ConnectorTypes';
 import { ComponentPreviewType } from '../../types/ComponentConnectorTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedComponentConnectorController: ComponentConnectorController;
 
 const mockedEditorApi: EditorAPI = {
     componentConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
-    componentConnectorDownload: async () => getEditorResponseData(castToEditorResponse(null)),
-    componentConnectorPreview: async () => getEditorResponseData(castToEditorResponse(null)),
-    componentConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
+    componentConnectorPreview: async () => new Uint8Array() as unknown as EditorResponse<any>,
     componentConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     componentConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
 };
