@@ -1,11 +1,14 @@
 name: PR Build
 on: [pull_request]
+env:
+  NODE_VERSION: 20
+permissions:
+  contents: read
+  actions: read
+  packages: read
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18]
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v4
@@ -19,16 +22,17 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
+
       - name: install dependencies
         run: yarn install
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run license check
         run: yarn validate-licenses
       - name: run linting
