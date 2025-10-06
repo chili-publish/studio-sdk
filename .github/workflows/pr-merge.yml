@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+      - fix/GRAFX-5066-fix-commit-to-main
+
 env:
   NODE_VERSION: 20
 permissions:
@@ -13,9 +15,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
       - name: Check cache
         id: cache
         uses: actions/cache@v4
@@ -25,13 +34,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Use Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run linting
         run: yarn ci-lint
       - name: run tests
@@ -53,7 +64,6 @@ jobs:
         run: node cicd.js sdk,connectors yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # execute commit script
       - name: execute commit script
         run: node ./.github/scripts/commit.js
       - name: get new npm version
