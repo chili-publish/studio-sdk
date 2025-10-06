@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - fix/GRAFX-5066-fix-commit-to-main
 
 env:
   NODE_VERSION: 20
