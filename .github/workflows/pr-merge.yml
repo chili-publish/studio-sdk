@@ -52,7 +52,6 @@ jobs:
         uses: phips28/gh-action-bump-version@v11.0.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version-type: "prerelease"
           skip-commit: "true"

@@ -2,6 +2,10 @@ name: PR Build
 on: [pull_request]
 env:
   NODE_VERSION: 20
+permissions:
+  contents: read
+  actions: read
+  packages: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,24 +28,11 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
-      - name: Get GitHub App JWT
-        id: get-gh-app-jwt
-        uses: ./.github/actions/get-gh-app-jwt
-        with:
-          gh-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
-          gh-app-id: ${{ vars.GH_APP_ID_CHILI_REPO_ACTIONS }}
-
-      - name: Get GitHub App Installation Access Token
-        id: get-gh-app-installation-access-token
-        uses: ./.github/actions/get-gh-app-installation-access-token
-        with:
-          gh-app-jwt: ${{ steps.get-gh-app-jwt.outputs.gh-app-jwt }}
-          gh-app-installation-id: ${{ vars.GH_APP_INSTALL_ID_CHILI_REPO_ACTIONS }}
 
       - name: install dependencies
         run: yarn install
         env:
-          NODE_AUTH_TOKEN: ${{ steps.get-gh-app-installation-access-token.outputs.gh-app-installation-access-token }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run license check
         run: yarn validate-licenses
       - name: run linting
