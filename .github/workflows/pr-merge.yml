@@ -32,8 +32,6 @@ jobs:
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run linting
         run: yarn ci-lint
       - name: run tests

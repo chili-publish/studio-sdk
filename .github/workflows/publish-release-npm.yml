@@ -59,16 +59,17 @@ jobs:
           node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      - name: Use Node ${{ env.NODE_VERSION }} for GitHub Package Registry
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@chili-publish"
-      - name: publish sdk build to GitHub Package Registry
-        run: node cicd.js sdk,connectors yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Stop publishing PRD version to GitHub Package Registry. Revert in case of issues
+      # - name: Use Node ${{ env.NODE_VERSION }} for GitHub Package Registry
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     registry-url: "https://npm.pkg.github.com"
+      #     scope: "@chili-publish"
+      # - name: publish sdk build to GitHub Package Registry
+      #   run: node cicd.js sdk,connectors yarn publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: execute commit script
         run: node ./.github/scripts/commit.js
       - name: get new npm version
