@@ -4,13 +4,17 @@ on:
     types: [released]
 env:
   NODE_VERSION: 20
+permissions:
+  contents: write
+  actions: read
+  packages: write
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PACKAGE_SECRET }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Check cache
         id: cache
         uses: actions/cache@v4
@@ -19,7 +23,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ env.NODE_VERSION }}
+      - name: Use Node ${{ env.NODE_VERSION }} for npm registry
         uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -45,7 +49,7 @@ jobs:
         run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
-      - name: publish sdk build
+      - name: publish sdk build to npm registry
         run: |
           # Get the full reference of the release
           ref=${{ github.ref }}
@@ -55,16 +59,17 @@ jobs:
           node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      - name: Use Node ${{ env.NODE_VERSION }} for dev release
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@chili-publish"
-      - name: publish sdk build
-        run: node cicd.js sdk,connectors yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+          # Stop publishing PRD version to GitHub Package Registry. Revert in case of issues
+      # - name: Use Node ${{ env.NODE_VERSION }} for GitHub Package Registry
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     registry-url: "https://npm.pkg.github.com"
+      #     scope: "@chili-publish"
+      # - name: publish sdk build to GitHub Package Registry
+      #   run: node cicd.js sdk,connectors yarn publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: execute commit script
         run: node ./.github/scripts/commit.js
       - name: get new npm version
@@ -85,7 +90,6 @@ jobs:
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
           mkdir -p ${patchlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${patchlatestpath%"/merge"}
-          
 
       - name: Copy to Azure Blob Storage
         uses: azure/CLI@v1
@@ -163,7 +167,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PACKAGE_SECRET }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2
         with:
