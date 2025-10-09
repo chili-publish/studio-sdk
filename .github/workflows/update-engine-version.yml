@@ -68,7 +68,7 @@ jobs:
               }
             }
             
-            fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
+            fs.writeFileSync('./temp/supported-versions-test.json', JSON.stringify(versions, null, 2));
           "
 
       - name: Azure Login action
