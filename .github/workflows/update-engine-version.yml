@@ -1,5 +1,5 @@
 name: Update Engine Version Management
-description: 'Update the engine version management file in case of an engine patch update'
+description: "Update the engine version management file in case of an engine patch update"
 on:
   workflow_dispatch:
     inputs:
@@ -8,31 +8,33 @@ on:
         required: true
         type: string
       engine_version:
-        description: 'New engine version (e.g. 2.1.1)'
+        description: "New engine version (e.g. 2.1.1)"
         required: true
         type: string
       environment:
-        description: 'Target environment (UAT or PROD)'
+        description: "Target environment (UAT or PROD)"
         required: true
         type: choice
-        default: 'UAT'
+        default: "UAT"
         options:
-          - 'UAT'
-          - 'PROD'
+          - "UAT"
+          - "PROD"
 
 jobs:
   update-engine-version-management:
     runs-on: ubuntu-latest
+    env:
+      STORAGE_ACCOUNT_NAME: ${{ (inputs.environment == 'PROD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }}
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Download and update versions file
         run: |
           # Create temporary directory
           mkdir -p temp
           # Download current versions file
           curl -o temp/supported-versions.json https://studio-cdn.chiligrafx.com/shared/version-management/supported-versions.json
-          
+
           # Create updated versions file using node
           node -e "
             const fs = require('fs');
@@ -68,7 +70,19 @@ jobs:
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
           "
- 
+
+      - name: Verify temp directory and file contents
+        run: |
+          echo "=== Checking temp directory ==="
+          ls -la temp/
+          echo ""
+          echo "=== File size and first few lines ==="
+          wc -l temp/supported-versions.json
+          head -20 temp/supported-versions.json
+          echo ""
+          echo "=== JSON validation ==="
+          node -e "console.log('JSON is valid:', !!require('./temp/supported-versions.json'))"
+
       - name: Azure Login action
         uses: azure/login@v2
         with:
@@ -79,15 +93,37 @@ jobs:
               "tenantId": "${{ vars.AZURE_TENANT_ID }}",
               "subscriptionId": "${{ (inputs.environment == 'PROD') && vars.SUBSCRIPTION_ID_PROD || vars.SUBSCRIPTION_ID_UAT }}"
             }
+      - name: Show resolved storage account
+        run: echo "STORAGE_ACCOUNT_NAME=${{ env.STORAGE_ACCOUNT_NAME }}"
+
+      - name: Sanity check storage access (read-only)
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az storage container list \
+              --account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
+              --auth-mode login \
+              --output table
+
+            # Optional: list a few blobs under your target path
+            az storage blob list \
+              --container-name shared \
+              --prefix version-management \
+              --account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
+              --auth-mode login \
+              --num-results 5 \
+              --output table
+
       - name: Upload build
+        if: ${{ false }} # temporarily disabled
         uses: azure/cli@v2
         with:
           azcliversion: latest
           inlineScript: |
             az storage blob upload-batch \
-            --account-name ${{ (inputs.environment == 'PROD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }} \
+            --account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
             --source temp/ \
             --destination shared/version-management \
             --overwrite true \
             --auth-mode login
-            
