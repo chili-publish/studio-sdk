@@ -141,8 +141,7 @@ jobs:
           inlineScript: |
             az storage blob upload-batch \
             --account-name ${{ vars.STORAGE_ACCOUNT_NAME_UAT }} \
-            --file temp/supported-versions.json 
-            --container-name shared 
-            --name version-management/supported-versions.json
+            --source temp/ \
+            --destination shared/version-management \
             --overwrite true \
             --auth-mode login
