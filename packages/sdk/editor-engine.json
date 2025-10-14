@@ -1,3 +1,4 @@
 {
-    "current": "2.14.latest"
+    "current": "2.14.latest",
+    "uat": "2.15.0-rc.0"
 }

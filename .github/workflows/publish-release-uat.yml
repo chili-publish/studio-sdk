@@ -104,7 +104,7 @@ jobs:
           SDK_MAJOR_MINOR=$(echo $SDK_VERSION | cut -d. -f1,2)
 
           # Get engine version from editor-engine.json and convert latest to 0
-          ENGINE_VERSION=$(node -p "require('./packages/sdk/editor-engine.json').current.replace('.latest', '.0')")
+          ENGINE_VERSION=$(node -p "require('./packages/sdk/editor-engine.json').uat")
 
           # Create updated versions file using node
           node -e "
