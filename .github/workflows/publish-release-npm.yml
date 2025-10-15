@@ -5,6 +5,7 @@ on:
 env:
   NODE_VERSION: 20
 permissions:
+  id-token: write  # Required for OIDC
   contents: write
   actions: read
   packages: write
@@ -31,7 +32,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Use Node ${{ env.NODE_VERSION }} for npm registry
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
@@ -63,20 +64,7 @@ jobs:
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
           stripped_tag=${tag%-*}
-          node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-          # Stop publishing PRD version to GitHub Package Registry. Revert in case of issues
-      # - name: Use Node ${{ env.NODE_VERSION }} for GitHub Package Registry
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
-      #     registry-url: "https://npm.pkg.github.com"
-      #     scope: "@chili-publish"
-      # - name: publish sdk build to GitHub Package Registry
-      #   run: node cicd.js sdk,connectors yarn publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node cicd.js sdk,connectors npm publish --tag $stripped_tag --tag latest
       - name: execute commit script
         run: node ./.github/scripts/commit.js
       - name: get new npm version
@@ -118,7 +106,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Use Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Download and update versions file
