@@ -34,6 +34,24 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - run: npm i -g npm@latest
+      # 🚫 Kill any token-based auth so npm uses OIDC
+      - name: Force OIDC (remove tokens & point to npmjs)
+        run: |
+          set -euxo pipefail
+          # Show if anything suspicious is present
+          env | grep -E 'NODE_AUTH_TOKEN|NPM_TOKEN' || true
+          npm config get registry
+          # Remove env token + any temp .npmrc with auth
+          unset NODE_AUTH_TOKEN || true
+          npm config delete //registry.npmjs.org/:_authToken || true
+          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
+            rm -f "$NPM_CONFIG_USERCONFIG"
+          fi
+          # Ensure we publish to npmjs for our scope
+          npm config set registry https://registry.npmjs.org/
+          npm config set @chili-publish:registry https://registry.npmjs.org/
+          npm ping
       - name: install dependencies
         run: yarn install
       - name: run linting
@@ -55,15 +73,33 @@ jobs:
       #   run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
-      - name: publish sdk build to npm registry
+      # ✅ Publish with npm (OIDC) from each package dir
+      - name: Publish SDK (OIDC)
+        working-directory: packages/sdk
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
         run: |
-          # Get the full reference of the release
-          ref=${{ github.ref }}
-          # Remove the refs/tags/ prefix
-          tag=${ref#refs/tags/}
-          stripped_tag=${tag%-*}
-          cd packages/sdk && npm publish --access public --tag test
-          cd packages/connectors && npm publish --access public --tag test
+          node -p "require('./package.json').name + ' ' + require('./package.json').version"
+          npm pack --dry-run
+          npm publish --access public --tag test
+
+      - name: Publish Connectors (OIDC)
+        working-directory: packages/connectors
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        run: |
+          node -p "require('./package.json').name + ' ' + require('./package.json').version"
+          npm pack --dry-run
+          npm publish --access public --tag test
+      # - name: publish sdk build to npm registry
+      #   run: |
+      #     # Get the full reference of the release
+      #     ref=${{ github.ref }}
+      #     # Remove the refs/tags/ prefix
+      #     tag=${ref#refs/tags/}
+      #     stripped_tag=${tag%-*}
+      #     cd packages/sdk && npm publish --access public --tag test
+      #     cd packages/connectors && npm publish --access public --tag test
       # - name: execute commit script
       #   run: node ./.github/scripts/commit.js
   #     - name: get new npm version
