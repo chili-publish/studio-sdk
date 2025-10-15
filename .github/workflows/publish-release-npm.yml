@@ -64,7 +64,7 @@ jobs:
           # Remove the refs/tags/ prefix
           tag=${ref#refs/tags/}
           stripped_tag=${tag%-*}
-          node cicd.js sdk,connectors npm publish --tag test
+          node cicd.js sdk,connectors npm publish --access public --tag test
       # - name: execute commit script
       #   run: node ./.github/scripts/commit.js
   #     - name: get new npm version
