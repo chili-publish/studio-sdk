@@ -4,14 +4,25 @@ on:
     types: [prereleased]
 env:
   NODE_VERSION: 20
+permissions:
+  contents: write
+  actions: read
+  packages: write
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: uat
     steps:
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PACKAGE_SECRET }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
       - name: Check cache
         id: cache
         uses: actions/cache@v4
@@ -28,19 +39,12 @@ jobs:
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run linting
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
-      - name: bump version locally
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin
-          git checkout -B main origin/main
-          npm version prerelease --git-tag-version=false --preid=rc
       - name: run readmeUpdater
         run: yarn make-badges
       - name: execute local js script
@@ -52,7 +56,7 @@ jobs:
       - name: publish sdk build
         run: node cicd.js sdk,connectors yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: get new npm version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -78,8 +82,6 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-      - name: execute commit script
-        run: node ./.github/scripts/commit.js
 
   update-version-management:
     runs-on: ubuntu-latest
@@ -139,8 +141,7 @@ jobs:
           inlineScript: |
             az storage blob upload-batch \
             --account-name ${{ vars.STORAGE_ACCOUNT_NAME_UAT }} \
-            --file temp/supported-versions.json 
-            --container-name shared 
-            --name version-management/supported-versions.json
+            --source temp/ \
+            --destination shared/version-management \
             --overwrite true \
             --auth-mode login
