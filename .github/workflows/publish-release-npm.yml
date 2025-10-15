@@ -6,9 +6,7 @@ env:
   NODE_VERSION: 20
 permissions:
   id-token: write  # Required for OIDC
-  contents: write
-  actions: read
-  packages: write
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
