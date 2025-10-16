@@ -38,6 +38,7 @@ export type FrameType = {
     // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
+    opacity: number;
 };
 
 export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
@@ -73,6 +74,7 @@ export type ImageFrameSource =
 export type ImageFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
@@ -82,6 +84,7 @@ export type ImageFrame = {
 export type ShapeFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.shape;
     blendMode: BlendMode;
     shapeProperties: {
@@ -104,6 +107,7 @@ export type ShapeFrame = {
 export type TextFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.text;
     textContent: string;
     paddingLeft: number;
@@ -126,6 +130,7 @@ export type TextFrame = {
 export type BarcodeFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.barcode;
     blendMode: BlendMode;
     barcodeProperties: {

@@ -44,6 +44,7 @@ const mockedEditorApi: EditorAPI = {
     setFrameWidth: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameY: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameOpacity: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameRotation: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
     removeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -108,6 +109,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameWidth');
     jest.spyOn(mockedEditorApi, 'setFrameX');
     jest.spyOn(mockedEditorApi, 'setFrameY');
+    jest.spyOn(mockedEditorApi, 'setFrameOpacity');
     jest.spyOn(mockedEditorApi, 'setFrameRotation');
     jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
     jest.spyOn(mockedEditorApi, 'removeFrames');
@@ -263,6 +265,12 @@ describe('FrameController', () => {
         await mockedFrameController.setHeight(id, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, '32');
+    });
+
+    it('Should be possible to set the opacity of a frame', async () => {
+        await mockedFrameController.setOpacity(id, 0.5);
+        expect(mockedEditorApi.setFrameOpacity).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameOpacity).toHaveBeenCalledWith(id, 0.5);
     });
 
     it('Should be possible to set the name of the frame', async () => {
