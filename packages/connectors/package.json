@@ -1,7 +1,11 @@
 {
     "name": "@chili-publish/studio-connectors",
-    "version": "1.31.1-alfa.10",
+    "version": "1.32.0",
     "types": "dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/chili-publish/studio-sdk.git"
+    },
     "type": "module",
     "files": [
         "dist"
