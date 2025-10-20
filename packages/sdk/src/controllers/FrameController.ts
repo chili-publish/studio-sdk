@@ -1230,7 +1230,7 @@ class FrameConstraintController {
     }
 
     /**
-     * This method will update (or set) the local gradient on a specified frame.
+     * This method will retrieve all constraints for a specified frame
      * @param id the id of the frame that we want to know the constraints from
      * @returns list of constraints
      */
@@ -1239,24 +1239,48 @@ class FrameConstraintController {
         return res.getFrameConstraints(id).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
-    setVerticalPosition = async (id: Id, allowed: boolean) => {
-        const constraint: FrameConstraint = { type: FrameConstraintType.verticalPosition, allowed };
+    /**
+     * This method will set the vertical movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether vertical movement is allowed or not
+     * @returns
+     */
+    setVerticalMovement = async (id: Id, allowed: boolean) => {
+        const constraint: FrameConstraint = { type: FrameConstraintType.verticalMovement, allowed };
         const res = await this.#editorAPI;
         return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
-    setHorizontalPosition = async (id: Id, allowed: boolean) => {
-        const constraint: FrameConstraint = { type: FrameConstraintType.horizontalPosition, allowed };
+    /**
+     * This method will set the horizontal movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether horizontal movement is allowed or not
+     * @returns
+     */
+    setHorizontalMovement = async (id: Id, allowed: boolean) => {
+        const constraint: FrameConstraint = { type: FrameConstraintType.horizontalMovement, allowed };
         const res = await this.#editorAPI;
         return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
+    /**
+     * This method will set the rotation constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether rotation is allowed or not
+     * @returns
+     */
     setRotation = async (id: Id, allowed: boolean) => {
         const constraint: FrameConstraint = { type: FrameConstraintType.rotation, allowed };
         const res = await this.#editorAPI;
         return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
+    /**
+     * This method will set the resize constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether resize is allowed or not
+     * @returns
+     */
     setResize = async (id: Id, allowed: boolean) => {
         const constraint: FrameConstraint = { type: FrameConstraintType.resize, allowed };
         const res = await this.#editorAPI;
