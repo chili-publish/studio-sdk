@@ -118,5 +118,5 @@ jobs:
               uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
               with:
                   environment: ${{ inputs.environment }}
-                  api-token: ${{ secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD }}
+                  api-token: ${{ (inputs.environment == 'PRD') && secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD || secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_UAT }}
                   path-prefix: shared/version-management
