@@ -120,6 +120,12 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
+      - name: Purge Cloudflare CDN
+        uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
+        with:
+          environment: PRD
+          api-token: ${{ secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD }}
+          path-prefix: sdk
 
   bump-version:
     runs-on: ubuntu-latest
