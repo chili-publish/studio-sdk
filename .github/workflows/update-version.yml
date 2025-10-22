@@ -1,5 +1,6 @@
 name: Update Version Management
 description: "Update the version management file"
+permissions: {}
 on:
   workflow_dispatch:
     inputs:
@@ -112,7 +113,7 @@ jobs:
   purge-cdn:
         needs: update-version-management
         name: Purge Cloudflare CDN
-        runs-on: k8s-rss-default
+        runs-on: ubuntu-latest
         steps:
             - name: Purge Cloudflare CDN
               uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
