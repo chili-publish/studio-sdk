@@ -1,10 +1,11 @@
-name: Update Engine Version Management
-description: "Update the engine version management file in case of an engine patch update"
+name: Update Version Management
+description: "Update the version management file"
+permissions: {}
 on:
   workflow_dispatch:
     inputs:
       sdk_version:
-        description: 'SDK version to update (e.g. 1.17 or "latest")'
+        description: 'SDK version to update (e.g. 1.17 or "latest", latest should only be used for patch version updates)'
         required: true
         type: string
       engine_version:
@@ -12,19 +13,24 @@ on:
         required: true
         type: string
       environment:
-        description: "Target environment (UAT or PROD)"
+        description: "Target environment (UAT or PRD)"
         required: true
         type: choice
         default: "UAT"
         options:
           - "UAT"
-          - "PROD"
+          - "PRD"
+      update_latest:
+        description: "Update the latest entry"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  update-engine-version-management:
+  update-version-management:
     runs-on: ubuntu-latest
     env:
-      STORAGE_ACCOUNT_NAME: ${{ (inputs.environment == 'PROD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }}
+      STORAGE_ACCOUNT_NAME: ${{ (inputs.environment == 'PRD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }}
     steps:
       - uses: actions/checkout@v3
 
@@ -67,6 +73,16 @@ jobs:
               if (versions.latest.sdkVersion.startsWith(sdkVersion)) {
                 versions.latest.engineVersion = engineVersion;
               }
+
+              // If update_latest is true, update the latest entry
+              if (inputs.update_latest) {
+                if (sdkVersion === 'latest') {
+                  console.error('SDK version latest cannot be used to update the latest entry');
+                  process.exit(1);
+                }
+                versions.latest.sdkVersion = sdkVersion;
+                versions.latest.engineVersion = engineVersion;
+              }
             }
             
             fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
@@ -93,3 +109,15 @@ jobs:
             --destination shared/version-management \
             --overwrite true \
             --auth-mode login
+
+  purge-cdn:
+    needs: update-version-management
+    name: Purge Cloudflare CDN
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge Cloudflare CDN
+        uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
+        with:
+            environment: ${{ inputs.environment }}
+            api-token: ${{ (inputs.environment == 'PRD') && secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD || secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_UAT }}
+            path-prefix: shared/version-management
