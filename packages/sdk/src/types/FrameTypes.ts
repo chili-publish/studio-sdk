@@ -413,3 +413,15 @@ export enum CropType {
     frameCrop = 'frameCrop',
     assetCrop = 'assetCrop',
 }
+
+export enum FrameConstraintType {
+    verticalMovement = 'verticalMovement',
+    horizontalMovement = 'horizontalMovement',
+    rotation = 'rotation',
+    resize = 'resize',
+}
+
+export type FrameConstraint = {
+    type: FrameConstraintType;
+    allowed: boolean;
+};
