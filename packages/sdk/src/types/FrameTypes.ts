@@ -2,6 +2,7 @@
 import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZone } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
 import { HasOverrideState, Id, PropertyState } from './CommonTypes';
+import { GradientUsage } from './GradientStyleTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
@@ -97,6 +98,7 @@ export type ShapeFrame = {
         sides?: number;
     };
     dropShadowSettings?: DropShadowSettings;
+    gradient?: GradientUsage;
 };
 
 export type TextFrame = {

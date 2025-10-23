@@ -14,12 +14,14 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  packages: read
 
 # Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
-
+env:
+  NODE_VERSION: 20
 jobs:
   # Single deploy job since we're just deploying
   deploy_to_pages:
@@ -27,9 +29,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,16 +40,16 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: build documentation to md
         run: yarn build-docs-md
       - name: build documentation to html

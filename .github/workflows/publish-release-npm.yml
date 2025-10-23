@@ -4,13 +4,23 @@ on:
     types: [released]
 env:
   NODE_VERSION: 20
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PACKAGE_SECRET }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
       - name: Check cache
         id: cache
         uses: actions/cache@v4
@@ -19,11 +29,28 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+      - name: Use Node ${{ env.NODE_VERSION }} for npm registry
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - run: npm i -g npm@latest
+      - name: Force OIDC (remove tokens & point to npmjs)
+        run: |
+          set -euxo pipefail
+          # Show if anything suspicious is present
+          env | grep -E 'NODE_AUTH_TOKEN|NPM_TOKEN' || true
+          npm config get registry
+          # Remove env token + any temp .npmrc with auth
+          unset NODE_AUTH_TOKEN || true
+          npm config delete //registry.npmjs.org/:_authToken || true
+          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
+            rm -f "$NPM_CONFIG_USERCONFIG"
+          fi
+          # Ensure we publish to npmjs for our scope
+          npm config set registry https://registry.npmjs.org/
+          npm config set @chili-publish:registry https://registry.npmjs.org/
+          npm ping
       - name: install dependencies
         run: yarn install
       - name: run linting
@@ -45,31 +72,25 @@ jobs:
         run: node ./.github/scripts/replicate-version.js
       - name: build code
         run: yarn build
-      - name: publish sdk build
+      - name: Publish SDK (OIDC)
+        working-directory: packages/sdk
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
         run: |
-          # Get the full reference of the release
-          ref=${{ github.ref }}
-          # Remove the refs/tags/ prefix
-          tag=${ref#refs/tags/}
-          stripped_tag=${tag%-*}
-          node cicd.js sdk,connectors yarn publish --tag $stripped_tag --tag latest
+          node -p "require('./package.json').name + ' ' + require('./package.json').version"
+          npm pack --dry-run
+          npm publish --access public --tag latest
+
+      - name: Publish Connectors (OIDC)
+        working-directory: packages/connectors
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      - name: Use Node ${{ env.NODE_VERSION }} for dev release
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@chili-publish"
-      - name: publish sdk build
-        run: node cicd.js sdk,connectors yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+          NPM_CONFIG_PROVENANCE: "true"
+        run: |
+          node -p "require('./package.json').name + ' ' + require('./package.json').version"
+          npm pack --dry-run
+          npm publish --access public --tag latest
       - name: execute commit script
         run: node ./.github/scripts/commit.js
-      - name: get new npm version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
       - name: copy file branch
         env:
           RELEASE_NAME: ${{ github.event.release.name }}
@@ -85,7 +106,6 @@ jobs:
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
           mkdir -p ${patchlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${patchlatestpath%"/merge"}
-          
 
       - name: Copy to Azure Blob Storage
         uses: azure/CLI@v1
@@ -100,70 +120,27 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
-
-  update-version-management:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+      - name: Purge Cloudflare CDN
+        uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Download and update versions file
-        run: |
-          # Create temporary directory
-          mkdir -p temp
-          # Download current versions file
-          curl -o temp/supported-versions.json https://stgrafxstudioprdpublic.blob.core.windows.net/shared/version-management/supported-versions.json
+          environment: PRD
+          api-token: ${{ secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD }}
+          path-prefix: sdk
 
-          # Get the SDK version from package.json
-          SDK_VERSION=$(node -p "require('./package.json').version")
-          # Strip everything after the patch version to get only major.minor.patch
-          SDK_VERSION=$(echo $SDK_VERSION | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+")
-
-          SDK_MAJOR_MINOR=$(echo $SDK_VERSION | cut -d. -f1,2)
-
-          # Get engine version from editor-engine.json and convert latest to 0
-          ENGINE_VERSION=$(node -p "require('./packages/sdk/editor-engine.json').current.replace('.latest', '.0')")
-
-          # Create updated versions file using node
-          node -e "
-            const args = process.argv.slice(1);
-            const fs = require('fs');
-            const versions = require('./temp/supported-versions.json');
-            const sdkVersion = args[0];
-            const engineVersion = args[1];
-            const majorMinor = args[2];
-            console.log(sdkVersion, engineVersion, majorMinor);
-            
-            // Update latest entry
-            versions.latest = {
-              sdkVersion: sdkVersion,
-              engineVersion: engineVersion
-            };
-            
-            // Add/update major.minor entry
-            versions[majorMinor] = {
-              sdkVersion: sdkVersion,
-              engineVersion: engineVersion
-            };
-            
-            fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
-          " $SDK_VERSION $ENGINE_VERSION $SDK_MAJOR_MINOR
-
-      - name: Upload to Azure Blob Storage
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az storage blob upload --file temp/supported-versions.json --container-name shared --name version-management/supported-versions.json --connection-string "${{ secrets.AZURE_CDN_STUDIO_PRD_CONNECTION_STRING }}" --overwrite true
   bump-version:
     runs-on: ubuntu-latest
-    needs: [update-version-management]
+    needs: build
     steps:
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PACKAGE_SECRET }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
       - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2
         with:
