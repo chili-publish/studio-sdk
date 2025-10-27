@@ -3,7 +3,7 @@ on:
   release:
     types: [released]
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 22.x
 permissions:
   id-token: write  # Required for OIDC
   contents: read
