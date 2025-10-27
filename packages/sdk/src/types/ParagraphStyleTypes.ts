@@ -131,6 +131,30 @@ export type ParagraphStyleUpdate = {
     bulletListCharacterStyleId?: {
         value?: string;
     };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListNumberingStyle?: {
+        value: string[];
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListLeftIndent?: {
+        value: string;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListTextIndent?: {
+        value: string;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListCharacterStyleId?: {
+        value?: string;
+    };
 };
 
 export type BulletListStyle = {
@@ -145,8 +169,14 @@ export type BulletListStyle = {
     characterStyleId?: string;
 };
 
+export type NumericListNumberingStyle = {
+    format: number;
+    symbol: number;
+};
+
 export type NumericListStyle = {
     leftIndent: number;
     textIndent: number;
+    numberingStyle: NumericListNumberingStyle[];
     characterStyleId?: string;
 };
