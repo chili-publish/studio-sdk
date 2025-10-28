@@ -14,7 +14,6 @@ import {
     FrameConfiguration,
     FrameConstraint,
     FrameConstraintsDeltaUpdate,
-    FrameConstraintType,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
