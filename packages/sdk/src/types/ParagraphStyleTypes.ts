@@ -135,7 +135,7 @@ export type ParagraphStyleUpdate = {
      * @experimental This property is experimental and may be changed in the future.
      */
     numericListNumberingStyle?: {
-        value: string[];
+        value: NumericListNumberingStyle[];
     };
     /**
      * @experimental This property is experimental and may be changed in the future.

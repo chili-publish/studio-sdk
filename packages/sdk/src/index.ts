@@ -144,7 +144,12 @@ export { ColorUsageType } from './types/ColorStyleTypes';
 export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
 export { GradientUsageType } from './types/GradientStyleTypes';
 export type { DocumentGradient, GradientDefinition, GradientUpdate } from './types/GradientStyleTypes';
-export type { ParagraphStyle, ParagraphStyleUpdate, NumericListStyle, NumericListNumberingStyle} from './types/ParagraphStyleTypes';
+export type {
+    ParagraphStyle,
+    ParagraphStyleUpdate,
+    NumericListStyle,
+    NumericListNumberingStyle,
+} from './types/ParagraphStyleTypes';
 
 export type {
     AddDocumentFontFamily,
