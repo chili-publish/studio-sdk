@@ -1216,7 +1216,7 @@ export class FrameController {
     };
 }
 
-class FrameConstraintController {
+export class FrameConstraintController {
     /**
      * @ignore
      */

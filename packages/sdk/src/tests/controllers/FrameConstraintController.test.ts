@@ -2,11 +2,11 @@ import { EditorAPI, Id } from '../../types/CommonTypes';
 import { FrameConstraintsDeltaUpdate } from '../../types/FrameTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
-import { FrameController } from '../../controllers/FrameController';
+import { FrameConstraintController, FrameController } from '../../controllers/FrameController';
 
 let id: Id;
 let mockedFrameController: FrameController;
-let frameConstraintController: any;
+let frameConstraintController: FrameConstraintController;
 
 const mockedEditorApi: EditorAPI = {
     getFrameConstraints: async () => getEditorResponseData(castToEditorResponse([])),
