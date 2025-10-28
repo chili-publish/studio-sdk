@@ -19,6 +19,7 @@ beforeEach(() => {
 
     jest.spyOn(mockedEditorApi, 'getFrameConstraints');
     jest.spyOn(mockedEditorApi, 'updateFrameConstraints');
+    jest.clearAllMocks();
 
     id = mockSelectFrame.id;
 });
@@ -60,7 +61,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setVerticalMovement(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(2);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -77,7 +78,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setHorizontalMovement(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(3);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -92,7 +93,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setHorizontalMovement(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(4);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -109,7 +110,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setRotation(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(5);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -124,7 +125,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setRotation(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(6);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -141,7 +142,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setResize(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(7);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -156,7 +157,7 @@ describe('FrameConstraintController', () => {
 
             await frameConstraintController.setResize(id, allowed);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(8);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
                 JSON.stringify(expectedDeltaUpdate)
@@ -171,7 +172,7 @@ describe('FrameConstraintController', () => {
             await frameConstraintController.setRotation(id, true);
             await frameConstraintController.setResize(id, false);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(12);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(4);
 
             const calls = (mockedEditorApi.updateFrameConstraints as jest.Mock).mock.calls;
             const lastFourCalls = calls.slice(-4);
@@ -189,7 +190,7 @@ describe('FrameConstraintController', () => {
             await frameConstraintController.setVerticalMovement(frameId1, true);
             await frameConstraintController.setHorizontalMovement(frameId2, false);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(14);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(2);
 
             const calls = (mockedEditorApi.updateFrameConstraints as jest.Mock).mock.calls;
             const lastTwoCalls = calls.slice(-2);
