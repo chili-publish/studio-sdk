@@ -1,5 +1,5 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
-import { FrameConstraint, FrameConstraintType, FrameConstraintsDeltaUpdate } from '../../types/FrameTypes';
+import { FrameConstraintsDeltaUpdate } from '../../types/FrameTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { FrameController } from '../../controllers/FrameController';
