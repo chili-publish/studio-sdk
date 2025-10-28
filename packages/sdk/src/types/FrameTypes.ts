@@ -424,4 +424,22 @@ export enum FrameConstraintType {
 export type FrameConstraint = {
     type: FrameConstraintType;
     allowed: boolean;
-};
+} & HasOverrideState;
+
+export interface FrameConstraintsDeltaUpdate {
+    selectable?: {
+        value: boolean | null;
+    };
+    horizontalMovementAllowed?: {
+        value: boolean;
+    };
+    verticalMovementAllowed?: {
+        value: boolean;
+    };
+    rotationAllowed?: {
+        value: boolean;
+    };
+    resizeAllowed?: {
+        value: boolean;
+    };
+}
