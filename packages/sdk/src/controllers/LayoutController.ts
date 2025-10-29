@@ -11,6 +11,7 @@ import {
 } from '../types/LayoutTypes';
 import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
+import { SelectLayoutOptions } from '../next/types/LayoutTypes';
 
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
@@ -112,7 +113,7 @@ export class LayoutController {
      * @param id the id of a specific layout
      * @returns
      */
-    select = async (id: Id) => {
+    select = async (id: Id, options?: SelectLayoutOptions) => {
         const res = await this.#editorAPI;
         return res.selectLayout(id, null).then((result) => getEditorResponseData<null>(result));
     };
