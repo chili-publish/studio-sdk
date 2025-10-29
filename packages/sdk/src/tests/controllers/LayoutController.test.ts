@@ -156,7 +156,7 @@ describe('LayoutController', () => {
     it('Should be possible to select a layout', async () => {
         await mockedLayoutController.select('1');
         expect(mockedEditorApi.selectLayout).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.selectLayout).toHaveBeenCalledWith('1');
+        expect(mockedEditorApi.selectLayout).toHaveBeenCalledWith('1', null);
     });
     it('Should be possible to duplicate a layout', async () => {
         await mockedLayoutController.duplicate('1');
