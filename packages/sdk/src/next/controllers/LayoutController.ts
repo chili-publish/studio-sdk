@@ -32,7 +32,7 @@ export class LayoutController {
      */
     select = async (id: Id, options: SelectLayoutOptions) => {
         const res = await this.#editorAPI;
-        return res.selectLayout(id, JSON.stringify(options)).then((result) => getEditorResponseData<null>(result));
+        return res.selectLayoutWithOptions(id, JSON.stringify(options)).then((result) => getEditorResponseData<null>(result));
     };
 
 }
