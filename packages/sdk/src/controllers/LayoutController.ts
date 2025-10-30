@@ -113,9 +113,9 @@ export class LayoutController {
      * @param id the id of a specific layout
      * @returns
      */
-    select = async (id: Id, options?: SelectLayoutOptions) => {
+    select = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.selectLayout(id, null).then((result) => getEditorResponseData<null>(result));
+        return res.selectLayout(id).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
