@@ -1,11 +1,11 @@
-import { MeasurementUnit } from "../../types/LayoutTypes";
+import { MeasurementUnit } from '../../types/LayoutTypes';
 
 export type SelectLayoutOptions = {
-    size?: PazeSize
+    pageSize?: LayoutOptionPageSize;
 };
 
-export type PazeSize = {
+export type LayoutOptionPageSize = {
     width: number;
     height: number;
-    unit: MeasurementUnit
+    unit: MeasurementUnit;
 };
