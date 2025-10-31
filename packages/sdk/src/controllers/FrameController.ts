@@ -13,7 +13,7 @@ import {
     FrameAnchorType,
     FrameConfiguration,
     FrameConstraint,
-    FrameConstraintType,
+    FrameConstraintsDeltaUpdate,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
@@ -1227,7 +1227,7 @@ export class FrameController {
     };
 }
 
-class FrameConstraintController {
+export class FrameConstraintController {
     /**
      * @ignore
      */
@@ -1257,9 +1257,9 @@ class FrameConstraintController {
      * @returns
      */
     setVerticalMovement = async (id: Id, allowed: boolean) => {
-        const constraint: FrameConstraint = { type: FrameConstraintType.verticalMovement, allowed };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { verticalMovementAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
     /**
@@ -1269,9 +1269,9 @@ class FrameConstraintController {
      * @returns
      */
     setHorizontalMovement = async (id: Id, allowed: boolean) => {
-        const constraint: FrameConstraint = { type: FrameConstraintType.horizontalMovement, allowed };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { horizontalMovementAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
     /**
@@ -1281,9 +1281,9 @@ class FrameConstraintController {
      * @returns
      */
     setRotation = async (id: Id, allowed: boolean) => {
-        const constraint: FrameConstraint = { type: FrameConstraintType.rotation, allowed };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { rotationAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 
     /**
@@ -1293,8 +1293,8 @@ class FrameConstraintController {
      * @returns
      */
     setResize = async (id: Id, allowed: boolean) => {
-        const constraint: FrameConstraint = { type: FrameConstraintType.resize, allowed };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(constraint)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
     };
 }
