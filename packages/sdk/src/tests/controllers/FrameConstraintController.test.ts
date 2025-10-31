@@ -17,9 +17,9 @@ beforeEach(() => {
     mockedFrameController = new FrameController(mockedEditorApi);
     frameConstraintController = mockedFrameController.constraints;
 
+    jest.clearAllMocks();
     jest.spyOn(mockedEditorApi, 'getFrameConstraints');
     jest.spyOn(mockedEditorApi, 'updateFrameConstraints');
-    jest.clearAllMocks();
 
     id = mockSelectFrame.id;
 });
