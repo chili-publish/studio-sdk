@@ -418,3 +418,33 @@ export enum CropType {
     frameCrop = 'frameCrop',
     assetCrop = 'assetCrop',
 }
+
+export enum FrameConstraintType {
+    verticalMovement = 'verticalMovement',
+    horizontalMovement = 'horizontalMovement',
+    rotation = 'rotation',
+    resize = 'resize',
+}
+
+export type FrameConstraint = {
+    type: FrameConstraintType;
+    allowed: boolean;
+} & HasOverrideState;
+
+export interface FrameConstraintsDeltaUpdate {
+    selectable?: {
+        value: boolean | null;
+    };
+    horizontalMovementAllowed?: {
+        value: boolean;
+    };
+    verticalMovementAllowed?: {
+        value: boolean;
+    };
+    rotationAllowed?: {
+        value: boolean;
+    };
+    resizeAllowed?: {
+        value: boolean;
+    };
+}
