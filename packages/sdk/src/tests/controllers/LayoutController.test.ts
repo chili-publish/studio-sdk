@@ -25,7 +25,7 @@ const mockedEditorApi: EditorAPI = {
     addLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     addLayouts: async () => getEditorResponseData(castToEditorResponse(null)),
     renameLayout: async () => getEditorResponseData(castToEditorResponse(null)),
-    selectLayout: async () => getEditorResponseData(castToEditorResponse(null)),
+    selectLayoutWithOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutHeight: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -61,7 +61,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'addLayout');
     jest.spyOn(mockedEditorApi, 'addLayouts');
     jest.spyOn(mockedEditorApi, 'renameLayout');
-    jest.spyOn(mockedEditorApi, 'selectLayout');
+    jest.spyOn(mockedEditorApi, 'selectLayoutWithOptions');
     jest.spyOn(mockedEditorApi, 'duplicateLayout');
     jest.spyOn(mockedEditorApi, 'resetLayout');
     jest.spyOn(mockedEditorApi, 'setLayoutHeight');
@@ -155,8 +155,21 @@ describe('LayoutController', () => {
     });
     it('Should be possible to select a layout', async () => {
         await mockedLayoutController.select('1');
-        expect(mockedEditorApi.selectLayout).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.selectLayout).toHaveBeenCalledWith('1');
+        expect(mockedEditorApi.selectLayoutWithOptions).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.selectLayoutWithOptions).toHaveBeenCalledWith('1', null);
+    });
+    it('Should be possible to select a layout with a page size', async () => {
+        const pageSize = {
+            width: 210,
+            height: 297,
+            unit: MeasurementUnit.mm,
+        };
+        await mockedLayoutController.selectWithPageSize('1', pageSize);
+        expect(mockedEditorApi.selectLayoutWithOptions).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.selectLayoutWithOptions).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify({ pageSize: pageSize }),
+        );
     });
     it('Should be possible to duplicate a layout', async () => {
         await mockedLayoutController.duplicate('1');

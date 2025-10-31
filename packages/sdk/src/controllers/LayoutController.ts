@@ -1,17 +1,17 @@
+import { CallSender } from 'penpal';
+import { LayoutOptionPageSize, SelectLayoutOptions } from '../next/types/LayoutTypes';
+import { ColorUsage } from '../types/ColorStyleTypes';
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     BleedDeltaUpdate,
     Layout,
     LayoutIntent,
     LayoutPreset,
-    ResizableLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
+    ResizableLayoutPropertiesUpdate,
 } from '../types/LayoutTypes';
-import { CallSender } from 'penpal';
-import { ColorUsage } from '../types/ColorStyleTypes';
-import { SelectLayoutOptions } from '../next/types/LayoutTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
@@ -115,7 +115,24 @@ export class LayoutController {
      */
     select = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.selectLayout(id).then((result) => getEditorResponseData<null>(result));
+        return res.selectLayoutWithOptions(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will select a specific layout and set the page size to the provided value. Note that
+     * the same limitations that apply to setPageSize also apply here.
+     * @param id the id of a specific layout
+     * @param pageSize the new page size that will be applied when selecting the layout
+     * @returns
+     */
+    selectWithPageSize = async (id: Id, pageSize: LayoutOptionPageSize) => {
+        const res = await this.#editorAPI;
+        const options: SelectLayoutOptions = {
+            pageSize: pageSize,
+        };
+        return res
+            .selectLayoutWithOptions(id, JSON.stringify(options))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
