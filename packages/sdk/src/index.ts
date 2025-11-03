@@ -176,6 +176,8 @@ export {
     MarkedListType,
 } from './types/TextStyleTypes';
 
+export { NumberListFormat, NumberListSeparatorSymbol } from './types/ParagraphStyleTypes';
+
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 export type {
