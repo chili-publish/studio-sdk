@@ -436,15 +436,15 @@ export interface FrameConstraintsDeltaUpdate {
         value: boolean | null;
     };
     horizontalMovementAllowed?: {
-        value: boolean;
+        value: boolean | null;
     };
     verticalMovementAllowed?: {
-        value: boolean;
+        value: boolean | null;
     };
     rotationAllowed?: {
-        value: boolean;
+        value: boolean | null;
     };
     resizeAllowed?: {
-        value: boolean;
+        value: boolean | null;
     };
 }
