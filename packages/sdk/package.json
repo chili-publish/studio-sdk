@@ -42,7 +42,7 @@
         "vite-plugin-dts": "^4.5.3"
     },
     "engines": {
-        "node": ">=18.0.0 <23.0.0"
+        "node": ">=18.0.0"
     },
     "scripts": {
         "clean": "shx rm -rf _bundles lib",
