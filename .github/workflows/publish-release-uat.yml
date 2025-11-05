@@ -82,66 +82,9 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
-
-  update-version-management:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+      - name: Purge Cloudflare CDN
+        uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Download and update versions file
-        run: |
-          # Create temporary directory
-          mkdir -p temp
-          # Download current versions file
-          curl -o temp/supported-versions.json https://stgrafxstudioprdpublic.blob.core.windows.net/shared/version-management/supported-versions.json
-
-          # Get the SDK version from package.json
-          SDK_VERSION=$(node -p "require('./package.json').version")
-          SDK_MAJOR_MINOR=$(echo $SDK_VERSION | cut -d. -f1,2)
-
-          # Get engine version from editor-engine.json and convert latest to 0
-          ENGINE_VERSION=$(node -p "require('./packages/sdk/editor-engine.json').current.replace('.latest', 'rc.0'")
-
-          # Create updated versions file using node
-          node -e "
-            const args = process.argv.slice(1);
-            const fs = require('fs');
-            const versions = require('./temp/supported-versions.json');
-            const sdkVersion = args[0];
-            const engineVersion = args[1];
-            const majorMinor = args[2];
-            console.log(sdkVersion, engineVersion, majorMinor);
-            
-            // Update latest entry
-            versions.latest = {
-              sdkVersion: sdkVersion,
-              engineVersion: engineVersion
-            };
-            
-            // Add/update major.minor entry
-            versions[majorMinor] = {
-              sdkVersion: sdkVersion,
-              engineVersion: engineVersion
-            };
-            
-            fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
-          " $SDK_VERSION $ENGINE_VERSION $SDK_MAJOR_MINOR
-      - name: Azure Login action
-        uses: azure/login@v2
-        with:
-          creds: '{"clientId":"${{ vars.SP_FRONTEND_CLIENT_ID }}", "clientSecret": "${{ secrets.SP_FRONTEND_CLIENT_SECRET }}","tenantId":"${{ vars.AZURE_TENANT_ID }}", "subscriptionId": "${{ vars.SUBSCRIPTION_ID_UAT }}"}'
-      - name: Upload build
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az storage blob upload-batch \
-            --account-name ${{ vars.STORAGE_ACCOUNT_NAME_UAT }} \
-            --source temp/ \
-            --destination shared/version-management \
-            --overwrite true \
-            --auth-mode login
+          environment: UAT
+          api-token: ${{ secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_UAT }}
+          path-prefix: sdk

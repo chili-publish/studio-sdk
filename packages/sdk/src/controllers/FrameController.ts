@@ -263,6 +263,17 @@ export class FrameController {
     };
 
     /**
+     * This method will set the frame opacity
+     * @param id the id of a specific frame
+     * @param opacity the opacity of the frame in range [0.0 - 1.0]
+     * @returns 
+     */
+    setOpacity = async (id: Id, opacity: number) => {
+        const res = await this.#editorAPI;
+        return res.setFrameOpacity(id, opacity).then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
      * This method will update the name of a specific frame
      * @param id the id of a specific frame
      * @param name the new name that the frame should receive
