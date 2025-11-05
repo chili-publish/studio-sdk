@@ -121,7 +121,7 @@ export class LayoutController {
 
     /**
      * This method will select a specific layout and set the page size to the provided value. Note that
-     * the same limitations that apply to setPageSize also apply here.
+     * the same limitations that apply to PageController.setSize also apply here.
      * @param id the id of a specific layout
      * @param pageSize the new page size that will be applied when selecting the layout
      * @returns
