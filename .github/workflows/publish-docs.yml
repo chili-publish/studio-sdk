@@ -21,7 +21,7 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 22.x
 jobs:
   # Single deploy job since we're just deploying
   deploy_to_pages:
