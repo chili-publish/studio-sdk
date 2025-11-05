@@ -182,3 +182,13 @@ export type ResizableLayoutPropertiesUpdate = {
         value: LayoutAspectRange | null;
     } | null;
 };
+
+export type SelectLayoutOptions = {
+    pageSize?: LayoutOptionPageSize;
+};
+
+export type LayoutOptionPageSize = {
+    width: number;
+    height: number;
+    unit: MeasurementUnit;
+};
