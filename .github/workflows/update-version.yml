@@ -110,14 +110,14 @@ jobs:
             --overwrite true \
             --auth-mode login
 
-  purge-cdn:
-    needs: update-version-management
-    name: Purge Cloudflare CDN
-    runs-on: ubuntu-latest
-    steps:
-      - name: Purge Cloudflare CDN
-        uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
-        with:
-            environment: ${{ inputs.environment }}
-            api-token: ${{ (inputs.environment == 'PRD') && secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD || secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_UAT }}
-            path-prefix: shared/version-management
+  # purge-cdn:
+  #   needs: update-version-management
+  #   name: Purge Cloudflare CDN
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Purge Cloudflare CDN
+  #       uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
+  #       with:
+  #           environment: ${{ inputs.environment }}
+  #           api-token: ${{ (inputs.environment == 'PRD') && secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD || secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_UAT }}
+  #           path-prefix: shared/version-management
