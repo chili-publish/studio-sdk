@@ -6,7 +6,6 @@ permissions:
   contents: read
   actions: read
   packages: read
-  pull-requests: write
 jobs:
   build:
     runs-on: ubuntu-latest
