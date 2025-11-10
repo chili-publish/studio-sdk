@@ -12,7 +12,7 @@ import {
     FrameAnchorProperties,
     FrameAnchorType,
     FrameConfiguration,
-    FrameConstraint,
+    FrameConstraints,
     FrameConstraintsDeltaUpdate,
     FrameLayoutType,
     FrameType,
@@ -1243,23 +1243,23 @@ export class FrameConstraintController {
     /**
      * This method will retrieve all constraints for a specified frame
      * @param id the id of the frame that we want to know the constraints from
-     * @returns list of constraints
+     * @returns the constraints configuration for the frame
      */
     get = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.getFrameConstraints(id).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.getFrameConstraints(id).then((result) => getEditorResponseData<FrameConstraints>(result));
     };
 
     /**
-     * This method will set the vertical movement constraint for a specified frame
+     * This method will set the selectable constraint for a specified frame
      * @param id the id of the frame that needs to get updated
-     * @param allowed whether vertical movement is allowed or not
+     * @param allowed whether the frame is selectable or not
      * @returns
      */
-    setVerticalMovement = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { verticalMovementAllowed: { value: allowed } };
+    setSelectable = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectable: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -1271,8 +1271,22 @@ export class FrameConstraintController {
     setHorizontalMovement = async (id: Id, allowed: boolean) => {
         const deltaUpdate: FrameConstraintsDeltaUpdate = { horizontalMovementAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will set the vertical movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether vertical movement is allowed or not
+     * @returns
+     */
+    setVerticalMovement = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { verticalMovementAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+
 
     /**
      * This method will set the rotation constraint for a specified frame
@@ -1283,7 +1297,7 @@ export class FrameConstraintController {
     setRotation = async (id: Id, allowed: boolean) => {
         const deltaUpdate: FrameConstraintsDeltaUpdate = { rotationAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -1295,6 +1309,6 @@ export class FrameConstraintController {
     setResize = async (id: Id, allowed: boolean) => {
         const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed } };
         const res = await this.#editorAPI;
-        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<FrameConstraint[]>(result));
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
 }
