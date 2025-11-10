@@ -39,17 +39,28 @@ describe('FrameConstraintController', () => {
 
     describe('setSelectable', () => {
         it('should set selectable constraint to allowed', async () => {
-            const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: allowed }
+                selectable: { value: true }
             };
+
+            await frameConstraintController.setSelectable(id, true);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(id, JSON.stringify(expectedDeltaUpdate));
         });
 
         it('should set selectable constraint to not allowed', async () => {
-            const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: allowed }
+                selectable: { value: false }
             };
+
+            await frameConstraintController.setSelectable(id, false);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate)
+            );
         });
     });
 
