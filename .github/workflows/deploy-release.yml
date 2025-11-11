@@ -37,8 +37,9 @@ jobs:
             echo "environment=uat" >> $GITHUB_OUTPUT
             echo "registry_url=https://npm.pkg.github.com" >> $GITHUB_OUTPUT
             echo "npm_scope=@chili-publish" >> $GITHUB_OUTPUT
-            echo "subscription_id=${{ vars.SUBSCRIPTION_ID_UAT }}" >> $GITHUB_OUTPUT
-            echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_UAT }}" >> $GITHUB_OUTPUT
+            # TEMPORARY: Use DEV storage for testing
+            echo "subscription_id=${{ vars.SUBSCRIPTION_ID_DEV }}" >> $GITHUB_OUTPUT
+            echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" >> $GITHUB_OUTPUT
             echo "Detected UAT release: $TAG_NAME"
           elif echo "$TAG_NAME" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "is_uat=false" >> $GITHUB_OUTPUT
@@ -46,8 +47,9 @@ jobs:
             echo "environment=prd" >> $GITHUB_OUTPUT
             echo "registry_url=https://registry.npmjs.org" >> $GITHUB_OUTPUT
             echo "npm_scope=" >> $GITHUB_OUTPUT
-            echo "subscription_id=${{ vars.SUBSCRIPTION_ID_PRD }}" >> $GITHUB_OUTPUT
-            echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_PRD }}" >> $GITHUB_OUTPUT
+            # TEMPORARY: Use DEV storage for testing
+            echo "subscription_id=${{ vars.SUBSCRIPTION_ID_DEV }}" >> $GITHUB_OUTPUT
+            echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" >> $GITHUB_OUTPUT
             echo "Detected PRD release: $TAG_NAME"
           else
             echo "❌ Error: Tag format not recognized. Expected format: X.Y.Z (PRD) or X.Y.Z-rc.N (UAT)"
@@ -171,26 +173,29 @@ jobs:
         env:
           ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
 
+      # TEMPORARY: Using --dry-run for testing - no real NPM publish
       - name: Publish SDK to GitHub Packages (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
         working-directory: packages/sdk
         run: |
           node -p "require('./package.json').name + ' ' + require('./package.json').version"
           npm pack --dry-run
-          npm publish
+          npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # TEMPORARY: Using --dry-run for testing - no real NPM publish
       - name: Publish Connectors to GitHub Packages (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
         working-directory: packages/connectors
         run: |
           node -p "require('./package.json').name + ' ' + require('./package.json').version"
           npm pack --dry-run
-          npm publish
+          npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # TEMPORARY: Using --dry-run for testing - no real NPM publish
       - name: Publish SDK to NPM (PRD OIDC)
         if: needs.detect-release-type.outputs.is_prd == 'true'
         working-directory: packages/sdk
@@ -199,8 +204,9 @@ jobs:
         run: |
           node -p "require('./package.json').name + ' ' + require('./package.json').version"
           npm pack --dry-run
-          npm publish --access public --tag latest
+          npm publish --access public --tag latest --dry-run
 
+      # TEMPORARY: Using --dry-run for testing - no real NPM publish
       - name: Publish Connectors to NPM (PRD OIDC)
         if: needs.detect-release-type.outputs.is_prd == 'true'
         working-directory: packages/connectors
@@ -209,7 +215,7 @@ jobs:
         run: |
           node -p "require('./package.json').name + ' ' + require('./package.json').version"
           npm pack --dry-run
-          npm publish --access public --tag latest
+          npm publish --access public --tag latest --dry-run
 
   deploy-azure:
     needs: [detect-release-type, preflight]
@@ -400,8 +406,6 @@ jobs:
             echo "is_hotfix=false" >> $GITHUB_OUTPUT
             echo "Detected regular release (minor version changed: $PREVIOUS_MINOR -> $CURRENT_MINOR)"
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get current version
         id: current_version
@@ -411,6 +415,7 @@ jobs:
           echo "current_version=$VERSION" >> $GITHUB_OUTPUT
           echo "Current version in main: $VERSION"
 
+      # TEMPORARY: Only calculate next version for testing - no commit/push
       - name: Bump to next minor alpha
         if: steps.check_hotfix.outputs.is_hotfix != 'true'
         id: bump_version
@@ -418,26 +423,30 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-          # Bump to next minor version with alpha.0 (only for regular production releases)
+          # Calculate next minor version with alpha.0 (only for regular production releases)
+          # We don't commit, so package.json changes are only in memory
           NEW_VERSION=$(npm version preminor --preid=alpha --git-tag-version=false)
 
           # Remove 'v' prefix if present
           NEXT_VERSION=$(echo $NEW_VERSION | sed 's/^v//')
 
           echo "new_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
-          echo "Bumped version to: $NEXT_VERSION"
+          echo "📦 Next version would be: $NEXT_VERSION"
+          echo "⚠️  TEMPORARY: Version bump calculated but not committed/pushed (for testing)"
 
-      - name: Execute replicate version script
-        if: steps.check_hotfix.outputs.is_hotfix != 'true'
-        run: node ./.github/scripts/replicate-version.js
+          exit 0; # No commit/push
 
-      - name: Commit and push version bump
-        if: steps.check_hotfix.outputs.is_hotfix != 'true'
-        run: |
-          git add package.json yarn.lock || true
-          git add packages/*/package.json packages/*/yarn.lock || true
-          git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
-          git push origin main
-          echo "Pushed version bump to main branch"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # TEMPORARY: Disabled for testing
+      # - name: Execute replicate version script
+      #   if: steps.check_hotfix.outputs.is_hotfix != 'true'
+      #   run: node ./.github/scripts/replicate-version.js
+
+      # TEMPORARY: Disabled for testing
+      # - name: Commit and push version bump
+      #   if: steps.check_hotfix.outputs.is_hotfix != 'true'
+      #   run: |
+      #     git add package.json yarn.lock || true
+      #     git add packages/*/package.json packages/*/yarn.lock || true
+      #     git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
+      #     git push origin main
+      #     echo "Pushed version bump to main branch"

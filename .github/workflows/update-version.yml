@@ -31,6 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       STORAGE_ACCOUNT_NAME: ${{ (inputs.environment == 'PRD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }}
+      SUBSCRIPTION_ID: ${{ (inputs.environment == 'PRD') && vars.SUBSCRIPTION_ID_PROD || vars.SUBSCRIPTION_ID_UAT }}
+      STORAGE_BASE_URL: ${{ (inputs.environment == 'PRD') && 'https://studio-cdn.chiligrafx.com' || 'https://studio-cdn.chiligrafx-uat.com' }}
     steps:
       - uses: actions/checkout@v3
 
@@ -39,8 +41,8 @@ jobs:
           # Create temporary directory
           mkdir -p temp
           # Download current versions file
-          
-          curl -o temp/supported-versions.json https://studio-cdn.chiligrafx${{ (inputs.environment == 'UAT') && '-uat' || '' }}.com/shared/version-management/supported-versions.json
+
+          curl -o temp/supported-versions.json ${{ env.STORAGE_BASE_URL }}/shared/version-management/supported-versions.json
 
           # Create updated versions file using node
           node -e "
@@ -96,7 +98,7 @@ jobs:
               "clientId": "${{ vars.SP_FRONTEND_CLIENT_ID }}",
               "clientSecret": "${{ secrets.SP_FRONTEND_CLIENT_SECRET }}",
               "tenantId": "${{ vars.AZURE_TENANT_ID }}",
-              "subscriptionId": "${{ (inputs.environment == 'PROD') && vars.SUBSCRIPTION_ID_PROD || vars.SUBSCRIPTION_ID_UAT }}"
+              "subscriptionId": "${{ env.SUBSCRIPTION_ID }}"
             }
       - name: Upload build
         uses: azure/cli@v2
