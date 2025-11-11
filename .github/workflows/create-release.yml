@@ -1,0 +1,318 @@
+name: Create GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (uat or prd)"
+        required: true
+        type: choice
+        options:
+          - uat
+          - prd
+      release_type:
+        description: "Release type (regular or hotfix)"
+        required: true
+        type: choice
+        options:
+          - regular
+          - hotfix
+      engine_version:
+        description: "Engine version to use (e.g., 2.15.latest) - optional"
+        required: false
+        type: string
+env:
+  NODE_VERSION: 22.x
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Fetch and cache GitHub Releases
+        id: cache_releases
+        run: |
+          # Fetch all releases once and cache as JSON
+          RELEASES_JSON=$(gh release list --limit 10 --json isPrerelease,tagName)
+
+          # Store as multiline output (GitHub Actions supports this)
+          {
+            echo 'releases_json<<EOF'
+            echo "$RELEASES_JSON"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+          echo "Fetched $(echo "$RELEASES_JSON" | jq 'length') releases"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find previous release tag (UAT)
+        if: github.event.inputs.environment == 'uat'
+        id: previous_tag_uat
+        run: |
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          # Use cached releases data
+          RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
+
+          if [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # For UAT hotfix: find the latest UAT release (prerelease)
+            # This handles the case where we're hotfixing an existing UAT release (e.g., 1.2.3-rc.0 -> 1.2.3-rc.1)
+            PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == true) | .tagName' | head -1)
+            
+            if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
+              echo "No UAT releases found for hotfix, using latest production release as previous tag"
+              PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            fi
+          else
+            # For UAT regular: always use the latest production release as previous tag
+            PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+          fi
+
+          if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
+            echo "❌ Error: No previous release found. A previous release is required."
+            exit 1
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "Previous UAT tag: $PREVIOUS_TAG"
+
+      - name: Find previous release tag (PRD)
+        if: github.event.inputs.environment == 'prd'
+        id: previous_tag_prd
+        run: |
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+
+          # Use cached releases data
+          RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
+
+          # Get all UAT releases (prereleases)
+          ALL_UAT_TAGS=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == true) | .tagName')
+
+          if [ -z "$ALL_UAT_TAGS" ]; then
+            echo "❌ Error: No UAT releases found. PRD releases must be created from UAT releases."
+            exit 1
+          fi
+
+          # Determine if we're looking for regular or hotfix UAT tag
+          # Regular: minor version changed from previous
+          # Hotfix: patch increment (same minor version)
+
+          if [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # For hotfix PRD: find latest hotfix UAT tag (patch increment)
+            # Get the latest production release to compare minor versions
+            LATEST_PRD=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+
+            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
+              # Extract major.minor from latest PRD
+              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              # Find UAT tags with same minor version (hotfix)
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
+                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
+                if [ "$UAT_MINOR" = "$PRD_MINOR" ]; then
+                  echo "$tag"
+                fi
+              done | head -1)
+            else
+              # No PRD releases yet, just get latest UAT
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+            fi
+          else
+            # For regular PRD: find latest regular UAT tag (minor increment)
+            # Get the latest production release to compare
+            LATEST_PRD=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+
+            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
+              # Extract major.minor from latest PRD
+              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              # Find UAT tags with different (higher) minor version (regular)
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
+                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
+                if [ "$UAT_MINOR" != "$PRD_MINOR" ]; then
+                  echo "$tag"
+                fi
+              done | head -1)
+            else
+              # No PRD releases yet, get latest UAT
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+            fi
+          fi
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "❌ Error: No matching UAT release found for $RELEASE_TYPE PRD release."
+            exit 1
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "Found base UAT tag for PRD: $PREVIOUS_TAG"
+
+      - name: Checkout UAT tag for PRD release
+        if: github.event.inputs.environment == 'prd'
+        run: |
+          UAT_TAG="${{ steps.previous_tag_prd.outputs.previous_tag }}"
+          echo "Checking out UAT tag: $UAT_TAG"
+          git fetch --tags
+          git checkout "$UAT_TAG"
+          echo "Checked out commit from UAT tag: $UAT_TAG"
+
+      - name: Bump version in memory
+        id: bump_version
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          ENVIRONMENT="${{ github.event.inputs.environment }}"
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # Hotfix: patch version increment
+            if [ "$ENVIRONMENT" = "uat" ]; then
+              # UAT hotfix: Check if we're hotfixing an existing UAT release or creating a new one
+              # If current version has -rc.X, we're hotfixing an existing UAT release
+              if echo "$CURRENT_VERSION" | grep -qE '-rc\.[0-9]+$'; then
+                # Hotfix existing UAT release: increment prerelease number only
+                # e.g., 1.2.3-rc.0 -> 1.2.3-rc.1
+                NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+              else
+                # New UAT hotfix from main or production: increment patch and add -rc.0
+                # e.g., 1.2.3 -> 1.2.4-rc.0
+                NEW_VERSION=$(npm version prepatch --preid=rc --git-tag-version=false)
+              fi
+            else
+              # PRD hotfix: e.g., 1.2.3-rc.1 -> 1.2.4 (strips prerelease, patch already incremented in UAT release)
+              NEW_VERSION=$(npm version patch --git-tag-version=false)
+            fi
+          else
+            # Regular: minor version increment
+            if [ "$ENVIRONMENT" = "uat" ]; then
+              # UAT regular: add -rc.0 prefix (minor version already bumped in post-production step)
+              # e.g., 1.3.0-alpha.0 -> 1.3.0-rc.0
+              NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+            else
+              # PRD regular: strip prerelease postfix
+              # e.g., 1.3.0-rc.2 -> 1.3.0
+              NEW_VERSION=$(npm version patch --git-tag-version=false)
+            fi
+          fi
+
+          # Remove 'v' prefix if present
+          TAG_NAME=$(echo $NEW_VERSION | sed 's/^v//')
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Bumped version to: $NEW_VERSION"
+          echo "Tag name: $TAG_NAME"
+
+      - name: Execute replicate version script
+        run: node ./.github/scripts/replicate-version.js
+
+      - name: Update engine version
+        if: github.event.inputs.engine_version != '' && github.event.inputs.environment == 'uat' && github.event.inputs.release_type == 'regular'
+        run: |
+          ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
+          ENGINE_JSON="packages/sdk/editor-engine.json"
+
+          # Update the engine version in editor-engine.json
+          node -e "
+            const fs = require('fs');
+            const path = '$ENGINE_JSON';
+            const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+            data.current = '$ENGINE_VERSION';
+            fs.writeFileSync(path, JSON.stringify(data, null, 4));
+            console.log('Updated engine version to: $ENGINE_VERSION');
+          "
+          echo "Updated $ENGINE_JSON with engine version: $ENGINE_VERSION"
+
+      - name: Create git tag
+        run: |
+          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          echo "Created tag: $TAG_NAME"
+
+      - name: Push tag only (no commits to main)
+        run: |
+          git push origin "${{ steps.bump_version.outputs.tag_name }}"
+          echo "Pushed tag: ${{ steps.bump_version.outputs.tag_name }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub release
+        id: create_release
+        run: |
+          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+          PREVIOUS_TAG="${{ github.event.inputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
+          ENVIRONMENT="${{ github.event.inputs.environment }}"
+
+          # For PRD releases, use the current HEAD (which is the UAT tag commit)
+          # For UAT releases, use the branch ref
+          if [ "$ENVIRONMENT" = "prd" ]; then
+            TARGET_REF="HEAD"
+          else
+            TARGET_REF="${{ github.ref_name }}"
+          fi
+
+          # Create release with auto-generated notes
+          # Use --notes-start-tag to ensure we compare against the correct previous tag
+          if [ "$ENVIRONMENT" = "uat" ]; then
+            gh release create $TAG_NAME \
+              --target $TARGET_REF \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG" \
+              --prerelease
+          else
+            gh release create $TAG_NAME \
+              --target $TARGET_REF \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG"
+          fi
+
+          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+          echo "Created GitHub release: $RELEASE_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify Teams
+        run: |
+          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+          VERSION="${{ steps.bump_version.outputs.tag_name }}"
+          ENVIRONMENT="${{ github.event.inputs.environment }}"
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          BRANCH="${{ github.ref_name }}"
+
+          if [ "$ENVIRONMENT" = "uat" ]; then
+            TYPE_EMOJI="🧪"
+            TYPE_TEXT="UAT"
+          else
+            TYPE_EMOJI="🎉"
+            TYPE_TEXT="Production"
+          fi
+
+          payload=$(cat <<EOF
+          {
+              "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** $BRANCH\n\nRelease has been created and deployment will be triggered automatically."
+          }
+          EOF
+          )
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
