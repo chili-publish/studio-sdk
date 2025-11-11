@@ -11,6 +11,8 @@ env:
 jobs:
   detect-release-type:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       is_uat: ${{ steps.detect.outputs.is_uat }}
       is_prd: ${{ steps.detect.outputs.is_prd }}
