@@ -258,15 +258,11 @@ jobs:
         env:
           ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
 
-      - name: Get package version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
-
       - name: Prepare CDN upload (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
         run: |
           path=packages/sdk/upload/latest
-          versionpath=packages/sdk/upload/${{ steps.package-version.outputs.current-version }}
+          versionpath=packages/sdk/upload/${{ needs.detect-release-type.outputs.version }}
           mkdir -p ${path%"/merge"}
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
           mkdir -p ${versionpath%"/merge"}
