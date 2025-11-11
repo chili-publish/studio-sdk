@@ -327,6 +327,7 @@ jobs:
   notify:
     needs: [detect-release-type, publish, deploy-azure]
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Notify Teams
         run: |
