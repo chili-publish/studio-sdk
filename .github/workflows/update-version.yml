@@ -50,7 +50,7 @@ jobs:
             // Parse version with optional RC suffix (e.g., "1.17.1-rc.0" or "1.17.1")
             function parseVersion(version) {
               if (version === 'latest') {
-                return { baseVersion: null, majorMinor: null, hasPatch: false, hasRC: false };
+                return { majorMinor: null, hasPatch: false, isMajorMinor: false, hasRC: false };
               }
               
               // Split by '-' to separate base version from RC suffix
@@ -65,12 +65,10 @@ jobs:
               const majorMinor = baseParts.slice(0, 2).join('.');
               
               return {
-                baseVersion: baseVersion,
                 majorMinor: majorMinor,
                 hasPatch: hasPatch,
                 isMajorMinor: isMajorMinor,
-                hasRC: hasRC,
-                fullVersion: version
+                hasRC: hasRC
               };
             }
             
