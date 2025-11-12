@@ -13,7 +13,7 @@ on:
           - "UAT"
           - "PRD"
       sdk_version:
-        description: 'SDK version. Use cases: "1.17" (major.minor) for adding new version; "latest" for patching engine; "1.17.1" (major.minor.patch) for patching SDK (only latest SDK can be patched)'
+        description: 'SDK version. Use cases: "1.17" (major.minor) for adding new version; "latest" for patching engine; "1.17.1" or "1.17.1-rc.0" (major.minor.patch with optional RC suffix) for patching SDK (only latest SDK can be patched)'
         required: true
         type: string
       engine_version:
