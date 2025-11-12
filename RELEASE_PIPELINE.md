@@ -1,193 +1,90 @@
 # Release Pipeline Sequence Diagram
 
-## UAT Regular Release Flow
+## Regular Release Flow (main branch → UAT → PRD)
 
 ```plantuml
 @startuml
 actor User
 participant "create-release.yml" as CreateRelease
-participant "GitHub API" as GitHub
 participant "deploy-release.yml" as DeployRelease
-participant "detect-release-type" as Detect
-participant "preflight" as Preflight
-participant "publish" as Publish
-participant "deploy-azure" as Azure
-participant "notify" as Notify
-participant "Microsoft Teams" as Teams
+participant "GitHub" as GitHub
+participant "Main Branch" as Main
+participant "Hotfix Branch" as HotfixBranch
 
-User -> CreateRelease: Manual trigger\n(environment: uat, release_type: regular,\nengine_version: optional)
-CreateRelease -> CreateRelease: Find previous tag (latest PRD)\nBump version (1.3.0-alpha.0 → 1.3.0-rc.0)
+note over Main: Initial state: main branch\nwith version 1.3.0-alpha.0\n(Minor version reflects Post Production bumping after previous PRD release)
+
+User -> CreateRelease: 1. Create UAT Regular Release\n(environment: uat, release_type: regular,\nengine_version: optional)\nFrom: current branch (main)
+CreateRelease -> CreateRelease: Auto-calculate previous tag\n(latest PRD release for UAT regular)
 alt Engine version provided
     CreateRelease -> CreateRelease: Update editor-engine.json
 end
-CreateRelease -> GitHub: Create tag & release (1.3.0-rc.0, prerelease)
-CreateRelease -> Teams: Notify release created
+CreateRelease -> GitHub: Create tag 1.3.0-rc.0 (prerelease)
+GitHub -> DeployRelease: Trigger deployment
+DeployRelease -> DeployRelease: Deploy to UAT\n(Publish to GitHub Packages,\nDeploy to Azure CDN)
 
-note over DeployRelease: Tag push triggers deploy-release.yml
+note over CreateRelease,DeployRelease: Optional: UAT Hotfix if issues found
 
-par
-    DeployRelease -> Detect: Detect release type (UAT)
-    DeployRelease -> Preflight: Run preflight checks
+opt UAT Hotfix needed
+    User -> HotfixBranch: Create hotfix branch\nfrom tag 1.3.0-rc.0
+    HotfixBranch -> HotfixBranch: Apply fixes
+    User -> CreateRelease: 1a. Create UAT Hotfix\n(environment: uat, release_type: hotfix)\nFrom: hotfix branch
+    CreateRelease -> CreateRelease: Auto-calculate previous tag\n(latest UAT release: 1.3.0-rc.0)
+    CreateRelease -> GitHub: Create tag 1.3.0-rc.1 (prerelease)
+    GitHub -> DeployRelease: Trigger deployment
+    DeployRelease -> DeployRelease: Deploy to UAT
 end
 
-par
-    DeployRelease -> Publish: Publish to GitHub Packages
-    DeployRelease -> Azure: Deploy to Azure CDN
-end
+User -> CreateRelease: 2. Create PRD Regular Release\n(environment: prd, release_type: regular)
+CreateRelease -> CreateRelease: Auto-calculate base UAT tag\n(latest regular UAT: 1.3.0-rc.1 or 1.3.0-rc.0)\nCheckout UAT tag
+CreateRelease -> GitHub: Create tag 1.3.0 (production)
+GitHub -> DeployRelease: Trigger deployment
+DeployRelease -> DeployRelease: Deploy to PRD\n(Publish to NPM public,\nDeploy to Azure CDN)
+DeployRelease -> Main: Bump main to 1.4.0-alpha.0\n(for next dev cycle)
 
-DeployRelease -> Notify: Send notification
-Notify -> Teams: UAT Deployment Completed
 @enduml
 ```
 
-## UAT Hotfix Release Flow
+## Hotfix Release Flow (hotfix branch → UAT → PRD)
 
 ```plantuml
 @startuml
 actor User
 participant "create-release.yml" as CreateRelease
-participant "GitHub API" as GitHub
 participant "deploy-release.yml" as DeployRelease
-participant "detect-release-type" as Detect
-participant "preflight" as Preflight
-participant "publish" as Publish
-participant "deploy-azure" as Azure
-participant "notify" as Notify
-participant "Microsoft Teams" as Teams
+participant "GitHub" as GitHub
+participant "Previous PRD" as PRD
+participant "Hotfix Branch" as HotfixBranch
 
-User -> CreateRelease: Manual trigger\n(environment: uat, release_type: hotfix)
-CreateRelease -> CreateRelease: Find previous tag (latest UAT)\nBump version (1.3.0-rc.0 → 1.3.0-rc.1)
-CreateRelease -> GitHub: Create tag & release (prerelease)
-CreateRelease -> Teams: Notify release created
+note over PRD: Initial state: Previous PRD release\ntag 1.2.3 (production)
 
-note over DeployRelease: Tag push triggers deploy-release.yml
+User -> HotfixBranch: Create hotfix branch\nfrom previous PRD tag (e.g., 1.2.3)
+HotfixBranch -> HotfixBranch: Apply fixes
+User -> CreateRelease: 1. Create UAT Hotfix\n(environment: uat, release_type: hotfix)\nFrom: hotfix branch
+CreateRelease -> CreateRelease: Auto-calculate previous tag\n(latest PRD release: 1.2.3)
+CreateRelease -> GitHub: Create tag 1.2.4-rc.0 (prerelease)
+GitHub -> DeployRelease: Trigger deployment
+DeployRelease -> DeployRelease: Deploy to UAT\n(Publish to GitHub Packages,\nDeploy to Azure CDN)
 
-par
-    DeployRelease -> Detect: Detect release type (UAT)
-    DeployRelease -> Preflight: Run preflight checks
+note over CreateRelease,DeployRelease: Optional: Additional UAT Hotfix if issues found
+
+opt Additional UAT Hotfix needed
+    User -> HotfixBranch: Update hotfix branch\nfrom tag 1.2.4-rc.0
+    HotfixBranch -> HotfixBranch: Apply additional fixes
+    User -> CreateRelease: 1a. Create UAT Hotfix\n(environment: uat, release_type: hotfix)\nFrom: updated hotfix branch
+    CreateRelease -> CreateRelease: Auto-calculate previous tag\n(latest UAT release: 1.2.4-rc.0)
+    CreateRelease -> GitHub: Create tag 1.2.4-rc.1 (prerelease)
+    GitHub -> DeployRelease: Trigger deployment
+    DeployRelease -> DeployRelease: Deploy to UAT
 end
 
-par
-    DeployRelease -> Publish: Publish to GitHub Packages
-    DeployRelease -> Azure: Deploy to Azure CDN
-end
+User -> CreateRelease: 2. Create PRD Hotfix\n(environment: prd, release_type: hotfix)
+CreateRelease -> CreateRelease: Auto-calculate base UAT tag\n(latest hotfix UAT: 1.2.4-rc.1 or 1.2.4-rc.0)\nCheckout UAT tag
+CreateRelease -> GitHub: Create tag 1.2.4 (production)
+GitHub -> DeployRelease: Trigger deployment
+DeployRelease -> DeployRelease: Deploy to PRD\n(Publish to NPM public,\nDeploy to Azure CDN)
+note over DeployRelease: No version bump to main\n(preserves patch space)
 
-DeployRelease -> Notify: Send notification
-Notify -> Teams: UAT Deployment Completed
 @enduml
 ```
 
-## PRD Regular Release Flow
-
-```plantuml
-@startuml
-actor User
-participant "create-release.yml" as CreateRelease
-participant "GitHub API" as GitHub
-participant "deploy-release.yml" as DeployRelease
-participant "detect-release-type" as Detect
-participant "preflight" as Preflight
-participant "publish" as Publish
-participant "deploy-azure" as Azure
-participant "bump-main-version" as BumpVersion
-participant "notify" as Notify
-participant "Microsoft Teams" as Teams
-
-User -> CreateRelease: Manual trigger\n(environment: prd, release_type: regular)
-CreateRelease -> CreateRelease: Find base UAT tag\nCheckout UAT tag\nBump version (1.3.0-rc.2 → 1.3.0)
-CreateRelease -> GitHub: Create tag & release (1.3.0, production)
-CreateRelease -> Teams: Notify release created
-
-note over DeployRelease: Tag push triggers deploy-release.yml
-
-par
-    DeployRelease -> Detect: Detect release type (PRD)
-    DeployRelease -> Preflight: Run preflight checks
-end
-
-par
-    DeployRelease -> Publish: Publish to NPM (public)
-    DeployRelease -> Azure: Deploy to Azure CDN
-end
-
-DeployRelease -> BumpVersion: Bump main version\n(1.3.0 → 1.4.0-alpha.0)
-BumpVersion -> GitHub: Commit and push to main
-
-DeployRelease -> Notify: Send notification
-Notify -> Teams: Production Deployment Completed
-@enduml
-```
-
-## PRD Hotfix Release Flow
-
-```plantuml
-@startuml
-actor User
-participant "create-release.yml" as CreateRelease
-participant "GitHub API" as GitHub
-participant "deploy-release.yml" as DeployRelease
-participant "detect-release-type" as Detect
-participant "preflight" as Preflight
-participant "publish" as Publish
-participant "deploy-azure" as Azure
-participant "notify" as Notify
-participant "Microsoft Teams" as Teams
-
-User -> CreateRelease: Manual trigger\n(environment: prd, release_type: hotfix)
-CreateRelease -> CreateRelease: Find base UAT tag\nCheckout UAT tag\nBump version (1.2.3-rc.1 → 1.2.4)
-CreateRelease -> GitHub: Create tag & release (1.2.4, production)
-CreateRelease -> Teams: Notify release created
-
-note over DeployRelease: Tag push triggers deploy-release.yml
-
-par
-    DeployRelease -> Detect: Detect release type (PRD)
-    DeployRelease -> Preflight: Run preflight checks
-end
-
-par
-    DeployRelease -> Publish: Publish to NPM (public)
-    DeployRelease -> Azure: Deploy to Azure CDN
-end
-
-note over DeployRelease: Skip version bump (hotfix detected)
-DeployRelease -> Notify: Send notification
-Notify -> Teams: Production Deployment Completed
-@enduml
-```
-
-## Key Points
-
-1. **Create Release Workflow** (`create-release.yml`):
-
-   - Manually triggered with inputs:
-     - `environment`: uat or prd
-     - `release_type`: regular or hotfix
-     - `engine_version`: optional - engine version to use (e.g., 2.15.latest)
-   - Determines previous tag based on environment and release type
-   - For PRD: checks out UAT tag before version bump
-   - **Only consumed for UAT regular releases**: If `engine_version` provided, updates `packages/sdk/editor-engine.json` before tag creation
-   - Creates git tag and GitHub release
-   - Sends create Github Release Teams notification
-
-2. **Deploy Release Workflow** (`deploy-release.yml`):
-
-   - Triggered automatically on tag push
-   - `detect-release-type`: Identifies UAT vs PRD from tag format
-   - `preflight`: Runs tests and linting
-   - `publish`: Publishes to GitHub Packages (UAT) or NPM (PRD)
-   - `deploy-azure`: Deploys to Azure CDN using service principal auth
-   - `bump-main-version`: Only for PRD regular releases (skips hotfixes)
-   - `notify`: Sends final Teams notification after successful deployment
-
-3. **Version Bumping Logic**:
-
-   - UAT Regular: Adds `-rc.0` to current version (minor already bumped)
-   - UAT Hotfix: Increments prerelease number or patch+rc.0
-   - PRD Regular and Hotfix: Strips `-rc.X` from UAT tag
-
-4. **Post-Production Version Bump**:
-
-   - Only runs for PRD regular releases (not hotfixes)
-   - Bumps main branch to next minor version with `-alpha.0`
-   - Preserves patch space for potential additional hotfixes
+For detailed sequence diagrams of individual release flows, see [RELEASE_PIPELINE_DETAILED.md](./RELEASE_PIPELINE_DETAILED.md).
