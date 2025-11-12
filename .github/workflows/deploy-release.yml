@@ -9,11 +9,41 @@ env:
   NODE_VERSION: 22.x
 
 jobs:
-  detect-release-type:
+  validate-tag-release:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
+      release_exists: ${{ steps.validate_release.outputs.release_exists }}
+      tag_name: ${{ steps.validate_release.outputs.tag_name }}
+    steps:
+      - name: Validate GitHub release exists
+        id: validate_release
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+          # Check if a GitHub release exists for this tag
+          if ! gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "⚠️  Warning: Tag $TAG_NAME pushed but no corresponding GitHub release found."
+            echo "⚠️  Skipping deployment. Tags should be created via create-release.yml workflow."
+            echo "release_exists=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "✅ GitHub release found for tag $TAG_NAME"
+          echo "release_exists=true" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  detect-release-type:
+    needs: [validate-tag-release]
+    if: needs.validate-tag-release.outputs.release_exists == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      release_exists: ${{ needs.validate-tag-release.outputs.release_exists }}
       is_uat: ${{ steps.detect.outputs.is_uat }}
       is_prd: ${{ steps.detect.outputs.is_prd }}
       tag_name: ${{ steps.detect.outputs.tag_name }}
@@ -61,6 +91,8 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
   preflight:
+    needs: [validate-tag-release]
+    if: needs.validate-tag-release.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -108,6 +140,7 @@ jobs:
 
   publish:
     needs: [detect-release-type, preflight]
+    if: needs.detect-release-type.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.detect-release-type.outputs.environment }}
     permissions:
@@ -219,6 +252,7 @@ jobs:
 
   deploy-azure:
     needs: [detect-release-type, preflight]
+    if: needs.detect-release-type.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.detect-release-type.outputs.environment }}
     permissions:
@@ -330,6 +364,7 @@ jobs:
 
   notify:
     needs: [detect-release-type, publish, deploy-azure]
+    if: needs.detect-release-type.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     permissions: {}
     steps:
@@ -353,7 +388,7 @@ jobs:
 
   bump-main-version:
     needs: [detect-release-type, deploy-azure]
-    if: needs.detect-release-type.outputs.is_prd == 'true'
+    if: needs.detect-release-type.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write

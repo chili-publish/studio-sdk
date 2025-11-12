@@ -1,6 +1,9 @@
 name: Create GitHub Release (branch)
 
 on:
+  push:
+    branches:
+      - feat/WRS-2503-implement-*
   workflow_dispatch:
     inputs:
       environment:
@@ -32,6 +35,11 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      # TODO: Remove this step once the workflow is enabled
+      - name: Terminate for enable workflow
+        run: |
+          echo "Terminating workflow"
+          exit 1
       - name: Checkout code
         uses: actions/checkout@v4
         with:
