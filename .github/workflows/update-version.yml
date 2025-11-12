@@ -47,10 +47,36 @@ jobs:
             const engineVersion = '${{ inputs.engine_version }}';
             const environment = '${{ inputs.environment }}';
             
-            // Determine the use case based on inputs
-            const versionParts = sdkVersion === 'latest' ? [] : sdkVersion.split('.');
-            const isPatchVersion = versionParts.length === 3;
-            const isMajorMinor = versionParts.length === 2;
+            // Parse version with optional RC suffix (e.g., "1.17.1-rc.0" or "1.17.1")
+            function parseVersion(version) {
+              if (version === 'latest') {
+                return { baseVersion: null, majorMinor: null, hasPatch: false, hasRC: false };
+              }
+              
+              // Split by '-' to separate base version from RC suffix
+              const parts = version.split('-');
+              const baseVersion = parts[0];
+              const hasRC = parts.length > 1;
+              
+              // Parse base version (major.minor.patch)
+              const baseParts = baseVersion.split('.');
+              const hasPatch = baseParts.length === 3;
+              const isMajorMinor = baseParts.length === 2;
+              const majorMinor = baseParts.slice(0, 2).join('.');
+              
+              return {
+                baseVersion: baseVersion,
+                majorMinor: majorMinor,
+                hasPatch: hasPatch,
+                isMajorMinor: isMajorMinor,
+                hasRC: hasRC,
+                fullVersion: version
+              };
+            }
+            
+            const parsed = parseVersion(sdkVersion);
+            const isPatchVersion = parsed.hasPatch;
+            const isMajorMinor = parsed.isMajorMinor;
             const isLatest = sdkVersion === 'latest';
             
             // Use Case 1: Adding new version (major.minor + specific engine version)
@@ -80,21 +106,23 @@ jobs:
             else if (isLatest && engineVersion !== 'latest') {
               // Update both latest and the corresponding version entry
               const latestSdkVersion = versions.latest.sdkVersion;
-              const majorMinor = latestSdkVersion.split('.').slice(0, 2).join('.');
+              const latestParsed = parseVersion(latestSdkVersion);
+              const majorMinor = latestParsed.majorMinor;
               
               versions.latest.engineVersion = engineVersion;
               versions[majorMinor].engineVersion = engineVersion;
               
               console.log('Updated engine version for latest and ' + majorMinor + ' to ' + engineVersion);
             }
-            // Use Case 3: Patching SDK (major.minor.patch + latest)
+            // Use Case 3: Patching SDK (major.minor.patch with optional RC + latest)
             else if (isPatchVersion && engineVersion === 'latest') {
-              const majorMinor = versionParts.slice(0, 2).join('.');
+              const majorMinor = parsed.majorMinor;
               const versionKey = majorMinor;
               
               // Validate: can only patch the latest SDK
               const latestSdkVersion = versions.latest.sdkVersion;
-              const latestMajorMinor = latestSdkVersion.split('.').slice(0, 2).join('.');
+              const latestParsed = parseVersion(latestSdkVersion);
+              const latestMajorMinor = latestParsed.majorMinor;
               
               if (majorMinor !== latestMajorMinor) {
                 console.error('Can only patch the latest SDK version. Latest is ' + latestSdkVersion + ', but trying to patch ' + sdkVersion);
@@ -110,7 +138,7 @@ jobs:
               // Keep existing engine version
               const finalEngineVersion = versions[versionKey].engineVersion;
               
-              // Update version entry
+              // Update version entry with the full version (including RC suffix if provided)
               versions[versionKey] = { sdkVersion: sdkVersion, engineVersion: finalEngineVersion };
               console.log('Updated SDK version ' + sdkVersion + ' with existing engine version ' + finalEngineVersion);
               
