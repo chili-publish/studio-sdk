@@ -1,4 +1,4 @@
-name: Deploy Release (branch)
+name: Deploy Release
 
 on:
   push:
@@ -43,7 +43,6 @@ jobs:
     permissions:
       contents: read
     outputs:
-      release_exists: ${{ needs.validate-tag-release.outputs.release_exists }}
       is_uat: ${{ steps.detect.outputs.is_uat }}
       is_prd: ${{ steps.detect.outputs.is_prd }}
       tag_name: ${{ steps.detect.outputs.tag_name }}
@@ -139,8 +138,8 @@ jobs:
         run: yarn cover
 
   publish:
-    needs: [detect-release-type, preflight]
-    if: needs.detect-release-type.outputs.release_exists == 'true'
+    needs: [validate-tag-release, detect-release-type, preflight]
+    if: needs.validate-tag-release.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.detect-release-type.outputs.environment }}
     permissions:
@@ -251,8 +250,8 @@ jobs:
           npm publish --access public --tag latest --dry-run
 
   deploy-azure:
-    needs: [detect-release-type, preflight]
-    if: needs.detect-release-type.outputs.release_exists == 'true'
+    needs: [validate-tag-release, detect-release-type, preflight]
+    if: needs.validate-tag-release.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.detect-release-type.outputs.environment }}
     permissions:
@@ -363,8 +362,8 @@ jobs:
               --auth-mode login
 
   notify:
-    needs: [detect-release-type, publish, deploy-azure]
-    if: needs.detect-release-type.outputs.release_exists == 'true'
+    needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
+    if: needs.validate-tag-release.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
     permissions: {}
     steps:
@@ -387,8 +386,8 @@ jobs:
           "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
 
   bump-main-version:
-    needs: [detect-release-type, deploy-azure]
-    if: needs.detect-release-type.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
+    needs: [validate-tag-release, detect-release-type, deploy-azure]
+    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
