@@ -86,5 +86,3 @@ note over DeployRelease: No version bump to main\n(preserves patch space)
 
 @enduml
 ```
-
-For detailed sequence diagrams of individual release flows, see [RELEASE_PIPELINE_DETAILED.md](./RELEASE_PIPELINE_DETAILED.md).
