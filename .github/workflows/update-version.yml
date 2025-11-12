@@ -45,6 +45,7 @@ jobs:
             const versions = require('./temp/supported-versions.json');
             const sdkVersion = '${{ inputs.sdk_version }}';
             const engineVersion = '${{ inputs.engine_version }}';
+            const environment = '${{ inputs.environment }}';
             
             // Determine the use case based on inputs
             const versionParts = sdkVersion === 'latest' ? [] : sdkVersion.split('.');
@@ -62,14 +63,18 @@ jobs:
                 process.exit(1);
               }
               
+              // Append patch version based on environment: PRD -> .0, UAT -> .0-rc.0
+              const patchSuffix = environment === 'PRD' ? '.0' : '.0-rc.0';
+              const fullSdkVersion = sdkVersion + patchSuffix;
+              
               // Create new version entry
-              versions[versionKey] = { sdkVersion: sdkVersion, engineVersion: engineVersion };
-              console.log('Added new SDK version ' + sdkVersion + ' with engine version ' + engineVersion);
+              versions[versionKey] = { sdkVersion: fullSdkVersion, engineVersion: engineVersion };
+              console.log('Added new SDK version ' + fullSdkVersion + ' with engine version ' + engineVersion);
               
               // Update latest automatically
-              versions.latest.sdkVersion = sdkVersion;
+              versions.latest.sdkVersion = fullSdkVersion;
               versions.latest.engineVersion = engineVersion;
-              console.log('Updated latest entry to new SDK version ' + sdkVersion);
+              console.log('Updated latest entry to new SDK version ' + fullSdkVersion);
             }
             // Use Case 2: Patching engine (latest + specific engine version)
             else if (isLatest && engineVersion !== 'latest') {
