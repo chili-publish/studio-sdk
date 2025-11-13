@@ -238,6 +238,7 @@ export class SDK {
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
+        this.component = new ComponentController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);

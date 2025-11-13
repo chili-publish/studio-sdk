@@ -21,6 +21,9 @@ beforeEach(() => {
 afterAll(() => {
     jest.restoreAllMocks();
 });
+afterEach(() => {
+    jest.clearAllMocks();
+});
 
 describe('ComponentController', () => {
     describe('linkComponentVariable', () => {
@@ -35,7 +38,7 @@ describe('ComponentController', () => {
         });
         it('Should be possible to unlink variable', async () => {
             await mockedComponentController.linkVariable(id, 'target-variable-id');
-            expect(mockedEditorApi.linkComponentVariable).toHaveBeenCalledTimes(2);
+            expect(mockedEditorApi.linkComponentVariable).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.linkComponentVariable).toHaveBeenCalledWith(id, 'target-variable-id', undefined);
         });
     });

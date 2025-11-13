@@ -452,7 +452,7 @@ export class FrameController {
 
     /**
      * @experimental This method will add a new component frame to the current layout positioned on the requested
-     * cordinates with the given dimensions. The component is initialized with the provided source.
+     * coordinates with the given dimensions. The component is initialized with the provided source.
      * @param source The source of the component frame
      * @param x The X coordinate of the new component frame within the layout
      * @param y The Y coordinate of the new component frame within the layout
