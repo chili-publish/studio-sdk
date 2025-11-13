@@ -332,7 +332,13 @@ jobs:
         id: commit_version
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+
+          # Only stage version-related files explicitly
           git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
+
+          # Check what files are staged
+          echo "📋 Staged files:"
+          git diff --staged --name-only || echo "No staged files"
 
           # Check if there are any changes to commit
           if git diff --staged --quiet; then
@@ -356,6 +362,10 @@ jobs:
       - name: Push tag
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+          # Check what files are in the commit we're about to push
+          echo "📋 Files in commit:"
+          git show --name-only --pretty=format: HEAD | head -20
+
           # Push only the tag (the commit is preserved by the tag reference)
           git push origin "$TAG_NAME"
           echo "✅ Pushed tag: $TAG_NAME"
