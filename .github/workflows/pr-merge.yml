@@ -53,7 +53,7 @@ jobs:
           version-type: "prerelease"
           skip-commit: "true"
           skip-tag: "true"
-          preid: alfa
+          preid: alpha
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: build code

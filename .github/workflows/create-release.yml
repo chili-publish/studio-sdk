@@ -1,6 +1,9 @@
 name: Create GitHub Release
 
 on:
+  push:
+    branches:
+      - feat/WRS-2503-implement-*
   workflow_dispatch:
     inputs:
       environment:
@@ -32,11 +35,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      # TODO: Remove this step once the workflow is enabled
-      - name: Terminate for enable workflow
-        run: |
-          echo "Terminating workflow"
-          exit 1
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -48,6 +46,39 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Prepare release parameters
+        id: prepare
+        run: |
+          # Extract values from inputs (workflow_dispatch) or use defaults (push for testing)
+          if [ -n "${{ github.event.inputs.environment }}" ]; then
+            ENVIRONMENT="${{ github.event.inputs.environment }}"
+          else
+            # Default values for testing (branch push trigger)
+            ENVIRONMENT="uat"
+            echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
+          fi
+
+          if [ -n "${{ github.event.inputs.release_type }}" ]; then
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          else
+            # Default values for testing (branch push trigger)
+            RELEASE_TYPE="regular"
+            echo "⚠️  Using default release_type: $RELEASE_TYPE (testing mode)"
+          fi
+
+          if [ -n "${{ github.event.inputs.engine_version }}" ]; then
+            ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
+          else
+            # Default empty for testing (branch push trigger)
+            ENGINE_VERSION=""
+            echo "⚠️  No engine_version provided (testing mode)"
+          fi
+
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "engine_version=$ENGINE_VERSION" >> $GITHUB_OUTPUT
+          echo "✅ Prepared parameters: environment=$ENVIRONMENT, release_type=$RELEASE_TYPE, engine_version=${ENGINE_VERSION:-<empty>}"
 
       - name: Fetch and cache GitHub Releases
         id: cache_releases
@@ -67,10 +98,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find previous release tag (UAT)
-        if: github.event.inputs.environment == 'uat'
+        if: steps.prepare.outputs.environment == 'uat'
         id: previous_tag_uat
         run: |
-          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           # Use cached releases data
           RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
 
@@ -97,10 +128,10 @@ jobs:
           echo "Previous UAT tag: $PREVIOUS_TAG"
 
       - name: Find previous release tag (PRD)
-        if: github.event.inputs.environment == 'prd'
+        if: steps.prepare.outputs.environment == 'prd'
         id: previous_tag_prd
         run: |
-          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
 
           # Use cached releases data
           RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
@@ -166,7 +197,7 @@ jobs:
           echo "Found base UAT tag for PRD: $PREVIOUS_TAG"
 
       - name: Checkout UAT tag for PRD release
-        if: github.event.inputs.environment == 'prd'
+        if: steps.prepare.outputs.environment == 'prd'
         run: |
           UAT_TAG="${{ steps.previous_tag_prd.outputs.previous_tag }}"
           echo "Checking out UAT tag: $UAT_TAG"
@@ -180,8 +211,8 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-          ENVIRONMENT="${{ github.event.inputs.environment }}"
-          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
 
           # Get current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -228,9 +259,9 @@ jobs:
         run: node ./.github/scripts/replicate-version.js
 
       - name: Update engine version
-        if: github.event.inputs.engine_version != '' && github.event.inputs.environment == 'uat' && github.event.inputs.release_type == 'regular'
+        if: steps.prepare.outputs.engine_version != '' && steps.prepare.outputs.environment == 'uat' && steps.prepare.outputs.release_type == 'regular'
         run: |
-          ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
+          ENGINE_VERSION="${{ steps.prepare.outputs.engine_version }}"
           ENGINE_JSON="packages/sdk/editor-engine.json"
 
           # Update the engine version in editor-engine.json
@@ -261,8 +292,8 @@ jobs:
         id: create_release
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          PREVIOUS_TAG="${{ github.event.inputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
-          ENVIRONMENT="${{ github.event.inputs.environment }}"
+          PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
 
           # For PRD releases, use the current HEAD (which is the UAT tag commit)
           # For UAT releases, use the branch ref
@@ -299,8 +330,8 @@ jobs:
         run: |
           RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
           VERSION="${{ steps.bump_version.outputs.tag_name }}"
-          ENVIRONMENT="${{ github.event.inputs.environment }}"
-          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           BRANCH="${{ github.ref_name }}"
 
           if [ "$ENVIRONMENT" = "uat" ]; then
