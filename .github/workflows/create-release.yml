@@ -376,21 +376,46 @@ jobs:
           echo "Previous tag for notes: $PREVIOUS_TAG"
           echo "Target commit SHA: $TARGET_REF"
 
+          # Validate previous tag exists
+          if ! git rev-parse "$PREVIOUS_TAG" >/dev/null 2>&1; then
+            echo "⚠️  Warning: Previous tag $PREVIOUS_TAG not found locally, fetching..."
+            git fetch --tags
+            if ! git rev-parse "$PREVIOUS_TAG" >/dev/null 2>&1; then
+              echo "❌ Error: Previous tag $PREVIOUS_TAG does not exist"
+              exit 1
+            fi
+          fi
+
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
+          # Release notes are required - fail if generation fails
           if [ "$ENVIRONMENT" = "uat" ]; then
-            gh release create $TAG_NAME \
+            if ! gh release create $TAG_NAME \
               --target $TARGET_REF \
               --title "$TAG_NAME" \
               --generate-notes \
               --notes-start-tag "$PREVIOUS_TAG" \
-              --prerelease
+              --prerelease; then
+              echo "❌ Error: Failed to create release with auto-generated notes"
+              echo "Previous tag: $PREVIOUS_TAG"
+              echo "Current tag: $TAG_NAME"
+              echo "Target commit: $TARGET_REF"
+              exit 1
+            fi
+            echo "✅ Release created with auto-generated notes"
           else
-            gh release create $TAG_NAME \
+            if ! gh release create $TAG_NAME \
               --target $TARGET_REF \
               --title "$TAG_NAME" \
               --generate-notes \
-              --notes-start-tag "$PREVIOUS_TAG"
+              --notes-start-tag "$PREVIOUS_TAG"; then
+              echo "❌ Error: Failed to create release with auto-generated notes"
+              echo "Previous tag: $PREVIOUS_TAG"
+              echo "Current tag: $TAG_NAME"
+              echo "Target commit: $TARGET_REF"
+              exit 1
+            fi
+            echo "✅ Release created with auto-generated notes"
           fi
 
           RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
