@@ -33,18 +33,9 @@ jobs:
       contents: write
       pull-requests: read
     steps:
-      - name: Get GitHub App Access Token
-        id: github-app-access-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
-          owner: ${{ github.repository_owner }}
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.github-app-access-token.outputs.token }}
           fetch-depth: 0
           ref: ${{ github.ref }}
 
@@ -243,32 +234,8 @@ jobs:
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
           echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
 
-      - name: Prepare branch for PRD release
-        if: steps.prepare.outputs.environment == 'prd'
-        run: |
-          UAT_TAG="${{ steps.previous_tag_prd.outputs.previous_tag }}"
-          echo "Fetching UAT tag: $UAT_TAG"
-          git fetch --tags
-
-          # Check if the UAT tag's commit has workflow files in its history
-          echo "🔍 Checking UAT tag commit for workflow file changes..."
-          if git show --name-only "$UAT_TAG" | grep -q '\.github/workflows/'; then
-            echo "⚠️  Warning: UAT tag $UAT_TAG commit contains workflow file changes"
-          fi
-
-          # Check commit tree (last 10 commits) for workflow files
-          if git log --name-only --pretty=format: "$UAT_TAG"~10.."$UAT_TAG" 2>/dev/null | grep -q '\.github/workflows/'; then
-            echo "⚠️  Warning: UAT tag $UAT_TAG commit tree contains workflow file changes"
-            echo "⚠️  This may require 'workflows' permission when pushing PRD tag"
-          else
-            echo "✅ No workflow files in UAT tag commit tree"
-          fi
-
-          # Create a temporary branch from the UAT tag
-          TEMP_BRANCH="temp-release-$(date +%s)"
-          git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
-          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
-          echo "✅ Created temporary branch: $TEMP_BRANCH from UAT tag: $UAT_TAG"
+          # For PRD releases, we assume the workflow is executed from a branch
+          # that was created from the latest UAT tag, so we work directly from the current branch
 
       - name: Bump version in memory
         id: bump_version
@@ -343,10 +310,10 @@ jobs:
           "
           echo "Updated $ENGINE_JSON with engine version: $ENGINE_VERSION"
 
-      - name: Prepare branch for commit (UAT only)
-        if: steps.prepare.outputs.environment == 'uat'
+      - name: Prepare branch for commit
         run: |
-          # Create a temporary branch for the version commit to avoid polluting main
+          # Create a temporary branch for the version commit to avoid polluting the workflow execution branch
+          # This applies to both UAT and PRD releases
           TEMP_BRANCH="temp-release-$(date +%s)"
           git checkout -b "$TEMP_BRANCH"
           echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
@@ -386,44 +353,6 @@ jobs:
       - name: Push tag
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-
-          # Check what files are in the commit we're about to push
-          echo "📋 Files in current commit (HEAD):"
-          git show --name-only --pretty=format: HEAD | head -20
-
-          # Check what files are in the parent commit (UAT tag for PRD)
-          echo "📋 Files in parent commit:"
-          git show --name-only --pretty=format: HEAD^ | head -20 || echo "No parent commit"
-
-          # Check if parent commit has workflow files
-          if git show --name-only HEAD^ 2>/dev/null | grep -q '\.github/workflows/'; then
-            echo "⚠️  Warning: Parent commit contains workflow file changes"
-            echo "This might require 'workflows' permission when pushing"
-          fi
-
-          # Check the full commit tree for workflow files
-          echo "📋 Checking commit tree for workflow files..."
-          if git log --name-only --pretty=format: HEAD~5..HEAD 2>/dev/null | grep -q '\.github/workflows/'; then
-            echo "⚠️  Warning: Commit tree contains workflow file changes"
-          else
-            echo "✅ No workflow files in commit tree"
-          fi
-
-          # Configure remote URL with GitHub App token (required for workflows permission)
-          # The checkout action may not preserve the token in the remote URL after branch operations
-          echo "🔧 Configuring git remote with GitHub App token..."
-          APP_TOKEN="${{ steps.github-app-access-token.outputs.token }}"
-          git remote set-url origin https://x-access-token:${APP_TOKEN}@github.com/${{ github.repository }}.git
-
-          # Verify remote URL is configured correctly (without exposing the token)
-          echo "🔍 Verifying git remote configuration..."
-          git remote get-url origin | sed 's/:[^@]*@/:***@/' || echo "Remote URL configured"
-
-          # Also configure git to use the token via credential helper as fallback
-          echo "https://x-access-token:${APP_TOKEN}@github.com" > ~/.git-credentials
-          git config --global credential.helper store
-
-          # Push only the tag (the commit is preserved by the tag reference)
           git push origin "$TAG_NAME"
           echo "✅ Pushed tag: $TAG_NAME"
 
@@ -465,7 +394,7 @@ jobs:
         if: env.temp_branch != ''
         run: |
           # Delete the temporary branch locally (remote branch was never pushed)
-          # Checkout back to the original branch used to execute the workflow
+          # Needed for both UAT and PRD releases where we create a temp branch for version commits
           git checkout "${{ github.ref_name }}" || git checkout main || true
           git branch -D "${{ env.temp_branch }}" || true
           echo "✅ Cleaned up temporary branch"
