@@ -68,7 +68,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="uat"
+            ENVIRONMENT="prd"
             echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
           fi
 
@@ -237,14 +237,18 @@ jobs:
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
           echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
 
-      - name: Checkout UAT tag for PRD release
+      - name: Prepare branch for PRD release
         if: steps.prepare.outputs.environment == 'prd'
         run: |
           UAT_TAG="${{ steps.previous_tag_prd.outputs.previous_tag }}"
-          echo "Checking out UAT tag: $UAT_TAG"
+          echo "Fetching UAT tag: $UAT_TAG"
           git fetch --tags
-          git checkout "$UAT_TAG"
-          echo "Checked out commit from UAT tag: $UAT_TAG"
+
+          # Create a temporary branch from the UAT tag
+          TEMP_BRANCH="temp-release-$(date +%s)"
+          git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
+          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "✅ Created temporary branch: $TEMP_BRANCH from UAT tag: $UAT_TAG"
 
       - name: Bump version in memory
         id: bump_version
@@ -406,10 +410,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cleanup temporary branch (UAT only)
-        if: steps.prepare.outputs.environment == 'uat' && env.temp_branch != ''
+      - name: Cleanup temporary branch
+        if: env.temp_branch != ''
         run: |
           # Delete the temporary branch locally (remote branch was never pushed)
+          # Checkout back to the original branch used to execute the workflow
           git checkout "${{ github.ref_name }}" || git checkout main || true
           git branch -D "${{ env.temp_branch }}" || true
           echo "✅ Cleaned up temporary branch"
