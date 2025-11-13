@@ -368,13 +368,13 @@ jobs:
           PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
           ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
 
-          # For PRD releases, use the current HEAD (which is the UAT tag commit)
-          # For UAT releases, use the branch ref
-          if [ "$ENVIRONMENT" = "prd" ]; then
-            TARGET_REF="HEAD"
-          else
-            TARGET_REF="${{ github.ref_name }}"
-          fi
+          # Use the tag itself as target (it points to the commit with version changes)
+          # This ensures release notes are generated from the correct commit range
+          TARGET_REF="$TAG_NAME"
+
+          echo "Creating release for tag: $TAG_NAME"
+          echo "Previous tag for notes: $PREVIOUS_TAG"
+          echo "Target ref: $TARGET_REF"
 
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
