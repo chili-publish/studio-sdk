@@ -368,23 +368,29 @@ jobs:
           PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
           ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
 
+          # Get commit SHA from the tag (tag is already pushed to remote)
+          # Fetch tags to ensure we have the latest tag reference
+          git fetch --tags
+          COMMIT_SHA=$(git rev-parse "$TAG_NAME")
+
           echo "Creating release for tag: $TAG_NAME"
           echo "Previous tag for notes: $PREVIOUS_TAG"
+          echo "Target commit: $COMMIT_SHA"
 
           # Create release with auto-generated notes
           # Note: GitHub only generates notes for commits associated with PRs
           # If no PRs are associated, only the full changelog link will be shown
-          # Use tag name directly as target since tag is already pushed
+          # Use commit SHA as target for reliability
           if [ "$ENVIRONMENT" = "uat" ]; then
             gh release create $TAG_NAME \
-              --target $TAG_NAME \
+              --target $COMMIT_SHA \
               --title "$TAG_NAME" \
               --generate-notes \
               --notes-start-tag "$PREVIOUS_TAG" \
               --prerelease
           else
             gh release create $TAG_NAME \
-              --target $TAG_NAME \
+              --target $COMMIT_SHA \
               --title "$TAG_NAME" \
               --generate-notes \
               --notes-start-tag "$PREVIOUS_TAG"
