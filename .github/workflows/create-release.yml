@@ -353,14 +353,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cleanup temporary branch (UAT only)
-        if: steps.prepare.outputs.environment == 'uat' && env.temp_branch != ''
-        run: |
-          # Delete the temporary branch locally (remote branch was never pushed)
-          git checkout "${{ github.ref_name }}" || git checkout main || true
-          git branch -D "${{ env.temp_branch }}" || true
-          echo "✅ Cleaned up temporary branch"
-
       - name: Create GitHub release
         id: create_release
         run: |
@@ -368,13 +360,9 @@ jobs:
           PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
           ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
 
-          # For PRD releases, use the current HEAD (which is the UAT tag commit)
-          # For UAT releases, use the branch ref
-          if [ "$ENVIRONMENT" = "prd" ]; then
-            TARGET_REF="HEAD"
-          else
-            TARGET_REF="${{ github.ref_name }}"
-          fi
+          # Use the tag name as target since it points to the commit we just created
+          # (After cleanup, HEAD will be back on the original branch, so we use the tag)
+          TARGET_REF="$TAG_NAME"
 
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
@@ -398,6 +386,14 @@ jobs:
           echo "Created GitHub release: $RELEASE_URL"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup temporary branch (UAT only)
+        if: steps.prepare.outputs.environment == 'uat' && env.temp_branch != ''
+        run: |
+          # Delete the temporary branch locally (remote branch was never pushed)
+          git checkout "${{ github.ref_name }}" || git checkout main || true
+          git branch -D "${{ env.temp_branch }}" || true
+          echo "✅ Cleaned up temporary branch"
 
       - name: Notify Teams
         run: |
