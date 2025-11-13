@@ -89,7 +89,7 @@ jobs:
           echo "✅ Raw JSON received (length: ${#RAW_JSON} characters)"
 
           echo "🔄 Normalizing JSON with jq..."
-          RELEASES_JSON=$(echo "$RAW_JSON" | jq '.')
+          RELEASES_JSON=$(echo "$RAW_JSON" | jq -c '.')
           if [ $? -ne 0 ]; then
             echo "❌ Error: Failed to normalize JSON"
             echo "Raw JSON preview: ${RAW_JSON:0:200}..."
@@ -97,7 +97,15 @@ jobs:
           fi
           echo "✅ JSON normalized successfully (length: ${#RELEASES_JSON} characters)"
 
+          # Validate normalized JSON is valid
+          if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
+            echo "❌ Error: Normalized JSON is invalid"
+            echo "Normalized JSON preview: ${RELEASES_JSON:0:200}..."
+            exit 1
+          fi
+
           # Store as multiline output using heredoc syntax
+          # Use -c (compact) to ensure single line, then format when retrieving
           echo "💾 Storing JSON in step outputs..."
           {
             echo 'releases_json<<EOF'
@@ -120,16 +128,27 @@ jobs:
           RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           echo "🔍 Finding previous UAT tag (release_type: $RELEASE_TYPE)"
 
-          RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
-          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON} characters)"
+          RELEASES_JSON_RAW="${{ steps.cache_releases.outputs.releases_json }}"
+          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON_RAW} characters)"
+          echo "🔍 JSON preview: ${RELEASES_JSON_RAW:0:100}..."
+
+          # Re-normalize JSON to ensure it's valid (handles any formatting issues from outputs)
+          echo "🔄 Re-normalizing JSON..."
+          RELEASES_JSON=$(echo "$RELEASES_JSON_RAW" | jq -c '.')
+          if [ $? -ne 0 ]; then
+            echo "❌ Error: Failed to re-normalize JSON from outputs"
+            echo "Raw JSON from outputs:"
+            echo "$RELEASES_JSON_RAW"
+            exit 1
+          fi
 
           # Validate JSON can be parsed
           if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
-            echo "❌ Error: Invalid JSON retrieved from outputs"
+            echo "❌ Error: Invalid JSON after re-normalization"
             echo "JSON preview: ${RELEASES_JSON:0:200}..."
             exit 1
           fi
-          echo "✅ JSON is valid and parseable"
+          echo "✅ JSON is valid and parseable (length: ${#RELEASES_JSON} characters)"
 
           if [ "$RELEASE_TYPE" = "hotfix" ]; then
             # For UAT hotfix: find the latest UAT release (prerelease)
@@ -165,16 +184,27 @@ jobs:
           RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           echo "🔍 Finding previous PRD tag (release_type: $RELEASE_TYPE)"
 
-          RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
-          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON} characters)"
+          RELEASES_JSON_RAW="${{ steps.cache_releases.outputs.releases_json }}"
+          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON_RAW} characters)"
+          echo "🔍 JSON preview: ${RELEASES_JSON_RAW:0:100}..."
+
+          # Re-normalize JSON to ensure it's valid (handles any formatting issues from outputs)
+          echo "🔄 Re-normalizing JSON..."
+          RELEASES_JSON=$(echo "$RELEASES_JSON_RAW" | jq -c '.')
+          if [ $? -ne 0 ]; then
+            echo "❌ Error: Failed to re-normalize JSON from outputs"
+            echo "Raw JSON from outputs:"
+            echo "$RELEASES_JSON_RAW"
+            exit 1
+          fi
 
           # Validate JSON can be parsed
           if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
-            echo "❌ Error: Invalid JSON retrieved from outputs"
+            echo "❌ Error: Invalid JSON after re-normalization"
             echo "JSON preview: ${RELEASES_JSON:0:200}..."
             exit 1
           fi
-          echo "✅ JSON is valid and parseable"
+          echo "✅ JSON is valid and parseable (length: ${#RELEASES_JSON} characters)"
 
           # Get all UAT releases (prereleases)
           echo "🔎 Extracting all UAT releases (prereleases)..."
