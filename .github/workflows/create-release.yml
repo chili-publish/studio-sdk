@@ -83,41 +83,14 @@ jobs:
       - name: Fetch and cache GitHub Releases
         id: cache_releases
         run: |
-          # Fetch all releases once and normalize JSON with jq
+          # Fetch all releases once and store in temp file
           echo "📥 Fetching releases from GitHub API..."
-          RAW_JSON=$(gh release list --limit 10 --json isPrerelease,tagName)
-          echo "✅ Raw JSON received (length: ${#RAW_JSON} characters)"
+          gh release list --limit 10 --json isPrerelease,tagName | jq '.' > /tmp/releases.json
 
-          echo "🔄 Normalizing JSON with jq..."
-          RELEASES_JSON=$(echo "$RAW_JSON" | jq -c '.')
-          if [ $? -ne 0 ]; then
-            echo "❌ Error: Failed to normalize JSON"
-            echo "Raw JSON preview: ${RAW_JSON:0:200}..."
-            exit 1
-          fi
-          echo "✅ JSON normalized successfully (length: ${#RELEASES_JSON} characters)"
-
-          # Validate normalized JSON is valid
-          if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
-            echo "❌ Error: Normalized JSON is invalid"
-            echo "Normalized JSON preview: ${RELEASES_JSON:0:200}..."
-            exit 1
-          fi
-
-          # Store as multiline output using heredoc syntax
-          # Use -c (compact) to ensure single line, then format when retrieving
-          echo "💾 Storing JSON in step outputs..."
-          {
-            echo 'releases_json<<EOF'
-            echo "$RELEASES_JSON"
-            echo 'EOF'
-          } >> $GITHUB_OUTPUT
-          echo "✅ JSON stored in outputs"
-
-          RELEASE_COUNT=$(echo "$RELEASES_JSON" | jq 'length')
-          echo "📊 Fetched $RELEASE_COUNT releases"
+          RELEASE_COUNT=$(jq 'length' /tmp/releases.json)
+          echo "✅ Fetched $RELEASE_COUNT releases"
           echo "📋 Sample of releases:"
-          echo "$RELEASES_JSON" | jq -r '.[0:3] | .[] | "  - \(.tagName) (prerelease: \(.isPrerelease))"'
+          jq -r '.[0:3] | .[] | "  - \(.tagName) (prerelease: \(.isPrerelease))"' /tmp/releases.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -128,44 +101,29 @@ jobs:
           RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           echo "🔍 Finding previous UAT tag (release_type: $RELEASE_TYPE)"
 
-          RELEASES_JSON_RAW="${{ steps.cache_releases.outputs.releases_json }}"
-          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON_RAW} characters)"
-          echo "🔍 JSON preview: ${RELEASES_JSON_RAW:0:100}..."
-
-          # Re-normalize JSON to ensure it's valid (handles any formatting issues from outputs)
-          echo "🔄 Re-normalizing JSON..."
-          RELEASES_JSON=$(echo "$RELEASES_JSON_RAW" | jq -c '.')
-          if [ $? -ne 0 ]; then
-            echo "❌ Error: Failed to re-normalize JSON from outputs"
-            echo "Raw JSON from outputs:"
-            echo "$RELEASES_JSON_RAW"
+          echo "📥 Reading releases from cached file..."
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
             exit 1
           fi
-
-          # Validate JSON can be parsed
-          if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
-            echo "❌ Error: Invalid JSON after re-normalization"
-            echo "JSON preview: ${RELEASES_JSON:0:200}..."
-            exit 1
-          fi
-          echo "✅ JSON is valid and parseable (length: ${#RELEASES_JSON} characters)"
+          echo "✅ Releases file found"
 
           if [ "$RELEASE_TYPE" = "hotfix" ]; then
             # For UAT hotfix: find the latest UAT release (prerelease)
             # This handles the case where we're hotfixing an existing UAT release (e.g., 1.2.3-rc.0 -> 1.2.3-rc.1)
             echo "🔎 Searching for latest UAT prerelease..."
-            PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == true) | .tagName' | head -1)
+            PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json | head -1)
             echo "  Found UAT prerelease: ${PREVIOUS_TAG:-<none>}"
             
             if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
               echo "⚠️  No UAT releases found for hotfix, using latest production release as previous tag"
-              PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+              PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
               echo "  Using production release: ${PREVIOUS_TAG:-<none>}"
             fi
           else
             # For UAT regular: always use the latest production release as previous tag
             echo "🔎 Searching for latest production release..."
-            PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
             echo "  Found production release: ${PREVIOUS_TAG:-<none>}"
           fi
 
@@ -184,31 +142,16 @@ jobs:
           RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           echo "🔍 Finding previous PRD tag (release_type: $RELEASE_TYPE)"
 
-          RELEASES_JSON_RAW="${{ steps.cache_releases.outputs.releases_json }}"
-          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON_RAW} characters)"
-          echo "🔍 JSON preview: ${RELEASES_JSON_RAW:0:100}..."
-
-          # Re-normalize JSON to ensure it's valid (handles any formatting issues from outputs)
-          echo "🔄 Re-normalizing JSON..."
-          RELEASES_JSON=$(echo "$RELEASES_JSON_RAW" | jq -c '.')
-          if [ $? -ne 0 ]; then
-            echo "❌ Error: Failed to re-normalize JSON from outputs"
-            echo "Raw JSON from outputs:"
-            echo "$RELEASES_JSON_RAW"
+          echo "📥 Reading releases from cached file..."
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
             exit 1
           fi
-
-          # Validate JSON can be parsed
-          if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
-            echo "❌ Error: Invalid JSON after re-normalization"
-            echo "JSON preview: ${RELEASES_JSON:0:200}..."
-            exit 1
-          fi
-          echo "✅ JSON is valid and parseable (length: ${#RELEASES_JSON} characters)"
+          echo "✅ Releases file found"
 
           # Get all UAT releases (prereleases)
           echo "🔎 Extracting all UAT releases (prereleases)..."
-          ALL_UAT_TAGS=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == true) | .tagName')
+          ALL_UAT_TAGS=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json)
           UAT_COUNT=$(echo "$ALL_UAT_TAGS" | grep -c . || echo "0")
           echo "  Found $UAT_COUNT UAT releases"
 
@@ -225,7 +168,7 @@ jobs:
             # For hotfix PRD: find latest hotfix UAT tag (patch increment)
             # Get the latest production release to compare minor versions
             echo "🔎 Searching for hotfix UAT tag (same minor version as latest PRD)..."
-            LATEST_PRD=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
             echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
 
             if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
@@ -250,7 +193,7 @@ jobs:
             # For regular PRD: find latest regular UAT tag (minor increment)
             # Get the latest production release to compare
             echo "🔎 Searching for regular UAT tag (different minor version from latest PRD)..."
-            LATEST_PRD=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
             echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
 
             if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
