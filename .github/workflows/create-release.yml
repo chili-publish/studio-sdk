@@ -387,6 +387,10 @@ jobs:
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
 
+          # Verify remote URL is configured correctly
+          echo "🔍 Checking git remote configuration..."
+          git remote -v
+
           # Check what files are in the commit we're about to push
           echo "📋 Files in current commit (HEAD):"
           git show --name-only --pretty=format: HEAD | head -20
@@ -409,8 +413,11 @@ jobs:
             echo "✅ No workflow files in commit tree"
           fi
 
+          # Ensure remote URL is configured with GitHub App token
+          # (checkout should have set this, but verify/update to be safe)
+          git remote set-url origin https://x-access-token:${{ steps.github-app-access-token.outputs.token }}@github.com/${{ github.repository }}.git
+
           # Push only the tag (the commit is preserved by the tag reference)
-          # Remote URL is already configured with GitHub App token from checkout step
           git push origin "$TAG_NAME"
           echo "✅ Pushed tag: $TAG_NAME"
 
