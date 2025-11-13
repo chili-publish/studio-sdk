@@ -32,14 +32,20 @@ jobs:
     permissions:
       contents: write
       pull-requests: read
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          token: ${{ steps.github-app-access-token.outputs.token }}
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.ref }}
 
       - name: Setup Node.js
@@ -104,8 +110,6 @@ jobs:
           echo "✅ Fetched $RELEASE_COUNT releases"
           echo "📋 Sample of releases:"
           jq -r '.[0:3] | .[] | "  - \(.tagName) (prerelease: \(.isPrerelease))"' /tmp/releases.json
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find previous release tag (UAT)
         if: steps.prepare.outputs.environment == 'uat'
@@ -244,6 +248,20 @@ jobs:
           echo "Fetching UAT tag: $UAT_TAG"
           git fetch --tags
 
+          # Check if the UAT tag's commit has workflow files in its history
+          echo "🔍 Checking UAT tag commit for workflow file changes..."
+          if git show --name-only "$UAT_TAG" | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: UAT tag $UAT_TAG commit contains workflow file changes"
+          fi
+
+          # Check commit tree (last 10 commits) for workflow files
+          if git log --name-only --pretty=format: "$UAT_TAG"~10.."$UAT_TAG" 2>/dev/null | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: UAT tag $UAT_TAG commit tree contains workflow file changes"
+            echo "⚠️  This may require 'workflows' permission when pushing PRD tag"
+          else
+            echo "✅ No workflow files in UAT tag commit tree"
+          fi
+
           # Create a temporary branch from the UAT tag
           TEMP_BRANCH="temp-release-$(date +%s)"
           git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
@@ -366,15 +384,33 @@ jobs:
       - name: Push tag
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+
           # Check what files are in the commit we're about to push
-          echo "📋 Files in commit:"
+          echo "📋 Files in current commit (HEAD):"
           git show --name-only --pretty=format: HEAD | head -20
 
+          # Check what files are in the parent commit (UAT tag for PRD)
+          echo "📋 Files in parent commit:"
+          git show --name-only --pretty=format: HEAD^ | head -20 || echo "No parent commit"
+
+          # Check if parent commit has workflow files
+          if git show --name-only HEAD^ 2>/dev/null | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: Parent commit contains workflow file changes"
+            echo "This might require 'workflows' permission when pushing"
+          fi
+
+          # Check the full commit tree for workflow files
+          echo "📋 Checking commit tree for workflow files..."
+          if git log --name-only --pretty=format: HEAD~5..HEAD 2>/dev/null | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: Commit tree contains workflow file changes"
+          else
+            echo "✅ No workflow files in commit tree"
+          fi
+
           # Push only the tag (the commit is preserved by the tag reference)
+          # Remote URL is already configured with GitHub App token from checkout step
           git push origin "$TAG_NAME"
           echo "✅ Pushed tag: $TAG_NAME"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub release
         id: create_release
@@ -407,8 +443,6 @@ jobs:
           RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
           echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
           echo "Created GitHub release: $RELEASE_URL"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup temporary branch
         if: env.temp_branch != ''
