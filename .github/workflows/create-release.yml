@@ -386,33 +386,70 @@ jobs:
             fi
           fi
 
+          # Validate commit range
+          PREVIOUS_COMMIT=$(git rev-parse "$PREVIOUS_TAG")
+          echo "Previous tag commit: $PREVIOUS_COMMIT"
+          echo "Current tag commit: $TARGET_REF"
+
+          # Check if there are commits between the tags
+          COMMIT_COUNT=$(git rev-list --count "$PREVIOUS_TAG".."$TAG_NAME" 2>/dev/null || echo "0")
+          echo "Commits between tags: $COMMIT_COUNT"
+
+          if [ "$COMMIT_COUNT" = "0" ]; then
+            echo "⚠️  Warning: No commits found between $PREVIOUS_TAG and $TAG_NAME"
+            echo "This might cause issues with release notes generation"
+          fi
+
+          # Check if previous tag is in the history of current tag
+          if ! git merge-base --is-ancestor "$PREVIOUS_TAG" "$TAG_NAME" 2>/dev/null; then
+            echo "⚠️  Warning: Previous tag $PREVIOUS_TAG is not in the history of $TAG_NAME"
+            echo "This might cause issues with release notes generation"
+          fi
+
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
           # Release notes are required - fail if generation fails
+          echo "Creating release with auto-generated notes..."
           if [ "$ENVIRONMENT" = "uat" ]; then
-            if ! gh release create $TAG_NAME \
+            OUTPUT=$(gh release create $TAG_NAME \
               --target $TARGET_REF \
               --title "$TAG_NAME" \
               --generate-notes \
               --notes-start-tag "$PREVIOUS_TAG" \
-              --prerelease; then
+              --prerelease 2>&1)
+            EXIT_CODE=$?
+            
+            if [ $EXIT_CODE -ne 0 ]; then
               echo "❌ Error: Failed to create release with auto-generated notes"
-              echo "Previous tag: $PREVIOUS_TAG"
-              echo "Current tag: $TAG_NAME"
-              echo "Target commit: $TARGET_REF"
+              echo "Exit code: $EXIT_CODE"
+              echo "Command output:"
+              echo "$OUTPUT"
+              echo ""
+              echo "Debug info:"
+              echo "Previous tag: $PREVIOUS_TAG ($PREVIOUS_COMMIT)"
+              echo "Current tag: $TAG_NAME ($TARGET_REF)"
+              echo "Commits between: $COMMIT_COUNT"
               exit 1
             fi
             echo "✅ Release created with auto-generated notes"
           else
-            if ! gh release create $TAG_NAME \
+            OUTPUT=$(gh release create $TAG_NAME \
               --target $TARGET_REF \
               --title "$TAG_NAME" \
               --generate-notes \
-              --notes-start-tag "$PREVIOUS_TAG"; then
+              --notes-start-tag "$PREVIOUS_TAG" 2>&1)
+            EXIT_CODE=$?
+            
+            if [ $EXIT_CODE -ne 0 ]; then
               echo "❌ Error: Failed to create release with auto-generated notes"
-              echo "Previous tag: $PREVIOUS_TAG"
-              echo "Current tag: $TAG_NAME"
-              echo "Target commit: $TARGET_REF"
+              echo "Exit code: $EXIT_CODE"
+              echo "Command output:"
+              echo "$OUTPUT"
+              echo ""
+              echo "Debug info:"
+              echo "Previous tag: $PREVIOUS_TAG ($PREVIOUS_COMMIT)"
+              echo "Current tag: $TAG_NAME ($TARGET_REF)"
+              echo "Commits between: $COMMIT_COUNT"
               exit 1
             fi
             echo "✅ Release created with auto-generated notes"
