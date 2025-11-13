@@ -73,7 +73,7 @@ jobs:
             RELEASE_TYPE="${{ github.event.inputs.release_type }}"
           else
             # Default values for testing (branch push trigger)
-            RELEASE_TYPE="hotfix"
+            RELEASE_TYPE="regular"
             echo "⚠️  Using default release_type: $RELEASE_TYPE (testing mode)"
           fi
 
