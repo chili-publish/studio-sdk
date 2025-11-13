@@ -361,89 +361,64 @@ jobs:
           git branch -D "${{ env.temp_branch }}" || true
           echo "✅ Cleaned up temporary branch"
 
-      # TODO: Temporarily disabled - create release manually on GitHub to debug API issues
-      # - name: Create GitHub release
-      #   id: create_release
-      #   run: |
-      #     TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-      #     PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
-      #     ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
-      #
-      #     # Get the commit SHA from the tag (tag is already pushed)
-      #     COMMIT_SHA=$(git rev-parse "$TAG_NAME")
-      #     TARGET_REF="$COMMIT_SHA"
-      #
-      #     echo "Creating release for tag: $TAG_NAME"
-      #     echo "Previous tag for notes: $PREVIOUS_TAG"
-      #     echo "Target commit SHA: $TARGET_REF"
-      #
-      #     # Create release with auto-generated notes
-      #     if [ "$ENVIRONMENT" = "uat" ]; then
-      #       gh release create $TAG_NAME \
-      #         --target $TARGET_REF \
-      #         --title "$TAG_NAME" \
-      #         --generate-notes \
-      #         --notes-start-tag "$PREVIOUS_TAG" \
-      #         --prerelease
-      #     else
-      #       gh release create $TAG_NAME \
-      #         --target $TARGET_REF \
-      #         --title "$TAG_NAME" \
-      #         --generate-notes \
-      #         --notes-start-tag "$PREVIOUS_TAG"
-      #     fi
-      #
-      #     RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
-      #     echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-      #     echo "Created GitHub release: $RELEASE_URL"
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Output release info for manual creation
+      - name: Create GitHub release
+        id: create_release
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
           PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
           ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
-          COMMIT_SHA=$(git rev-parse "$TAG_NAME")
 
-          echo "📋 Tag created: $TAG_NAME"
-          echo "📋 Commit SHA: $COMMIT_SHA"
-          echo "📋 Previous tag for notes: $PREVIOUS_TAG"
-          echo "📋 Environment: $ENVIRONMENT"
-          echo ""
-          echo "⚠️  Release creation is temporarily disabled."
-          echo "Please create the release manually on GitHub:"
-          echo "  - Tag: $TAG_NAME"
-          echo "  - Target: $COMMIT_SHA"
-          echo "  - Previous tag for notes: $PREVIOUS_TAG"
+          echo "Creating release for tag: $TAG_NAME"
+          echo "Previous tag for notes: $PREVIOUS_TAG"
+
+          # Create release with auto-generated notes
+          # Note: GitHub only generates notes for commits associated with PRs
+          # If no PRs are associated, only the full changelog link will be shown
+          # Use tag name directly as target since tag is already pushed
           if [ "$ENVIRONMENT" = "uat" ]; then
-            echo "  - Mark as prerelease: Yes"
+            gh release create $TAG_NAME \
+              --target $TAG_NAME \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG" \
+              --prerelease
+          else
+            gh release create $TAG_NAME \
+              --target $TAG_NAME \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG"
           fi
 
-      # TODO: Temporarily disabled - notify after manual release creation
-      # - name: Notify Teams
-      #   run: |
-      #     RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
-      #     VERSION="${{ steps.bump_version.outputs.tag_name }}"
-      #     ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
-      #     RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
-      #     BRANCH="${{ github.ref_name }}"
-      #
-      #     if [ "$ENVIRONMENT" = "uat" ]; then
-      #       TYPE_EMOJI="🧪"
-      #       TYPE_TEXT="UAT"
-      #     else
-      #       TYPE_EMOJI="🎉"
-      #       TYPE_TEXT="Production"
-      #     fi
-      #
-      #     payload=$(cat <<EOF
-      #     {
-      #         "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** $BRANCH\n\nRelease has been created and deployment will be triggered automatically."
-      #     }
-      #     EOF
-      #     )
-      #     curl --request POST \
-      #     --header "Content-Type: application/json" \
-      #     --data "$payload" \
-      #     "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
+          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+          echo "Created GitHub release: $RELEASE_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify Teams
+        run: |
+          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+          VERSION="${{ steps.bump_version.outputs.tag_name }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          BRANCH="${{ github.ref_name }}"
+
+          if [ "$ENVIRONMENT" = "uat" ]; then
+            TYPE_EMOJI="🧪"
+            TYPE_TEXT="UAT"
+          else
+            TYPE_EMOJI="🎉"
+            TYPE_TEXT="Production"
+          fi
+
+          payload=$(cat <<EOF
+          {
+              "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** $BRANCH\n\nRelease has been created and deployment will be triggered automatically."
+          }
+          EOF
+          )
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
