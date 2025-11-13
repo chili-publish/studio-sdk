@@ -159,6 +159,7 @@ export * from './types/ConnectorTypes';
 export * from './types/DataConnectorTypes';
 export * from './types/FontConnectorTypes';
 export { GradientType } from './types/GradientStyleTypes';
+export * from './types/ComponentConnectorTypes';
 export * from './types/MediaConnectorTypes';
 export {
     Alignment,
