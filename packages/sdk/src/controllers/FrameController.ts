@@ -40,6 +40,11 @@ export class FrameController {
      */
     #editorAPI: EditorAPI;
     constraints: FrameConstraintController;
+    /**
+     * This variable helps to redirect shapes related methods to newly introduced ShapeController
+     * to avoid any breaking changes
+     */
+    private shapeController: ShapeController;
 
     /**
      * @ignore
@@ -50,11 +55,7 @@ export class FrameController {
         this.constraints = new FrameConstraintController(this.#editorAPI);
     }
 
-    /**
-     * This variable helps to redirect shapes related methods to newly introduced ShapeController
-     * to avoid any breaking changes
-     */
-    private shapeController: ShapeController;
+
 
     /**
      * This method returns the list of frames
@@ -1285,8 +1286,6 @@ export class FrameConstraintController {
         const res = await this.#editorAPI;
         return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
-
-
 
     /**
      * This method will set the rotation constraint for a specified frame
