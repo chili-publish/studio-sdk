@@ -6,6 +6,7 @@ import {
     AnchorTargetEdgeType,
     AutoGrowDirection,
     BlendMode,
+    ComponentSourceTypeEnum,
     CropType,
     FitMode,
     FitModePosition,
@@ -31,6 +32,7 @@ let mockedFrameController: FrameController;
 const mockedEditorApi: EditorAPI = {
     addFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     addBarcodeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
+    addComponentFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     getFrames: async () => getEditorResponseData(castToEditorResponse(null)),
     getSelectedFrames: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -96,6 +98,7 @@ beforeEach(() => {
 
     jest.spyOn(mockedEditorApi, 'addFrame');
     jest.spyOn(mockedEditorApi, 'addBarcodeFrame');
+    jest.spyOn(mockedEditorApi, 'addComponentFrame');
     jest.spyOn(mockedEditorApi, 'duplicateFrames');
     jest.spyOn(mockedEditorApi, 'getFrames');
     jest.spyOn(mockedEditorApi, 'getSelectedFrames');
@@ -178,6 +181,24 @@ describe('FrameController', () => {
         await mockedFrameController.createBarcodeFrame(BarcodeType.ean13, { x: 100, y: 101 });
         expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.addBarcodeFrame).toHaveBeenCalledWith(BarcodeType.ean13, 100, 101);
+    });
+
+    it('Should be possible to create a component frame', async () => {
+        await mockedFrameController.createComponentFrame(
+            { type: ComponentSourceTypeEnum.connector, id: 'comp1', assetId: 'var1' },
+            100,
+            101,
+            102,
+            103,
+        );
+        expect(mockedEditorApi.addComponentFrame).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.addComponentFrame).toHaveBeenCalledWith(
+            100,
+            101,
+            102,
+            103,
+            JSON.stringify({ type: ComponentSourceTypeEnum.connector, id: 'comp1', assetId: 'var1' }),
+        );
     });
 
     it('Should be possible to duplicate a list of frames', async () => {

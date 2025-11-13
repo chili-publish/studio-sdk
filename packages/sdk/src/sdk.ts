@@ -45,6 +45,7 @@ import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 import { GradientStyleController } from './controllers/GradientStyleController';
 import { ComponentConnectorController } from './controllers/ComponentConnectorController';
+import { ComponentController } from './controllers/ComponentController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -65,8 +66,9 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     shape: ShapeController;
-    /** @experimental */
     barcode: BarcodeController;
+    /** @experimental */
+    component: ComponentController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
@@ -121,6 +123,7 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
+        this.component = new ComponentController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);

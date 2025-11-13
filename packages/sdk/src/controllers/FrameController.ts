@@ -6,6 +6,7 @@ import {
     AutoGrowDeltaUpdate,
     AutoGrowDirection,
     BlendMode,
+    ComponentSource,
     CropType,
     FitMode,
     FitModePosition,
@@ -266,12 +267,12 @@ export class FrameController {
      * This method will set the frame opacity
      * @param id the id of a specific frame
      * @param opacity the opacity of the frame in range [0.0 - 1.0]
-     * @returns 
+     * @returns
      */
     setOpacity = async (id: Id, opacity: number) => {
         const res = await this.#editorAPI;
         return res.setFrameOpacity(id, opacity).then((result) => getEditorResponseData<null>(result));
-    }
+    };
 
     /**
      * This method will update the name of a specific frame
@@ -438,15 +439,32 @@ export class FrameController {
     };
 
     /**
-     * @experimental This method will create a new barcode frame of 'type' type to the layout positioned on the requested
+     * This method will create a new barcode frame of 'type' type to the layout positioned on the requested
      * coordinates. Any coordinate that is not specified will default to 'center'.
      * @param type the type of barcode to create
      * @param position optional position object where you can specify the x, y of the barcode frame
-     * @returns
+     * @returns the newly created barcode frame's id
      */
     createBarcodeFrame = async (type: BarcodeType, position?: { x?: number; y?: number }) => {
         const res = await this.#editorAPI;
         return res.addBarcodeFrame(type, position?.x, position?.y).then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * @experimental This method will add a new component frame to the current layout positioned on the requested
+     * cordinates with the given dimensions. The component is initialized with the provided source.
+     * @param source The source of the component frame
+     * @param x The X coordinate of the new component frame within the layout
+     * @param y The Y coordinate of the new component frame within the layout
+     * @param width The width of the new component frame within the layout
+     * @param height The height of the new component frame within the layout
+     * @returns the newly created component frame's id
+     */
+    createComponentFrame = async (source: ComponentSource, x: number, y: number, width: number, height: number) => {
+        const res = await this.#editorAPI;
+        return res
+            .addComponentFrame(x, y, width, height, JSON.stringify(source))
+            .then((result) => getEditorResponseData<Id>(result));
     };
 
     /**
