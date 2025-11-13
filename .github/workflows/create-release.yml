@@ -68,7 +68,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="prd"
+            ENVIRONMENT="uat"
             echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
           fi
 
@@ -76,7 +76,7 @@ jobs:
             RELEASE_TYPE="${{ github.event.inputs.release_type }}"
           else
             # Default values for testing (branch push trigger)
-            RELEASE_TYPE="hotfix"
+            RELEASE_TYPE="regular"
             echo "⚠️  Using default release_type: $RELEASE_TYPE (testing mode)"
           fi
 
