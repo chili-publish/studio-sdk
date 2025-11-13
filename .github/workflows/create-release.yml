@@ -83,17 +83,33 @@ jobs:
       - name: Fetch and cache GitHub Releases
         id: cache_releases
         run: |
-          # Fetch all releases once and cache as JSON
-          RELEASES_JSON=$(gh release list --limit 10 --json isPrerelease,tagName)
+          # Fetch all releases once and normalize JSON with jq
+          echo "📥 Fetching releases from GitHub API..."
+          RAW_JSON=$(gh release list --limit 10 --json isPrerelease,tagName)
+          echo "✅ Raw JSON received (length: ${#RAW_JSON} characters)"
 
-          # Store as multiline output (GitHub Actions supports this)
+          echo "🔄 Normalizing JSON with jq..."
+          RELEASES_JSON=$(echo "$RAW_JSON" | jq '.')
+          if [ $? -ne 0 ]; then
+            echo "❌ Error: Failed to normalize JSON"
+            echo "Raw JSON preview: ${RAW_JSON:0:200}..."
+            exit 1
+          fi
+          echo "✅ JSON normalized successfully (length: ${#RELEASES_JSON} characters)"
+
+          # Store as multiline output using heredoc syntax
+          echo "💾 Storing JSON in step outputs..."
           {
             echo 'releases_json<<EOF'
             echo "$RELEASES_JSON"
             echo 'EOF'
           } >> $GITHUB_OUTPUT
+          echo "✅ JSON stored in outputs"
 
-          echo "Fetched $(echo "$RELEASES_JSON" | jq 'length') releases"
+          RELEASE_COUNT=$(echo "$RELEASES_JSON" | jq 'length')
+          echo "📊 Fetched $RELEASE_COUNT releases"
+          echo "📋 Sample of releases:"
+          echo "$RELEASES_JSON" | jq -r '.[0:3] | .[] | "  - \(.tagName) (prerelease: \(.isPrerelease))"'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -102,21 +118,36 @@ jobs:
         id: previous_tag_uat
         run: |
           RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
-          # Use cached releases data
+          echo "🔍 Finding previous UAT tag (release_type: $RELEASE_TYPE)"
+
           RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
+          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON} characters)"
+
+          # Validate JSON can be parsed
+          if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
+            echo "❌ Error: Invalid JSON retrieved from outputs"
+            echo "JSON preview: ${RELEASES_JSON:0:200}..."
+            exit 1
+          fi
+          echo "✅ JSON is valid and parseable"
 
           if [ "$RELEASE_TYPE" = "hotfix" ]; then
             # For UAT hotfix: find the latest UAT release (prerelease)
             # This handles the case where we're hotfixing an existing UAT release (e.g., 1.2.3-rc.0 -> 1.2.3-rc.1)
+            echo "🔎 Searching for latest UAT prerelease..."
             PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == true) | .tagName' | head -1)
+            echo "  Found UAT prerelease: ${PREVIOUS_TAG:-<none>}"
             
             if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
-              echo "No UAT releases found for hotfix, using latest production release as previous tag"
+              echo "⚠️  No UAT releases found for hotfix, using latest production release as previous tag"
               PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+              echo "  Using production release: ${PREVIOUS_TAG:-<none>}"
             fi
           else
             # For UAT regular: always use the latest production release as previous tag
+            echo "🔎 Searching for latest production release..."
             PREVIOUS_TAG=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            echo "  Found production release: ${PREVIOUS_TAG:-<none>}"
           fi
 
           if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
@@ -125,19 +156,31 @@ jobs:
           fi
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
-          echo "Previous UAT tag: $PREVIOUS_TAG"
+          echo "✅ Previous UAT tag: $PREVIOUS_TAG"
 
       - name: Find previous release tag (PRD)
         if: steps.prepare.outputs.environment == 'prd'
         id: previous_tag_prd
         run: |
           RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          echo "🔍 Finding previous PRD tag (release_type: $RELEASE_TYPE)"
 
-          # Use cached releases data
           RELEASES_JSON="${{ steps.cache_releases.outputs.releases_json }}"
+          echo "📥 Retrieved JSON from outputs (length: ${#RELEASES_JSON} characters)"
+
+          # Validate JSON can be parsed
+          if ! echo "$RELEASES_JSON" | jq empty 2>/dev/null; then
+            echo "❌ Error: Invalid JSON retrieved from outputs"
+            echo "JSON preview: ${RELEASES_JSON:0:200}..."
+            exit 1
+          fi
+          echo "✅ JSON is valid and parseable"
 
           # Get all UAT releases (prereleases)
+          echo "🔎 Extracting all UAT releases (prereleases)..."
           ALL_UAT_TAGS=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == true) | .tagName')
+          UAT_COUNT=$(echo "$ALL_UAT_TAGS" | grep -c . || echo "0")
+          echo "  Found $UAT_COUNT UAT releases"
 
           if [ -z "$ALL_UAT_TAGS" ]; then
             echo "❌ Error: No UAT releases found. PRD releases must be created from UAT releases."
@@ -151,11 +194,14 @@ jobs:
           if [ "$RELEASE_TYPE" = "hotfix" ]; then
             # For hotfix PRD: find latest hotfix UAT tag (patch increment)
             # Get the latest production release to compare minor versions
+            echo "🔎 Searching for hotfix UAT tag (same minor version as latest PRD)..."
             LATEST_PRD=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
 
             if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
               # Extract major.minor from latest PRD
               PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              echo "  PRD minor version: $PRD_MINOR"
               # Find UAT tags with same minor version (hotfix)
               PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
                 UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
@@ -163,18 +209,24 @@ jobs:
                   echo "$tag"
                 fi
               done | head -1)
+              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
             else
               # No PRD releases yet, just get latest UAT
+              echo "  No PRD releases found, using latest UAT..."
               PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
             fi
           else
             # For regular PRD: find latest regular UAT tag (minor increment)
             # Get the latest production release to compare
+            echo "🔎 Searching for regular UAT tag (different minor version from latest PRD)..."
             LATEST_PRD=$(echo "$RELEASES_JSON" | jq -r '.[] | select(.isPrerelease == false) | .tagName' | head -1)
+            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
 
             if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
               # Extract major.minor from latest PRD
               PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              echo "  PRD minor version: $PRD_MINOR"
               # Find UAT tags with different (higher) minor version (regular)
               PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
                 UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
@@ -182,9 +234,12 @@ jobs:
                   echo "$tag"
                 fi
               done | head -1)
+              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
             else
               # No PRD releases yet, get latest UAT
+              echo "  No PRD releases found, using latest UAT..."
               PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
             fi
           fi
 
@@ -194,7 +249,7 @@ jobs:
           fi
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
-          echo "Found base UAT tag for PRD: $PREVIOUS_TAG"
+          echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
 
       - name: Checkout UAT tag for PRD release
         if: steps.prepare.outputs.environment == 'prd'
