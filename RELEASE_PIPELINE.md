@@ -34,8 +34,10 @@ opt UAT Hotfix needed
     DeployRelease -> DeployRelease: Deploy to UAT
 end
 
-User -> CreateRelease: 2. Create PRD Regular Release\n(environment: prd, release_type: regular)
-CreateRelease -> CreateRelease: Auto-calculate base UAT tag\n(latest regular UAT: 1.3.0-rc.1 or 1.3.0-rc.0)\nCheckout UAT tag
+note over User: IMPORTANT: Create branch from\nlatest UAT release tag\n(e.g., 1.3.0-rc.1 or 1.3.0-rc.0)
+User -> CreateRelease: 2. Create branch from latest UAT tag\n(e.g., 1.3.0-rc.1 or 1.3.0-rc.0)
+User -> CreateRelease: 2a. Create PRD Regular Release\n(environment: prd, release_type: regular)\nFrom: branch created from latest UAT tag
+CreateRelease -> CreateRelease: Auto-calculate base UAT tag\n(latest regular UAT: 1.3.0-rc.1 or 1.3.0-rc.0)\nWork from current branch
 CreateRelease -> GitHub: Create tag 1.3.0 (production)
 GitHub -> DeployRelease: Trigger deployment
 DeployRelease -> DeployRelease: Deploy to PRD\n(Publish to NPM public,\nDeploy to Azure CDN)
@@ -77,8 +79,10 @@ opt Additional UAT Hotfix needed
     DeployRelease -> DeployRelease: Deploy to UAT
 end
 
-User -> CreateRelease: 2. Create PRD Hotfix\n(environment: prd, release_type: hotfix)
-CreateRelease -> CreateRelease: Auto-calculate base UAT tag\n(latest hotfix UAT: 1.2.4-rc.1 or 1.2.4-rc.0)\nCheckout UAT tag
+note over User: IMPORTANT: Create branch from\nlatest UAT release tag\n(e.g., 1.2.4-rc.1 or 1.2.4-rc.0)
+User -> CreateRelease: 2. Create branch from latest UAT tag\n(e.g., 1.2.4-rc.1 or 1.2.4-rc.0)
+User -> CreateRelease: 2a. Create PRD Hotfix\n(environment: prd, release_type: hotfix)\nFrom: branch created from latest UAT tag
+CreateRelease -> CreateRelease: Auto-calculate base UAT tag\n(latest hotfix UAT: 1.2.4-rc.1 or 1.2.4-rc.0)\nWork from current branch
 CreateRelease -> GitHub: Create tag 1.2.4 (production)
 GitHub -> DeployRelease: Trigger deployment
 DeployRelease -> DeployRelease: Deploy to PRD\n(Publish to NPM public,\nDeploy to Azure CDN)
