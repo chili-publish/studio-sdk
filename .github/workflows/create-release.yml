@@ -261,15 +261,18 @@ jobs:
           if [ "$RELEASE_TYPE" = "hotfix" ]; then
             # Hotfix: patch version increment
             if [ "$ENVIRONMENT" = "uat" ]; then
-              # UAT hotfix: Check if we're hotfixing an existing UAT release or creating a new one
-              # If current version has -rc.X, we're hotfixing an existing UAT release
-              if echo "$CURRENT_VERSION" | grep -qE '-rc\.[0-9]+$'; then
+              # UAT hotfix: Check if we're hotfixing an existing UAT release
+              # The hotfix branch was created from a UAT release tag, so package.json should have -rc.X
+              echo "Current version in package.json: $CURRENT_VERSION"
+              if echo "$CURRENT_VERSION" | grep -q -- '-rc\.'; then
                 # Hotfix existing UAT release: increment prerelease number only
                 # e.g., 1.2.3-rc.0 -> 1.2.3-rc.1
+                echo "Hotfixing existing UAT release (current version has -rc.X)"
                 NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
               else
                 # New UAT hotfix from main or production: increment patch and add -rc.0
                 # e.g., 1.2.3 -> 1.2.4-rc.0
+                echo "Creating new UAT hotfix from main/production (current version: $CURRENT_VERSION)"
                 NEW_VERSION=$(npm version prepatch --preid=rc --git-tag-version=false)
               fi
             else
