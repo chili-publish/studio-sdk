@@ -110,6 +110,8 @@ jobs:
           echo "✅ Fetched $RELEASE_COUNT releases"
           echo "📋 Sample of releases:"
           jq -r '.[0:3] | .[] | "  - \(.tagName) (prerelease: \(.isPrerelease))"' /tmp/releases.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find previous release tag (UAT)
         if: steps.prepare.outputs.environment == 'uat'
@@ -443,6 +445,8 @@ jobs:
           RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
           echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
           echo "Created GitHub release: $RELEASE_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup temporary branch
         if: env.temp_branch != ''
