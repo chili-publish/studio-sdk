@@ -8,7 +8,7 @@ import { getEditorResponseData, throwEditorResponseError } from '../utils/Editor
  * @experimental This controller is still experimental and might change in future releases.
  *
  * The ComponentConnectorController is responsible for all communication regarding Component connectors.
- * Methods inside this controller can be called by `window.SDK.ComponentConnector.{method-name}`
+ * Methods inside this controller can be called by `window.SDK.componentConnector.{method-name}`
  *
  * The way GraFx Studio handles different sources of Component is called 'ComponentConnector'.
  * A ComponentConnector is an implementation of a set of capabilities we need
@@ -91,7 +91,7 @@ export class ComponentConnectorController {
      * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
      * method allows you to discover which mappings are available for a given connector. If you want to use any of these
      * mappings, they will be available in the `context` parameter of any connector method.
-     * @param connectorId unique id of the media connector
+     * @param connectorId unique id of the component connector
      * @returns connector mappings
      */
     getConfigurationOptions = async (connectorId: string) => {
@@ -105,7 +105,7 @@ export class ComponentConnectorController {
      * @experimental This method is still experimental and might change in future releases.
      * This method returns what capabilities the selected connector has. It gives an indication what methods can
      * be used successfully for a certain connector.
-     * @param connectorId unique id of the Font connector
+     * @param connectorId unique id of the component connector
      * @returns ComponentConnectorCapabilities
      */
     getCapabilities = async (connectorId: string) => {
