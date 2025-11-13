@@ -411,9 +411,41 @@ jobs:
           # Release notes are required - fail if generation fails
           echo "Creating release with auto-generated notes..."
 
+          # Try to generate notes first via API to see detailed error
+          echo "Attempting to generate notes via GitHub API..."
+          REPO="${{ github.repository }}"
+          NOTES_RESPONSE=$(gh api \
+            -X POST \
+            "/repos/$REPO/releases/generate-notes" \
+            -f tag_name="$TAG_NAME" \
+            -f target_commitish="$TARGET_REF" \
+            -f previous_tag_name="$PREVIOUS_TAG" \
+            --jq '.' 2>&1) || NOTES_ERROR=$?
+
+          if [ -n "$NOTES_ERROR" ]; then
+            echo "❌ Error generating notes via API:"
+            echo "$NOTES_RESPONSE"
+            echo ""
+            echo "Trying to get more details..."
+            # Try without jq to see raw response
+            gh api \
+              -X POST \
+              "/repos/$REPO/releases/generate-notes" \
+              -f tag_name="$TAG_NAME" \
+              -f target_commitish="$TARGET_REF" \
+              -f previous_tag_name="$PREVIOUS_TAG" 2>&1 || true
+            echo ""
+          else
+            echo "✅ Notes generated successfully via API"
+            echo "Generated notes preview:"
+            echo "$NOTES_RESPONSE" | head -20
+          fi
+
           # Set up error handling
           set +e  # Don't exit on error immediately
 
+          echo ""
+          echo "Creating release with gh CLI..."
           if [ "$ENVIRONMENT" = "uat" ]; then
             gh release create $TAG_NAME \
               --target $TARGET_REF \
