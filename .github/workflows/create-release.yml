@@ -65,7 +65,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="uat"
+            ENVIRONMENT="prd"
             echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
           fi
 
@@ -119,27 +119,34 @@ jobs:
           echo "✅ Releases file found"
 
           if [ "$RELEASE_TYPE" = "hotfix" ]; then
-            # For UAT hotfix: find the latest UAT release (prerelease)
-            # This handles the case where we're hotfixing an existing UAT release (e.g., 1.2.3-rc.0 -> 1.2.3-rc.1)
-            echo "🔎 Searching for latest UAT prerelease..."
-            PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json | head -1)
-            echo "  Found UAT prerelease: ${PREVIOUS_TAG:-<none>}"
+            # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
+            # The hotfix branch can be created from either:
+            # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
+            # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "  Current version in package.json: $CURRENT_VERSION"
             
-            if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
-              echo "⚠️  No UAT releases found for hotfix, using latest production release as previous tag"
-              PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
-              echo "  Using production release: ${PREVIOUS_TAG:-<none>}"
+            echo "🔎 Searching for tag matching package.json version..."
+            ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -E "^${CURRENT_VERSION}$" | head -1)
+            
+            if [ -z "$PREVIOUS_TAG" ]; then
+              echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
+              echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
+              exit 1
             fi
+            
+            echo "  Found matching tag: $PREVIOUS_TAG"
           else
             # For UAT regular: always use the latest production release as previous tag
             echo "🔎 Searching for latest production release..."
             PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
             echo "  Found production release: ${PREVIOUS_TAG:-<none>}"
-          fi
-
-          if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
-            echo "❌ Error: No previous release found. A previous release is required."
-            exit 1
+            
+            if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
+              echo "❌ Error: No production release found. A previous production release is required for UAT regular releases."
+              exit 1
+            fi
           fi
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
@@ -170,72 +177,25 @@ jobs:
             exit 1
           fi
 
-          # Determine if we're looking for regular or hotfix UAT tag
-          # Regular: minor version changed from previous
-          # Hotfix: patch increment (same minor version)
+          # Since PRD workflow is executed from a branch created from a UAT tag,
+          # find the UAT tag that matches the current package.json version
+          # This ensures we use the correct tag the branch was created from
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "  Current version in package.json: $CURRENT_VERSION"
 
-          if [ "$RELEASE_TYPE" = "hotfix" ]; then
-            # For hotfix PRD: find latest hotfix UAT tag (patch increment)
-            # Get the latest production release to compare minor versions
-            echo "🔎 Searching for hotfix UAT tag (same minor version as latest PRD)..."
-            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
-            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
-
-            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
-              # Extract major.minor from latest PRD
-              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
-              echo "  PRD minor version: $PRD_MINOR"
-              # Find UAT tags with same minor version (hotfix)
-              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
-                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
-                if [ "$UAT_MINOR" = "$PRD_MINOR" ]; then
-                  echo "$tag"
-                fi
-              done | head -1)
-              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
-            else
-              # No PRD releases yet, just get latest UAT
-              echo "  No PRD releases found, using latest UAT..."
-              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
-              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
-            fi
-          else
-            # For regular PRD: find latest regular UAT tag (minor increment)
-            # Get the latest production release to compare
-            echo "🔎 Searching for regular UAT tag (different minor version from latest PRD)..."
-            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
-            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
-
-            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
-              # Extract major.minor from latest PRD
-              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
-              echo "  PRD minor version: $PRD_MINOR"
-              # Find UAT tags with different (higher) minor version (regular)
-              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
-                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
-                if [ "$UAT_MINOR" != "$PRD_MINOR" ]; then
-                  echo "$tag"
-                fi
-              done | head -1)
-              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
-            else
-              # No PRD releases yet, get latest UAT
-              echo "  No PRD releases found, using latest UAT..."
-              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
-              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
-            fi
-          fi
+          # Find the UAT tag that matches the current version
+          PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | grep -E "^${CURRENT_VERSION}$" | head -1)
 
           if [ -z "$PREVIOUS_TAG" ]; then
-            echo "❌ Error: No matching UAT release found for $RELEASE_TYPE PRD release."
+            echo "❌ Error: No UAT tag found matching package.json version ($CURRENT_VERSION)"
+            echo "❌ The branch must be created from a valid UAT release tag."
             exit 1
           fi
 
+          echo "  Using UAT tag: $PREVIOUS_TAG"
+
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
           echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
-
-          # For PRD releases, we assume the workflow is executed from a branch
-          # that was created from the latest UAT tag, so we work directly from the current branch
 
       - name: Bump version in memory
         id: bump_version
