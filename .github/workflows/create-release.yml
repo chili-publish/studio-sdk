@@ -68,7 +68,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="uat"
+            ENVIRONMENT="prd"
             echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
           fi
 
