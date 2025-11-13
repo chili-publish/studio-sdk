@@ -414,31 +414,38 @@ jobs:
           # Try to generate notes first via API to see detailed error
           echo "Attempting to generate notes via GitHub API..."
           REPO="${{ github.repository }}"
-          NOTES_RESPONSE=$(gh api \
+
+          # Try without jq first to see raw response (including errors)
+          echo "Raw API response:"
+          RAW_RESPONSE=$(gh api \
             -X POST \
             "/repos/$REPO/releases/generate-notes" \
             -f tag_name="$TAG_NAME" \
             -f target_commitish="$TARGET_REF" \
             -f previous_tag_name="$PREVIOUS_TAG" \
-            --jq '.' 2>&1) || NOTES_ERROR=$?
+            --include 2>&1) || API_ERROR=$?
 
-          if [ -n "$NOTES_ERROR" ]; then
-            echo "❌ Error generating notes via API:"
-            echo "$NOTES_RESPONSE"
+          echo "$RAW_RESPONSE"
+          echo ""
+
+          # Check HTTP status code
+          HTTP_STATUS=$(echo "$RAW_RESPONSE" | grep -i "HTTP/" | tail -1 | awk '{print $2}' || echo "unknown")
+          echo "HTTP Status: $HTTP_STATUS"
+
+          if [ -n "$API_ERROR" ] || [ "$HTTP_STATUS" != "200" ]; then
             echo ""
-            echo "Trying to get more details..."
-            # Try without jq to see raw response
-            gh api \
+            echo "❌ Error generating notes via API"
+            echo "Trying alternative: generate notes without previous_tag_name..."
+            
+            # Try without previous_tag_name to see if that's the issue
+            ALT_RESPONSE=$(gh api \
               -X POST \
               "/repos/$REPO/releases/generate-notes" \
               -f tag_name="$TAG_NAME" \
               -f target_commitish="$TARGET_REF" \
-              -f previous_tag_name="$PREVIOUS_TAG" 2>&1 || true
+              --include 2>&1) || true
+            echo "$ALT_RESPONSE"
             echo ""
-          else
-            echo "✅ Notes generated successfully via API"
-            echo "Generated notes preview:"
-            echo "$NOTES_RESPONSE" | head -20
           fi
 
           # Set up error handling
