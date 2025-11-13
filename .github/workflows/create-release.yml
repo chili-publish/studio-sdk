@@ -326,6 +326,7 @@ jobs:
           echo "✅ Created temporary branch: $TEMP_BRANCH"
 
       - name: Commit version changes
+        id: commit_version
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
           git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
@@ -333,10 +334,15 @@ jobs:
           # Check if there are any changes to commit
           if git diff --staged --quiet; then
             echo "⚠️  No version changes to commit"
+            # Use current HEAD if no changes
+            COMMIT_SHA=$(git rev-parse HEAD)
           else
             git commit -m "chore: bump version to $TAG_NAME"
+            COMMIT_SHA=$(git rev-parse HEAD)
             echo "✅ Committed version changes"
           fi
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "Commit SHA: $COMMIT_SHA"
 
       - name: Create git tag
         run: |
@@ -360,9 +366,9 @@ jobs:
           PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
           ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
 
-          # Use the tag name as target since it points to the commit we just created
-          # (After cleanup, HEAD will be back on the original branch, so we use the tag)
-          TARGET_REF="$TAG_NAME"
+          # Use the commit SHA as target to ensure we point to the exact commit we created
+          # (After cleanup, HEAD will be back on the original branch, so we use the commit SHA)
+          TARGET_REF="${{ steps.commit_version.outputs.commit_sha }}"
 
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
