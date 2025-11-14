@@ -24,6 +24,11 @@ on:
         description: "Engine version to use (e.g., 2.15.latest) - optional"
         required: false
         type: string
+      delete_branch:
+        description: "Delete the workflow execution branch after release (hotfix only) - optional"
+        required: false
+        type: boolean
+        default: false
 env:
   NODE_VERSION: 22.x
 jobs:
@@ -85,10 +90,18 @@ jobs:
             echo "⚠️  No engine_version provided (testing mode)"
           fi
 
+          # Extract delete_branch parameter (defaults to false)
+          if [ "${{ github.event.inputs.delete_branch }}" = "true" ]; then
+            DELETE_BRANCH="true"
+          else
+            DELETE_BRANCH="false"
+          fi
+
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
           echo "engine_version=$ENGINE_VERSION" >> $GITHUB_OUTPUT
-          echo "✅ Prepared parameters: environment=$ENVIRONMENT, release_type=$RELEASE_TYPE, engine_version=${ENGINE_VERSION:-<empty>}"
+          echo "delete_branch=$DELETE_BRANCH" >> $GITHUB_OUTPUT
+          echo "✅ Prepared parameters: environment=$ENVIRONMENT, release_type=$RELEASE_TYPE, engine_version=${ENGINE_VERSION:-<empty>}, delete_branch=$DELETE_BRANCH"
 
       - name: Fetch and cache GitHub Releases
         id: cache_releases
@@ -350,6 +363,23 @@ jobs:
           git checkout "${{ github.ref_name }}" || git checkout main || true
           git branch -D "${{ env.temp_branch }}" || true
           echo "✅ Cleaned up temporary branch"
+
+      - name: Delete workflow execution branch
+        if: steps.prepare.outputs.release_type == 'hotfix' && steps.prepare.outputs.delete_branch == 'true' && github.ref_type == 'branch'
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "🗑️  Deleting hotfix branch: $BRANCH_NAME"
+
+          # Checkout main first to avoid being on the branch we want to delete
+          git checkout main
+
+          # Delete local branch
+          git branch -D "$BRANCH_NAME" || echo "⚠️  Local branch $BRANCH_NAME not found or already deleted"
+
+          # Delete remote branch
+          git push origin --delete "$BRANCH_NAME" || echo "⚠️  Remote branch $BRANCH_NAME not found or already deleted"
+
+          echo "✅ Deleted hotfix branch: $BRANCH_NAME"
 
       - name: Notify Teams
         run: |
