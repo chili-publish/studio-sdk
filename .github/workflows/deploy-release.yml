@@ -2,6 +2,8 @@ name: Deploy Release
 
 on:
   push:
+    branches:
+      - feat/WRS-2503-implement-*
     tags:
       - "*"
 
