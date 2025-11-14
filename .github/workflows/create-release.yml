@@ -179,36 +179,11 @@ jobs:
           fi
           echo "✅ Releases file found"
 
-          # Get all UAT releases (prereleases)
-          echo "🔎 Extracting all UAT releases (prereleases)..."
-          ALL_UAT_TAGS=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json)
-          UAT_COUNT=$(echo "$ALL_UAT_TAGS" | grep -c . || echo "0")
-          echo "  Found $UAT_COUNT UAT releases"
-
-          if [ -z "$ALL_UAT_TAGS" ]; then
-            echo "❌ Error: No UAT releases found. PRD releases must be created from UAT releases."
-            exit 1
-          fi
-
-          # Since PRD workflow is executed from a branch created from a UAT tag,
-          # find the UAT tag that matches the current package.json version
-          # This ensures we use the correct tag the branch was created from
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "  Current version in package.json: $CURRENT_VERSION"
-
-          # Find the UAT tag that matches the current version
-          PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
-
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "❌ Error: No UAT tag found matching package.json version ($CURRENT_VERSION)"
-            echo "❌ The branch must be created from a valid UAT release tag."
-            exit 1
-          fi
-
-          echo "  Using UAT tag: $PREVIOUS_TAG"
-
+          # For PRD releases, always use the latest production release as previous tag
+          echo "🔎 Searching for latest production release..."
+          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+          echo "✅ Previous PRD tag: $PREVIOUS_TAG"
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
-          echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
 
       - name: Bump version in memory
         id: bump_version
