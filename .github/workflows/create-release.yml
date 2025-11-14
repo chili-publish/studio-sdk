@@ -309,6 +309,14 @@ jobs:
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
           echo "Commit SHA: $COMMIT_SHA"
 
+      - name: Push version commit
+        run: |
+          # Push the temporary branch so the commit exists on GitHub
+          # This is required for gh release create --target to work
+          TEMP_BRANCH="${{ env.temp_branch }}"
+          git push origin "$TEMP_BRANCH"
+          echo "✅ Pushed version commit on branch: $TEMP_BRANCH"
+
       - name: Create GitHub release
         id: create_release
         run: |
@@ -346,11 +354,15 @@ jobs:
       - name: Cleanup temporary branch
         if: env.temp_branch != ''
         run: |
-          # Delete the temporary branch locally (remote branch was never pushed)
+          # Delete the temporary branch (both local and remote)
           # Needed for both UAT and PRD releases where we create a temp branch for version commits
+          TEMP_BRANCH="${{ env.temp_branch }}"
           git checkout "${{ github.ref_name }}" || git checkout main || true
-          git branch -D "${{ env.temp_branch }}" || true
-          echo "✅ Cleaned up temporary branch"
+          # Delete remote branch
+          git push origin --delete "$TEMP_BRANCH" || echo "⚠️  Remote branch $TEMP_BRANCH not found or already deleted"
+          # Delete local branch
+          git branch -D "$TEMP_BRANCH" || echo "⚠️  Local branch $TEMP_BRANCH not found or already deleted"
+          echo "✅ Cleaned up temporary branch: $TEMP_BRANCH"
 
       - name: Delete workflow execution branch
         if: steps.prepare.outputs.release_type == 'hotfix' && steps.prepare.outputs.delete_branch == 'true' && github.ref_type == 'branch'
