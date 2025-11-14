@@ -111,7 +111,9 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: packages/sdk/node_modules
+          path: |
+            node_modules
+            packages/sdk/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
@@ -124,7 +126,7 @@ jobs:
           scope: "@chili-publish"
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -153,7 +155,9 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: packages/sdk/node_modules
+          path: |
+            node_modules
+            packages/sdk/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
@@ -184,7 +188,7 @@ jobs:
           npm ping
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ needs.detect-release-type.outputs.is_uat == 'true' && secrets.GITHUB_TOKEN || '' }}
 
@@ -246,7 +250,9 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: packages/sdk/node_modules
+          path: |
+            node_modules
+            packages/sdk/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
@@ -259,7 +265,7 @@ jobs:
           scope: ${{ needs.detect-release-type.outputs.npm_scope }}
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ needs.detect-release-type.outputs.is_uat == 'true' && secrets.GITHUB_TOKEN || '' }}
 
@@ -384,6 +390,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            packages/sdk/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
