@@ -7,6 +7,11 @@ export enum WellKnownConfigurationKeys {
     QueryCallCacheEnabled = 'ENABLE_QUERY_CALL_CACHE',
 }
 
+export enum FrameEditingMode {
+    full,
+    followConstraints,
+}
+
 export type StudioStyling = {
     uiBackgroundColorHex?: string;
 };
@@ -17,6 +22,8 @@ export type StudioStyling = {
 export type StudioOptionsDeltaUpdate = {
     /** Options for the different studio engine shortcuts */
     shortcutOptions?: ShortcutOptionsDeltaUpdate;
+    /** Options for the different frame editing modes */
+    frameEditingMode?: FrameEditingMode;
 };
 
 /**
@@ -82,4 +89,5 @@ export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
         copyPaste: { enabled: false },
         viewMode: { enabled: false },
     },
+    frameEditingMode: FrameEditingMode.full,
 };
