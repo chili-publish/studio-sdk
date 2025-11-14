@@ -1,0 +1,499 @@
+name: Create GitHub Release
+
+on:
+  push:
+    branches:
+      - feat/WRS-2503-implement-*
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (uat or prd)"
+        required: true
+        type: choice
+        options:
+          - uat
+          - prd
+      release_type:
+        description: "Release type (regular or hotfix)"
+        required: true
+        type: choice
+        options:
+          - regular
+          - hotfix
+      engine_version:
+        description: "Engine version to use (e.g., 2.15.latest) - optional"
+        required: false
+        type: string
+      delete_branch:
+        description: "Delete the workflow execution branch after release (hotfix only) - optional"
+        required: false
+        type: boolean
+        default: true
+env:
+  NODE_VERSION: 22.x
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Prepare release parameters
+        id: prepare
+        run: |
+          # Extract values from inputs (workflow_dispatch) or use defaults (push for testing)
+          if [ -n "${{ github.event.inputs.environment }}" ]; then
+            ENVIRONMENT="${{ github.event.inputs.environment }}"
+          else
+            # Default values for testing (branch push trigger)
+            ENVIRONMENT="prd"
+            echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
+          fi
+
+          if [ -n "${{ github.event.inputs.release_type }}" ]; then
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+          else
+            # Default values for testing (branch push trigger)
+            RELEASE_TYPE="regular"
+            echo "⚠️  Using default release_type: $RELEASE_TYPE (testing mode)"
+          fi
+
+          if [ -n "${{ github.event.inputs.engine_version }}" ]; then
+            ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
+          else
+            # Default empty for testing (branch push trigger)
+            ENGINE_VERSION=""
+            echo "⚠️  No engine_version provided (testing mode)"
+          fi
+
+          # Extract delete_branch parameter (defaults to false)
+          if [ "${{ github.event.inputs.delete_branch }}" = "true" ]; then
+            DELETE_BRANCH="true"
+          else
+            DELETE_BRANCH="false"
+          fi
+
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "engine_version=$ENGINE_VERSION" >> $GITHUB_OUTPUT
+          echo "delete_branch=$DELETE_BRANCH" >> $GITHUB_OUTPUT
+          echo "✅ Prepared parameters: environment=$ENVIRONMENT, release_type=$RELEASE_TYPE, engine_version=${ENGINE_VERSION:-<empty>}, delete_branch=$DELETE_BRANCH"
+
+      - name: Fetch and cache GitHub Releases
+        id: cache_releases
+        run: |
+          # Fetch all releases once and store in temp file
+          echo "📥 Fetching releases from GitHub API..."
+          gh release list --limit 10 --json isPrerelease,tagName | jq '.' > /tmp/releases.json
+
+          RELEASE_COUNT=$(jq 'length' /tmp/releases.json)
+          echo "✅ Fetched $RELEASE_COUNT releases"
+          echo "📋 Sample of releases:"
+          jq -r '.[0:3] | .[] | "  - \(.tagName) (prerelease: \(.isPrerelease))"' /tmp/releases.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find previous release tag (UAT)
+        if: steps.prepare.outputs.environment == 'uat'
+        id: previous_tag_uat
+        run: |
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          echo "🔍 Finding previous UAT tag (release_type: $RELEASE_TYPE)"
+
+          echo "📥 Reading releases from cached file..."
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
+            exit 1
+          fi
+          echo "✅ Releases file found"
+
+          if [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
+            # The hotfix branch can be created from either:
+            # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
+            # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "  Current version in package.json: $CURRENT_VERSION"
+            
+            echo "🔎 Searching for tag matching package.json version..."
+            ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
+            
+            if [ -z "$PREVIOUS_TAG" ]; then
+              echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
+              echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
+              exit 1
+            fi
+            
+            echo "  Found matching tag: $PREVIOUS_TAG"
+          else
+            # For UAT regular: always use the latest production release as previous tag
+            echo "🔎 Searching for latest production release..."
+            PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+            echo "  Found production release: ${PREVIOUS_TAG:-<none>}"
+            
+            if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
+              echo "❌ Error: No production release found. A previous production release is required for UAT regular releases."
+              exit 1
+            fi
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "✅ Previous UAT tag: $PREVIOUS_TAG"
+
+      - name: Find previous release tag (PRD)
+        if: steps.prepare.outputs.environment == 'prd'
+        id: previous_tag_prd
+        run: |
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          echo "🔍 Finding previous PRD tag (release_type: $RELEASE_TYPE)"
+
+          echo "📥 Reading releases from cached file..."
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
+            exit 1
+          fi
+          echo "✅ Releases file found"
+
+          # For PRD releases, always use the latest production release as previous tag
+          echo "🔎 Searching for latest production release..."
+          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+          echo "✅ Previous PRD tag: $PREVIOUS_TAG"
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Find previous UAT tag for checkout (PRD)
+        if: steps.prepare.outputs.environment == 'prd'
+        id: previous_tag_uat_checkout_prd
+        run: |
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          echo "🔍 Finding previous PRD tag (release_type: $RELEASE_TYPE)"
+          echo "📥 Reading releases from cached file..."
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
+            exit 1
+          fi
+          echo "✅ Releases file found"
+          # Get all UAT releases (prereleases)
+          echo "🔎 Extracting all UAT releases (prereleases)..."
+          ALL_UAT_TAGS=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json)
+          UAT_COUNT=$(echo "$ALL_UAT_TAGS" | grep -c . || echo "0")
+          echo "  Found $UAT_COUNT UAT releases"
+          if [ -z "$ALL_UAT_TAGS" ]; then
+            echo "❌ Error: No UAT releases found. PRD releases must be created from UAT releases."
+            exit 1
+          fi
+          # Determine if we're looking for regular or hotfix UAT tag
+          # Regular: minor version changed from previous
+          # Hotfix: patch increment (same minor version)
+          if [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # For hotfix PRD: find latest hotfix UAT tag (patch increment)
+            # Get the latest production release to compare minor versions
+            echo "🔎 Searching for hotfix UAT tag (same minor version as latest PRD)..."
+            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
+            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
+              # Extract major.minor from latest PRD
+              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              echo "  PRD minor version: $PRD_MINOR"
+              # Find UAT tags with same minor version (hotfix)
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
+                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
+                if [ "$UAT_MINOR" = "$PRD_MINOR" ]; then
+                  echo "$tag"
+                fi
+              done | head -1)
+              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
+            else
+              # No PRD releases yet, just get latest UAT
+              echo "  No PRD releases found, using latest UAT..."
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
+            fi
+          else
+            # For regular PRD: find latest regular UAT tag (minor increment)
+            # Get the latest production release to compare
+            echo "🔎 Searching for regular UAT tag (different minor version from latest PRD)..."
+            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
+            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
+              # Extract major.minor from latest PRD
+              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              echo "  PRD minor version: $PRD_MINOR"
+              # Find UAT tags with different (higher) minor version (regular)
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
+                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
+                if [ "$UAT_MINOR" != "$PRD_MINOR" ]; then
+                  echo "$tag"
+                fi
+              done | head -1)
+              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
+            else
+              # No PRD releases yet, get latest UAT
+              echo "  No PRD releases found, using latest UAT..."
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
+            fi
+          fi
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "❌ Error: No matching UAT release found for $RELEASE_TYPE PRD release."
+            exit 1
+          fi
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
+
+      - name: Prepare branch for PRD release
+        if: steps.prepare.outputs.environment == 'prd'
+        run: |
+          UAT_TAG="${{ steps.previous_tag_uat_checkout_prd.outputs.previous_tag }}"
+          echo "Fetching UAT tag: $UAT_TAG"
+          git fetch --tags
+
+          # Check if the UAT tag's commit has workflow files in its history
+          echo "🔍 Checking UAT tag commit for workflow file changes..."
+          if git show --name-only "$UAT_TAG" | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: UAT tag $UAT_TAG commit contains workflow file changes"
+          fi
+          # Check commit tree (last 10 commits) for workflow files
+          if git log --name-only --pretty=format: "$UAT_TAG"~10.."$UAT_TAG" 2>/dev/null | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: UAT tag $UAT_TAG commit tree contains workflow file changes"
+            echo "⚠️  This may require 'workflows' permission when pushing PRD tag"
+          else
+            echo "✅ No workflow files in UAT tag commit tree"
+          fi
+
+          # Create a temporary branch from the UAT tag
+          TEMP_BRANCH="temp-release-$(date +%s)"
+          git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
+          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "✅ Created temporary branch: $TEMP_BRANCH from UAT tag: $UAT_TAG"
+
+      - name: Bump version in memory
+        id: bump_version
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$ENVIRONMENT" = "prd" ]; then
+            # PRD releases (both regular and hotfix): strip prerelease suffix
+            # e.g., 1.3.0-rc.2 -> 1.3.0 (regular)
+            # e.g., 1.2.3-rc.1 -> 1.2.3 (hotfix, patch already incremented in UAT)
+            NEW_VERSION=$(npm version patch --git-tag-version=false)
+          elif [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # UAT hotfix: Check if we're hotfixing an existing UAT release
+            # The hotfix branch was created from a UAT release tag, so package.json should have -rc.X
+            echo "Current version in package.json: $CURRENT_VERSION"
+            if [[ "$CURRENT_VERSION" == *"-rc."* ]]; then
+              # Hotfix existing UAT release: increment prerelease number only
+              # e.g., 1.2.3-rc.0 -> 1.2.3-rc.1
+              echo "Hotfixing existing UAT release (current version has -rc.X)"
+              NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+            else
+              # New UAT hotfix from main or production: increment patch and add -rc.0
+              # e.g., 1.2.3 -> 1.2.4-rc.0
+              echo "Creating new UAT hotfix from main/production (current version: $CURRENT_VERSION)"
+              NEW_VERSION=$(npm version prepatch --preid=rc --git-tag-version=false)
+            fi
+          else
+            # UAT regular: add -rc.0 prefix (minor version already bumped in post-production step)
+            # e.g., 1.3.0-alpha.0 -> 1.3.0-rc.0
+            NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+          fi
+
+          # Remove 'v' prefix if present
+          TAG_NAME=$(echo $NEW_VERSION | sed 's/^v//')
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Bumped version to: $NEW_VERSION"
+          echo "Tag name: $TAG_NAME"
+
+      - name: Execute replicate version script
+        run: node ./.github/scripts/replicate-version.js
+
+      - name: Update engine version
+        if: steps.prepare.outputs.engine_version != '' && steps.prepare.outputs.environment == 'uat' && steps.prepare.outputs.release_type == 'regular'
+        run: |
+          ENGINE_VERSION="${{ steps.prepare.outputs.engine_version }}"
+          ENGINE_JSON="packages/sdk/editor-engine.json"
+
+          # Update the engine version in editor-engine.json
+          node -e "
+            const fs = require('fs');
+            const path = '$ENGINE_JSON';
+            const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+            data.current = '$ENGINE_VERSION';
+            fs.writeFileSync(path, JSON.stringify(data, null, 4));
+            console.log('Updated engine version to: $ENGINE_VERSION');
+          "
+          echo "Updated $ENGINE_JSON with engine version: $ENGINE_VERSION"
+
+      - name: Prepare branch for commit
+        if: steps.prepare.outputs.environment == 'uat'
+        run: |
+          # Create a temporary branch for the version commit to avoid polluting the workflow execution branch
+          TEMP_BRANCH="temp-release-$(date +%s)"
+          git checkout -b "$TEMP_BRANCH"
+          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "✅ Created temporary branch: $TEMP_BRANCH"
+
+      - name: Commit version changes
+        id: commit_version
+        run: |
+          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+
+          # Only stage version-related files explicitly
+          git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
+
+          # Check what files are staged
+          echo "📋 Staged files:"
+          git diff --staged --name-only || echo "No staged files"
+
+          # Check if there are any changes to commit
+          if git diff --staged --quiet; then
+            echo "⚠️  No version changes to commit"
+            # Use current HEAD if no changes
+            COMMIT_SHA=$(git rev-parse HEAD)
+          else
+            git commit -m "chore: bump version to $TAG_NAME"
+            COMMIT_SHA=$(git rev-parse HEAD)
+            echo "✅ Committed version changes"
+          fi
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "Commit SHA: $COMMIT_SHA"
+
+      - name: Push version commit
+        run: |
+          # Push the temporary branch so the commit exists on GitHub
+          # This is required for gh release create --target to work
+          TEMP_BRANCH="${{ env.temp_branch }}"
+          git push origin "$TEMP_BRANCH"
+          echo "✅ Pushed version commit on branch: $TEMP_BRANCH"
+
+      - name: Create GitHub release
+        id: create_release
+        run: |
+          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+          PREVIOUS_TAG="${{ steps.prepare.outputs.environment == 'uat' && steps.previous_tag_uat.outputs.previous_tag || steps.previous_tag_prd.outputs.previous_tag }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+
+          # Use the commit SHA as target to ensure we point to the exact commit we created
+          # (After cleanup, HEAD will be back on the original branch, so we use the commit SHA)
+          TARGET_REF="${{ steps.commit_version.outputs.commit_sha }}"
+
+          # Create release with auto-generated notes
+          # Use --notes-start-tag to ensure we compare against the correct previous tag
+          if [ "$ENVIRONMENT" = "uat" ]; then
+            gh release create $TAG_NAME \
+              --target $TARGET_REF \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG" \
+              --prerelease
+          else
+            gh release create $TAG_NAME \
+              --target $TARGET_REF \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG"
+          fi
+
+          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+          echo "Created GitHub release: $RELEASE_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup temporary branch
+        if: env.temp_branch != ''
+        run: |
+          # Delete the temporary branch (both local and remote)
+          # Needed for both UAT and PRD releases where we create a temp branch for version commits
+          TEMP_BRANCH="${{ env.temp_branch }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+
+          # For PRD, we started from a tag checkout, so just checkout main
+          # For UAT, checkout the original workflow execution branch
+          if [ "$ENVIRONMENT" = "prd" ]; then
+            git checkout main || true
+          else
+            git checkout "${{ github.ref_name }}" || git checkout main || true
+          fi
+
+          # Delete remote branch
+          git push origin --delete "$TEMP_BRANCH" || echo "⚠️  Remote branch $TEMP_BRANCH not found or already deleted"
+          # Delete local branch
+          git branch -D "$TEMP_BRANCH" || echo "⚠️  Local branch $TEMP_BRANCH not found or already deleted"
+          echo "✅ Cleaned up temporary branch: $TEMP_BRANCH"
+
+      - name: Delete workflow execution branch
+        if: steps.prepare.outputs.release_type == 'hotfix' && steps.prepare.outputs.delete_branch == 'true' && github.ref_type == 'branch'
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "🗑️  Deleting hotfix branch: $BRANCH_NAME"
+
+          # Checkout main first to avoid being on the branch we want to delete
+          git checkout main
+
+          # Delete local branch
+          git branch -D "$BRANCH_NAME" || echo "⚠️  Local branch $BRANCH_NAME not found or already deleted"
+
+          # Delete remote branch
+          git push origin --delete "$BRANCH_NAME" || echo "⚠️  Remote branch $BRANCH_NAME not found or already deleted"
+
+          echo "✅ Deleted hotfix branch: $BRANCH_NAME"
+
+      - name: Notify Teams
+        run: |
+          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+          VERSION="${{ steps.bump_version.outputs.tag_name }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          BRANCH="${{ github.ref_name }}"
+
+          if [ "$ENVIRONMENT" = "uat" ]; then
+            TYPE_EMOJI="🧪"
+            TYPE_TEXT="UAT"
+          else
+            TYPE_EMOJI="🎉"
+            TYPE_TEXT="Production"
+          fi
+
+          payload=$(cat <<EOF
+          {
+              "text": "$TYPE_EMOJI **$TYPE_TEXT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n**Branch:** $BRANCH\n\nRelease has been created and deployment will be triggered automatically."
+          }
+          EOF
+          )
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
