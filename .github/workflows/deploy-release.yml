@@ -19,6 +19,11 @@ jobs:
       release_exists: ${{ steps.validate_release.outputs.release_exists }}
       tag_name: ${{ steps.validate_release.outputs.tag_name }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Validate GitHub release exists
         id: validate_release
         run: |
@@ -26,39 +31,14 @@ jobs:
           TAG_NAME=1.34.0-rc.0
           # TAG_NAME=${GITHUB_REF#refs/tags/}
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-          echo "🔍 Starting validation for tag: $TAG_NAME"
-
-          # Check if gh CLI is available
-          if ! command -v gh &> /dev/null; then
-            echo "❌ Error: GitHub CLI (gh) is not installed"
-            exit 1
-          fi
-          echo "✅ GitHub CLI is available"
 
           # Check if a GitHub release exists for this tag
-          # gh release view returns valid JSON if release exists, or error text if not
-          echo "📞 Calling: gh release view $TAG_NAME --json tagName,url"
-          RELEASE_JSON=$(gh release view "$TAG_NAME" --json tagName,url 2>&1) || {
-            echo "❌ Error: gh release view command failed"
-            echo "Response: $RELEASE_JSON"
-            echo "release_exists=false" >> $GITHUB_OUTPUT
-            exit 0
-          }
-
-          # Debug: Show what we received
-          echo "📥 Response received (length: ${#RELEASE_JSON} characters)"
-          echo "📥 Response preview: ${RELEASE_JSON:0:200}..."
-
-          # Verify we got valid JSON (release exists) vs error text (release not found)
-          # jq -e exits with 0 if tagName exists and is not null/false, non-zero otherwise
-          if echo "$RELEASE_JSON" | jq -e '.tagName' >/dev/null 2>&1; then
+          # gh release view returns release info if exists, or error message if not
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
             echo "✅ GitHub release found for tag $TAG_NAME"
             echo "release_exists=true" >> $GITHUB_OUTPUT
           else
             echo "⚠️  Warning: Tag $TAG_NAME pushed but no corresponding GitHub release found."
-            echo "⚠️  Full response: $RELEASE_JSON"
-            echo "⚠️  Attempting to parse JSON to see structure..."
-            echo "$RELEASE_JSON" | jq '.' 2>&1 || echo "❌ Not valid JSON"
             echo "⚠️  Skipping deployment. Tags should be created via create-release.yml workflow."
             echo "release_exists=false" >> $GITHUB_OUTPUT
             exit 0
