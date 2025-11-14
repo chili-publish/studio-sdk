@@ -70,7 +70,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="prd"
+            ENVIRONMENT="uat"
             echo "⚠️  Using default environment: $ENVIRONMENT (testing mode)"
           fi
 
@@ -267,10 +267,8 @@ jobs:
 
       - name: Prepare branch for PRD release
         if: steps.prepare.outputs.environment == 'prd'
-        id: prepare_branch_prd
         run: |
           UAT_TAG="${{ steps.previous_tag_uat_checkout_prd.outputs.previous_tag }}"
-          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
           echo "Fetching UAT tag: $UAT_TAG"
           git fetch --tags
 
@@ -287,22 +285,11 @@ jobs:
             echo "✅ No workflow files in UAT tag commit tree"
           fi
 
-          # For regular releases: create permanent branch for git history
-          # For hotfix releases: create temporary branch
-          if [ "$RELEASE_TYPE" = "regular" ]; then
-            # Extract version from UAT tag (remove -rc.X suffix for branch name)
-            BRANCH_VERSION=$(echo "$UAT_TAG" | sed 's/-rc\.[0-9]\+$//')
-            BRANCH_NAME="release/prd-$BRANCH_VERSION"
-            git checkout -b "$BRANCH_NAME" "$UAT_TAG"
-            echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-            echo "✅ Created permanent branch: $BRANCH_NAME from UAT tag: $UAT_TAG"
-          else
-            # Hotfix: use temporary branch
-            TEMP_BRANCH="temp-release-$(date +%s)"
-            git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
-            echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
-            echo "✅ Created temporary branch: $TEMP_BRANCH from UAT tag: $UAT_TAG"
-          fi
+          # Create a temporary branch from the UAT tag
+          TEMP_BRANCH="temp-release-$(date +%s)"
+          git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
+          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "✅ Created temporary branch: $TEMP_BRANCH from UAT tag: $UAT_TAG"
 
       - name: Bump version in memory
         id: bump_version
@@ -371,28 +358,12 @@ jobs:
 
       - name: Prepare branch for commit
         if: steps.prepare.outputs.environment == 'uat'
-        id: prepare_branch_uat
         run: |
-          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
-
-          # For regular releases: create permanent branch for git history
-          # For hotfix releases: create temporary branch
-          if [ "$RELEASE_TYPE" = "regular" ]; then
-            # Get current version from package.json to create branch name
-            CURRENT_VERSION=$(node -p "require('./package.json').version")
-            # Remove -alpha.X or -rc.X suffix for branch name
-            BRANCH_VERSION=$(echo "$CURRENT_VERSION" | sed 's/-\(alpha\|rc\)\.[0-9]\+$//')
-            BRANCH_NAME="release/uat-$BRANCH_VERSION"
-            git checkout -b "$BRANCH_NAME"
-            echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-            echo "✅ Created permanent branch: $BRANCH_NAME"
-          else
-            # Hotfix: use temporary branch
-            TEMP_BRANCH="temp-release-$(date +%s)"
-            git checkout -b "$TEMP_BRANCH"
-            echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
-            echo "✅ Created temporary branch: $TEMP_BRANCH"
-          fi
+          # Create a temporary branch for the version commit to avoid polluting the workflow execution branch
+          TEMP_BRANCH="temp-release-$(date +%s)"
+          git checkout -b "$TEMP_BRANCH"
+          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "✅ Created temporary branch: $TEMP_BRANCH"
 
       - name: Commit version changes
         id: commit_version
@@ -421,26 +392,11 @@ jobs:
 
       - name: Push version commit
         run: |
-          # Push the branch so the commit exists on GitHub
+          # Push the temporary branch so the commit exists on GitHub
           # This is required for gh release create --target to work
-          # For regular releases: push permanent branch
-          # For hotfix releases: push temporary branch
-          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
-          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
-
-          if [ "$RELEASE_TYPE" = "regular" ]; then
-            if [ "$ENVIRONMENT" = "prd" ]; then
-              BRANCH_NAME="${{ steps.prepare_branch_prd.outputs.branch_name }}"
-            else
-              BRANCH_NAME="${{ steps.prepare_branch_uat.outputs.branch_name }}"
-            fi
-            git push origin "$BRANCH_NAME"
-            echo "✅ Pushed version commit on permanent branch: $BRANCH_NAME"
-          else
-            TEMP_BRANCH="${{ env.temp_branch }}"
-            git push origin "$TEMP_BRANCH"
-            echo "✅ Pushed version commit on temporary branch: $TEMP_BRANCH"
-          fi
+          TEMP_BRANCH="${{ env.temp_branch }}"
+          git push origin "$TEMP_BRANCH"
+          echo "✅ Pushed version commit on branch: $TEMP_BRANCH"
 
       - name: Create GitHub release
         id: create_release
@@ -480,7 +436,7 @@ jobs:
         if: env.temp_branch != ''
         run: |
           # Delete the temporary branch (both local and remote)
-          # Only runs for hotfix releases (regular releases use permanent branches that are kept)
+          # Needed for both UAT and PRD releases where we create a temp branch for version commits
           TEMP_BRANCH="${{ env.temp_branch }}"
           ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
 
