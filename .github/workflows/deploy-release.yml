@@ -28,7 +28,7 @@ jobs:
         id: validate_release
         run: |
           # TODO: Temporary specify exact tag name to test on push branch. Remove after testing.
-          TAG_NAME=1.34.0-rc.0
+          TAG_NAME=1.34.0
           # TAG_NAME=${GITHUB_REF#refs/tags/}
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
@@ -67,7 +67,7 @@ jobs:
         id: detect
         run: |
           # TODO: Temporary specify exact tag name to test on push branch. Remove after testing.
-          TAG_NAME=1.34.0-rc.0
+          TAG_NAME=1.34.0
           # TAG_NAME=${GITHUB_REF#refs/tags/}
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
