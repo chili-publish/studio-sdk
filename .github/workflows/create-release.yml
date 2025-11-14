@@ -3,7 +3,7 @@ name: Create GitHub Release
 on:
   push:
     branches:
-      - feat/WRS-2503-implement-*
+      - hotfix/1.34.0-rc.1
   workflow_dispatch:
     inputs:
       environment:
