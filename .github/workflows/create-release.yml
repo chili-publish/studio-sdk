@@ -28,7 +28,7 @@ on:
         description: "Delete the workflow execution branch after release (hotfix only) - optional"
         required: false
         type: boolean
-        default: false
+        default: true
 env:
   NODE_VERSION: 22.x
 jobs:
@@ -94,7 +94,7 @@ jobs:
           if [ "${{ github.event.inputs.delete_branch }}" = "true" ]; then
             DELETE_BRANCH="true"
           else
-            DELETE_BRANCH="false"
+            DELETE_BRANCH="true"
           fi
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
@@ -308,18 +308,6 @@ jobs:
           fi
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
           echo "Commit SHA: $COMMIT_SHA"
-
-      - name: Create git tag
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-          echo "Created tag: $TAG_NAME"
-
-      - name: Push tag
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          git push origin "$TAG_NAME"
-          echo "✅ Pushed tag: $TAG_NAME"
 
       - name: Create GitHub release
         id: create_release
