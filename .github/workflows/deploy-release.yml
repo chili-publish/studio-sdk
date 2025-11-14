@@ -72,7 +72,8 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
           # Check if tag contains -rc (UAT) or is a clean semver (PRD)
-          if echo "$TAG_NAME" | grep -qE '-rc\.[0-9]+$'; then
+          # Use bash pattern matching like in create-release.yml
+          if [[ "$TAG_NAME" == *"-rc."* ]]; then
             echo "is_uat=true" >> $GITHUB_OUTPUT
             echo "is_prd=false" >> $GITHUB_OUTPUT
             echo "environment=uat" >> $GITHUB_OUTPUT
@@ -82,7 +83,7 @@ jobs:
             echo "subscription_id=${{ vars.SUBSCRIPTION_ID_DEV }}" >> $GITHUB_OUTPUT
             echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" >> $GITHUB_OUTPUT
             echo "Detected UAT release: $TAG_NAME"
-          elif echo "$TAG_NAME" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+          elif [[ "$TAG_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "is_uat=false" >> $GITHUB_OUTPUT
             echo "is_prd=true" >> $GITHUB_OUTPUT
             echo "environment=prd" >> $GITHUB_OUTPUT
