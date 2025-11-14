@@ -141,7 +141,7 @@ jobs:
             
             echo "🔎 Searching for tag matching package.json version..."
             ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
-            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "^${CURRENT_VERSION}$" | head -1)
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
             
             if [ -z "$PREVIOUS_TAG" ]; then
               echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
@@ -197,7 +197,7 @@ jobs:
           echo "  Current version in package.json: $CURRENT_VERSION"
 
           # Find the UAT tag that matches the current version
-          PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | grep -Fx "^${CURRENT_VERSION}$" | head -1)
+          PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
 
           if [ -z "$PREVIOUS_TAG" ]; then
             echo "❌ Error: No UAT tag found matching package.json version ($CURRENT_VERSION)"
@@ -231,7 +231,7 @@ jobs:
             # UAT hotfix: Check if we're hotfixing an existing UAT release
             # The hotfix branch was created from a UAT release tag, so package.json should have -rc.X
             echo "Current version in package.json: $CURRENT_VERSION"
-            if echo "$CURRENT_VERSION" | grep -qE '-rc\.'; then
+            if [[ "$CURRENT_VERSION" == *"-rc."* ]]; then
               # Hotfix existing UAT release: increment prerelease number only
               # e.g., 1.2.3-rc.0 -> 1.2.3-rc.1
               echo "Hotfixing existing UAT release (current version has -rc.X)"
