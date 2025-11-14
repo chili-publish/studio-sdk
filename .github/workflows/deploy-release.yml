@@ -30,12 +30,12 @@ jobs:
           # Check if a GitHub release exists for this tag
           # gh release view returns valid JSON if release exists, or error text if not
           RELEASE_JSON=$(gh release view "$TAG_NAME" --json tagName,url 2>&1)
-          
+
           # Debug: Show what we received
           echo "🔍 Checking release for tag: $TAG_NAME"
           echo "📥 Response length: ${#RELEASE_JSON} characters"
           echo "📥 Response preview: ${RELEASE_JSON:0:200}..."
-          
+
           # Verify we got valid JSON (release exists) vs error text (release not found)
           # jq -e exits with 0 if tagName exists and is not null/false, non-zero otherwise
           if echo "$RELEASE_JSON" | jq -e '.tagName' >/dev/null 2>&1; then
