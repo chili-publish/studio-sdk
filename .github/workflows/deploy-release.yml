@@ -28,15 +28,21 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
           # Check if a GitHub release exists for this tag
-          if ! gh release view "$TAG_NAME" >/dev/null 2>&1; then
+          # gh release view returns valid JSON if release exists, or error text if not
+          RELEASE_JSON=$(gh release view "$TAG_NAME" --json tagName,url 2>&1)
+
+          # Verify we got valid JSON (release exists) vs error text (release not found)
+          # jq -e exits with 0 if tagName exists and is not null/false, non-zero otherwise
+          if echo "$RELEASE_JSON" | jq -e '.tagName' >/dev/null 2>&1; then
+            echo "✅ GitHub release found for tag $TAG_NAME"
+            echo "release_exists=true" >> $GITHUB_OUTPUT
+          else
             echo "⚠️  Warning: Tag $TAG_NAME pushed but no corresponding GitHub release found."
+            echo "⚠️  Response: $RELEASE_JSON"
             echo "⚠️  Skipping deployment. Tags should be created via create-release.yml workflow."
             echo "release_exists=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-
-          echo "✅ GitHub release found for tag $TAG_NAME"
-          echo "release_exists=true" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
