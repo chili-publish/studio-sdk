@@ -94,7 +94,7 @@ jobs:
           if [ "${{ github.event.inputs.delete_branch }}" = "true" ]; then
             DELETE_BRANCH="true"
           else
-            DELETE_BRANCH="true"
+            DELETE_BRANCH="false"
           fi
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
@@ -185,6 +185,125 @@ jobs:
           echo "✅ Previous PRD tag: $PREVIOUS_TAG"
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
+      - name: Find previous UAT tag for checkout (PRD)
+        if: steps.prepare.outputs.environment == 'prd'
+        id: previous_tag_uat_checkout_prd
+        run: |
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          echo "🔍 Finding previous PRD tag (release_type: $RELEASE_TYPE)"
+          echo "📥 Reading releases from cached file..."
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
+            exit 1
+          fi
+          echo "✅ Releases file found"
+          # Get all UAT releases (prereleases)
+          echo "🔎 Extracting all UAT releases (prereleases)..."
+          ALL_UAT_TAGS=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json)
+          UAT_COUNT=$(echo "$ALL_UAT_TAGS" | grep -c . || echo "0")
+          echo "  Found $UAT_COUNT UAT releases"
+          if [ -z "$ALL_UAT_TAGS" ]; then
+            echo "❌ Error: No UAT releases found. PRD releases must be created from UAT releases."
+            exit 1
+          fi
+          # Determine if we're looking for regular or hotfix UAT tag
+          # Regular: minor version changed from previous
+          # Hotfix: patch increment (same minor version)
+          if [ "$RELEASE_TYPE" = "hotfix" ]; then
+            # For hotfix PRD: find latest hotfix UAT tag (patch increment)
+            # Get the latest production release to compare minor versions
+            echo "🔎 Searching for hotfix UAT tag (same minor version as latest PRD)..."
+            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
+            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
+              # Extract major.minor from latest PRD
+              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              echo "  PRD minor version: $PRD_MINOR"
+              # Find UAT tags with same minor version (hotfix)
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
+                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
+                if [ "$UAT_MINOR" = "$PRD_MINOR" ]; then
+                  echo "$tag"
+                fi
+              done | head -1)
+              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
+            else
+              # No PRD releases yet, just get latest UAT
+              echo "  No PRD releases found, using latest UAT..."
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
+            fi
+          else
+            # For regular PRD: find latest regular UAT tag (minor increment)
+            # Get the latest production release to compare
+            echo "🔎 Searching for regular UAT tag (different minor version from latest PRD)..."
+            LATEST_PRD=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+            echo "  Latest PRD release: ${LATEST_PRD:-<none>}"
+            if [ -n "$LATEST_PRD" ] && [ "$LATEST_PRD" != "null" ]; then
+              # Extract major.minor from latest PRD
+              PRD_MINOR=$(echo "$LATEST_PRD" | cut -d. -f1,2)
+              echo "  PRD minor version: $PRD_MINOR"
+              # Find UAT tags with different (higher) minor version (regular)
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
+                UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
+                if [ "$UAT_MINOR" != "$PRD_MINOR" ]; then
+                  echo "$tag"
+                fi
+              done | head -1)
+              echo "  Found matching UAT tag: ${PREVIOUS_TAG:-<none>}"
+            else
+              # No PRD releases yet, get latest UAT
+              echo "  No PRD releases found, using latest UAT..."
+              PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
+              echo "  Using latest UAT: ${PREVIOUS_TAG:-<none>}"
+            fi
+          fi
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "❌ Error: No matching UAT release found for $RELEASE_TYPE PRD release."
+            exit 1
+          fi
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "✅ Found base UAT tag for PRD: $PREVIOUS_TAG"
+
+      - name: Prepare branch for PRD release
+        if: steps.prepare.outputs.environment == 'prd'
+        id: prepare_branch_prd
+        run: |
+          UAT_TAG="${{ steps.previous_tag_uat_checkout_prd.outputs.previous_tag }}"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          echo "Fetching UAT tag: $UAT_TAG"
+          git fetch --tags
+
+          # Check if the UAT tag's commit has workflow files in its history
+          echo "🔍 Checking UAT tag commit for workflow file changes..."
+          if git show --name-only "$UAT_TAG" | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: UAT tag $UAT_TAG commit contains workflow file changes"
+          fi
+          # Check commit tree (last 10 commits) for workflow files
+          if git log --name-only --pretty=format: "$UAT_TAG"~10.."$UAT_TAG" 2>/dev/null | grep -q '\.github/workflows/'; then
+            echo "⚠️  Warning: UAT tag $UAT_TAG commit tree contains workflow file changes"
+            echo "⚠️  This may require 'workflows' permission when pushing PRD tag"
+          else
+            echo "✅ No workflow files in UAT tag commit tree"
+          fi
+
+          # For regular releases: create permanent branch for git history
+          # For hotfix releases: create temporary branch
+          if [ "$RELEASE_TYPE" = "regular" ]; then
+            # Extract version from UAT tag (remove -rc.X suffix for branch name)
+            BRANCH_VERSION=$(echo "$UAT_TAG" | sed 's/-rc\.[0-9]\+$//')
+            BRANCH_NAME="release/prd-$BRANCH_VERSION"
+            git checkout -b "$BRANCH_NAME" "$UAT_TAG"
+            echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+            echo "✅ Created permanent branch: $BRANCH_NAME from UAT tag: $UAT_TAG"
+          else
+            # Hotfix: use temporary branch
+            TEMP_BRANCH="temp-release-$(date +%s)"
+            git checkout -b "$TEMP_BRANCH" "$UAT_TAG"
+            echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+            echo "✅ Created temporary branch: $TEMP_BRANCH from UAT tag: $UAT_TAG"
+          fi
+
       - name: Bump version in memory
         id: bump_version
         run: |
@@ -251,13 +370,29 @@ jobs:
           echo "Updated $ENGINE_JSON with engine version: $ENGINE_VERSION"
 
       - name: Prepare branch for commit
+        if: steps.prepare.outputs.environment == 'uat'
+        id: prepare_branch_uat
         run: |
-          # Create a temporary branch for the version commit to avoid polluting the workflow execution branch
-          # This applies to both UAT and PRD releases
-          TEMP_BRANCH="temp-release-$(date +%s)"
-          git checkout -b "$TEMP_BRANCH"
-          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
-          echo "✅ Created temporary branch: $TEMP_BRANCH"
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+
+          # For regular releases: create permanent branch for git history
+          # For hotfix releases: create temporary branch
+          if [ "$RELEASE_TYPE" = "regular" ]; then
+            # Get current version from package.json to create branch name
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            # Remove -alpha.X or -rc.X suffix for branch name
+            BRANCH_VERSION=$(echo "$CURRENT_VERSION" | sed 's/-\(alpha\|rc\)\.[0-9]\+$//')
+            BRANCH_NAME="release/uat-$BRANCH_VERSION"
+            git checkout -b "$BRANCH_NAME"
+            echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+            echo "✅ Created permanent branch: $BRANCH_NAME"
+          else
+            # Hotfix: use temporary branch
+            TEMP_BRANCH="temp-release-$(date +%s)"
+            git checkout -b "$TEMP_BRANCH"
+            echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
+            echo "✅ Created temporary branch: $TEMP_BRANCH"
+          fi
 
       - name: Commit version changes
         id: commit_version
@@ -286,11 +421,26 @@ jobs:
 
       - name: Push version commit
         run: |
-          # Push the temporary branch so the commit exists on GitHub
+          # Push the branch so the commit exists on GitHub
           # This is required for gh release create --target to work
-          TEMP_BRANCH="${{ env.temp_branch }}"
-          git push origin "$TEMP_BRANCH"
-          echo "✅ Pushed version commit on branch: $TEMP_BRANCH"
+          # For regular releases: push permanent branch
+          # For hotfix releases: push temporary branch
+          RELEASE_TYPE="${{ steps.prepare.outputs.release_type }}"
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+
+          if [ "$RELEASE_TYPE" = "regular" ]; then
+            if [ "$ENVIRONMENT" = "prd" ]; then
+              BRANCH_NAME="${{ steps.prepare_branch_prd.outputs.branch_name }}"
+            else
+              BRANCH_NAME="${{ steps.prepare_branch_uat.outputs.branch_name }}"
+            fi
+            git push origin "$BRANCH_NAME"
+            echo "✅ Pushed version commit on permanent branch: $BRANCH_NAME"
+          else
+            TEMP_BRANCH="${{ env.temp_branch }}"
+            git push origin "$TEMP_BRANCH"
+            echo "✅ Pushed version commit on temporary branch: $TEMP_BRANCH"
+          fi
 
       - name: Create GitHub release
         id: create_release
@@ -330,9 +480,18 @@ jobs:
         if: env.temp_branch != ''
         run: |
           # Delete the temporary branch (both local and remote)
-          # Needed for both UAT and PRD releases where we create a temp branch for version commits
+          # Only runs for hotfix releases (regular releases use permanent branches that are kept)
           TEMP_BRANCH="${{ env.temp_branch }}"
-          git checkout "${{ github.ref_name }}" || git checkout main || true
+          ENVIRONMENT="${{ steps.prepare.outputs.environment }}"
+
+          # For PRD, we started from a tag checkout, so just checkout main
+          # For UAT, checkout the original workflow execution branch
+          if [ "$ENVIRONMENT" = "prd" ]; then
+            git checkout main || true
+          else
+            git checkout "${{ github.ref_name }}" || git checkout main || true
+          fi
+
           # Delete remote branch
           git push origin --delete "$TEMP_BRANCH" || echo "⚠️  Remote branch $TEMP_BRANCH not found or already deleted"
           # Delete local branch
