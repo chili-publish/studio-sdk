@@ -74,10 +74,10 @@ jobs:
         with:
           creds: |
             {
-              "clientId": "${{ vars.SP_FRONTEND_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.SP_FRONTEND_CLIENT_SECRET }}",
-              "tenantId": "${{ vars.AZURE_TENANT_ID }}",
-              "subscriptionId": "${{ vars.SUBSCRIPTION_ID_UAT }}"
+              "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
+              "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
+              "tenantId": "${{ vars.AZ_TENANT_ID }}",
+              "subscriptionId": "${{ vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}"
             }
       - name: Copy to Azure Blob Storage (SDK)
         uses: azure/CLI@v2
