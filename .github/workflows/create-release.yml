@@ -3,7 +3,7 @@ name: Create GitHub Release
 on:
   push:
     branches:
-      - fix/WRS-2503-test-branch-use-case
+      - hotfix/uat-1.34.0-rc.1
   workflow_dispatch:
     inputs:
       environment:
@@ -53,7 +53,7 @@ jobs:
             RELEASE_TYPE="${{ github.event.inputs.release_type }}"
           else
             # Default values for testing (branch push trigger)
-            RELEASE_TYPE="regular"
+            RELEASE_TYPE="hotfix"
           fi
 
           if [ -n "${{ github.event.inputs.engine_version }}" ]; then
