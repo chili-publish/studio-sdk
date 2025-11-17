@@ -406,6 +406,27 @@ jobs:
           # Force push since we squashed commits
           git push origin "$WORKFLOW_BRANCH" --force
 
+      - name: Create GitHub release
+        id: create_release_hotfix
+        run: |
+          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+          PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
+          TARGET_REF="${{ steps.commit_version.outputs.commit_sha }}"
+
+          # Create release with auto-generated notes
+          # Use --notes-start-tag to ensure we compare against the correct previous tag
+          gh release create $TAG_NAME \
+            --target $TARGET_REF \
+            --title "$TAG_NAME" \
+            --generate-notes \
+            --notes-start-tag "$PREVIOUS_TAG" \
+            --prerelease
+
+          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Merge UAT hotfix to target branch
         run: |
           WORKFLOW_BRANCH="${{ env.workflow_branch }}"
@@ -441,27 +462,6 @@ jobs:
 
           # Delete local branch
           git branch -D "$WORKFLOW_BRANCH" || echo "⚠️  Remote branch $WORKFLOW_BRANCH not found or already deleted"
-
-      - name: Create GitHub release
-        id: create_release
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.commit_version.outputs.commit_sha }}"
-
-          # Create release with auto-generated notes
-          # Use --notes-start-tag to ensure we compare against the correct previous tag
-          gh release create $TAG_NAME \
-            --target $TARGET_REF \
-            --title "$TAG_NAME" \
-            --generate-notes \
-            --notes-start-tag "$PREVIOUS_TAG" \
-            --prerelease
-
-          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
-          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare notification text
         id: notify
