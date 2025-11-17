@@ -340,9 +340,21 @@ jobs:
           # For UAT hotfix: squash all commits in the hotfix branch BEFORE version changes
           # Find the base commit (the tag the hotfix branch was created from)
           BASE_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          BASE_COMMIT=$(git rev-parse "$BASE_TAG")
+
+          # Ensure tags are fetched
+          git fetch --tags origin || git fetch --tags
+
+          # Resolve tag to commit SHA
+          BASE_COMMIT=$(git rev-parse "$BASE_TAG" 2>/dev/null)
+
+          if [ -z "$BASE_COMMIT" ]; then
+            echo "❌ Error: Could not resolve tag '$BASE_TAG' to a commit"
+            echo "❌ Make sure the tag exists and the hotfix branch was created from a valid release tag."
+            exit 1
+          fi
 
           # Reset soft to base commit (keeps all changes from hotfix commits staged)
+          # This effectively squashes all commits between BASE_COMMIT and HEAD into staged changes
           git reset --soft "$BASE_COMMIT"
 
           # All changes from hotfix commits are now staged
