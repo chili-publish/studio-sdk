@@ -1,6 +1,6 @@
 {
     "name": "@chili-publish/studio-connectors",
-    "version": "1.33.1-alfa.0",
+    "version": "1.34.0-alpha.0",
     "types": "dist/index.d.ts",
     "repository": {
         "type": "git",
