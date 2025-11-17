@@ -476,7 +476,7 @@ jobs:
           TEXT="🧪 **UAT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n\nRelease has been created and deployment will be triggered automatically."
           echo "text=$TEXT" >> $GITHUB_OUTPUT
 
-  prd-release:
+  production:
     needs: setup
     if: needs.setup.outputs.environment == 'prd'
     runs-on: ubuntu-latest
@@ -701,16 +701,37 @@ jobs:
           echo "text=$TEXT" >> $GITHUB_OUTPUT
 
   notify-teams:
-    needs: [setup, uat-regular, uat-hotfix, prd-release]
-    if: needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.prd-release.result == 'success'
+    needs: [setup, uat-regular, uat-hotfix, production]
+    if: always() && (needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.production.result == 'success')
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Notify Teams
+      - name: Extract notification text
+        id: extract_text
         run: |
           # Get notification text from the job that succeeded (only one will have a value)
-          TEXT="${{ needs.uat-regular.outputs.notification_text || needs.uat-hotfix.outputs.notification_text || needs.prd-release.outputs.notification_text }}"
+          # Check each job's result and get its notification text if it succeeded
+          TEXT=""
+
+          if [ "${{ needs.uat-regular.result }}" == "success" ]; then
+            TEXT="${{ needs.uat-regular.outputs.notification_text }}"
+          elif [ "${{ needs.uat-hotfix.result }}" == "success" ]; then
+            TEXT="${{ needs.uat-hotfix.outputs.notification_text }}"
+          elif [ "${{ needs.production.result }}" == "success" ]; then
+            TEXT="${{ needs.production.outputs.notification_text }}"
+          fi
+
+          if [ -z "$TEXT" ]; then
+            echo "⚠️  No notification text available. Skipping Teams notification."
+            exit 0
+          fi
+
+          echo "text=$TEXT" >> $GITHUB_OUTPUT
+
+      - name: Notify Teams
+        run: |
+          TEXT="${{ steps.extract_text.outputs.text }}"
 
           # Use jq to properly escape the text for JSON
           payload=$(echo "$TEXT" | jq -Rs '{text: .}')
