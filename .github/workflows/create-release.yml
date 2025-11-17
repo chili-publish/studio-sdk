@@ -1,6 +1,9 @@
 name: Create GitHub Release
 
 on:
+  push:
+    branches:
+      - fix/WRS-2503-test-branch-use-case
   workflow_dispatch:
     inputs:
       environment:
@@ -43,7 +46,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="prd"
+            ENVIRONMENT="uat"
           fi
 
           if [ -n "${{ github.event.inputs.release_type }}" ]; then
