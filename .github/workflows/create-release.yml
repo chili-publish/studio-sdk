@@ -1,6 +1,9 @@
 name: Create GitHub Release
 
 on:
+  push:
+    branches:
+      - fix/WRS-2503-test-branch
   workflow_dispatch:
     inputs:
       environment:
@@ -44,7 +47,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="prd"
+            ENVIRONMENT="uat"
           fi
 
           if [ -n "${{ github.event.inputs.release_type }}" ]; then
@@ -58,13 +61,13 @@ jobs:
             ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
           else
             # Default empty for testing (branch push trigger)
-            ENGINE_VERSION=""
+            ENGINE_VERSION="2.18.latest"
           fi
 
           # Determine target branch based on environment and release type
           # UAT regular and PRD releases: target branch is main
           # UAT hotfix: target branch is main (but workflow branch is the hotfix branch)
-          TARGET_BRANCH="main"
+          TARGET_BRANCH="fix/WRS-2503-test-branch"
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
