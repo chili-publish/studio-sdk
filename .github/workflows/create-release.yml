@@ -205,6 +205,9 @@ jobs:
           VERSION_COMMIT=$(git rev-parse HEAD)
           echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
 
+          # Push the version branch temporarily so GitHub can reference it for release creation
+          git push origin "$VERSION_BRANCH" || echo "⚠️  Version branch push failed, but continuing..."
+
       - name: Create GitHub release
         id: create_release
         run: |
@@ -245,6 +248,16 @@ jobs:
 
           # Push the workflow branch with merge commit (using GitHub App token for protected branches)
           git push origin "$WORKFLOW_BRANCH"
+
+      - name: Delete version branch
+        run: |
+          VERSION_BRANCH="${{ env.version_branch }}"
+
+          # Delete remote version branch
+          git push origin --delete "$VERSION_BRANCH" || echo "⚠️  Remote version branch $VERSION_BRANCH not found or already deleted"
+
+          # Delete local version branch (if still exists)
+          git branch -D "$VERSION_BRANCH" || echo "⚠️  Local version branch $VERSION_BRANCH not found or already deleted"
 
       - name: Prepare notification text
         id: notify
