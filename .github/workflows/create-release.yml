@@ -1,6 +1,9 @@
 name: Create GitHub Release
 
 on:
+  push:
+    branches:
+      - fix/WRS-2503-show-case-branch
   workflow_dispatch:
     inputs:
       environment:
@@ -65,7 +68,7 @@ jobs:
           # Determine target branch based on environment and release type
           # UAT regular and PRD releases: target branch is main
           # UAT hotfix: target branch is main (but workflow branch is the hotfix branch)
-          TARGET_BRANCH="main"
+          TARGET_BRANCH="fix/WRS-2503-show-case-branch"
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
