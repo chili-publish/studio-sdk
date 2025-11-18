@@ -483,9 +483,10 @@ jobs:
           WORKFLOW_BRANCH="${{ github.ref_name }}"
           TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
 
-          if [ "$WORKFLOW_BRANCH" != "$TARGET_BRANCH" ]; then
-            echo "❌ Error: PRD release must be executed from '$TARGET_BRANCH' branch. Current branch: '$WORKFLOW_BRANCH'"
-              exit 1
+          # Terminate if branch is the target branch to prevent accidental history override
+          if [ "$WORKFLOW_BRANCH" = "$TARGET_BRANCH" ]; then
+            echo "❌ Error: Cannot execute PRD release on 'main' branch. PRD release must be executed from a release branch."
+            exit 1
           fi
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
