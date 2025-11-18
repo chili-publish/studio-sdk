@@ -96,7 +96,7 @@ jobs:
               "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
               "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
               "tenantId": "${{ vars.AZ_TENANT_ID }}",
-              "subscriptionId": "${{ (inputs.environment == 'PROD') && vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD || vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}"
+              "subscriptionId": "${{ (inputs.environment == 'PRD') && vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD || vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}"
             }
       - name: Upload build
         uses: azure/cli@v2
