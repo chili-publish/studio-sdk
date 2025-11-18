@@ -317,6 +317,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Store workflow execution branch
+        run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
       - name: Find previous release tag
         id: previous_tag
         run: |
@@ -325,49 +330,21 @@ jobs:
             exit 1
           fi
 
-            # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
-            # The hotfix branch can be created from either:
-            # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
-            # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
-            CURRENT_VERSION=$(node -p "require('./package.json').version")
-            ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
-            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
-            
-            if [ -z "$PREVIOUS_TAG" ]; then
-              echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
-              echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
-              exit 1
-            fi
-            
-          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
+          # The hotfix branch can be created from either:
+          # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
+          # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
+          PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
 
-      - name: Squash commits and prepare for UAT hotfix
-        run: |
-          WORKFLOW_BRANCH="${{ github.ref_name }}"
-          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
-
-          # For UAT hotfix: squash all commits in the hotfix branch BEFORE version changes
-          # Find the base commit (the tag the hotfix branch was created from)
-          BASE_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-
-          # Ensure tags are fetched
-          git fetch --tags origin || git fetch --tags
-
-          # Resolve tag to commit SHA
-          BASE_COMMIT=$(git rev-parse "$BASE_TAG" 2>/dev/null)
-
-          if [ -z "$BASE_COMMIT" ]; then
-            echo "❌ Error: Could not resolve tag '$BASE_TAG' to a commit"
-            echo "❌ Make sure the tag exists and the hotfix branch was created from a valid release tag."
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
+            echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
             exit 1
           fi
 
-          # Reset soft to base commit (keeps all changes from hotfix commits staged)
-          # This effectively squashes all commits between BASE_COMMIT and HEAD into staged changes
-          git reset --soft "$BASE_COMMIT"
-
-          # All changes from hotfix commits are now staged
-          # Version changes will be made next, then staged and committed together
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
       - name: Bump version in memory
         id: bump_version
@@ -404,7 +381,7 @@ jobs:
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
           WORKFLOW_BRANCH="${{ env.workflow_branch }}"
 
-          # Stage version-related files (squashed commits are already staged from reset --soft)
+          # Stage version-related files
           git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
 
           # Always include [skip ci] in commit message
@@ -412,8 +389,8 @@ jobs:
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
 
-          # Force push since we squashed commits
-          git push origin "$WORKFLOW_BRANCH" --force
+          # Push version changes
+          git push origin "$WORKFLOW_BRANCH"
 
       - name: Create GitHub release
         id: create_release_hotfix
@@ -592,17 +569,6 @@ jobs:
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
-      - name: Create version branch from workflow branch
-        run: |
-          # The workflow branch is assumed to be already checked out from a UAT tag
-          # Create a version branch from the current workflow branch for version changes
-          VERSION_BRANCH="prd-release-$(date +%s)"
-          git checkout -b "$VERSION_BRANCH" || {
-            echo "❌ Failed to create version branch: $VERSION_BRANCH"
-            exit 1
-          }
-          echo "version_branch=$VERSION_BRANCH" >> $GITHUB_ENV
-
       - name: Bump version in memory
         id: bump_version
         run: |
@@ -622,11 +588,11 @@ jobs:
       - name: Execute replicate version script
         run: node ./.github/scripts/replicate-version.js
 
-      - name: Commit version changes
+      - name: Commit and push version changes
         id: commit_version
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          VERSION_BRANCH="${{ env.version_branch }}"
+          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
 
           # Stage version-related files
           git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
@@ -635,10 +601,10 @@ jobs:
           git commit -m "chore: bump version to $TAG_NAME [skip ci]"
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "version_commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
 
-          # Store the version commit SHA for release creation
-          VERSION_COMMIT=$(git rev-parse HEAD)
-          echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
+          # Push version changes directly to workflow branch
+          git push origin "$WORKFLOW_BRANCH"
 
       - name: Create GitHub release
         id: create_release
@@ -660,31 +626,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge version branch to workflow branch and push
-        id: merge_to_target
+      - name: Merge release branch to target branch
         run: |
           WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          VERSION_BRANCH="${{ env.version_branch }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
 
-          # Fetch the workflow branch (we're currently on version branch)
-          git fetch origin "$WORKFLOW_BRANCH" || {
-            echo "❌ Failed to fetch workflow branch: $WORKFLOW_BRANCH"
+          # Fetch and checkout the target branch
+          git fetch origin "$TARGET_BRANCH" || {
+            echo "❌ Failed to fetch target branch: $TARGET_BRANCH"
+            exit 1
+          }
+          git checkout "$TARGET_BRANCH" || {
+            echo "❌ Failed to checkout target branch: $TARGET_BRANCH"
             exit 1
           }
 
-          git checkout "$WORKFLOW_BRANCH" || {
-            echo "❌ Failed to checkout workflow branch: $WORKFLOW_BRANCH"
-            exit 1
-          }
+          # Merge release branch using --strategy=ours to preserve target branch content
+          # --strategy=ours creates a merge commit in history but keeps the target branch's tree unchanged
+          git merge "$WORKFLOW_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
 
-          # Merge version branch using --strategy=ours to preserve workflow branch content
-          # --strategy=ours creates a merge commit in history but keeps the workflow branch's tree unchanged
-          # This preserves git history and tag creation reference while keeping content unchanged
-          # Merge with --strategy=ours - this records the merge in history but keeps workflow branch content
-          git merge "$VERSION_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
-
-          # Push the workflow branch with merge commit (using GitHub App token for protected branches)
-          git push origin "$WORKFLOW_BRANCH"
+          # Push the target branch with merge commit (using GitHub App token for protected branches)
+          git push origin "$TARGET_BRANCH"
 
       - name: Delete workflow branch (release branch)
         run: |
