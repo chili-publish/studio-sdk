@@ -201,38 +201,16 @@ jobs:
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
 
-      - name: Merge version branch to workflow branch and push
-        id: merge_to_target
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          VERSION_BRANCH="${{ env.version_branch }}"
-
-          git checkout "$WORKFLOW_BRANCH" || {
-            echo "❌ Failed to checkout workflow branch: $WORKFLOW_BRANCH"
-            exit 1
-          }
-
-          # Merge version branch using --strategy=ours to preserve workflow branch content
-          # --strategy=ours creates a merge commit in history but keeps the workflow branch's tree unchanged
-          # This preserves git history and tag creation reference while keeping content unchanged
-          VERSION_COMMIT=$(git rev-parse "$VERSION_BRANCH")
-
-          # Merge with --strategy=ours - this records the merge in history but keeps workflow branch content
-          git merge "$VERSION_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
-
-          # Store the version commit SHA for tag creation (from version branch, not the merge commit)
-          # The tag will point to the version commit, but the workflow branch content remains unchanged
+          # Store the version commit SHA for release creation
+          VERSION_COMMIT=$(git rev-parse HEAD)
           echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
-
-          # Push the workflow branch with merge commit (using GitHub App token for protected branches)
-          git push origin "$WORKFLOW_BRANCH"
 
       - name: Create GitHub release
         id: create_release
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
           PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.merge_to_target.outputs.version_commit_sha }}"
+          TARGET_REF="${{ steps.commit_version.outputs.version_commit_sha }}"
 
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
@@ -247,6 +225,26 @@ jobs:
           echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge version branch to workflow branch and push
+        id: merge_to_target
+        run: |
+          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
+          VERSION_BRANCH="${{ env.version_branch }}"
+
+          git checkout "$WORKFLOW_BRANCH" || {
+            echo "❌ Failed to checkout workflow branch: $WORKFLOW_BRANCH"
+            exit 1
+          }
+
+          # Merge version branch using --strategy=ours to preserve workflow branch content
+          # --strategy=ours creates a merge commit in history but keeps the workflow branch's tree unchanged
+          # This preserves git history and tag creation reference while keeping content unchanged
+          # Merge with --strategy=ours - this records the merge in history but keeps workflow branch content
+          git merge "$VERSION_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
+
+          # Push the workflow branch with merge commit (using GitHub App token for protected branches)
+          git push origin "$WORKFLOW_BRANCH"
 
       - name: Prepare notification text
         id: notify
@@ -326,20 +324,20 @@ jobs:
             exit 1
           fi
 
-          # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
-          # The hotfix branch can be created from either:
-          # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
-          # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
-          PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
-
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
-            echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
-            exit 1
-          fi
-
+            # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
+            # The hotfix branch can be created from either:
+            # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
+            # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
+            
+            if [ -z "$PREVIOUS_TAG" ]; then
+              echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
+              echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
+              exit 1
+            fi
+            
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
       - name: Squash commits and prepare for UAT hotfix
@@ -500,7 +498,7 @@ jobs:
 
           if [ "$WORKFLOW_BRANCH" != "$TARGET_BRANCH" ]; then
             echo "❌ Error: PRD release must be executed from '$TARGET_BRANCH' branch. Current branch: '$WORKFLOW_BRANCH'"
-            exit 1
+              exit 1
           fi
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
@@ -544,6 +542,36 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Validate UAT tag exists
+        run: |
+          if [ ! -f /tmp/releases.json ]; then
+            echo "❌ Error: Releases file not found"
+            exit 1
+          fi
+
+          # Read version from package.json (should match the UAT tag the branch was created from)
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          if [ -z "$CURRENT_VERSION" ]; then
+            echo "❌ Error: Could not read version from package.json"
+            exit 1
+          fi
+
+          echo "📦 Current package.json version: $CURRENT_VERSION"
+
+          # Check if this version exists as a UAT release (prerelease)
+          UAT_TAG_EXISTS=$(jq -r --arg version "$CURRENT_VERSION" '.[] | select(.isPrerelease == true and .tagName == $version) | .tagName' /tmp/releases.json | head -1)
+
+          if [ -z "$UAT_TAG_EXISTS" ] || [ "$UAT_TAG_EXISTS" = "null" ]; then
+            echo "❌ Error: UAT tag '$CURRENT_VERSION' not found in GitHub releases."
+            echo "❌ The workflow branch must be created from a valid UAT release tag."
+            echo "❌ Available UAT releases:"
+            jq -r '.[] | select(.isPrerelease == true) | "  - \(.tagName)"' /tmp/releases.json || echo "  (none found)"
+            exit 1
+          fi
+
+          echo "✅ UAT tag '$CURRENT_VERSION' found in GitHub releases"
+
       - name: Find previous release tag
         id: previous_tag
         run: |
@@ -563,59 +591,13 @@ jobs:
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
-      - name: Find UAT tag for checkout
-        id: uat_tag
+      - name: Create version branch from workflow branch
         run: |
-          RELEASE_TYPE="${{ needs.setup.outputs.release_type }}"
-
-          if [ ! -f /tmp/releases.json ]; then
-            echo "❌ Error: Releases file not found"
-            exit 1
-          fi
-
-          # Get all UAT releases (prereleases)
-          ALL_UAT_TAGS=$(jq -r '.[] | select(.isPrerelease == true) | .tagName' /tmp/releases.json)
-
-          if [ -z "$ALL_UAT_TAGS" ]; then
-            echo "❌ Error: No UAT releases found. PRD releases must be created from UAT releases."
-            exit 1
-          fi
-
-          # Find the appropriate UAT tag based on release type
-          if [ "$RELEASE_TYPE" = "hotfix" ]; then
-            # For hotfix PRD: find UAT tag with same minor version as previous PRD tag
-            PREVIOUS_PRD_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-            PRD_MINOR=$(echo "$PREVIOUS_PRD_TAG" | cut -d. -f1,2)
-
-            # Find UAT tags with same minor version (hotfix)
-            PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | while read tag; do
-              UAT_MINOR=$(echo "$tag" | sed 's/-rc\.[0-9]\+$//' | cut -d. -f1,2)
-              if [ "$UAT_MINOR" = "$PRD_MINOR" ]; then
-                echo "$tag"
-              fi
-            done | head -1)
-          else
-            # For regular PRD: use latest UAT release
-            PREVIOUS_TAG=$(echo "$ALL_UAT_TAGS" | head -1)
-          fi
-
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "❌ Error: No matching UAT release found for $RELEASE_TYPE PRD release."
-            exit 1
-          fi
-
-          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
-
-      - name: Checkout UAT tag for PRD release
-        run: |
-          UAT_TAG="${{ steps.uat_tag.outputs.previous_tag }}"
-          git fetch --tags
-
-          # Create a branch from the UAT tag (both regular and hotfix PRD releases)
-          # We'll commit the version to this branch, then merge to workflow branch
+          # The workflow branch is assumed to be already checked out from a UAT tag
+          # Create a version branch from the current workflow branch for version changes
           VERSION_BRANCH="prd-release-$(date +%s)"
-          git checkout -b "$VERSION_BRANCH" "$UAT_TAG" || {
-            echo "❌ Failed to create branch from UAT tag: $UAT_TAG"
+          git checkout -b "$VERSION_BRANCH" || {
+            echo "❌ Failed to create version branch: $VERSION_BRANCH"
             exit 1
           }
           echo "version_branch=$VERSION_BRANCH" >> $GITHUB_ENV
@@ -643,6 +625,7 @@ jobs:
         id: commit_version
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+          VERSION_BRANCH="${{ env.version_branch }}"
 
           # Stage version-related files
           git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
@@ -652,44 +635,16 @@ jobs:
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
 
-      - name: Merge version branch to workflow branch and push
-        id: merge_to_target
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          VERSION_BRANCH="${{ env.version_branch }}"
-
-          # Fetch the workflow branch (we're currently on version branch from UAT tag)
-          git fetch origin "$WORKFLOW_BRANCH" || {
-            echo "❌ Failed to fetch workflow branch: $WORKFLOW_BRANCH"
-            exit 1
-          }
-
-          git checkout "$WORKFLOW_BRANCH" || {
-            echo "❌ Failed to checkout workflow branch: $WORKFLOW_BRANCH"
-            exit 1
-          }
-
-          # Merge version branch using --strategy=ours to preserve workflow branch content
-          # --strategy=ours creates a merge commit in history but keeps the workflow branch's tree unchanged
-          # This preserves git history and tag creation reference while keeping content unchanged
-          VERSION_COMMIT=$(git rev-parse "$VERSION_BRANCH")
-
-          # Merge with --strategy=ours - this records the merge in history but keeps workflow branch content
-          git merge "$VERSION_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
-
-          # Store the version commit SHA for tag creation (from version branch, not the merge commit)
-          # The tag will point to the version commit, but the workflow branch content remains unchanged
+          # Store the version commit SHA for release creation
+          VERSION_COMMIT=$(git rev-parse HEAD)
           echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
-
-          # Push the workflow branch with merge commit (using GitHub App token for protected branches)
-          git push origin "$WORKFLOW_BRANCH"
 
       - name: Create GitHub release
         id: create_release
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
           PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.merge_to_target.outputs.version_commit_sha }}"
+          TARGET_REF="${{ steps.commit_version.outputs.version_commit_sha }}"
 
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
@@ -703,6 +658,48 @@ jobs:
           echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge version branch to workflow branch and push
+        id: merge_to_target
+        run: |
+          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
+          VERSION_BRANCH="${{ env.version_branch }}"
+
+          # Fetch the workflow branch (we're currently on version branch)
+          git fetch origin "$WORKFLOW_BRANCH" || {
+            echo "❌ Failed to fetch workflow branch: $WORKFLOW_BRANCH"
+            exit 1
+          }
+
+          git checkout "$WORKFLOW_BRANCH" || {
+            echo "❌ Failed to checkout workflow branch: $WORKFLOW_BRANCH"
+            exit 1
+          }
+
+          # Merge version branch using --strategy=ours to preserve workflow branch content
+          # --strategy=ours creates a merge commit in history but keeps the workflow branch's tree unchanged
+          # This preserves git history and tag creation reference while keeping content unchanged
+          # Merge with --strategy=ours - this records the merge in history but keeps workflow branch content
+          git merge "$VERSION_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
+
+          # Push the workflow branch with merge commit (using GitHub App token for protected branches)
+          git push origin "$WORKFLOW_BRANCH"
+
+      - name: Delete workflow branch (release branch)
+        run: |
+          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
+
+          # Checkout target branch first to avoid being on the branch we want to delete
+          git checkout "$TARGET_BRANCH" || {
+            echo "⚠️  Failed to checkout target branch: $TARGET_BRANCH. Attempting to delete workflow branch anyway."
+          }
+
+          # Delete remote workflow branch (release branch)
+          git push origin --delete "$WORKFLOW_BRANCH" || echo "⚠️  Remote workflow branch $WORKFLOW_BRANCH not found or already deleted"
+
+          # Delete local workflow branch (if still exists)
+          git branch -D "$WORKFLOW_BRANCH" || echo "⚠️  Local workflow branch $WORKFLOW_BRANCH not found or already deleted"
 
       - name: Prepare notification text
         id: notify
