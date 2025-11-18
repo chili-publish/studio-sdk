@@ -24,6 +24,7 @@ on:
 
 env:
   NODE_VERSION: 22.x
+  RELEASES_LIMIT: 10
 
 jobs:
   setup:
@@ -44,7 +45,7 @@ jobs:
             ENVIRONMENT="${{ github.event.inputs.environment }}"
           else
             # Default values for testing (branch push trigger)
-            ENVIRONMENT="prd"
+            ENVIRONMENT="uat"
           fi
 
           if [ -n "${{ github.event.inputs.release_type }}" ]; then
@@ -128,7 +129,7 @@ jobs:
 
       - name: Fetch and cache GitHub Releases
         run: |
-          gh release list --limit 10 --json isPrerelease,tagName | jq '.' > /tmp/releases.json
+          gh release list --limit ${{ env.RELEASES_LIMIT }} --json isPrerelease,tagName | jq '.' > /tmp/releases.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -312,7 +313,7 @@ jobs:
 
       - name: Fetch and cache GitHub Releases
         run: |
-          gh release list --limit 10 --json isPrerelease,tagName | jq '.' > /tmp/releases.json
+          gh release list --limit ${{ env.RELEASES_LIMIT }} --json isPrerelease,tagName | jq '.' > /tmp/releases.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -538,7 +539,7 @@ jobs:
 
       - name: Fetch and cache GitHub Releases
         run: |
-          gh release list --limit 10 --json isPrerelease,tagName | jq '.' > /tmp/releases.json
+          gh release list --limit ${{ env.RELEASES_LIMIT }} --json isPrerelease,tagName | jq '.' > /tmp/releases.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
