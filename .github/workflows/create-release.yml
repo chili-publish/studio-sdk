@@ -199,10 +199,6 @@ jobs:
 
           # Always include [skip ci] in commit message
           git commit -m "chore: bump version to $TAG_NAME [skip ci]"
-          COMMIT_SHA=$(git rev-parse HEAD)
-          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
-
-          # Store the version commit SHA for release creation
           VERSION_COMMIT=$(git rev-parse HEAD)
           echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
 
@@ -386,8 +382,8 @@ jobs:
 
           # Always include [skip ci] in commit message
           git commit -m "chore: bump version to $TAG_NAME [skip ci]"
-          COMMIT_SHA=$(git rev-parse HEAD)
-          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          VERSION_COMMIT=$(git rev-parse HEAD)
+          echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
 
           # Push version changes
           git push origin "$WORKFLOW_BRANCH"
@@ -397,7 +393,7 @@ jobs:
         run: |
           TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
           PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.commit_version.outputs.commit_sha }}"
+          TARGET_REF="${{ steps.commit_version.outputs.version_commit_sha }}"
 
           # Create release with auto-generated notes
           # Use --notes-start-tag to ensure we compare against the correct previous tag
@@ -599,9 +595,8 @@ jobs:
 
           # Always include [skip ci] in commit message
           git commit -m "chore: bump version to $TAG_NAME [skip ci]"
-          COMMIT_SHA=$(git rev-parse HEAD)
-          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
-          echo "version_commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          VERSION_COMMIT=$(git rev-parse HEAD)
+          echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
 
           # Push version changes directly to workflow branch
           git push origin "$WORKFLOW_BRANCH"
