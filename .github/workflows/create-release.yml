@@ -708,8 +708,12 @@ jobs:
         run: |
           TEXT="${{ steps.extract_text.outputs.text }}"
 
-          # Use jq to properly escape the text for JSON
-          payload=$(echo "$TEXT" | jq -Rs '{text: .}')
+          payload=$(cat <<EOF
+          {
+              "text": "$TEXT"
+          }
+          EOF
+          )
 
           curl --request POST \
           --header "Content-Type: application/json" \
