@@ -34,6 +34,7 @@ jobs:
       environment: ${{ steps.prepare.outputs.environment }}
       release_type: ${{ steps.prepare.outputs.release_type }}
       engine_version: ${{ steps.prepare.outputs.engine_version }}
+      target_branch: ${{ steps.prepare.outputs.target_branch }}
     steps:
       - name: Prepare release parameters
         id: prepare
@@ -60,9 +61,15 @@ jobs:
             ENGINE_VERSION=""
           fi
 
+          # Determine target branch based on environment and release type
+          # UAT regular and PRD releases: target branch is main
+          # UAT hotfix: target branch is main (but workflow branch is the hotfix branch)
+          TARGET_BRANCH="main"
+
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
           echo "engine_version=$ENGINE_VERSION" >> $GITHUB_OUTPUT
+          echo "target_branch=$TARGET_BRANCH" >> $GITHUB_OUTPUT
 
   uat-regular:
     needs: setup
@@ -74,6 +81,18 @@ jobs:
     outputs:
       notification_text: ${{ steps.notify.outputs.text }}
     steps:
+      - name: Validate branch
+        run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
+
+          if [ "$WORKFLOW_BRANCH" != "$TARGET_BRANCH" ]; then
+            echo "❌ Error: UAT regular release must be executed from '$TARGET_BRANCH' branch. Current branch: '$WORKFLOW_BRANCH'"
+            exit 1
+          fi
+
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
       - name: Get GitHub App Access Token
         id: github-app-access-token
         uses: actions/create-github-app-token@v2
@@ -130,11 +149,6 @@ jobs:
           fi
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
-
-      - name: Store workflow execution branch
-        run: |
-          WORKFLOW_BRANCH="${{ github.ref_name }}"
-          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
       - name: Bump version in memory
         id: bump_version
@@ -257,9 +271,10 @@ jobs:
       - name: Validate branch
         run: |
           WORKFLOW_BRANCH="${{ github.ref_name }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
 
-          # Terminate if branch is 'main' to prevent accidental history override
-          if [ "$WORKFLOW_BRANCH" = "main" ]; then
+          # Terminate if branch is the target branch to prevent accidental history override
+          if [ "$WORKFLOW_BRANCH" = "$TARGET_BRANCH" ]; then
             echo "❌ Error: Cannot execute UAT hotfix on 'main' branch. UAT hotfix must be executed from a hotfix branch."
             exit 1
           fi
@@ -327,16 +342,11 @@ jobs:
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
-      - name: Store workflow execution branch
-        run: |
-          WORKFLOW_BRANCH="${{ github.ref_name }}"
-          # Target branch for UAT hotfix merge (default: main, configurable for testing)
-          TARGET_BRANCH="main"
-          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
-          echo "target_branch=$TARGET_BRANCH" >> $GITHUB_ENV
-
       - name: Squash commits and prepare for UAT hotfix
         run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
           # For UAT hotfix: squash all commits in the hotfix branch BEFORE version changes
           # Find the base commit (the tag the hotfix branch was created from)
           BASE_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
@@ -430,7 +440,7 @@ jobs:
       - name: Merge UAT hotfix to target branch
         run: |
           WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          TARGET_BRANCH="${{ env.target_branch }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
 
           # Fetch and checkout the target branch
           git fetch origin "$TARGET_BRANCH" || {
@@ -452,7 +462,7 @@ jobs:
       - name: Delete UAT hotfix branch
         run: |
           WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          TARGET_BRANCH="${{ env.target_branch }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
 
           # Checkout target branch first to avoid being on the branch we want to delete
           git checkout "$TARGET_BRANCH"
@@ -466,7 +476,7 @@ jobs:
       - name: Prepare notification text
         id: notify
         run: |
-          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+          RELEASE_URL="${{ steps.create_release_hotfix.outputs.release_url }}"
           VERSION="${{ steps.bump_version.outputs.tag_name }}"
 
           # Prepare notification text with newlines
@@ -483,6 +493,18 @@ jobs:
     outputs:
       notification_text: ${{ steps.notify.outputs.text }}
     steps:
+      - name: Validate branch
+        run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          TARGET_BRANCH="${{ needs.setup.outputs.target_branch }}"
+
+          if [ "$WORKFLOW_BRANCH" != "$TARGET_BRANCH" ]; then
+            echo "❌ Error: PRD release must be executed from '$TARGET_BRANCH' branch. Current branch: '$WORKFLOW_BRANCH'"
+            exit 1
+          fi
+
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
       - name: Get GitHub App Access Token
         id: github-app-access-token
         uses: actions/create-github-app-token@v2
@@ -583,11 +605,6 @@ jobs:
           fi
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
-
-      - name: Store workflow execution branch
-        run: |
-          WORKFLOW_BRANCH="${{ github.ref_name }}"
-          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
       - name: Checkout UAT tag for PRD release
         run: |
