@@ -48,7 +48,7 @@ runs:
         RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
         echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ env.GITHUB_TOKEN }}
 
     - name: Prepare notification text
       id: prepare_notification

@@ -31,6 +31,8 @@ runs:
 
         # Push the target branch with merge commit
         git push origin "$TARGET_BRANCH"
+      env:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
 
     - name: Delete source branch
       shell: bash

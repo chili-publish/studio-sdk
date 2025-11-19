@@ -28,5 +28,4 @@ runs:
 
         echo "releases_file=$RELEASES_FILE" >> $GITHUB_OUTPUT
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        GH_TOKEN: ${{ env.GITHUB_TOKEN }}

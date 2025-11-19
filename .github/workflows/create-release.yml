@@ -124,6 +124,8 @@ jobs:
         uses: ./.github/actions/fetch-gh-releases
         with:
           releases_limit: ${{ env.RELEASES_LIMIT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find previous release tag
         id: previous_tag
@@ -155,12 +157,16 @@ jobs:
           previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
           target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
           release_type: "uat"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge and delete version branch
         uses: ./.github/actions/merge-and-delete-branch
         with:
           source_branch: ${{ steps.apply_version.outputs.created_version_branch }}
           target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 
   uat-hotfix:
     needs: configure-parameters
@@ -223,6 +229,8 @@ jobs:
         uses: ./.github/actions/fetch-gh-releases
         with:
           releases_limit: ${{ env.RELEASES_LIMIT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find previous release tag
         id: previous_tag
@@ -260,12 +268,16 @@ jobs:
           previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
           target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
           release_type: "uat"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge and delete UAT hotfix branch
         uses: ./.github/actions/merge-and-delete-branch
         with:
           source_branch: ${{ env.workflow_branch }}
           target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 
   production:
     needs: configure-parameters
@@ -328,6 +340,8 @@ jobs:
         uses: ./.github/actions/fetch-gh-releases
         with:
           releases_limit: ${{ env.RELEASES_LIMIT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate UAT tag exists
         run: |
@@ -387,12 +401,16 @@ jobs:
           previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
           target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
           release_type: "production"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge and delete release branch
         uses: ./.github/actions/merge-and-delete-branch
         with:
           source_branch: ${{ env.workflow_branch }}
           target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 
   notify-teams:
     needs: [configure-parameters, uat-regular, uat-hotfix, production]
