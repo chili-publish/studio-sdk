@@ -18,7 +18,7 @@ on:
           - regular
           - hotfix
       engine_version:
-        description: "Engine version to use (e.g., 2.15.latest) - optional (UAT regular only)"
+        description: "Engine version to use (e.g., 2.15.latest) - optional. Applies only when environment is 'uat' and release_type is 'regular'"
         required: false
         type: string
 
@@ -72,7 +72,7 @@ jobs:
       contents: write
       pull-requests: read
     outputs:
-      notification_text: ${{ steps.notify.outputs.text }}
+      notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
     steps:
       - name: Validate branch
         run: |
@@ -86,55 +86,20 @@ jobs:
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
-      - name: Get GitHub App Access Token
-        id: github-app-access-token
-        uses: actions/create-github-app-token@v2
+      - name: Setup release environment
+        id: setup
+        uses: ./.github/actions/setup-release-environment
         with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
-          owner: ${{ github.repository_owner }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref }}
-          token: ${{ steps.github-app-access-token.outputs.token }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Check cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Fetch and cache GitHub Releases
-        run: |
-          gh release list --limit ${{ env.RELEASES_LIMIT }} --json isPrerelease,tagName | jq '.' > /tmp/releases.json
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node_version: ${{ env.NODE_VERSION }}
+          releases_limit: ${{ env.RELEASES_LIMIT }}
 
       - name: Find previous release tag
         id: previous_tag
         run: |
-          if [ ! -f /tmp/releases.json ]; then
-            echo "❌ Error: Releases file not found"
-            exit 1
-          fi
+          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
 
           # For UAT regular: always use the latest production release as previous tag
-          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
 
           if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
             echo "❌ Error: No production release found. A previous production release is required for UAT regular releases."
@@ -143,120 +108,27 @@ jobs:
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
-      - name: Bump version in memory
-        id: bump_version
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Apply version's update
+        id: apply_version
+        uses: ./.github/actions/apply-versions-update
+        with:
+          version_strategy: "prerelease"
+          engine_version: ${{ needs.configure-parameters.outputs.engine_version }}
 
-          # UAT regular: add -rc.0 prefix (minor version already bumped in post-production step)
-          # e.g., 1.3.0-alpha.0 -> 1.3.0-rc.0
-          NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+      - name: Create release and prepare notification
+        id: create_release_and_notify
+        uses: ./.github/actions/create-gh-release
+        with:
+          tag_name: ${{ steps.apply_version.outputs.tag_name }}
+          previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+          target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
+          release_type: "uat"
 
-          # Remove 'v' prefix if present
-          TAG_NAME=$(echo $NEW_VERSION | sed 's/^v//')
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-
-      - name: Execute replicate version script
-        run: node ./.github/scripts/replicate-version.js
-
-      - name: Update engine version
-        if: needs.configure-parameters.outputs.engine_version != ''
-        run: |
-          ENGINE_VERSION="${{ needs.configure-parameters.outputs.engine_version }}"
-          ENGINE_JSON="packages/sdk/editor-engine.json"
-
-          # Update the engine version in editor-engine.json
-          node -e "
-            const fs = require('fs');
-            const path = '$ENGINE_JSON';
-            const data = JSON.parse(fs.readFileSync(path, 'utf8'));
-            data.current = '$ENGINE_VERSION';
-            fs.writeFileSync(path, JSON.stringify(data, null, 4));
-          "
-
-      - name: Commit version changes
-        id: commit_version
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-
-          # Create a version branch for the version commit
-          VERSION_BRANCH="temp-release-$(date +%s)"
-          git checkout -b "$VERSION_BRANCH"
-          echo "version_branch=$VERSION_BRANCH" >> $GITHUB_ENV
-
-          # Stage version-related files
-          git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
-
-          # Always include [skip ci] in commit message
-          git commit -m "chore: bump version to $TAG_NAME [skip ci]"
-          VERSION_COMMIT=$(git rev-parse HEAD)
-          echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
-
-          # Push the version branch temporarily so GitHub can reference it for release creation
-          git push origin "$VERSION_BRANCH" || echo "⚠️  Version branch push failed, but continuing..."
-
-      - name: Create GitHub release
-        id: create_release
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.commit_version.outputs.version_commit_sha }}"
-
-          # Create release with auto-generated notes
-          # Use --notes-start-tag to ensure we compare against the correct previous tag
-          gh release create $TAG_NAME \
-            --target $TARGET_REF \
-            --title "$TAG_NAME" \
-            --generate-notes \
-            --notes-start-tag "$PREVIOUS_TAG" \
-            --prerelease
-
-          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
-          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Merge version branch to workflow branch and push
-        id: merge_to_target
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          VERSION_BRANCH="${{ env.version_branch }}"
-
-          git checkout "$WORKFLOW_BRANCH" || {
-            echo "❌ Failed to checkout workflow branch: $WORKFLOW_BRANCH"
-            exit 1
-          }
-
-          # Merge version branch using --strategy=ours to preserve workflow branch content
-          # --strategy=ours creates a merge commit in history but keeps the workflow branch's tree unchanged
-          # This preserves git history and tag creation reference while keeping content unchanged
-          # Merge with --strategy=ours - this records the merge in history but keeps workflow branch content
-          git merge "$VERSION_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
-
-          # Push the workflow branch with merge commit (using GitHub App token for protected branches)
-          git push origin "$WORKFLOW_BRANCH"
-
-      - name: Delete version branch
-        run: |
-          VERSION_BRANCH="${{ env.version_branch }}"
-
-          # Delete remote version branch
-          git push origin --delete "$VERSION_BRANCH" || echo "⚠️  Remote version branch $VERSION_BRANCH not found or already deleted"
-
-          # Delete local version branch (if still exists)
-          git branch -D "$VERSION_BRANCH" || echo "⚠️  Local version branch $VERSION_BRANCH not found or already deleted"
-
-      - name: Prepare notification text
-        id: notify
-        run: |
-          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
-          VERSION="${{ steps.bump_version.outputs.tag_name }}"
-
-          # Prepare notification text with newlines
-          TEXT="🧪 **UAT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n\nRelease has been created and deployment will be triggered automatically."
-          echo "text=$TEXT" >> $GITHUB_OUTPUT
+      - name: Merge and delete version branch
+        uses: ./.github/actions/merge-and-delete-branch
+        with:
+          source_branch: ${{ steps.apply_version.outputs.created_version_branch }}
+          target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
 
   uat-hotfix:
     needs: configure-parameters
@@ -266,7 +138,7 @@ jobs:
       contents: write
       pull-requests: read
     outputs:
-      notification_text: ${{ steps.notify.outputs.text }}
+      notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
     steps:
       - name: Validate branch
         run: |
@@ -279,64 +151,26 @@ jobs:
             exit 1
           fi
 
-      - name: Get GitHub App Access Token
-        id: github-app-access-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
-          owner: ${{ github.repository_owner }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref }}
-          token: ${{ steps.github-app-access-token.outputs.token }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Check cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Fetch and cache GitHub Releases
-        run: |
-          gh release list --limit ${{ env.RELEASES_LIMIT }} --json isPrerelease,tagName | jq '.' > /tmp/releases.json
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Store workflow execution branch
-        run: |
-          WORKFLOW_BRANCH="${{ github.ref_name }}"
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
+      - name: Setup release environment
+        id: setup
+        uses: ./.github/actions/setup-release-environment
+        with:
+          node_version: ${{ env.NODE_VERSION }}
+          releases_limit: ${{ env.RELEASES_LIMIT }}
 
       - name: Find previous release tag
         id: previous_tag
         run: |
-          if [ ! -f /tmp/releases.json ]; then
-            echo "❌ Error: Releases file not found"
-            exit 1
-          fi
+          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
 
           # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
           # The hotfix branch can be created from either:
           # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
           # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
           CURRENT_VERSION=$(node -p "require('./package.json').version")
-          ALL_TAGS=$(jq -r '.[] | .tagName' /tmp/releases.json)
+          ALL_TAGS=$(jq -r '.[] | .tagName' "$RELEASES_FILE")
           PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
 
           if [ -z "$PREVIOUS_TAG" ]; then
@@ -347,118 +181,27 @@ jobs:
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
-      - name: Bump version in memory
-        id: bump_version
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Apply version's update
+        id: apply_version
+        uses: ./.github/actions/apply-versions-update
+        with:
+          version_strategy: "prerelease-conditional"
+          version_branch: ${{ env.workflow_branch }}
 
-          # Get current version from package.json
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
+      - name: Create release and prepare notification
+        id: create_release_and_notify
+        uses: ./.github/actions/create-gh-release
+        with:
+          tag_name: ${{ steps.apply_version.outputs.tag_name }}
+          previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+          target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
+          release_type: "uat"
 
-          # UAT hotfix: Check if we're hotfixing an existing UAT release
-          # The hotfix branch was created from a UAT release tag, so package.json should have -rc.X
-          if [[ "$CURRENT_VERSION" == *"-rc."* ]]; then
-            # Hotfix existing UAT release: increment prerelease number only
-            # e.g., 1.2.3-rc.0 -> 1.2.3-rc.1
-            NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
-          else
-            # New UAT hotfix from main or production: increment patch and add -rc.0
-            # e.g., 1.2.3 -> 1.2.4-rc.0
-            NEW_VERSION=$(npm version prepatch --preid=rc --git-tag-version=false)
-          fi
-
-          # Remove 'v' prefix if present
-          TAG_NAME=$(echo $NEW_VERSION | sed 's/^v//')
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-
-      - name: Execute replicate version script
-        run: node ./.github/scripts/replicate-version.js
-
-      - name: Commit and push version changes
-        id: commit_version
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-
-          # Stage version-related files
-          git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
-
-          # Always include [skip ci] in commit message
-          git commit -m "chore: bump version to $TAG_NAME [skip ci]"
-          VERSION_COMMIT=$(git rev-parse HEAD)
-          echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
-
-          # Push version changes
-          git push origin "$WORKFLOW_BRANCH"
-
-      - name: Create GitHub release
-        id: create_release_hotfix
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.commit_version.outputs.version_commit_sha }}"
-
-          # Create release with auto-generated notes
-          # Use --notes-start-tag to ensure we compare against the correct previous tag
-          gh release create $TAG_NAME \
-            --target $TARGET_REF \
-            --title "$TAG_NAME" \
-            --generate-notes \
-            --notes-start-tag "$PREVIOUS_TAG" \
-            --prerelease
-
-          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
-          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Merge UAT hotfix to target branch
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
-
-          # Fetch and checkout the target branch
-          git fetch origin "$TARGET_BRANCH" || {
-            echo "❌ Failed to fetch target branch: $TARGET_BRANCH"
-            exit 1
-          }
-          git checkout "$TARGET_BRANCH" || {
-            echo "❌ Failed to checkout target branch: $TARGET_BRANCH"
-            exit 1
-          }
-
-          # Merge hotfix branch using --strategy=ours to preserve target branch content
-          # --strategy=ours creates a merge commit in history but keeps the target branch's tree unchanged
-          git merge "$WORKFLOW_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
-
-          # Push the target branch with merge commit (using GitHub App token for protected branches)
-          git push origin "$TARGET_BRANCH"
-
-      - name: Delete UAT hotfix branch
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
-
-          # Checkout target branch first to avoid being on the branch we want to delete
-          git checkout "$TARGET_BRANCH"
-
-          # Delete remote branch
-          git push origin --delete "$WORKFLOW_BRANCH" || echo "⚠️  Remote branch $WORKFLOW_BRANCH not found or already deleted"
-
-          # Delete local branch
-          git branch -D "$WORKFLOW_BRANCH" || echo "⚠️  Remote branch $WORKFLOW_BRANCH not found or already deleted"
-
-      - name: Prepare notification text
-        id: notify
-        run: |
-          RELEASE_URL="${{ steps.create_release_hotfix.outputs.release_url }}"
-          VERSION="${{ steps.bump_version.outputs.tag_name }}"
-
-          # Prepare notification text with newlines
-          TEXT="🧪 **UAT Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n\nRelease has been created and deployment will be triggered automatically."
-          echo "text=$TEXT" >> $GITHUB_OUTPUT
+      - name: Merge and delete UAT hotfix branch
+        uses: ./.github/actions/merge-and-delete-branch
+        with:
+          source_branch: ${{ env.workflow_branch }}
+          target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
 
   production:
     needs: configure-parameters
@@ -468,7 +211,7 @@ jobs:
       contents: write
       pull-requests: read
     outputs:
-      notification_text: ${{ steps.notify.outputs.text }}
+      notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
     steps:
       - name: Validate branch
         run: |
@@ -483,51 +226,16 @@ jobs:
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
-      - name: Get GitHub App Access Token
-        id: github-app-access-token
-        uses: actions/create-github-app-token@v2
+      - name: Setup release environment
+        id: setup
+        uses: ./.github/actions/setup-release-environment
         with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
-          owner: ${{ github.repository_owner }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref }}
-          token: ${{ steps.github-app-access-token.outputs.token }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Check cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Fetch and cache GitHub Releases
-        run: |
-          gh release list --limit ${{ env.RELEASES_LIMIT }} --json isPrerelease,tagName | jq '.' > /tmp/releases.json
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node_version: ${{ env.NODE_VERSION }}
+          releases_limit: ${{ env.RELEASES_LIMIT }}
 
       - name: Validate UAT tag exists
         run: |
-          if [ ! -f /tmp/releases.json ]; then
-            echo "❌ Error: Releases file not found"
-            exit 1
-          fi
+          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
 
           # Read version from package.json (should match the UAT tag the branch was created from)
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -540,13 +248,13 @@ jobs:
           echo "📦 Current package.json version: $CURRENT_VERSION"
 
           # Check if this version exists as a UAT release (prerelease)
-          UAT_TAG_EXISTS=$(jq -r --arg version "$CURRENT_VERSION" '.[] | select(.isPrerelease == true and .tagName == $version) | .tagName' /tmp/releases.json | head -1)
+          UAT_TAG_EXISTS=$(jq -r --arg version "$CURRENT_VERSION" '.[] | select(.isPrerelease == true and .tagName == $version) | .tagName' "$RELEASES_FILE" | head -1)
 
           if [ -z "$UAT_TAG_EXISTS" ] || [ "$UAT_TAG_EXISTS" = "null" ]; then
             echo "❌ Error: UAT tag '$CURRENT_VERSION' not found in GitHub releases."
             echo "❌ The workflow branch must be created from a valid UAT release tag."
             echo "❌ Available UAT releases:"
-            jq -r '.[] | select(.isPrerelease == true) | "  - \(.tagName)"' /tmp/releases.json || echo "  (none found)"
+            jq -r '.[] | select(.isPrerelease == true) | "  - \(.tagName)"' "$RELEASES_FILE" || echo "  (none found)"
             exit 1
           fi
 
@@ -555,13 +263,10 @@ jobs:
       - name: Find previous release tag
         id: previous_tag
         run: |
-          if [ ! -f /tmp/releases.json ]; then
-            echo "❌ Error: Releases file not found"
-            exit 1
-          fi
+          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
 
           # For PRD releases, always use the latest production release as previous tag
-          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' /tmp/releases.json | head -1)
+          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
 
           # Fail if no previous PRD release found (required for all PRD releases)
           if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
@@ -571,109 +276,27 @@ jobs:
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
-      - name: Bump version in memory
-        id: bump_version
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Apply version's update
+        id: apply_version
+        uses: ./.github/actions/apply-versions-update
+        with:
+          version_strategy: "patch"
+          version_branch: ${{ env.workflow_branch }}
 
-          # PRD releases (both regular and hotfix): strip prerelease suffix
-          # e.g., 1.3.0-rc.2 -> 1.3.0 (regular)
-          # e.g., 1.2.3-rc.1 -> 1.2.3 (hotfix, patch already incremented in UAT)
-          NEW_VERSION=$(npm version patch --git-tag-version=false)
+      - name: Create release and prepare notification
+        id: create_release_and_notify
+        uses: ./.github/actions/create-gh-release
+        with:
+          tag_name: ${{ steps.apply_version.outputs.tag_name }}
+          previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+          target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
+          release_type: "production"
 
-          # Remove 'v' prefix if present
-          TAG_NAME=$(echo $NEW_VERSION | sed 's/^v//')
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-
-      - name: Execute replicate version script
-        run: node ./.github/scripts/replicate-version.js
-
-      - name: Commit and push version changes
-        id: commit_version
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-
-          # Stage version-related files
-          git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
-
-          # Always include [skip ci] in commit message
-          git commit -m "chore: bump version to $TAG_NAME [skip ci]"
-          VERSION_COMMIT=$(git rev-parse HEAD)
-          echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
-
-          # Push version changes directly to workflow branch
-          git push origin "$WORKFLOW_BRANCH"
-
-      - name: Create GitHub release
-        id: create_release
-        run: |
-          TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
-          PREVIOUS_TAG="${{ steps.previous_tag.outputs.previous_tag }}"
-          TARGET_REF="${{ steps.commit_version.outputs.version_commit_sha }}"
-
-          # Create release with auto-generated notes
-          # Use --notes-start-tag to ensure we compare against the correct previous tag
-          gh release create $TAG_NAME \
-            --target $TARGET_REF \
-            --title "$TAG_NAME" \
-            --generate-notes \
-            --notes-start-tag "$PREVIOUS_TAG"
-
-          RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
-          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Merge release branch to target branch
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
-
-          # Fetch and checkout the target branch
-          git fetch origin "$TARGET_BRANCH" || {
-            echo "❌ Failed to fetch target branch: $TARGET_BRANCH"
-            exit 1
-          }
-          git checkout "$TARGET_BRANCH" || {
-            echo "❌ Failed to checkout target branch: $TARGET_BRANCH"
-            exit 1
-          }
-
-          # Merge release branch using --strategy=ours to preserve target branch content
-          # --strategy=ours creates a merge commit in history but keeps the target branch's tree unchanged
-          git merge "$WORKFLOW_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
-
-          # Push the target branch with merge commit (using GitHub App token for protected branches)
-          git push origin "$TARGET_BRANCH"
-
-      - name: Delete workflow branch (release branch)
-        run: |
-          WORKFLOW_BRANCH="${{ env.workflow_branch }}"
-          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
-
-          # Checkout target branch first to avoid being on the branch we want to delete
-          git checkout "$TARGET_BRANCH" || {
-            echo "⚠️  Failed to checkout target branch: $TARGET_BRANCH. Attempting to delete workflow branch anyway."
-          }
-
-          # Delete remote workflow branch (release branch)
-          git push origin --delete "$WORKFLOW_BRANCH" || echo "⚠️  Remote workflow branch $WORKFLOW_BRANCH not found or already deleted"
-
-          # Delete local workflow branch (if still exists)
-          git branch -D "$WORKFLOW_BRANCH" || echo "⚠️  Local workflow branch $WORKFLOW_BRANCH not found or already deleted"
-
-      - name: Prepare notification text
-        id: notify
-        run: |
-          RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
-          VERSION="${{ steps.bump_version.outputs.tag_name }}"
-
-          # Prepare notification text with newlines
-          TEXT="🎉 **Production Release Created**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n\nRelease has been created and deployment will be triggered automatically."
-          echo "text=$TEXT" >> $GITHUB_OUTPUT
+      - name: Merge and delete release branch
+        uses: ./.github/actions/merge-and-delete-branch
+        with:
+          source_branch: ${{ env.workflow_branch }}
+          target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
 
   notify-teams:
     needs: [configure-parameters, uat-regular, uat-hotfix, production]

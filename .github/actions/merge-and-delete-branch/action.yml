@@ -1,0 +1,50 @@
+name: "Merge and Delete Branch"
+description: "Merge source branch to target branch using --strategy=ours, then delete source branch"
+inputs:
+  source_branch:
+    required: true
+    description: "Source branch to merge from (will be deleted after merge)"
+  target_branch:
+    required: true
+    description: "Target branch to merge to"
+runs:
+  using: composite
+  steps:
+    - name: Merge source branch to target branch
+      shell: bash
+      run: |
+        SOURCE_BRANCH="${{ inputs.source_branch }}"
+        TARGET_BRANCH="${{ inputs.target_branch }}"
+
+        # Fetch and checkout the target branch
+        git fetch origin "$TARGET_BRANCH" || {
+          echo "❌ Failed to fetch target branch: $TARGET_BRANCH"
+          exit 1
+        }
+        git checkout "$TARGET_BRANCH" || {
+          echo "❌ Failed to checkout target branch: $TARGET_BRANCH"
+          exit 1
+        }
+
+        # Merge source branch using --strategy=ours to preserve target branch content
+        git merge "$SOURCE_BRANCH" --strategy=ours --no-edit -m "chore: merge version bump commit [skip ci]"
+
+        # Push the target branch with merge commit
+        git push origin "$TARGET_BRANCH"
+
+    - name: Delete source branch
+      shell: bash
+      run: |
+        SOURCE_BRANCH="${{ inputs.source_branch }}"
+        TARGET_BRANCH="${{ inputs.target_branch }}"
+
+        # Checkout target branch first to avoid being on the branch we want to delete
+        git checkout "$TARGET_BRANCH" || {
+          echo "⚠️  Failed to checkout target branch: $TARGET_BRANCH. Attempting to delete source branch anyway."
+        }
+
+        # Delete remote branch
+        git push origin --delete "$SOURCE_BRANCH" || echo "⚠️  Remote branch $SOURCE_BRANCH not found or already deleted"
+
+        # Delete local branch
+        git branch -D "$SOURCE_BRANCH" || echo "⚠️  Local branch $SOURCE_BRANCH not found or already deleted"

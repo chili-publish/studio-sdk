@@ -1,0 +1,71 @@
+name: "Setup Release Environment"
+description: "Setup GitHub App token, checkout, Node.js, cache, dependencies, and fetch GitHub releases"
+inputs:
+  node_version:
+    required: true
+    description: "Node.js version"
+  releases_limit:
+    required: true
+    description: "Limit for GitHub releases to fetch"
+outputs:
+  github_app_token:
+    description: "GitHub App access token"
+    value: ${{ steps.github-app-access-token.outputs.token }}
+  releases_file:
+    description: "Path to the file containing GitHub releases JSON data"
+    value: ${{ steps.fetch-releases.outputs.releases_file }}
+runs:
+  using: composite
+  steps:
+    - name: Get GitHub App Access Token
+      id: github-app-access-token
+      uses: actions/create-github-app-token@v2
+      with:
+        app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+        private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+        owner: ${{ github.repository_owner }}
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.ref }}
+        token: ${{ steps.github-app-access-token.outputs.token }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node_version }}
+
+    - name: Check cache
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      shell: bash
+      run: yarn install --frozen-lockfile
+
+    - name: Fetch and cache GitHub Releases
+      id: fetch-releases
+      shell: bash
+      run: |
+        RELEASES_FILE="/tmp/releases-$(date +%s).json"
+
+        # Fetch releases and write to file
+        gh release list --limit ${{ inputs.releases_limit }} --json isPrerelease,tagName | jq '.' > "$RELEASES_FILE"
+
+        # Validate that we got release data
+        if [ ! -f "$RELEASES_FILE" ]; then
+          echo "❌ Error: Releases file not found: $RELEASES_FILE"
+          exit 1
+        fi
+
+        echo "releases_file=$RELEASES_FILE" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
