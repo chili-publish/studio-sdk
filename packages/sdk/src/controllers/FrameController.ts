@@ -55,8 +55,6 @@ export class FrameController {
         this.constraints = new FrameConstraintController(this.#editorAPI);
     }
 
-
-
     /**
      * This method returns the list of frames
      * @returns list of all frames
