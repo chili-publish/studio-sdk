@@ -86,17 +86,49 @@ jobs:
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
-      - name: Setup release environment
-        id: setup
-        uses: ./.github/actions/setup-release-environment
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
         with:
-          node_version: ${{ env.NODE_VERSION }}
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fetch GH releases
+        id: fetch_releases
+        uses: ./.github/actions/fetch-gh-releases
+        with:
           releases_limit: ${{ env.RELEASES_LIMIT }}
 
       - name: Find previous release tag
         id: previous_tag
         run: |
-          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
           # For UAT regular: always use the latest production release as previous tag
           PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
@@ -153,30 +185,62 @@ jobs:
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
-      - name: Setup release environment
-        id: setup
-        uses: ./.github/actions/setup-release-environment
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
         with:
-          node_version: ${{ env.NODE_VERSION }}
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fetch GH releases
+        id: fetch_releases
+        uses: ./.github/actions/fetch-gh-releases
+        with:
           releases_limit: ${{ env.RELEASES_LIMIT }}
 
       - name: Find previous release tag
         id: previous_tag
         run: |
-          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
-          # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
-          # The hotfix branch can be created from either:
-          # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
-          # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
+            # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
+            # The hotfix branch can be created from either:
+            # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
+            # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
           ALL_TAGS=$(jq -r '.[] | .tagName' "$RELEASES_FILE")
-          PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
-
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
-            echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
-            exit 1
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
+            
+            if [ -z "$PREVIOUS_TAG" ]; then
+              echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
+              echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
+              exit 1
           fi
 
           echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
@@ -226,16 +290,48 @@ jobs:
 
           echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
 
-      - name: Setup release environment
-        id: setup
-        uses: ./.github/actions/setup-release-environment
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
         with:
-          node_version: ${{ env.NODE_VERSION }}
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fetch GH releases
+        id: fetch_releases
+        uses: ./.github/actions/fetch-gh-releases
+        with:
           releases_limit: ${{ env.RELEASES_LIMIT }}
 
       - name: Validate UAT tag exists
         run: |
-          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
           # Read version from package.json (should match the UAT tag the branch was created from)
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -263,7 +359,7 @@ jobs:
       - name: Find previous release tag
         id: previous_tag
         run: |
-          RELEASES_FILE="${{ steps.setup.outputs.releases_file }}"
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
           # For PRD releases, always use the latest production release as previous tag
           PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
