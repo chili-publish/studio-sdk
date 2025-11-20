@@ -101,4 +101,20 @@ export class ExperimentController {
         const res = await this.#editorAPI;
         return res.selectTextById(frameId, startIndex, length).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method adds custom data that will be saved and restored when undoing and redoing.
+     * Duplicate values are overwritten. The data is exposed via the onCustomUndoDataChanged event.
+     *
+     * @param key The key of the custom data
+     * @param value The value of the custom data
+     * @param skipEvent Whether to skip the event that is triggered when the custom data is changed, defaults to false
+     * @returns
+     */
+    addCustomUndoData = async (key: string, value: string, skipEvent?: boolean) => {
+        const res = await this.#editorAPI;
+        return res
+            .setCustomUndoData(key, value, skipEvent ?? false)
+            .then((result) => getEditorResponseData<null>(result));
+    };
 }

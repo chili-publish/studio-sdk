@@ -4,6 +4,21 @@ export enum WellKnownConfigurationKeys {
     GraFxStudioDocumentType = 'DOCUMENT_TYPE',
     GraFxStudioTemplateId = 'TEMPLATE_ID',
     GraFxStudioAuthToken = 'GRAFX_AUTH_TOKEN',
+    QueryCallCacheEnabled = 'ENABLE_QUERY_CALL_CACHE',
+}
+
+export enum FrameEditingMode {
+    /** 
+     * Default (Designer) mode
+     * No constraints
+     */
+    full,
+
+    /** 
+     * End user mode
+     * Limits the existing tools to the given constraints
+     */
+    followConstraints,
 }
 
 export type StudioStyling = {
@@ -16,6 +31,11 @@ export type StudioStyling = {
 export type StudioOptionsDeltaUpdate = {
     /** Options for the different studio engine shortcuts */
     shortcutOptions?: ShortcutOptionsDeltaUpdate;
+    /** 
+     * Determines which editing mode should be allowed
+     * @defaultValue `FrameEditingMode.full`
+    */
+    frameEditingMode?: FrameEditingMode;
 };
 
 /**
@@ -81,4 +101,5 @@ export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
         copyPaste: { enabled: false },
         viewMode: { enabled: false },
     },
+    frameEditingMode: FrameEditingMode.full,
 };

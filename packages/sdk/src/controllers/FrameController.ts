@@ -1,14 +1,19 @@
+import { BarcodeType } from '../types/BarcodeTypes';
+import { ColorUsage } from '../types/ColorStyleTypes';
 import type { EditorAPI, EditorResponse, Id } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     AnchorTarget,
     AutoGrowDeltaUpdate,
     AutoGrowDirection,
     BlendMode,
+    CropType,
     FitMode,
     FitModePosition,
     FrameAnchorProperties,
     FrameAnchorType,
+    FrameConfiguration,
+    FrameConstraints,
+    FrameConstraintsDeltaUpdate,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
@@ -16,13 +21,14 @@ import {
     ImageFrameSource,
     ImageFrameUrlSource,
     ImageSourceTypeEnum,
+    ShadowSettingsDeltaUpdate,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../types/FrameTypes';
-import { ColorUsage } from '../types/ColorStyleTypes';
+import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
 import { ShapeType } from '../types/ShapeTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
-import { BarcodeType } from '../types/BarcodeTypes';
 
 /**
  * The FrameController is responsible for all communication regarding Frames.
@@ -33,6 +39,12 @@ export class FrameController {
      * @ignore
      */
     #editorAPI: Promise<EditorAPI>;
+    constraints: FrameConstraintController;
+    /**
+     * This variable helps to redirect shapes related methods to newly introduced ShapeController
+     * to avoid any breaking changes
+     */
+    private shapeController: ShapeController;
 
     /**
      * @ignore
@@ -40,13 +52,9 @@ export class FrameController {
     constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
         this.shapeController = new ShapeController(this.#editorAPI);
+        this.constraints = new FrameConstraintController(this.#editorAPI);
     }
 
-    /**
-     * This variable helps to redirect shapes related methods to newly introduced ShapeController
-     * to avoid any breaking changes
-     */
-    private shapeController: ShapeController;
     /**
      * This method returns the list of frames
      * @returns list of all frames
@@ -257,6 +265,17 @@ export class FrameController {
         const res = await this.#editorAPI;
         return res.setFrameY(id, YValue).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will set the frame opacity
+     * @param id the id of a specific frame
+     * @param opacity the opacity of the frame in range [0.0 - 1.0]
+     * @returns 
+     */
+    setOpacity = async (id: Id, opacity: number) => {
+        const res = await this.#editorAPI;
+        return res.setFrameOpacity(id, opacity).then((result) => getEditorResponseData<null>(result));
+    }
 
     /**
      * This method will update the name of a specific frame
@@ -678,11 +697,12 @@ export class FrameController {
     /**
      * This method will make the specified image frame go into cropping mode.
      * @param id the id of a specific image frame
+     * @param type the type of cropping mode to enter. Defaults to frameCrop.
      * @returns
      */
-    enterCropMode = async (id: Id) => {
+    enterCropMode = async (id: Id, type: CropType = CropType.frameCrop) => {
         const res = await this.#editorAPI;
-        return res.enterCropMode(id).then((result) => getEditorResponseData<null>(result));
+        return res.enterCropMode(id, type).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -729,6 +749,34 @@ export class FrameController {
     exitSubjectMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelSubjectMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will make the specified shape frame go into gradient mode.
+     * @param id the id of a specific shape frame
+     * @returns
+     */
+    enterGradientMode = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterGradientMode(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit gradient mode while saving the applied gradient.
+     * @returns
+     */
+    applyGradientMode = async () => {
+        const res = await this.#editorAPI;
+        return res.applyGradientMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit gradient mode without saving the applied gradient.
+     * @returns
+     */
+    cancelGradientMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelGradientMode().then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -951,6 +999,76 @@ export class FrameController {
         return getEditorResponseData<null>(res);
     };
 
+    /**
+     * This method will enable shadow on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setShadowEnabled = async (id: Id, value: boolean) => {
+        const update: ShadowSettingsDeltaUpdate = { enabled: { value: value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the distance for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new distance value to be set
+     * @returns
+     */
+    setShadowDistance = async (id: Id, value: string) => {
+        const update: ShadowSettingsDeltaUpdate = { distance: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the angle in degrees for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new angle value to be set
+     * @returns
+     */
+    setShadowAngleDegrees = async (id: Id, value: number) => {
+        const update: ShadowSettingsDeltaUpdate = { angleDegrees: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the blur radius for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new blur radius value to be set
+     * @returns
+     */
+    setShadowBlurRadius = async (id: Id, value: number) => {
+        const update: ShadowSettingsDeltaUpdate = { blurRadius: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the color for shadow of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new color value to be set
+     * @returns
+     */
+    setShadowColor = async (id: Id, value: ColorUsage) => {
+        const update: ShadowSettingsDeltaUpdate = { color: { value } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameShadowSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
     private setAnchor = async (
         id: Id,
         horizontal: boolean,
@@ -1017,5 +1135,177 @@ export class FrameController {
     resetAnchoring = async (id: Id) => {
         const res = await this.#editorAPI;
         return res.resetFrameTransformation(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset the isVisible property of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @returns
+     */
+    resetVisibility = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.setFrameIsVisible(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will get the frame configuration for a specified frame.
+     *
+     * A frame configuration is a set of rules that define what is allowed to
+     * do with a given behavior of a frame.
+     *
+     * e.g. list of allowed frame targets for a specific anchor
+     *
+     * @param id the id of the frame to get the frame configuration for
+     * @returns the frame's configuration
+     */
+    getConfiguration = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getFrameConfiguration(id).then((result) => getEditorResponseData<FrameConfiguration>(result));
+    };
+
+    /**
+     * This method will set the crop override for the current asset for the specified frame
+     * @param id the id of the frame that holds the override to reset
+     * @returns
+     */
+    resetAssetCropOverride = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAssetCropOverride(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will reset all crop overrides for the specified frame
+     * @param id the id of the frame
+     * @returns
+     */
+    resetAllAssetCropOverrides = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetAllAssetCropOverrides(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will enable/disable gradient on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setGradientApplied = async (id: Id, value: boolean) => {
+        const update: GradientDeltaUpdate = { isApplied: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will update (or set) the local gradient on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new value to be set to the frame.
+     * @returns
+     */
+    setLocalGradient = async (id: Id, value: GradientUpdate) => {
+        const update: GradientDeltaUpdate = { gradient: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will update (or set) the frame to use the provided brand kit gradient
+     * @param id the id of the frame that needs to get updated
+     * @param value the id of an existing brandkit gradient
+     * @returns
+     */
+    setBrandKitGradient = async (id: Id, value: Id) => {
+        const update: GradientDeltaUpdate = { id: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+}
+
+export class FrameConstraintController {
+    /**
+     * @ignore
+     */
+    #editorAPI: Promise<EditorAPI>;
+
+    /**
+     * @ignore
+     */
+    constructor(editorAPI: Promise<EditorAPI>) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * This method will retrieve all constraints for a specified frame
+     * @param id the id of the frame that we want to know the constraints from
+     * @returns the constraints configuration for the frame
+     */
+    get = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getFrameConstraints(id).then((result) => getEditorResponseData<FrameConstraints>(result));
+    };
+
+    /**
+     * This method will set the selectable constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether the frame is selectable or not
+     * @returns
+     */
+    setSelectable = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectable: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the horizontal movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether horizontal movement is allowed or not
+     * @returns
+     */
+    setHorizontalMovement = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { horizontalMovementAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the vertical movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether vertical movement is allowed or not
+     * @returns
+     */
+    setVerticalMovement = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { verticalMovementAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the rotation constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether rotation is allowed or not
+     * @returns
+     */
+    setRotation = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { rotationAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the resize constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether resize is allowed or not
+     * @returns
+     */
+    setResize = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
 }

@@ -10,4 +10,6 @@ export enum EngineEditModeType {
     textEdit = 'textEdit',
     customCrop = 'customCrop',
     frameSubjectArea = 'frameSubjectArea',
+    perAssetCrop = 'perAssetCrop',
+    gradient = 'gradient',
 }

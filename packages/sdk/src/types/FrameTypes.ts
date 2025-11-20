@@ -2,6 +2,7 @@
 import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZone } from './BarcodeTypes';
 import { ColorUsage } from './ColorStyleTypes';
 import { HasOverrideState, Id, PropertyState } from './CommonTypes';
+import { GradientUsage } from './GradientStyleTypes';
 import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
 
 export type FrameLayoutType = {
@@ -25,6 +26,8 @@ export type FrameLayoutType = {
     maxCopyfitting: PropertyState<number>;
     enableCopyfitting: PropertyState<boolean>;
     autoGrow: AutoGrowSettings;
+    isShowingCustomCroppedAsset: boolean;
+    customCroppedAssetCount: number;
 } | null;
 
 //Frame.image
@@ -35,6 +38,7 @@ export type FrameType = {
     // `imageUrl` is not generic: should be removed from model
     imageUrl: string;
     blendMode: string;
+    opacity: number;
 };
 
 export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
@@ -50,25 +54,37 @@ export type ImageFrameUrlSource = {
 };
 
 export type ImageFrameConnectorSource = {
+    type: ImageSourceTypeEnum.connector;
     assetId: Id;
     id: Id;
-    type: ImageSourceTypeEnum.connector;
 };
 
-export type ImageFrameSource = ImageFrameConnectorSource | ImageFrameVariableSource | ImageFrameUrlSource;
+export type ImageFrameBrandkitMediaSource = {
+    type: ImageSourceTypeEnum.brandKitMedia;
+    name: string;
+};
+
+export type ImageFrameSource =
+    | ImageFrameConnectorSource
+    | ImageFrameVariableSource
+    | ImageFrameUrlSource
+    | ImageFrameBrandkitMediaSource;
 
 // used by new getter methods
 export type ImageFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.image;
     src?: ImageFrameSource;
     blendMode: BlendMode;
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type ShapeFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.shape;
     blendMode: BlendMode;
     shapeProperties: {
@@ -84,11 +100,14 @@ export type ShapeFrame = {
         cornerRadius: CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
         sides?: number;
     };
+    dropShadowSettings?: DropShadowSettings;
+    gradient?: GradientUsage;
 };
 
 export type TextFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.text;
     textContent: string;
     paddingLeft: number;
@@ -105,11 +124,13 @@ export type TextFrame = {
     textStrokeColor: number;
     hasClippingPath: boolean;
     blendMode: BlendMode;
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type BarcodeFrame = {
     id: Id;
     name: string;
+    opacity: number;
     type: FrameTypeEnum.barcode;
     blendMode: BlendMode;
     barcodeProperties: {
@@ -127,6 +148,7 @@ export type BarcodeFrame = {
     };
     src?: BarcodeSource;
     barcodeType: BarcodeType;
+    dropShadowSettings?: DropShadowSettings;
 };
 
 export type BarcodeSource = BarcodeVariableSource | BarcodeTextSource;
@@ -184,6 +206,32 @@ export interface AutoGrowDeltaUpdate {
     };
 }
 
+export type DropShadowSettings = {
+    enabled: boolean;
+    distance: number;
+    angleDegrees: number;
+    blurRadius: number;
+    color: ColorUsage;
+};
+
+export interface ShadowSettingsDeltaUpdate {
+    distance?: {
+        value: string;
+    };
+    angleDegrees?: {
+        value: number;
+    };
+    blurRadius?: {
+        value: number;
+    };
+    enabled?: {
+        value: boolean;
+    };
+    color?: {
+        value: ColorUsage;
+    };
+}
+
 export enum AutoGrowDirection {
     top = 'top',
     bottom = 'bottom',
@@ -195,6 +243,7 @@ export enum ImageSourceTypeEnum {
     url = 'url',
     variable = 'variable',
     connector = 'connector',
+    brandKitMedia = 'brandKitMedia',
 }
 
 export enum FrameTypeEnum {
@@ -354,3 +403,46 @@ export type FrameAnchorProperties = {
     target: AnchorTarget;
     endTarget?: AnchorTarget | null;
 };
+
+export type AnchorConfiguration = {
+    allowedTypes: Set<FrameAnchorType>;
+    allowedFrameIds: Set<Id>;
+};
+
+export type FrameConfiguration = {
+    horizontal: AnchorConfiguration;
+    vertical: AnchorConfiguration;
+};
+
+export enum CropType {
+    frameCrop = 'frameCrop',
+    assetCrop = 'assetCrop',
+}
+
+
+export type FrameConstraints = {
+    selectable: PropertyState<boolean>;
+    horizontal: PropertyState<{ allowed: boolean }>;
+    vertical: PropertyState<{ allowed: boolean }>;
+    rotation: PropertyState<{ allowed: boolean }>;
+    resize: PropertyState<{ allowed: boolean }>;
+};
+
+
+export interface FrameConstraintsDeltaUpdate {
+    selectable?: {
+        value: boolean | null;
+    };
+    horizontalMovementAllowed?: {
+        value: boolean | null;
+    };
+    verticalMovementAllowed?: {
+        value: boolean | null;
+    };
+    rotationAllowed?: {
+        value: boolean | null;
+    };
+    resizeAllowed?: {
+        value: boolean | null;
+    };
+}

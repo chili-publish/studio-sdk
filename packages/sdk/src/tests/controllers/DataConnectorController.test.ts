@@ -1,8 +1,8 @@
-import { DataItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
-import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { DataConnectorController } from '../../controllers/DataConnectorController';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
+import { DataPage, PageConfig } from '../../types/DataConnectorTypes';
 import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
 let mockedDataConnectorController: DataConnectorController;
 
@@ -76,7 +76,7 @@ describe('DataConnectorController', () => {
             }),
         });
 
-        const result: EditorResponse<DataPage<DataItem>> = await mockedDataConnectorController.getPage(
+        const result: EditorResponse<DataPage> = await mockedDataConnectorController.getPage(
             connectorId,
             pageConfig,
             context,

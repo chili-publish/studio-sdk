@@ -1,8 +1,12 @@
+import { FrameController } from '../../controllers/FrameController';
+import { BarcodeType } from '../../types/BarcodeTypes';
+import { ColorUsage, ColorUsageType } from '../../types/ColorStyleTypes';
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
     AnchorTargetEdgeType,
     AutoGrowDirection,
     BlendMode,
+    CropType,
     FitMode,
     FitModePosition,
     FrameAnchorProperties,
@@ -14,12 +18,11 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
-import { FrameController } from '../../controllers/FrameController';
+import { GradientType } from '../../types/GradientStyleTypes';
+import { ShapeType } from '../../types/ShapeTypes';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
-import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
-import { ShapeType } from '../../types/ShapeTypes';
-import { BarcodeType } from '../../types/BarcodeTypes';
 
 let id: Id;
 
@@ -41,6 +44,7 @@ const mockedEditorApi: EditorAPI = {
     setFrameWidth: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameX: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameY: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameOpacity: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameRotation: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
     removeFrame: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -74,9 +78,17 @@ const mockedEditorApi: EditorAPI = {
     enterSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applySubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    enterGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    applyGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    cancelGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateFrameShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setAnchorProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    getFrameConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAssetCropOverride: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetAllAssetCropOverrides: async () => getEditorResponseData(castToEditorResponse(null)),
+    updateFrameGradientSettings: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -97,6 +109,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameWidth');
     jest.spyOn(mockedEditorApi, 'setFrameX');
     jest.spyOn(mockedEditorApi, 'setFrameY');
+    jest.spyOn(mockedEditorApi, 'setFrameOpacity');
     jest.spyOn(mockedEditorApi, 'setFrameRotation');
     jest.spyOn(mockedEditorApi, 'setFrameIsVisible');
     jest.spyOn(mockedEditorApi, 'removeFrames');
@@ -129,9 +142,17 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'enterSubjectMode');
     jest.spyOn(mockedEditorApi, 'applySubjectMode');
     jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
+    jest.spyOn(mockedEditorApi, 'enterGradientMode');
+    jest.spyOn(mockedEditorApi, 'applyGradientMode');
+    jest.spyOn(mockedEditorApi, 'cancelGradientMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
+    jest.spyOn(mockedEditorApi, 'updateFrameShadowSettings');
     jest.spyOn(mockedEditorApi, 'setAnchorProperties');
+    jest.spyOn(mockedEditorApi, 'getFrameConfiguration');
+    jest.spyOn(mockedEditorApi, 'resetAssetCropOverride');
+    jest.spyOn(mockedEditorApi, 'resetAllAssetCropOverrides');
+    jest.spyOn(mockedEditorApi, 'updateFrameGradientSettings');
 
     id = mockSelectFrame.id;
 });
@@ -244,6 +265,12 @@ describe('FrameController', () => {
         await mockedFrameController.setHeight(id, '32');
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setFrameHeight).toHaveBeenCalledWith(id, '32');
+    });
+
+    it('Should be possible to set the opacity of a frame', async () => {
+        await mockedFrameController.setOpacity(id, 0.5);
+        expect(mockedEditorApi.setFrameOpacity).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameOpacity).toHaveBeenCalledWith(id, 0.5);
     });
 
     it('Should be possible to set the name of the frame', async () => {
@@ -454,7 +481,7 @@ describe('FrameController', () => {
     it('Should be possible to enter cropping mode on a specific frame', async () => {
         await mockedFrameController.enterCropMode(id);
         expect(mockedEditorApi.enterCropMode).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(id);
+        expect(mockedEditorApi.enterCropMode).toHaveBeenCalledWith(id, CropType.frameCrop);
     });
 
     it('Should be possible to apply the current image crop to the frame', async () => {
@@ -478,9 +505,37 @@ describe('FrameController', () => {
         expect(mockedEditorApi.applySubjectMode).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to cancel the current subject area', async () => {
+    it('Should be possible to exit subject mode without saving the applied subject area', async () => {
         await mockedFrameController.exitSubjectMode();
         expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to enter gradient mode on a specific frame', async () => {
+        await mockedFrameController.enterGradientMode(id);
+        expect(mockedEditorApi.enterGradientMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.enterGradientMode).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to apply the current gradient to the frame', async () => {
+        await mockedFrameController.applyGradientMode();
+        expect(mockedEditorApi.applyGradientMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to cancel gradient mode without saving the applied gradient', async () => {
+        await mockedFrameController.cancelGradientMode();
+        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to reset asset crop override', async () => {
+        await mockedFrameController.resetAssetCropOverride(id);
+        expect(mockedEditorApi.resetAssetCropOverride).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetAssetCropOverride).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to reset all asset crop overrides', async () => {
+        await mockedFrameController.resetAllAssetCropOverrides(id);
+        expect(mockedEditorApi.resetAllAssetCropOverrides).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetAllAssetCropOverrides).toHaveBeenCalledWith(id);
     });
 });
 
@@ -588,6 +643,67 @@ describe('Auto grow updating', () => {
     });
 });
 
+describe('Shadow settings updating', () => {
+    it('should be possible to update the enabled shadow setting', async () => {
+        const enabled = true;
+
+        await mockedFrameController.setShadowEnabled(id, enabled);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ enabled: { value: enabled } }),
+        );
+    });
+
+    it('should be possible to update the distance shadow setting', async () => {
+        const distance = '10';
+
+        await mockedFrameController.setShadowDistance(id, distance);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ distance: { value: distance } }),
+        );
+    });
+
+    it('should be possible to update the angle degrees shadow setting', async () => {
+        const angleDegrees = 45;
+
+        await mockedFrameController.setShadowAngleDegrees(id, angleDegrees);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ angleDegrees: { value: angleDegrees } }),
+        );
+    });
+
+    it('should be possible to update the blur radius shadow setting', async () => {
+        const blurRadius = 5;
+
+        await mockedFrameController.setShadowBlurRadius(id, blurRadius);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(4);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ blurRadius: { value: blurRadius } }),
+        );
+    });
+
+    it('should be possible to update the color shadow setting', async () => {
+        const color: ColorUsage = {
+            id: 'color-id',
+            type: ColorUsageType.brandKit,
+            opacity: 100,
+        };
+
+        await mockedFrameController.setShadowColor(id, color);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledTimes(5);
+        expect(mockedEditorApi.updateFrameShadowSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ color: { value: color } }),
+        );
+    });
+});
+
 describe('Anchoring', () => {
     it('should be possible to set the vertical anchor settings', async () => {
         const anchorType = FrameAnchorType.startAndEnd;
@@ -625,5 +741,51 @@ describe('Anchoring', () => {
         await mockedFrameController.resetAnchoring(id);
         expect(mockedEditorApi.resetFrameTransformation).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetFrameTransformation).toHaveBeenLastCalledWith(id);
+    });
+
+    it('should be possible to reset a frame visibility', async () => {
+        await mockedFrameController.resetVisibility(id);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameIsVisible).toHaveBeenLastCalledWith(id, null);
+    });
+
+    it('should be possible to get frame configuration', async () => {
+        await mockedFrameController.getConfiguration(id);
+        expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getFrameConfiguration).toHaveBeenCalledWith(id);
+    });
+
+    it('should be possible to enable/disable gradients on a frame', async () => {
+        const enabled = true;
+        await mockedFrameController.setGradientApplied(id, enabled);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ isApplied: enabled }),
+        );
+    });
+
+    it('should be possible to set the gradient to a brand kit gradient', async () => {
+        const gradientId = 'gradient-id';
+        await mockedFrameController.setBrandKitGradient(id, gradientId);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ id: gradientId }),
+        );
+    });
+
+    it('should be possible to set the gradient to a local gradient', async () => {
+        const gradient = {
+            stops: [],
+            colors: [],
+            type: GradientType.linear,
+        };
+        await mockedFrameController.setLocalGradient(id, gradient);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ gradient: gradient }),
+        );
     });
 });

@@ -1,8 +1,13 @@
-// Re-export everything from types directory
-export * from './types/ConnectorTypes';
-export * from './types/VariableTypes';
-export * from './types/NextSubscribers';
-export * from './types/PageTypes';
+export { ConnectorRegistrationSource } from './types/ConnectorTypes';
+export type {
+    ConnectorGrafxRegistration,
+    ConnectorInstance,
+    ConnectorLocalRegistration,
+    ConnectorUrlRegistration,
+} from './types/ConnectorTypes';
+export type { NextSubscribers } from './types/NextSubscribers';
+export type { ListVariable } from './types/VariableTypes';
+export type { PageSize } from './types/PageTypes';
 
 // Re-export individual controller files
 export * from './controllers/PageController';

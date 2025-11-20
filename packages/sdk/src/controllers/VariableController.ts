@@ -1,5 +1,6 @@
 import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
+import { Dictionary } from '@chili-studio/connector-types';
 import {
     DateRestriction,
     DateVariablePropertiesDeltaUpdate,
@@ -418,6 +419,9 @@ export class VariableController {
      * If the value is some text to be set on a ShortTextVariable, it must not
      * contain any type of line breaks.
      *
+     * If the value is passing a context on an image variable value, it will be
+     * available from the connector.
+     *
      * @param id the id of the variable
      * @param value the new value of the variable
      * @returns
@@ -545,6 +549,19 @@ export class VariableController {
     };
 
     /**
+     * This method sets removeParagraphIfEmpty flag for a variable
+     * @param id The id of the variable to update
+     * @param removeParagraphIfEmpty Set to true to remove the paragraph if it is empty, or false to keep it
+     * @returns
+     */
+    setRemoveParagraphIfEmpty = async (id: string, removeParagraphIfEmpty: boolean) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariableRemoveParagraphIfEmpty(id, removeParagraphIfEmpty)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method sets isReadonly flag for a variable
      * @returns
      */
@@ -579,6 +596,20 @@ export class VariableController {
         return res
             .setImageVariableConnector(id, JSON.stringify(connectorRegistration))
             .then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * This method sets the value of an image variable along with its context in a single atomic operation
+     * @param id the id of the image variable to update
+     * @param value the new value of the image variable
+     * @param context the context dictionary
+     * @returns
+     */
+    setImageVariableValueWithContext = async (id: string, value: string | null, context: Dictionary) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageVariableValueWithContext(id, value, JSON.stringify(context))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -656,6 +687,53 @@ export class VariableController {
     getPrivateData = async (id: string) => {
         const res = await this.#editorAPI;
         return res.getVariablePrivateData(id).then((result) => getEditorResponseData<PrivateData>(result));
+    };
+
+    /**
+     * This method sets the allowQuery flag for an image variable
+     * @param id the id of the variable
+     * @param allowQuery the allowQuery flag
+     * @returns
+     */
+    setAllowImageQuery = async (id: string, allowQuery: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowQuery(id, allowQuery).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the allowUpload flag for an image variable
+     * @param id the id of the variable
+     * @param allowUpload the allowUpload flag
+     * @returns
+     */
+    setAllowImageUpload = async (id: string, allowUpload: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setImageVariableAllowUpload(id, allowUpload).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets the minimum size (both width and height) for an image variable that will be uploaded
+     * @param id the id of the variable
+     * @param minWidth the minimum width
+     * @param minHeight the minimum height
+     * @returns
+     */
+    setMinImageUploadSize = async (id: string, minWidth: string | null, minHeight: string | null) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageVariableUploadMinSize(id, minWidth, minHeight)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the "don't break" flag for a short text variable. When set to true, the variable will not be split across lines.
+     * @param id the id of the variable
+     * @param isDontBreak the value of the "don't break" flag
+     * @returns
+     */
+    setIsDontBreak = async (id: string, isDontBreak: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setVariableIsDontBreak(id, isDontBreak).then((result) => getEditorResponseData<null>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {

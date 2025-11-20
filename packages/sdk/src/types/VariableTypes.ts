@@ -1,3 +1,4 @@
+import { Dictionary } from '@chili-studio/connector-types';
 import { PrivateData } from './CommonTypes';
 
 export interface ConnectorImageVariableSource {
@@ -11,6 +12,11 @@ export interface ConnectorImageVariableSource {
      * the actual resolved media Id.
      */
     resolved?: ResolvedMedia;
+
+    /**
+     * The context of the variable that will be passed to the connector
+     */
+    context: Dictionary;
 }
 
 /**
@@ -53,6 +59,10 @@ export interface Variable {
 
 export interface ImageVariable extends Variable {
     value?: ConnectorImageVariableSource;
+    allowQuery: boolean;
+    allowUpload: boolean;
+    uploadMinHeight?: number | null;
+    uploadMinWidth?: number | null;
 }
 
 export interface ListVariableItem {
@@ -73,8 +83,10 @@ export interface BooleanVariable extends Variable {
 
 export interface ShortTextVariable extends Variable {
     value: string;
+    removeParagraphIfEmpty: boolean;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
+    isDontBreak: boolean;
 }
 
 export interface NumberVariable extends Variable {
@@ -93,6 +105,7 @@ export interface NumberVariable extends Variable {
 
 export interface DateVariable extends Variable {
     value?: string;
+    removeParagraphIfEmpty: boolean;
     displayFormat: string;
     startDate?: DateRestriction;
     endDate?: DateRestriction;

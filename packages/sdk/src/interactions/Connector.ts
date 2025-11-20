@@ -1,20 +1,8 @@
 import { Id } from '../types/CommonTypes';
 import { StudioStyling } from '../types/ConfigurationTypes';
+import { PenpalConnectionProvider } from './PenpalConnectionProvider';
 import { WebSocketNodeConnectionProvider } from './WebSocketNodeConnectionProvider';
 import { StudioConnection } from './base/StudioConnection';
-import { PenpalConnectionProvider } from './PenpalConnectionProvider';
-
-const Connect = (
-    editorLink: string,
-    params: ConfigParameterTypes,
-    setConnection: (connection: StudioConnection) => void,
-    editorId = 'chili-editor',
-    styling?: StudioStyling,
-) => {
-    const isBrowser = typeof window !== 'undefined';
-    const connectionProvider = isBrowser ? new PenpalConnectionProvider() : new WebSocketNodeConnectionProvider();
-    connectionProvider.createConnection(editorLink, params, setConnection, editorId, styling);
-};
 
 export interface ConfigParameterTypes {
     onActionsChanged: (state: string) => void;
@@ -24,8 +12,12 @@ export interface ConfigParameterTypes {
     onDocumentLoaded: () => void;
     onSelectedFramesContentChanged: (state: string) => void;
     onSelectedFramesLayoutChanged: (state: string) => void;
+    onFramesLayoutChanged: (state: string) => void;
     onSelectedLayoutPropertiesChanged: (state: string) => void;
     onSelectedLayoutUnitChanged: (state: string) => void;
+    /**
+     * @deprecated use `onSelectedPageIdChanged` instead
+     */
     onPageSelectionChanged: (id: Id) => void;
     onScrubberPositionChanged: (state: string) => void;
     onFrameAnimationsChanged: (state: string) => void;
@@ -45,7 +37,7 @@ export interface ConfigParameterTypes {
     onZoomChanged: (scaleFactor: string) => void;
     onSelectedPageIdChanged: (pageId: string) => void;
     onPagesChanged: (pages: string) => void;
-    onPageSnapshotInvalidated: (pageId: string) => void;
+    onPageSnapshotInvalidated: (pageId: Id) => void;
     onPageSizeChanged: (scaleFactor: string) => void;
     onShapeCornerRadiusChanged: (cornerRadius: string) => void;
     onCropActiveFrameIdChanged: (id?: Id) => void;
@@ -56,6 +48,18 @@ export interface ConfigParameterTypes {
     onDocumentIssueListChanged: (documentIssues: string) => void;
     onCustomUndoDataChanged: (customData: string) => void;
     onEngineEditModeChanged: (engineEditMode: string) => void;
+    onBrandKitMediaChanged: (brandKitMedia: string) => void;
 }
 
+const Connect = (
+    editorLink: string,
+    params: ConfigParameterTypes,
+    setConnection: (connection: StudioConnection) => void,
+    editorId = 'chili-editor',
+    styling?: StudioStyling,
+) => {
+    const isBrowser = typeof window !== 'undefined';
+    const connectionProvider = isBrowser ? new PenpalConnectionProvider() : new WebSocketNodeConnectionProvider();
+    connectionProvider.createConnection(editorLink, params, setConnection, editorId, styling);
+};
 export default Connect;

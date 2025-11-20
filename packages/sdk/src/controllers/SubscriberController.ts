@@ -1,4 +1,4 @@
-import { Id, RuntimeConfigType } from '../types/CommonTypes';
+import { ActionAsyncError, DataRowAsyncError, Id, RuntimeConfigType } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import { MeasurementUnit } from '../types/LayoutTypes';
 import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
@@ -72,6 +72,15 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on the state of all frames, if this changes, this listener will get triggered with the updates
+     * @param framesLayout Stringified array of FrameLayoutType objects
+     */
+    onFramesLayoutChanged = (framesLayout: string) => {
+        const frames = JSON.parse(framesLayout);
+        this.config.events.onFramesLayoutChanged.trigger(frames);
+    };
+
+    /**
      * Listener on the state of the currently selected frames, if this changes, this listener will get triggered with the updates
      * @param framesLayout Stringified array of FrameLayoutType objects
      */
@@ -140,6 +149,7 @@ export class SubscriberController {
     };
 
     /**
+     * @deprecated use `onSelectedPageIdChanged` instead
      * To be implemented, gets triggered when clicking on the pageTitle on the canvas.
      */
     onPageSelectionChanged = (id: Id) => {
@@ -317,10 +327,10 @@ export class SubscriberController {
     /**
      * @experimental
      * Listener on pages snapshots, this will fire when a page snapshot is invalidated and should be updated.
-     * @param page id of the page
+     * @param pageId id of the page
      */
-    onPageSnapshotInvalidated = (page: Id) => {
-        this.config.events.onPageSnapshotInvalidated.trigger(JSON.parse(page));
+    onPageSnapshotInvalidated = (pageId: Id) => {
+        this.config.events.onPageSnapshotInvalidated.trigger(pageId);
     };
     /**
      * Listener on page size, this listener will get triggered when the page size is changed, while the document is a `project`.
@@ -360,7 +370,28 @@ export class SubscriberController {
      * @param asyncError error triggered asynchronously
      */
     onAsyncError = (asyncError: string) => {
-        this.config.events.onAsyncError.trigger(JSON.parse(asyncError));
+        const parsedError = JSON.parse(asyncError);
+
+        if (parsedError?.type === 'dataRow') {
+            const dataRowException = new DataRowAsyncError(
+                parsedError.count,
+                parsedError.message,
+                parsedError.exceptions,
+            );
+
+            this.config.events.onAsyncError.trigger(dataRowException);
+        } else if (parsedError?.type === 'action') {
+            const actionException = new ActionAsyncError(
+                parsedError.message,
+                parsedError.id,
+                parsedError.event,
+                parsedError.eventChain,
+            );
+
+            this.config.events.onAsyncError.trigger(actionException);
+        } else {
+            this.config.events.onAsyncError.trigger(parsedError);
+        }
     };
 
     /**
@@ -403,5 +434,13 @@ export class SubscriberController {
      */
     onEngineEditModeChanged = (engineEditMode: string) => {
         this.config.events.onEngineEditModeChanged.trigger(JSON.parse(engineEditMode));
+    };
+
+    /**
+     * Listener on brand kit media, if this changes, this listener will get triggered with the updates
+     * @param brandKitMedia Stringified array of BrandKitMedia objects
+     */
+    onBrandKitMediaChanged = (brandKitMedia: string) => {
+        this.config.events.onBrandKitMediaChanged.trigger(JSON.parse(brandKitMedia));
     };
 }

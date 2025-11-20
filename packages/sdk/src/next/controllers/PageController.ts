@@ -27,7 +27,7 @@ export class PageController {
     /**
      * This method will set the width of all pages to a specific value.
      * This only works if the document is a project.
-     * @param width the string value that will be calculated (f.e. 1+1 will result in 2) The notation is in pixels
+     * @param width the string value that will be calculated (f.e. 1+1 will result in 2)  The default unit is in the current layout unit (e.g. px, mm, in)
      * @returns
      */
     setWidth = async (width: string) => {
@@ -38,7 +38,7 @@ export class PageController {
     /**
      * This method will set the height of all pages to a specific value.
      * This only works if the document is a project.
-     * @param height the string value that will be calculated (f.e. 1+1 will result in 2). The notation is in pixels
+     * @param height the string value that will be calculated (f.e. 1+1 will result in 2).  The default unit is in the current layout unit (e.g. px, mm, in)
      * @returns
      */
     setHeight = async (height: string) => {

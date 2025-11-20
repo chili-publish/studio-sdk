@@ -15,8 +15,11 @@ lib-esm/
 dist/
 coverage/
 docs/
-packages/sdk/next
-packages/sdk/types
+packages/sdk/connector-types/
+
+# Environment config files
+.env
+.env.*
 
 examples/**/package-lock.json
 _bundles/

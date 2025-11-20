@@ -1,12 +1,6 @@
-import { Id } from './CommonTypes';
+import { Media as GenericMedia, MediaDetail as GenericMediaDetail } from '@chili-studio/connector-types';
 import { MediaType } from './ConnectorTypes';
-
-export type MediaConnectorCapabilities = {
-    query: boolean;
-    detail: boolean;
-    filtering: boolean;
-    metadata?: boolean;
-};
+export type { MediaConnectorCapabilities } from '@chili-studio/connector-types';
 
 export enum MediaDownloadType {
     thumbnail = 'thumbnail',
@@ -17,20 +11,9 @@ export enum MediaDownloadType {
 
 export enum MediaDownloadIntent {
     web = 'web',
+    print = 'print',
+    animation = 'animation',
 }
 
-export type Media = {
-    id: Id;
-    name: string;
-    relativePath: string;
-    type: MediaType;
-    extension: string | null;
-    metaData: {
-        [key: string]: string;
-    };
-};
-
-export interface MediaDetail extends Media {
-    width?: number;
-    height?: number;
-}
+export type Media = GenericMedia<MediaType>;
+export type MediaDetail = GenericMediaDetail<MediaType>;

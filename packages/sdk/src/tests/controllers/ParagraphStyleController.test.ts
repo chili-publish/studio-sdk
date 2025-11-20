@@ -35,6 +35,9 @@ afterAll(() => {
 });
 
 const updateParagraphStyle: ParagraphStyleUpdate = {
+    fontKey: {
+        value: 'fontKey',
+    },
     fontSize: {
         value: 15.0,
     },
@@ -86,6 +89,28 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
             isApplied: true,
             type: ColorUsageType.local,
         },
+    },
+    strokeColor: {
+        value: {
+            color: {
+                type: ColorType.rgb,
+                r: 255,
+                g: 0,
+                b: 0,
+            },
+            opacity: 0.5,
+            isApplied: true,
+            type: ColorUsageType.local,
+        },
+    },
+    fillColorApplied: {
+        value: true,
+    },
+    strokeColorApplied: {
+        value: true,
+    },
+    strokeWidth: {
+        value: '0',
     },
     underline: {
         value: true,

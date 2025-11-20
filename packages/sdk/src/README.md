@@ -10,11 +10,23 @@ The 'Next' section of the SDK provides a glimpse of what’s to come. We’ll in
 
 By doing this, we can introduce breaking changes without disrupting your integration when you update. Our goal is to maintain stability for the major version while still allowing flexibility for innovation. When a major update occurs, the functions and additions from this section will be moved to the main part of the SDK.
 
-If you’re using the next controller, consider importing the typings from the next types as well. These (breaking) typings are accessible in your application by referencing @chili-publish/studio-sdk/lib/src/next, for example:
+### Imports
+
+**Deprecated:** If you’re using the next controller, consider importing the typings from the next types as well. These (breaking) typings are accessible in your application by referencing @chili-publish/studio-sdk/lib/src/next, for example:
 
 ```ts
 import type { ListVariable } from '@chili-publish/studio-sdk/lib/src/next';
 ```
+
+NOTE: the above import method is deprecated and will be removed in next major release. Consider using root import with the `Next` namespace instead
+
+```ts
+import type { Next } '@chili-publish/studio-sdk';
+
+const variable: Next.ListVariable = {...}
+```
+
+### Event stream
 
 In addition, `Next` version of event stream is available when specifying `enableNextSubscribers`
 
@@ -27,11 +39,6 @@ const sdk = new StudioSDK({
     },
 });
 ```
-
-## The document
-
-We have made an effort to type the document that is used by the editor-engine as ChiliDocument.
-You can find the entire definition [on this page](interfaces/types_DocumentTypes.ChiliDocument.md).
 
 ## Enums, Types, Interfaces and general Methods
 

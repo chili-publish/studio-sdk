@@ -1,7 +1,14 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, MetaData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
-import { DeprecatedMediaType, MediaType, QueryOptions, QueryPage } from '../types/ConnectorTypes';
+import { EditorAPI, EditorRawAPI, EditorResponse } from '../types/CommonTypes';
+import {
+    ConnectorConfigOptions,
+    DeprecatedMediaType,
+    MediaType,
+    MetaData,
+    QueryOptions,
+    QueryPage,
+} from '../types/ConnectorTypes';
 import { FontConnectorCapabilities, FontFamily, FontPreviewFormat, FontStyle } from '../types/FontConnectorTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The FontConnectorController is responsible for all communication regarding Font connectors.
@@ -21,14 +28,14 @@ export class FontConnectorController {
      * @ignore
      */
     #editorAPI: Promise<EditorAPI>;
-    #blobAPI: EditorRawAPI;
+    #blobAPI: Promise<EditorRawAPI>;
 
     /**
      * @ignore
      */
     constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as unknown as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as Promise<EditorRawAPI>;
     }
 
     /**

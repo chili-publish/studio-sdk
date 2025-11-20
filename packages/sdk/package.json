@@ -1,6 +1,7 @@
 {
     "name": "@chili-publish/studio-sdk",
-    "version": "1.21.1-rc.4",
+    "private": false,
+    "version": "1.34.0-alpha.3",
     "description": "The sdk for the chili editor",
     "repository": {
         "type": "git",
@@ -20,12 +21,10 @@
         "@babel/runtime": "^7.14.8",
         "@inthepocket/npm-license-scraper": "^2.3.0",
         "@testing-library/jest-dom": "^5.14.1",
+        "@types/jest": "^29.5.0",
         "@types/ws": "^8.18.0",
         "@typescript-eslint/eslint-plugin": "^5.36.0",
         "@typescript-eslint/parser": "^5.36.0",
-        "babel-loader": "^8.2.2",
-        "babel-preset-env": "^1.7.0",
-        "clean-webpack-plugin": "^4.0.0-alpha.0",
         "eslint": "^7.31.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "^2.23.4",
@@ -37,27 +36,20 @@
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1",
         "shx": "^0.3.3",
-        "terser-webpack-plugin": "^5.2.4",
         "ts-jest": "^29.2.5",
-        "ts-loader": "^9.3.1",
-        "typedoc": "^0.23.10",
+        "typedoc": "^0.27.9",
         "typedoc-plugin-markdown": "^3.13.4",
         "typescript": "^5.7.3",
-        "webpack": "^5.46.0",
-        "webpack-bundle-analyzer": "^4.5.0",
-        "webpack-cli": "^4.7.2",
-        "webpack-dev-server": "^3.11.2"
+        "vite": "^5.0.0",
+        "vite-plugin-dts": "^4.5.3"
     },
     "engines": {
         "node": ">=18.0.0"
     },
     "scripts": {
-        "clean": "shx rm -rf dist",
-        "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
-        "build:node": "tsc --module commonjs --target es6 --outDir dist/cjs && tsc --module esnext --target es6 --outDir dist/esm",
-        "build:bundle": "webpack --mode production",
-        "build": "yarn run clean && yarn run build:types && yarn run build:node && yarn run build:bundle",
-        "prepack": "yarn run build",
+        "clean": "shx rm -rf _bundles lib",
+        "build": "yarn clean && vite build && tsc && node scripts/postbuild.js",
+        "build:dev": "yarn clean && vite build --mode development && tsc && node scripts/postbuild.js",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
         "test": "jest",
@@ -67,35 +59,31 @@
         "cover": "jest --coverage",
         "make-badges": "node createCoverageBadge",
         "validate-licenses": "node validate_licenses.js",
-        "build-docs-md": "npx typedoc --hideBreadcrumbs --out ./docs/md",
-        "build-docs-html": "npx typedoc --out ./docs/html --plugin none --readme ./src/README_HTML.md"
+        "build-docs-md": "npx typedoc --out ./docs/md",
+        "build-docs-html": "npx typedoc --out ./docs/html --readme ./src/README_HTML.md"
     },
-    "exports": {
-      ".": {
-        "node": "./dist/cjs/src/index.js",
-        "types": "./dist/types/src/index.d.ts",
-        "import": "./dist/esm/src/index.js",
-        "require": "./dist/cjs/src/index.js",
-        "browser": "./dist/browser/studio-sdk.min.js",
-        "default": "./dist/cjs/src/index.js"
-      }
-    },
-    "sideEffects": false,
     "husky": {
         "hooks": {
             "pre-commit": "npm run format-staged"
         }
     },
-    "main": "dist/cjs/src/index.js",
-    "module": "dist/esm/src/index.js",
-    "types": "dist/types/src/index.d.ts",
-    "browser": "dist/browser/studio-sdk.min.js",
+    "main": "./_bundles/main.js",
+    "module": "./_bundles/main.es.js",
+    "browser": "./_bundles/main.js",
+    "types": "./lib/src/index.d.ts",
     "files": [
-      "dist"
+        "lib/",
+        "connector-types/",
+        "_bundles/",
+        "README.md"
     ],
     "bugs": {
         "url": "https://github.com/chili-publish/studio-sdk/issues"
     },
     "homepage": "https://github.com/chili-publish/studio-sdk#readme",
-    "author": "chili-publish"
+    "author": "chili-publish",
+    "directories": {
+        "doc": "docs",
+        "lib": "lib"
+    }
 }

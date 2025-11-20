@@ -31,6 +31,10 @@ export enum DownloadFormats {
     PNG = 'png',
     JPG = 'jpg',
     PDF = 'pdf',
+    /**
+     * @experimental This download format is experimental.
+     */
+    HTML = 'html'
 }
 
 export enum EnvironmentType {

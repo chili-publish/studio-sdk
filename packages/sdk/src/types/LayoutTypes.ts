@@ -3,10 +3,20 @@ import { Id, PrivateData, PropertyState } from './CommonTypes';
 
 export type LayoutPropertiesType = {
     id: Id;
-    width: { value: number; isOverride: boolean };
-    height: { value: number; isOverride: boolean };
-    timelineLengthMs: { value: number; isOverride: boolean };
-    [key: string]: number | string | Record<string, unknown>;
+    name: string;
+    displayName: string | null;
+    width: PropertyState<number>;
+    height: PropertyState<number>;
+    animated: PropertyState<boolean>;
+    intent: PropertyState<LayoutIntent>;
+    unit: PropertyState<MeasurementUnit>;
+    fillColor: PropertyState<ColorUsage>;
+    fillColorEnabled: PropertyState<boolean>;
+    bleed: PropertyState<LayoutBleed | undefined>;
+    availableForUser: boolean;
+    selectedByUser: boolean;
+    timelineLengthMs: PropertyState<number | undefined>;
+    resizableByUser: ResizableLayoutProperties;
 } | null;
 
 export type FrameProperties = {
@@ -45,6 +55,8 @@ export type Layout = {
     parentId?: Id;
     width: PropertyState<number>;
     height: PropertyState<number>;
+    layoutWidth: PropertyState<number>;
+    layoutHeight: PropertyState<number>;
     childLayouts: Id[];
     timelineLengthMs: PropertyState<number>;
     unit: PropertyState<MeasurementUnit>;
@@ -123,11 +135,29 @@ export enum LayoutIntent {
 
 export type ResizableLayoutProperties = {
     enabled: boolean;
-    minWidth: number | null;
-    maxWidth: number | null;
-    minHeight: number | null;
-    maxHeight: number | null;
+    minWidth?: number | null;
+    maxWidth?: number | null;
+    minHeight?: number | null;
+    maxHeight?: number | null;
+    constraintMode?: ConstraintMode | null;
+    aspectRange?: LayoutAspectRange | null;
 };
+
+export type LayoutAspect = {
+    horizontal: number;
+    vertical: number;
+};
+
+export type LayoutAspectRange = {
+    min: LayoutAspect;
+    max: LayoutAspect;
+};
+
+export enum ConstraintMode {
+    locked = 'locked',
+    range = 'range',
+    none = 'none',
+}
 
 export type ResizableLayoutPropertiesUpdate = {
     enabled?: {
@@ -145,4 +175,20 @@ export type ResizableLayoutPropertiesUpdate = {
     maxHeight?: {
         value: string | null;
     } | null;
+    constraintMode?: {
+        value: ConstraintMode | null;
+    } | null;
+    aspectRange?: {
+        value: LayoutAspectRange | null;
+    } | null;
+};
+
+export type SelectLayoutOptions = {
+    pageSize?: LayoutOptionPageSize;
+};
+
+export type LayoutOptionPageSize = {
+    width: number;
+    height: number;
+    unit: MeasurementUnit;
 };

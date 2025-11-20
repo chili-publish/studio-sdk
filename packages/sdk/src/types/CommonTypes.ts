@@ -9,6 +9,7 @@ import { DocumentColor } from './ColorStyleTypes';
 import { StudioOptionsDeltaUpdate, StudioStyling } from './ConfigurationTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent } from './ConnectorTypes';
 import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
+import { EngineEditMode } from './EngineEditModeTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
 import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
@@ -18,7 +19,7 @@ import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
-import { EngineEditMode } from './EngineEditModeTypes';
+import { BrandKitMedia } from './BrandKitTypes';
 
 export type Id = string;
 export type BaseConfigType = {
@@ -28,6 +29,11 @@ export type BaseConfigType = {
     documentType?: DocumentType;
     studioStyling?: StudioStyling;
     studioOptions?: StudioOptionsDeltaUpdate;
+    /**
+     * Whether the engine should cache query calls.
+     * When enabled it will cache the query calls regardless of the cache control headers.
+     */
+    enableQueryCallCache?: boolean;
     enableNextSubscribers?: {
         onVariableListChanged: boolean;
     };
@@ -81,6 +87,7 @@ export type ManagedCallbacksConfigType = {
         onStateChanged: EngineEvent<() => MaybePromise<void>>;
         onDocumentLoaded: EngineEvent<() => MaybePromise<void>>;
         onSelectedFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
+        onFramesLayoutChanged: EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>;
         onSelectedFramesContentChanged: EngineEvent<(state: Frame[]) => MaybePromise<void>>;
         onPageSelectionChanged: EngineEvent<(id: Id) => MaybePromise<void>>;
         onSelectedLayoutPropertiesChanged: EngineEvent<(state: LayoutPropertiesType) => MaybePromise<void>>;
@@ -116,6 +123,7 @@ export type ManagedCallbacksConfigType = {
         onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
         onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
+        onBrandKitMediaChanged: EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>;
     };
 };
 
@@ -157,6 +165,11 @@ export type InitialCallbacksConfigType = {
     onSelectedFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
 
     /**
+     * @deprecated use `events.onFramesLayoutChanged` instead
+     */
+    onFramesLayoutChanged?: (states: FrameLayoutType[]) => void;
+
+    /**
      * @deprecated use `onSelectedFramesContentChanged` instead
      */
     onSelectedFrameContentChanged?: (state: Frame | null) => void;
@@ -167,7 +180,7 @@ export type InitialCallbacksConfigType = {
     onSelectedFramesContentChanged?: (state: Frame[]) => void;
 
     /**
-     * @deprecated use `events.onPageSelectionChanged` instead
+     * @deprecated use `onSelectedPageIdChanged` instead
      */
     onPageSelectionChanged?: (id: Id) => void;
 
@@ -277,7 +290,7 @@ export type InitialCallbacksConfigType = {
      *
      * @deprecated use `events.onPageSnapshotInvalidated` instead
      */
-    onPageSnapshotInvalidated?: (page: Id) => void;
+    onPageSnapshotInvalidated?: (pageId: Id) => void;
 
     /**
      * @deprecated use `events.onPageSizeChanged` instead
@@ -328,6 +341,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onEngineEditModeChanged` instead
      */
     onEngineEditModeChanged?: (engineEditMode: EngineEditMode) => void;
+
+    /**
+     * @deprecated use `events.onBrandKitMediaChanged` instead
+     */
+    onBrandKitMediaChanged?: (brandKitMedia: BrandKitMedia[]) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;
@@ -383,43 +401,62 @@ export interface SelectedLayoutFrame {
     type: FrameTypeEnum;
     isVisible: boolean;
 }
-
-export interface MetaData {
-    [key: string]: string | boolean;
-}
-
-export interface ConnectorOptions {
-    [key: string]: string | boolean;
-}
-
-export enum ConnectorConfigValueType {
-    text = 'text',
-    boolean = 'boolean',
-}
-
-export interface ConnectorConfigValue {
-    readonly name: string;
-    readonly displayName: string;
-    readonly type: ConnectorConfigValueType;
-}
-
-export type ConnectorConfigOptions = ConnectorConfigValue[];
-
 export interface ActionEventErrorData {
     event: ActionEditorEvent;
     actionIds: Id[];
 }
 
 interface AsyncErrorBase {
+    type: AsyncErrorType;
     message: string;
 }
 
-export interface ActionAsyncError extends AsyncErrorBase {
+export class ActionAsyncError implements AsyncErrorBase {
+    type: AsyncErrorType;
     id?: string;
     event?: ActionEditorEvent;
     eventChain?: ActionEventErrorData[];
+    message: string;
+
+    constructor(message: string, id?: string, event?: ActionEditorEvent, eventChain?: ActionEventErrorData[]) {
+        this.type = AsyncErrorType.action;
+        this.message = message;
+        this.id = id;
+        this.event = event;
+        this.eventChain = eventChain;
+    }
 }
 
-export type AsyncError = ActionAsyncError;
+export class DataRowAsyncError implements AsyncErrorBase {
+    type: AsyncErrorType;
+    count: number;
+    exceptions: EditorExceptionDto[];
+    message: string;
+
+    constructor(count: number, message: string, exceptions: EditorExceptionDto[]) {
+        this.type = AsyncErrorType.dataRow;
+        this.count = count;
+        this.message = message;
+        this.exceptions = exceptions;
+    }
+}
+
+export enum AsyncErrorType {
+    action = 'action',
+    dataRow = 'dataRow',
+}
+
+export interface ExceptionContext {
+    variableId?: Id;
+}
+
+export interface EditorExceptionDto {
+    type: string;
+    code: number;
+    message: string;
+    context?: ExceptionContext;
+}
+
+export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;

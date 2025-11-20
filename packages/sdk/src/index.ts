@@ -16,6 +16,7 @@ export {
     AutoGrowDirection,
     BarcodeSourceTypeEnum,
     BlendMode,
+    CropType,
     FitMode,
     FitModePosition,
     FlowDirection,
@@ -26,8 +27,8 @@ export {
     UpdateZIndexMethod,
     VerticalAlign,
 } from './types/FrameTypes';
-export { LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
-export type { ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
+export { ConstraintMode, LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
+export type { LayoutAspect, ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
 
 export { DocumentIssueTypeEnum, DocumentType } from './types/DocumentTypes';
 
@@ -37,6 +38,7 @@ export { FrameAnchorTarget, PageAnchorTarget } from './types/FrameTypes';
 export type {
     AnchorTarget,
     AutoGrowSettings,
+    DropShadowSettings,
     BarcodeFrame,
     BarcodeSource,
     BarcodeTextSource,
@@ -45,6 +47,7 @@ export type {
     EndFrameAnchor,
     Frame,
     FrameAnchor,
+    FrameConstraints,
     FrameLayoutType,
     FrameType,
     ImageFrame,
@@ -70,9 +73,9 @@ export {
     Day,
     Locale,
     VariableType,
+    VariableVisibilityOperator,
     VariableVisibilityTargetType,
     VariableVisibilityType,
-    VariableVisibilityOperator,
 } from './types/VariableTypes';
 
 export type {
@@ -107,18 +110,15 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
-export { ConnectorConfigValueType } from './types/CommonTypes';
+export { ActionAsyncError, DataRowAsyncError } from './types/CommonTypes';
 export type {
     ConfigType,
-    ConnectorConfigOptions,
-    ConnectorConfigValue,
     EditorResponse,
     Id,
     InitialStateType,
-    MetaData,
     PageType,
-    SelectedLayoutFrame,
     PrivateData,
+    SelectedLayoutFrame,
 } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
@@ -143,6 +143,8 @@ export type {
 export type { CharacterStyle, CharacterStyleUpdate } from './types/CharacterStyleTypes';
 export { ColorUsageType } from './types/ColorStyleTypes';
 export type { ColorUsage, ColorUsageUpdate } from './types/ColorStyleTypes';
+export { GradientUsageType } from './types/GradientStyleTypes';
+export type { DocumentGradient, GradientDefinition, GradientUpdate } from './types/GradientStyleTypes';
 export type { ParagraphStyle, ParagraphStyleUpdate } from './types/ParagraphStyleTypes';
 
 export type {
@@ -150,12 +152,14 @@ export type {
     AddDocumentFontStyle,
     DocumentFontFamily,
     DocumentFontStyle,
+    CharacterPreview,
 } from './types/FontTypes';
 
 export { ColorType } from './types/ColorStyleTypes';
 export * from './types/ConnectorTypes';
 export * from './types/DataConnectorTypes';
 export * from './types/FontConnectorTypes';
+export { GradientType } from './types/GradientStyleTypes';
 export * from './types/MediaConnectorTypes';
 export {
     Alignment,
@@ -165,9 +169,29 @@ export {
     SelectedTextStyles,
     SelectedTextStyleSections,
     TextPosition,
+    MarkedListType,
 } from './types/TextStyleTypes';
 
 export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
+
+export type {
+    APIBrandKit,
+    APIBrandKitMedia,
+    BrandKitCharacterStyle,
+    BrandKitColor,
+    BrandKitFont,
+    BrandKitMedia,
+    BrandKitParagraphStyle,
+    CMYK,
+    CMYKColorValue,
+    HEXColorValue,
+    RGB,
+    RGBColorValue,
+    SpotCMYKColorValue,
+    SpotHEXColorValue,
+    SpotRGBColorValue,
+    StudioBrandKit,
+} from './types/BrandKitTypes';
 
 export * from './types/ActionTypes';
 
@@ -181,6 +205,6 @@ export * from './types/PageTypes';
 
 export * from './types/EngineEditModeTypes';
 
-export * as Next from './next';
-
 export default SDK;
+
+export * as Next from './next';

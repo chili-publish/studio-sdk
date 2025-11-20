@@ -1,30 +1,40 @@
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
 import { DeprecatedMediaConnectorDownloadType, SortBy, SortOrder } from '../../types/ConnectorTypes';
 import { MediaDownloadIntent, MediaDownloadType } from '../../types/MediaConnectorTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
 
 let mockedMediaConnectorController: MediaConnectorController;
+
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
 
 const mockedEditorApi: EditorAPI = {
     mediaConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorDownload: async () => getEditorResponseData(castToEditorResponse(null)),
+    mediaConnectorDownload: async () => new Uint8Array() as unknown as EditorResponse<any>,
     mediaConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    mediaConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
+const mockedLocalConfig = new Map<string, string>();
 beforeEach(() => {
+    mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
+    mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
     mockedMediaConnectorController = new MediaConnectorController(Promise.resolve(mockedEditorApi));
-    jest.spyOn(mockedEditorApi, 'mediaConnectorQuery');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDetail');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDownload');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetConfigurationOptions');
+    jest.spyOn(mockedEditorApi, 'mediaConnectorQuery');
+    jest.spyOn(mockedEditorApi, 'mediaConnectorUpload');
 });
 
 afterEach(() => {
     jest.restoreAllMocks();
+    mockFetch.mockClear();
 });
 describe('MediaConnectorController', () => {
     const connectorId = 'dam';
@@ -90,6 +100,25 @@ describe('MediaConnectorController', () => {
             JSON.stringify(context),
         );
     });
+    it('Should throw a structured error if the download method returns a non-success response', async () => {
+        (mockedEditorApi.mediaConnectorDownload as jest.Mock).mockResolvedValueOnce({
+            success: false,
+            status: 500,
+            error: 'Error',
+            data: JSON.stringify({}),
+            parsedData: null,
+        });
+        await expect(
+            mockedMediaConnectorController.download(connectorId, mediaId, MediaDownloadType.thumbnail, context),
+        ).rejects.toThrow('Error');
+    });
+
+    it('Should throw an unrecognized response type error if download method returns an unexpected response type', async () => {
+        (mockedEditorApi.mediaConnectorDownload as jest.Mock).mockResolvedValueOnce(null);
+        await expect(
+            mockedMediaConnectorController.download(connectorId, mediaId, MediaDownloadType.thumbnail, context),
+        ).rejects.toThrow('Unexpected response type: object.');
+    });
 
     it('Should call the getCapabilities method', async () => {
         await mockedMediaConnectorController.getCapabilities(connectorId);
@@ -110,6 +139,23 @@ describe('MediaConnectorController', () => {
             connectorId,
             mediaId,
             JSON.stringify(context),
+        );
+    });
+});
+
+describe('MediaConnectorController - Upload', () => {
+    const connectorId = 'dam';
+    it('should call the upload method', async () => {
+        await mockedMediaConnectorController.upload(
+            connectorId,
+            [{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }],
+            {},
+        );
+        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.mediaConnectorUpload).toHaveBeenCalledWith(
+            connectorId,
+            JSON.stringify([{ id: '123', name: 'test.jpg', url: 'https://test.com/test.jpg' }]),
+            JSON.stringify({}),
         );
     });
 });

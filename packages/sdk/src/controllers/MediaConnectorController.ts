@@ -1,9 +1,12 @@
-import { ConnectorConfigOptions, EditorAPI, EditorRawAPI, EditorResponse, Id, MetaData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
+import { CallSender } from 'penpal';
+import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
+    ConnectorConfigOptions,
     DeprecatedMediaConnectorDownloadType,
     DeprecatedMediaType,
+    FilePointer,
     MediaType,
+    MetaData,
     QueryOptions,
     QueryPage,
 } from '../types/ConnectorTypes';
@@ -14,6 +17,7 @@ import {
     MediaDownloadIntent,
     MediaDownloadType,
 } from '../types/MediaConnectorTypes';
+import { getEditorResponseData, throwEditorResponseError } from '../utils/EditorResponseData';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.
@@ -84,16 +88,12 @@ export class MediaConnectorController {
      * @param context context that will be available in the connector script.
      * @returns
      */
-    download = async (
-        id: Id,
-        mediaId: Id,
-        downloadType: MediaDownloadType,
-        context: MetaData = {},
-    ): Promise<Uint8Array> => {
+    download = async (id: Id, mediaId: Id, downloadType: MediaDownloadType, context: MetaData = {}) => {
         const compatibleDownloadType = this.parseDeprecatedMediaDownloadType(
             downloadType as unknown as DeprecatedMediaConnectorDownloadType,
         ) as MediaDownloadType;
         const res = await this.#blobAPI;
+
         return res
             .mediaConnectorDownload(
                 id,
@@ -102,7 +102,20 @@ export class MediaConnectorController {
                 MediaDownloadIntent.web,
                 JSON.stringify(context),
             )
-            .then((result) => (result as Uint8Array) ?? (result as EditorResponse<null>));
+            .then((result) => {
+                // Handle binary data (Uint8Array) directly
+                if (result instanceof Uint8Array) {
+                    return result;
+                }
+
+                // Handle structured response (EditorResponse) for non-success cases
+                if (typeof result === 'object' && result !== null && 'success' in result && !result.success) {
+                    throwEditorResponseError(result as EditorResponse<null>);
+                }
+
+                // Unexpected response type - throw error
+                throw new Error(`Unexpected response type: ${typeof result}.`);
+            });
     };
 
     /**
@@ -160,4 +173,19 @@ export class MediaConnectorController {
                 return deprecatedMediaDownloadType as unknown as MediaDownloadType;
         }
     }
+
+    /**
+     * Invokes the upload on the connector, using the given staged pointer(s).
+     * If you want help with staging files, use the `stageFiles` method from the UtilsController.
+     * @param connectorId The MediaConnector instance to use (just like download API).
+     * @param filePointers Array of FilePointer as staged by stageFile(s).
+     * @param context Arbitrary metadata/context for the upload (auth, meta fields, etc).
+     * @returns Promise<Media[]>
+     */
+    upload = async (connectorId: Id, filePointers: FilePointer[], context: MetaData = {}) => {
+        const res = await this.#editorAPI;
+        return res
+            .mediaConnectorUpload(connectorId, JSON.stringify(filePointers), JSON.stringify(context))
+            .then((result) => getEditorResponseData<Media[]>(result));
+    };
 }

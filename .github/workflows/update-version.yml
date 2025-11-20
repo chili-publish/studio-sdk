@@ -1,0 +1,192 @@
+name: Update Version Management
+description: "Update the version management file"
+permissions: {}
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (UAT or PRD)"
+        required: true
+        type: choice
+        default: "UAT"
+        options:
+          - "UAT"
+          - "PRD"
+      sdk_version:
+        description: 'SDK version. Use cases: "1.17" (major.minor) for adding new version; "latest" for patching engine; "1.17.1" or "1.17.1-rc.0" (major.minor.patch with optional RC suffix) for patching SDK (only latest SDK can be patched)'
+        required: true
+        type: string
+      engine_version:
+        description: 'Engine version. Use cases: specific version (e.g. 2.1.1) for adding new version or patching engine; "latest" for patching SDK (keeps existing engine version)'
+        required: true
+        type: string
+
+jobs:
+  update-version-management:
+    runs-on: ubuntu-latest
+    env:
+      STORAGE_ACCOUNT_NAME: ${{ (inputs.environment == 'PRD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }}
+      SUBSCRIPTION_ID: ${{ (inputs.environment == 'PRD') && vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD || vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}
+      STORAGE_BASE_URL: ${{ (inputs.environment == 'PRD') && 'https://studio-cdn.chiligrafx.com' || 'https://studio-cdn.chiligrafx-uat.com' }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download and update versions file
+        run: |
+          # Create temporary directory
+          mkdir -p temp
+          # Download current versions file
+
+          curl -o temp/supported-versions.json ${{ env.STORAGE_BASE_URL }}/shared/version-management/supported-versions.json
+
+          # Create updated versions file using node
+          node -e "
+            const fs = require('fs');
+            const versions = require('./temp/supported-versions.json');
+            const sdkVersion = '${{ inputs.sdk_version }}';
+            const engineVersion = '${{ inputs.engine_version }}';
+            const environment = '${{ inputs.environment }}';
+            
+            // Parse version with optional RC suffix (e.g., "1.17.1-rc.0" or "1.17.1")
+            function parseVersion(version) {
+              if (version === 'latest') {
+                return { majorMinor: null, hasPatch: false, isMajorMinor: false, hasRC: false };
+              }
+              
+              // Split by '-' to separate base version from RC suffix
+              const parts = version.split('-');
+              const baseVersion = parts[0];
+              const hasRC = parts.length > 1;
+              
+              // Parse base version (major.minor.patch)
+              const baseParts = baseVersion.split('.');
+              const hasPatch = baseParts.length === 3;
+              const isMajorMinor = baseParts.length === 2;
+              const majorMinor = baseParts.slice(0, 2).join('.');
+              
+              return {
+                majorMinor: majorMinor,
+                hasPatch: hasPatch,
+                isMajorMinor: isMajorMinor,
+                hasRC: hasRC
+              };
+            }
+            
+            const parsed = parseVersion(sdkVersion);
+            const isPatchVersion = parsed.hasPatch;
+            const isMajorMinor = parsed.isMajorMinor;
+            const isLatest = sdkVersion === 'latest';
+            
+            // Use Case 1: Adding new version (major.minor + specific engine version)
+            if (isMajorMinor && engineVersion !== 'latest') {
+              const versionKey = sdkVersion;
+              const isNew = !versions[versionKey];
+              
+              if (!isNew) {
+                console.error('SDK version ' + sdkVersion + ' already exists. Use patch format (major.minor.patch) to update it.');
+                process.exit(1);
+              }
+              
+              // Append patch version based on environment: PRD -> .0, UAT -> .0-rc.0
+              const patchSuffix = environment === 'PRD' ? '.0' : '.0-rc.0';
+              const fullSdkVersion = sdkVersion + patchSuffix;
+              
+              // Create new version entry
+              versions[versionKey] = { sdkVersion: fullSdkVersion, engineVersion: engineVersion };
+              console.log('Added new SDK version ' + fullSdkVersion + ' with engine version ' + engineVersion);
+              
+              // Update latest automatically
+              versions.latest.sdkVersion = fullSdkVersion;
+              versions.latest.engineVersion = engineVersion;
+              console.log('Updated latest entry to new SDK version ' + fullSdkVersion);
+            }
+            // Use Case 2: Patching engine (latest + specific engine version)
+            else if (isLatest && engineVersion !== 'latest') {
+              // Update both latest and the corresponding version entry
+              const latestSdkVersion = versions.latest.sdkVersion;
+              const latestParsed = parseVersion(latestSdkVersion);
+              const majorMinor = latestParsed.majorMinor;
+              
+              versions.latest.engineVersion = engineVersion;
+              versions[majorMinor].engineVersion = engineVersion;
+              
+              console.log('Updated engine version for latest and ' + majorMinor + ' to ' + engineVersion);
+            }
+            // Use Case 3: Patching SDK (major.minor.patch with optional RC + latest)
+            else if (isPatchVersion && engineVersion === 'latest') {
+              const majorMinor = parsed.majorMinor;
+              const versionKey = majorMinor;
+              
+              // Validate: can only patch the latest SDK
+              const latestSdkVersion = versions.latest.sdkVersion;
+              const latestParsed = parseVersion(latestSdkVersion);
+              const latestMajorMinor = latestParsed.majorMinor;
+              
+              if (majorMinor !== latestMajorMinor) {
+                console.error('Can only patch the latest SDK version. Latest is ' + latestSdkVersion + ', but trying to patch ' + sdkVersion);
+                process.exit(1);
+              }
+              
+              // Validate: version entry must exist
+              if (!versions[versionKey]) {
+                console.error('Cannot patch SDK version ' + sdkVersion + ' - version entry does not exist');
+                process.exit(1);
+              }
+              
+              // Keep existing engine version
+              const finalEngineVersion = versions[versionKey].engineVersion;
+              
+              // Update version entry with the full version (including RC suffix if provided)
+              versions[versionKey] = { sdkVersion: sdkVersion, engineVersion: finalEngineVersion };
+              console.log('Updated SDK version ' + sdkVersion + ' with existing engine version ' + finalEngineVersion);
+              
+              // Update latest automatically
+              versions.latest.sdkVersion = sdkVersion;
+              versions.latest.engineVersion = finalEngineVersion;
+              console.log('Updated latest entry to newer patch version ' + sdkVersion);
+            }
+            // All other cases should terminate
+            else {
+              console.error('Invalid combination of sdk_version and engine_version. Valid use cases:');
+              console.error('1. Adding new version: sdk_version in major.minor format + specific engine_version');
+              console.error('2. Patching engine: sdk_version="latest" + specific engine_version');
+              console.error('3. Patching SDK: sdk_version in major.minor.patch format + engine_version="latest"');
+              process.exit(1);
+            }
+            
+            fs.writeFileSync('./temp/supported-versions.json', JSON.stringify(versions, null, 2));
+          "
+
+      - name: Azure Login action
+        uses: azure/login@v2
+        with:
+          creds: >-
+            {
+              "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
+              "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
+              "tenantId": "${{ vars.AZ_TENANT_ID }}",
+              "subscriptionId": "${{ env.SUBSCRIPTION_ID }}"
+            }
+      - name: Upload build
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az storage blob upload-batch \
+            --account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --source temp/ \
+            --destination shared/version-management \
+            --overwrite true \
+            --auth-mode login
+
+  # purge-cdn:
+  #   needs: update-version-management
+  #   name: Purge Cloudflare CDN
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Purge Cloudflare CDN
+  #       uses: chili-publish/delivery-github-utilities/actions/cloudflare/purge-cdn@cloudflare-purge-cdn_1.0.0
+  #       with:
+  #           environment: ${{ inputs.environment }}
+  #           api-token: ${{ (inputs.environment == 'PRD') && secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_PRD || secrets.CLOUDFLARE_CDN_PURGE_API_TOKEN_UAT }}
+  #           path-prefix: shared/version-management

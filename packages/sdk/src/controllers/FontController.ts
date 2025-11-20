@@ -1,5 +1,12 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { AddDocumentFontFamily, AddDocumentFontStyle, DocumentFontFamily, DocumentFontStyle } from '../types/FontTypes';
+import {
+    AddDocumentFontFamily,
+    AddDocumentFontStyle,
+    CharacterPreview,
+    CharacterPreviewStyle,
+    DocumentFontFamily,
+    DocumentFontStyle,
+} from '../types/FontTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -156,5 +163,19 @@ export class FontController {
     moveFontFamilies = async (order: number, ids: string[]) => {
         const res = await this.#editorAPI;
         return res.moveFontFamilies(order, ids).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental This method is experimental and may be changed in the future.
+     * This method returns SVG graphics for requested characters used as bullets
+     * @param characters the list of characters to render as SVG
+     * @param characterPreviewStyle style to generate characters preview
+     * @returns An object with the characters as keys and the SVG graphics as values
+     */
+    getPreviewsOfCharacterStrings = async (characters: string[], characterPreviewStyle: CharacterPreviewStyle) => {
+        const res = await this.#editorAPI;
+        return res
+            .getPreviewsOfCharacterStrings(characters, JSON.stringify(characterPreviewStyle))
+            .then((result) => getEditorResponseData<CharacterPreview>(result));
     };
 }

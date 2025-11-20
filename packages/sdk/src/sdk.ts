@@ -10,6 +10,7 @@ import { DocumentType } from './types/DocumentTypes';
 import { ActionController } from './controllers/ActionController';
 import { AnimationController } from './controllers/AnimationController';
 import { BarcodeController } from './controllers/BarcodeController';
+import { BrandKitController } from './controllers/BrandKitController';
 import { CanvasController } from './controllers/CanvasController';
 import { CharacterStyleController } from './controllers/CharacterStyleController';
 import { ClipboardController } from './controllers/ClipboardController';
@@ -42,10 +43,13 @@ import { NextInitiator } from './next/NextInitiator';
 import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
+import { GradientStyleController } from './controllers/GradientStyleController';
+
+declare const __ENGINE_DOMAIN__: string;
+const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
+const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}/web`;
 
 let connection: StudioConnection;
-
-const FIXED_EDITOR_LINK = 'https://studio-cdn.chiligrafx.com/editor/' + engineInfo.current + '/web';
 
 export class SDK {
     config: RuntimeConfigType;
@@ -80,12 +84,14 @@ export class SDK {
     paragraphStyle: ParagraphStyleController;
     characterStyle: CharacterStyleController;
     colorStyle: ColorStyleController;
+    gradientStyle: GradientStyleController;
     font: FontController;
     experiment: ExperimentController;
     canvas: CanvasController;
     colorConversion: ColorConversionController;
     info: InfoController;
     clipboard: ClipboardController;
+    brandKit: BrandKitController;
     next: NextInitiator;
 
     private subscriber: SubscriberController;
@@ -121,7 +127,7 @@ export class SDK {
 
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
         this.variable = new VariableController(this.editorAPI);
-        this.utils = new UtilsController();
+        this.utils = new UtilsController(this.editorAPI, this.localConfig);
         this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
@@ -129,6 +135,7 @@ export class SDK {
         // To be renamed textSelection > textStyle
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
+        this.gradientStyle = new GradientStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.font = new FontController(this.editorAPI);
@@ -139,6 +146,7 @@ export class SDK {
         this.clipboard = new ClipboardController(this.editorAPI);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
+        this.brandKit = new BrandKitController(this.editorAPI, this);
     }
 
     /**
@@ -156,6 +164,7 @@ export class SDK {
                 onDocumentLoaded: this.subscriber.onDocumentLoaded,
                 onSelectedFramesContentChanged: this.subscriber.onSelectedFramesContentChanged,
                 onSelectedFramesLayoutChanged: this.subscriber.onSelectedFramesLayoutChanged,
+                onFramesLayoutChanged: this.subscriber.onFramesLayoutChanged,
                 onSelectedLayoutPropertiesChanged: this.subscriber.onSelectedLayoutPropertiesChanged,
                 onSelectedLayoutUnitChanged: this.subscriber.onSelectedLayoutUnitChanged,
                 onPageSelectionChanged: this.subscriber.onPageSelectionChanged,
@@ -206,6 +215,7 @@ export class SDK {
                 onDocumentIssueListChanged: this.subscriber.onDocumentIssueListChanged,
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
                 onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
+                onBrandKitMediaChanged: this.subscriber.onBrandKitMediaChanged,
             },
             this.setConnection,
             this.config.editorId,
@@ -220,13 +230,14 @@ export class SDK {
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
-        this.utils = new UtilsController();
+        this.utils = new UtilsController(this.editorAPI, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.debug = new DebugController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.textSelection = new TextStyleController(this.editorAPI);
         this.colorStyle = new ColorStyleController(this.editorAPI);
+        this.gradientStyle = new GradientStyleController(this.editorAPI);
         this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
@@ -239,8 +250,10 @@ export class SDK {
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
+        this.colorConversion = new ColorConversionController(this.editorAPI);
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
+        this.brandKit = new BrandKitController(this.editorAPI, this);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version
@@ -261,6 +274,12 @@ export class SDK {
 
         // Update the engine with the specified options from the config or fall back to the defaults.
         this.configuration.updateStudioOptions(this.config.studioOptions || defaultStudioOptions);
+
+        // Whether the engine should cache query calls. This is disabled by default.
+        this.configuration.setValue(
+            WellKnownConfigurationKeys.QueryCallCacheEnabled,
+            this.config.enableQueryCallCache?.toString() || 'false',
+        );
     };
 
     setConnection = (newConnection: StudioConnection) => {

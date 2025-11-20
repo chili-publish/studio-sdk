@@ -28,6 +28,7 @@ import { Viewport } from '../types/ViewportTypes';
 import { EngineCallbackHandler } from './EngineCallbackHandler';
 import { EngineEvent } from './EngineEvent';
 import { ToolType } from './Enums';
+import { BrandKitMedia } from '../types/BrandKitTypes';
 
 export class ConfigHelper {
     /**
@@ -85,6 +86,10 @@ export class ConfigHelper {
             ),
             onSelectedFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>(
                 () => clone.onSelectedFramesLayoutChanged,
+                clone.logging?.logger,
+            ),
+            onFramesLayoutChanged: new EngineEvent<(states: FrameLayoutType[]) => MaybePromise<void>>(
+                () => clone.onFramesLayoutChanged,
                 clone.logging?.logger,
             ),
             onSelectedFramesContentChanged: new EngineEvent<(state: Frame[]) => MaybePromise<void>>(
@@ -216,6 +221,10 @@ export class ConfigHelper {
             ),
             onEngineEditModeChanged: new EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>(
                 () => clone.onEngineEditModeChanged,
+                clone.logging.logger,
+            ),
+            onBrandKitMediaChanged: new EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>(
+                () => clone.onBrandKitMediaChanged,
                 clone.logging.logger,
             ),
         };

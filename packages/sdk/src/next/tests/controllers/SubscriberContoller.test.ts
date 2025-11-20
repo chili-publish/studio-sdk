@@ -11,6 +11,7 @@ const mockEditorApi = {
     onVariableListChanged: jest.fn(async () => getEditorResponseData(castToEditorResponse(null))),
     onConnectorsChanged: jest.fn(async () => getEditorResponseData(castToEditorResponse(null))),
     onPageSizeChanged: jest.fn(async () => getEditorResponseData(castToEditorResponse(null))),
+    onBrandKitMediaChanged: jest.fn(async () => getEditorResponseData(castToEditorResponse(null))),
 };
 
 beforeEach(() => {

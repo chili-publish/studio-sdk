@@ -1,6 +1,6 @@
-import { Alignment, Case, Scripting } from './TextStyleTypes';
 import { ColorUsage, ColorUsageUpdate } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
+import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type ParagraphStyle = {
     id: Id;
@@ -27,58 +27,126 @@ export type ParagraphStyle = {
     textAlignLast: Alignment;
     textOverprint: boolean;
     color: ColorUsage;
+    strokeColor: ColorUsage;
     fillColorApplied: boolean;
+    strokeColorApplied: boolean;
+    strokeWidth: number;
     underline: boolean;
     lineThrough: boolean;
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    bulletListStyle: BulletListStyle;
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListStyle: NumericListStyle;
 };
 
 export type ParagraphStyleUpdate = {
-    fontSize: {
+    fontKey?: {
+        value: string;
+    };
+    fontSize?: {
         value: number;
     };
-    typographicCase: {
+    typographicCase?: {
         value: Case;
     };
-    kerningOn: {
+    kerningOn?: {
         value: boolean;
     };
-    subSuperScript: {
+    subSuperScript?: {
         value: Scripting;
     };
-    trackingLeft: {
+    trackingLeft?: {
         value: number;
     };
-    trackingRight: {
+    trackingRight?: {
         value: number;
     };
-    textIndent: {
+    textIndent?: {
         value: string;
     };
-    alignToBaseLine: {
+    alignToBaseLine?: {
         value: boolean;
     };
-    baselineShiftValue: {
+    baselineShiftValue?: {
         value: string;
     };
-    lineHeight: {
+    lineHeight?: {
         value: number;
     };
-    textAlign: {
+    textAlign?: {
         value: Alignment;
     };
-    textAlignLast: {
+    textAlignLast?: {
         value: Alignment;
     };
-    textOverprint: {
+    textOverprint?: {
         value: boolean;
     };
-    color: {
+    color?: {
         value: ColorUsageUpdate;
     };
-    underline: {
+    fillColorApplied?: {
         value: boolean;
     };
-    lineThrough: {
+    strokeColor?: {
+        value: ColorUsageUpdate;
+    };
+    strokeColorApplied?: {
         value: boolean;
     };
+    strokeWidth?: {
+        value: string;
+    };
+    underline?: {
+        value: boolean;
+    };
+    lineThrough?: {
+        value: boolean;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    bulletListBulletMarks?: {
+        value: string[];
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    bulletListLeftIndent?: {
+        value: string;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    bulletListTextIndent?: {
+        value: string;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    bulletListCharacterStyleId?: {
+        value?: string;
+    };
+};
+
+export type BulletListStyle = {
+    /**
+     * Array of bullet marks for each level
+     * The position of the item in the array is the level of the bullet list
+     * The value of the item is the bullet mark
+     */
+    bulletMarks: string[];
+    leftIndent: number;
+    textIndent: number;
+    characterStyleId?: string;
+};
+
+export type NumericListStyle = {
+    leftIndent: number;
+    textIndent: number;
+    characterStyleId?: string;
 };

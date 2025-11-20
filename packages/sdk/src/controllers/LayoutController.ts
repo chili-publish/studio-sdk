@@ -1,15 +1,17 @@
+import { ColorUsage } from '../types/ColorStyleTypes';
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
-import { getEditorResponseData } from '../utils/EditorResponseData';
 import {
     BleedDeltaUpdate,
     Layout,
     LayoutIntent,
     LayoutPreset,
-    ResizableLayoutPropertiesUpdate,
     MeasurementUnit,
     PositionEnum,
+    ResizableLayoutPropertiesUpdate,
+    SelectLayoutOptions,
+    LayoutOptionPageSize
 } from '../types/LayoutTypes';
-import { ColorUsage } from '../types/ColorStyleTypes';
+import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
@@ -20,14 +22,14 @@ export class LayoutController {
      * @ignore
      */
     #editorAPI: Promise<EditorAPI>;
-    #blobAPI: EditorRawAPI;
+    #blobAPI: Promise<EditorRawAPI>;
 
     /**
      * @ignore
      */
     constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as unknown as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as Promise<EditorRawAPI>;
     }
 
     /**
@@ -113,7 +115,24 @@ export class LayoutController {
      */
     select = async (id: Id) => {
         const res = await this.#editorAPI;
-        return res.selectLayout(id).then((result) => getEditorResponseData<null>(result));
+        return res.selectLayoutWithOptions(id, null).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will select a specific layout and set the page size to the provided value. Note that
+     * the same limitations that apply to PageController.setSize also apply here.
+     * @param id the id of a specific layout
+     * @param pageSize the new page size that will be applied when selecting the layout
+     * @returns
+     */
+    selectWithPageSize = async (id: Id, pageSize: LayoutOptionPageSize) => {
+        const res = await this.#editorAPI;
+        const options: SelectLayoutOptions = {
+            pageSize: pageSize,
+        };
+        return res
+            .selectLayoutWithOptions(id, JSON.stringify(options))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -281,11 +300,11 @@ export class LayoutController {
     setBleedValue = async (id: Id, value: string, position?: PositionEnum) => {
         const update: BleedDeltaUpdate = position
             ? {
-                  left: position === PositionEnum.left ? value : undefined,
-                  top: position === PositionEnum.top ? value : undefined,
-                  right: position === PositionEnum.right ? value : undefined,
-                  bottom: position === PositionEnum.bottom ? value : undefined,
-              }
+                left: position === PositionEnum.left ? value : undefined,
+                top: position === PositionEnum.top ? value : undefined,
+                right: position === PositionEnum.right ? value : undefined,
+                bottom: position === PositionEnum.bottom ? value : undefined,
+            }
             : { left: value, top: value, right: value, bottom: value };
 
         const res = await this.#editorAPI;

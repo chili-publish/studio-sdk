@@ -41,8 +41,13 @@ describe('VariableController', () => {
             resolved: {
                 mediaId: 'resolved-brush-id',
             },
+            context: {
+                searchInUploadFolder: true,
+            },
         },
         privateData: {},
+        allowQuery: true,
+        allowUpload: true,
     };
 
     const listVar: Variable & { items: ListVariableItem[]; selected?: ListVariableItem } = {
@@ -92,6 +97,12 @@ describe('VariableController', () => {
         updateVariablePrefixSuffixProperties: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(null)),
         getVariablePrivateData: async () => getEditorResponseData(castToEditorResponse(privateData)),
+        setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableValueWithContext: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableRemoveParagraphIfEmpty: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -125,6 +136,12 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'updateVariablePrefixSuffixProperties');
         jest.spyOn(mockEditorApi, 'setVariablePrivateData');
         jest.spyOn(mockEditorApi, 'getVariablePrivateData');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
+        jest.spyOn(mockEditorApi, 'setImageVariableValueWithContext');
+        jest.spyOn(mockEditorApi, 'setVariableRemoveParagraphIfEmpty');
+        jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
     });
 
     it('get variable by id', async () => {
@@ -312,6 +329,12 @@ describe('VariableController', () => {
         await mockedVariableController.setIsRequired('1', true);
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableIsRequired).toHaveBeenCalledWith('1', true);
+    });
+
+    it('set removeParagraphIfEmpty', async () => {
+        await mockedVariableController.setRemoveParagraphIfEmpty('1', true);
+        expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledWith('1', true);
     });
 
     it('set isReadonly', async () => {
@@ -540,5 +563,36 @@ describe('VariableController', () => {
         expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getVariablePrivateData).toHaveBeenCalledWith('1');
         expect(response?.parsedData).toStrictEqual(privateData);
+    });
+
+    it('sets the allowQuery flag for an image variable', async () => {
+        await mockedVariableController.setAllowImageQuery('1', true);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledWith('1', true);
+    });
+
+    it('sets the allowUpload flag for an image variable', async () => {
+        await mockedVariableController.setAllowImageUpload('1', true);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledWith('1', true);
+    });
+
+    it('sets the minimum size (both width and height) for an image variable that will be uploaded', async () => {
+        await mockedVariableController.setMinImageUploadSize('1', '100', '100');
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith('1', '100', '100');
+    });
+
+    it('sets the connector context for an image variable', async () => {
+        const context = { searchInUploadFolder: true, category: 'logos' };
+        await mockedVariableController.setImageVariableValueWithContext('1', '2', context);
+        expect(mockEditorApi.setImageVariableValueWithContext).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableValueWithContext).toHaveBeenCalledWith('1', '2', JSON.stringify(context));
+    });
+
+    it('sets the dontBreak flag for a variable', async () => {
+        await mockedVariableController.setIsDontBreak('1', true);
+        expect(mockEditorApi.setVariableIsDontBreak).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableIsDontBreak).toHaveBeenCalledWith('1', true);
     });
 });

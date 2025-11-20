@@ -1,4 +1,4 @@
-import { VariableController } from '../../controllers/VariableController';
+import { ImageVariableController, VariableController } from '../../controllers/VariableController';
 import { ListVariableItem, Variable, VariableType, VariableVisibilityType } from '../../../types/VariableTypes';
 import type { ListVariable } from '../../../next/types/VariableTypes';
 import { EditorAPI } from '../../../types/CommonTypes';
@@ -42,7 +42,7 @@ describe('Next.VariableController', () => {
         getVariableByName: async () => getEditorResponseData(castToEditorResponse(listVar)),
         getVariables: async () => getEditorResponseData(castToEditorResponse(variables)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
-        setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe('Next.VariableController', () => {
         jest.spyOn(mockEditorApi, 'getVariableByName');
         jest.spyOn(mockEditorApi, 'getVariables');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
-        jest.spyOn(mockEditorApi, 'setImageVariableConnector');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
     });
 
     it('get variable by id', async () => {
@@ -104,6 +104,65 @@ describe('Next.VariableController', () => {
             ]).map((item) => JSON.stringify(item)),
         );
     });
+});
+
+describe('Next.VariableController.ImageVariableController', () => {
+    let mockedImageVariableController: ImageVariableController;
+
+    const variableId = 'variableId';
+
+    const mockEditorApi: EditorAPI = {
+        setImageVariableAllowQuery: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableAllowUpload: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableConnectorContext: async () => getEditorResponseData(castToEditorResponse(null)),
+        setImageVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
+    };
+
+    beforeEach(() => {
+        mockedImageVariableController = new ImageVariableController(Promise.resolve(mockEditorApi));
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
+        jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
+        jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
+        jest.spyOn(mockEditorApi, 'setImageVariableConnectorContext');
+        jest.spyOn(mockEditorApi, 'setImageVariableConnector');
+    });
+
+    it('set allow query', async () => {
+        const response = await mockedImageVariableController.setAllowQuery(variableId, true);
+
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowQuery).toHaveBeenCalledWith(variableId, true);
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it('set allow upload', async () => {
+        const response = await mockedImageVariableController.setAllowUpload(variableId, true);
+
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableAllowUpload).toHaveBeenCalledWith(variableId, true);
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it('sets the minimum size (both width and height) for an image variable that will be uploaded', async () => {
+        const response = await mockedImageVariableController.setMinUploadSize(variableId, '100', '100');
+
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableUploadMinSize).toHaveBeenCalledWith(variableId, '100', '100');
+        expect(response?.parsedData).toBe(null);
+    });
+
+    it('sets the connector context for an image variable', async () => {
+        const context = { searchInUploadFolder: true, category: 'logos' };
+        const response = await mockedImageVariableController.setConnectorContext(variableId, context);
+
+        expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setImageVariableConnectorContext).toHaveBeenCalledWith(
+            variableId,
+            JSON.stringify(context),
+        );
+        expect(response?.parsedData).toBe(null);
+    });
 
     it('set image variable url connector', async () => {
         const registration: ConnectorUrlRegistration = {
@@ -111,7 +170,7 @@ describe('Next.VariableController', () => {
             source: ConnectorRegistrationSource.url,
         };
 
-        const response = await mockedVariableController.setImageVariableConnector(variableId, registration);
+        const response = await mockedImageVariableController.setConnector(variableId, registration);
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
@@ -124,7 +183,7 @@ describe('Next.VariableController', () => {
             source: ConnectorRegistrationSource.local,
         };
 
-        const response = await mockedVariableController.setImageVariableConnector(variableId, registration);
+        const response = await mockedImageVariableController.setConnector(variableId, registration);
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(variableId, JSON.stringify(registration));
@@ -137,7 +196,7 @@ describe('Next.VariableController', () => {
             id: 'grafx-id',
         };
 
-        const response = await mockedVariableController.setImageVariableConnector(variableId, grafxRegistration);
+        const response = await mockedImageVariableController.setConnector(variableId, grafxRegistration);
 
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(

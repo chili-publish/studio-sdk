@@ -51,7 +51,7 @@ export class UndoManagerController {
      */
     addCustomData = async (key: string, value: string) => {
         const res = await this.#editorAPI;
-        return res.setCustomUndoData(key, value).then((result) => getEditorResponseData<null>(result));
+        return res.setCustomUndoData(key, value, false).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -60,15 +60,16 @@ export class UndoManagerController {
      * Even if you throw an exception inside the record scope it will still end it properly.
      * @returns
      */
-    record = async (operationName: string, undoOperationCallback: (sdk: SDK) => void) => {
+    record = async (operationName: string, undoOperationCallback: (sdk: SDK) => Promise<void>) => {
         try {
             await this.#advanced.beginIfNoneActive(operationName);
 
             await undoOperationCallback(this.#sdk);
-        } catch (error) {
-            throw error;
-        } finally {
+
             await this.#advanced.end();
+        } catch (error) {
+            await this.#advanced.abort();
+            throw error;
         }
     };
 
@@ -88,6 +89,55 @@ export class UndoManagerController {
     resume = async () => {
         const res = await this.#editorAPI;
         return res.resume().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Advanced undo manager functionality for manually controlling undo operations.
+     * This will start a new undo operation.
+     * This will throw an exception when there is already an undo operation recording.
+     * @experimental This method is experimental and may change in future versions.
+     * @returns
+     */
+    advanced = {
+        /**
+         * This will start a new undo operation.
+         * This will throw an exception when there is already an undo operation recording.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        begin: async (operationName: string) => {
+            return this.#advanced.begin(operationName);
+        },
+
+        /**
+         * This will start a new undo operation if there is no other undo operation recording.
+         * This does not throw.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        beginIfNoneActive: async (operationName: string) => {
+            return this.#advanced.beginIfNoneActive(operationName);
+        },
+
+        /**
+         * Ends the currently active recording operation.
+         * If there is no recording operation currently running this will throw an exception.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        end: async () => {
+            return this.#advanced.end();
+        },
+
+        /**
+         * Aborts the currently active recording operation.
+         * If there is no recording operation currently running this will throw an exception.
+         * @experimental This method is experimental and may change in future versions.
+         * @returns
+         */
+        abort: async () => {
+            return this.#advanced.abort();
+        },
     };
 }
 
@@ -132,5 +182,15 @@ export class AdvancedUndoManagerController {
     end = async () => {
         const res = await this.#editorAPI;
         return res.end().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Aborts the currently active recording operation.
+     * If there is no recording operation currently running this will throw an exception.
+     * @returns
+     */
+    abort = async () => {
+        const res = await this.#editorAPI;
+        return res.abort().then((result) => getEditorResponseData<null>(result));
     };
 }

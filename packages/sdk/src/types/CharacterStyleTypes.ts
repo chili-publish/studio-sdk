@@ -22,52 +22,67 @@ export type CharacterStyle = {
     lineHeight?: number;
     textOverprint?: boolean;
     color: ColorUsage;
+    strokeColor: ColorUsage;
     fillColorApplied?: boolean | null;
+    strokeColorApplied?: boolean | null;
+    strokeWidth?: number;
     underline: boolean;
     lineThrough: boolean;
 };
 
 export type CharacterStyleUpdate = {
-    fontKey: {
+    fontKey?: {
         value: string;
     };
-    fontSize: {
+    fontSize?: {
         value: number;
     };
-    typographicCase: {
+    typographicCase?: {
         value: Case;
     };
-    kerningOn: {
+    kerningOn?: {
         value: boolean;
     };
-    subSuperScript: {
+    subSuperScript?: {
         value: Scripting;
     };
-    trackingLeft: {
+    trackingLeft?: {
         value: number;
     };
-    trackingRight: {
+    trackingRight?: {
         value: number;
     };
-    textIndent: {
+    textIndent?: {
         value: string;
     };
-    baselineShiftValue: {
+    baselineShiftValue?: {
         value: string;
     };
-    lineHeight: {
+    lineHeight?: {
         value: number;
     };
-    textOverprint: {
+    textOverprint?: {
         value: boolean;
     };
-    color: {
+    color?: {
         value: ColorUsageUpdate;
     };
-    underline: {
+    fillColorApplied?: {
         value: boolean;
     };
-    lineThrough: {
+    strokeColor?: {
+        value: ColorUsageUpdate;
+    };
+    strokeColorApplied?: {
+        value: boolean;
+    };
+    strokeWidth?: {
+        value: string;
+    };
+    underline?: {
+        value: boolean;
+    };
+    lineThrough?: {
         value: boolean;
     };
 };

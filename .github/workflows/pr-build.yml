@@ -1,14 +1,20 @@
 name: PR Build
 on: [pull_request]
+env:
+  NODE_VERSION: 22.x
+permissions:
+  contents: read
+  actions: read
+  packages: read
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18]
+    name: build (18)
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Check cache
         id: cache
         uses: actions/cache@v4
@@ -17,16 +23,16 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Use Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://npm.pkg.github.com"
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_SECRET }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run license check
         run: yarn validate-licenses
       - name: run linting
@@ -39,6 +45,11 @@ jobs:
         if: always()
         with:
           files: packages/sdk/coverage/**/*.xml
+      - name: SonarQube analysis
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: build code
         run: yarn build
       - name: validate sdk examples
@@ -49,26 +60,49 @@ jobs:
         run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_PR_ID/studio-sdk.tgz
       - name: prepare for connectors upload
         run: node cicd.js connectors yarn prepare-upload
-      - name: copy file branch
+      - name: copy bundles
         run: |
-          path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
-          cp -R packages/sdk/coverage/lcov-report/src packages/sdk/coverage/lcov-report/coverage.html packages/sdk/coverage/lcov-report/base.css packages/sdk/coverage/lcov-report/prettify.css ${path%"/merge"} &&
-          cp -R packages/sdk/dist packages/sdk/upload/dev-packages/$CI_PR_ID
+          cp -R packages/sdk/_bundles packages/sdk/upload/dev-packages/$CI_PR_ID
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: >-
+            {
+              "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
+              "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
+              "tenantId": "${{ vars.AZ_TENANT_ID }}",
+              "subscriptionId": "${{ vars.AZ_SUBSCRIPTION_ID_SAAS_DEV }}"
+            }
       - name: Copy to Azure Blob Storage
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/sdk/upload/ \
+              --overwrite true \
+              --auth-mode login
       - name: Copy to Azure Blob Storage (Connectors)
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/connectors/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/connectors/upload/ \
+              --overwrite true \
+              --auth-mode login
       - name: prepare for actions upload
         run: |
           node cicd.js actions node scripts/prepare-release.mjs
       - name: Copy to Azure Blob Storage (Actions)
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/actions/cdn/ \
+              --overwrite true \
+              --auth-mode login
