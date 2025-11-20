@@ -102,16 +102,10 @@ runs:
         # Stage version-related files
         git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
 
-        # Always include [skip ci] in commit message
-        git commit -m "chore: bump version to $TAG_NAME [skip ci]"
+        # Don't include [skip ci] in order to trigger tag push workflow (deployment) once release is published
+        git commit -m "chore: bump version to $TAG_NAME"
         VERSION_COMMIT=$(git rev-parse HEAD)
         echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
 
         # Push changes
-        if [ -z "$VERSION_BRANCH_INPUT" ]; then
-          # Push the temporary version branch so GitHub can reference it for release creation
-          git push origin "$BRANCH_TO_PUSH" || echo "⚠️  Version branch push failed, but continuing..."
-        else
-          # Push version changes directly to the specified branch
-          git push origin "$BRANCH_TO_PUSH"
-        fi
+        git push origin "$BRANCH_TO_PUSH"
