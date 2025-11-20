@@ -53,7 +53,7 @@ jobs:
           version-type: "prerelease"
           skip-commit: "true"
           skip-tag: "true"
-          preid: alfa
+          preid: alpha
       - name: execute local js script
         run: node ./.github/scripts/replicate-version.js
       - name: build code
@@ -75,16 +75,37 @@ jobs:
           cp -R packages/sdk/_bundles/* ${path%"/merge"}
           mkdir -p ${versionpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: >-
+            {
+              "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
+              "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
+              "tenantId": "${{ vars.AZ_TENANT_ID }}",
+              "subscriptionId": "${{ vars.AZ_SUBSCRIPTION_ID_SAAS_DEV }}"
+            }
       - name: Copy to Azure Blob Storage (SDK)
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/sdk/upload/ \
+              --overwrite true \
+              --auth-mode login
+
       - name: prepare for actions upload
         run: |
           node cicd.js actions node scripts/prepare-release.mjs
       - name: Copy to Azure Blob Storage (Actions)
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/actions/cdn/ \
+              --overwrite true \
+              --auth-mode login

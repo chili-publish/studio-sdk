@@ -1,0 +1,458 @@
+name: Create GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (uat or prd)"
+        required: true
+        type: choice
+        options:
+          - uat
+          - prd
+      release_type:
+        description: "Release type (regular or hotfix)"
+        required: true
+        type: choice
+        options:
+          - regular
+          - hotfix
+      engine_version:
+        description: "Engine version to use (e.g., 2.15.latest) - optional. Applies only when environment is 'uat' and release_type is 'regular'"
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: 22.x
+  RELEASES_LIMIT: 10
+
+jobs:
+  configure-parameters:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      environment: ${{ steps.prepare.outputs.environment }}
+      release_type: ${{ steps.prepare.outputs.release_type }}
+      engine_version: ${{ steps.prepare.outputs.engine_version }}
+      target_branch: ${{ steps.prepare.outputs.target_branch }}
+    steps:
+      - name: Prepare release parameters
+        id: prepare
+        run: |
+          # Read values from workflow_dispatch inputs (required)
+          if [ -z "${{ github.event.inputs.environment }}" ]; then
+            echo "❌ Error: 'environment' input is required"
+            exit 1
+          fi
+          ENVIRONMENT="${{ github.event.inputs.environment }}"
+
+          if [ -z "${{ github.event.inputs.release_type }}" ]; then
+            echo "❌ Error: 'release_type' input is required"
+            exit 1
+          fi
+          RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+
+          # Engine version is optional (only used for UAT regular)
+          ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
+
+          # Define target branch. It states for the branch that will be used for release commit history merges.
+          TARGET_BRANCH="main"
+
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "engine_version=$ENGINE_VERSION" >> $GITHUB_OUTPUT
+          echo "target_branch=$TARGET_BRANCH" >> $GITHUB_OUTPUT
+
+  uat-regular:
+    needs: configure-parameters
+    if: needs.configure-parameters.outputs.environment == 'uat' && needs.configure-parameters.outputs.release_type == 'regular'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
+    steps:
+      - name: Validate branch
+        run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
+
+          if [ "$WORKFLOW_BRANCH" != "$TARGET_BRANCH" ]; then
+            echo "❌ Error: UAT regular release must be executed from '$TARGET_BRANCH' branch. Current branch: '$WORKFLOW_BRANCH'"
+            exit 1
+          fi
+
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fetch GH releases
+        id: fetch_releases
+        uses: ./.github/actions/fetch-gh-releases
+        with:
+          releases_limit: ${{ env.RELEASES_LIMIT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find previous release tag
+        id: previous_tag
+        run: |
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
+
+          # For UAT regular: always use the latest production release as previous tag
+          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
+
+          if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
+            echo "❌ Error: No production release found. A previous production release is required for UAT regular releases."
+            exit 1
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Apply version's update
+        id: apply_version
+        uses: ./.github/actions/apply-versions-update
+        with:
+          version_strategy: "prerelease"
+          engine_version: ${{ needs.configure-parameters.outputs.engine_version }}
+
+      - name: Create release and prepare notification
+        id: create_release_and_notify
+        uses: ./.github/actions/create-gh-release
+        with:
+          tag_name: ${{ steps.apply_version.outputs.tag_name }}
+          previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+          target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
+          release_type: "uat"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge and delete version branch
+        uses: ./.github/actions/merge-and-delete-branch
+        with:
+          source_branch: ${{ steps.apply_version.outputs.created_version_branch }}
+          target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
+
+  uat-hotfix:
+    needs: configure-parameters
+    if: needs.configure-parameters.outputs.environment == 'uat' && needs.configure-parameters.outputs.release_type == 'hotfix'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
+    steps:
+      - name: Validate branch
+        run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
+
+          # Terminate if branch is the target branch to prevent accidental history override
+          if [ "$WORKFLOW_BRANCH" = "$TARGET_BRANCH" ]; then
+            echo "❌ Error: Cannot execute UAT hotfix on 'main' branch. UAT hotfix must be executed from a hotfix branch."
+            exit 1
+          fi
+
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fetch GH releases
+        id: fetch_releases
+        uses: ./.github/actions/fetch-gh-releases
+        with:
+          releases_limit: ${{ env.RELEASES_LIMIT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find previous release tag
+        id: previous_tag
+        run: |
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
+
+            # For UAT hotfix: find the tag (UAT or PRD) that matches the current package.json version
+            # The hotfix branch can be created from either:
+            # 1. A UAT release tag (e.g., 1.2.3-rc.0) - hotfixing existing UAT release
+            # 2. A production release tag (e.g., 1.2.3) - new hotfix from production
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+          ALL_TAGS=$(jq -r '.[] | .tagName' "$RELEASES_FILE")
+            PREVIOUS_TAG=$(echo "$ALL_TAGS" | grep -Fx "${CURRENT_VERSION}" | head -1)
+            
+            if [ -z "$PREVIOUS_TAG" ]; then
+              echo "❌ Error: No tag found matching package.json version ($CURRENT_VERSION)"
+              echo "❌ The hotfix branch must be created from a valid UAT or production release tag."
+              exit 1
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Apply version's update
+        id: apply_version
+        uses: ./.github/actions/apply-versions-update
+        with:
+          version_strategy: "prerelease-conditional"
+          version_branch: ${{ env.workflow_branch }}
+
+      - name: Create release and prepare notification
+        id: create_release_and_notify
+        uses: ./.github/actions/create-gh-release
+        with:
+          tag_name: ${{ steps.apply_version.outputs.tag_name }}
+          previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+          target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
+          release_type: "uat"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge and delete UAT hotfix branch
+        uses: ./.github/actions/merge-and-delete-branch
+        with:
+          source_branch: ${{ env.workflow_branch }}
+          target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
+
+  production:
+    needs: configure-parameters
+    if: needs.configure-parameters.outputs.environment == 'prd'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
+    steps:
+      - name: Validate branch
+        run: |
+          WORKFLOW_BRANCH="${{ github.ref_name }}"
+          TARGET_BRANCH="${{ needs.configure-parameters.outputs.target_branch }}"
+
+          # Terminate if branch is the target branch to prevent accidental history override
+          if [ "$WORKFLOW_BRANCH" = "$TARGET_BRANCH" ]; then
+            echo "❌ Error: Cannot execute PRD release on 'main' branch. PRD release must be executed from a release branch."
+            exit 1
+          fi
+
+          echo "workflow_branch=$WORKFLOW_BRANCH" >> $GITHUB_ENV
+
+      - name: Get GitHub App Access Token
+        id: github-app-access-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          token: ${{ steps.github-app-access-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fetch GH releases
+        id: fetch_releases
+        uses: ./.github/actions/fetch-gh-releases
+        with:
+          releases_limit: ${{ env.RELEASES_LIMIT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate UAT tag exists
+        run: |
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
+
+          # Read version from package.json (should match the UAT tag the branch was created from)
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          if [ -z "$CURRENT_VERSION" ]; then
+            echo "❌ Error: Could not read version from package.json"
+            exit 1
+          fi
+
+          echo "📦 Current package.json version: $CURRENT_VERSION"
+
+          # Check if this version exists as a UAT release (prerelease)
+          UAT_TAG_EXISTS=$(jq -r --arg version "$CURRENT_VERSION" '.[] | select(.isPrerelease == true and .tagName == $version) | .tagName' "$RELEASES_FILE" | head -1)
+
+          if [ -z "$UAT_TAG_EXISTS" ] || [ "$UAT_TAG_EXISTS" = "null" ]; then
+            echo "❌ Error: UAT tag '$CURRENT_VERSION' not found in GitHub releases."
+            echo "❌ The workflow branch must be created from a valid UAT release tag."
+            echo "❌ Available UAT releases:"
+            jq -r '.[] | select(.isPrerelease == true) | "  - \(.tagName)"' "$RELEASES_FILE" || echo "  (none found)"
+            exit 1
+          fi
+
+          echo "✅ UAT tag '$CURRENT_VERSION' found in GitHub releases"
+
+      - name: Find previous release tag
+        id: previous_tag
+        run: |
+          RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
+
+          # For PRD releases, always use the latest production release as previous tag
+          PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
+
+          # Fail if no previous PRD release found (required for all PRD releases)
+          if [ -z "$PREVIOUS_TAG" ] || [ "$PREVIOUS_TAG" = "null" ]; then
+            echo "❌ Error: No PRD release found. A previous PRD release is required for all PRD releases."
+            exit 1
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Apply version's update
+        id: apply_version
+        uses: ./.github/actions/apply-versions-update
+        with:
+          version_strategy: "patch"
+          version_branch: ${{ env.workflow_branch }}
+
+      - name: Create release and prepare notification
+        id: create_release_and_notify
+        uses: ./.github/actions/create-gh-release
+        with:
+          tag_name: ${{ steps.apply_version.outputs.tag_name }}
+          previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
+          target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
+          release_type: "production"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge and delete release branch
+        uses: ./.github/actions/merge-and-delete-branch
+        with:
+          source_branch: ${{ env.workflow_branch }}
+          target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
+
+  notify-teams:
+    needs: [configure-parameters, uat-regular, uat-hotfix, production]
+    if: always() && (needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.production.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Extract notification text
+        id: extract_text
+        run: |
+          # Get notification text from the job that succeeded (only one will have a value)
+          # Check each job's result and get its notification text if it succeeded
+          TEXT=""
+
+          if [ "${{ needs.uat-regular.result }}" == "success" ]; then
+            TEXT="${{ needs.uat-regular.outputs.notification_text }}"
+          elif [ "${{ needs.uat-hotfix.result }}" == "success" ]; then
+            TEXT="${{ needs.uat-hotfix.outputs.notification_text }}"
+          elif [ "${{ needs.production.result }}" == "success" ]; then
+            TEXT="${{ needs.production.outputs.notification_text }}"
+          fi
+
+          if [ -z "$TEXT" ]; then
+            echo "⚠️  No notification text available. Skipping Teams notification."
+            exit 0
+          fi
+
+          echo "text=$TEXT" >> $GITHUB_OUTPUT
+
+      - name: Notify Teams
+        run: |
+          TEXT="${{ steps.extract_text.outputs.text }}"
+
+          payload=$(cat <<EOF
+          {
+              "text": "$TEXT"
+          }
+          EOF
+          )
+
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
