@@ -8,7 +8,14 @@ export enum WellKnownConfigurationKeys {
 }
 
 export enum FrameEditingMode {
+    /** Default (Designer) mode
+     * No constraints
+     */
     full,
+
+    /** End user mode
+     * Limits the existing tools to the given constraints
+     */
     followConstraints,
 }
 
