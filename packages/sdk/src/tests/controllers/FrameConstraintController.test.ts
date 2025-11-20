@@ -40,18 +40,21 @@ describe('FrameConstraintController', () => {
     describe('setSelectable', () => {
         it('should set selectable constraint to allowed', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: true }
+                selectable: { value: true },
             };
 
             await frameConstraintController.setSelectable(id, true);
 
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(id, JSON.stringify(expectedDeltaUpdate));
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
         });
 
         it('should set selectable constraint to not allowed', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: false }
+                selectable: { value: false },
             };
 
             await frameConstraintController.setSelectable(id, false);
@@ -59,7 +62,7 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
     });
@@ -68,7 +71,7 @@ describe('FrameConstraintController', () => {
         it('should set horizontal movement constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                horizontalMovementAllowed: { value: allowed }
+                horizontalMovementAllowed: { value: allowed },
             };
 
             await frameConstraintController.setHorizontalMovement(id, allowed);
@@ -76,14 +79,14 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
 
         it('should set horizontal movement constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                horizontalMovementAllowed: { value: allowed }
+                horizontalMovementAllowed: { value: allowed },
             };
 
             await frameConstraintController.setHorizontalMovement(id, allowed);
@@ -91,7 +94,7 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
     });
@@ -100,7 +103,7 @@ describe('FrameConstraintController', () => {
         it('should set vertical movement constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                verticalMovementAllowed: { value: allowed }
+                verticalMovementAllowed: { value: allowed },
             };
 
             await frameConstraintController.setVerticalMovement(id, allowed);
@@ -108,14 +111,14 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
 
         it('should set vertical movement constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                verticalMovementAllowed: { value: allowed }
+                verticalMovementAllowed: { value: allowed },
             };
 
             await frameConstraintController.setVerticalMovement(id, allowed);
@@ -123,7 +126,7 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
     });
@@ -132,7 +135,7 @@ describe('FrameConstraintController', () => {
         it('should set rotation constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                rotationAllowed: { value: allowed }
+                rotationAllowed: { value: allowed },
             };
 
             await frameConstraintController.setRotation(id, allowed);
@@ -140,14 +143,14 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
 
         it('should set rotation constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                rotationAllowed: { value: allowed }
+                rotationAllowed: { value: allowed },
             };
 
             await frameConstraintController.setRotation(id, allowed);
@@ -155,7 +158,7 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
     });
@@ -164,7 +167,7 @@ describe('FrameConstraintController', () => {
         it('should set resize constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                resizeAllowed: { value: allowed }
+                resizeAllowed: { value: allowed },
             };
 
             await frameConstraintController.setResize(id, allowed);
@@ -172,14 +175,14 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
 
         it('should set resize constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                resizeAllowed: { value: allowed }
+                resizeAllowed: { value: allowed },
             };
 
             await frameConstraintController.setResize(id, allowed);
@@ -187,7 +190,7 @@ describe('FrameConstraintController', () => {
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
                 id,
-                JSON.stringify(expectedDeltaUpdate)
+                JSON.stringify(expectedDeltaUpdate),
             );
         });
     });
@@ -223,7 +226,10 @@ describe('FrameConstraintController', () => {
             const lastTwoCalls = calls.slice(-2);
 
             expect(lastTwoCalls[0]).toEqual([frameId1, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
-            expect(lastTwoCalls[1]).toEqual([frameId2, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
+            expect(lastTwoCalls[1]).toEqual([
+                frameId2,
+                JSON.stringify({ horizontalMovementAllowed: { value: false } }),
+            ]);
         });
     });
 });

@@ -1,4 +1,3 @@
-import { CallSender } from 'penpal';
 import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorConfigOptions,
