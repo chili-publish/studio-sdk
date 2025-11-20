@@ -92,7 +92,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedFrameController = new FrameController(mockedEditorApi);
+    mockedFrameController = new FrameController(Promise.resolve(mockedEditorApi));
 
     jest.spyOn(mockedEditorApi, 'addFrame');
     jest.spyOn(mockedEditorApi, 'addBarcodeFrame');

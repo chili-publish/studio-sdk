@@ -10,12 +10,12 @@ export class AnimationController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(children: EditorAPI) {
+    constructor(children: Promise<EditorAPI>) {
         this.#editorAPI = children;
     }
 

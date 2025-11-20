@@ -1,4 +1,3 @@
-import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import {
@@ -10,7 +9,7 @@ import {
     PositionEnum,
     ResizableLayoutPropertiesUpdate,
     SelectLayoutOptions,
-    LayoutOptionPageSize
+    LayoutOptionPageSize,
 } from '../types/LayoutTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -22,15 +21,15 @@ export class LayoutController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
-    #blobAPI: EditorRawAPI;
+    #editorAPI: Promise<EditorAPI>;
+    #blobAPI: Promise<EditorRawAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as Promise<EditorRawAPI>;
     }
 
     /**
@@ -301,11 +300,11 @@ export class LayoutController {
     setBleedValue = async (id: Id, value: string, position?: PositionEnum) => {
         const update: BleedDeltaUpdate = position
             ? {
-                left: position === PositionEnum.left ? value : undefined,
-                top: position === PositionEnum.top ? value : undefined,
-                right: position === PositionEnum.right ? value : undefined,
-                bottom: position === PositionEnum.bottom ? value : undefined,
-            }
+                  left: position === PositionEnum.left ? value : undefined,
+                  top: position === PositionEnum.top ? value : undefined,
+                  right: position === PositionEnum.right ? value : undefined,
+                  bottom: position === PositionEnum.bottom ? value : undefined,
+              }
             : { left: value, top: value, right: value, bottom: value };
 
         const res = await this.#editorAPI;

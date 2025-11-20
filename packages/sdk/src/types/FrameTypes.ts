@@ -419,7 +419,6 @@ export enum CropType {
     assetCrop = 'assetCrop',
 }
 
-
 export type FrameConstraints = {
     selectable: PropertyState<boolean>;
     horizontal: PropertyState<{ allowed: boolean }>;
@@ -427,7 +426,6 @@ export type FrameConstraints = {
     rotation: PropertyState<{ allowed: boolean }>;
     resize: PropertyState<{ allowed: boolean }>;
 };
-
 
 export interface FrameConstraintsDeltaUpdate {
     selectable?: {

@@ -1,7 +1,7 @@
-import { Connection } from 'penpal';
 import engineInfo from '../editor-engine.json';
 import packageInfo from '../package.json';
 import Connect from './interactions/Connector';
+import { StudioConnection } from './interactions/base/StudioConnection';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
@@ -49,16 +49,16 @@ declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
 const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}/web`;
 
-let connection: Connection;
+let connection: StudioConnection;
 
 export class SDK {
     config: RuntimeConfigType;
-    connection: Connection;
+    connection: StudioConnection;
 
     /**
      * @ignore
      */
-    editorAPI: EditorAPI;
+    editorAPI: Promise<EditorAPI>;
 
     action: ActionController;
     layout: LayoutController;
@@ -109,7 +109,7 @@ export class SDK {
         this.connection = connection;
         this.editorAPI = connection?.promise.then((child) => {
             return child;
-        }) as unknown as EditorAPI;
+        }) as unknown as Promise<EditorAPI>;
 
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
@@ -221,9 +221,7 @@ export class SDK {
             this.config.editorId,
             this.config.studioStyling,
         );
-        this.editorAPI = connection?.promise.then((editorAPI) => {
-            return editorAPI;
-        }) as unknown as EditorAPI;
+        this.editorAPI = connection?.promise;
 
         this.action = new ActionController(this.editorAPI);
         this.layout = new LayoutController(this.editorAPI);
@@ -284,7 +282,7 @@ export class SDK {
         );
     };
 
-    setConnection = (newConnection: Connection) => {
+    setConnection = (newConnection: StudioConnection) => {
         connection = newConnection;
     };
 }

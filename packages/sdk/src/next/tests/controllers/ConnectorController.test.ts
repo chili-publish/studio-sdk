@@ -20,7 +20,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedConnectorController = new ConnectorController(mockEditorApi);
+    mockedConnectorController = new ConnectorController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getConnectorById');
     jest.spyOn(mockEditorApi, 'getConnectors');
     jest.spyOn(mockEditorApi, 'registerConnector');

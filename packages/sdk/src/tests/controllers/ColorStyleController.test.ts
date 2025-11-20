@@ -17,7 +17,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedColorStyleController = new ColorStyleController(mockEditorApi);
+    mockedColorStyleController = new ColorStyleController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getColors');
     jest.spyOn(mockEditorApi, 'getColorById');
     jest.spyOn(mockEditorApi, 'createColor');

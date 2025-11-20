@@ -21,7 +21,7 @@ beforeEach(() => {
     jest.spyOn(MathUtils, 'round');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
-    mockedUtilsController = new UtilsController(mockedEditorApi, mockedLocalConfig);
+    mockedUtilsController = new UtilsController(Promise.resolve(mockedEditorApi), mockedLocalConfig);
 });
 
 afterEach(() => {

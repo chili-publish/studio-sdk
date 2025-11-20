@@ -1,9 +1,9 @@
-import * as ConnectorFunctions from '../../interactions/Connector';
+import * as PenpalFunction from '../../interactions/PenpalConnectionProvider';
 
 const editorLink = 'https://test.test.net/';
 beforeEach(() => {
-    jest.spyOn(ConnectorFunctions, 'validateEditorLink');
-    jest.spyOn(ConnectorFunctions, 'setupFrame');
+    jest.spyOn(PenpalFunction, 'validateEditorLink');
+    jest.spyOn(PenpalFunction, 'setupFrame');
     Object.defineProperty(window, 'initializeStudioEngine', {
         configurable: true,
         enumerable: true,
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe('Connector helpers', () => {
     it('validates an editor link', () => {
-        const validatedLink = ConnectorFunctions.validateEditorLink(editorLink);
+        const validatedLink = PenpalFunction.validateEditorLink(editorLink);
         expect(validatedLink).toEqual(editorLink);
     });
 
@@ -25,7 +25,7 @@ describe('Connector helpers', () => {
         iframe.setAttribute('style', 'width: 100%; height: 100%;');
         iframe.setAttribute('frameBorder', '0');
         iframe.setAttribute('referrerpolicy', 'origin');
-        ConnectorFunctions.setupFrame(iframe, editorLink);
+        PenpalFunction.setupFrame(iframe, editorLink);
         // expect(iframe.srcdoc).toEqual('placeholder');
         // expect(iframe.title).toEqual('Chili-Editor');
     });
@@ -34,7 +34,7 @@ describe('Connector helpers', () => {
         const styling = { uiBackgroundColorHex: '000000' };
 
         const iframe = document.createElement('iframe');
-        ConnectorFunctions.setupFrame(iframe, editorLink, styling);
+        PenpalFunction.setupFrame(iframe, editorLink, styling);
         const doc = iframe.ownerDocument;
 
         const metas = doc.head.getElementsByTagName('meta');

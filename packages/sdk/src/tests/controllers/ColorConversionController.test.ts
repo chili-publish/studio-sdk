@@ -10,7 +10,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedColorConversionController = new ColorConversionController(mockedEditorApi);
+    mockedColorConversionController = new ColorConversionController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'colorToRgb');
 });
 

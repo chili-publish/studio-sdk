@@ -35,14 +35,14 @@ export class ConnectorController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     #localConfig: Map<string, string>;
     #connectorCompatibilityTools: ConnectorCompatibilityTools;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
+    constructor(editorAPI: Promise<EditorAPI>, localConfig: Map<string, string>) {
         this.#editorAPI = editorAPI;
         this.#localConfig = localConfig;
         this.#connectorCompatibilityTools = new ConnectorCompatibilityTools();
