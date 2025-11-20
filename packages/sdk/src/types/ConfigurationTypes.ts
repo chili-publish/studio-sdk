@@ -8,12 +8,14 @@ export enum WellKnownConfigurationKeys {
 }
 
 export enum FrameEditingMode {
-    /** Default (Designer) mode
+    /** 
+     * Default (Designer) mode
      * No constraints
      */
     full,
 
-    /** End user mode
+    /** 
+     * End user mode
      * Limits the existing tools to the given constraints
      */
     followConstraints,
@@ -29,7 +31,10 @@ export type StudioStyling = {
 export type StudioOptionsDeltaUpdate = {
     /** Options for the different studio engine shortcuts */
     shortcutOptions?: ShortcutOptionsDeltaUpdate;
-    /** Options for the different frame editing modes */
+    /** 
+     * Determines which editing mode should be allowed
+     * @defaultValue `FrameEditingMode.full`
+    */
     frameEditingMode?: FrameEditingMode;
 };
 
