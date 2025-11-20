@@ -13,7 +13,8 @@ global.fetch = mockFetch;
 const mockedEditorApi: EditorAPI = {
     mediaConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorDownload: async () => new Uint8Array() as unknown as EditorResponse<null>,
+    mediaConnectorDownload: async <T>() =>
+        new Uint8Array() as unknown as EditorResponse<T>,
     mediaConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
