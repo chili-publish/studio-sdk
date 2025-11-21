@@ -34,7 +34,7 @@ export enum DownloadFormats {
     /**
      * @experimental This download format is experimental.
      */
-    HTML = 'html'
+    HTML = 'html',
 }
 
 export enum EnvironmentType {
