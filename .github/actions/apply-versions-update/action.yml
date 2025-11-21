@@ -107,5 +107,10 @@ runs:
         VERSION_COMMIT=$(git rev-parse HEAD)
         echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
 
-        # Push changes
-        git push origin "$BRANCH_TO_PUSH"
+        # Create tag pointing to the version commit
+        git tag "$TAG_NAME" "$VERSION_COMMIT"
+
+        # Push branch and tag together to trigger tag push workflow (deploy-release.yml)
+        git push origin "$BRANCH_TO_PUSH" "$TAG_NAME"
+      env:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
