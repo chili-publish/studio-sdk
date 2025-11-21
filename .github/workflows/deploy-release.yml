@@ -136,336 +136,336 @@ jobs:
       - name: Run tests
         run: yarn cover
 
-  publish:
-    needs: [validate-tag-release, detect-release-type, preflight]
-    if: needs.validate-tag-release.outputs.release_exists == 'true'
-    runs-on: ubuntu-latest
-    environment: ${{ needs.detect-release-type.outputs.environment }}
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.detect-release-type.outputs.tag_name }}
+  # publish:
+  #   needs: [validate-tag-release, detect-release-type, preflight]
+  #   if: needs.validate-tag-release.outputs.release_exists == 'true'
+  #   runs-on: ubuntu-latest
+  #   environment: ${{ needs.detect-release-type.outputs.environment }}
+  #   permissions:
+  #     contents: read
+  #     id-token: write
+  #     packages: write
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ needs.detect-release-type.outputs.tag_name }}
 
-      - name: Check cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            packages/sdk/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-          restore-keys: |
-            ${{ runner.os }}-node-
+  #     - name: Check cache
+  #       id: cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           node_modules
+  #           packages/sdk/node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
-          scope: ${{ needs.detect-release-type.outputs.npm_scope }}
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
+  #         scope: ${{ needs.detect-release-type.outputs.npm_scope }}
 
-      - name: Force OIDC (remove tokens & point to npmjs)
-        if: needs.detect-release-type.outputs.is_prd == 'true'
-        run: |
-          set -euxo pipefail
-          # Show if anything suspicious is present
-          env | grep -E 'NODE_AUTH_TOKEN|NPM_TOKEN' || true
-          npm config get registry
-          # Remove env token + any temp .npmrc with auth
-          unset NODE_AUTH_TOKEN || true
-          npm config delete //registry.npmjs.org/:_authToken || true
-          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
-            rm -f "$NPM_CONFIG_USERCONFIG"
-          fi
-          # Ensure we publish to npmjs for our scope
-          npm config set registry https://registry.npmjs.org/
-          npm config set @chili-publish:registry https://registry.npmjs.org/
-          npm ping
+  #     - name: Force OIDC (remove tokens & point to npmjs)
+  #       if: needs.detect-release-type.outputs.is_prd == 'true'
+  #       run: |
+  #         set -euxo pipefail
+  #         # Show if anything suspicious is present
+  #         env | grep -E 'NODE_AUTH_TOKEN|NPM_TOKEN' || true
+  #         npm config get registry
+  #         # Remove env token + any temp .npmrc with auth
+  #         unset NODE_AUTH_TOKEN || true
+  #         npm config delete //registry.npmjs.org/:_authToken || true
+  #         if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
+  #           rm -f "$NPM_CONFIG_USERCONFIG"
+  #         fi
+  #         # Ensure we publish to npmjs for our scope
+  #         npm config set registry https://registry.npmjs.org/
+  #         npm config set @chili-publish:registry https://registry.npmjs.org/
+  #         npm ping
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ needs.detect-release-type.outputs.is_uat == 'true' && secrets.GITHUB_TOKEN || '' }}
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ needs.detect-release-type.outputs.is_uat == 'true' && secrets.GITHUB_TOKEN || '' }}
 
-      - name: Build code
-        run: yarn build
-        env:
-          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
+  #     - name: Build code
+  #       run: yarn build
+  #       env:
+  #         ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
 
-      - name: Publish SDK to GitHub Packages (UAT)
-        if: needs.detect-release-type.outputs.is_uat == 'true'
-        working-directory: packages/sdk
-        run: |
-          node -p "require('./package.json').name + ' ' + require('./package.json').version"
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Publish SDK to GitHub Packages (UAT)
+  #       if: needs.detect-release-type.outputs.is_uat == 'true'
+  #       working-directory: packages/sdk
+  #       run: |
+  #         node -p "require('./package.json').name + ' ' + require('./package.json').version"
+  #         npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish Connectors to GitHub Packages (UAT)
-        if: needs.detect-release-type.outputs.is_uat == 'true'
-        working-directory: packages/connectors
-        run: |
-          node -p "require('./package.json').name + ' ' + require('./package.json').version"
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Publish Connectors to GitHub Packages (UAT)
+  #       if: needs.detect-release-type.outputs.is_uat == 'true'
+  #       working-directory: packages/connectors
+  #       run: |
+  #         node -p "require('./package.json').name + ' ' + require('./package.json').version"
+  #         npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish SDK to NPM (PRD OIDC)
-        if: needs.detect-release-type.outputs.is_prd == 'true'
-        working-directory: packages/sdk
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
-        run: |
-          node -p "require('./package.json').name + ' ' + require('./package.json').version"
-          npm publish --access public --tag latest
+  #     - name: Publish SDK to NPM (PRD OIDC)
+  #       if: needs.detect-release-type.outputs.is_prd == 'true'
+  #       working-directory: packages/sdk
+  #       env:
+  #         NPM_CONFIG_PROVENANCE: "true"
+  #       run: |
+  #         node -p "require('./package.json').name + ' ' + require('./package.json').version"
+  #         npm publish --access public --tag latest
 
-      - name: Publish Connectors to NPM (PRD OIDC)
-        if: needs.detect-release-type.outputs.is_prd == 'true'
-        working-directory: packages/connectors
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
-        run: |
-          node -p "require('./package.json').name + ' ' + require('./package.json').version"
-          npm publish --access public --tag latest
+  #     - name: Publish Connectors to NPM (PRD OIDC)
+  #       if: needs.detect-release-type.outputs.is_prd == 'true'
+  #       working-directory: packages/connectors
+  #       env:
+  #         NPM_CONFIG_PROVENANCE: "true"
+  #       run: |
+  #         node -p "require('./package.json').name + ' ' + require('./package.json').version"
+  #         npm publish --access public --tag latest
 
-  deploy-azure:
-    needs: [validate-tag-release, detect-release-type, preflight]
-    if: needs.validate-tag-release.outputs.release_exists == 'true'
-    runs-on: ubuntu-latest
-    environment: ${{ needs.detect-release-type.outputs.environment }}
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.detect-release-type.outputs.tag_name }}
+  # deploy-azure:
+  #   needs: [validate-tag-release, detect-release-type, preflight]
+  #   if: needs.validate-tag-release.outputs.release_exists == 'true'
+  #   runs-on: ubuntu-latest
+  #   environment: ${{ needs.detect-release-type.outputs.environment }}
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ needs.detect-release-type.outputs.tag_name }}
 
-      - name: Check cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            packages/sdk/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-          restore-keys: |
-            ${{ runner.os }}-node-
+  #     - name: Check cache
+  #       id: cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           node_modules
+  #           packages/sdk/node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
-          scope: ${{ needs.detect-release-type.outputs.npm_scope }}
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
+  #         scope: ${{ needs.detect-release-type.outputs.npm_scope }}
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ needs.detect-release-type.outputs.is_uat == 'true' && secrets.GITHUB_TOKEN || '' }}
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ needs.detect-release-type.outputs.is_uat == 'true' && secrets.GITHUB_TOKEN || '' }}
 
-      - name: Build code
-        run: yarn build
-        env:
-          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
+  #     - name: Build code
+  #       run: yarn build
+  #       env:
+  #         ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
 
-      - name: Prepare CDN upload (UAT)
-        if: needs.detect-release-type.outputs.is_uat == 'true'
-        run: |
-          path=packages/sdk/upload/latest
-          versionpath=packages/sdk/upload/${{ needs.detect-release-type.outputs.version }}
-          mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
-          mkdir -p ${versionpath%"/merge"}
-          cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
+  #     - name: Prepare CDN upload (UAT)
+  #       if: needs.detect-release-type.outputs.is_uat == 'true'
+  #       run: |
+  #         path=packages/sdk/upload/latest
+  #         versionpath=packages/sdk/upload/${{ needs.detect-release-type.outputs.version }}
+  #         mkdir -p ${path%"/merge"}
+  #         cp -R packages/sdk/_bundles/* ${path%"/merge"}
+  #         mkdir -p ${versionpath%"/merge"}
+  #         cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
 
-      - name: Prepare CDN upload (PRD)
-        if: needs.detect-release-type.outputs.is_prd == 'true'
-        env:
-          RELEASE_NAME: ${{ needs.detect-release-type.outputs.version }}
-        run: |
-          path=packages/sdk/upload/latest
-          minorversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+")
-          patchversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+" | cut -d. -f3)
-          minorlatestpath=packages/sdk/upload/$minorversion/latest
-          patchlatestpath=packages/sdk/upload/$minorversion/$patchversion/latest
-          mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
-          mkdir -p ${minorlatestpath%"/merge"}
-          cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
-          mkdir -p ${patchlatestpath%"/merge"}
-          cp -R packages/sdk/_bundles/* ${patchlatestpath%"/merge"}
+  #     - name: Prepare CDN upload (PRD)
+  #       if: needs.detect-release-type.outputs.is_prd == 'true'
+  #       env:
+  #         RELEASE_NAME: ${{ needs.detect-release-type.outputs.version }}
+  #       run: |
+  #         path=packages/sdk/upload/latest
+  #         minorversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+")
+  #         patchversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+" | cut -d. -f3)
+  #         minorlatestpath=packages/sdk/upload/$minorversion/latest
+  #         patchlatestpath=packages/sdk/upload/$minorversion/$patchversion/latest
+  #         mkdir -p ${path%"/merge"}
+  #         cp -R packages/sdk/_bundles/* ${path%"/merge"}
+  #         mkdir -p ${minorlatestpath%"/merge"}
+  #         cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
+  #         mkdir -p ${patchlatestpath%"/merge"}
+  #         cp -R packages/sdk/_bundles/* ${patchlatestpath%"/merge"}
 
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: >-
-            {
-              "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
-              "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
-              "tenantId": "${{ vars.AZ_TENANT_ID }}",
-              "subscriptionId": "${{ needs.detect-release-type.outputs.subscription_id }}"
-            }
+  #     - name: Azure Login
+  #       uses: azure/login@v2
+  #       with:
+  #         creds: >-
+  #           {
+  #             "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
+  #             "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
+  #             "tenantId": "${{ vars.AZ_TENANT_ID }}",
+  #             "subscriptionId": "${{ needs.detect-release-type.outputs.subscription_id }}"
+  #           }
 
-      - name: Copy SDK to Azure Blob Storage
-        uses: azure/cli@v2
-        with:
-          inlineScript: |
-            az storage blob upload-batch \
-              --account-name "${{ needs.detect-release-type.outputs.storage_account_name }}" \
-              --destination sdk \
-              --source packages/sdk/upload/ \
-              --overwrite true \
-              --auth-mode login
+  #     - name: Copy SDK to Azure Blob Storage
+  #       uses: azure/cli@v2
+  #       with:
+  #         inlineScript: |
+  #           az storage blob upload-batch \
+  #             --account-name "${{ needs.detect-release-type.outputs.storage_account_name }}" \
+  #             --destination sdk \
+  #             --source packages/sdk/upload/ \
+  #             --overwrite true \
+  #             --auth-mode login
 
-      - name: Prepare for actions upload
-        run: |
-          node cicd.js actions node scripts/prepare-release.mjs
+  #     - name: Prepare for actions upload
+  #       run: |
+  #         node cicd.js actions node scripts/prepare-release.mjs
 
-      - name: Copy Actions to Azure Blob Storage
-        uses: azure/cli@v2
-        with:
-          inlineScript: |
-            az storage blob upload-batch \
-              --account-name "${{ needs.detect-release-type.outputs.storage_account_name }}" \
-              --destination sdk \
-              --source packages/actions/cdn/ \
-              --overwrite true \
-              --auth-mode login
+  #     - name: Copy Actions to Azure Blob Storage
+  #       uses: azure/cli@v2
+  #       with:
+  #         inlineScript: |
+  #           az storage blob upload-batch \
+  #             --account-name "${{ needs.detect-release-type.outputs.storage_account_name }}" \
+  #             --destination sdk \
+  #             --source packages/actions/cdn/ \
+  #             --overwrite true \
+  #             --auth-mode login
 
-  notify:
-    needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
-    if: needs.validate-tag-release.outputs.release_exists == 'true'
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - name: Notify Teams
-        run: |
-          VERSION="${{ needs.detect-release-type.outputs.version }}"
-          TAG_NAME="${{ needs.detect-release-type.outputs.tag_name }}"
-          RELEASE_TYPE="${{ needs.detect-release-type.outputs.is_uat == 'true' && 'UAT' || 'Production' }}"
-          EMOJI="${{ needs.detect-release-type.outputs.is_uat == 'true' && '🧪' || '🎉' }}"
+  # notify:
+  #   needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
+  #   if: needs.validate-tag-release.outputs.release_exists == 'true'
+  #   runs-on: ubuntu-latest
+  #   permissions: {}
+  #   steps:
+  #     - name: Notify Teams
+  #       run: |
+  #         VERSION="${{ needs.detect-release-type.outputs.version }}"
+  #         TAG_NAME="${{ needs.detect-release-type.outputs.tag_name }}"
+  #         RELEASE_TYPE="${{ needs.detect-release-type.outputs.is_uat == 'true' && 'UAT' || 'Production' }}"
+  #         EMOJI="${{ needs.detect-release-type.outputs.is_uat == 'true' && '🧪' || '🎉' }}"
 
-          payload=$(cat <<EOF
-          {
-              "text": "$EMOJI **$RELEASE_TYPE Deployment Completed**\n\n**Version:** $VERSION\n**Tag:** $TAG_NAME\n\nDeployment to $RELEASE_TYPE environment completed successfully."
-          }
-          EOF
-          )
-          curl --request POST \
-          --header "Content-Type: application/json" \
-          --data "$payload" \
-          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
+  #         payload=$(cat <<EOF
+  #         {
+  #             "text": "$EMOJI **$RELEASE_TYPE Deployment Completed**\n\n**Version:** $VERSION\n**Tag:** $TAG_NAME\n\nDeployment to $RELEASE_TYPE environment completed successfully."
+  #         }
+  #         EOF
+  #         )
+  #         curl --request POST \
+  #         --header "Content-Type: application/json" \
+  #         --data "$payload" \
+  #         "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
 
-  bump-main-version:
-    needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
-    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Get GitHub App Access Token
-        id: github-app-access-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
-          owner: ${{ github.repository_owner }}
+  # bump-main-version:
+  #   needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
+  #   if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Get GitHub App Access Token
+  #       id: github-app-access-token
+  #       uses: actions/create-github-app-token@v2
+  #       with:
+  #         app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+  #         private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
+  #         owner: ${{ github.repository_owner }}
 
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ steps.github-app-access-token.outputs.token }}
-          fetch-depth: 0
+  #     - name: Checkout main branch
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: main
+  #         token: ${{ steps.github-app-access-token.outputs.token }}
+  #         fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
 
-      - name: Check cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            packages/sdk/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
-          restore-keys: |
-            ${{ runner.os }}-node-
+  #     - name: Check cache
+  #       id: cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           node_modules
+  #           packages/sdk/node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
 
-      - name: Check if hotfix release
-        id: check_hotfix
-        run: |
-          CURRENT_TAG="${{ needs.detect-release-type.outputs.version }}"
+  #     - name: Check if hotfix release
+  #       id: check_hotfix
+  #       run: |
+  #         CURRENT_TAG="${{ needs.detect-release-type.outputs.version }}"
 
-          # Get previous production release (skip the current release)
-          # Get all production releases and filter out the current tag, then take the first one
-          PREVIOUS_TAG=$(gh release list --limit 10 --json isPrerelease,tagName --jq ".[] | select(.isPrerelease == false) | select(.tagName != \"$CURRENT_TAG\") | .tagName" | head -1)
+  #         # Get previous production release (skip the current release)
+  #         # Get all production releases and filter out the current tag, then take the first one
+  #         PREVIOUS_TAG=$(gh release list --limit 10 --json isPrerelease,tagName --jq ".[] | select(.isPrerelease == false) | select(.tagName != \"$CURRENT_TAG\") | .tagName" | head -1)
 
-          if [ -z "$PREVIOUS_TAG" ]; then
-            echo "is_hotfix=false" >> $GITHUB_OUTPUT
-            echo "No previous release found, assuming regular release"
-            exit 0
-          fi
+  #         if [ -z "$PREVIOUS_TAG" ]; then
+  #           echo "is_hotfix=false" >> $GITHUB_OUTPUT
+  #           echo "No previous release found, assuming regular release"
+  #           exit 0
+  #         fi
 
-          # Extract major.minor from both versions
-          CURRENT_MINOR=$(echo "$CURRENT_TAG" | cut -d. -f1,2)
-          PREVIOUS_MINOR=$(echo "$PREVIOUS_TAG" | cut -d. -f1,2)
+  #         # Extract major.minor from both versions
+  #         CURRENT_MINOR=$(echo "$CURRENT_TAG" | cut -d. -f1,2)
+  #         PREVIOUS_MINOR=$(echo "$PREVIOUS_TAG" | cut -d. -f1,2)
 
-          # If minor version is the same, it's a hotfix (patch increment)
-          if [ "$CURRENT_MINOR" = "$PREVIOUS_MINOR" ]; then
-            echo "is_hotfix=true" >> $GITHUB_OUTPUT
-            echo "Detected hotfix release (minor version unchanged: $CURRENT_MINOR)"
-          else
-            echo "is_hotfix=false" >> $GITHUB_OUTPUT
-            echo "Detected regular release (minor version changed: $PREVIOUS_MINOR -> $CURRENT_MINOR)"
-          fi
+  #         # If minor version is the same, it's a hotfix (patch increment)
+  #         if [ "$CURRENT_MINOR" = "$PREVIOUS_MINOR" ]; then
+  #           echo "is_hotfix=true" >> $GITHUB_OUTPUT
+  #           echo "Detected hotfix release (minor version unchanged: $CURRENT_MINOR)"
+  #         else
+  #           echo "is_hotfix=false" >> $GITHUB_OUTPUT
+  #           echo "Detected regular release (minor version changed: $PREVIOUS_MINOR -> $CURRENT_MINOR)"
+  #         fi
 
-      - name: Get current version
-        id: current_version
-        if: steps.check_hotfix.outputs.is_hotfix != 'true'
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "current_version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Current version in main: $VERSION"
+  #     - name: Get current version
+  #       id: current_version
+  #       if: steps.check_hotfix.outputs.is_hotfix != 'true'
+  #       run: |
+  #         VERSION=$(node -p "require('./package.json').version")
+  #         echo "current_version=$VERSION" >> $GITHUB_OUTPUT
+  #         echo "Current version in main: $VERSION"
 
-      - name: Bump to next minor alpha
-        if: steps.check_hotfix.outputs.is_hotfix != 'true'
-        id: bump_version
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+  #     - name: Bump to next minor alpha
+  #       if: steps.check_hotfix.outputs.is_hotfix != 'true'
+  #       id: bump_version
+  #       run: |
+  #         git config --global user.name 'github-actions[bot]'
+  #         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-          # Calculate next minor version with alpha.0 (only for regular production releases)
-          NEW_VERSION=$(npm version preminor --preid=alpha --git-tag-version=false)
+  #         # Calculate next minor version with alpha.0 (only for regular production releases)
+  #         NEW_VERSION=$(npm version preminor --preid=alpha --git-tag-version=false)
 
-          # Remove 'v' prefix if present
-          NEXT_VERSION=$(echo $NEW_VERSION | sed 's/^v//')
+  #         # Remove 'v' prefix if present
+  #         NEXT_VERSION=$(echo $NEW_VERSION | sed 's/^v//')
 
-          echo "new_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
-          echo "Bumped version to: $NEXT_VERSION"
+  #         echo "new_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+  #         echo "Bumped version to: $NEXT_VERSION"
 
-      - name: Execute replicate version script
-        if: steps.check_hotfix.outputs.is_hotfix != 'true'
-        run: node ./.github/scripts/replicate-version.js
+  #     - name: Execute replicate version script
+  #       if: steps.check_hotfix.outputs.is_hotfix != 'true'
+  #       run: node ./.github/scripts/replicate-version.js
 
-      - name: Commit and push version bump
-        if: steps.check_hotfix.outputs.is_hotfix != 'true'
-        run: |
-          git add package.json yarn.lock || true
-          git add packages/*/package.json packages/*/yarn.lock || true
-          git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
-          git push origin main
-          echo "Pushed version bump to main branch"
+  #     - name: Commit and push version bump
+  #       if: steps.check_hotfix.outputs.is_hotfix != 'true'
+  #       run: |
+  #         git add package.json yarn.lock || true
+  #         git add packages/*/package.json packages/*/yarn.lock || true
+  #         git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
+  #         git push origin main
+  #         echo "Pushed version bump to main branch"

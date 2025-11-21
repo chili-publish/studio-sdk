@@ -57,7 +57,7 @@ jobs:
           ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
 
           # Define target branch. It states for the branch that will be used for release commit history merges.
-          TARGET_BRANCH="main"
+          TARGET_BRANCH="fix/WRS-2503"-push-tag-directly
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
