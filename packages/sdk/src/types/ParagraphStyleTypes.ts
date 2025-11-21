@@ -131,6 +131,30 @@ export type ParagraphStyleUpdate = {
     bulletListCharacterStyleId?: {
         value?: string;
     };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListNumberingStyle?: {
+        value: NumericListNumberingStyle[];
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListLeftIndent?: {
+        value: string;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListTextIndent?: {
+        value: string;
+    };
+    /**
+     * @experimental This property is experimental and may be changed in the future.
+     */
+    numericListCharacterStyleId?: {
+        value?: string;
+    };
 };
 
 export type BulletListStyle = {
@@ -148,5 +172,27 @@ export type BulletListStyle = {
 export type NumericListStyle = {
     leftIndent: number;
     textIndent: number;
+    numberingStyle: NumericListNumberingStyle[];
     characterStyleId?: string;
 };
+
+export type NumericListNumberingStyle = {
+    format: NumberListFormat;
+    symbol: NumberListSeparatorSymbol;
+};
+
+export enum NumberListFormat {
+    arabic = 'arabic',
+    romanUpperCase = 'romanUpperCase',
+    romanLowerCase = 'romanLowerCase',
+    latinUpperCase = 'latinUpperCase',
+    latinLowerCase = 'latinLowerCase',
+}
+
+export enum NumberListSeparatorSymbol {
+    none = 'none',
+    dash = 'dash',
+    dot = 'dot',
+    colon = 'colon',
+    roundBracket = 'roundBracket',
+}
