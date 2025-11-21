@@ -12,6 +12,8 @@ import {
     FrameAnchorProperties,
     FrameAnchorType,
     FrameConfiguration,
+    FrameConstraints,
+    FrameConstraintsDeltaUpdate,
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
@@ -37,6 +39,12 @@ export class FrameController {
      * @ignore
      */
     #editorAPI: EditorAPI;
+    constraints: FrameConstraintController;
+    /**
+     * This variable helps to redirect shapes related methods to newly introduced ShapeController
+     * to avoid any breaking changes
+     */
+    private shapeController: ShapeController;
 
     /**
      * @ignore
@@ -44,13 +52,9 @@ export class FrameController {
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
         this.shapeController = new ShapeController(this.#editorAPI);
+        this.constraints = new FrameConstraintController(this.#editorAPI);
     }
 
-    /**
-     * This variable helps to redirect shapes related methods to newly introduced ShapeController
-     * to avoid any breaking changes
-     */
-    private shapeController: ShapeController;
     /**
      * This method returns the list of frames
      * @returns list of all frames
@@ -1219,5 +1223,89 @@ export class FrameController {
         return res
             .updateFrameGradientSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
+    };
+}
+
+export class FrameConstraintController {
+    /**
+     * @ignore
+     */
+    #editorAPI: EditorAPI;
+
+    /**
+     * @ignore
+     */
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    /**
+     * This method will retrieve all constraints for a specified frame
+     * @param id the id of the frame that we want to know the constraints from
+     * @returns the constraints configuration for the frame
+     */
+    get = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getFrameConstraints(id).then((result) => getEditorResponseData<FrameConstraints>(result));
+    };
+
+    /**
+     * This method will set the selectable constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether the frame is selectable or not
+     * @returns
+     */
+    setSelectable = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectable: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the horizontal movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether horizontal movement is allowed or not
+     * @returns
+     */
+    setHorizontalMovement = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { horizontalMovementAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the vertical movement constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether vertical movement is allowed or not
+     * @returns
+     */
+    setVerticalMovement = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { verticalMovementAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the rotation constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether rotation is allowed or not
+     * @returns
+     */
+    setRotation = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { rotationAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the resize constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether resize is allowed or not
+     * @returns
+     */
+    setResize = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res.updateFrameConstraints(id, JSON.stringify(deltaUpdate)).then((result) => getEditorResponseData<null>(result));
     };
 }

@@ -1,0 +1,116 @@
+name: "Apply version's update"
+description: "Bump version, replicate to packages, optionally update engine, and commit changes"
+inputs:
+  version_strategy:
+    required: true
+    description: "Version bump strategy: 'prerelease', 'prerelease-conditional', or 'patch'"
+  engine_version:
+    required: false
+    description: "Engine version to update (optional, only for UAT regular)"
+  version_branch:
+    required: false
+    description: "Branch name to commit version changes to (if provided, commits directly to this branch; otherwise creates a temporary version branch)"
+outputs:
+  tag_name:
+    description: "The new version tag name"
+    value: ${{ steps.bump_version.outputs.tag_name }}
+  version_commit_sha:
+    description: "SHA of the version commit"
+    value: ${{ steps.commit_version.outputs.version_commit_sha }}
+  created_version_branch:
+    description: "Created version branch name (only set if version_branch input is not provided)"
+    value: ${{ steps.commit_version.outputs.version_branch }}
+runs:
+  using: composite
+  steps:
+    - name: Bump version in memory
+      id: bump_version
+      shell: bash
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+        VERSION_STRATEGY="${{ inputs.version_strategy }}"
+
+        if [ "$VERSION_STRATEGY" = "prerelease" ]; then
+          # UAT regular: add -rc.0 prefix (minor version already bumped in post-production step)
+          # e.g., 1.3.0-alpha.0 -> 1.3.0-rc.0
+          NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+        elif [ "$VERSION_STRATEGY" = "prerelease-conditional" ]; then
+          # UAT hotfix: Check if we're hotfixing an existing UAT release
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [[ "$CURRENT_VERSION" == *"-rc."* ]]; then
+            # Hotfix existing UAT release: increment prerelease number only
+            # e.g., 1.2.3-rc.0 -> 1.2.3-rc.1
+            NEW_VERSION=$(npm version prerelease --preid=rc --git-tag-version=false)
+          else
+            # New UAT hotfix from main or production: increment patch and add -rc.0
+            # e.g., 1.2.3 -> 1.2.4-rc.0
+            NEW_VERSION=$(npm version prepatch --preid=rc --git-tag-version=false)
+          fi
+        elif [ "$VERSION_STRATEGY" = "patch" ]; then
+          # PRD releases (both regular and hotfix): strip prerelease suffix
+          # e.g., 1.3.0-rc.2 -> 1.3.0 (regular)
+          # e.g., 1.2.3-rc.1 -> 1.2.3 (hotfix, patch already incremented in UAT)
+          NEW_VERSION=$(npm version patch --git-tag-version=false)
+        else
+          echo "❌ Error: Unknown version strategy: $VERSION_STRATEGY"
+          exit 1
+        fi
+
+        # Remove 'v' prefix if present
+        TAG_NAME=$(echo $NEW_VERSION | sed 's/^v//')
+        echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+    - name: Execute replicate version script
+      shell: bash
+      run: node ./.github/scripts/replicate-version.js
+
+    - name: Update engine version
+      if: inputs.engine_version != ''
+      shell: bash
+      run: |
+        ENGINE_VERSION="${{ inputs.engine_version }}"
+        ENGINE_JSON="packages/sdk/editor-engine.json"
+
+        # Update the engine version in editor-engine.json
+        node -e "
+          const fs = require('fs');
+          const path = '$ENGINE_JSON';
+          const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+          data.current = '$ENGINE_VERSION';
+          fs.writeFileSync(path, JSON.stringify(data, null, 4));
+        "
+
+    - name: Commit and push version changes
+      id: commit_version
+      shell: bash
+      run: |
+        TAG_NAME="${{ steps.bump_version.outputs.tag_name }}"
+        VERSION_BRANCH_INPUT="${{ inputs.version_branch }}"
+
+        if [ -z "$VERSION_BRANCH_INPUT" ]; then
+          # Create a temporary version branch for the version commit
+          CREATED_VERSION_BRANCH="temp-release-$(date +%s)"
+          git checkout -b "$CREATED_VERSION_BRANCH"
+          echo "version_branch=$CREATED_VERSION_BRANCH" >> $GITHUB_OUTPUT
+          BRANCH_TO_PUSH="$CREATED_VERSION_BRANCH"
+        else
+          BRANCH_TO_PUSH="$VERSION_BRANCH_INPUT"
+        fi
+
+        # Stage version-related files
+        git add package.json packages/*/package.json packages/sdk/editor-engine.json 2>/dev/null || true
+
+        # Don't include [skip ci] in order to trigger tag push workflow (deployment) once release is published
+        git commit -m "chore: bump version to $TAG_NAME"
+        VERSION_COMMIT=$(git rev-parse HEAD)
+        echo "version_commit_sha=$VERSION_COMMIT" >> $GITHUB_OUTPUT
+
+        # Create tag pointing to the version commit
+        git tag "$TAG_NAME" "$VERSION_COMMIT"
+
+        # Push branch and tag together to trigger tag push workflow (deploy-release.yml)
+        git push origin "$BRANCH_TO_PUSH" "$TAG_NAME"
+      env:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}

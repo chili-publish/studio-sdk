@@ -47,6 +47,7 @@ export type {
     EndFrameAnchor,
     Frame,
     FrameAnchor,
+    FrameConstraints,
     FrameLayoutType,
     FrameType,
     ImageFrame,

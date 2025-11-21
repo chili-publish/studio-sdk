@@ -1,7 +1,7 @@
 name: PR Build
 on: [pull_request]
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 22.x
 permissions:
   contents: read
   actions: read
@@ -60,26 +60,49 @@ jobs:
         run: node cicd.js sdk yarn pack -f upload/dev-packages/$CI_PR_ID/studio-sdk.tgz
       - name: prepare for connectors upload
         run: node cicd.js connectors yarn prepare-upload
-      - name: copy file branch
+      - name: copy bundles
         run: |
-          path=packages/sdk/upload/coverage/$CI_REF_NAME && mkdir -p ${path%"/merge"} && cp -R packages/sdk/coverage/lcov-report/index.html packages/sdk/coverage/lcov-report/coverage.html &&
-          cp -R packages/sdk/coverage/lcov-report/src packages/sdk/coverage/lcov-report/coverage.html packages/sdk/coverage/lcov-report/base.css packages/sdk/coverage/lcov-report/prettify.css ${path%"/merge"} &&
           cp -R packages/sdk/_bundles packages/sdk/upload/dev-packages/$CI_PR_ID
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: >-
+            {
+              "clientId": "${{ vars.AZ_AD_CLIENT_ID_CP_RJS_INT_CICD_SP }}",
+              "clientSecret": "${{ secrets.AZ_AD_CLIENT_SECRET_CP_RJS_INT_CICD_SP }}",
+              "tenantId": "${{ vars.AZ_TENANT_ID }}",
+              "subscriptionId": "${{ vars.AZ_SUBSCRIPTION_ID_SAAS_DEV }}"
+            }
       - name: Copy to Azure Blob Storage
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/sdk/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/sdk/upload/ \
+              --overwrite true \
+              --auth-mode login
       - name: Copy to Azure Blob Storage (Connectors)
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/connectors/upload/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/connectors/upload/ \
+              --overwrite true \
+              --auth-mode login
       - name: prepare for actions upload
         run: |
           node cicd.js actions node scripts/prepare-release.mjs
       - name: Copy to Azure Blob Storage (Actions)
-        uses: azure/CLI@v1
+        uses: azure/cli@v2
         with:
           inlineScript: |
-            az storage blob upload-batch -d sdk -s packages/actions/cdn/ --connection-string "${{ secrets.AZURE_CDN_STUDIO_DEV_CONNECTION_STRING }}" --overwrite true
+            az storage blob upload-batch \
+              --account-name "${{ vars.STORAGE_ACCOUNT_NAME_DEV }}" \
+              --destination sdk \
+              --source packages/actions/cdn/ \
+              --overwrite true \
+              --auth-mode login
