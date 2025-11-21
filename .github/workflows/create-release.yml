@@ -148,6 +148,8 @@ jobs:
         with:
           version_strategy: "prerelease"
           engine_version: ${{ needs.configure-parameters.outputs.engine_version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release and prepare notification
         id: create_release_and_notify
@@ -259,6 +261,8 @@ jobs:
         with:
           version_strategy: "prerelease-conditional"
           version_branch: ${{ env.workflow_branch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release and prepare notification
         id: create_release_and_notify
@@ -392,6 +396,8 @@ jobs:
         with:
           version_strategy: "patch"
           version_branch: ${{ env.workflow_branch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release and prepare notification
         id: create_release_and_notify
