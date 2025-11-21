@@ -57,7 +57,7 @@ jobs:
           ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
 
           # Define target branch. It states for the branch that will be used for release commit history merges.
-          TARGET_BRANCH="fix/WRS-2503"-push-tag-directly
+          TARGET_BRANCH="main"
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
@@ -418,47 +418,47 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 
-  # notify-teams:
-  #   needs: [configure-parameters, uat-regular, uat-hotfix, production]
-  #   if: always() && (needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.production.result == 'success')
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #   steps:
-  #     - name: Extract notification text
-  #       id: extract_text
-  #       run: |
-  #         # Get notification text from the job that succeeded (only one will have a value)
-  #         # Check each job's result and get its notification text if it succeeded
-  #         TEXT=""
+  notify-teams:
+    needs: [configure-parameters, uat-regular, uat-hotfix, production]
+    if: always() && (needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.production.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Extract notification text
+        id: extract_text
+        run: |
+          # Get notification text from the job that succeeded (only one will have a value)
+          # Check each job's result and get its notification text if it succeeded
+          TEXT=""
 
-  #         if [ "${{ needs.uat-regular.result }}" == "success" ]; then
-  #           TEXT="${{ needs.uat-regular.outputs.notification_text }}"
-  #         elif [ "${{ needs.uat-hotfix.result }}" == "success" ]; then
-  #           TEXT="${{ needs.uat-hotfix.outputs.notification_text }}"
-  #         elif [ "${{ needs.production.result }}" == "success" ]; then
-  #           TEXT="${{ needs.production.outputs.notification_text }}"
-  #         fi
+          if [ "${{ needs.uat-regular.result }}" == "success" ]; then
+            TEXT="${{ needs.uat-regular.outputs.notification_text }}"
+          elif [ "${{ needs.uat-hotfix.result }}" == "success" ]; then
+            TEXT="${{ needs.uat-hotfix.outputs.notification_text }}"
+          elif [ "${{ needs.production.result }}" == "success" ]; then
+            TEXT="${{ needs.production.outputs.notification_text }}"
+          fi
 
-  #         if [ -z "$TEXT" ]; then
-  #           echo "⚠️  No notification text available. Skipping Teams notification."
-  #           exit 0
-  #         fi
+          if [ -z "$TEXT" ]; then
+            echo "⚠️  No notification text available. Skipping Teams notification."
+            exit 0
+          fi
 
-  #         echo "text=$TEXT" >> $GITHUB_OUTPUT
+          echo "text=$TEXT" >> $GITHUB_OUTPUT
 
-  #     - name: Notify Teams
-  #       run: |
-  #         TEXT="${{ steps.extract_text.outputs.text }}"
+      - name: Notify Teams
+        run: |
+          TEXT="${{ steps.extract_text.outputs.text }}"
 
-  #         payload=$(cat <<EOF
-  #         {
-  #             "text": "$TEXT"
-  #         }
-  #         EOF
-  #         )
+          payload=$(cat <<EOF
+          {
+              "text": "$TEXT"
+          }
+          EOF
+          )
 
-  #         curl --request POST \
-  #         --header "Content-Type: application/json" \
-  #         --data "$payload" \
-  #         "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
+          curl --request POST \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
