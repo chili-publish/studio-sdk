@@ -220,6 +220,9 @@ export class SDK {
             this.setConnection,
             this.config.editorId,
             this.config.studioStyling,
+            (error) => {
+                this.config.onConnectionError?.(error);
+            },
         );
         this.editorAPI = connection?.promise.then((editorAPI) => {
             return editorAPI;
