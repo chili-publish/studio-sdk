@@ -12,13 +12,13 @@ export enum FrameEditingMode {
      * Default (Designer) mode
      * No constraints
      */
-    full,
+    full = 'full',
 
     /**
      * End user mode
      * Limits the existing tools to the given constraints
      */
-    followConstraints,
+    followConstraints = 'followConstraints',
 }
 
 export type StudioStyling = {
