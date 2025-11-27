@@ -40,7 +40,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
                                 error: event.error?.toString(),
                             },
                         },
-                        window.location.ancestorOrigins[0] || '*',
+                        window.location.ancestorOrigins[0] || window.location.origin,
                     );
                 }
             };
@@ -51,43 +51,38 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
                             type: 'iframe-error',
                             error: { message: event.reason?.toString() || 'Unhandled promise rejection' },
                         },
-                        window.location.ancestorOrigins[0] || '*',
+                        window.location.ancestorOrigins[0] || window.location.origin,
                     );
                 }
             };
             window.addEventListener('error', handleIframeError);
             window.addEventListener('unhandledrejection', handleUnhandledRejection);
         </script>
-        <script src="${link}init.js" async></script>
+        <script src="${link}init.js"></script>
         <script src="${link}flutter_bootstrap.js"></script>
         <script>
-            const handleLoad = () => {
-                try {
-                    if (!window?.initializeStudioEngine) {
+             try {
+                    if(!window?.initializeStudioEngine){
                         throw new Error('Failed to initialize studio engine: initializeStudioEngine not found');
                     }
-                    initializeStudioEngine({ assetBase: '${link}' });
-                } catch (error) {
+                    initializeStudioEngine({
+                        assetBase: '${link}',
+                    });
+                } catch(error) {
                     if (window.parent && window.parent !== window) {
-                        window.parent.postMessage(
-                            {
-                                type: 'iframe-error',
-                                error: {
-                                    message: error?.message || 'Error initializing studio engine',
-                                    error: error?.toString(),
-                                },
-                            },
-                            window.location.ancestorOrigins[0],
-                        );
+                        window.parent.postMessage({
+                            type: 'iframe-error',
+                            error: {
+                                message: error?.message || 'Error initializing studio engine',
+                                error: error?.toString()
+                            }
+                        }, window.location.ancestorOrigins[0] || window.location.origin);
                     }
                     throw error;
                 } finally {
                     window.removeEventListener('error', handleIframeError);
                     window.removeEventListener('unhandledrejection', handleUnhandledRejection);
-                    window.removeEventListener('load', handleLoad);
                 }
-            };
-            window.addEventListener('load', handleLoad);
         </script>
     </body>
 </html>`;
