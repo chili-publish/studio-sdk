@@ -26,6 +26,7 @@ export {
     TextDirection,
     UpdateZIndexMethod,
     VerticalAlign,
+    ComponentSourceTypeEnum,
 } from './types/FrameTypes';
 export { ConstraintMode, LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 export type { LayoutAspect, ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';

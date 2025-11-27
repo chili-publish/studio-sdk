@@ -11,6 +11,10 @@ export type ComponentPage = QueryPage<Component>;
 export interface Component {
     id: string;
     name: string;
+    defaultComponentDimensions: {
+        width: number;
+        height: number;
+    };
 };
 
 /**
