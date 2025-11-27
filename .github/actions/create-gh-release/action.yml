@@ -1,0 +1,70 @@
+name: "Create GitHub Release"
+description: "Create GitHub release and prepare notification text"
+inputs:
+  tag_name:
+    required: true
+    description: "Tag name for the release"
+  previous_tag:
+    required: true
+    description: "Previous tag for release notes"
+  target_ref:
+    required: true
+    description: "Target commit SHA for the release"
+  release_type:
+    required: true
+    description: "Release type: uat or production"
+outputs:
+  notification_text:
+    description: "Prepared notification text"
+    value: ${{ steps.prepare_notification.outputs.text }}
+runs:
+  using: composite
+  steps:
+    - name: Create GitHub release
+      id: create_release
+      shell: bash
+      run: |
+        TAG_NAME="${{ inputs.tag_name }}"
+        PREVIOUS_TAG="${{ inputs.previous_tag }}"
+        TARGET_REF="${{ inputs.target_ref }}"
+        RELEASE_TYPE="${{ inputs.release_type }}"
+
+        # UAT releases are prereleases, production releases are not
+        if [ "$RELEASE_TYPE" = "uat" ]; then
+          gh release create $TAG_NAME \
+            --target $TARGET_REF \
+            --title "$TAG_NAME" \
+            --generate-notes \
+            --notes-start-tag "$PREVIOUS_TAG" \
+            --prerelease
+        else
+          gh release create $TAG_NAME \
+            --target $TARGET_REF \
+            --title "$TAG_NAME" \
+            --generate-notes \
+            --notes-start-tag "$PREVIOUS_TAG"
+        fi
+
+        RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+        echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ env.GITHUB_TOKEN }}
+
+    - name: Prepare notification text
+      id: prepare_notification
+      shell: bash
+      run: |
+        RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+        VERSION="${{ inputs.tag_name }}"
+        RELEASE_TYPE="${{ inputs.release_type }}"
+
+        if [ "$RELEASE_TYPE" = "uat" ]; then
+          EMOJI="🧪"
+          TYPE="UAT Release Created"
+        else
+          EMOJI="🎉"
+          TYPE="Production Release Created"
+        fi
+
+        TEXT="${EMOJI} **${TYPE}**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n\nRelease has been created and deployment will be triggered automatically."
+        echo "text=$TEXT" >> $GITHUB_OUTPUT

@@ -1,0 +1,31 @@
+name: "Fetch GH Releases"
+description: "Fetch and cache GitHub releases"
+inputs:
+  releases_limit:
+    required: true
+    description: "Limit for GitHub releases to fetch"
+outputs:
+  releases_file:
+    description: "Path to the file containing GitHub releases JSON data"
+    value: ${{ steps.fetch-releases.outputs.releases_file }}
+runs:
+  using: composite
+  steps:
+    - name: Fetch and cache GitHub Releases
+      id: fetch-releases
+      shell: bash
+      run: |
+        RELEASES_FILE="/tmp/releases-$(date +%s).json"
+
+        # Fetch releases and write to file
+        gh release list --limit ${{ inputs.releases_limit }} --json isPrerelease,tagName | jq '.' > "$RELEASES_FILE"
+
+        # Validate that we got release data
+        if [ ! -f "$RELEASES_FILE" ]; then
+          echo "❌ Error: Releases file not found: $RELEASES_FILE"
+          exit 1
+        fi
+
+        echo "releases_file=$RELEASES_FILE" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ env.GITHUB_TOKEN }}
