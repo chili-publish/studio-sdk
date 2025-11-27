@@ -179,7 +179,7 @@ export {
 
 export { NumberListFormat, NumberListSeparatorSymbol } from './types/ParagraphStyleTypes';
 
-export { WellKnownConfigurationKeys } from './types/ConfigurationTypes';
+export { WellKnownConfigurationKeys, FrameEditingMode } from './types/ConfigurationTypes';
 
 export type {
     APIBrandKit,
