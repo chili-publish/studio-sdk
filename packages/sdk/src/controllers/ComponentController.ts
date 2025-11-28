@@ -1,4 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
+import { Variable } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -28,6 +29,18 @@ export class ComponentController {
      */
     linkVariable = async (frameId: Id, target: Id, source?: Id) => {
         const res = await this.#editorAPI;
-        return res.linkComponentVariable(frameId, target, source).then((result) => getEditorResponseData<null>(result));
+        return res
+            .linkComponentVariable(frameId, target, source, null)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method returns the list of variables of a component frame.
+     * @param id the id of the componentFrame.
+     * @returns
+     */
+    getComponentVariables = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.getComponentVariables(frameId).then((result) => getEditorResponseData<Variable[]>(result));
     };
 }

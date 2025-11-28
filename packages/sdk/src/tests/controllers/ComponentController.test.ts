@@ -9,11 +9,14 @@ let mockedComponentController: ComponentController;
 
 const mockedEditorApi: EditorAPI = {
     linkComponentVariable: async () => getEditorResponseData(castToEditorResponse(null)),
+    getComponentVariables: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     mockedComponentController = new ComponentController(mockedEditorApi);
+
     jest.spyOn(mockedEditorApi, 'linkComponentVariable');
+    jest.spyOn(mockedEditorApi, 'getComponentVariables');
 
     id = mockSelectFrame.id;
 });
@@ -34,12 +37,25 @@ describe('ComponentController', () => {
                 id,
                 'target-variable-id',
                 'source-variable-id',
+                null,
             );
         });
         it('Should be possible to unlink variable', async () => {
             await mockedComponentController.linkVariable(id, 'target-variable-id');
             expect(mockedEditorApi.linkComponentVariable).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.linkComponentVariable).toHaveBeenCalledWith(id, 'target-variable-id', undefined);
+            expect(mockedEditorApi.linkComponentVariable).toHaveBeenCalledWith(
+                id,
+                'target-variable-id',
+                undefined,
+                null,
+            );
+        });
+    });
+    describe('getComponentVariables', () => {
+        it('Should be possible to get component variables', async () => {
+            await mockedComponentController.getComponentVariables(id);
+            expect(mockedEditorApi.getComponentVariables).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.getComponentVariables).toHaveBeenCalledWith(id);
         });
     });
 });
