@@ -26,12 +26,12 @@ export class BrandKitController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, sdk: SDK) {
+    constructor(editorAPI: Promise<EditorAPI>, sdk: SDK) {
         this.#editorAPI = editorAPI;
         this.colorStyleController = sdk.colorStyle;
         this.gradientStyleController = sdk.gradientStyle;

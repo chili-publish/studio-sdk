@@ -46,7 +46,7 @@ describe('Next.VariableController', () => {
     };
 
     beforeEach(() => {
-        mockedVariableController = new VariableController(mockEditorApi);
+        mockedVariableController = new VariableController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'getVariableById');
         jest.spyOn(mockEditorApi, 'getVariableByName');
         jest.spyOn(mockEditorApi, 'getVariables');
@@ -120,7 +120,7 @@ describe('Next.VariableController.ImageVariableController', () => {
     };
 
     beforeEach(() => {
-        mockedImageVariableController = new ImageVariableController(mockEditorApi);
+        mockedImageVariableController = new ImageVariableController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'setImageVariableAllowQuery');
         jest.spyOn(mockEditorApi, 'setImageVariableAllowUpload');
         jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');

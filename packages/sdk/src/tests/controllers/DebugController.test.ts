@@ -12,7 +12,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedDebugController = new DebugController(mockedEditorApi);
+    mockedDebugController = new DebugController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'getLogs');
     jest.spyOn(mockedEditorApi, 'toggleDebugPanel');
     jest.spyOn(mockedEditorApi, 'enableDebug');

@@ -14,7 +14,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedFrameController = new FrameController(mockedEditorApi);
+    mockedFrameController = new FrameController(Promise.resolve(mockedEditorApi));
     frameConstraintController = mockedFrameController.constraints;
 
     jest.clearAllMocks();

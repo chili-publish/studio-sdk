@@ -132,16 +132,18 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'undo');
         jest.spyOn(mockEditorApi, 'abort');
 
-        const fontController = new FontController(mockEditorApi);
-        const fontConnectorController = new FontConnectorController(mockEditorApi);
-        const colorStyleController = new ColorStyleController(mockEditorApi);
-        const gradientStyleController = new GradientStyleController(mockEditorApi);
-        const mediaController = new MediaConnectorController(mockEditorApi);
-        const characterStyleController = new CharacterStyleController(mockEditorApi);
-        const paragraphStyleController = new ParagraphStyleController(mockEditorApi);
+        const editorApiPromise = Promise.resolve(mockEditorApi);
+
+        const fontController = new FontController(editorApiPromise);
+        const fontConnectorController = new FontConnectorController(editorApiPromise);
+        const colorStyleController = new ColorStyleController(editorApiPromise);
+        const gradientStyleController = new GradientStyleController(editorApiPromise);
+        const mediaController = new MediaConnectorController(editorApiPromise);
+        const characterStyleController = new CharacterStyleController(editorApiPromise);
+        const paragraphStyleController = new ParagraphStyleController(editorApiPromise);
 
         const mockSDK: SDK = {
-            editorAPI: mockEditorApi,
+            editorAPI: editorApiPromise,
             colorStyle: colorStyleController,
             gradientStyle: gradientStyleController,
             font: fontController,
@@ -150,9 +152,9 @@ describe('BrandKitController', () => {
             characterStyle: characterStyleController,
             paragraphStyle: paragraphStyleController,
         } as SDK;
-        mockSDK.undoManager = new UndoManagerController(mockEditorApi, mockSDK);
+        mockSDK.undoManager = new UndoManagerController(editorApiPromise, mockSDK);
 
-        mockBrandKitController = new BrandKitController(mockEditorApi, mockSDK);
+        mockBrandKitController = new BrandKitController(editorApiPromise, mockSDK);
         mockSDK.brandKit = mockBrandKitController;
     });
 

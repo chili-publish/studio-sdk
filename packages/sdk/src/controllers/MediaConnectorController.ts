@@ -1,4 +1,3 @@
-import { CallSender } from 'penpal';
 import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
 import {
     ConnectorConfigOptions,
@@ -36,15 +35,15 @@ export class MediaConnectorController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     #blobAPI: EditorRawAPI;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as EditorRawAPI;
     }
 
     /**

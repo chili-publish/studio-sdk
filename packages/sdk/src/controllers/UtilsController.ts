@@ -19,13 +19,13 @@ export class UtilsController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     #localConfig: Map<string, string>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
+    constructor(editorAPI: Promise<EditorAPI>, localConfig: Map<string, string>) {
         this.#editorAPI = editorAPI;
         this.#localConfig = localConfig;
     }

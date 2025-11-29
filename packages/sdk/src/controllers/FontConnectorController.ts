@@ -1,4 +1,3 @@
-import { CallSender } from 'penpal';
 import { EditorAPI, EditorRawAPI, EditorResponse } from '../types/CommonTypes';
 import {
     ConnectorConfigOptions,
@@ -28,15 +27,15 @@ export class FontConnectorController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
-    #blobAPI: EditorRawAPI;
+    #editorAPI: Promise<EditorAPI>;
+    #blobAPI: Promise<EditorRawAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as Promise<EditorRawAPI>;
     }
 
     /**

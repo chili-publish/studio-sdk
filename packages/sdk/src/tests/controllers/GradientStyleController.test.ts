@@ -17,7 +17,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedGradientStyleController = new GradientStyleController(mockEditorApi);
+    mockedGradientStyleController = new GradientStyleController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getGradients');
     jest.spyOn(mockEditorApi, 'getGradientById');
     jest.spyOn(mockEditorApi, 'createGradient');

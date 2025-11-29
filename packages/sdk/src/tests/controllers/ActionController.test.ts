@@ -22,7 +22,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedActionController = new ActionController(mockEditorApi);
+    mockedActionController = new ActionController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getActions');
     jest.spyOn(mockEditorApi, 'getActionById');
     jest.spyOn(mockEditorApi, 'createAction');

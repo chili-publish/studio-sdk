@@ -38,7 +38,7 @@ export class FrameController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     constraints: FrameConstraintController;
     /**
      * This variable helps to redirect shapes related methods to newly introduced ShapeController
@@ -49,7 +49,7 @@ export class FrameController {
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
         this.shapeController = new ShapeController(this.#editorAPI);
         this.constraints = new FrameConstraintController(this.#editorAPI);
@@ -1230,12 +1230,12 @@ export class FrameConstraintController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 

@@ -24,7 +24,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedFontController = new FontController(mockedEditorApi);
+    mockedFontController = new FontController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'addFontFamily');
     jest.spyOn(mockedEditorApi, 'removeFontFamily');
     jest.spyOn(mockedEditorApi, 'addFontStyle');
