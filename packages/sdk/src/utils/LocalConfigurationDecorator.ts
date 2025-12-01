@@ -12,7 +12,7 @@ export class LocalConfigurationDecorator extends ConfigurationController {
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, localConfig: Map<string, string>) {
+    constructor(editorAPI: Promise<EditorAPI>, localConfig: Map<string, string>) {
         super(editorAPI);
         this.#localConfig = localConfig;
     }

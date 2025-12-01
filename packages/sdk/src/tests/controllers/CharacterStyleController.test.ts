@@ -19,7 +19,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedCharacterStyleController = new CharacterStyleController(mockEditorApi);
+    mockedCharacterStyleController = new CharacterStyleController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'getCharacterStyles');
     jest.spyOn(mockEditorApi, 'getCharacterStyleById');
     jest.spyOn(mockEditorApi, 'createCharacterStyle');

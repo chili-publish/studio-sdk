@@ -13,13 +13,13 @@ export class VariableController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
     image: ImageVariableController;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
         this.image = new ImageVariableController(editorAPI);
     }
@@ -74,9 +74,9 @@ export class VariableController {
 }
 
 export class ImageVariableController {
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 

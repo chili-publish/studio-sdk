@@ -12,7 +12,7 @@ describe('ToolController', () => {
     };
 
     beforeEach(() => {
-        mockedToolController = new ToolController(mockEditorApi);
+        mockedToolController = new ToolController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'getSelectedTool');
         jest.spyOn(mockEditorApi, 'setTool');
     });

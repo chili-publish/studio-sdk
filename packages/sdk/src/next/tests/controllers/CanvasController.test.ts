@@ -9,7 +9,7 @@ const mockEditorApi: EditorAPI = {
     zoomToPage: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 beforeEach(() => {
-    mockedCanvasController = new CanvasController(mockEditorApi);
+    mockedCanvasController = new CanvasController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'zoomToPage');
 });
 

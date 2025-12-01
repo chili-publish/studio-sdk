@@ -13,7 +13,8 @@ global.fetch = mockFetch;
 const mockedEditorApi: EditorAPI = {
     mediaConnectorQuery: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorDetail: async () => getEditorResponseData(castToEditorResponse(null)),
-    mediaConnectorDownload: async () => new Uint8Array() as unknown as EditorResponse<any>,
+    mediaConnectorDownload: async <T>() =>
+        new Uint8Array() as unknown as EditorResponse<T>,
     mediaConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     mediaConnectorUpload: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -23,7 +24,7 @@ const mockedLocalConfig = new Map<string, string>();
 beforeEach(() => {
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
-    mockedMediaConnectorController = new MediaConnectorController(mockedEditorApi);
+    mockedMediaConnectorController = new MediaConnectorController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'mediaConnectorDetail');
     jest.spyOn(mockedEditorApi, 'mediaConnectorDownload');
     jest.spyOn(mockedEditorApi, 'mediaConnectorGetCapabilities');

@@ -17,13 +17,13 @@ export class DataSourceController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
     #dataItemMappingTools: DataItemMappingTools;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
+    constructor(editorAPI: Promise<EditorAPI>, dataItemMappingTools: DataItemMappingTools) {
         this.#editorAPI = editorAPI;
         this.#dataItemMappingTools = dataItemMappingTools;
     }

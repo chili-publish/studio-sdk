@@ -26,7 +26,10 @@ describe('LocalConfigurationDecorator', () => {
     let mockedLocalConfigurationDecorator: LocalConfigurationDecorator;
 
     beforeEach(() => {
-        mockedLocalConfigurationDecorator = new LocalConfigurationDecorator(mockEditorApi, mockLocalConfig);
+        mockedLocalConfigurationDecorator = new LocalConfigurationDecorator(
+            Promise.resolve(mockEditorApi),
+            mockLocalConfig,
+        );
     });
 
     it('it gets value from the local config if available', async () => {

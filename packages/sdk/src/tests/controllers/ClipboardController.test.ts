@@ -24,7 +24,7 @@ describe('ClipboardController', () => {
     };
 
     beforeEach(() => {
-        mockedClipboardController = new ClipboardController(mockEditorApi);
+        mockedClipboardController = new ClipboardController(Promise.resolve(mockEditorApi));
         jest.spyOn(mockEditorApi, 'copyFrames');
         jest.spyOn(mockEditorApi, 'cutFrames');
         jest.spyOn(mockEditorApi, 'pasteFrames');

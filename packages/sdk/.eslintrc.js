@@ -47,7 +47,7 @@ module.exports = {
     ignorePatterns: [
         '**/dist/*.js',
         '**/lib/**/*.ts',
-        '_bundles/*.js',
+        'dist/*.js',
         'next/*.js',
         '**/.storybook/**',
         '**/src/stories/**',

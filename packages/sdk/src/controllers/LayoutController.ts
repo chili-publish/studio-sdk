@@ -1,4 +1,3 @@
-import { CallSender } from 'penpal';
 import { ColorUsage } from '../types/ColorStyleTypes';
 import type { EditorAPI, EditorRawAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import {
@@ -22,15 +21,15 @@ export class LayoutController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
-    #blobAPI: EditorRawAPI;
+    #editorAPI: Promise<EditorAPI>;
+    #blobAPI: Promise<EditorRawAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
-        this.#blobAPI = editorAPI as CallSender as EditorRawAPI;
+        this.#blobAPI = editorAPI as unknown as Promise<EditorRawAPI>;
     }
 
     /**

@@ -18,7 +18,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedBarcodeController = new BarcodeController(mockedEditorApi);
+    mockedBarcodeController = new BarcodeController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'setBarcodeProperties');
     jest.spyOn(mockedEditorApi, 'setBarcodeSource');
 

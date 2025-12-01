@@ -20,7 +20,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedExperimentController = new ExperimentController(mockedEditorApi);
+    mockedExperimentController = new ExperimentController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'insertTextVariable');
     jest.spyOn(mockedEditorApi, 'enterTextEditMode');
     jest.spyOn(mockedEditorApi, 'exitTextEditMode');

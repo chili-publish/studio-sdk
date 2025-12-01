@@ -10,7 +10,7 @@ const mockEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedPageController = new PageController(mockEditorApi);
+    mockedPageController = new PageController(Promise.resolve(mockEditorApi));
     jest.spyOn(mockEditorApi, 'setPageWidth');
     jest.spyOn(mockEditorApi, 'setPageHeight');
 });

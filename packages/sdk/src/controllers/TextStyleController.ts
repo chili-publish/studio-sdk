@@ -10,12 +10,12 @@ export class TextStyleController {
     /**
      * @ignore
      */
-    readonly #editorAPI: EditorAPI;
+    readonly #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 

@@ -17,7 +17,8 @@
         "make-badges": "node cicd.js sdk yarn make-badges",
         "validate-licenses": "node cicd.js sdk yarn validate-licenses",
         "build-docs-md": "node cicd.js sdk yarn build-docs-md",
-        "build-docs-html": "node cicd.js sdk yarn build-docs-html"
+        "build-docs-html": "node cicd.js sdk yarn build-docs-html",
+        "update-next-exports": "node scripts/update-next-exports.js"
     },
     "dependencies": {
         "glob": "^10.3.5"

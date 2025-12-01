@@ -15,7 +15,7 @@ const mockedEditorApi: EditorAPI = {
 };
 
 beforeEach(() => {
-    mockedShapeController = new ShapeController(mockedEditorApi);
+    mockedShapeController = new ShapeController(Promise.resolve(mockedEditorApi));
     jest.spyOn(mockedEditorApi, 'setShapeProperties');
     jest.spyOn(mockedEditorApi, 'setShapeCorners');
 

@@ -11,12 +11,12 @@ export class ShapeController {
     /**
      * @ignore
      */
-    #editorAPI: EditorAPI;
+    #editorAPI: Promise<EditorAPI>;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: Promise<EditorAPI>) {
         this.#editorAPI = editorAPI;
     }
 

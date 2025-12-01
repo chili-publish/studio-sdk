@@ -12,7 +12,7 @@ dist/
 *.log
 lib/
 lib-esm/
-_bundles/
+dist/
 coverage/
 docs/
 packages/sdk/connector-types/
@@ -22,3 +22,4 @@ packages/sdk/connector-types/
 .env.*
 
 examples/**/package-lock.json
+_bundles/

@@ -15,7 +15,7 @@ const mockEditorApi: EditorAPI = {
 const mockedDataItemMappingTools = new DataItemMappingTools();
 
 beforeEach(() => {
-    mockedDataSourceController = new DataSourceController(mockEditorApi, mockedDataItemMappingTools);
+    mockedDataSourceController = new DataSourceController(Promise.resolve(mockEditorApi), mockedDataItemMappingTools);
     jest.spyOn(mockEditorApi, 'setDataSource');
     jest.spyOn(mockEditorApi, 'getDataSource');
     jest.spyOn(mockEditorApi, 'removeDataSource');
