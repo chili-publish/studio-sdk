@@ -143,8 +143,8 @@ jobs:
     environment: ${{ needs.detect-release-type.outputs.environment }}
     permissions:
       contents: read
-      id-token: write
-      packages: write
+      id-token: write # Required for OIDC
+      packages: write # Required for GitHub Packages npm publish
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -168,25 +168,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
           scope: ${{ needs.detect-release-type.outputs.npm_scope }}
-
-      - name: Force OIDC (remove tokens & point to npmjs)
-        if: needs.detect-release-type.outputs.is_prd == 'true'
-        run: |
-          set -euxo pipefail
-          # Show if anything suspicious is present
-          env | grep -E 'NODE_AUTH_TOKEN|NPM_TOKEN' || true
-          npm config get registry
-          # Remove env token + any temp .npmrc with auth
-          unset NODE_AUTH_TOKEN || true
-          npm config delete //registry.npmjs.org/:_authToken || true
-          if [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
-            rm -f "$NPM_CONFIG_USERCONFIG"
-          fi
-          # Ensure we publish to npmjs for our scope
-          npm config set registry https://registry.npmjs.org/
-          npm config set @chili-publish:registry https://registry.npmjs.org/
-          npm ping
-
+      - name: Update to latest npm version
+        run: npm i -g npm@latest
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         env:
