@@ -62,6 +62,8 @@ const mockedEditorApi: EditorAPI = {
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitModePosition: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
+    setNumberOfColumns: async () => getEditorResponseData(castToEditorResponse(null)),
+    setColumnGap: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setMaxCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
     setEnableCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -127,6 +129,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitModePosition');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
+    jest.spyOn(mockedEditorApi, 'setNumberOfColumns');
+    jest.spyOn(mockedEditorApi, 'setColumnGap');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
     jest.spyOn(mockedEditorApi, 'setMaxCopyfitting');
     jest.spyOn(mockedEditorApi, 'setEnableCopyfitting');
@@ -415,6 +419,18 @@ describe('FrameController', () => {
         await mockedFrameController.setVerticalAlign(id, VerticalAlign.justify);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setVerticalAlignment).toHaveBeenCalledWith(id, VerticalAlign.justify);
+    });
+
+    it('Should be possible to set the number of columns of a frame', async () => {
+        await mockedFrameController.setNumberOfColumns(id, 3);
+        expect(mockedEditorApi.setNumberOfColumns).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setNumberOfColumns).toHaveBeenCalledWith(id, 3);
+    });
+
+    it('Should be possible to set the column gap of a frame', async () => {
+        await mockedFrameController.setColumnGap(id, 10.5);
+        expect(mockedEditorApi.setColumnGap).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setColumnGap).toHaveBeenCalledWith(id, 10.5);
     });
 
     it('Should be possible to set the min value for copyfitting', async () => {
