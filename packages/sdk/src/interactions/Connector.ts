@@ -19,25 +19,73 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     const link = validateEditorLink(editorLink);
     const stylingJson = JSON.stringify(styling || {});
     const html = `<html>
-        <head>
-            <base href="/" />
+    <head>
+        <base href="/" />
             <meta charset="UTF-8"/>
-            <!--  use this property to pass the StudioStyling to the engine -->
+        <!--  use this property to pass the StudioStyling to the engine -->
             <meta name="studio-styling" content='${stylingJson}'>
-        </head>
-        <body>
-            <script>                
-            </script>
-            <script src="${link}init.js" async></script>
-            <script src="${link}flutter_bootstrap.js"></script>
-            <script>
-                initializeStudioEngine({
-                    assetBase: '${link}',
-                });
-            </script>
-        </body>
-        </html>
-    `;
+    </head>
+    <body>
+        <script>
+            const handleIframeError = (event) => {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage(
+                        {
+                            type: 'iframe-error',
+                            error: {
+                                message: event.message,
+                                filename: event.filename,
+                                lineno: event.lineno,
+                                colno: event.colno,
+                                error: event.error?.toString(),
+                            },
+                        },
+                        window.location.ancestorOrigins[0] || window.location.origin,
+                    );
+                }
+            };
+            const handleUnhandledRejection = (event) => {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage(
+                        {
+                            type: 'iframe-error',
+                            error: { message: event.reason?.toString() || 'Unhandled promise rejection' },
+                        },
+                        window.location.ancestorOrigins[0] || window.location.origin,
+                    );
+                }
+            };
+            window.addEventListener('error', handleIframeError);
+            window.addEventListener('unhandledrejection', handleUnhandledRejection);
+        </script>
+        <script src="${link}init.js" async></script>
+        <script src="${link}flutter_bootstrap.js"></script>
+        <script>
+             try {
+                    if(!window?.initializeStudioEngine){
+                        throw new Error('Failed to initialize studio engine: initializeStudioEngine not found');
+                    }
+                    initializeStudioEngine({
+                        assetBase: '${link}',
+                    });
+                } catch(error) {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage({
+                            type: 'iframe-error',
+                            error: {
+                                message: error?.message || 'Error initializing studio engine',
+                                error: error?.toString()
+                            }
+                        }, window.location.ancestorOrigins[0] || window.location.origin);
+                    }
+                    throw error;
+                } finally {
+                    window.removeEventListener('error', handleIframeError);
+                    window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+                }
+        </script>
+    </body>
+</html>`;
 
     // Set the iframe's content using DOM manipulation
     // eslint-disable-next-line no-param-reassign
@@ -91,13 +139,19 @@ interface ConfigParameterTypes {
     onBrandKitMediaChanged: (brandKitMedia: string) => void;
 }
 
+let messageHandler: ((event: MessageEvent) => void) | null = null;
+
 const Connect = (
     editorLink: string,
     params: ConfigParameterTypes,
     setConnection: (connection: Connection) => void,
     editorId = 'chili-editor',
     styling?: StudioStyling,
+    onSetupFrameError?: (error: Error) => void,
 ) => {
+    if (messageHandler) {
+        window.removeEventListener('message', messageHandler);
+    }
     const editorSelectorId = `#${editorId}`;
     const iframe = document.createElement('iframe');
     iframe.setAttribute('srcdoc', ' ');
@@ -105,12 +159,29 @@ const Connect = (
     iframe.setAttribute('style', 'width: 100%; height: 100%;');
     iframe.setAttribute('frameBorder', '0');
     iframe.setAttribute('referrerpolicy', 'origin');
-
     const setupNewFrame = () => {
         const iframeContainer = document.querySelector(editorSelectorId);
         if (iframeContainer) {
             iframeContainer?.appendChild(iframe);
-            setupFrame(iframe, editorLink, styling);
+
+            iframe.addEventListener(
+                'error',
+                () => {
+                    const error = new Error('Failed to setup frame: iframe failed to load');
+                    onSetupFrameError?.(error);
+                },
+                { capture: true, once: true },
+            );
+
+            try {
+                setupFrame(iframe, editorLink, styling);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    onSetupFrameError?.(error);
+                } else {
+                    onSetupFrameError?.(new Error(`Failed to setup frame: ${error}`));
+                }
+            }
         }
     };
 
@@ -121,6 +192,20 @@ const Connect = (
             setupNewFrame();
         });
     }
+
+    messageHandler = (event: MessageEvent) => {
+        if (event.source !== iframe.contentWindow) {
+            return;
+        }
+        if (event.data?.type === 'iframe-error') {
+            const errorData = event.data.error;
+            const error = new Error(errorData.message || 'Failed to setup frame: error in iframe');
+            onSetupFrameError?.(error);
+        }
+    };
+
+    window.addEventListener('message', messageHandler);
+
     setConnection(
         connectToChild({
             // The iframe to which a connection should be made

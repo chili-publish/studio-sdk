@@ -41,6 +41,11 @@ export type BaseConfigType = {
         logLevel?: LogLevel;
         logger?: LoggerFunction;
     };
+    /**
+     * Callback function that is called when an error occurs during iframe setup or connection.
+     * @param error The error that occurred during setup or connection
+     */
+    onConnectionError?: (error: Error) => void;
 };
 
 export type LoggerFunction = (logLevel: LogLevel, category: LogCategory, message: string) => void;
