@@ -44,6 +44,8 @@ import { ConfigHelper } from './utils/ConfigHelper';
 import { DataItemMappingTools } from './utils/DataItemMappingTools';
 import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator';
 import { GradientStyleController } from './controllers/GradientStyleController';
+import { ComponentConnectorController } from './controllers/ComponentConnectorController';
+import { ComponentController } from './controllers/ComponentController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -64,11 +66,16 @@ export class SDK {
     layout: LayoutController;
     frame: FrameController;
     shape: ShapeController;
-    /** @experimental */
     barcode: BarcodeController;
+    /** @experimental */
+    component: ComponentController;
     connector: ConnectorController;
     mediaConnector: MediaConnectorController;
     fontConnector: FontConnectorController;
+    /**
+     * @experimental This controller is still experimental and might change in future releases.
+     */
+    componentConnector: ComponentConnectorController;
     dataConnector: DataConnectorController;
     dataSource: DataSourceController;
     animation: AnimationController;
@@ -116,10 +123,12 @@ export class SDK {
         this.frame = new FrameController(this.editorAPI);
         this.shape = new ShapeController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
+        this.component = new ComponentController(this.editorAPI);
         this.undoManager = new UndoManagerController(this.editorAPI, this);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.componentConnector = new ComponentConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.animation = new AnimationController(this.editorAPI);
@@ -232,6 +241,7 @@ export class SDK {
         this.layout = new LayoutController(this.editorAPI);
         this.frame = new FrameController(this.editorAPI);
         this.barcode = new BarcodeController(this.editorAPI);
+        this.component = new ComponentController(this.editorAPI);
         this.animation = new AnimationController(this.editorAPI);
         this.document = new DocumentController(this.editorAPI);
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
@@ -247,6 +257,7 @@ export class SDK {
         this.characterStyle = new CharacterStyleController(this.editorAPI);
         this.mediaConnector = new MediaConnectorController(this.editorAPI);
         this.fontConnector = new FontConnectorController(this.editorAPI);
+        this.componentConnector = new ComponentConnectorController(this.editorAPI);
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
