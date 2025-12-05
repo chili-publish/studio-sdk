@@ -58,7 +58,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
             window.addEventListener('error', handleIframeError);
             window.addEventListener('unhandledrejection', handleUnhandledRejection);
         </script>
-        <script src="${link}init.js"></script>
+        <script src="${link}init.js" async></script>
         <script src="${link}flutter_bootstrap.js"></script>
         <script>
              try {
