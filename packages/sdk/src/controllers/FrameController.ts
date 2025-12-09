@@ -605,7 +605,7 @@ export class FrameController {
      * @param columnGap the column gap value to be set to the frame.
      * @returns
      */
-    setColumnGap = async (id: Id, columnGap: number) => {
+    setColumnGap = async (id: Id, columnGap: string) => {
         const res = await this.#editorAPI;
         return res.setColumnGap(id, columnGap).then((result) => getEditorResponseData<null>(result));
     };
