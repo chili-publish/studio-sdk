@@ -41,7 +41,7 @@ export type FrameType = {
     opacity: number;
 };
 
-export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame;
+export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame | ComponentFrame;
 
 export type ImageFrameVariableSource = {
     type: ImageSourceTypeEnum.variable;
@@ -163,6 +163,29 @@ export type BarcodeTextSource = {
     text: string;
 };
 
+export type ComponentFrame = {
+    id: Id;
+    name: string;
+    opacity: number;
+    type: FrameTypeEnum.component;
+    blendMode: BlendMode;
+    src: ComponentSource;
+    variableMappings: VariableMapping[];
+};
+
+export type ComponentSource = ConnectorComponentSource;
+
+export type ConnectorComponentSource = {
+    type: ComponentSourceTypeEnum.connector;
+    id: Id;
+    assetId: Id;
+};
+
+export type VariableMapping = {
+    source: Id;
+    target: Id;
+};
+
 export type CropSettings = {
     left: number;
     top: number;
@@ -246,11 +269,16 @@ export enum ImageSourceTypeEnum {
     brandKitMedia = 'brandKitMedia',
 }
 
+export enum ComponentSourceTypeEnum {
+    connector = 'connector',
+}
+
 export enum FrameTypeEnum {
     text = 'text',
     image = 'image',
     shape = 'shape',
     barcode = 'barcode',
+    component = 'component',
 }
 
 export enum BarcodeSourceTypeEnum {

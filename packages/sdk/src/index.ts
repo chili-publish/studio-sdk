@@ -26,6 +26,7 @@ export {
     TextDirection,
     UpdateZIndexMethod,
     VerticalAlign,
+    ComponentSourceTypeEnum,
 } from './types/FrameTypes';
 export { ConstraintMode, LayoutIntent, LayoutType, MeasurementUnit, PositionEnum } from './types/LayoutTypes';
 export type { LayoutAspect, ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
@@ -165,6 +166,7 @@ export * from './types/ConnectorTypes';
 export * from './types/DataConnectorTypes';
 export * from './types/FontConnectorTypes';
 export { GradientType } from './types/GradientStyleTypes';
+export * from './types/ComponentConnectorTypes';
 export * from './types/MediaConnectorTypes';
 export {
     Alignment,
