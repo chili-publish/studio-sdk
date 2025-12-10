@@ -589,6 +589,28 @@ export class FrameController {
     };
 
     /**
+     * This method will set the number of columns property of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param numberOfColumns the number of columns to be set to the frame.
+     * @returns
+     */
+    setNumberOfColumns = async (id: Id, numberOfColumns: number) => {
+        const res = await this.#editorAPI;
+        return res.setNumberOfColumns(id, numberOfColumns).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the column gap property of a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param columnGap the column gap value to be set to the frame.
+     * @returns
+     */
+    setColumnGap = async (id: Id, columnGap: string) => {
+        const res = await this.#editorAPI;
+        return res.setColumnGap(id, columnGap).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the min copyFitting property of a specified frame.
      * @param id the id of the frame that needs to get updated
      * @param value the new min copyFitting value to be set to the frame.
