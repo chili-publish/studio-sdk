@@ -428,9 +428,9 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to set the column gap of a frame', async () => {
-        await mockedFrameController.setColumnGap(id, 10.5);
+        await mockedFrameController.setColumnGap(id, "10.5mm");
         expect(mockedEditorApi.setColumnGap).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setColumnGap).toHaveBeenCalledWith(id, 10.5);
+        expect(mockedEditorApi.setColumnGap).toHaveBeenCalledWith(id, "10.5mm");
     });
 
     it('Should be possible to set the min value for copyfitting', async () => {
