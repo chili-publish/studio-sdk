@@ -114,7 +114,7 @@ export type TextFrame = {
     paddingTop: number;
     paddingRight: number;
     paddingBottom: number;
-    numberOfColumn: number;
+    numberOfColumns: number;
     columnGap: number;
     textDirection: TextDirection;
     flowDirection: FlowDirection;
