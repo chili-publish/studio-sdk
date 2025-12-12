@@ -448,15 +448,15 @@ export enum CropType {
 }
 
 export type FrameConstraints = {
-    selectable: PropertyState<boolean>;
-    horizontal: PropertyState<{ allowed: boolean }>;
-    vertical: PropertyState<{ allowed: boolean }>;
-    rotation: PropertyState<{ allowed: boolean }>;
-    resize: PropertyState<{ allowed: boolean }>;
+    selectionAllowed: PropertyState<boolean>;
+    horizontalMovementAllowed: PropertyState<boolean>;
+    verticalMovementAllowed: PropertyState<boolean>;
+    rotationAllowed: PropertyState<boolean>;
+    resizeAllowed: PropertyState<boolean>;
 };
 
 export interface FrameConstraintsDeltaUpdate {
-    selectable?: {
+    selectionAllowed?: {
         value: boolean | null;
     };
     horizontalMovementAllowed?: {

@@ -1274,7 +1274,7 @@ export class FrameConstraintController {
      * @returns
      */
     setSelectable = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectable: { value: allowed } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectionAllowed: { value: allowed } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))

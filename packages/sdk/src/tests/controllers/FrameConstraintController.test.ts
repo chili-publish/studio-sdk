@@ -40,7 +40,7 @@ describe('FrameConstraintController', () => {
     describe('setSelectable', () => {
         it('should set selectable constraint to allowed', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: true },
+                selectionAllowed: { value: true },
             };
 
             await frameConstraintController.setSelectable(id, true);
@@ -54,7 +54,7 @@ describe('FrameConstraintController', () => {
 
         it('should set selectable constraint to not allowed', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: false },
+                selectionAllowed: { value: false },
             };
 
             await frameConstraintController.setSelectable(id, false);
