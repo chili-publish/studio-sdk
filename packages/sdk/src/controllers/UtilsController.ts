@@ -9,7 +9,7 @@ import {
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
 import { round } from '../utils/MathUtils';
-import { MeasurementUnit } from '@chili-studio/connector-types';
+import { MeasurementUnit } from '../types/LayoutTypes';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier

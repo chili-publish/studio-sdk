@@ -1,13 +1,6 @@
+import { MeasurementUnit } from './Common';
 import { QueryPage } from './Connector.Shared';
 
-
-export enum MeasurementUnit {
-    px = 'px',
-    mm = 'mm',
-    cm = 'cm',
-    inch = 'inch',
-    pt = 'pt',
-}
 /**
  * @experimental This is still experimental and might change in future releases.
  */

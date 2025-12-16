@@ -2,8 +2,7 @@ import { mockDocument } from '../__mocks__/mockDocument';
 import { DocumentController } from '../../controllers/DocumentController';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
-import { LayoutIntent } from '../../types/LayoutTypes';
-import { MeasurementUnit } from '../../index'
+import { LayoutIntent, MeasurementUnit } from '../../types/LayoutTypes';
 
 let mockedDocumentController: DocumentController;
 const mockFetch = jest.fn();

@@ -5,7 +5,7 @@ import { EnvironmentType } from '../../utils/Enums';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse } from '../../utils/EditorResponseData';
 import * as MathUtils from '../../utils/MathUtils';
-import { MeasurementUnit } from '../../index';
+import { MeasurementUnit } from '../../types/LayoutTypes';
 
 let mockedUtilsController: UtilsController;
 

@@ -17,7 +17,7 @@ import { DocumentIssue, UndoState } from '../types/DocumentTypes';
 import { EngineEditMode } from '../types/EngineEditModeTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { Frame, FrameLayoutType } from '../types/FrameTypes';
-import { LayoutListItemType, LayoutPropertiesType } from '../types/LayoutTypes';
+import { LayoutListItemType, LayoutPropertiesType , MeasurementUnit } from '../types/LayoutTypes';
 import { Page, PageSize } from '../types/PageTypes';
 import { ParagraphStyle } from '../types/ParagraphStyleTypes';
 import { CornerRadiusUpdateModel } from '../types/ShapeTypes';
@@ -29,7 +29,7 @@ import { EngineCallbackHandler } from './EngineCallbackHandler';
 import { EngineEvent } from './EngineEvent';
 import { ToolType } from './Enums';
 import { BrandKitMedia } from '../types/BrandKitTypes';
-import { MeasurementUnit } from '@chili-studio/connector-types';
+
 export class ConfigHelper {
     /**
      * Creates a runtime configuration object from the provided configuration object.

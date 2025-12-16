@@ -9,9 +9,9 @@ import {
     ResizableLayoutPropertiesUpdate,
     PositionEnum,
     ConstraintMode,
+    MeasurementUnit,
 } from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
-import { MeasurementUnit } from '../../index';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;

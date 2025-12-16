@@ -10,9 +10,9 @@ import {
     ResizableLayoutPropertiesUpdate,
     SelectLayoutOptions,
     LayoutOptionPageSize,
+    MeasurementUnit,
 } from '../types/LayoutTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { MeasurementUnit } from '@chili-studio/connector-types';
 /**
  * The LayoutController is responsible for all communication regarding Layouts.
  * Methods inside this controller can be called by `window.SDK.layout.{method-name}`

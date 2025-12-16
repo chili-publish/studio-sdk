@@ -4,7 +4,8 @@ import { ListVariable, ListVariableItem, Variable, VariableType } from '../types
 import { ViewMode } from '../types/ViewModeTypes';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 import { ToolType } from '../utils/Enums';
-import { MeasurementUnit } from '@chili-studio/connector-types';
+import { MeasurementUnit } from '../types/LayoutTypes';
+
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
  * Callbacks inside this controller can be set by `window.SDK.subscriber.{method-name}`
