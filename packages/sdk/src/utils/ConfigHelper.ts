@@ -17,7 +17,7 @@ import { DocumentIssue, UndoState } from '../types/DocumentTypes';
 import { EngineEditMode } from '../types/EngineEditModeTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { Frame, FrameLayoutType } from '../types/FrameTypes';
-import { LayoutListItemType, LayoutPropertiesType, MeasurementUnit } from '../types/LayoutTypes';
+import { LayoutListItemType, LayoutPropertiesType , MeasurementUnit } from '../types/LayoutTypes';
 import { Page, PageSize } from '../types/PageTypes';
 import { ParagraphStyle } from '../types/ParagraphStyleTypes';
 import { CornerRadiusUpdateModel } from '../types/ShapeTypes';

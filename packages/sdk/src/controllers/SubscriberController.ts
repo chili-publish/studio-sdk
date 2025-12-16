@@ -1,10 +1,10 @@
 import { ActionAsyncError, DataRowAsyncError, Id, RuntimeConfigType } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
-import { MeasurementUnit } from '../types/LayoutTypes';
 import { ListVariable, ListVariableItem, Variable, VariableType } from '../types/VariableTypes';
 import { ViewMode } from '../types/ViewModeTypes';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 import { ToolType } from '../utils/Enums';
+import { MeasurementUnit } from '../types/LayoutTypes';
 
 /**
  * The SubscriberController is responsible for all listeners which can influence the application-state from outside.
