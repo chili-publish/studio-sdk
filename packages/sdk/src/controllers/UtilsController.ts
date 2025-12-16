@@ -6,10 +6,10 @@ import {
     UploadAssetValidationErrorType,
     UploadValidationConfiguration,
 } from '../types/ConnectorTypes';
-import { MeasurementUnit } from '../types/LayoutTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
 import { round } from '../utils/MathUtils';
+import { MeasurementUnit } from '@chili-studio/connector-types';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier

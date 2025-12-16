@@ -7,11 +7,11 @@ import {
     LayoutIntent,
     LayoutPreset,
     ResizableLayoutPropertiesUpdate,
-    MeasurementUnit,
     PositionEnum,
     ConstraintMode,
 } from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
+import { MeasurementUnit } from '../../index';
 
 let mockedLayoutController: LayoutController;
 let mockId: Id;

@@ -1,11 +1,11 @@
 import { UtilsController } from '../../controllers/UtilsController';
 import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
 import { UploadAssetValidationError, UploadAssetValidationErrorType } from '../../types/ConnectorTypes';
-import { MeasurementUnit } from '../../types/LayoutTypes';
 import { EnvironmentType } from '../../utils/Enums';
 import { EditorAPI } from '../../types/CommonTypes';
 import { castToEditorResponse } from '../../utils/EditorResponseData';
 import * as MathUtils from '../../utils/MathUtils';
+import { MeasurementUnit } from '../../index';
 
 let mockedUtilsController: UtilsController;
 

@@ -12,7 +12,7 @@ import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
 import { EngineEditMode } from './EngineEditModeTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
-import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
+import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties } from './LayoutTypes';
 import { Page, PageSize } from './PageTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
@@ -20,6 +20,7 @@ import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
 import { BrandKitMedia } from './BrandKitTypes';
+import { MeasurementUnit } from '@chili-studio/connector-types';
 
 export type Id = string;
 export type BaseConfigType = {
