@@ -229,22 +229,24 @@ describe('FrameConstraintController', () => {
 
     describe('integration tests', () => {
         it('should handle multiple constraint updates independently', async () => {
+            await frameConstraintController.setSelectable(id, true);
             await frameConstraintController.setVerticalMovement(id, true);
             await frameConstraintController.setHorizontalMovement(id, false);
             await frameConstraintController.setRotation(id, true);
             await frameConstraintController.setResize(id, false);
             await frameConstraintController.setCrop(id, true);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(5);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(6);
 
             const calls = (mockedEditorApi.updateFrameConstraints as jest.Mock).mock.calls;
-            const lastFiveCalls = calls.slice(-5);
+            const lastSixCalls = calls.slice(-6);
 
-            expect(lastFiveCalls[0]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
-            expect(lastFiveCalls[1]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
-            expect(lastFiveCalls[2]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
-            expect(lastFiveCalls[3]).toEqual([id, JSON.stringify({ resizeAllowed: { value: false } })]);
-            expect(lastFiveCalls[4]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
+            expect(lastSixCalls[0]).toEqual([id, JSON.stringify({ selectionAllowed: { value: true } })]);
+            expect(lastSixCalls[1]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
+            expect(lastSixCalls[2]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
+            expect(lastSixCalls[3]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
+            expect(lastSixCalls[4]).toEqual([id, JSON.stringify({ resizeAllowed: { value: false } })]);
+            expect(lastSixCalls[5]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
         });
 
         it('should work with different frame IDs', async () => {
