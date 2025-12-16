@@ -453,6 +453,7 @@ export type FrameConstraints = {
     verticalMovementAllowed: PropertyState<boolean>;
     rotationAllowed: PropertyState<boolean>;
     resizeAllowed: PropertyState<boolean>;
+    cropAllowed: PropertyState<boolean>;
 };
 
 export interface FrameConstraintsDeltaUpdate {
@@ -469,6 +470,9 @@ export interface FrameConstraintsDeltaUpdate {
         value: boolean | null;
     };
     resizeAllowed?: {
+        value: boolean | null;
+    };
+    cropAllowed?: {
         value: boolean | null;
     };
 }
