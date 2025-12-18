@@ -185,7 +185,7 @@ jobs:
         working-directory: packages/sdk
         run: |
           node -p "require('./package.json').name + ' ' + require('./package.json').version"
-          npm publish
+          npm publish --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -194,7 +194,7 @@ jobs:
         working-directory: packages/connectors
         run: |
           node -p "require('./package.json').name + ' ' + require('./package.json').version"
-          npm publish
+          npm publish --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
