@@ -40,7 +40,7 @@ describe('FrameConstraintController', () => {
     describe('setSelectable', () => {
         it('should set selectable constraint to allowed', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: true },
+                selectionAllowed: { value: true },
             };
 
             await frameConstraintController.setSelectable(id, true);
@@ -54,7 +54,7 @@ describe('FrameConstraintController', () => {
 
         it('should set selectable constraint to not allowed', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                selectable: { value: false },
+                selectionAllowed: { value: false },
             };
 
             await frameConstraintController.setSelectable(id, false);
@@ -195,22 +195,58 @@ describe('FrameConstraintController', () => {
         });
     });
 
+    describe('setCrop', () => {
+        it('should set crop constraint to allowed', async () => {
+            const allowed = true;
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                cropAllowed: { value: allowed },
+            };
+
+            await frameConstraintController.setCrop(id, allowed);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should set crop constraint to not allowed', async () => {
+            const allowed = false;
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                cropAllowed: { value: allowed },
+            };
+
+            await frameConstraintController.setCrop(id, allowed);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+    });
+
     describe('integration tests', () => {
         it('should handle multiple constraint updates independently', async () => {
+            await frameConstraintController.setSelectable(id, true);
             await frameConstraintController.setVerticalMovement(id, true);
             await frameConstraintController.setHorizontalMovement(id, false);
             await frameConstraintController.setRotation(id, true);
             await frameConstraintController.setResize(id, false);
+            await frameConstraintController.setCrop(id, true);
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(4);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(6);
 
             const calls = (mockedEditorApi.updateFrameConstraints as jest.Mock).mock.calls;
-            const lastFourCalls = calls.slice(-4);
+            const lastSixCalls = calls.slice(-6);
 
-            expect(lastFourCalls[0]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
-            expect(lastFourCalls[1]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
-            expect(lastFourCalls[2]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
-            expect(lastFourCalls[3]).toEqual([id, JSON.stringify({ resizeAllowed: { value: false } })]);
+            expect(lastSixCalls[0]).toEqual([id, JSON.stringify({ selectionAllowed: { value: true } })]);
+            expect(lastSixCalls[1]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
+            expect(lastSixCalls[2]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
+            expect(lastSixCalls[3]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
+            expect(lastSixCalls[4]).toEqual([id, JSON.stringify({ resizeAllowed: { value: false } })]);
+            expect(lastSixCalls[5]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
         });
 
         it('should work with different frame IDs', async () => {

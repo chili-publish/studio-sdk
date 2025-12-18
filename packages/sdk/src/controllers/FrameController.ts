@@ -1296,7 +1296,7 @@ export class FrameConstraintController {
      * @returns
      */
     setSelectable = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectable: { value: allowed } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { selectionAllowed: { value: allowed } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1353,6 +1353,20 @@ export class FrameConstraintController {
      */
     setResize = async (id: Id, allowed: boolean) => {
         const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the crop constraint for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether crop is allowed or not
+     * @returns
+     */
+    setCrop = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { cropAllowed: { value: allowed } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))

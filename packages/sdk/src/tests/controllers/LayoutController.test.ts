@@ -7,9 +7,9 @@ import {
     LayoutIntent,
     LayoutPreset,
     ResizableLayoutPropertiesUpdate,
-    MeasurementUnit,
     PositionEnum,
     ConstraintMode,
+    MeasurementUnit,
 } from '../../types/LayoutTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 

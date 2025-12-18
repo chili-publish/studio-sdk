@@ -1,6 +1,8 @@
+import { MeasurementUnit } from '@chili-studio/connector-types';
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PrivateData, PropertyState } from './CommonTypes';
 
+export { MeasurementUnit } from '@chili-studio/connector-types';
 export type LayoutPropertiesType = {
     id: Id;
     name: string;
@@ -117,14 +119,6 @@ export enum PositionEnum {
 export enum LayoutType {
     top = 'top',
     child = 'child',
-}
-
-export enum MeasurementUnit {
-    px = 'px',
-    mm = 'mm',
-    cm = 'cm',
-    inch = 'inch',
-    pt = 'pt',
 }
 
 export enum LayoutIntent {

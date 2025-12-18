@@ -1,3 +1,4 @@
+import { MeasurementUnit } from './Common';
 import { QueryPage } from './Connector.Shared';
 
 /**
@@ -14,6 +15,7 @@ export interface Component {
     defaultComponentDimensions: {
         width: number;
         height: number;
+        unit: MeasurementUnit;
     };
 };
 
