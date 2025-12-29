@@ -87,6 +87,7 @@ export interface ShortTextVariable extends Variable {
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
     isDontBreak: boolean;
+    maxCharacters?: number;
 }
 
 export interface NumberVariable extends Variable {
