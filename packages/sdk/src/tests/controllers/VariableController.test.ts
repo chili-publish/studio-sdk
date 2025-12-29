@@ -102,6 +102,7 @@ describe('VariableController', () => {
         setImageVariableUploadMinSize: async () => getEditorResponseData(castToEditorResponse(null)),
         setImageVariableValueWithContext: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableRemoveParagraphIfEmpty: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableCharacterLimit: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
@@ -141,6 +142,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setImageVariableUploadMinSize');
         jest.spyOn(mockEditorApi, 'setImageVariableValueWithContext');
         jest.spyOn(mockEditorApi, 'setVariableRemoveParagraphIfEmpty');
+        jest.spyOn(mockEditorApi, 'setVariableCharacterLimit');
         jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
     });
 
@@ -335,6 +337,12 @@ describe('VariableController', () => {
         await mockedVariableController.setRemoveParagraphIfEmpty('1', true);
         expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledWith('1', true);
+    });
+
+     it('set maxCharacters', async () => {
+        await mockedVariableController.setVariableCharacterLimit('1', 5);
+        expect(mockEditorApi.setVariableCharacterLimit).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableCharacterLimit).toHaveBeenCalledWith('1', 5);
     });
 
     it('set isReadonly', async () => {

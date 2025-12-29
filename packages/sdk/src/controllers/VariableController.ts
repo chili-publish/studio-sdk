@@ -562,6 +562,20 @@ export class VariableController {
     };
 
     /**
+     * This method sets maxCharacters limit on a text variable
+     * @param id The id of the variable to update
+     * @param maxCharacters Sets the max number of characters for that variable
+     * maxCharacters > 0 && maxCharacters <= 10000 or it can be set to null
+     * @returns
+     */
+    setVariableCharacterLimit = async (id: string, maxCharacters: number | null) => {
+        const res = await this.#editorAPI;
+        return res
+            .setVariableCharacterLimit(id, maxCharacters)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method sets isReadonly flag for a variable
      * @returns
      */
