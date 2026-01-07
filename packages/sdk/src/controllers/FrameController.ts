@@ -1352,8 +1352,11 @@ export class FrameConstraintController {
      * @param proportionLocked whether the frame's proportions are locked or not
      * @returns
      */
-    setResize = async (id: Id, allowed: boolean, proportionLocked: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed }, proportionLocked: { value: proportionLocked } };
+    setResize = async (id: Id, allowed: boolean, proportionLocked?: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = {
+            resizeAllowed: { value: allowed },
+            ...(proportionLocked !== undefined && { proportionLocked: { value: proportionLocked } }),
+        };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))

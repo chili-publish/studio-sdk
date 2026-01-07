@@ -164,6 +164,21 @@ describe('FrameConstraintController', () => {
     });
 
     describe('setResize', () => {
+        it('should set resize constraint without proportionLocked when not provided', async () => {
+            const allowed = true;
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                resizeAllowed: { value: allowed },
+            };
+
+            await frameConstraintController.setResize(id, allowed);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
         it('should set resize constraint to allowed with proportions unlocked', async () => {
             const allowed = true;
             const proportionLocked = false;
@@ -183,23 +198,6 @@ describe('FrameConstraintController', () => {
 
         it('should set resize constraint to not allowed with proportions locked', async () => {
             const allowed = false;
-            const proportionLocked = true;
-            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                resizeAllowed: { value: allowed },
-                proportionLocked: { value: proportionLocked },
-            };
-
-            await frameConstraintController.setResize(id, allowed, proportionLocked);
-
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
-                id,
-                JSON.stringify(expectedDeltaUpdate),
-            );
-        });
-
-        it('should set resize constraint to allowed with proportions locked', async () => {
-            const allowed = true;
             const proportionLocked = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
                 resizeAllowed: { value: allowed },
