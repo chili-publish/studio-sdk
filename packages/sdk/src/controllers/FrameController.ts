@@ -1349,10 +1349,14 @@ export class FrameConstraintController {
      * This method will set the resize constraint for a specified frame
      * @param id the id of the frame that needs to get updated
      * @param allowed whether resize is allowed or not
+     * @param proportionLocked whether the frame's proportions are locked or not
      * @returns
      */
-    setResize = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { resizeAllowed: { value: allowed } };
+    setResize = async (id: Id, allowed: boolean, proportionLocked?: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = {
+            resizeAllowed: { value: allowed },
+            ...(proportionLocked !== undefined && { proportionLocked: { value: proportionLocked } }),
+        };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
