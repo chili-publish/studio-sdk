@@ -1,4 +1,4 @@
-import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import { Dictionary } from '@chili-studio/connector-types';
 import {
@@ -760,15 +760,20 @@ export class VariableController {
      * @returns
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    highlightUsages = async (_id: string): Promise<VariableUsagesReport> => {
+    highlightUsages = async (_id: string): Promise<EditorResponse<VariableUsagesReport>> => {
         console.error('highlightUsages is not implemented');
-        return {
-            pages: [],
-            frames: [],
-            actionTrigger: [],
-            variables: [],
-            outputDataSource: false,
-        };
+        return getEditorResponseData<VariableUsagesReport>({
+            success: true,
+            status: 200,
+            data: JSON.stringify({
+                pages: [],
+                frames: [],
+                actionTrigger: [],
+                variables: [],
+                outputDataSource: false,
+            }),
+            parsedData: null,
+        });
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
