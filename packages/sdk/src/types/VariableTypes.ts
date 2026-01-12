@@ -1,5 +1,5 @@
 import { Dictionary } from '@chili-studio/connector-types';
-import { PrivateData } from './CommonTypes';
+import { Id, PrivateData } from './CommonTypes';
 
 export interface ConnectorImageVariableSource {
     connectorId: string;
@@ -302,3 +302,11 @@ export type VariableVisibilityConditionValue =
     | VariableVisibilityConditionValueBoolean
     | VariableVisibilityConditionValueText
     | VariableVisibilityConditionValueNumber;
+
+export type VariableUsagesReport = {
+    pages: Id[];
+    frames: Id[];
+    actionTrigger: Id[];
+    variables: Id[];
+    outputDataSource: boolean;
+};
