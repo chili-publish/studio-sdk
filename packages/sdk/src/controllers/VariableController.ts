@@ -759,7 +759,8 @@ export class VariableController {
      * @param id the id of the variable
      * @returns
      */
-    highlightUsages = async (id: string): Promise<VariableUsagesReport> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    highlightUsages = async (_id: string): Promise<VariableUsagesReport> => {
         console.error('highlightUsages is not implemented');
         return {
             pages: [],
