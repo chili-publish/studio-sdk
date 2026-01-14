@@ -570,9 +570,7 @@ export class VariableController {
      */
     setVariableCharacterLimit = async (id: string, maxCharacters: number | null) => {
         const res = await this.#editorAPI;
-        return res
-            .setVariableCharacterLimit(id, maxCharacters)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setVariableCharacterLimit(id, maxCharacters).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

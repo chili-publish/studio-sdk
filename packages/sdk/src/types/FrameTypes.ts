@@ -28,6 +28,8 @@ export type FrameLayoutType = {
     autoGrow: AutoGrowSettings;
     isShowingCustomCroppedAsset: boolean;
     customCroppedAssetCount: number;
+    isVirtual: boolean;
+    parentFrame: Id | null;
 } | null;
 
 //Frame.image
@@ -35,13 +37,11 @@ export type FrameType = {
     id: Id;
     name: string;
     type: FrameTypeEnum;
-    // `imageUrl` is not generic: should be removed from model
-    imageUrl: string;
     blendMode: string;
     opacity: number;
 };
 
-export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame | ComponentFrame;
+export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame | ComponentFrame | ComponentGridFrame;
 
 export type ImageFrameVariableSource = {
     type: ImageSourceTypeEnum.variable;
@@ -173,6 +173,16 @@ export type ComponentFrame = {
     variableMappings: VariableMapping[];
 };
 
+export type ComponentGridFrame = {
+    id: Id;
+    name: string;
+    opacity: number;
+    type: FrameTypeEnum.componentGrid;
+    blendMode: BlendMode;
+    variableId?: Id;
+    variableMappings: GridVariableMappings;
+};
+
 export type ComponentSource = ConnectorComponentSource;
 
 export type ConnectorComponentSource = {
@@ -279,6 +289,7 @@ export enum FrameTypeEnum {
     shape = 'shape',
     barcode = 'barcode',
     component = 'component',
+    componentGrid = 'componentGrid',
 }
 
 export enum BarcodeSourceTypeEnum {
@@ -480,3 +491,12 @@ export interface FrameConstraintsDeltaUpdate {
         value: boolean | null;
     };
 }
+
+export type GridVariableMappings = {
+    mappings: Record<string, VariableIdToSourceFieldMapping[]>;
+};
+
+export type VariableIdToSourceFieldMapping = {
+    variableId: Id;
+    sourceField: string;
+};
