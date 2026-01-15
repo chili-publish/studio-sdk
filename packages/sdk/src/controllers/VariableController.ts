@@ -757,23 +757,11 @@ export class VariableController {
      * - variables
      * - outputDataSource
      * @param id the id of the variable
-     * @returns
+     * @returns the usages of the variable
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    highlightUsages = async (_id: string): Promise<EditorResponse<VariableUsagesReport>> => {
-        console.error('highlightUsages is not implemented');
-        return getEditorResponseData<VariableUsagesReport>({
-            success: true,
-            status: 200,
-            data: JSON.stringify({
-                pages: [],
-                frames: [],
-                actionTrigger: [],
-                variables: [],
-                outputDataSource: false,
-            }),
-            parsedData: null,
-        });
+    highlightUsages = async (id: string): Promise<EditorResponse<VariableUsagesReport>> => {
+        const res = await this.#editorAPI;
+        return res.highlightVariableUsages(id).then((result) => getEditorResponseData<VariableUsagesReport>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
