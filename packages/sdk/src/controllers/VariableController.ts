@@ -1,4 +1,4 @@
-import { EditorAPI, Id, PrivateData } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import { Dictionary } from '@chili-studio/connector-types';
 import {
@@ -12,6 +12,7 @@ import {
     PrefixSuffixDeltaUpdate,
     Variable,
     VariableType,
+    VariableUsagesReport,
     VariableVisibility,
     VariableVisibilityType,
 } from '../types/VariableTypes';
@@ -570,9 +571,7 @@ export class VariableController {
      */
     setVariableCharacterLimit = async (id: string, maxCharacters: number | null) => {
         const res = await this.#editorAPI;
-        return res
-            .setVariableCharacterLimit(id, maxCharacters)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setVariableCharacterLimit(id, maxCharacters).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -748,6 +747,21 @@ export class VariableController {
     setIsDontBreak = async (id: string, isDontBreak: boolean) => {
         const res = await this.#editorAPI;
         return res.setVariableIsDontBreak(id, isDontBreak).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method highlights the usages of a variable in
+     * - pages
+     * - frames
+     * - actionTrigger
+     * - variables
+     * - outputDataSource
+     * @param id the id of the variable
+     * @returns the usages of the variable
+     */
+    highlightUsages = async (id: string): Promise<EditorResponse<VariableUsagesReport>> => {
+        const res = await this.#editorAPI;
+        return res.highlightVariableUsages(id).then((result) => getEditorResponseData<VariableUsagesReport>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
