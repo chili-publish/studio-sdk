@@ -30,6 +30,7 @@ export type FrameLayoutType = {
     customCroppedAssetCount: number;
     isVirtual: boolean;
     parentFrame: Id | null;
+    componentGridSettings: PropertyState<ComponentGridSettings>;
 } | null;
 
 //Frame.image
@@ -500,3 +501,31 @@ export type VariableIdToSourceFieldMapping = {
     variableId: Id;
     sourceField: string;
 };
+
+export enum ComponentGridSettingsType {
+    fixed = 'fixed',
+    slotting = 'slotting',
+}
+
+export type ComponentGridSettingsFixed = {
+    numberOfColumns: number;
+    numberOfRows: number;
+    componentConnectorId?: Id;
+    componentId?: Id;
+    horizontalSpacing: number;
+    verticalSpacing: number;
+    type: ComponentGridSettingsType.fixed;
+};
+
+export type ComponentGridSettingsSlotting = {
+    numberOfColumns: number;
+    numberOfRows: number;
+    allowReordering: boolean;
+    componentConnectorId?: Id;
+    componentId?: Id;
+    horizontalSpacing: number;
+    verticalSpacing: number;
+    type: ComponentGridSettingsType.slotting;
+};
+
+export type ComponentGridSettings = ComponentGridSettingsFixed | ComponentGridSettingsSlotting;
