@@ -1,5 +1,5 @@
-import { Dictionary } from '@chili-studio/connector-types';
-import { PrivateData } from './CommonTypes';
+import { DataModelProperty, Dictionary } from '@chili-studio/connector-types';
+import { Id, PrivateData } from './CommonTypes';
 
 export interface ConnectorImageVariableSource {
     connectorId: string;
@@ -39,6 +39,7 @@ export enum VariableType {
     group = 'group',
     number = 'number',
     date = 'date',
+    dataSource = 'dataSource',
 }
 
 export interface Variable {
@@ -114,6 +115,28 @@ export interface DateVariable extends Variable {
     locale: Locale;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
+}
+
+export enum DataSourceVariableSourceType {
+    connector = 'connector',
+    direct = 'direct',
+}
+
+export interface ConnectorDataSourceVariableSource {
+    connectorId: Id;
+    type: DataSourceVariableSourceType.connector;
+}
+
+export interface DirectDataSourceVariableSource {
+    type: DataSourceVariableSourceType.direct;
+    model: DataModelProperty[];
+}
+
+export type DataSourceVariableSource = ConnectorDataSourceVariableSource | DirectDataSourceVariableSource;
+
+export interface DataSourceVariable extends Variable {
+    entryId?: string;
+    value?: DataSourceVariableSource;
 }
 
 export type LongTextVariable = ShortTextVariable;
