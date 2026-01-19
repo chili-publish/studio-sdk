@@ -51,6 +51,9 @@ export type ShortcutOptionsDeltaUpdate = {
     /** The hand shortcut. */
     hand?: ShortcutOption;
 
+    /** The temporary hand shortcut. */
+    temporaryHand?: ShortcutOption;
+
     /** The image frame shortcut. */
     image?: ShortcutOption;
 
@@ -92,6 +95,7 @@ export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
         debugPanel: { enabled: false },
         ellipse: { enabled: false },
         hand: { enabled: false },
+        temporaryHand: { enabled: false },
         image: { enabled: false },
         polygon: { enabled: false },
         rectangle: { enabled: false },
