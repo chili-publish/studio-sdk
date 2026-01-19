@@ -31,6 +31,7 @@ export type FrameLayoutType = {
     isVirtual: boolean;
     parentFrame: Id | null;
     componentGridSettings: PropertyState<ComponentGridSettings>;
+    inOverflow: boolean;
 } | null;
 
 //Frame.image
