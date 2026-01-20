@@ -864,7 +864,6 @@ declare module 'grafx-studio-actions' {
             spotHex = 'spotHex',
         }
 
-
         /**
          * Controller for manipulating brand kit paragraph styles.
          */
