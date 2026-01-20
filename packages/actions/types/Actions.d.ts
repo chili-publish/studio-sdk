@@ -744,7 +744,7 @@ declare module 'grafx-studio-actions' {
              * kept, defaults to false
              * @returns
              */
-            select(layoutName: string | Layout | VariableValue, keepPageSize?:boolean): void;
+            select(layoutName: string | Layout | VariableValue, keepPageSize?: boolean): void;
 
             /**
              * Returns all layouts in the document.
@@ -809,7 +809,88 @@ declare module 'grafx-studio-actions' {
              * @returns
              */
             copy(fromName: string, toName: string): void;
+
+            /**
+             * Sets a brand kit color
+             * @param name the color
+             * @param value the color value
+             * @returns
+             */
+            setColorValue(name: string, value: BrandKitColor): void;
         }
+
+        export type BrandKitColor =
+            | RGBColorValue
+            | CMYKColorValue
+            | HEXColorValue
+            | SpotRGBColorValue
+            | SpotCMYKColorValue
+            | SpotHEXColorValue;
+
+        export interface BaseBrandKitColor extends HasName {
+
+            readonly guid: string;
+
+        }
+
+        export type RGB = { r: number; g: number; b: number };
+        export type CMYK = { c: number; m: number; y: number; k: number };
+
+
+        export interface RGBColorValue extends BaseBrandKitColor {
+
+            readonly value: RGB;
+            readonly type: APIColorType.rgb;
+
+        }
+
+        export interface CMYKColorValue extends BaseBrandKitColor {
+
+            readonly value: CMYK;
+            readonly type: APIColorType.cmyk;
+
+        }
+
+        export interface HEXColorValue extends BaseBrandKitColor {
+
+            readonly value: string;
+            readonly type: APIColorType.hex;
+
+        }
+
+        export interface SpotRGBColorValue extends BaseBrandKitColor {
+
+            readonly displayValue: RGB;
+            readonly value: string;
+            readonly type: APIColorType.spotRgb;
+
+        }
+
+        export interface SpotCMYKColorValue extends BaseBrandKitColor {
+
+            readonly displayValue: CMYK;
+            readonly value: string;
+            readonly type: APIColorType.spotCmyk;
+
+        }
+
+        export interface SpotHEXColorValue extends BaseBrandKitColor {
+
+            readonly displayValue: string;
+            readonly value: string;
+            readonly type: APIColorType.spotHex;
+
+        }
+
+        export enum APIColorType {
+            rgb = 'rgb',
+            hex = 'hex',
+            cmyk = 'cmyk',
+            spotCmyk = 'spotCmyk',
+            spotRgb = 'spotRgb',
+            spotHex = 'spotHex',
+        }
+
 
         /**
          * Controller for manipulating brand kit paragraph styles.

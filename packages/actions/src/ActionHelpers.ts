@@ -688,3 +688,14 @@ function copyParagraphStyleFromTo(from: string, to: string) {
 function copyCharacterStyleFromTo(from: string, to: string) {
     studio.brandKit.characterStyles.copy(from, to);
 }
+
+/**
+ * Sets a brand kit's color by its name and value object.
+ *
+ *
+ * @param {string} name - The name of the color
+ * @param {BrandKitColor} value - The new BrandKitColor value (ensure correct types are used). 
+ */
+function setColorValue(name: string, value: BrandKitColor) {
+    studio.brandKit.colors.setColorValue(name, value);
+}
