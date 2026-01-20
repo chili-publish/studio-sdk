@@ -836,21 +836,42 @@ declare module 'grafx-studio-actions' {
 
         export interface RGBColorValue extends BaseColorValue {
 
+            /**
+             * The RGB color value
+             */
             readonly value: RGB;
+
+            /**
+             * The color type
+             */
             readonly type: APIColorType.rgb;
 
         }
 
         export interface CMYKColorValue extends BaseColorValue {
 
+            /**
+             * The cmyk color value
+             */
             readonly value: CMYK;
+
+            /**
+             * The color type
+             */
             readonly type: APIColorType.cmyk;
 
         }
 
         export interface HEXColorValue extends BaseColorValue {
 
+            /**
+             * The hex color value
+             */
             readonly value: string;
+
+            /**
+             * The color type
+             */
             readonly type: APIColorType.hex;
 
         }
@@ -859,9 +880,6 @@ declare module 'grafx-studio-actions' {
             rgb = 'rgb',
             hex = 'hex',
             cmyk = 'cmyk',
-            spotCmyk = 'spotCmyk',
-            spotRgb = 'spotRgb',
-            spotHex = 'spotHex',
         }
 
         /**
