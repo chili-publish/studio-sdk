@@ -816,18 +816,15 @@ declare module 'grafx-studio-actions' {
              * @param value the color value
              * @returns
              */
-            setColorValue(name: string, value: BrandKitColor): void;
+            set(name: string, value: ColorValue): void;
         }
 
-        export type BrandKitColor =
+        export type ColorValue =
             | RGBColorValue
             | CMYKColorValue
-            | HEXColorValue
-            | SpotRGBColorValue
-            | SpotCMYKColorValue
-            | SpotHEXColorValue;
+            | HEXColorValue;
 
-        export interface BaseBrandKitColor extends HasName {
+        export interface BaseColorValue extends HasName {
 
             readonly guid: string;
 
@@ -837,48 +834,24 @@ declare module 'grafx-studio-actions' {
         export type CMYK = { c: number; m: number; y: number; k: number };
 
 
-        export interface RGBColorValue extends BaseBrandKitColor {
+        export interface RGBColorValue extends BaseColorValue {
 
             readonly value: RGB;
             readonly type: APIColorType.rgb;
 
         }
 
-        export interface CMYKColorValue extends BaseBrandKitColor {
+        export interface CMYKColorValue extends BaseColorValue {
 
             readonly value: CMYK;
             readonly type: APIColorType.cmyk;
 
         }
 
-        export interface HEXColorValue extends BaseBrandKitColor {
+        export interface HEXColorValue extends BaseColorValue {
 
             readonly value: string;
             readonly type: APIColorType.hex;
-
-        }
-
-        export interface SpotRGBColorValue extends BaseBrandKitColor {
-
-            readonly displayValue: RGB;
-            readonly value: string;
-            readonly type: APIColorType.spotRgb;
-
-        }
-
-        export interface SpotCMYKColorValue extends BaseBrandKitColor {
-
-            readonly displayValue: CMYK;
-            readonly value: string;
-            readonly type: APIColorType.spotCmyk;
-
-        }
-
-        export interface SpotHEXColorValue extends BaseBrandKitColor {
-
-            readonly displayValue: string;
-            readonly value: string;
-            readonly type: APIColorType.spotHex;
 
         }
 

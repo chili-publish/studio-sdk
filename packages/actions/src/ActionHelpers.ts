@@ -694,8 +694,8 @@ function copyCharacterStyleFromTo(from: string, to: string) {
  *
  *
  * @param {string} name - The name of the color
- * @param {BrandKitColor} value - The new BrandKitColor value (ensure correct types are used). 
+ * @param {ColorValue} value - The new ColorValue value (ensure correct types are used). 
  */
-function setColorValue(name: string, value: BrandKitColor) {
-    studio.brandKit.colors.setColorValue(name, value);
+function setColorValue(name: string, value: ColorValue) {
+    studio.brandKit.colors.set(name, value);
 }
