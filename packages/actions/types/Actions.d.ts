@@ -825,17 +825,13 @@ declare module 'grafx-studio-actions' {
             | HEXColorValue;
 
         export interface BaseColorValue extends HasName {
-
             readonly guid: string;
-
         }
 
         export type RGB = { r: number; g: number; b: number };
         export type CMYK = { c: number; m: number; y: number; k: number };
 
-
         export interface RGBColorValue extends BaseColorValue {
-
             /**
              * The RGB color value
              */
@@ -849,7 +845,6 @@ declare module 'grafx-studio-actions' {
         }
 
         export interface CMYKColorValue extends BaseColorValue {
-
             /**
              * The cmyk color value
              */
@@ -859,11 +854,9 @@ declare module 'grafx-studio-actions' {
              * The color type
              */
             readonly type: APIColorType.cmyk;
-
         }
 
         export interface HEXColorValue extends BaseColorValue {
-
             /**
              * The hex color value
              */
@@ -873,7 +866,6 @@ declare module 'grafx-studio-actions' {
              * The color type
              */
             readonly type: APIColorType.hex;
-
         }
 
         export enum APIColorType {
