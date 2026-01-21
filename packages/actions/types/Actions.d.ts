@@ -831,7 +831,7 @@ declare module 'grafx-studio-actions' {
         export type RGB = { r: number; g: number; b: number };
         export type CMYK = { c: number; m: number; y: number; k: number };
 
-        export interface RGBColorValue extends BaseColorValue {
+        export interface RGBColorValue {
             /**
              * The RGB color value
              */
@@ -844,7 +844,7 @@ declare module 'grafx-studio-actions' {
 
         }
 
-        export interface CMYKColorValue extends BaseColorValue {
+        export interface CMYKColorValue {
             /**
              * The cmyk color value
              */
@@ -856,7 +856,7 @@ declare module 'grafx-studio-actions' {
             readonly type: APIColorType.cmyk;
         }
 
-        export interface HEXColorValue extends BaseColorValue {
+        export interface HEXColorValue {
             /**
              * The hex color value
              */
@@ -867,6 +867,13 @@ declare module 'grafx-studio-actions' {
              */
             readonly type: APIColorType.hex;
         }
+
+        /**
+        * Color constructors for actions
+        */  
+        function rgb(r: number, g: number, b: number): ColorValue;
+        function cmyk(c: number, m: number, y: number, k: number): ColorValue;
+        function hex(value: string): ColorValue;
 
         export enum APIColorType {
             rgb = 'rgb',
