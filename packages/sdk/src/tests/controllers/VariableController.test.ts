@@ -339,7 +339,7 @@ describe('VariableController', () => {
         expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledWith('1', true);
     });
 
-     it('set maxCharacters', async () => {
+    it('set maxCharacters', async () => {
         await mockedVariableController.setVariableCharacterLimit('1', 5);
         expect(mockEditorApi.setVariableCharacterLimit).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableCharacterLimit).toHaveBeenCalledWith('1', 5);
