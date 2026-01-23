@@ -699,3 +699,29 @@ function copyCharacterStyleFromTo(from: string, to: string) {
 function setColorValue(name: string, value: ColorValue) {
     studio.brandKit.colors.set(name, value);
 }
+
+function rgb(r: number, g: number, b: number): RGBColorValue {
+    return {
+        r: r,
+        g: g,
+        b: b,
+        type: APIColorType.rgb
+    };
+}
+
+function cmyk(c: number, m: number, y: number, k: number): CMYKColorValue {
+    return {
+        c: c,
+        m: m,
+        y: y,
+        k: k,
+        type: APIColorType.cmyk
+    };
+}
+
+function hex(hexString: string): HEXColorValue {
+    return {
+        hex: hexString,
+        type: APIColorType.hex
+    };
+}
