@@ -842,7 +842,7 @@ declare module 'grafx-studio-actions' {
             /**
              * The color type
              */
-            readonly type: APIColorType.rgb;
+            readonly type: 'rgb';
 
         }
 
@@ -858,7 +858,7 @@ declare module 'grafx-studio-actions' {
             /**
              * The color type
              */
-            readonly type: APIColorType.cmyk;
+            readonly type: 'cmyk';
         }
 
         export interface HEXColorValue {
@@ -870,15 +870,9 @@ declare module 'grafx-studio-actions' {
             /**
              * The color type
              */
-            readonly type: APIColorType.hex;
+            readonly type: 'hex';
         }
-
-        export enum APIColorType {
-            rgb = 'rgb',
-            hex = 'hex',
-            cmyk = 'cmyk',
-        }
-
+        
         /**
          * Controller for manipulating brand kit paragraph styles.
          */
