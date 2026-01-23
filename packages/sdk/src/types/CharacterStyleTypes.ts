@@ -23,8 +23,10 @@ export type CharacterStyle = {
     textOverprint?: boolean;
     color: ColorUsage;
     strokeColor: ColorUsage;
+    backgroundColor: ColorUsage;
     fillColorApplied?: boolean | null;
     strokeColorApplied?: boolean | null;
+    backgroundColorApplied?: boolean | null;
     strokeWidth?: number;
     underline: boolean;
     lineThrough: boolean;
@@ -73,11 +75,17 @@ export type CharacterStyleUpdate = {
     strokeColor?: {
         value: ColorUsageUpdate;
     };
+    strokeWidth?: {
+        value: string;
+    };
     strokeColorApplied?: {
         value: boolean;
     };
-    strokeWidth?: {
-        value: string;
+    backgroundColor?: {
+        value: ColorUsageUpdate;
+    };
+    backgroundColorApplied?: {
+        value: boolean;
     };
     underline?: {
         value: boolean;

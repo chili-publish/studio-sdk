@@ -28,8 +28,10 @@ export type ParagraphStyle = {
     textOverprint: boolean;
     color: ColorUsage;
     strokeColor: ColorUsage;
+    backgroundColor: ColorUsage;
     fillColorApplied: boolean;
     strokeColorApplied: boolean;
+    backgroundColorApplied?: boolean;
     strokeWidth: number;
     underline: boolean;
     lineThrough: boolean;
@@ -100,6 +102,12 @@ export type ParagraphStyleUpdate = {
     };
     strokeWidth?: {
         value: string;
+    };
+    backgroundColor?: {
+        value: ColorUsageUpdate;
+    };
+    backgroundColorApplied?: {
+        value: boolean;
     };
     underline?: {
         value: boolean;
