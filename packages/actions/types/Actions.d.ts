@@ -835,7 +835,9 @@ declare module 'grafx-studio-actions' {
             /**
              * The RGB color value
              */
-            readonly value: RGB;
+            readonly r: number;
+            readonly g: number;
+            readonly b: number;
 
             /**
              * The color type
@@ -848,7 +850,10 @@ declare module 'grafx-studio-actions' {
             /**
              * The cmyk color value
              */
-            readonly value: CMYK;
+            readonly c: number;
+            readonly m: number;
+            readonly y: number;
+            readonly k: number;
 
             /**
              * The color type
@@ -860,20 +865,13 @@ declare module 'grafx-studio-actions' {
             /**
              * The hex color value
              */
-            readonly value: string;
+            readonly hex: string;
 
             /**
              * The color type
              */
             readonly type: APIColorType.hex;
         }
-
-        /**
-        * Color constructors for actions
-        */  
-        function rgb(r: number, g: number, b: number): ColorValue;
-        function cmyk(c: number, m: number, y: number, k: number): ColorValue;
-        function hex(value: string): ColorValue;
 
         export enum APIColorType {
             rgb = 'rgb',
