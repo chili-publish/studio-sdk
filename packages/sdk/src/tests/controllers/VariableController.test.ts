@@ -7,6 +7,7 @@ import {
     Locale,
     Variable,
     VariableType,
+    VariableUsagesReport,
     VariableVisibilityType,
     VariableVisibilityVisible,
 } from '../../types/VariableTypes';
@@ -67,6 +68,14 @@ describe('VariableController', () => {
 
     const variables = [listVar];
 
+    const variableUsagesReport: VariableUsagesReport = {
+        pages: ['page1', 'page2'],
+        frames: ['frame1'],
+        actionTrigger: ['trigger1'],
+        variables: ['var1', 'var2'],
+        outputDataSource: true,
+    };
+
     const mockEditorApi: EditorAPI = {
         getVariableById: async () => getEditorResponseData(castToEditorResponse(variable)),
         getVariableByName: async () => getEditorResponseData(castToEditorResponse(listVar)),
@@ -104,6 +113,7 @@ describe('VariableController', () => {
         setVariableRemoveParagraphIfEmpty: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableCharacterLimit: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
+        highlightVariableUsages: async () => getEditorResponseData(castToEditorResponse(variableUsagesReport)),
     };
 
     beforeEach(() => {
@@ -144,6 +154,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableRemoveParagraphIfEmpty');
         jest.spyOn(mockEditorApi, 'setVariableCharacterLimit');
         jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
+        jest.spyOn(mockEditorApi, 'highlightVariableUsages');
     });
 
     it('get variable by id', async () => {
@@ -339,7 +350,7 @@ describe('VariableController', () => {
         expect(mockEditorApi.setVariableRemoveParagraphIfEmpty).toHaveBeenCalledWith('1', true);
     });
 
-     it('set maxCharacters', async () => {
+    it('set maxCharacters', async () => {
         await mockedVariableController.setVariableCharacterLimit('1', 5);
         expect(mockEditorApi.setVariableCharacterLimit).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableCharacterLimit).toHaveBeenCalledWith('1', 5);
@@ -602,5 +613,12 @@ describe('VariableController', () => {
         await mockedVariableController.setIsDontBreak('1', true);
         expect(mockEditorApi.setVariableIsDontBreak).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableIsDontBreak).toHaveBeenCalledWith('1', true);
+    });
+
+    it('highlights the usages of a variable', async () => {
+        const response = await mockedVariableController.highlightUsages('1');
+        expect(mockEditorApi.highlightVariableUsages).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.highlightVariableUsages).toHaveBeenCalledWith('1');
+        expect(response?.parsedData).toStrictEqual(variableUsagesReport);
     });
 });
