@@ -246,6 +246,193 @@ describe('FrameConstraintController', () => {
         });
     });
 
+    describe('setTextEditingAllowed', () => {
+        it('should set text editing constraint to allowed', async () => {
+            const allowed = true;
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                textEditingAllowed: { value: allowed },
+            };
+
+            await frameConstraintController.setTextEditingAllowed(id, allowed);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should set text editing constraint to not allowed', async () => {
+            const allowed = false;
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                textEditingAllowed: { value: allowed },
+            };
+
+            await frameConstraintController.setTextEditingAllowed(id, allowed);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+    });
+
+    describe('setAllowedParagraphStyleIds', () => {
+        it('should set allowed paragraph style IDs constraint', async () => {
+            const styleIds: Id[] = ['style-1', 'style-2', 'style-3'];
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedParagraphStyleIds: { value: styleIds },
+            };
+
+            await frameConstraintController.setAllowedParagraphStyleIds(id, styleIds);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should remove allowed paragraph style IDs constraint when set to null', async () => {
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedParagraphStyleIds: { value: null },
+            };
+
+            await frameConstraintController.setAllowedParagraphStyleIds(id, null);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+    });
+
+    describe('setAllowedCharacterStyleIds', () => {
+        it('should set allowed character style IDs constraint', async () => {
+            const styleIds: Id[] = ['char-style-1', 'char-style-2'];
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedCharacterStyleIds: { value: styleIds },
+            };
+
+            await frameConstraintController.setAllowedCharacterStyleIds(id, styleIds);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should remove allowed character style IDs constraint when set to null', async () => {
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedCharacterStyleIds: { value: null },
+            };
+
+            await frameConstraintController.setAllowedCharacterStyleIds(id, null);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+    });
+
+    describe('setAllowedColorIds', () => {
+        it('should set allowed color IDs constraint', async () => {
+            const colorIds: Id[] = ['color-1', 'color-2', 'color-3', 'color-4'];
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedColorIds: { value: colorIds },
+            };
+
+            await frameConstraintController.setAllowedColorIds(id, colorIds);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should remove allowed color IDs constraint when set to null', async () => {
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedColorIds: { value: null },
+            };
+
+            await frameConstraintController.setAllowedColorIds(id, null);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+    });
+
+    describe('setAllowedFontSizes', () => {
+        it('should set allowed font sizes constraint with min and max', async () => {
+            const fontSizeRange = { min: 10, max: 72 };
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedFontSizes: { value: fontSizeRange },
+            };
+
+            await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should set allowed font sizes constraint with min only (max null)', async () => {
+            const fontSizeRange = { min: 12, max: null };
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedFontSizes: { value: fontSizeRange },
+            };
+
+            await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should set allowed font sizes constraint with max only (min null)', async () => {
+            const fontSizeRange = { min: null, max: 48 };
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedFontSizes: { value: fontSizeRange },
+            };
+
+            await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+
+        it('should remove allowed font sizes constraint when set to { min: null, max: null }', async () => {
+            const fontSizeRange = { min: null, max: null };
+            const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
+                allowedFontSizes: { value: fontSizeRange },
+            };
+
+            await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
+
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(expectedDeltaUpdate),
+            );
+        });
+    });
+
     describe('integration tests', () => {
         it('should handle multiple constraint updates independently', async () => {
             await frameConstraintController.setSelectable(id, true);
@@ -254,21 +441,31 @@ describe('FrameConstraintController', () => {
             await frameConstraintController.setRotation(id, true);
             await frameConstraintController.setResize(id, false, true);
             await frameConstraintController.setCrop(id, true);
+            await frameConstraintController.setTextEditingAllowed(id, true);
+            await frameConstraintController.setAllowedParagraphStyleIds(id, ['style-1', 'style-2']);
+            await frameConstraintController.setAllowedCharacterStyleIds(id, ['char-style-1']);
+            await frameConstraintController.setAllowedColorIds(id, ['color-1', 'color-2']);
+            await frameConstraintController.setAllowedFontSizes(id, { min: 10, max: 72 });
 
-            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(6);
+            expect(mockedEditorApi.updateFrameConstraints).toHaveBeenCalledTimes(11);
 
             const calls = (mockedEditorApi.updateFrameConstraints as jest.Mock).mock.calls;
-            const lastSixCalls = calls.slice(-6);
+            const lastElevenCalls = calls.slice(-11);
 
-            expect(lastSixCalls[0]).toEqual([id, JSON.stringify({ selectionAllowed: { value: true } })]);
-            expect(lastSixCalls[1]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
-            expect(lastSixCalls[2]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
-            expect(lastSixCalls[3]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
-            expect(lastSixCalls[4]).toEqual([
+            expect(lastElevenCalls[0]).toEqual([id, JSON.stringify({ selectionAllowed: { value: true } })]);
+            expect(lastElevenCalls[1]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
+            expect(lastElevenCalls[2]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
+            expect(lastElevenCalls[3]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
+            expect(lastElevenCalls[4]).toEqual([
                 id,
                 JSON.stringify({ resizeAllowed: { value: false }, proportionLocked: { value: true } }),
             ]);
-            expect(lastSixCalls[5]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
+            expect(lastElevenCalls[5]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
+            expect(lastElevenCalls[6]).toEqual([id, JSON.stringify({ textEditingAllowed: { value: true } })]);
+            expect(lastElevenCalls[7]).toEqual([id, JSON.stringify({ allowedParagraphStyleIds: { value: ['style-1', 'style-2'] } })]);
+            expect(lastElevenCalls[8]).toEqual([id, JSON.stringify({ allowedCharacterStyleIds: { value: ['char-style-1'] } })]);
+            expect(lastElevenCalls[9]).toEqual([id, JSON.stringify({ allowedColorIds: { value: ['color-1', 'color-2'] } })]);
+            expect(lastElevenCalls[10]).toEqual([id, JSON.stringify({ allowedFontSizes: { value: { min: 10, max: 72 } } })]);
         });
 
         it('should work with different frame IDs', async () => {
