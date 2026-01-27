@@ -470,15 +470,46 @@ export enum CropType {
     assetCrop = 'assetCrop',
 }
 
-export type FrameConstraints = {
+export enum FrameConstraintsType {
+    image = 'image',
+    text = 'text',
+}
+
+type BaseFrameConstraints = {
     selectionAllowed: PropertyState<boolean>;
     horizontalMovementAllowed: PropertyState<boolean>;
     verticalMovementAllowed: PropertyState<boolean>;
     rotationAllowed: PropertyState<boolean>;
     resizeAllowed: PropertyState<boolean>;
-    cropAllowed: PropertyState<boolean>;
     proportionLocked: PropertyState<boolean>;
+    type: FrameConstraintsType;
 };
+
+export type ImageFrameConstraints = BaseFrameConstraints & {
+    type: FrameConstraintsType.image;
+    cropAllowed: PropertyState<boolean>;
+};
+
+export type TextFrameConstraints = BaseFrameConstraints & {
+    type: FrameConstraintsType.text;
+    textEditingAllowed: PropertyState<boolean>;
+    allowedParagraphStyleIds?: PropertyState<Array<Id> | null>;
+    allowedCharacterStyleIds?: PropertyState<Array<Id> | null>;
+    allowedColorIds?: PropertyState<Array<Id> | null>;
+    allowedFontSizes?: PropertyState<FontSizeRangeConstraint>;
+
+};
+
+export interface FontSizeRangeConstraint {
+    min: number | null;
+    max: number | null;
+}
+
+
+export type FrameConstraints =
+    | ImageFrameConstraints
+    | TextFrameConstraints
+    | BaseFrameConstraints;
 
 export interface FrameConstraintsDeltaUpdate {
     selectionAllowed?: {
@@ -501,5 +532,20 @@ export interface FrameConstraintsDeltaUpdate {
     };
     proportionLocked?: {
         value: boolean | null;
+    };
+    textEditingAllowed?: {
+        value: boolean | null;
+    };
+    allowedParagraphStyleIds?: {
+        value: Array<Id> | null;
+    };
+    allowedCharacterStyleIds?: {
+        value: Array<Id> | null;
+    };
+    allowedColorIds?: {
+        value: Array<Id> | null;
+    };
+    allowedFontSizes?: {
+        value: FontSizeRangeConstraint | null;
     };
 }
