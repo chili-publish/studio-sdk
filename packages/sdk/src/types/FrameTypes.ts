@@ -508,8 +508,7 @@ export interface FontSizeRangeConstraint {
 
 export type FrameConstraints =
     | ImageFrameConstraints
-    | TextFrameConstraints
-    | BaseFrameConstraints;
+    | TextFrameConstraints;
 
 export interface FrameConstraintsDeltaUpdate {
     selectionAllowed?: {
