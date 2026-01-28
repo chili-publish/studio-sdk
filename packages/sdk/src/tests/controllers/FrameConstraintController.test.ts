@@ -218,7 +218,7 @@ describe('FrameConstraintController', () => {
         it('should set crop constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                cropAllowed: { value: allowed },
+                image: { cropAllowed: { value: allowed } },
             };
 
             await frameConstraintController.setCrop(id, allowed);
@@ -233,7 +233,7 @@ describe('FrameConstraintController', () => {
         it('should set crop constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                cropAllowed: { value: allowed },
+                image: { cropAllowed: { value: allowed } },
             };
 
             await frameConstraintController.setCrop(id, allowed);
@@ -250,7 +250,7 @@ describe('FrameConstraintController', () => {
         it('should set text editing constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                textEditingAllowed: { value: allowed },
+                text: { textEditingAllowed: { value: allowed } },
             };
 
             await frameConstraintController.setTextEditingAllowed(id, allowed);
@@ -265,7 +265,7 @@ describe('FrameConstraintController', () => {
         it('should set text editing constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                textEditingAllowed: { value: allowed },
+                text: { textEditingAllowed: { value: allowed } },
             };
 
             await frameConstraintController.setTextEditingAllowed(id, allowed);
@@ -282,7 +282,7 @@ describe('FrameConstraintController', () => {
         it('should set allowed paragraph style IDs constraint', async () => {
             const styleIds: Id[] = ['style-1', 'style-2', 'style-3'];
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedParagraphStyleIds: { value: styleIds },
+                text: { allowedParagraphStyleIds: { value: styleIds } },
             };
 
             await frameConstraintController.setAllowedParagraphStyleIds(id, styleIds);
@@ -296,7 +296,7 @@ describe('FrameConstraintController', () => {
 
         it('should remove allowed paragraph style IDs constraint when set to null', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedParagraphStyleIds: { value: null },
+                text: { allowedParagraphStyleIds: { value: null } },
             };
 
             await frameConstraintController.setAllowedParagraphStyleIds(id, null);
@@ -313,7 +313,7 @@ describe('FrameConstraintController', () => {
         it('should set allowed character style IDs constraint', async () => {
             const styleIds: Id[] = ['char-style-1', 'char-style-2'];
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedCharacterStyleIds: { value: styleIds },
+                text: { allowedCharacterStyleIds: { value: styleIds } },
             };
 
             await frameConstraintController.setAllowedCharacterStyleIds(id, styleIds);
@@ -327,7 +327,7 @@ describe('FrameConstraintController', () => {
 
         it('should remove allowed character style IDs constraint when set to null', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedCharacterStyleIds: { value: null },
+                text: { allowedCharacterStyleIds: { value: null } },
             };
 
             await frameConstraintController.setAllowedCharacterStyleIds(id, null);
@@ -344,7 +344,7 @@ describe('FrameConstraintController', () => {
         it('should set allowed color IDs constraint', async () => {
             const colorIds: Id[] = ['color-1', 'color-2', 'color-3', 'color-4'];
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedColorIds: { value: colorIds },
+                text: { allowedColorIds: { value: colorIds } },
             };
 
             await frameConstraintController.setAllowedColorIds(id, colorIds);
@@ -358,7 +358,7 @@ describe('FrameConstraintController', () => {
 
         it('should remove allowed color IDs constraint when set to null', async () => {
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedColorIds: { value: null },
+                text: { allowedColorIds: { value: null } },
             };
 
             await frameConstraintController.setAllowedColorIds(id, null);
@@ -375,7 +375,7 @@ describe('FrameConstraintController', () => {
         it('should set allowed font sizes constraint with min and max', async () => {
             const fontSizeRange = { min: 10, max: 72 };
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedFontSizes: { value: fontSizeRange },
+                text: { allowedFontSizes: { value: fontSizeRange } },
             };
 
             await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
@@ -390,7 +390,7 @@ describe('FrameConstraintController', () => {
         it('should set allowed font sizes constraint with min only (max null)', async () => {
             const fontSizeRange = { min: 12, max: null };
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedFontSizes: { value: fontSizeRange },
+                text: { allowedFontSizes: { value: fontSizeRange } },
             };
 
             await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
@@ -405,7 +405,7 @@ describe('FrameConstraintController', () => {
         it('should set allowed font sizes constraint with max only (min null)', async () => {
             const fontSizeRange = { min: null, max: 48 };
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedFontSizes: { value: fontSizeRange },
+                text: { allowedFontSizes: { value: fontSizeRange } },
             };
 
             await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
@@ -420,7 +420,7 @@ describe('FrameConstraintController', () => {
         it('should remove allowed font sizes constraint when set to { min: null, max: null }', async () => {
             const fontSizeRange = { min: null, max: null };
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                allowedFontSizes: { value: fontSizeRange },
+                text: { allowedFontSizes: { value: fontSizeRange } },
             };
 
             await frameConstraintController.setAllowedFontSizes(id, fontSizeRange);
@@ -460,12 +460,12 @@ describe('FrameConstraintController', () => {
                 id,
                 JSON.stringify({ resizeAllowed: { value: false }, proportionLocked: { value: true } }),
             ]);
-            expect(lastElevenCalls[5]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
-            expect(lastElevenCalls[6]).toEqual([id, JSON.stringify({ textEditingAllowed: { value: true } })]);
-            expect(lastElevenCalls[7]).toEqual([id, JSON.stringify({ allowedParagraphStyleIds: { value: ['style-1', 'style-2'] } })]);
-            expect(lastElevenCalls[8]).toEqual([id, JSON.stringify({ allowedCharacterStyleIds: { value: ['char-style-1'] } })]);
-            expect(lastElevenCalls[9]).toEqual([id, JSON.stringify({ allowedColorIds: { value: ['color-1', 'color-2'] } })]);
-            expect(lastElevenCalls[10]).toEqual([id, JSON.stringify({ allowedFontSizes: { value: { min: 10, max: 72 } } })]);
+            expect(lastElevenCalls[5]).toEqual([id, JSON.stringify({ image: { cropAllowed: { value: true } } })]);
+            expect(lastElevenCalls[6]).toEqual([id, JSON.stringify({ text: { textEditingAllowed: { value: true } } })]);
+            expect(lastElevenCalls[7]).toEqual([id, JSON.stringify({ text: { allowedParagraphStyleIds: { value: ['style-1', 'style-2'] } } })]);
+            expect(lastElevenCalls[8]).toEqual([id, JSON.stringify({ text: { allowedCharacterStyleIds: { value: ['char-style-1'] } } })]);
+            expect(lastElevenCalls[9]).toEqual([id, JSON.stringify({ text: { allowedColorIds: { value: ['color-1', 'color-2'] } } })]);
+            expect(lastElevenCalls[10]).toEqual([id, JSON.stringify({ text: { allowedFontSizes: { value: { min: 10, max: 72 } } } })]);
         });
 
         it('should work with different frame IDs', async () => {

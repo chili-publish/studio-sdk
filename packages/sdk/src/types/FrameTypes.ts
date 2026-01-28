@@ -470,34 +470,22 @@ export enum CropType {
     assetCrop = 'assetCrop',
 }
 
-export enum FrameConstraintsType {
-    image = 'image',
-    text = 'text',
-}
-
-type BaseFrameConstraints = {
-    selectionAllowed: PropertyState<boolean>;
-    horizontalMovementAllowed: PropertyState<boolean>;
-    verticalMovementAllowed: PropertyState<boolean>;
-    rotationAllowed: PropertyState<boolean>;
-    resizeAllowed: PropertyState<boolean>;
-    proportionLocked: PropertyState<boolean>;
-    type: FrameConstraintsType;
-};
-
-export type ImageFrameConstraints = BaseFrameConstraints & {
-    type: FrameConstraintsType.image;
+/**
+ * Image-specific editing constraints.
+ */
+export type ImageFrameConstraints = {
     cropAllowed: PropertyState<boolean>;
 };
 
-export type TextFrameConstraints = BaseFrameConstraints & {
-    type: FrameConstraintsType.text;
+/**
+ * Text-specific editing constraints.
+ */
+export type TextFrameConstraints = {
     textEditingAllowed: PropertyState<boolean>;
     allowedParagraphStyleIds?: PropertyState<Array<Id> | null>;
     allowedCharacterStyleIds?: PropertyState<Array<Id> | null>;
     allowedColorIds?: PropertyState<Array<Id> | null>;
     allowedFontSizes?: PropertyState<FontSizeRangeConstraint>;
-
 };
 
 export interface FontSizeRangeConstraint {
@@ -505,11 +493,55 @@ export interface FontSizeRangeConstraint {
     max: number | null;
 }
 
+/**
+ * Frame editing constraints with optional frame-type-specific sub-properties.
+ */
+export type FrameConstraints = {
+    selectionAllowed: PropertyState<boolean>;
+    horizontalMovementAllowed: PropertyState<boolean>;
+    verticalMovementAllowed: PropertyState<boolean>;
+    rotationAllowed: PropertyState<boolean>;
+    resizeAllowed: PropertyState<boolean>;
+    proportionLocked: PropertyState<boolean>;
+    /** Image-specific constraints. */
+    image?: ImageFrameConstraints;
+    /** Text-specific constraints. */
+    text?: TextFrameConstraints;
+};
 
-export type FrameConstraints =
-    | ImageFrameConstraints
-    | TextFrameConstraints;
+/**
+ * Image-specific constraints delta update.
+ */
+export interface ImageFrameConstraintsDeltaUpdate {
+    cropAllowed?: {
+        value: boolean | null;
+    };
+}
 
+/**
+ * Text-specific constraints delta update.
+ */
+export interface TextFrameConstraintsDeltaUpdate {
+    textEditingAllowed?: {
+        value: boolean | null;
+    };
+    allowedParagraphStyleIds?: {
+        value: Array<Id> | null;
+    };
+    allowedCharacterStyleIds?: {
+        value: Array<Id> | null;
+    };
+    allowedColorIds?: {
+        value: Array<Id> | null;
+    };
+    allowedFontSizes?: {
+        value: FontSizeRangeConstraint | null;
+    };
+}
+
+/**
+ * Frame constraints delta update with optional frame-type-specific sub-properties.
+ */
 export interface FrameConstraintsDeltaUpdate {
     selectionAllowed?: {
         value: boolean | null;
@@ -526,25 +558,11 @@ export interface FrameConstraintsDeltaUpdate {
     resizeAllowed?: {
         value: boolean | null;
     };
-    cropAllowed?: {
-        value: boolean | null;
-    };
     proportionLocked?: {
         value: boolean | null;
     };
-    textEditingAllowed?: {
-        value: boolean | null;
-    };
-    allowedParagraphStyleIds?: {
-        value: Array<Id> | null;
-    };
-    allowedCharacterStyleIds?: {
-        value: Array<Id> | null;
-    };
-    allowedColorIds?: {
-        value: Array<Id> | null;
-    };
-    allowedFontSizes?: {
-        value: FontSizeRangeConstraint | null;
-    };
+    /** Image-specific constraints update. */
+    image?: ImageFrameConstraintsDeltaUpdate;
+    /** Text-specific constraints update. */
+    text?: TextFrameConstraintsDeltaUpdate;
 }

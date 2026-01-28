@@ -1371,7 +1371,7 @@ export class FrameConstraintController {
      * @returns
      */
     setCrop = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { cropAllowed: { value: allowed } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { image: { cropAllowed: { value: allowed } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1385,7 +1385,7 @@ export class FrameConstraintController {
      * @returns
      */
     setTextEditingAllowed = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { textEditingAllowed: { value: allowed } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { textEditingAllowed: { value: allowed } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1399,7 +1399,7 @@ export class FrameConstraintController {
      * @returns
      */
     setAllowedParagraphStyleIds = async (id: Id, styleIds: Array<Id> | null) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { allowedParagraphStyleIds: { value: styleIds } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedParagraphStyleIds: { value: styleIds } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1413,7 +1413,7 @@ export class FrameConstraintController {
      * @returns
      */
     setAllowedCharacterStyleIds = async (id: Id, styleIds: Array<Id> | null) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { allowedCharacterStyleIds: { value: styleIds } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedCharacterStyleIds: { value: styleIds } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1427,7 +1427,7 @@ export class FrameConstraintController {
      * @returns
      */
     setAllowedColorIds = async (id: Id, colorIds: Array<Id> | null) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { allowedColorIds: { value: colorIds } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedColorIds: { value: colorIds } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1441,7 +1441,7 @@ export class FrameConstraintController {
      * @returns
      */
     setAllowedFontSizes = async (id: Id, fontSizeRange: FontSizeRangeConstraint) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { allowedFontSizes: { value: fontSizeRange } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedFontSizes: { value: fontSizeRange } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
