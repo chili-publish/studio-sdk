@@ -48,10 +48,12 @@ export type {
     EndFrameAnchor,
     Frame,
     FrameAnchor,
+    FontSizeRangeConstraint,
     FrameConstraints,
     FrameLayoutType,
     FrameType,
     ImageFrame,
+    ImageFrameConstraints,
     ImageFrameSource,
     ImageFrameUrlSource,
     ImageFrameVariableSource,
@@ -60,6 +62,7 @@ export type {
     StartAndEndFrameAnchor,
     StartFrameAnchor,
     TextFrame,
+    TextFrameConstraints,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
