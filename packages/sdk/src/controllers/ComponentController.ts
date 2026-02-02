@@ -1,4 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
+import { ComponentFitEnum } from '../types/FrameTypes';
 import { Variable } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -42,5 +43,16 @@ export class ComponentController {
     getComponentVariables = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.getComponentVariables(frameId).then((result) => getEditorResponseData<Variable[]>(result));
+    };
+
+    /**
+     * This method sets the fit mode of a component frame.
+     * @param frameId the id of the component frame.
+     * @param fitMode the fit mode to set.
+     * @returns
+     */
+    setFitMode = async (frameId: Id, fitMode: ComponentFitEnum) => {
+        const res = await this.#editorAPI;
+        return res.setComponentLayoutFit(frameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
 }
