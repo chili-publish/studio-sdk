@@ -171,6 +171,11 @@ export type ComponentFrame = {
     blendMode: BlendMode;
     src: ComponentSource;
     variableMappings: VariableMapping[];
+
+    /**
+     * How the component fits within the frame.
+     */
+    fitMode: ComponentFitEnum;
 };
 
 export type ComponentSource = ConnectorComponentSource;
@@ -185,6 +190,24 @@ export type VariableMapping = {
     source: Id;
     target: Id;
 };
+
+export enum ComponentFitEnum {
+    /**
+     * The component resizes to fit the frame size.
+     */
+    resize = 'resize',
+
+    /**
+     * The component scales to fit the frame size while maintaining its aspect ratio.
+     */
+    scale = 'scale',
+
+    /**
+     * The component first scales to fit the frame size while maintaining its aspect ratio,
+     * then resizes to fill the remaining space.
+     */
+    scaleAndResize = 'scaleAndResize',
+}
 
 export type CropSettings = {
     left: number;
