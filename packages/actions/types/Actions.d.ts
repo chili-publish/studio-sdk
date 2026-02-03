@@ -828,9 +828,6 @@ declare module 'grafx-studio-actions' {
             readonly guid: string;
         }
 
-        export type RGB = { r: number; g: number; b: number };
-        export type CMYK = { c: number; m: number; y: number; k: number };
-
         export interface RGBColorValue {
             /**
              * The RGB color value
