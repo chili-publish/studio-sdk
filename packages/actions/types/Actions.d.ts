@@ -744,7 +744,7 @@ declare module 'grafx-studio-actions' {
              * kept, defaults to false
              * @returns
              */
-            select(layoutName: string | Layout | VariableValue, keepPageSize?:boolean): void;
+            select(layoutName: string | Layout | VariableValue, keepPageSize?: boolean): void;
 
             /**
              * Returns all layouts in the document.
@@ -809,8 +809,67 @@ declare module 'grafx-studio-actions' {
              * @returns
              */
             copy(fromName: string, toName: string): void;
+
+            /**
+             * Sets a brand kit color
+             * @param name the color
+             * @param value the color value
+             * @returns
+             */
+            set(name: string, value: ColorValue): void;
         }
 
+        export type ColorValue =
+            | RGBColorValue
+            | CMYKColorValue
+            | HEXColorValue;
+
+        export interface BaseColorValue extends HasName {
+            readonly guid: string;
+        }
+
+        export interface RGBColorValue {
+            /**
+             * The RGB color value
+             */
+            readonly r: number;
+            readonly g: number;
+            readonly b: number;
+
+            /**
+             * The color type
+             */
+            readonly type: 'rgb';
+
+        }
+
+        export interface CMYKColorValue {
+            /**
+             * The cmyk color value
+             */
+            readonly c: number;
+            readonly m: number;
+            readonly y: number;
+            readonly k: number;
+
+            /**
+             * The color type
+             */
+            readonly type: 'cmyk';
+        }
+
+        export interface HEXColorValue {
+            /**
+             * The hex color value
+             */
+            readonly hex: string;
+
+            /**
+             * The color type
+             */
+            readonly type: 'hex';
+        }
+        
         /**
          * Controller for manipulating brand kit paragraph styles.
          */

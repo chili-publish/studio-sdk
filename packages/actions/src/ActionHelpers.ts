@@ -688,3 +688,66 @@ function copyParagraphStyleFromTo(from: string, to: string) {
 function copyCharacterStyleFromTo(from: string, to: string) {
     studio.brandKit.characterStyles.copy(from, to);
 }
+
+/**
+ * Sets a brand kit's color by its name and value object.
+ *
+ *
+ * @param {string} name - The name of the color
+ * @param {ColorValue} value - The new ColorValue value (ensure correct types are used). 
+ */
+function setColorValue(name: string, value: ColorValue) {
+    studio.brandKit.colors.set(name, value);
+}
+
+/**
+ * Creates an RGB color value.
+ *
+ * @param {number} r - The red component (0-255).
+ * @param {number} g - The green component (0-255).
+ * @param {number} b - The blue component (0-255).
+ * @returns {RGBColorValue} The RGB color value.
+ *
+ * @returns {RGBColorValue} The RGB color value.
+ */
+function rgb(r: number, g: number, b: number): RGBColorValue {
+    return {
+        r: r,
+        g: g,
+        b: b,
+        type: 'rgb'
+    };
+}
+/**
+ * Creates a CMYK color value.
+ *
+ * @param {number} c - The cyan component (0-100).
+ * @param {number} m - The magenta component (0-100).
+ * @param {number} y - The yellow component (0-100).
+ * @param {number} k - The black component (0-100).
+ * 
+ * @returns {CMYKColorValue} The CMYK color value.
+ */
+function cmyk(c: number, m: number, y: number, k: number): CMYKColorValue {
+    return {
+        c: c,
+        m: m,
+        y: y,
+        k: k,
+        type: 'cmyk'
+    };
+}
+
+/**
+ * Creates a HEX color value.
+ *
+ * @param {string} hexString - The hex color string (e.g. "#RRGGBB").
+ * 
+ * @returns {HEXColorValue} The HEX color value.
+ */
+function hex(hexString: string): HEXColorValue {
+    return {
+        hex: hexString,
+        type: 'hex'
+    };
+}
