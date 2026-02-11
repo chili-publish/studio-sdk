@@ -264,7 +264,10 @@ describe('FrameConstraintController', () => {
             expect(lastSixCalls[1]).toEqual([id, JSON.stringify({ verticalMovementAllowed: { value: true } })]);
             expect(lastSixCalls[2]).toEqual([id, JSON.stringify({ horizontalMovementAllowed: { value: false } })]);
             expect(lastSixCalls[3]).toEqual([id, JSON.stringify({ rotationAllowed: { value: true } })]);
-            expect(lastSixCalls[4]).toEqual([id, JSON.stringify({ resizeAllowed: { value: false }, proportionLocked: { value: true } })]);
+            expect(lastSixCalls[4]).toEqual([
+                id,
+                JSON.stringify({ resizeAllowed: { value: false }, proportionLocked: { value: true } }),
+            ]);
             expect(lastSixCalls[5]).toEqual([id, JSON.stringify({ cropAllowed: { value: true } })]);
         });
 
