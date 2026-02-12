@@ -10,7 +10,7 @@ import {
     CropType,
     FitMode,
     FitModePosition,
-    FontSizeRangeConstraint,
+    FontSizeRangeManagedConstraint,
     FrameAnchorProperties,
     FrameAnchorType,
     FrameConfiguration,
@@ -19,6 +19,7 @@ import {
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
+    IdSetManagedConstraint,
     ImageFrameConnectorSource,
     ImageFrameSource,
     ImageFrameUrlSource,
@@ -1395,11 +1396,11 @@ export class FrameConstraintController {
     /**
      * This method will set the allowed paragraph style IDs constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
-     * @param styleIds an array of paragraph style IDs that are allowed, or null to remove the constraint
+     * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedParagraphStyleIds = async (id: Id, styleIds: Array<Id> | null) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedParagraphStyleIds: { value: styleIds } } };
+    setAllowedParagraphStyleIds = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { paragraphStyleIds: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1409,11 +1410,11 @@ export class FrameConstraintController {
     /**
      * This method will set the allowed character style IDs constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
-     * @param styleIds an array of character style IDs that are allowed, or null to remove the constraint
+     * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedCharacterStyleIds = async (id: Id, styleIds: Array<Id> | null) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedCharacterStyleIds: { value: styleIds } } };
+    setAllowedCharacterStyleIds = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { characterStyleIds: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1423,11 +1424,11 @@ export class FrameConstraintController {
     /**
      * This method will set the allowed color IDs constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
-     * @param colorIds an array of color IDs that are allowed, or null to remove the constraint
+     * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedColorIds = async (id: Id, colorIds: Array<Id> | null) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedColorIds: { value: colorIds } } };
+    setAllowedColorIds = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { colorIds: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1437,11 +1438,11 @@ export class FrameConstraintController {
     /**
      * This method will set the allowed font sizes constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
-     * @param fontSizeRange the font size range constraint with min and/or max values. Pass { min: null, max: null } to remove the constraint
+     * @param constraint the managed constraint: when allowed is true, restricts font sizes to min and max (inclusive); when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedFontSizes = async (id: Id, fontSizeRange: FontSizeRangeConstraint) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { allowedFontSizes: { value: fontSizeRange } } };
+    setAllowedFontSizes = async (id: Id, constraint: FontSizeRangeManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { fontSizes: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
