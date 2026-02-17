@@ -1,4 +1,4 @@
-import { Dictionary } from '@chili-studio/connector-types';
+import { DataModelProperty, Dictionary } from '@chili-studio/connector-types';
 import { Id, PrivateData } from './CommonTypes';
 
 export interface ConnectorImageVariableSource {
@@ -39,6 +39,7 @@ export enum VariableType {
     group = 'group',
     number = 'number',
     date = 'date',
+    dataSource = 'dataSource',
 }
 
 export interface Variable {
@@ -310,3 +311,27 @@ export type VariableUsagesReport = {
     variables: Id[];
     outputDataSource: boolean;
 };
+
+// Data Source Variable Types
+
+export type RowId = string;
+
+export enum DataSourceVariableSourceType {
+    injected = 'injected',
+    connector = 'connector',
+}
+
+export type InjectedDataSourceVariableSource = {
+    type: DataSourceVariableSourceType.injected;
+    model: DataModelProperty[];
+};
+
+export type ConnectorDataSourceVariableSource = {
+    type: DataSourceVariableSourceType.connector;
+    connectorId: string;
+};
+
+export type DataSourceVariableSource = InjectedDataSourceVariableSource | ConnectorDataSourceVariableSource;
+export interface DataSourceVariable extends Variable {
+    value?: DataSourceVariableSource;
+}
