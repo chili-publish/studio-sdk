@@ -1,6 +1,6 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { Dictionary } from '@chili-studio/connector-types';
+import { DataModelProperty, Dictionary } from '@chili-studio/connector-types';
 import {
     DateRestriction,
     DateVariablePropertiesDeltaUpdate,
@@ -10,6 +10,7 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
+    RowId,
     Variable,
     VariableType,
     VariableUsagesReport,
@@ -207,6 +208,18 @@ class DateVariable {
     }
 }
 
+class DataSourceVariable {
+    #editorAPI: EditorAPI;
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    setValue = async (id: string, value: DataModelProperty[] | RowId) => {
+        const res = await this.#editorAPI;
+        return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
+    };
+}
+
 /**
  * The VariableController is responsible for all communication regarding the variables.
  * Methods inside this controller can be called by `window.SDK.variable.{method-name}`
@@ -219,6 +232,7 @@ export class VariableController {
 
     number: NumberVariable;
     date: DateVariable;
+    dataSource: DataSourceVariable;
 
     /**
      * @ignore
@@ -227,6 +241,7 @@ export class VariableController {
         this.#editorAPI = editorAPI;
         this.number = new NumberVariable(this.#editorAPI);
         this.date = new DateVariable(this.#editorAPI);
+        this.dataSource = new DataSourceVariable(this.#editorAPI);
     }
 
     /**
