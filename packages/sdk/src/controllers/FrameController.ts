@@ -1394,13 +1394,13 @@ export class FrameConstraintController {
     };
 
     /**
-     * This method will set the allowed paragraph style IDs constraint for a specified text frame
+     * This method will set the allowed paragraph styles constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
      * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedParagraphStyleIds = async (id: Id, constraint: IdSetManagedConstraint) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { paragraphStyleIds: { value: constraint } } };
+    setAllowedParagraphStyles = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { paragraphStyles: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1408,13 +1408,13 @@ export class FrameConstraintController {
     };
 
     /**
-     * This method will set the allowed character style IDs constraint for a specified text frame
+     * This method will set the allowed character styles constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
      * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedCharacterStyleIds = async (id: Id, constraint: IdSetManagedConstraint) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { characterStyleIds: { value: constraint } } };
+    setAllowedCharacterStyles = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { characterStyles: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
@@ -1422,13 +1422,13 @@ export class FrameConstraintController {
     };
 
     /**
-     * This method will set the allowed color IDs constraint for a specified text frame
+     * This method will set the allowed colors constraint for a specified text frame
      * @param id the id of the frame that needs to get updated
      * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
      * @returns
      */
-    setAllowedColorIds = async (id: Id, constraint: IdSetManagedConstraint) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { colorIds: { value: constraint } } };
+    setAllowedColors = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { colors: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
