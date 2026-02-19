@@ -482,9 +482,9 @@ export type ImageFrameConstraints = {
  */
 export type TextFrameConstraints = {
     textEditingAllowed: PropertyState<boolean>;
-    paragraphStyleIds: PropertyState<IdSetManagedConstraint>;
-    characterStyleIds: PropertyState<IdSetManagedConstraint>;
-    colorIds: PropertyState<IdSetManagedConstraint>;
+    paragraphStyles: PropertyState<IdSetManagedConstraint>;
+    characterStyles: PropertyState<IdSetManagedConstraint>;
+    colors: PropertyState<IdSetManagedConstraint>;
     fontSizes: PropertyState<FontSizeRangeManagedConstraint>;
 };
 
@@ -549,13 +549,13 @@ export interface TextFrameConstraintsDeltaUpdate {
     textEditingAllowed?: {
         value: boolean;
     };
-    paragraphStyleIds?: {
+    paragraphStyles?: {
         value: IdSetManagedConstraint;
     };
-    characterStyleIds?: {
+    characterStyles?: {
         value: IdSetManagedConstraint;
     };
-    colorIds?: {
+    colors?: {
         value: IdSetManagedConstraint;
     };
     fontSizes?: {
