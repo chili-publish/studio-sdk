@@ -12,8 +12,7 @@ import {
     mockStudioBrandKit,
     mockMedia,
 } from '../__mocks__/Brandkit';
-import { CMYK, RGB, StudioBrandKit } from '../../types/BrandKitTypes';
-import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
+import { APIBrandKit } from '../../types/BrandKitTypes';
 import { FontController } from '../../controllers/FontController';
 import { ColorStyleController } from '../../controllers/ColorStyleController';
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
@@ -30,10 +29,6 @@ const mockFontFamilyId = '614e0cba-37d3-45a7-b9af-ddf2bf76f7db';
 const mockColorId = '1111-2222-3333-4444-5555';
 const mockGradientId = '2222-3333-4444-5555-6666';
 
-const flushPromises = () => {
-    return new Promise((resolve) => setTimeout(resolve, 0));
-};
-
 describe('BrandKitController', () => {
     let mockBrandKitController: BrandKitController;
     let mockEditorApi: EditorAPI;
@@ -49,6 +44,34 @@ describe('BrandKitController', () => {
             updateBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
             renameBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
             removeBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
+            getBrandKit: async () =>
+                getEditorResponseData(
+                    castToEditorResponse({
+                        id: 'test-brand-kit-id',
+                        version: '2025-06-12T12:10:29.354877',
+                        name: 'Test Brand Kit',
+                        colors: mockColors,
+                        gradients: mockGradients,
+                        fonts: mockFonts,
+                        characterStyles: mockCharacterStyles,
+                        paragraphStyles: mockParagraphStyles,
+                        media: mockMedia,
+                    }),
+                ),
+            setBrandKit: async (...args: unknown[]) =>
+                getEditorResponseData(
+                    castToEditorResponse({
+                        id: (args[0] as APIBrandKit).id,
+                        version: (args[0] as APIBrandKit).lastModifiedDate,
+                        name: (args[0] as APIBrandKit).name,
+                        colors: mockColors,
+                        gradients: mockGradients,
+                        fonts: mockFonts,
+                        characterStyles: mockCharacterStyles,
+                        paragraphStyles: mockParagraphStyles,
+                        media: mockMedia,
+                    }),
+                ),
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
             createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
@@ -97,6 +120,8 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'updateBrandKitMedia');
         jest.spyOn(mockEditorApi, 'renameBrandKitMedia');
         jest.spyOn(mockEditorApi, 'removeBrandKitMedia');
+        jest.spyOn(mockEditorApi, 'getBrandKit');
+        jest.spyOn(mockEditorApi, 'setBrandKit');
 
         jest.spyOn(mockEditorApi, 'getColors');
         jest.spyOn(mockEditorApi, 'removeColor');
@@ -196,31 +221,19 @@ describe('BrandKitController', () => {
 
     it('Should call the get method', async () => {
         const response = await mockBrandKitController.get();
-        expect(mockEditorApi.getColors).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getGradients).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getFontFamilies).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getAllBrandKitMedia).toHaveBeenCalledTimes(1);
 
-        expect(response).toEqual(
-            expect.objectContaining({
-                data: JSON.stringify({
-                    id: 'test-brand-kit-id',
-                    brandKit: {
-                        id: 'test-brand-kit-id',
-                        name: 'Test Brand Kit',
-                        lastModifiedDate: '2025-06-12T12:10:29.354877',
-                        colors: mockColors,
-                        gradients: mockGradients,
-                        fonts: mockFonts,
-                        paragraphStyles: mockParagraphStyles,
-                        characterStyles: mockCharacterStyles,
-                        media: mockMedia,
-                    },
-                }),
-            }),
-        );
+        expect(mockEditorApi.getBrandKit).toHaveBeenCalledTimes(1);
+        expect(response.parsedData).toEqual({
+            id: 'test-brand-kit-id',
+            version: '2025-06-12T12:10:29.354877',
+            name: 'Test Brand Kit',
+            colors: mockColors,
+            gradients: mockGradients,
+            fonts: mockFonts,
+            characterStyles: mockCharacterStyles,
+            paragraphStyles: mockParagraphStyles,
+            media: mockMedia,
+        });
     });
 
     it('Should successfully remove brandkit content', async () => {
@@ -260,119 +273,36 @@ describe('BrandKitController', () => {
     });
 
     it('Should successfully set brandkit content', async () => {
-        const mockColor = mockColors[10];
-        const fontKey = mockFonts.find((font) => font.id === mockFontFamilyId)?.fontStyles[0].id;
+        const mockAPIBrandKit = {
+            id: mockStudioBrandKit.id,
+            name: mockStudioBrandKit.brandKit.name,
+            dateCreated: mockStudioBrandKit.brandKit.dateCreated,
+            lastModifiedDate: mockStudioBrandKit.brandKit.lastModifiedDate,
+            fonts: mockStudioBrandKit.brandKit.fonts.map((f) => ({
+                ...f,
+                fontConnectorId: mockStudioBrandKit.fontConnectorId,
+            })),
+            colors: mockStudioBrandKit.brandKit.colors,
+            characterStyles: mockStudioBrandKit.brandKit.characterStyles,
+            paragraphStyles: mockStudioBrandKit.brandKit.paragraphStyles,
+            media: mockStudioBrandKit.brandKit.media,
+        } as unknown as APIBrandKit;
 
-        const colors = mockStudioBrandKit.brandKit.colors;
-        const fontfamilies = mockStudioBrandKit.brandKit.fonts;
-        const connectorId = mockStudioBrandKit.fontConnectorId;
-        const paragraphStyle = mockStudioBrandKit.brandKit.paragraphStyles[0];
-        const characterStyle = mockStudioBrandKit.brandKit.characterStyles[0];
-        const media = mockStudioBrandKit.brandKit.media;
+        const response = await mockBrandKitController.set(mockAPIBrandKit);
 
-        await mockBrandKitController.set(mockStudioBrandKit as unknown as StudioBrandKit);
-
-        await flushPromises();
-
-        expect(mockEditorApi.createColor).toHaveBeenCalledTimes(mockStudioBrandKit.brandKit.colors.length);
-        expect(mockEditorApi.updateColor).toHaveBeenCalledTimes(mockStudioBrandKit.brandKit.colors.length);
-
-        expect(mockEditorApi.updateColor).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.stringContaining(JSON.stringify({ ...(colors[0].displayValue as RGB), type: ColorType.spotRGB })),
-        );
-
-        expect(mockEditorApi.updateColor).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.stringContaining(JSON.stringify({ ...(colors[1].displayValue as CMYK), type: ColorType.spotCMYK })),
-        );
-
-        expect(mockEditorApi.updateColor).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.stringContaining(JSON.stringify({ value: colors[2].value, type: ColorType.hex })),
-        );
-
-        expect(mockEditorApi.addFontFamily).toHaveBeenCalledWith(
-            connectorId,
-            expect.stringContaining(
-                JSON.stringify({ name: mockFontFamilyName, fontFamilyId: fontfamilies[0].fontFamilyId }),
-            ),
-        );
-
-        expect(mockEditorApi.addFontFamily).toHaveBeenCalledWith(
-            connectorId,
-            expect.stringContaining(
-                JSON.stringify({ name: mockFontFamilyName, fontFamilyId: fontfamilies[1].fontFamilyId }),
-            ),
-        );
-
-        expect(mockEditorApi.createParagraphStyle).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.updateParagraphStyle).toHaveBeenCalledWith(
-            mockParagraphStyleId,
-            expect.stringContaining(
-                JSON.stringify({
-                    name: { value: paragraphStyle.name },
-                    textAlign: { value: paragraphStyle.textAlign },
-                    fontSize: { value: paragraphStyle.fontSize },
-                    lineHeight: { value: paragraphStyle.lineHeight },
-                    trackingRight: { value: paragraphStyle.trackingRight },
-                    fillColorApplied: { value: paragraphStyle.fillColorApplied },
-                    color: {
-                        value: {
-                            id: mockColorId,
-                            color: mockColor.color,
-                            type: ColorUsageType.brandKit,
-                            isApplied: true,
-                        },
-                    },
-                    strokeColor: {
-                        value: {
-                            id: mockColorId,
-                            color: mockColor.color,
-                            type: ColorUsageType.brandKit,
-                            isApplied: true,
-                        },
-                    },
-                    strokeColorApplied: { value: true },
-                    strokeWidth: { value: '7' },
-                    fontKey: { value: fontKey },
-                }),
-            ),
-        );
-
-        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledTimes(media.length);
-        expect(mockEditorApi.addBrandKitMedia).toHaveBeenCalledWith(
-            media[0].name,
-            media[0].mediaConnectorId,
-            media[0].mediaId,
-        );
-        expect(mockEditorApi.createCharacterStyle).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.updateCharacterStyle).toHaveBeenCalledWith(
-            mockCharacterStyleId,
-            expect.stringContaining(
-                JSON.stringify({
-                    name: { value: characterStyle.name },
-                    fillColorApplied: { value: characterStyle.fillColorApplied },
-                    fontSize: { value: characterStyle.fontSize },
-                    subSuperScript: { value: characterStyle.subSuperScript },
-                    lineHeight: { value: characterStyle.lineHeight },
-                    color: {
-                        value: {
-                            id: mockColorId,
-                            color: mockColor.color,
-                            type: ColorUsageType.brandKit,
-                            isApplied: false,
-                        },
-                    },
-                    fontKey: { value: null },
-                }),
-            ),
-        );
-
-        expect(mockEditorApi.updateBrandKitIdAndVersion).toHaveBeenCalledWith(
-            mockStudioBrandKit.id,
-            mockStudioBrandKit.brandKit.lastModifiedDate,
-        );
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(mockAPIBrandKit);
+        expect(response.parsedData).toEqual({
+            id: mockAPIBrandKit.id,
+            version: mockAPIBrandKit.lastModifiedDate,
+            name: mockAPIBrandKit.name,
+            colors: mockColors,
+            gradients: mockGradients,
+            fonts: mockFonts,
+            characterStyles: mockCharacterStyles,
+            paragraphStyles: mockParagraphStyles,
+            media: mockMedia,
+        });
     });
 
     it('Should call getAllBrandKitMedia of EditorAPI successfully', async () => {
