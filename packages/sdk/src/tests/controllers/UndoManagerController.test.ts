@@ -98,6 +98,11 @@ describe('UndoManagerController', () => {
         expect(mockEditorApi.resume).toHaveBeenCalledTimes(1);
     });
 
+    it('it clears the undo stack', async () => {
+        await mockedUndoManagerController.clear();
+        expect(mockEditorApi.clear).toHaveBeenCalledTimes(1);
+    });
+
     describe('advanced methods', () => {
         it('begins an operation through advanced.begin', async () => {
             const operationName = 'operationName';
