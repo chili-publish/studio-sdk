@@ -196,6 +196,7 @@ export type {
     APIBrandKitColor,
     APIBrandKitFont,
     APIBrandKitParagraphStyle,
+    BrandKitMedia,
     CMYK,
     CMYKColorValue,
     HEXColorValue,
