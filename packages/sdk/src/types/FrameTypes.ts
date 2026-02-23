@@ -481,7 +481,7 @@ export type ImageFrameConstraints = {
  * Text-specific editing constraints.
  */
 export type TextFrameConstraints = {
-    textEditingAllowed: PropertyState<boolean>;
+    editingAllowed: PropertyState<boolean>;
     paragraphStyles: PropertyState<IdSetManagedConstraint>;
     characterStyles: PropertyState<IdSetManagedConstraint>;
     colors: PropertyState<IdSetManagedConstraint>;
@@ -546,7 +546,7 @@ export interface ImageFrameConstraintsDeltaUpdate {
  * Text-specific constraints delta update.
  */
 export interface TextFrameConstraintsDeltaUpdate {
-    textEditingAllowed?: {
+    editingAllowed?: {
         value: boolean;
     };
     paragraphStyles?: {

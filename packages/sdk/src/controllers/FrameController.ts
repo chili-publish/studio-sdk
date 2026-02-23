@@ -1386,7 +1386,7 @@ export class FrameConstraintController {
      * @returns
      */
     setTextEditingAllowed = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { textEditingAllowed: { value: allowed } } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { editingAllowed: { value: allowed } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))

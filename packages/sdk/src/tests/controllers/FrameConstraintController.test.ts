@@ -250,7 +250,7 @@ describe('FrameConstraintController', () => {
         it('should set text editing constraint to allowed', async () => {
             const allowed = true;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                text: { textEditingAllowed: { value: allowed } },
+                text: { editingAllowed: { value: allowed } },
             };
 
             await frameConstraintController.setTextEditingAllowed(id, allowed);
@@ -265,7 +265,7 @@ describe('FrameConstraintController', () => {
         it('should set text editing constraint to not allowed', async () => {
             const allowed = false;
             const expectedDeltaUpdate: FrameConstraintsDeltaUpdate = {
-                text: { textEditingAllowed: { value: allowed } },
+                text: { editingAllowed: { value: allowed } },
             };
 
             await frameConstraintController.setTextEditingAllowed(id, allowed);
@@ -464,7 +464,7 @@ describe('FrameConstraintController', () => {
                 JSON.stringify({ resizeAllowed: { value: false }, proportionLocked: { value: true } }),
             ]);
             expect(lastElevenCalls[5]).toEqual([id, JSON.stringify({ image: { cropAllowed: { value: true } } })]);
-            expect(lastElevenCalls[6]).toEqual([id, JSON.stringify({ text: { textEditingAllowed: { value: true } } })]);
+            expect(lastElevenCalls[6]).toEqual([id, JSON.stringify({ text: { editingAllowed: { value: true } } })]);
             expect(lastElevenCalls[7]).toEqual([id, JSON.stringify({ text: { paragraphStyles: { value: { allowed: true, ids: ['style-1', 'style-2'] } } } })]);
             expect(lastElevenCalls[8]).toEqual([id, JSON.stringify({ text: { characterStyles: { value: { allowed: true, ids: ['char-style-1'] } } } })]);
             expect(lastElevenCalls[9]).toEqual([id, JSON.stringify({ text: { colors: { value: { allowed: true, ids: ['color-1', 'color-2'] } } } })]);
