@@ -65,9 +65,11 @@ export interface AppearanceProperties {
     opacity?: string;
     useFill?: boolean;
     useStroke?: boolean;
+    useBackground?: boolean;
     useDropShadow?: boolean;
     fillColor?: string;
     strokeColor?: string;
+    backgroundColor?: string;
     dropShadowColor?: string;
 }
 
@@ -96,8 +98,10 @@ export interface SelectedTextStyle {
     textOverprint?: boolean;
     color?: DisplayColor;
     strokeColor?: DisplayColor;
+    backgroundColor?: DisplayColor;
     fillColorApplied?: boolean;
     strokeColorApplied?: boolean;
+    backgroundColorApplied?: boolean;
     strokeWidth?: number;
     underline?: boolean;
     lineThrough?: boolean;
@@ -145,6 +149,8 @@ export enum SelectedTextStyles {
     FILL_COLOR_APPLIED = 'fillColorApplied',
     STROKE_COLOR = 'strokeColor',
     STROKE_COLOR_APPLIED = 'strokeColorApplied',
+    BACKGROUND_COLOR = 'backgroundColor',
+    BACKGROUND_COLOR_APPLIED = 'backgroundColorApplied',
     DROP_SHADOW_COLOR = 'dropShadowColor',
     BLEND_MODE = 'blendMode',
     OPACITY = 'opacity',
