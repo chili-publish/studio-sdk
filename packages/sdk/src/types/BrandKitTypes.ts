@@ -103,6 +103,19 @@ export type APIBrandKitMedia = {
     mediaId: Id;
 };
 
+export type APIBrandKitTheme = {
+    id: Id;
+    name: string;
+    inheritsFrom: string | null;
+    dateCreated: string | null;
+    lastModifiedDate: string | null;
+    colors: APIBrandKitColor[];
+    characterStyles: APIBrandKitCharacterStyle[];
+    paragraphStyles: APIBrandKitParagraphStyle[];
+    fonts: APIBrandKitFont[];
+    media: APIBrandKitMedia[];
+};
+
 export type APIBrandKit = {
     id: Id;
     name: string;
@@ -113,6 +126,19 @@ export type APIBrandKit = {
     characterStyles: BrandKitCharacterStyle[];
     paragraphStyles: BrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
+    themes: APIBrandKitTheme[];
+};
+
+export type StudioBrandKitTheme = {
+    id: string;
+    name: string;
+    inheritsFrom: string | null;
+    dateCreated: string | null;
+    lastModifiedDate: string | null;
+    colors: DocumentColor[];
+    characterStyles: CharacterStyle[];
+    paragraphStyles: ParagraphStyle[];
+    media: BrandKitMedia[];
 };
 
 /**
@@ -153,4 +179,5 @@ export type EngineBrandKit = {
     characterStyles: CharacterStyle[];
     paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];
+    themes: StudioBrandKitTheme[];
 };

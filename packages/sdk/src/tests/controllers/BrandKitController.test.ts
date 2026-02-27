@@ -58,6 +58,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockCharacterStyles,
                         paragraphStyles: mockParagraphStyles,
                         media: mockMedia,
+                        themes: [],
                     }),
                 ),
             setBrandKit: async (...args: unknown[]) => {
@@ -77,6 +78,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockCharacterStyles,
                         paragraphStyles: mockParagraphStyles,
                         media: mockMedia,
+                        themes: (args[0] as APIBrandKit).themes ?? [],
                     }),
                 );
             },
@@ -353,7 +355,7 @@ describe('BrandKitController', () => {
         expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledWith(name);
         expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledTimes(1);
     });
-    
+
     it('Should call isBrandKitAutoSync of EditorAPI successfully', async () => {
         await mockBrandKitController.isAutoSync();
         expect(mockEditorApi.isBrandKitAutoSync).toHaveBeenCalledTimes(1);
