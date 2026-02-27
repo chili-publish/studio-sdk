@@ -403,5 +403,6 @@ export const mockStudioBrandKit = {
                 mediaId: 'f6a50d37-a859-4c07-b915-0bb0f43c6c6b',
             },
         ],
+        themes: [],
     },
 };
