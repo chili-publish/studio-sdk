@@ -56,6 +56,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockCharacterStyles,
                         paragraphStyles: mockParagraphStyles,
                         media: mockMedia,
+                        themes: [],
                     }),
                 ),
             setBrandKit: async (...args: unknown[]) =>
@@ -70,6 +71,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockCharacterStyles,
                         paragraphStyles: mockParagraphStyles,
                         media: mockMedia,
+                        themes: (args[0] as APIBrandKit).themes ?? [],
                     }),
                 ),
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
@@ -233,6 +235,7 @@ describe('BrandKitController', () => {
             characterStyles: mockCharacterStyles,
             paragraphStyles: mockParagraphStyles,
             media: mockMedia,
+            themes: [],
         });
     });
 
@@ -286,6 +289,7 @@ describe('BrandKitController', () => {
             characterStyles: mockStudioBrandKit.brandKit.characterStyles,
             paragraphStyles: mockStudioBrandKit.brandKit.paragraphStyles,
             media: mockStudioBrandKit.brandKit.media,
+            themes: mockStudioBrandKit.brandKit.themes,
         } as unknown as APIBrandKit;
 
         const response = await mockBrandKitController.set(mockAPIBrandKit);
@@ -302,6 +306,7 @@ describe('BrandKitController', () => {
             characterStyles: mockCharacterStyles,
             paragraphStyles: mockParagraphStyles,
             media: mockMedia,
+            themes: mockStudioBrandKit.brandKit.themes,
         });
     });
 

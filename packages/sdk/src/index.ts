@@ -191,6 +191,7 @@ export type {
     APIBrandKitColor,
     APIBrandKitFont,
     APIBrandKitParagraphStyle,
+    APIBrandKitTheme,
     BrandKitMedia,
     CMYK,
     CMYKColorValue,
@@ -201,6 +202,7 @@ export type {
     SpotHEXColorValue,
     SpotRGBColorValue,
     StudioBrandKit,
+    StudioBrandKitTheme,
 } from './types/BrandKitTypes';
 
 export * from './types/ActionTypes';
