@@ -335,7 +335,7 @@ export class BrandKitController {
      */
     isSync = async () => {
         const res = await this.#editorAPI;
-        return res.isSync().then((result) => getEditorResponseData<boolean>(result));
+        return res.isBrandKitSynced().then((result) => getEditorResponseData<boolean>(result));
     };
 
     /**
@@ -345,7 +345,7 @@ export class BrandKitController {
      */
     setSync = async (isSync: boolean) => {
         const res = await this.#editorAPI;
-        return res.setSync(isSync).then((result) => getEditorResponseData<boolean>(result));
+        return res.setBrandKitSynced(isSync).then((result) => getEditorResponseData<boolean>(result));
     };
 
     private async setColors(studioBrandKit: StudioBrandKit, sdk: SDK) {
