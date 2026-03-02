@@ -2,6 +2,7 @@ import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import { DataModelProperty, Dictionary } from '@chili-studio/connector-types';
 import {
+    DataSourceVariableDisplayMode,
     DateRestriction,
     DateVariablePropertiesDeltaUpdate,
     Day,
@@ -217,6 +218,24 @@ class DataSourceVariable {
     setValue = async (id: string, value: DataModelProperty[] | RowId) => {
         const res = await this.#editorAPI;
         return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the display mode and optional display column for a data source variable.
+     * @param variableId The id of the data source variable to update
+     * @param displayMode How the variable is displayed in the UI (table or list)
+     * @param displayColumn Optional column id or name used as the display column (e.g. when in list mode)
+     * @returns
+     */
+    setDisplayOptions = async (
+        variableId: string,
+        displayMode: DataSourceVariableDisplayMode,
+        displayColumn?: string | null,
+    ) => {
+        const res = await this.#editorAPI;
+        return res
+            .setDataSourceVariableDisplayOptions(variableId, displayMode, displayColumn ?? undefined)
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
 

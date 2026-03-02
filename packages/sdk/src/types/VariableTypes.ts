@@ -332,6 +332,14 @@ export type ConnectorDataSourceVariableSource = {
 };
 
 export type DataSourceVariableSource = InjectedDataSourceVariableSource | ConnectorDataSourceVariableSource;
+
+export enum DataSourceVariableDisplayMode {
+    table = 'table',
+    list = 'list',
+}
+
 export interface DataSourceVariable extends Variable {
     value?: DataSourceVariableSource;
+    displayMode?: DataSourceVariableDisplayMode;
+    displayColumn?: string | null;
 }
