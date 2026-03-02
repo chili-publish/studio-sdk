@@ -78,6 +78,7 @@ export {
     VariableVisibilityOperator,
     VariableVisibilityTargetType,
     VariableVisibilityType,
+    DataSourceVariableDisplayMode,
     DataSourceVariableSourceType,
 } from './types/VariableTypes';
 
