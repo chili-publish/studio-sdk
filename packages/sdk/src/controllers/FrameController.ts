@@ -1264,6 +1264,19 @@ export class FrameController {
             .updateFrameGradientSettings(id, JSON.stringify(update))
             .then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method will set the smart crop subject id for a specified frame
+     * @param id the id of the frame that needs to get updated
+     * @param subjectId the subject id to set for smart crop
+     * @returns
+     */
+    setSmartCropSubjectId = async (id: Id, subjectId?: String) => {
+        const res = await this.#editorAPI;
+        return res
+            .setSmartCropSubjectId(id, subjectId)
+            .then((result) => getEditorResponseData<null>(result));
+    };
 }
 
 export class FrameConstraintController {
