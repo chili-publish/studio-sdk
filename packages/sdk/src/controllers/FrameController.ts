@@ -1271,7 +1271,7 @@ export class FrameController {
      * @param subjectId the subject id to set for smart crop
      * @returns
      */
-    setSmartCropSubjectId = async (id: Id, subjectId?: String) => {
+    setSmartCropSubjectId = async (id: Id, subjectId?: string) => {
         const res = await this.#editorAPI;
         return res
             .setSmartCropSubjectId(id, subjectId)
