@@ -93,8 +93,9 @@ export class DataConnectorController {
 
     /**
      * Retrieve a single data item by its identifier from a specific DataConnector.
-     * Only available for connectors that implement the bidirectional navigation capability
-     * (`DataConnectorCapabilities.bidirectionalNavigation === true`).
+     * Only available for connectors that implement both the bidirectional navigation capability
+     * (`DataConnectorCapabilities.bidirectionalNavigation === true`) and the model ID capability
+     * (`DataConnectorCapabilities.modelId === true`).
      * @param connectorId unique id of the Data connector
      * @param id identifier of the item to retrieve
      * @param context context that will be available in the connector script.
