@@ -3,7 +3,10 @@ import {
     DataModel,
     DataPage,
     Dictionary,
+    BiderectionalDataPage,
+    BiderectionalPageConfig,
     PageConfig,
+    BiderectionalDataPageItem,
 } from '@chili-studio/connector-types';
 import { ConnectorConfigOptions, ConnectorRuntimeContext } from './Connector.Shared';
 
@@ -13,15 +16,29 @@ export type {
     DataModel,
     DataModelProperty,
     DataPage,
-    PageConfig
+    BiderectionalPageConfig,
+    PageConfig,
+    BiderectionalDataPage
 } from '@chili-studio/connector-types';
 
-export interface DataConnector {
-    getPage(config: PageConfig, context: Dictionary): Promise<DataPage>;
+export interface BaseDataConnector {
     getModel(context: Dictionary): Promise<DataModel>;
     getConfigurationOptions(): ConnectorConfigOptions | null;
     getCapabilities(): DataConnectorCapabilities;
 }
 
-// TODO: add methods once defined
+export interface OneDirectionalNavigation {
+    getPage(config: PageConfig, context: Dictionary): Promise<DataPage>;
+}
+
+export interface BiderectionalNavigation {
+    getPage(config: BiderectionalPageConfig, context: Dictionary): Promise<BiderectionalDataPage>;
+}
+
+export interface DataConnector extends BaseDataConnector, OneDirectionalNavigation {}
+
+export interface GetPageItemById extends BiderectionalNavigation {
+    getPageItemById(id: string, context: Dictionary): Promise<BiderectionalDataPageItem>;
+}
+
 export type DataConnectorRuntimeContext = ConnectorRuntimeContext;

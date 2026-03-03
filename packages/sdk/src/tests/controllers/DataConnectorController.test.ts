@@ -1,6 +1,6 @@
 import { DataConnectorController } from '../../controllers/DataConnectorController';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { DataPage, PageConfig } from '../../types/DataConnectorTypes';
+import { BiderectionalDataPageItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
 import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -11,6 +11,7 @@ const mockedEditorApi: EditorAPI = {
     dataConnectorGetModel: async () => getEditorResponseData(castToEditorResponse(null)),
     dataConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     dataConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    dataConnectorGetPageItemById: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 const mockedDataItemMappingTools = new DataItemMappingTools();
@@ -21,6 +22,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'dataConnectorGetModel');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetConfigurationOptions');
+    jest.spyOn(mockedEditorApi, 'dataConnectorGetPageItemById');
 });
 
 afterEach(() => {
@@ -114,5 +116,37 @@ describe('DataConnectorController', () => {
         await mockedDataConnectorController.getConfigurationOptions(connectorId);
         expect(mockedEditorApi.dataConnectorGetConfigurationOptions).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.dataConnectorGetConfigurationOptions).toHaveBeenLastCalledWith(connectorId);
+    });
+
+    it('Should call the getPageItemById method', async () => {
+        const itemId = 'item-123';
+        await mockedDataConnectorController.getPageItemById(connectorId, itemId, context);
+        expect(mockedEditorApi.dataConnectorGetPageItemById).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.dataConnectorGetPageItemById).toHaveBeenCalledWith(
+            connectorId,
+            itemId,
+            JSON.stringify(context),
+        );
+    });
+
+    it('Should map date properties in the item returned by getPageItemById', async () => {
+        (mockedEditorApi.dataConnectorGetPageItemById as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            data: JSON.stringify({
+                data: { createDate: { type: 'date', value: 1111 }, label: 'hello' },
+                previousPageToken: 'prev-token',
+                nextPageToken: 'next-token',
+            }),
+        });
+
+        const result: EditorResponse<BiderectionalDataPageItem> =
+            await mockedDataConnectorController.getPageItemById(connectorId, 'item-123', context);
+
+        expect(result.parsedData?.data).toStrictEqual({
+            createDate: new Date(1111),
+            label: 'hello',
+        });
+        expect(result.parsedData?.previousPageToken).toBe('prev-token');
+        expect(result.parsedData?.nextPageToken).toBe('next-token');
     });
 });

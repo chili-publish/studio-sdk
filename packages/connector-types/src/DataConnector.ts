@@ -4,6 +4,8 @@ export type DataConnectorCapabilities = {
     filtering: boolean;
     sorting: boolean;
     model: boolean;
+    bidirectionalNavigation?: boolean;
+    modelId?: boolean;
 };
 
 export type DataItem = {
@@ -12,6 +14,7 @@ export type DataItem = {
 
 export type DataModel = {
     properties: DataModelProperty[];
+    propertyNameAsId?: string;
 };
 
 export type DataModelProperty = {
@@ -19,16 +22,37 @@ export type DataModelProperty = {
     type: string;
 };
 
-export type DataPage = Pick<QueryPage<DataItem>, 'data'> & {
+export interface OneDirectionalNavigation {
     continuationToken?: string | null;
-};
+}
 
-export interface PageConfig {
+export interface BiderectionalNavigation {
+    previousPageToken?: string | null;
+    nextPageToken?: string | null;
+}
+
+export type WithNavigation<T, N extends OneDirectionalNavigation | BiderectionalNavigation> = T & N;
+
+export type DataPage = WithNavigation<Pick<QueryPage<DataItem>, 'data'>, OneDirectionalNavigation>;
+
+export type BiderectionalDataPage = WithNavigation<Pick<QueryPage<DataItem>, 'data'>, BiderectionalNavigation>;
+
+interface PageConfigBase {
     filters?: DataFilter[] | null;
     sorting?: DataSorting[] | null;
-    continuationToken?: string | null;
     limit: number;
 }
+
+export type PageConfig = PageConfigBase & OneDirectionalNavigation;
+
+export type BiderectionalPageConfig = PageConfigBase & BiderectionalNavigation;
+
+export type BiderectionalDataPageItem = WithNavigation<
+    {
+        data: DataItem;
+    },
+    BiderectionalNavigation
+>;
 
 export interface DataSorting {
     property: string;

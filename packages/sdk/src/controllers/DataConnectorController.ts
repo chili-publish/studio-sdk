@@ -1,10 +1,15 @@
 import { EditorAPI, EditorResponse } from '../types/CommonTypes';
 import { ConnectorConfigOptions, MetaData } from '../types/ConnectorTypes';
 import {
+    BiderectionalDataPage,
+    BiderectionalDataPageItem,
+    BiderectionalNavigation,
+    BiderectionalPageConfig,
     DataConnectorCapabilities,
     DataModel,
     DataPage,
     EditorDataPage,
+    OneDirectionalNavigation,
     PageConfig,
 } from '../types/DataConnectorTypes';
 import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
@@ -42,31 +47,79 @@ export class DataConnectorController {
      * Query a specific DataConnector for data using both specific PageConfig and the dynamic
      * context as parameters.
      * @param connectorId unique id of the Data connector
-     * @param config page configuration
+     * @param config bidirectional page configuration — provides `previousPageToken` / `nextPageToken` navigation
      * @param context context that will be available in the connector script.
-     * @returns a DataPage with an array of data objects
+     * @returns a BiderectionalDataPage with an array of data objects and bidirectional navigation tokens
      */
-    getPage = async (
+    getPage(
         connectorId: string,
-        config: PageConfig,
+        config: BiderectionalPageConfig,
+        context?: MetaData,
+    ): Promise<EditorResponse<BiderectionalDataPage>>;
+
+    /**
+     * Query a specific DataConnector for data using both specific PageConfig and the dynamic
+     * context as parameters.
+     * @param connectorId unique id of the Data connector
+     * @param config one-directional page configuration — provides a `continuationToken` for forward navigation
+     * @param context context that will be available in the connector script.
+     * @returns a DataPage with an array of data objects and a continuation token
+     */
+    getPage(connectorId: string, config: PageConfig, context?: MetaData): Promise<EditorResponse<DataPage>>;
+
+    async getPage(
+        connectorId: string,
+        config: PageConfig | BiderectionalPageConfig,
         context: MetaData = {},
-    ): Promise<EditorResponse<DataPage>> => {
+    ): Promise<EditorResponse<DataPage | BiderectionalDataPage>> {
         const res = await this.#editorAPI;
-        return res
-            .dataConnectorGetPage(connectorId, JSON.stringify(config), JSON.stringify(context))
-            .then((result) => getEditorResponseData<EditorDataPage<EngineDataItem>>(result))
-            .then((resp) => {
-                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
-                if (resp.parsedData) {
-                    update.parsedData = {
-                        data: resp.parsedData.data.map((e: EngineDataItem) =>
-                            this.#dataItemMappingTools.mapEngineToDataItem(e),
-                        ),
-                        continuationToken: resp.parsedData.continuationToken,
-                    };
-                }
-                return update;
-            });
+        const result = await res.dataConnectorGetPage(
+            connectorId,
+            JSON.stringify(config),
+            JSON.stringify(context),
+        );
+        const resp = getEditorResponseData<EditorDataPage<EngineDataItem, OneDirectionalNavigation | BiderectionalNavigation>>(result);
+        const update: EditorResponse<DataPage | BiderectionalDataPage> = { ...resp, parsedData: null };
+        if (resp.parsedData) {
+            update.parsedData = {
+                ...resp.parsedData,
+                data: resp.parsedData.data.map((e: EngineDataItem) =>
+                    this.#dataItemMappingTools.mapEngineToDataItem(e),
+                ),
+            } as DataPage | BiderectionalDataPage;
+        }
+        return update;
+    }
+
+    /**
+     * Retrieve a single data item by its identifier from a specific DataConnector.
+     * Only available for connectors that implement the bidirectional navigation capability
+     * (`DataConnectorCapabilities.bidirectionalNavigation === true`).
+     * @param connectorId unique id of the Data connector
+     * @param id identifier of the item to retrieve
+     * @param context context that will be available in the connector script.
+     * @returns a BiderectionalDataPageItem containing the data item and bidirectional navigation tokens
+     */
+    getPageItemById = async (
+        connectorId: string,
+        id: string,
+        context: MetaData = {},
+    ): Promise<EditorResponse<BiderectionalDataPageItem>> => {
+        const res = await this.#editorAPI;
+        const result = await res.dataConnectorGetPageItemById(
+            connectorId,
+            id,
+            JSON.stringify(context),
+        );
+        const resp = getEditorResponseData<{ data: EngineDataItem } & BiderectionalNavigation>(result);
+        const update: EditorResponse<BiderectionalDataPageItem> = { ...resp, parsedData: null };
+        if (resp.parsedData) {
+            update.parsedData = {
+                ...resp.parsedData,
+                data: this.#dataItemMappingTools.mapEngineToDataItem(resp.parsedData.data),
+            };
+        }
+        return update;
     };
 
     /**
