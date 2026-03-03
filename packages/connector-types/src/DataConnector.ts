@@ -4,8 +4,7 @@ export type DataConnectorCapabilities = {
     filtering: boolean;
     sorting: boolean;
     model: boolean;
-    bidirectionalNavigation?: boolean;
-    modelId?: boolean;
+    dataSourceVariable?: boolean;
 };
 
 export type DataItem = {
