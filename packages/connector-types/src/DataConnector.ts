@@ -13,7 +13,7 @@ export type DataItem = {
 
 export type DataModel = {
     properties: DataModelProperty[];
-    propertyNameAsId?: string;
+    itemIdPropertyName?: string;
 };
 
 export type DataModelProperty = {
