@@ -17,6 +17,7 @@ export type {
     DataModel,
     DataModelProperty,
     DataPage,
+    BidirectionalDataPageItem,
     BidirectionalPageConfig,
     PageConfig,
     PageItemOptions,
