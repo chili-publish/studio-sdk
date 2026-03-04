@@ -1,6 +1,11 @@
 import { DataConnectorController } from '../../controllers/DataConnectorController';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { BidirectionalDataPageItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
+import {
+    BidirectionalDataPageItem,
+    DataPage,
+    PageConfig,
+    PageItemOptions,
+} from '../../types/DataConnectorTypes';
 import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -40,6 +45,8 @@ describe('DataConnectorController', () => {
     };
 
     const context = { debug: 'true' };
+
+    const pageItemOptions: PageItemOptions = { sorting: [], limit: 20 };
 
     it('Should call the getPage method', async () => {
         await mockedDataConnectorController.getPage(connectorId, pageConfig, context);
@@ -120,11 +127,12 @@ describe('DataConnectorController', () => {
 
     it('Should call the getPageItemById method', async () => {
         const itemId = 'item-123';
-        await mockedDataConnectorController.getPageItemById(connectorId, itemId, context);
+        await mockedDataConnectorController.getPageItemById(connectorId, itemId, pageItemOptions, context);
         expect(mockedEditorApi.dataConnectorGetPageItemById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.dataConnectorGetPageItemById).toHaveBeenCalledWith(
             connectorId,
             itemId,
+            JSON.stringify(pageItemOptions),
             JSON.stringify(context),
         );
     });
@@ -142,6 +150,7 @@ describe('DataConnectorController', () => {
         const result: EditorResponse<BidirectionalDataPageItem> = await mockedDataConnectorController.getPageItemById(
             connectorId,
             'item-123',
+            pageItemOptions,
             context,
         );
 

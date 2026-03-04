@@ -42,6 +42,12 @@ interface PageConfigBase {
     limit: number;
 }
 
+/** Options for getPageItemById: sorting and limit used to build navigation tokens. */
+export interface PageItemOptions {
+    sorting?: DataSorting[] | null;
+    limit: number;
+}
+
 export type PageConfig = PageConfigBase & OneDirectionalNavigation;
 
 export type BidirectionalPageConfig = PageConfigBase & BidirectionalNavigation;

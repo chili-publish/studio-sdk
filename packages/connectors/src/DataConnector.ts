@@ -6,6 +6,7 @@ import {
     BidirectionalDataPage,
     BidirectionalPageConfig,
     PageConfig,
+    PageItemOptions,
     BidirectionalDataPageItem,
 } from '@chili-studio/connector-types';
 import { Connector, ConnectorRuntimeContext } from './Connector.Shared';
@@ -18,6 +19,7 @@ export type {
     DataPage,
     BidirectionalPageConfig,
     PageConfig,
+    PageItemOptions,
     BidirectionalDataPage,
 } from '@chili-studio/connector-types';
 
@@ -28,8 +30,8 @@ export type {
 export interface DataSourceVariableCapability {
     /** Bidirectional paged data. */
     getPage(config: BidirectionalPageConfig, context: Dictionary): Promise<BidirectionalDataPage>;
-    /** Single item by ID (column identified by the model’s itemIdPropertyName). */
-    getPageItemById(id: string, context: Dictionary): Promise<BidirectionalDataPageItem>;
+    /** Single item by ID; pageOptions (sorting, limit) used to build navigation tokens. */
+    getPageItemById(id: string, pageOptions: PageItemOptions, context: Dictionary): Promise<BidirectionalDataPageItem>;
     /** Model must declare which property is the item ID. */
     getModel(context: Dictionary): Promise<Required<DataModel>>;
 }

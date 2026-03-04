@@ -22,5 +22,6 @@ export type {
     BidirectionalDataPage,
     BidirectionalDataPageItem,
     PageConfig,
+    PageItemOptions,
     BidirectionalPageConfig,
 } from '@chili-studio/connector-types';

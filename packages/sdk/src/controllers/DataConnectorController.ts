@@ -11,6 +11,7 @@ import {
     EditorDataPage,
     OneDirectionalNavigation,
     PageConfig,
+    PageItemOptions,
 } from '../types/DataConnectorTypes';
 import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
 import { getEditorResponseData } from '../utils/EditorResponseData';
@@ -94,19 +95,26 @@ export class DataConnectorController {
      * Retrieve a single data item by its identifier from a specific DataConnector.
      * Only available for connectors that set `DataConnectorCapabilities.dataSourceVariable = true`,
      * which implies support for both bidirectional page navigation and item-level lookup.
-     * On the connector side this corresponds to implementing the `DataSourceVariableCapability` interface.
+     * pageOptions (sorting, limit) are used by the connector to build navigation tokens.
      * @param connectorId unique id of the Data connector
      * @param id identifier of the item to retrieve
+     * @param pageOptions sorting and limit used to build previousPageToken/nextPageToken
      * @param context context that will be available in the connector script.
      * @returns a BidirectionalDataPageItem containing the data item and bidirectional navigation tokens
      */
     getPageItemById = async (
         connectorId: string,
         id: string,
+        pageOptions: PageItemOptions,
         context: MetaData = {},
     ): Promise<EditorResponse<BidirectionalDataPageItem>> => {
         const res = await this.#editorAPI;
-        const result = await res.dataConnectorGetPageItemById(connectorId, id, JSON.stringify(context));
+        const result = await res.dataConnectorGetPageItemById(
+            connectorId,
+            id,
+            JSON.stringify(pageOptions),
+            JSON.stringify(context),
+        );
         const resp = getEditorResponseData<{ data: EngineDataItem } & BidirectionalNavigation>(result);
         const update: EditorResponse<BidirectionalDataPageItem> = { ...resp, parsedData: null };
         if (resp.parsedData) {
