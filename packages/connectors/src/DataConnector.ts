@@ -35,11 +35,17 @@ export interface DataSourceVariableCapability {
 }
 
 /**
+ * Contract for connectors that set `DataConnectorCapabilities.model = true`.
+ */
+export interface ModelCapability {
+    getModel(context: Dictionary): Promise<DataModel>;
+}
+
+/**
  * Default implementation that we use for Output Data Source use case
  */
 export interface DataConnector extends Connector<DataConnectorCapabilities> {
     getPage(config: PageConfig, context: Dictionary): Promise<DataPage>;
-    getModel(context: Dictionary): Promise<DataModel>;
 }
 
 export type DataConnectorRuntimeContext = ConnectorRuntimeContext;
