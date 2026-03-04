@@ -73,6 +73,13 @@ export class DataConnectorController {
         config: PageConfig | BidirectionalPageConfig,
         context: MetaData = {},
     ): Promise<EditorResponse<DataPage | BidirectionalDataPage>> {
+        const { previousPageToken, continuationToken } = config as BidirectionalPageConfig;
+        if (previousPageToken != null && continuationToken != null) {
+            throw new Error(
+                'Invalid page config: "previousPageToken" and "continuationToken" are mutually exclusive. Provide only one to indicate navigation direction.',
+            );
+        }
+
         const res = await this.#editorAPI;
         const result = await res.dataConnectorGetPage(connectorId, JSON.stringify(config), JSON.stringify(context));
         const resp =

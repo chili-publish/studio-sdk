@@ -2,6 +2,7 @@ import { DataConnectorController } from '../../controllers/DataConnectorControll
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import {
     BidirectionalDataPageItem,
+    BidirectionalPageConfig,
     DataPage,
     PageConfig,
     PageItemOptions,
@@ -47,6 +48,18 @@ describe('DataConnectorController', () => {
     const context = { debug: 'true' };
 
     const pageItemOptions: PageItemOptions = { sorting: [], limit: 20 };
+
+    it('Should throw when both previousPageToken and continuationToken are set', async () => {
+        const ambiguousConfig: BidirectionalPageConfig = {
+            limit: 20,
+            previousPageToken: 'prev-token',
+            continuationToken: 'next-token',
+        };
+        await expect(mockedDataConnectorController.getPage(connectorId, ambiguousConfig, context)).rejects.toThrow(
+            'mutually exclusive',
+        );
+        expect(mockedEditorApi.dataConnectorGetPage).not.toHaveBeenCalled();
+    });
 
     it('Should call the getPage method', async () => {
         await mockedDataConnectorController.getPage(connectorId, pageConfig, context);
