@@ -4,7 +4,7 @@ export type OneDirectionalNavigation = {
 
 export type BidirectionalNavigation = {
     previousPageToken?: string | null;
-    nextPageToken?: string | null;
+    continuationToken?: string | null;
 };
 
 export type EditorDataPage<

@@ -27,7 +27,7 @@ export interface OneDirectionalNavigation {
 
 export interface BidirectionalNavigation {
     previousPageToken?: string | null;
-    nextPageToken?: string | null;
+    continuationToken?: string | null;
 }
 
 export type WithNavigation<T, N extends OneDirectionalNavigation | BidirectionalNavigation> = T & N;

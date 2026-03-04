@@ -48,7 +48,7 @@ export class DataConnectorController {
      * Query a specific DataConnector for data using both specific PageConfig and the dynamic
      * context as parameters.
      * @param connectorId unique id of the Data connector
-     * @param config bidirectional page configuration — provides `previousPageToken` / `nextPageToken` navigation
+     * @param config bidirectional page configuration — provides `previousPageToken` / `continuationToken` navigation
      * @param context context that will be available in the connector script.
      * @returns a BidirectionalDataPage with an array of data objects and bidirectional navigation tokens
      */
@@ -98,7 +98,7 @@ export class DataConnectorController {
      * pageOptions (sorting, limit) are used by the connector to build navigation tokens.
      * @param connectorId unique id of the Data connector
      * @param id identifier of the item to retrieve
-     * @param pageOptions sorting and limit used to build previousPageToken/nextPageToken
+     * @param pageOptions sorting and limit used to build previousPageToken/continuationToken
      * @param context context that will be available in the connector script.
      * @returns a BidirectionalDataPageItem containing the data item and bidirectional navigation tokens
      */

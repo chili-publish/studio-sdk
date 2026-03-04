@@ -143,7 +143,7 @@ describe('DataConnectorController', () => {
             data: JSON.stringify({
                 data: { createDate: { type: 'date', value: 1111 }, label: 'hello' },
                 previousPageToken: 'prev-token',
-                nextPageToken: 'next-token',
+                continuationToken: 'next-token',
             }),
         });
 
@@ -159,6 +159,6 @@ describe('DataConnectorController', () => {
             label: 'hello',
         });
         expect(result.parsedData?.previousPageToken).toBe('prev-token');
-        expect(result.parsedData?.nextPageToken).toBe('next-token');
+        expect(result.parsedData?.continuationToken).toBe('next-token');
     });
 });
