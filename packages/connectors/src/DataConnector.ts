@@ -27,13 +27,11 @@ export type {
  * Contract for connectors that set `DataConnectorCapabilities.dataSourceVariable = true`.
  * All three methods are required for the Data Source Variable feature.
  */
-export interface DataSourceVariableCapability {
+export interface DataSourceVariableCapability extends ModelCapability {
     /** Bidirectional paged data. */
     getPage(config: BidirectionalPageConfig, context: Dictionary): Promise<BidirectionalDataPage>;
     /** Single item by ID; pageOptions (sorting, limit) used to build navigation tokens. */
     getPageItemById(id: string, pageOptions: PageItemOptions, context: Dictionary): Promise<BidirectionalDataPageItem>;
-    /** Model must declare which property is the item ID. */
-    getModel(context: Dictionary): Promise<Required<DataModel>>;
 }
 
 /**
