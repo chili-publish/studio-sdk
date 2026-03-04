@@ -1,10 +1,10 @@
 import { EditorAPI, EditorResponse } from '../types/CommonTypes';
 import { ConnectorConfigOptions, MetaData } from '../types/ConnectorTypes';
 import {
-    BiderectionalDataPage,
-    BiderectionalDataPageItem,
-    BiderectionalNavigation,
-    BiderectionalPageConfig,
+    BidirectionalDataPage,
+    BidirectionalDataPageItem,
+    BidirectionalNavigation,
+    BidirectionalPageConfig,
     DataConnectorCapabilities,
     DataModel,
     DataPage,
@@ -49,13 +49,13 @@ export class DataConnectorController {
      * @param connectorId unique id of the Data connector
      * @param config bidirectional page configuration — provides `previousPageToken` / `nextPageToken` navigation
      * @param context context that will be available in the connector script.
-     * @returns a BiderectionalDataPage with an array of data objects and bidirectional navigation tokens
+     * @returns a BidirectionalDataPage with an array of data objects and bidirectional navigation tokens
      */
     getPage(
         connectorId: string,
-        config: BiderectionalPageConfig,
+        config: BidirectionalPageConfig,
         context?: MetaData,
-    ): Promise<EditorResponse<BiderectionalDataPage>>;
+    ): Promise<EditorResponse<BidirectionalDataPage>>;
 
     /**
      * Query a specific DataConnector for data using both specific PageConfig and the dynamic
@@ -69,24 +69,23 @@ export class DataConnectorController {
 
     async getPage(
         connectorId: string,
-        config: PageConfig | BiderectionalPageConfig,
+        config: PageConfig | BidirectionalPageConfig,
         context: MetaData = {},
-    ): Promise<EditorResponse<DataPage | BiderectionalDataPage>> {
+    ): Promise<EditorResponse<DataPage | BidirectionalDataPage>> {
         const res = await this.#editorAPI;
-        const result = await res.dataConnectorGetPage(
-            connectorId,
-            JSON.stringify(config),
-            JSON.stringify(context),
-        );
-        const resp = getEditorResponseData<EditorDataPage<EngineDataItem, OneDirectionalNavigation | BiderectionalNavigation>>(result);
-        const update: EditorResponse<DataPage | BiderectionalDataPage> = { ...resp, parsedData: null };
+        const result = await res.dataConnectorGetPage(connectorId, JSON.stringify(config), JSON.stringify(context));
+        const resp =
+            getEditorResponseData<EditorDataPage<EngineDataItem, OneDirectionalNavigation | BidirectionalNavigation>>(
+                result,
+            );
+        const update: EditorResponse<DataPage | BidirectionalDataPage> = { ...resp, parsedData: null };
         if (resp.parsedData) {
             update.parsedData = {
                 ...resp.parsedData,
                 data: resp.parsedData.data.map((e: EngineDataItem) =>
                     this.#dataItemMappingTools.mapEngineToDataItem(e),
                 ),
-            } as DataPage | BiderectionalDataPage;
+            } as DataPage | BidirectionalDataPage;
         }
         return update;
     }
@@ -99,21 +98,17 @@ export class DataConnectorController {
      * @param connectorId unique id of the Data connector
      * @param id identifier of the item to retrieve
      * @param context context that will be available in the connector script.
-     * @returns a BiderectionalDataPageItem containing the data item and bidirectional navigation tokens
+     * @returns a BidirectionalDataPageItem containing the data item and bidirectional navigation tokens
      */
     getPageItemById = async (
         connectorId: string,
         id: string,
         context: MetaData = {},
-    ): Promise<EditorResponse<BiderectionalDataPageItem>> => {
+    ): Promise<EditorResponse<BidirectionalDataPageItem>> => {
         const res = await this.#editorAPI;
-        const result = await res.dataConnectorGetPageItemById(
-            connectorId,
-            id,
-            JSON.stringify(context),
-        );
-        const resp = getEditorResponseData<{ data: EngineDataItem } & BiderectionalNavigation>(result);
-        const update: EditorResponse<BiderectionalDataPageItem> = { ...resp, parsedData: null };
+        const result = await res.dataConnectorGetPageItemById(connectorId, id, JSON.stringify(context));
+        const resp = getEditorResponseData<{ data: EngineDataItem } & BidirectionalNavigation>(result);
+        const update: EditorResponse<BidirectionalDataPageItem> = { ...resp, parsedData: null };
         if (resp.parsedData) {
             update.parsedData = {
                 ...resp.parsedData,

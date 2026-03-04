@@ -1,6 +1,6 @@
 import { DataConnectorController } from '../../controllers/DataConnectorController';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { BiderectionalDataPageItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
+import { BidirectionalDataPageItem, DataPage, PageConfig } from '../../types/DataConnectorTypes';
 import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -139,8 +139,11 @@ describe('DataConnectorController', () => {
             }),
         });
 
-        const result: EditorResponse<BiderectionalDataPageItem> =
-            await mockedDataConnectorController.getPageItemById(connectorId, 'item-123', context);
+        const result: EditorResponse<BidirectionalDataPageItem> = await mockedDataConnectorController.getPageItemById(
+            connectorId,
+            'item-123',
+            context,
+        );
 
         expect(result.parsedData?.data).toStrictEqual({
             createDate: new Date(1111),

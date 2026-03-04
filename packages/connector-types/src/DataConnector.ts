@@ -25,16 +25,16 @@ export interface OneDirectionalNavigation {
     continuationToken?: string | null;
 }
 
-export interface BiderectionalNavigation {
+export interface BidirectionalNavigation {
     previousPageToken?: string | null;
     nextPageToken?: string | null;
 }
 
-export type WithNavigation<T, N extends OneDirectionalNavigation | BiderectionalNavigation> = T & N;
+export type WithNavigation<T, N extends OneDirectionalNavigation | BidirectionalNavigation> = T & N;
 
 export type DataPage = WithNavigation<Pick<QueryPage<DataItem>, 'data'>, OneDirectionalNavigation>;
 
-export type BiderectionalDataPage = WithNavigation<Pick<QueryPage<DataItem>, 'data'>, BiderectionalNavigation>;
+export type BidirectionalDataPage = WithNavigation<Pick<QueryPage<DataItem>, 'data'>, BidirectionalNavigation>;
 
 interface PageConfigBase {
     filters?: DataFilter[] | null;
@@ -44,13 +44,13 @@ interface PageConfigBase {
 
 export type PageConfig = PageConfigBase & OneDirectionalNavigation;
 
-export type BiderectionalPageConfig = PageConfigBase & BiderectionalNavigation;
+export type BidirectionalPageConfig = PageConfigBase & BidirectionalNavigation;
 
-export type BiderectionalDataPageItem = WithNavigation<
+export type BidirectionalDataPageItem = WithNavigation<
     {
         data: DataItem;
     },
-    BiderectionalNavigation
+    BidirectionalNavigation
 >;
 
 export interface DataSorting {

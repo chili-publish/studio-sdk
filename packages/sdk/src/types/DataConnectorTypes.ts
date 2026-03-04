@@ -2,14 +2,14 @@ export type OneDirectionalNavigation = {
     continuationToken?: string | null;
 };
 
-export type BiderectionalNavigation = {
+export type BidirectionalNavigation = {
     previousPageToken?: string | null;
     nextPageToken?: string | null;
 };
 
 export type EditorDataPage<
     Item,
-    N extends OneDirectionalNavigation | BiderectionalNavigation = OneDirectionalNavigation,
+    N extends OneDirectionalNavigation | BidirectionalNavigation = OneDirectionalNavigation,
 > = {
     data: Item[];
 } & N;
@@ -19,8 +19,8 @@ export type {
     DataItem,
     DataModel,
     DataPage,
-    BiderectionalDataPage,
-    BiderectionalDataPageItem,
+    BidirectionalDataPage,
+    BidirectionalDataPageItem,
     PageConfig,
-    BiderectionalPageConfig,
+    BidirectionalPageConfig,
 } from '@chili-studio/connector-types';
