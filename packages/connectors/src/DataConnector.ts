@@ -8,6 +8,7 @@ import {
     PageConfig,
     PageItemOptions,
     BidirectionalDataPageItem,
+    DataSourceVariableDataModel,
 } from '@chili-studio/connector-types';
 import { BaseConnector, ConnectorRuntimeContext } from './Connector.Shared';
 
@@ -16,6 +17,7 @@ export type {
     DataItem,
     DataModel,
     DataModelProperty,
+    DataSourceVariableDataModel,
     DataPage,
     BidirectionalDataPageItem,
     BidirectionalPageConfig,
@@ -28,7 +30,7 @@ export type {
  * Contract for connectors that set `DataConnectorCapabilities.dataSourceVariable = true`.
  * All three methods are required for the Data Source Variable feature.
  */
-export interface DataSourceVariableCapability extends ModelCapability {
+export interface DataSourceVariableCapability extends DataSourceVariableModelCapability {
     /** Bidirectional paged data. */
     getPage(config: BidirectionalPageConfig, context: Dictionary): Promise<BidirectionalDataPage>;
     /** Single item by ID; pageOptions (sorting, limit) used to build navigation tokens. */
@@ -40,6 +42,10 @@ export interface DataSourceVariableCapability extends ModelCapability {
  */
 export interface ModelCapability {
     getModel(context: Dictionary): Promise<DataModel>;
+}
+
+export interface DataSourceVariableModelCapability extends ModelCapability {
+    getModel(context: Dictionary): Promise<DataSourceVariableDataModel>;
 }
 
 /**
