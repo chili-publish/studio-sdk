@@ -125,7 +125,7 @@ export type TextFrame = {
     hasClippingPath: boolean;
     blendMode: BlendMode;
     dropShadowSettings?: DropShadowSettings;
-    hasVariable: boolean;
+    hasVariable?: boolean;
 };
 
 export type BarcodeFrame = {
