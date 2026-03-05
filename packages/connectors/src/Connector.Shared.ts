@@ -101,7 +101,7 @@ export interface ConnectorHttpError extends Error {
     readonly status: number;
 }
 
-export interface Connector<C extends Record<string, boolean | undefined>> {
+export interface BaseConnector<C extends Record<string, boolean | undefined>> {
     getCapabilities(): C;
     getConfigurationOptions(): ConnectorConfigOptions | null;
 }

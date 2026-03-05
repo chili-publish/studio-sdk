@@ -9,7 +9,7 @@ import {
     PageItemOptions,
     BidirectionalDataPageItem,
 } from '@chili-studio/connector-types';
-import { Connector, ConnectorRuntimeContext } from './Connector.Shared';
+import { BaseConnector, ConnectorRuntimeContext } from './Connector.Shared';
 
 export type {
     DataConnectorCapabilities,
@@ -45,7 +45,7 @@ export interface ModelCapability {
 /**
  * Default implementation that we use for Output Data Source use case
  */
-export interface DataConnector extends Connector<DataConnectorCapabilities> {
+export interface DataConnector extends BaseConnector<DataConnectorCapabilities> {
     getPage(config: PageConfig, context: Dictionary): Promise<DataPage>;
 }
 
