@@ -329,6 +329,25 @@ export class BrandKitController {
         return result;
     };
 
+    /**
+     * This method returns the value indicating whether the brand kit is in sync
+     * @returns boolean indicating sync status
+     */
+    isSync = async () => {
+        const res = await this.#editorAPI;
+        return res.isBrandKitSynced().then((result) => getEditorResponseData<boolean>(result));
+    };
+
+    /**
+     * This method sets the sync status of the brand kit
+     * @param isSync boolean indicating sync status
+     * @returns boolean indicating the result of the operation
+     */
+    setSync = async (isSync: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setBrandKitSynced(isSync).then((result) => getEditorResponseData<boolean>(result));
+    };
+
     private async setColors(studioBrandKit: StudioBrandKit, sdk: SDK) {
         const localColorGuidsMap = new Map<string, string>();
 
