@@ -583,6 +583,12 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledWith(id, subjectId);
     });
+
+    it('Should be possible to set smart crop subject id to default', async () => {
+        await mockedFrameController.setSmartCropSubjectId(id);
+        expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledWith(id, undefined);
+    });
 });
 
 describe('ImageFrameSource manipulations', () => {
