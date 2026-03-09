@@ -22,6 +22,8 @@ export type {
 } from '@chili-studio/connector-types';
 
 /**
+ * @experimental This interface is still experimental and might change in future releases.
+ * 
  * Contract for connectors that set `DataConnectorCapabilities.dataSourceVariable = true`.
  * All three methods are required for the Data Source Variable feature.
  */

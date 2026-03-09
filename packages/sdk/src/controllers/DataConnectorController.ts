@@ -99,6 +99,8 @@ export class DataConnectorController {
     }
 
     /**
+     * @experimental This method is still experimental and might change in future releases.
+     *
      * Retrieve a single data item by its identifier from a specific DataConnector.
      * Only available for connectors that set `DataConnectorCapabilities.dataSourceVariable = true`,
      * which implies support for both bidirectional page navigation and item-level lookup.
