@@ -17,7 +17,7 @@ export type DataModel = {
 
 export type DataSourceVariableDataModel = DataModel & {
     itemIdPropertyName: string;
-}
+};
 
 export type DataModelProperty = {
     name: string;
