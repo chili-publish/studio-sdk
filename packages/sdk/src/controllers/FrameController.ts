@@ -10,6 +10,7 @@ import {
     CropType,
     FitMode,
     FitModePosition,
+    FontSizeRangeManagedConstraint,
     FrameAnchorProperties,
     FrameAnchorType,
     FrameConfiguration,
@@ -18,6 +19,7 @@ import {
     FrameLayoutType,
     FrameType,
     FrameTypeEnum,
+    IdSetManagedConstraint,
     ImageFrameConnectorSource,
     ImageFrameSource,
     ImageFrameUrlSource,
@@ -1364,13 +1366,83 @@ export class FrameConstraintController {
     };
 
     /**
-     * This method will set the crop constraint for a specified frame
+     * This method will set the crop constraint for a specified image frame
      * @param id the id of the frame that needs to get updated
      * @param allowed whether crop is allowed or not
      * @returns
      */
     setCrop = async (id: Id, allowed: boolean) => {
-        const deltaUpdate: FrameConstraintsDeltaUpdate = { cropAllowed: { value: allowed } };
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { image: { cropAllowed: { value: allowed } } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the text editing constraint for a specified text frame
+     * @param id the id of the frame that needs to get updated
+     * @param allowed whether text editing is allowed or not
+     * @returns
+     */
+    setTextEditingAllowed = async (id: Id, allowed: boolean) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { editingAllowed: { value: allowed } } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the allowed paragraph styles constraint for a specified text frame
+     * @param id the id of the frame that needs to get updated
+     * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
+     * @returns
+     */
+    setAllowedParagraphStyles = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { paragraphStyles: { value: constraint } } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the allowed character styles constraint for a specified text frame
+     * @param id the id of the frame that needs to get updated
+     * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
+     * @returns
+     */
+    setAllowedCharacterStyles = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { characterStyles: { value: constraint } } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the allowed colors constraint for a specified text frame
+     * @param id the id of the frame that needs to get updated
+     * @param constraint the managed constraint: when allowed is true, only the provided ids may be used; when false, the constraint is turned off (stored value is kept for reactivation)
+     * @returns
+     */
+    setAllowedColors = async (id: Id, constraint: IdSetManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { colors: { value: constraint } } };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the allowed font sizes constraint for a specified text frame
+     * @param id the id of the frame that needs to get updated
+     * @param constraint the managed constraint: when allowed is true, restricts font sizes to min and max (inclusive); when false, the constraint is turned off (stored value is kept for reactivation)
+     * @returns
+     */
+    setAllowedFontSizes = async (id: Id, constraint: FontSizeRangeManagedConstraint) => {
+        const deltaUpdate: FrameConstraintsDeltaUpdate = { text: { fontSizes: { value: constraint } } };
         const res = await this.#editorAPI;
         return res
             .updateFrameConstraints(id, JSON.stringify(deltaUpdate))
