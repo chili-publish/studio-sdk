@@ -1,10 +1,11 @@
 import SDK from '..';
 import {
-    APIBrandKit,
-    StudioBrandKit,
     BrandKitMedia,
+    EngineBrandKit,
+    StudioBrandKit,
 } from '../types/BrandKitTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
+import { engineBrandKitToBrandKitInternal, engineBrandKitToStudioBrandKit } from '../utils/BrandKitAdapter';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
 import { ColorStyleController } from './ColorStyleController';
@@ -104,11 +105,20 @@ export class BrandKitController {
 
     /**
      * @experimental This method returns the local brandkit
-     * @returns The local brandkit with all assigned resources
+     * @returns brandkit with all assigned resources
      */
     get = async () => {
         const res = await this.#editorAPI;
-        return res.getBrandKit().then((result) => getEditorResponseData<StudioBrandKit>(result));
+        const result = await res.getBrandKit();
+        const response = getEditorResponseData<EngineBrandKit>(result);
+        const engineData = response.parsedData;
+        if (engineData == null) {
+            throw new Error('Brand kit response has no data');
+        }
+        return {
+            ...response,
+            parsedData: engineBrandKitToStudioBrandKit(engineData),
+        };
     };
 
     /**
@@ -216,12 +226,21 @@ export class BrandKitController {
 
     /**
      * @experimental This method updates a brand kit and all related resources assigned to it
-     * @param apiBrandKit - The environment brand kit data containing all resources to be set
-     * @returns The updated local brand kit with all assigned resources
+     * @param studioBrandKit the content of the brand kit
+     * @returns
      */
-    set = async (apiBrandKit: APIBrandKit) => {
+    set = async (studioBrandKit: StudioBrandKit) => {
         const res = await this.#editorAPI;
-        return res.setBrandKit(apiBrandKit).then((result) => getEditorResponseData<StudioBrandKit>(result));
+        const result = await res.setBrandKit(studioBrandKit.brandKit);
+        const response = getEditorResponseData<EngineBrandKit>(result);
+        const engineData = response.parsedData;
+        if (engineData == null) {
+            throw new Error('Brand kit set response has no data');
+        }
+        return {
+            ...response,
+            parsedData: engineBrandKitToBrandKitInternal(engineData),
+        };
     };
 
 
