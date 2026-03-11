@@ -15,6 +15,7 @@ import {
 import { EditorAPI, PrivateData } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
+import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 
 afterEach(() => {
     jest.restoreAllMocks();
@@ -26,6 +27,8 @@ describe('VariableController', () => {
     const connectorId = 'connectorId';
     const variableId = 'variableId';
     const privateData = { hello: 'world' } as PrivateData;
+
+    const mockedDataItemMappingTools = new DataItemMappingTools();
 
     const variable: ImageVariable = {
         id: variableId,
@@ -89,8 +92,7 @@ describe('VariableController', () => {
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableValue: async () => getEditorResponseData(castToEditorResponse(null)),
-        setDataSourceVariableDisplayOptions: async () =>
-            getEditorResponseData(castToEditorResponse(null)),
+        setDataSourceVariableDisplayOptions: async () => getEditorResponseData(castToEditorResponse(null)),
         groupVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         duplicateVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -117,10 +119,11 @@ describe('VariableController', () => {
         setVariableCharacterLimit: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
         highlightVariableUsages: async () => getEditorResponseData(castToEditorResponse(variableUsagesReport)),
+        getInjectedDataSourceVariableData: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
-        mockedVariableController = new VariableController(mockEditorApi);
+        mockedVariableController = new VariableController(mockEditorApi, mockedDataItemMappingTools);
         jest.spyOn(mockEditorApi, 'getVariableById');
         jest.spyOn(mockEditorApi, 'getVariableByName');
         jest.spyOn(mockEditorApi, 'getVariables');
@@ -159,6 +162,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableCharacterLimit');
         jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
         jest.spyOn(mockEditorApi, 'highlightVariableUsages');
+        jest.spyOn(mockEditorApi, 'getInjectedDataSourceVariableData');
     });
 
     it('get variable by id', async () => {
@@ -448,11 +452,7 @@ describe('VariableController', () => {
         await mockedVariableController.dataSource.setDisplayOptions(varId, displayMode);
 
         expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(
-            varId,
-            displayMode,
-            undefined,
-        );
+        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(varId, displayMode, undefined);
     });
 
     it('updates the date start date', async () => {
@@ -653,5 +653,11 @@ describe('VariableController', () => {
         expect(mockEditorApi.highlightVariableUsages).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.highlightVariableUsages).toHaveBeenCalledWith('1');
         expect(response?.parsedData).toStrictEqual(variableUsagesReport);
+    });
+
+    it('returns the data for an injected data source variable', async () => {
+        await mockedVariableController.dataSource.getInjectedData('injected-data-source-var-1');
+        expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledWith('injected-data-source-var-1');
     });
 });

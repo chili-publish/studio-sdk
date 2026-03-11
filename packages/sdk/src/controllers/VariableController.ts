@@ -1,6 +1,6 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { DataModelProperty, Dictionary } from '@chili-studio/connector-types';
+import { DataModelProperty, DataPage, Dictionary } from '@chili-studio/connector-types';
 import {
     DataSourceVariableDisplayMode,
     DateRestriction,
@@ -20,6 +20,8 @@ import {
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
+import { EditorDataPage } from '../types/DataConnectorTypes';
+import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -211,8 +213,11 @@ class DateVariable {
 
 class DataSourceVariable {
     #editorAPI: EditorAPI;
-    constructor(editorAPI: EditorAPI) {
+    #dataItemMappingTools: DataItemMappingTools;
+
+    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
         this.#editorAPI = editorAPI;
+        this.#dataItemMappingTools = dataItemMappingTools;
     }
 
     setValue = async (id: string, value: DataModelProperty[] | RowId) => {
@@ -237,6 +242,31 @@ class DataSourceVariable {
             .setDataSourceVariableDisplayOptions(variableId, displayMode, displayColumn ?? undefined)
             .then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * Get the injected data from a data source variable. This only works for data source variables
+     * that are in injected data mode. If no data is set, an empty list will be returned.
+     * @param variableId the id of the variable
+     * @returns a DataPage with an array of data objects
+     */
+    getInjectedData = async (variableId: string): Promise<EditorResponse<DataPage>> => {
+        const res = await this.#editorAPI;
+        return res
+            .getInjectedDataSourceVariableData(variableId)
+            .then((result) => getEditorResponseData<EditorDataPage<EngineDataItem>>(result))
+            .then((resp) => {
+                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
+                if (resp.parsedData) {
+                    update.parsedData = {
+                        data: resp.parsedData.data.map((e: EngineDataItem) =>
+                            this.#dataItemMappingTools.mapEngineToDataItem(e),
+                        ),
+                        continuationToken: resp.parsedData.continuationToken,
+                    };
+                }
+                return update;
+            });
+    };
 }
 
 /**
@@ -256,11 +286,11 @@ export class VariableController {
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
         this.#editorAPI = editorAPI;
         this.number = new NumberVariable(this.#editorAPI);
         this.date = new DateVariable(this.#editorAPI);
-        this.dataSource = new DataSourceVariable(this.#editorAPI);
+        this.dataSource = new DataSourceVariable(this.#editorAPI, dataItemMappingTools);
     }
 
     /**

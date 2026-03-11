@@ -135,7 +135,7 @@ export class SDK {
         this.document = new DocumentController(this.editorAPI);
 
         this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
-        this.variable = new VariableController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI, this.dataItemMappingTools);
         this.utils = new UtilsController(this.editorAPI, this.localConfig);
         this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = new ToolController(this.editorAPI);
@@ -261,7 +261,7 @@ export class SDK {
         this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
         this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
         this.connector = new ConnectorController(this.editorAPI, this.localConfig);
-        this.variable = new VariableController(this.editorAPI);
+        this.variable = new VariableController(this.editorAPI, this.dataItemMappingTools);
         this.font = new FontController(this.editorAPI);
         this.experiment = new ExperimentController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
