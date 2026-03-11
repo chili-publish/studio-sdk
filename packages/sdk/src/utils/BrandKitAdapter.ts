@@ -34,7 +34,7 @@ export function engineBrandKitToStudioBrandKit(engine: EngineBrandKit): StudioBr
     const brandKit: APIBrandKit = {
         id: engine.id ?? '',
         name: engine.name ?? '',
-        dateCreated: engine.version ?? '',
+        dateCreated: '',
         lastModifiedDate: engine.version ?? '',
         fonts: engine.fonts.map(documentFontToBrandKitFont),
         colors: engine.colors.map(documentColorToBrandKitColor),
