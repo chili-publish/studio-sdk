@@ -78,7 +78,7 @@ export {
     VariableVisibilityOperator,
     VariableVisibilityTargetType,
     VariableVisibilityType,
-    DataSourceVariableDisplayMode,
+    DataSourceVariableDisplayOptionsType,
     DataSourceVariableSourceType,
 } from './types/VariableTypes';
 
@@ -104,6 +104,9 @@ export type {
     VariableVisibilityLayout,
     VariableWithValue,
     DataSourceVariable,
+    DataSourceVariableDisplayOptions,
+    DataSourceVariableDisplayOptionsList,
+    DataSourceVariableDisplayOptionsTable,
     InjectedDataSourceVariableSource,
     ConnectorDataSourceVariableSource,
     DataSourceVariableSource,

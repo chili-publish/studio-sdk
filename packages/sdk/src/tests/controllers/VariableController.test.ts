@@ -1,6 +1,6 @@
 import { VariableController } from '../../controllers/VariableController';
 import {
-    DataSourceVariableDisplayMode,
+    DataSourceVariableDisplayOptionsType,
     Day,
     ImageVariable,
     ListVariable,
@@ -430,29 +430,33 @@ describe('VariableController', () => {
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, null);
     });
 
-    it('sets the data source variable display mode and display column', async () => {
+    it('sets the data source variable display options to list with display column', async () => {
         const varId = 'data-source-var-1';
-        const displayMode = DataSourceVariableDisplayMode.list;
+        const displayOptionsType = DataSourceVariableDisplayOptionsType.list;
         const displayColumn = 'columnId';
 
-        await mockedVariableController.dataSource.setDisplayOptions(varId, displayMode, displayColumn);
+        await mockedVariableController.dataSource.setDisplayOptions(varId, displayOptionsType, displayColumn);
 
         expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(
             varId,
-            displayMode,
+            displayOptionsType,
             displayColumn,
         );
     });
 
-    it('sets the data source variable display mode without display column', async () => {
+    it('sets the data source variable display options to table', async () => {
         const varId = 'data-source-var-2';
-        const displayMode = DataSourceVariableDisplayMode.table;
+        const displayOptionsType = DataSourceVariableDisplayOptionsType.table;
 
-        await mockedVariableController.dataSource.setDisplayOptions(varId, displayMode);
+        await mockedVariableController.dataSource.setDisplayOptions(varId, displayOptionsType);
 
         expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(varId, displayMode, undefined);
+        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(
+            varId,
+            displayOptionsType,
+            undefined,
+        );
     });
 
     it('updates the date start date', async () => {

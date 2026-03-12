@@ -121,6 +121,11 @@ export type LongTextVariable = ShortTextVariable;
 
 export type GroupVariable = Variable;
 
+export interface DataSourceVariable extends Variable {
+    value?: DataSourceVariableSource;
+    displayOptions: DataSourceVariableDisplayOptions;
+}
+
 export type DateRestriction = RelativeDate | AbsoluteDate;
 
 export interface ValueWithStyle {
@@ -333,13 +338,22 @@ export type ConnectorDataSourceVariableSource = {
 
 export type DataSourceVariableSource = InjectedDataSourceVariableSource | ConnectorDataSourceVariableSource;
 
-export enum DataSourceVariableDisplayMode {
+export enum DataSourceVariableDisplayOptionsType {
     table = 'table',
     list = 'list',
 }
 
-export interface DataSourceVariable extends Variable {
-    value?: DataSourceVariableSource;
-    displayMode?: DataSourceVariableDisplayMode;
-    displayColumn?: string | null;
+export interface DataSourceVariableDisplayOptionsTable {
+    type: DataSourceVariableDisplayOptionsType.table;
 }
+
+export interface DataSourceVariableDisplayOptionsList {
+    type: DataSourceVariableDisplayOptionsType.list;
+    displayColumn: string;
+}
+
+export type DataSourceVariableDisplayOptions =
+    | DataSourceVariableDisplayOptionsTable
+    | DataSourceVariableDisplayOptionsList;
+
+
