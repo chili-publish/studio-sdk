@@ -61,7 +61,11 @@ describe('BrandKitController', () => {
                     }),
                 ),
             setBrandKit: async (...args: unknown[]) => {
-                const apiBrandKit = args[0] as { id: string; lastModifiedDate: string; name: string } | undefined;
+                const apiBrandKit = JSON.parse(args[0] as string) as {
+                    id: string;
+                    lastModifiedDate: string;
+                    name: string;
+                };
                 return getEditorResponseData(
                     castToEditorResponse({
                         id: apiBrandKit?.id ?? null,
@@ -289,7 +293,7 @@ describe('BrandKitController', () => {
         const response = await mockBrandKitController.set(mockStudioBrandKit as unknown as StudioBrandKit);
 
         expect(mockEditorApi.setBrandKit).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(mockStudioBrandKit.brandKit);
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(mockStudioBrandKit.brandKit));
         expect(response.parsedData).toBeDefined();
         expect(response.parsedData).toMatchObject({
             id: mockStudioBrandKit.id,

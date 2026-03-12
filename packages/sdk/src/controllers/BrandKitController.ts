@@ -231,7 +231,7 @@ export class BrandKitController {
      */
     set = async (studioBrandKit: StudioBrandKit) => {
         const res = await this.#editorAPI;
-        const result = await res.setBrandKit(studioBrandKit.brandKit);
+        const result = await res.setBrandKit(JSON.stringify(studioBrandKit.brandKit));
         const response = getEditorResponseData<EngineBrandKit>(result);
         const engineData = response.parsedData;
         if (engineData == null) {

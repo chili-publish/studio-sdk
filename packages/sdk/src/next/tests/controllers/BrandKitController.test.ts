@@ -31,7 +31,7 @@ beforeEach(() => {
         getBrandKit: async () =>
             getEditorResponseData(castToEditorResponse(mockBrandKitResponse)),
         setBrandKit: async (...args: unknown[]) => {
-            const apiBrandKit = args[0] as APIBrandKit;
+            const apiBrandKit = JSON.parse(args[0] as string) as APIBrandKit;
             return getEditorResponseData(
                 castToEditorResponse({
                     id: apiBrandKit?.id ?? null,
@@ -96,7 +96,7 @@ describe('Next.BrandKitController', () => {
         const response = await mockBrandKitController.set(apiBrandKit);
 
         expect(mockEditorApi.setBrandKit).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(apiBrandKit);
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(apiBrandKit));
         expect(response.parsedData).toBeDefined();
         expect(response.parsedData).toMatchObject({
             id: apiBrandKit.id,
