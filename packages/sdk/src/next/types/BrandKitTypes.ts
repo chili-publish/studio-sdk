@@ -56,7 +56,7 @@ export type BrandKit = {
     name: string | null;
     colors: DocumentColor[];
     gradients: DocumentGradient[];
-    fonts: DocumentFontFamily[];
+    fontFamilies: DocumentFontFamily[];
     characterStyles: CharacterStyle[];
     paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];

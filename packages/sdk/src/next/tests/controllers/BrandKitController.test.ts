@@ -17,7 +17,7 @@ const mockBrandKitResponse = {
     name: 'Test Brand Kit',
     colors: mockColors,
     gradients: mockGradients,
-    fonts: mockFonts,
+    fontFamilies: mockFonts,
     characterStyles: mockCharacterStyles,
     paragraphStyles: mockParagraphStyles,
     media: mockMedia,
@@ -39,7 +39,7 @@ beforeEach(() => {
                     name: apiBrandKit?.name ?? null,
                     colors: mockColors,
                     gradients: mockGradients,
-                    fonts: mockFonts,
+                    fontFamilies: mockFonts,
                     characterStyles: mockCharacterStyles,
                     paragraphStyles: mockParagraphStyles,
                     media: mockMedia,
@@ -68,7 +68,7 @@ describe('Next.BrandKitController', () => {
             name: 'Test Brand Kit',
         });
         expect(response.parsedData?.colors).toHaveLength(mockColors.length);
-        expect(response.parsedData?.fonts).toHaveLength(mockFonts.length);
+        expect(response.parsedData?.fontFamilies).toHaveLength(mockFonts.length);
         expect(response.parsedData?.characterStyles).toHaveLength(mockCharacterStyles.length);
         expect(response.parsedData?.paragraphStyles).toHaveLength(mockParagraphStyles.length);
         expect(response.parsedData?.media).toHaveLength(mockMedia.length);
@@ -105,6 +105,6 @@ describe('Next.BrandKitController', () => {
         });
         expect(response.parsedData?.colors).toEqual(mockColors);
         expect(response.parsedData?.gradients).toEqual(mockGradients);
-        expect(response.parsedData?.fonts).toEqual(mockFonts);
+        expect(response.parsedData?.fontFamilies).toEqual(mockFonts);
     });
 });

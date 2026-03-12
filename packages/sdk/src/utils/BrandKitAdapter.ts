@@ -30,13 +30,13 @@ import { DocumentFontFamily } from '../types/FontTypes';
  */
 export function engineBrandKitToStudioBrandKit(engine: EngineBrandKit): StudioBrandKit {
     const fontConnectorId =
-        engine.fonts.length > 0 ? String(engine.fonts[0].connectorId) : '';
+        engine.fontFamilies.length > 0 ? String(engine.fontFamilies[0].connectorId) : '';
     const brandKit: APIBrandKit = {
         id: engine.id ?? '',
         name: engine.name ?? '',
         dateCreated: '', // This is not supported by the API yet
         lastModifiedDate: engine.version ?? '',
-        fonts: engine.fonts.map(documentFontToBrandKitFont),
+        fonts: engine.fontFamilies.map(documentFontToBrandKitFont),
         colors: engine.colors.map(documentColorToBrandKitColor),
         characterStyles: engine.characterStyles.map(characterStyleToBrandKitCharacterStyle),
         paragraphStyles: engine.paragraphStyles.map(paragraphStyleToBrandKitParagraphStyle),
@@ -60,7 +60,7 @@ export function engineBrandKitToBrandKitInternal(engine: EngineBrandKit): BrandK
         name: engine.name ?? '',
         colors: engine.colors,
         gradients: engine.gradients,
-        fonts: engine.fonts,
+        fonts: engine.fontFamilies,
         characterStyles: engine.characterStyles,
         paragraphStyles: engine.paragraphStyles,
         media: engine.media,
