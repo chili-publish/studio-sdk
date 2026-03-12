@@ -1,5 +1,6 @@
 import { VariableController } from '../../controllers/VariableController';
 import {
+    DataSourceVariableDisplayOptionsType,
     Day,
     ImageVariable,
     ListVariable,
@@ -14,6 +15,7 @@ import {
 import { EditorAPI, PrivateData } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { ConnectorRegistration, ConnectorRegistrationSource } from '../../types/ConnectorTypes';
+import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 
 afterEach(() => {
     jest.restoreAllMocks();
@@ -25,6 +27,8 @@ describe('VariableController', () => {
     const connectorId = 'connectorId';
     const variableId = 'variableId';
     const privateData = { hello: 'world' } as PrivateData;
+
+    const mockedDataItemMappingTools = new DataItemMappingTools();
 
     const variable: ImageVariable = {
         id: variableId,
@@ -88,6 +92,7 @@ describe('VariableController', () => {
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableValue: async () => getEditorResponseData(castToEditorResponse(null)),
+        setDataSourceVariableDisplayOptions: async () => getEditorResponseData(castToEditorResponse(null)),
         groupVariables: async () => getEditorResponseData(castToEditorResponse(null)),
         duplicateVariable: async () => getEditorResponseData(castToEditorResponse(null)),
         moveVariable: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -114,10 +119,11 @@ describe('VariableController', () => {
         setVariableCharacterLimit: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
         highlightVariableUsages: async () => getEditorResponseData(castToEditorResponse(variableUsagesReport)),
+        getInjectedDataSourceVariableData: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
-        mockedVariableController = new VariableController(mockEditorApi);
+        mockedVariableController = new VariableController(mockEditorApi, mockedDataItemMappingTools);
         jest.spyOn(mockEditorApi, 'getVariableById');
         jest.spyOn(mockEditorApi, 'getVariableByName');
         jest.spyOn(mockEditorApi, 'getVariables');
@@ -129,6 +135,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableType');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setVariableValue');
+        jest.spyOn(mockEditorApi, 'setDataSourceVariableDisplayOptions');
         jest.spyOn(mockEditorApi, 'groupVariables');
         jest.spyOn(mockEditorApi, 'duplicateVariable');
         jest.spyOn(mockEditorApi, 'moveVariable');
@@ -155,6 +162,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableCharacterLimit');
         jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
         jest.spyOn(mockEditorApi, 'highlightVariableUsages');
+        jest.spyOn(mockEditorApi, 'getInjectedDataSourceVariableData');
     });
 
     it('get variable by id', async () => {
@@ -422,6 +430,35 @@ describe('VariableController', () => {
         expect(mockEditorApi.setVariableValue).toHaveBeenCalledWith(varId, null);
     });
 
+    it('sets the data source variable display options to list with display column', async () => {
+        const varId = 'data-source-var-1';
+        const displayOptionsType = DataSourceVariableDisplayOptionsType.list;
+        const displayColumn = 'columnId';
+
+        await mockedVariableController.dataSource.setDisplayOptions(varId, displayOptionsType, displayColumn);
+
+        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(
+            varId,
+            displayOptionsType,
+            displayColumn,
+        );
+    });
+
+    it('sets the data source variable display options to table', async () => {
+        const varId = 'data-source-var-2';
+        const displayOptionsType = DataSourceVariableDisplayOptionsType.table;
+
+        await mockedVariableController.dataSource.setDisplayOptions(varId, displayOptionsType);
+
+        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setDataSourceVariableDisplayOptions).toHaveBeenCalledWith(
+            varId,
+            displayOptionsType,
+            undefined,
+        );
+    });
+
     it('updates the date start date', async () => {
         await mockedVariableController.date.setStartDate('1', { offset: 4, type: 'relative' });
         expect(mockEditorApi.updateDateVariableProperties).toHaveBeenCalledTimes(1);
@@ -620,5 +657,11 @@ describe('VariableController', () => {
         expect(mockEditorApi.highlightVariableUsages).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.highlightVariableUsages).toHaveBeenCalledWith('1');
         expect(response?.parsedData).toStrictEqual(variableUsagesReport);
+    });
+
+    it('returns the data for an injected data source variable', async () => {
+        await mockedVariableController.dataSource.getInjectedData('injected-data-source-var-1');
+        expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledWith('injected-data-source-var-1');
     });
 });
