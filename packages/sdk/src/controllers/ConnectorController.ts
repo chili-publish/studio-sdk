@@ -5,6 +5,7 @@ import {
     ConnectorMappingType,
     ConnectorOptions,
     ConnectorRegistration,
+    ConnectorRegistrationSource,
     ConnectorState,
     ConnectorStateType,
     ConnectorToEngineMapping,
@@ -284,6 +285,117 @@ export class ConnectorController {
             // Update the configuration with the resulted mappings
             await config.setMappings(combinedMappings);
         });
+    };
+
+    /**
+     * Sets an HTTP header on one or more connector instances. The first argument is the connector id: either
+     * a local connector instance id (document id) or a remote (Environment API) id. The method first tries to
+     * configure a connector with that id as a local instance; if that fails, it treats the value as a
+     * remoteConnectorId and updates all local instances that use it.
+     *
+     * **Local connector id:** When the id matches a connector instance in the document, that connector is
+     * configured with the header (e.g. id from getById, getAllByType).
+     *
+     * **Remote connector id:** When the id does not match a local instance (or configure fails), it is treated
+     * as the remote id from the Environment API. All local connector instances sharing this remote id
+     * (across media, data, fonts, components) are then updated.
+     *
+     * **IMPORTANT – Remote id path only affects already registered connectors:** When the remote id path is
+     * used, only connector instances that exist in the document at the time of the call are updated. Any
+     * connector registered afterwards will not receive this header automatically.
+     *
+     * @param connectorId local connector instance id (document id) or remote connector id (Environment API); always required
+     * @param headerName HTTP header name (e.g. 'Authorization')
+     * @param headerValue HTTP header value (e.g. 'Bearer &lt;token&gt;')
+     * @returns EditorResponse with null on success; error if no matching connector or configure fails
+     */
+    setHttpHeader = async (
+        connectorId: string,
+        headerName: string,
+        headerValue: string,
+    ): Promise<EditorResponse<null>> => {
+        const fail = (error: string, status: number): EditorResponse<null> => ({
+            data: null,
+            success: false,
+            error,
+            status,
+            parsedData: null,
+        });
+
+        try {
+            await this.configure(connectorId, async (configurator) => {
+                await configurator.setHttpHeader(headerName, headerValue);
+            });
+            return getEditorResponseData<null>(
+                { data: null, success: true, error: undefined, status: 0, parsedData: undefined },
+                false,
+            );
+        } catch {
+            // Treat connectorId as remoteConnectorId and update all matching local instances
+        }
+
+        try {
+            // TODO: The whole method implementation should be substituted with Flutter implementation in context of https://chilipublishintranet.atlassian.net/browse/EDT-2316
+            const remoteConnectorId = connectorId;
+            const allTypes = [
+                ConnectorType.media,
+                ConnectorType.fonts,
+                ConnectorType.data,
+                ConnectorType.components,
+            ] as const;
+
+            const getRemoteId = (c: ConnectorInstance): string | null => {
+                if (c.source.source !== ConnectorRegistrationSource.grafx) return null;
+                return 'id' in c.source
+                    ? (c.source as Next.ConnectorGrafxRegistration).id
+                    : (c.source.url?.replace(/\/+$/, '').split('/').pop() ?? '') || null;
+            };
+
+            const connectorsByType = await Promise.all(
+                allTypes.map((connectorType) => this.getAllByType(connectorType)),
+            );
+            const matching: ConnectorInstance[] = connectorsByType.flatMap(
+                (resp) =>
+                    resp.parsedData?.filter((c: ConnectorInstance) => getRemoteId(c) === remoteConnectorId) ?? [],
+            );
+
+            if (matching.length === 0) {
+                return fail(`Connectors not found for remote id: ${remoteConnectorId}`, 404);
+            }
+
+            const settled = await Promise.allSettled(
+                matching.map((connector) =>
+                    this.configure(connector.id, async (configurator) => {
+                        await configurator.setHttpHeader(headerName, headerValue);
+                    }),
+                ),
+            );
+
+            const failures: string[] = [];
+            settled.forEach((outcome, i) => {
+                const connId = matching[i]?.id ?? 'unknown';
+                if (outcome.status === 'rejected') {
+                    const message =
+                        outcome.reason instanceof Error ? outcome.reason.message : String(outcome.reason);
+                    failures.push(`connector "${connId}": ${message}`);
+                }
+            });
+
+            if (failures.length > 0) {
+                return fail(
+                    `Failed to set header for ${failures.length} connector instance(s): ${failures.join('; ')}`,
+                    500,
+                );
+            }
+
+            return getEditorResponseData<null>(
+                { data: null, success: true, error: undefined, status: 0, parsedData: undefined },
+                false,
+            );
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            return fail(`Unexpected error in setHttpHeader: ${message}`, 500);
+        }
     };
 }
 

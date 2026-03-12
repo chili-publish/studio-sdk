@@ -316,4 +316,106 @@ describe('ConnectorController', () => {
             }),
         ]);
     });
+
+    describe('setHttpHeader', () => {
+        const remoteId = grafxSourceId;
+        const headerName = 'Authorization';
+        const headerValue = 'Bearer token';
+
+        describe('when first argument is local connector instance id', () => {
+            it('configures that connector only and does not call getConnectors', async () => {
+                const result = await mockedConnectorController.setHttpHeader(
+                    grafxConnector.id,
+                    headerName,
+                    headerValue,
+                );
+
+                expect(result.success).toBe(true);
+                expect(mockEditorApi.getConnectors).not.toHaveBeenCalled();
+                expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
+                    grafxConnector.id,
+                    headerName,
+                    headerValue,
+                );
+            });
+
+            it('returns error when configure fails (then falls back to remote path and finds no match)', async () => {
+                (mockEditorApi.updateConnectorConfiguration as jest.Mock).mockRejectedValueOnce(
+                    new Error('Configure failed'),
+                );
+
+                const result = await mockedConnectorController.setHttpHeader(
+                    grafxConnector.id,
+                    headerName,
+                    headerValue,
+                );
+
+                expect(result.success).toBe(false);
+                expect(result.error).toMatch(/not found/i);
+                expect(result.error).toContain(grafxConnector.id);
+            });
+        });
+
+        describe('when first argument is remote connector id (local configure fails)', () => {
+            beforeEach(() => {
+                (mockEditorApi.updateConnectorConfiguration as jest.Mock).mockImplementation((id: string) =>
+                    id === remoteId
+                        ? Promise.reject(new Error('not a local id'))
+                        : Promise.resolve(castToEditorResponse(null)),
+                );
+            });
+
+            it('searches all connector types and sets header on every matching instance', async () => {
+                const result = await mockedConnectorController.setHttpHeader(remoteId, headerName, headerValue);
+
+                expect(result.success).toBe(true);
+                expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(4);
+                expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
+                expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.fonts);
+                expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.data);
+                expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.components);
+                expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
+                    grafxConnector.id,
+                    headerName,
+                    headerValue,
+                );
+            });
+
+            it('calls setHttpHeader with the given header name and value for each matching instance', async () => {
+                await mockedConnectorController.setHttpHeader(remoteId, 'X-Custom-Header', 'custom-value');
+
+                expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
+                    grafxConnector.id,
+                    'X-Custom-Header',
+                    'custom-value',
+                );
+            });
+
+            it('returns error when no connector instance matches the remote id', async () => {
+                (mockEditorApi.getConnectors as jest.Mock).mockResolvedValue(
+                    getEditorResponseData(castToEditorResponse([])),
+                );
+
+                const result = await mockedConnectorController.setHttpHeader(remoteId, headerName, headerValue);
+
+                expect(result.success).toBe(false);
+                expect(result.error).toMatch(/not found/i);
+                expect(result.error).toContain(remoteId);
+            });
+
+            it('returns combined error when configure fails for one or more matching instances', async () => {
+                (mockEditorApi.updateConnectorConfiguration as jest.Mock).mockImplementation((id: string) =>
+                    id === remoteId
+                        ? Promise.reject(new Error('not a local id'))
+                        : Promise.reject(new Error('Configure failed')),
+                );
+
+                const result = await mockedConnectorController.setHttpHeader(remoteId, headerName, headerValue);
+
+                expect(result.success).toBe(false);
+                expect(result.error).toMatch(/Failed to set header/);
+                expect(result.error).toContain('Configure failed');
+            });
+        });
+    });
 });
