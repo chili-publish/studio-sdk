@@ -239,7 +239,7 @@ describe('BrandKitController', () => {
         expect(response.parsedData.brandKit).toMatchObject({
             id: 'test-brand-kit-id',
             name: 'Test Brand Kit',
-            dateCreated: '2025-06-12T12:10:29.354877',
+            dateCreated: '',
             lastModifiedDate: '2025-06-12T12:10:29.354877',
         });
         expect(response.parsedData.brandKit.colors).toHaveLength(mockColors.length);
