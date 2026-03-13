@@ -44,7 +44,7 @@ describe('BrandKitController', () => {
             getBrandKitName: async () => getEditorResponseData(castToEditorResponse('Test Brand Kit')),
             updateBrandKitIdAndVersion: async () => getEditorResponseData(castToEditorResponse(null)),
             renameBrandKit: async () => getEditorResponseData(castToEditorResponse(null)),
-            isBrandKitAutoSyncEnabled: async () => getEditorResponseData(castToEditorResponse(false)),
+            isBrandKitAutoSync: async () => getEditorResponseData(castToEditorResponse(false)),
             enableBrandKitAutoSync: async () => getEditorResponseData(castToEditorResponse(true)),
             getAllBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(mockMedia)),
             addBrandKitMedia: async () => getEditorResponseData(castToEditorResponse('media-id-123')),
@@ -93,7 +93,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'getBrandKitName');
         jest.spyOn(mockEditorApi, 'updateBrandKitIdAndVersion');
         jest.spyOn(mockEditorApi, 'renameBrandKit');
-        jest.spyOn(mockEditorApi, 'isBrandKitAutoSyncEnabled');
+        jest.spyOn(mockEditorApi, 'isBrandKitAutoSync');
         jest.spyOn(mockEditorApi, 'enableBrandKitAutoSync');
 
         jest.spyOn(mockEditorApi, 'getAllBrandKitMedia');
@@ -425,9 +425,9 @@ describe('BrandKitController', () => {
         expect(mockEditorApi.removeBrandKitMedia).toHaveBeenCalledTimes(1);
     });
     
-    it('Should call isBrandKitAutoSyncEnabled of EditorAPI successfully', async () => {
-        await mockBrandKitController.isAutoSyncEnabled();
-        expect(mockEditorApi.isBrandKitAutoSyncEnabled).toHaveBeenCalledTimes(1);
+    it('Should call isBrandKitAutoSync of EditorAPI successfully', async () => {
+        await mockBrandKitController.isAutoSync();
+        expect(mockEditorApi.isBrandKitAutoSync).toHaveBeenCalledTimes(1);
     });
 
     it('Should call enableBrandKitAutoSync of EditorAPI successfully', async () => {

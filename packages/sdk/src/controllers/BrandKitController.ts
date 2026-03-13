@@ -333,9 +333,9 @@ export class BrandKitController {
      * This method returns the value indicating whether the brand kit auto-sync is enabled or not
      * @returns boolean indicating sync status
      */
-    isAutoSyncEnabled = async () => {
+    isAutoSync = async () => {
         const res = await this.#editorAPI;
-        return res.isBrandKitAutoSyncEnabled().then((result) => getEditorResponseData<boolean>(result));
+        return res.isBrandKitAutoSync().then((result) => getEditorResponseData<boolean>(result));
     };
 
     /**
