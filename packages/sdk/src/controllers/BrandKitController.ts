@@ -330,22 +330,22 @@ export class BrandKitController {
     };
 
     /**
-     * This method returns the value indicating whether the brand kit is in sync
+     * This method returns the value indicating whether the brand kit auto-sync is enabled or not
      * @returns boolean indicating sync status
      */
-    isSync = async () => {
+    isAutoSyncEnabled = async () => {
         const res = await this.#editorAPI;
-        return res.isBrandKitSynced().then((result) => getEditorResponseData<boolean>(result));
+        return res.isBrandKitAutoSyncEnabled().then((result) => getEditorResponseData<boolean>(result));
     };
 
     /**
-     * This method sets the sync status of the brand kit
-     * @param isSync boolean indicating sync status
+     * This method enables or disables brand kit auto-sync
+     * @param enableAutoSync boolean indicating auto-sync status
      * @returns boolean indicating the result of the operation
      */
-    setSync = async (isSync: boolean) => {
+    enableAutoSync = async (enableAutoSync: boolean) => {
         const res = await this.#editorAPI;
-        return res.setBrandKitSynced(isSync).then((result) => getEditorResponseData<boolean>(result));
+        return res.enableBrandKitAutoSync(enableAutoSync).then((result) => getEditorResponseData<boolean>(result));
     };
 
     private async setColors(studioBrandKit: StudioBrandKit, sdk: SDK) {
