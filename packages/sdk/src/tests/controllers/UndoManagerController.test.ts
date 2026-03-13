@@ -20,6 +20,7 @@ describe('UndoManagerController', () => {
         abort: async () => getEditorResponseData(castToEditorResponse(null)),
         pause: async () => getEditorResponseData(castToEditorResponse(null)),
         resume: async () => getEditorResponseData(castToEditorResponse(null)),
+        clear: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -34,6 +35,7 @@ describe('UndoManagerController', () => {
         jest.spyOn(mockEditorApi, 'abort');
         jest.spyOn(mockEditorApi, 'pause');
         jest.spyOn(mockEditorApi, 'resume');
+        jest.spyOn(mockEditorApi, 'clear');
     });
 
     afterEach(() => {
@@ -96,6 +98,11 @@ describe('UndoManagerController', () => {
     it('it resumes the undo manager', async () => {
         await mockedUndoManagerController.resume();
         expect(mockEditorApi.resume).toHaveBeenCalledTimes(1);
+    });
+
+    it('it clears the undo stack', async () => {
+        await mockedUndoManagerController.clear();
+        expect(mockEditorApi.clear).toHaveBeenCalledTimes(1);
     });
 
     describe('advanced methods', () => {

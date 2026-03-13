@@ -1,6 +1,12 @@
 import { DataConnectorController } from '../../controllers/DataConnectorController';
 import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
-import { DataPage, PageConfig } from '../../types/DataConnectorTypes';
+import {
+    BidirectionalDataPageItem,
+    BidirectionalPageConfig,
+    DataPage,
+    PageConfig,
+    PageItemOptions,
+} from '../../types/DataConnectorTypes';
 import { DataItemMappingTools } from '../../utils/DataItemMappingTools';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -11,6 +17,7 @@ const mockedEditorApi: EditorAPI = {
     dataConnectorGetModel: async () => getEditorResponseData(castToEditorResponse(null)),
     dataConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     dataConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    dataConnectorGetPageItemById: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 const mockedDataItemMappingTools = new DataItemMappingTools();
@@ -21,6 +28,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'dataConnectorGetModel');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'dataConnectorGetConfigurationOptions');
+    jest.spyOn(mockedEditorApi, 'dataConnectorGetPageItemById');
 });
 
 afterEach(() => {
@@ -38,6 +46,20 @@ describe('DataConnectorController', () => {
     };
 
     const context = { debug: 'true' };
+
+    const pageItemOptions: PageItemOptions = { sorting: [], limit: 20 };
+
+    it('Should throw when both previousPageToken and continuationToken are set', async () => {
+        const ambiguousConfig: BidirectionalPageConfig = {
+            limit: 20,
+            previousPageToken: 'prev-token',
+            continuationToken: 'next-token',
+        };
+        await expect(mockedDataConnectorController.getPage(connectorId, ambiguousConfig, context)).rejects.toThrow(
+            'mutually exclusive',
+        );
+        expect(mockedEditorApi.dataConnectorGetPage).not.toHaveBeenCalled();
+    });
 
     it('Should call the getPage method', async () => {
         await mockedDataConnectorController.getPage(connectorId, pageConfig, context);
@@ -114,5 +136,42 @@ describe('DataConnectorController', () => {
         await mockedDataConnectorController.getConfigurationOptions(connectorId);
         expect(mockedEditorApi.dataConnectorGetConfigurationOptions).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.dataConnectorGetConfigurationOptions).toHaveBeenLastCalledWith(connectorId);
+    });
+
+    it('Should call the getPageItemById method', async () => {
+        const itemId = 'item-123';
+        await mockedDataConnectorController.getPageItemById(connectorId, itemId, pageItemOptions, context);
+        expect(mockedEditorApi.dataConnectorGetPageItemById).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.dataConnectorGetPageItemById).toHaveBeenCalledWith(
+            connectorId,
+            itemId,
+            JSON.stringify(pageItemOptions),
+            JSON.stringify(context),
+        );
+    });
+
+    it('Should map date properties in the item returned by getPageItemById', async () => {
+        (mockedEditorApi.dataConnectorGetPageItemById as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            data: JSON.stringify({
+                data: { createDate: { type: 'date', value: 1111 }, label: 'hello' },
+                previousPageToken: 'prev-token',
+                continuationToken: 'next-token',
+            }),
+        });
+
+        const result: EditorResponse<BidirectionalDataPageItem> = await mockedDataConnectorController.getPageItemById(
+            connectorId,
+            'item-123',
+            pageItemOptions,
+            context,
+        );
+
+        expect(result.parsedData?.data).toStrictEqual({
+            createDate: new Date(1111),
+            label: 'hello',
+        });
+        expect(result.parsedData?.previousPageToken).toBe('prev-token');
+        expect(result.parsedData?.continuationToken).toBe('next-token');
     });
 });

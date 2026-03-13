@@ -92,6 +92,15 @@ export class UndoManagerController {
     };
 
     /**
+     * This method clears the undo stack
+     * @returns
+     */
+    clear = async () => {
+        const res = await this.#editorAPI;
+        return res.clear().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * Advanced undo manager functionality for manually controlling undo operations.
      * This will start a new undo operation.
      * This will throw an exception when there is already an undo operation recording.

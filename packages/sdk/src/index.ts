@@ -49,10 +49,14 @@ export type {
     EndFrameAnchor,
     Frame,
     FrameAnchor,
+    FontSizeRangeManagedConstraint,
     FrameConstraints,
+    IdSetManagedConstraint,
+    ManagedConstraint,
     FrameLayoutType,
     FrameType,
     ImageFrame,
+    ImageFrameConstraints,
     ImageFrameSource,
     ImageFrameUrlSource,
     ImageFrameVariableSource,
@@ -61,6 +65,7 @@ export type {
     StartAndEndFrameAnchor,
     StartFrameAnchor,
     TextFrame,
+    TextFrameConstraints,
 } from './types/FrameTypes';
 export type {
     FrameProperties,

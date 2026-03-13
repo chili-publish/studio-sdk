@@ -93,6 +93,7 @@ const mockedEditorApi: EditorAPI = {
     resetAssetCropOverride: async () => getEditorResponseData(castToEditorResponse(null)),
     resetAllAssetCropOverrides: async () => getEditorResponseData(castToEditorResponse(null)),
     updateFrameGradientSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    setSmartCropSubjectId: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -160,6 +161,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetAssetCropOverride');
     jest.spyOn(mockedEditorApi, 'resetAllAssetCropOverrides');
     jest.spyOn(mockedEditorApi, 'updateFrameGradientSettings');
+    jest.spyOn(mockedEditorApi, 'setSmartCropSubjectId');
 
     id = mockSelectFrame.id;
 });
@@ -573,6 +575,19 @@ describe('FrameController', () => {
         await mockedFrameController.resetAllAssetCropOverrides(id);
         expect(mockedEditorApi.resetAllAssetCropOverrides).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetAllAssetCropOverrides).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to set smart crop subject id', async () => {
+        const subjectId = 'subject-123';
+        await mockedFrameController.setSmartCropSubjectId(id, subjectId);
+        expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledWith(id, subjectId);
+    });
+
+    it('Should be possible to set smart crop subject id to default', async () => {
+        await mockedFrameController.setSmartCropSubjectId(id);
+        expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledWith(id, undefined);
     });
 });
 
