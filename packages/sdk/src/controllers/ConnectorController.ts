@@ -288,31 +288,25 @@ export class ConnectorController {
     };
 
     /**
-     * Sets an HTTP header on one or more connector instances. The first argument is the connector id: either
-     * a local connector instance id (document id) or a remote (Environment API) id. The method first tries to
-     * configure a connector with that id as a local instance; if that fails, it treats the value as a
-     * remoteConnectorId and updates all local instances that use it.
+     * Sets an HTTP header on every local connector instance of the given type that uses the given remote (Environment API) id.
+     * Finds all connector instances of that type sharing this remote id and configures each with the provided header
+     * (e.g. for connector authorization).
      *
-     * **Local connector id:** When the id matches a connector instance in the document, that connector is
-     * configured with the header (e.g. id from getById, getAllByType).
+     * **IMPORTANT – Only already registered connectors:** Only connector instances that exist in the document
+     * at the time of the call are updated. Any connector registered afterwards will not receive this header
+     * automatically.
      *
-     * **Remote connector id:** When the id does not match a local instance (or configure fails), it is treated
-     * as the remote id from the Environment API. All local connector instances sharing this remote id
-     * (across media, data, fonts, components) are then updated.
-     *
-     * **IMPORTANT – Remote id path only affects already registered connectors:** When the remote id path is
-     * used, only connector instances that exist in the document at the time of the call are updated. Any
-     * connector registered afterwards will not receive this header automatically.
-     *
-     * @param connectorId local connector instance id (document id) or remote connector id (Environment API); always required
+     * @param remoteConnectorId remote connector id from the Environment API (grafx source); always required
      * @param headerName HTTP header name (e.g. 'Authorization')
      * @param headerValue HTTP header value (e.g. 'Bearer &lt;token&gt;')
+     * @param connectorType connector type to search (media, fonts, data, or components); required
      * @returns EditorResponse with null on success; error if no matching connector or configure fails
      */
     setHttpHeader = async (
-        connectorId: string,
+        remoteConnectorId: string,
         headerName: string,
         headerValue: string,
+        connectorType: ConnectorType,
     ): Promise<EditorResponse<null>> => {
         const fail = (error: string, status: number): EditorResponse<null> => ({
             data: null,
@@ -323,27 +317,7 @@ export class ConnectorController {
         });
 
         try {
-            await this.configure(connectorId, async (configurator) => {
-                await configurator.setHttpHeader(headerName, headerValue);
-            });
-            return getEditorResponseData<null>(
-                { data: null, success: true, error: undefined, status: 0, parsedData: undefined },
-                false,
-            );
-        } catch {
-            // Treat connectorId as remoteConnectorId and update all matching local instances
-        }
-
-        try {
             // TODO: The whole method implementation should be substituted with Flutter implementation in context of https://chilipublishintranet.atlassian.net/browse/EDT-2316
-            const remoteConnectorId = connectorId;
-            const allTypes = [
-                ConnectorType.media,
-                ConnectorType.fonts,
-                ConnectorType.data,
-                ConnectorType.components,
-            ] as const;
-
             const getRemoteId = (c: ConnectorInstance): string | null => {
                 if (c.source.source !== ConnectorRegistrationSource.grafx) return null;
                 return 'id' in c.source
@@ -351,13 +325,9 @@ export class ConnectorController {
                     : (c.source.url?.replace(/\/+$/, '').split('/').pop() ?? '') || null;
             };
 
-            const connectorsByType = await Promise.all(
-                allTypes.map((connectorType) => this.getAllByType(connectorType)),
-            );
-            const matching: ConnectorInstance[] = connectorsByType.flatMap(
-                (resp) =>
-                    resp.parsedData?.filter((c: ConnectorInstance) => getRemoteId(c) === remoteConnectorId) ?? [],
-            );
+            const { parsedData: connectors } = await this.getAllByType(connectorType);
+            const matching: ConnectorInstance[] =
+                connectors?.filter((c: ConnectorInstance) => getRemoteId(c) === remoteConnectorId) ?? [];
 
             if (matching.length === 0) {
                 return fail(`Connectors not found for remote id: ${remoteConnectorId}`, 404);
