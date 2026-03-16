@@ -331,6 +331,8 @@ export class BrandKitController {
 
     /**
      * This method returns the value indicating whether the brand kit auto-sync is enabled or not
+     * It is up to the integrator to implement this auto-sync functionality, this method only is an indication if it should be done or not.
+     
      * @returns boolean indicating sync status
      */
     isAutoSync = async () => {
