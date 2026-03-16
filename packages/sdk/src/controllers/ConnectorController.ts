@@ -333,23 +333,20 @@ export class ConnectorController {
                 return fail(`Connectors not found for remote id: ${remoteConnectorId}`, 404);
             }
 
-            const settled = await Promise.allSettled(
-                matching.map((connector) =>
-                    this.configure(connector.id, async (configurator) => {
-                        await configurator.setHttpHeader(headerName, headerValue);
-                    }),
-                ),
-            );
-
             const failures: string[] = [];
-            settled.forEach((outcome, i) => {
-                const connId = matching[i]?.id ?? 'unknown';
-                if (outcome.status === 'rejected') {
-                    const message =
-                        outcome.reason instanceof Error ? outcome.reason.message : String(outcome.reason);
-                    failures.push(`connector "${connId}": ${message}`);
+            for (const connector of matching) {
+                try {
+                    const result = await this.configure(connector.id, async (configurator) => {
+                        await configurator.setHttpHeader(headerName, headerValue);
+                    });
+                    if (result && !result.success) {
+                        failures.push(`connector "${connector.id}": ${result.error ?? 'configure failed'}`);
+                    }
+                } catch (error) {
+                    const message = error instanceof Error ? error.message : String(error);
+                    failures.push(`connector "${connector.id}": ${message}`);
                 }
-            });
+            }
 
             if (failures.length > 0) {
                 return fail(
