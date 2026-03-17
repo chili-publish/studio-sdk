@@ -1,5 +1,5 @@
 import { PageController } from '../../controllers/PageController';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { SnapshotSettings } from '../../types/PageTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -14,7 +14,7 @@ const mockEditorApi: EditorAPI = {
         getEditorResponseData(castToEditorResponse({ width, height })),
     addPage: async () => getEditorResponseData(castToEditorResponse('frameID')),
     removePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
-    getPageSnapshotWithSettings: async () => getEditorResponseData(castToEditorResponse([1])),
+    getPageSnapshotWithSettings: async () => new Uint8Array() as unknown as EditorResponse<any>,
     selectPage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     duplicatePage: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageIsVisible: async (id: unknown, isVisible: unknown) =>
@@ -102,6 +102,22 @@ describe('PageController', () => {
         await mockedPageController.getSnapshot('1');
         expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledTimes(2);
         expect(mockEditorApi.getPageSnapshotWithSettings).toHaveBeenCalledWith('1', null);
+    });
+
+    it('Should throw a structured error if the getSnapshot method returns a non-success response', async () => {
+        (mockEditorApi.getPageSnapshotWithSettings as jest.Mock).mockResolvedValueOnce({
+            success: false,
+            status: 500,
+            error: 'Error',
+            data: JSON.stringify({}),
+            parsedData: null,
+        });
+        await expect(mockedPageController.getSnapshot('1')).rejects.toThrow('Error');
+    });
+
+    it('Should throw an unrecognized response type error if getSnapshot method returns an unexpected response type', async () => {
+        (mockEditorApi.getPageSnapshotWithSettings as jest.Mock).mockResolvedValueOnce(null);
+        await expect(mockedPageController.getSnapshot('1')).rejects.toThrow('Unexpected response type: object.');
     });
 
     it('Should accept calculations for the pageHeight and pageWidth methods', async () => {
