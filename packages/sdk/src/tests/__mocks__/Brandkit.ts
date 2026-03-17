@@ -307,6 +307,7 @@ export const mockMedia = [
 
 export const mockStudioBrandKit = {
     id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
+    name: 'BrandkitTest1',
     fontConnectorId: 'fontConnectorId',
     brandKit: {
         id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',

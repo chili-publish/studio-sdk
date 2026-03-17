@@ -1,8 +1,10 @@
+import { CharacterStyle } from './CharacterStyleTypes';
 import { APIColorType, DocumentColor } from './ColorStyleTypes';
 import { Id } from './CommonTypes';
 import { DocumentCharacterStyle, DocumentParagraphStyle } from './DocumentTypes';
 import { DocumentFontFamily } from './FontTypes';
 import { DocumentGradient } from './GradientStyleTypes';
+import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type RGB = { r: number; g: number; b: number };
@@ -113,6 +115,9 @@ export type APIBrandKit = {
     media: APIBrandKitMedia[];
 };
 
+/**
+ * User-facing brand kit type returned by BrandKitController.get() and accepted by BrandKitController.set().
+ */
 export type StudioBrandKit = {
     id: string;
     name: string;
@@ -120,6 +125,9 @@ export type StudioBrandKit = {
     brandKit: APIBrandKit;
 };
 
+/**
+ * Internal brand kit shape returned by BrandKitController.set() with document-style resources.
+ */
 export type BrandKitInternal = {
     id: string;
     version: string;
@@ -129,5 +137,20 @@ export type BrandKitInternal = {
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
+    media: BrandKitMedia[];
+};
+
+/**
+ * Engine response shape from getBrandKit() / setBrandKit(). Used internally to adapt to StudioBrandKit / BrandKitInternal.
+ */
+export type EngineBrandKit = {
+    id: string | null;
+    version: string | null;
+    name: string | null;
+    colors: DocumentColor[];
+    gradients: DocumentGradient[];
+    fontFamilies: DocumentFontFamily[];
+    characterStyles: CharacterStyle[];
+    paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];
 };
