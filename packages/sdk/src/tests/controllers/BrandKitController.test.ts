@@ -11,13 +11,13 @@ import {
     mockParagraphStyles,
     mockStudioBrandKit,
     mockMedia,
+    mockBrandKitThemeDocumentColors,
+    mockBrandKitThemeCharacterStyle,
+    mockBrandKitThemeParagraphStyle,
+    mockBrandKitThemesOutput,
+    mockAPIBrandKitThemes,
 } from '../__mocks__/Brandkit';
-import {
-    APIBrandKit,
-    APIBrandKitTheme,
-    BrandKitTheme,
-    StudioBrandKit,
-} from '../../types/BrandKitTypes';
+import { APIBrandKit, StudioBrandKit } from '../../types/BrandKitTypes';
 import { FontController } from '../../controllers/FontController';
 import { ColorStyleController } from '../../controllers/ColorStyleController';
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
@@ -33,36 +33,6 @@ const mockCharacterStyleId = 'characterStyleId';
 const mockFontFamilyId = '614e0cba-37d3-45a7-b9af-ddf2bf76f7db';
 const mockColorId = '1111-2222-3333-4444-5555';
 const mockGradientId = '2222-3333-4444-5555-6666';
-
-/** Output theme shape (document style) returned by get() */
-const mockBrandKitThemesOutput = [
-    {
-        id: 'theme-id-1',
-        name: 'Output Theme',
-        inheritsFrom: null,
-        dateCreated: null,
-        lastModifiedDate: null,
-        colors: mockColors,
-        characterStyles: mockCharacterStyles,
-        paragraphStyles: mockParagraphStyles,
-        media: mockMedia,
-    },
-] as unknown as BrandKitTheme[];
-
-/** Input theme shape (API style) accepted by set() */
-const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
-    {
-        id: 'api-theme-id',
-        name: 'API Theme',
-        inheritsFrom: null,
-        dateCreated: null,
-        lastModifiedDate: null,
-        colors: [],
-        characterStyles: [],
-        paragraphStyles: [],
-        media: mockMedia,
-    },
-];
 
 describe('BrandKitController', () => {
     let mockBrandKitController: BrandKitController;
@@ -294,9 +264,9 @@ describe('BrandKitController', () => {
         expect(response.parsedData.brandKit.themes[0]).toMatchObject({
             id: 'theme-id-1',
             name: 'Output Theme',
-            colors: mockColors,
-            characterStyles: mockCharacterStyles,
-            paragraphStyles: mockParagraphStyles,
+            colors: [...mockBrandKitThemeDocumentColors],
+            characterStyles: [mockBrandKitThemeCharacterStyle],
+            paragraphStyles: [mockBrandKitThemeParagraphStyle],
             media: mockMedia,
         });
     });

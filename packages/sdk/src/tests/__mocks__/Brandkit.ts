@@ -1,3 +1,11 @@
+import type { APIBrandKitTheme, BrandKitTheme } from '../../types/BrandKitTypes';
+import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
+import { Alignment, Case, Scripting } from '../../types/TextStyleTypes';
+import {
+    NumberListFormat,
+    NumberListSeparatorSymbol,
+} from '../../types/ParagraphStyleTypes';
+
 export const mockColors = [
     {
         id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
@@ -302,6 +310,125 @@ export const mockMedia = [
         name: 'c9aaa676-a6c0-4a3e-aa67-afdb2f1359f8_bg-hk-25.jpg',
         remoteConnectorId: 'grafxmedia',
         assetId: '62000e62-55e2-4ef7-8486-c722c913aa88',
+    },
+];
+
+/** Document-style colors for BrandKit theme mocks (DocumentColor[]). */
+export const mockBrandKitThemeDocumentColors = [
+    {
+        id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
+        name: 'Black',
+        color: { c: 0, m: 0, y: 0, k: 1, type: ColorType.cmyk },
+    },
+] as const;
+
+/** Document-style character style for BrandKit theme mocks (CharacterStyle). */
+export const mockBrandKitThemeCharacterStyle = {
+    id: '410e4ffb-ecd9-4f02-bcaf-7ace11104ab1',
+    name: 'New CharacterStyle',
+    fontSize: 12,
+    typographicCase: Case.NORMAL,
+    kerningOn: false,
+    subSuperScript: Scripting.NORMAL,
+    trackingLeft: 0,
+    trackingRight: 0,
+    baselineShiftValue: '0',
+    lineHeight: 120,
+    color: {
+        id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
+        opacity: 1,
+        type: ColorUsageType.brandKit,
+    },
+    strokeColor: {
+        color: { r: 0, g: 0, b: 0, type: ColorType.rgb },
+        opacity: 1,
+        type: ColorUsageType.local,
+    },
+    fillColorApplied: true,
+    strokeColorApplied: false,
+    underline: false,
+    lineThrough: false,
+};
+
+/** Document-style paragraph style for BrandKit theme mocks (ParagraphStyle). */
+export const mockBrandKitThemeParagraphStyle = {
+    id: '760f651b-2aba-47e8-b99d-61f2619f2714',
+    name: 'Basic Paragraph',
+    fontKey: '8a0788ff-cf05-403d-9893-120bc3773603',
+    fontStyle: '8cb18f2f-56a9-4f9e-bbb2-c7687ead7ef8',
+    fontSize: 12,
+    typographicCase: Case.NORMAL,
+    kerningOn: false,
+    subSuperScript: Scripting.NORMAL,
+    trackingLeft: 0,
+    trackingRight: 0,
+    startIndent: '0',
+    endIndent: '0',
+    spaceBefore: '0',
+    spaceAfter: '0',
+    textIndent: '0',
+    alignToBaseLine: false,
+    baselineShiftValue: '0',
+    lineHeight: 120,
+    textAlign: Alignment.LEFT,
+    textAlignLast: Alignment.LEFT,
+    textOverprint: false,
+    color: {
+        id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
+        opacity: 1,
+        type: ColorUsageType.brandKit,
+    },
+    strokeColor: {
+        color: { r: 0, g: 0, b: 0, type: ColorType.rgb },
+        opacity: 1,
+        type: ColorUsageType.local,
+    },
+    fillColorApplied: true,
+    strokeColorApplied: false,
+    strokeWidth: 1,
+    underline: false,
+    lineThrough: false,
+    bulletListStyle: {
+        bulletMarks: [],
+        leftIndent: 0,
+        textIndent: 0,
+    },
+    numericListStyle: {
+        leftIndent: 0,
+        textIndent: 0,
+        numberingStyle: [
+            { format: NumberListFormat.arabic, symbol: NumberListSeparatorSymbol.dot },
+        ],
+    },
+};
+
+/** BrandKit themes in document/output shape, as returned by get(). */
+export const mockBrandKitThemesOutput: BrandKitTheme[] = [
+    {
+        id: 'theme-id-1',
+        name: 'Output Theme',
+        inheritsFrom: null,
+        dateCreated: null,
+        lastModifiedDate: null,
+        colors: [...mockBrandKitThemeDocumentColors],
+        characterStyles: [mockBrandKitThemeCharacterStyle],
+        paragraphStyles: [mockBrandKitThemeParagraphStyle],
+        media: mockMedia,
+    },
+];
+
+/** BrandKit themes in API/input shape, as accepted by set(). */
+export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
+    {
+        id: 'api-theme-id',
+        name: 'API Theme',
+        inheritsFrom: null,
+        dateCreated: null,
+        lastModifiedDate: null,
+        colors: [],
+        characterStyles: [],
+        paragraphStyles: [],
+        media: mockMedia,
     },
 ];
 
