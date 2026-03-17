@@ -17,6 +17,7 @@ import {
     VariableUsagesReport,
     VariableVisibility,
     VariableVisibilityType,
+    DataSourceVariableSourceType,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
@@ -266,6 +267,16 @@ class DataSourceVariable {
                 }
                 return update;
             });
+    };
+
+    setInjectedDataSourceVariableModel = async (variableId: string, model: DataModelProperty) => {
+        const res = await this.#editorAPI;
+        return res.setInjectedDataSourceVariableModel(variableId, JSON.stringify(model)).then((result) => getEditorResponseData<null>(result));
+    };
+
+    setDataSourceVariableSourceType = async (variableId: string, sourceType: DataSourceVariableSourceType) => {
+        const res = await this.#editorAPI;
+        return res.setDataSourceVariableSourceType(variableId, sourceType).then((result) => getEditorResponseData<null>(result));
     };
 }
 
