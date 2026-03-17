@@ -329,6 +329,27 @@ export class BrandKitController {
         return result;
     };
 
+    /**
+     * This method returns the value indicating whether the brand kit auto-sync is enabled or not
+     * It is up to the integrator to implement this auto-sync functionality, this method only is an indication if it should be done or not.
+     
+     * @returns boolean indicating sync status
+     */
+    isAutoSync = async () => {
+        const res = await this.#editorAPI;
+        return res.isBrandKitAutoSync().then((result) => getEditorResponseData<boolean>(result));
+    };
+
+    /**
+     * This method enables or disables brand kit auto-sync
+     * @param enableAutoSync boolean indicating auto-sync status
+     * @returns boolean indicating the result of the operation
+     */
+    enableAutoSync = async (enableAutoSync: boolean) => {
+        const res = await this.#editorAPI;
+        return res.enableBrandKitAutoSync(enableAutoSync).then((result) => getEditorResponseData<boolean>(result));
+    };
+
     private async setColors(studioBrandKit: StudioBrandKit, sdk: SDK) {
         const localColorGuidsMap = new Map<string, string>();
 
