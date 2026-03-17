@@ -207,7 +207,7 @@ export type {
     SpotHEXColorValue,
     SpotRGBColorValue,
     StudioBrandKit,
-    StudioBrandKitTheme,
+    BrandKitTheme,
 } from './types/BrandKitTypes';
 
 export * from './types/ActionTypes';
