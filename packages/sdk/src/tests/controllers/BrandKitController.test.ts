@@ -1,4 +1,4 @@
-import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { BrandKitController } from '../../controllers/BrandKitController';
 // eslint-disable-next-line import/no-named-as-default
