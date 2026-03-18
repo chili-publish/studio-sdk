@@ -5,7 +5,6 @@ import {
     ConnectorMappingType,
     ConnectorOptions,
     ConnectorRegistration,
-    ConnectorRegistrationSource,
     ConnectorState,
     ConnectorStateType,
     ConnectorToEngineMapping,
@@ -289,80 +288,21 @@ export class ConnectorController {
 
     /**
      * Sets an HTTP header on every local connector instance of the given type that uses the given remote (Environment API) id.
-     * Finds all connector instances of that type sharing this remote id and configures each with the provided header
-     * (e.g. for connector authorization).
-     *
-     * **IMPORTANT – Only already registered connectors:** Only connector instances that exist in the document
-     * at the time of the call are updated. Any connector registered afterwards will not receive this header
-     * automatically.
      *
      * @param remoteConnectorId remote connector id from the Environment API (grafx source); always required
      * @param headerName HTTP header name (e.g. 'Authorization')
      * @param headerValue HTTP header value (e.g. 'Bearer &lt;token&gt;')
-     * @param connectorType connector type to search (media, fonts, data, or components); required
-     * @returns EditorResponse with null on success; error if no matching connector or configure fails
+     * @returns EditorResponse with null on success; error if the engine call fails
      */
     setHttpHeader = async (
         remoteConnectorId: string,
         headerName: string,
         headerValue: string,
-        connectorType: ConnectorType,
     ): Promise<EditorResponse<null>> => {
-        const fail = (error: string, status: number): EditorResponse<null> => ({
-            data: null,
-            success: false,
-            error,
-            status,
-            parsedData: null,
-        });
-
-        try {
-            // TODO: The whole method implementation should be substituted with Flutter implementation in context of https://chilipublishintranet.atlassian.net/browse/EDT-2316
-            const getRemoteId = (c: ConnectorInstance): string | null => {
-                if (c.source.source !== ConnectorRegistrationSource.grafx) return null;
-                return 'id' in c.source
-                    ? (c.source as Next.ConnectorGrafxRegistration).id
-                    : (c.source.url?.replace(/\/+$/, '').split('/').pop() ?? '') || null;
-            };
-
-            const { parsedData: connectors } = await this.getAllByType(connectorType);
-            const matching: ConnectorInstance[] =
-                connectors?.filter((c: ConnectorInstance) => getRemoteId(c) === remoteConnectorId) ?? [];
-
-            if (matching.length === 0) {
-                return fail(`Connectors not found for remote id: ${remoteConnectorId}`, 404);
-            }
-
-            const failures: string[] = [];
-            for (const connector of matching) {
-                try {
-                    const result = await this.configure(connector.id, async (configurator) => {
-                        await configurator.setHttpHeader(headerName, headerValue);
-                    });
-                    if (result && !result.success) {
-                        failures.push(`connector "${connector.id}": ${result.error ?? 'configure failed'}`);
-                    }
-                } catch (error) {
-                    const message = error instanceof Error ? error.message : String(error);
-                    failures.push(`connector "${connector.id}": ${message}`);
-                }
-            }
-
-            if (failures.length > 0) {
-                return fail(
-                    `Failed to set header for ${failures.length} connector instance(s): ${failures.join('; ')}`,
-                    500,
-                );
-            }
-
-            return getEditorResponseData<null>(
-                { data: null, success: true, error: undefined, status: 0, parsedData: undefined },
-                false,
-            );
-        } catch (error) {
-            const message = error instanceof Error ? error.message : String(error);
-            return fail(`Unexpected error in setHttpHeader: ${message}`, 500);
-        }
+        const res = await this.#editorAPI;
+        return res
+            .remoteConnectorAuthenticationSetHttpHeader(remoteConnectorId, headerName, headerValue)
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
 

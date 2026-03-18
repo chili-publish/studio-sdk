@@ -277,9 +277,14 @@ export const grafxMediaConnectorRegistration: ConnectorLocalRegistration = {
 export class GrafxTokenAuthCredentials {
     token: string;
     type = AuthCredentialsTypeEnum.grafxToken;
+    /**
+     * Optional HTTP headers to send with connector requests (e.g. Authorization).
+     */
+    headers?: Record<string, string>;
 
-    constructor(token: string) {
+    constructor(token: string, headers?: Record<string, string>) {
         this.token = token;
+        this.headers = headers;
     }
 }
 
@@ -289,6 +294,14 @@ export class GrafxTokenAuthCredentials {
  */
 export class RefreshedAuthCredendentials {
     type = AuthCredentialsTypeEnum.refreshed;
+    /**
+     * Optional HTTP headers to send with connector requests (e.g. Authorization).
+     */
+    headers?: Record<string, string>;
+
+    constructor(headers?: Record<string, string>) {
+        this.headers = headers;
+    }
 }
 
 export enum AuthCredentialsTypeEnum {

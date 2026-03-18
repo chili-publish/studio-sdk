@@ -51,6 +51,7 @@ const mockEditorApi: EditorAPI = {
     updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorState: async () => getEditorResponseData(castToEditorResponse({ id: '', type: 'ready' })),
     connectorAuthenticationSetHttpHeader: async () => getEditorResponseData(castToEditorResponse(null)),
+    remoteConnectorAuthenticationSetHttpHeader: async () => getEditorResponseData(castToEditorResponse(null)),
     setConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     setConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -75,6 +76,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
     jest.spyOn(mockEditorApi, 'getConnectorState');
     jest.spyOn(mockEditorApi, 'connectorAuthenticationSetHttpHeader');
+    jest.spyOn(mockEditorApi, 'remoteConnectorAuthenticationSetHttpHeader');
     jest.spyOn(mockEditorApi, 'setConnectorOptions');
     jest.spyOn(mockEditorApi, 'setConnectorMappings');
     jest.spyOn(mockEditorApi, 'getConnectorOptions');
@@ -317,77 +319,19 @@ describe('ConnectorController', () => {
         ]);
     });
 
-    describe('setHttpHeader', () => {
-        const remoteId = grafxSourceId;
-        const headerName = 'Authorization';
-        const headerValue = 'Bearer token';
+    it('setHttpHeader delegates to remoteConnectorAuthenticationSetHttpHeader and returns the result', async () => {
+        const result = await mockedConnectorController.setHttpHeader(
+            grafxSourceId,
+            'Authorization',
+            'Bearer token',
+        );
 
-        it('searches the given connector type and sets header on every matching instance', async () => {
-            const result = await mockedConnectorController.setHttpHeader(
-                remoteId,
-                headerName,
-                headerValue,
-                ConnectorType.media,
-            );
-
-            expect(result.success).toBe(true);
-            expect(mockEditorApi.getConnectors).toHaveBeenCalledTimes(1);
-            expect(mockEditorApi.getConnectors).toHaveBeenCalledWith(ConnectorType.media);
-            expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
-                grafxConnector.id,
-                headerName,
-                headerValue,
-            );
-        });
-
-        it('calls setHttpHeader with the given header name and value for each matching instance', async () => {
-            await mockedConnectorController.setHttpHeader(
-                remoteId,
-                'X-Custom-Header',
-                'custom-value',
-                ConnectorType.media,
-            );
-
-            expect(mockEditorApi.connectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
-                grafxConnector.id,
-                'X-Custom-Header',
-                'custom-value',
-            );
-        });
-
-        it('returns error when no connector instance matches the remote id', async () => {
-            (mockEditorApi.getConnectors as jest.Mock).mockResolvedValue(
-                getEditorResponseData(castToEditorResponse([])),
-            );
-
-            const result = await mockedConnectorController.setHttpHeader(
-                remoteId,
-                headerName,
-                headerValue,
-                ConnectorType.media,
-            );
-
-            expect(result.success).toBe(false);
-            expect(result.error).toMatch(/not found/i);
-            expect(result.error).toContain(remoteId);
-            expect(mockEditorApi.connectorAuthenticationSetHttpHeader).not.toHaveBeenCalled();
-        });
-
-        it('returns combined error when configure fails for one or more matching instances', async () => {
-            (mockEditorApi.updateConnectorConfiguration as jest.Mock).mockRejectedValueOnce(
-                new Error('Configure failed'),
-            );
-
-            const result = await mockedConnectorController.setHttpHeader(
-                remoteId,
-                headerName,
-                headerValue,
-                ConnectorType.media,
-            );
-
-            expect(result.success).toBe(false);
-            expect(result.error).toMatch(/Failed to set header/);
-            expect(result.error).toContain('Configure failed');
-        });
+        expect(result.success).toBe(true);
+        expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
+            grafxSourceId,
+            'Authorization',
+            'Bearer token',
+        );
     });
 });
