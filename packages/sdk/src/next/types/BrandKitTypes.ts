@@ -4,6 +4,8 @@ import {
     BrandKitParagraphStyle,
     APIBrandKitMedia as MainAPIBrandKitMedia,
     BrandKitMedia,
+    APIBrandKitTheme,
+    BrandKitTheme,
 } from '../../types/BrandKitTypes';
 import { CharacterStyle } from '../../types/CharacterStyleTypes';
 import { DocumentColor } from '../../types/ColorStyleTypes';
@@ -44,6 +46,7 @@ export type APIBrandKit = {
     characterStyles: APIBrandKitCharacterStyle[];
     paragraphStyles: APIBrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
+    themes: APIBrandKitTheme[];
 };
 
 /**
@@ -60,4 +63,5 @@ export type BrandKit = {
     characterStyles: CharacterStyle[];
     paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];
+    themes: BrandKitTheme[];
 };
