@@ -180,6 +180,51 @@ export class BrandKitController {
     };
 
     /**
+     * @experimental This method removes a brand kit and all related resources assigned to it
+     * @returns
+     */
+    remove = async () => {
+        const colors = await this.colorStyleController.getAll();
+        const colorsList = colors.parsedData || [];
+
+        const gradients = await this.gradientStyleController.getAll();
+        const gradientsList = gradients.parsedData || [];
+
+        const paragraphStyles = await this.paragraphStyleController.getAll();
+        const paragraphStylesList = paragraphStyles.parsedData || [];
+
+        const characterStyles = await this.characterStyleController.getAll();
+        const characterStylesList = characterStyles.parsedData || [];
+
+        const fonts = await this.fontController.getFontFamilies();
+        const fontsList = fonts.parsedData || [];
+
+        const media = await this.getAllMedia();
+        const mediaList = media.parsedData || [];
+
+        await this.undoManagerController.record('brandKit.remove', async (sdk) => {
+            for (const color of colorsList) {
+                await sdk.colorStyle.remove(color.id);
+            }
+            for (const gradient of gradientsList) {
+                await sdk.gradientStyle.remove(gradient.id);
+            }
+            for (const style of paragraphStylesList) {
+                await sdk.paragraphStyle.remove(style.id);
+            }
+            for (const style of characterStylesList) {
+                await sdk.characterStyle.remove(style.id);
+            }
+            for (const font of fontsList) {
+                await sdk.font.removeFontFamily(font.id);
+            }
+            for (const media of mediaList) {
+                await this.removeMedia(media.name);
+            }
+        });
+    };
+
+    /**
      * @experimental This method updates a brand kit and all related resources assigned to it
      * @param studioBrandKit the content of the brand kit
      * @returns

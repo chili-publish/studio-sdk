@@ -1,4 +1,4 @@
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { BrandKitController } from '../../controllers/BrandKitController';
 // eslint-disable-next-line import/no-named-as-default
@@ -255,6 +255,42 @@ describe('BrandKitController', () => {
         expect(response.parsedData.brandKit.paragraphStyles).toHaveLength(mockParagraphStyles.length);
         expect(response.parsedData.brandKit.media).toHaveLength(mockMedia.length);
         expect(response.parsedData.brandKit.themes).toHaveLength(mockBrandKitThemesOutput.length);
+    });
+
+    it('Should successfully remove brandkit content', async () => {
+        await mockBrandKitController.remove();
+
+        expect(mockEditorApi.getColors).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getFontFamilies).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
+
+        expect(mockEditorApi.removeColor).toHaveBeenCalledTimes(mockColors.length);
+        expect(mockEditorApi.removeFontFamily).toHaveBeenCalledTimes(mockFonts.length);
+        expect(mockEditorApi.removeParagraphStyle).toHaveBeenCalledTimes(mockParagraphStyles.length);
+        expect(mockEditorApi.removeCharacterStyle).toHaveBeenCalledTimes(mockCharacterStyles.length);
+
+        expect(
+            (mockEditorApi.removeColor as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map((call) => call[0]),
+        ).toEqual(mockColors.map((color) => color.id));
+
+        expect(
+            (mockEditorApi.removeFontFamily as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map(
+                (call) => call[0],
+            ),
+        ).toEqual(mockFonts.map((font) => font.id));
+
+        expect(
+            (mockEditorApi.removeParagraphStyle as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map(
+                (call) => call[0],
+            ),
+        ).toEqual(mockParagraphStyles.map((style) => style.id));
+
+        expect(
+            (mockEditorApi.removeCharacterStyle as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map(
+                (call) => call[0],
+            ),
+        ).toEqual(mockCharacterStyles.map((style) => style.id));
     });
 
     it('returns brandKit.themes as BrandKitTheme[] (output type) when get() is called', async () => {
