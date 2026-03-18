@@ -31,6 +31,7 @@ export type BrandKitColor =
 export type BrandKitFont = {
     fontFamilyId: string;
     fontFamilyBrandKitGuid: string;
+    fontConnectorId?: string | null;
 };
 
 export type BrandKitCharacterStyle = {
@@ -103,6 +104,18 @@ export type APIBrandKitMedia = {
     mediaId: Id;
 };
 
+export type APIBrandKitTheme = {
+    id: Id;
+    name: string;
+    inheritsFrom: string | null;
+    dateCreated: string | null;
+    lastModifiedDate: string | null;
+    colors: BrandKitColor[];
+    characterStyles: BrandKitCharacterStyle[];
+    paragraphStyles: BrandKitParagraphStyle[];
+    media: BrandKitMedia[];
+};
+
 export type APIBrandKit = {
     id: Id;
     name: string;
@@ -113,6 +126,19 @@ export type APIBrandKit = {
     characterStyles: BrandKitCharacterStyle[];
     paragraphStyles: BrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
+    themes: APIBrandKitTheme[] | BrandKitTheme[];
+};
+
+export type BrandKitTheme = {
+    id: string;
+    name: string;
+    inheritsFrom: string | null;
+    dateCreated: string | null;
+    lastModifiedDate: string | null;
+    colors: DocumentColor[];
+    characterStyles: CharacterStyle[];
+    paragraphStyles: ParagraphStyle[];
+    media: BrandKitMedia[];
 };
 
 /**
@@ -138,6 +164,7 @@ export type BrandKitInternal = {
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
     media: BrandKitMedia[];
+    themes: BrandKitTheme[];
 };
 
 /**
@@ -153,4 +180,5 @@ export type EngineBrandKit = {
     characterStyles: CharacterStyle[];
     paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];
+    themes: BrandKitTheme[];
 };
