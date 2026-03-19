@@ -51,7 +51,7 @@ const mockEditorApi: EditorAPI = {
     updateConnectorConfiguration: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorState: async () => getEditorResponseData(castToEditorResponse({ id: '', type: 'ready' })),
     connectorAuthenticationSetHttpHeader: async () => getEditorResponseData(castToEditorResponse(null)),
-    remoteConnectorAuthenticationSetHttpHeader: async () => getEditorResponseData(castToEditorResponse(null)),
+    remoteConnectorAuthenticationSetHttpHeaders: async () => getEditorResponseData(castToEditorResponse(null)),
     setConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     setConnectorMappings: async () => getEditorResponseData(castToEditorResponse(null)),
     getConnectorOptions: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -76,7 +76,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'updateConnectorConfiguration');
     jest.spyOn(mockEditorApi, 'getConnectorState');
     jest.spyOn(mockEditorApi, 'connectorAuthenticationSetHttpHeader');
-    jest.spyOn(mockEditorApi, 'remoteConnectorAuthenticationSetHttpHeader');
+    jest.spyOn(mockEditorApi, 'remoteConnectorAuthenticationSetHttpHeaders');
     jest.spyOn(mockEditorApi, 'setConnectorOptions');
     jest.spyOn(mockEditorApi, 'setConnectorMappings');
     jest.spyOn(mockEditorApi, 'getConnectorOptions');
@@ -319,12 +319,12 @@ describe('ConnectorController', () => {
         ]);
     });
 
-    it('setHttpHeader delegates to remoteConnectorAuthenticationSetHttpHeader and returns the result', async () => {
-        const result = await mockedConnectorController.setHttpHeader(grafxSourceId, { Authorization: 'Bearer token' });
+    it('setHttpHeaders delegates to remoteConnectorAuthenticationSetHttpHeaders and returns the result', async () => {
+        const result = await mockedConnectorController.setHttpHeaders(grafxSourceId, { Authorization: 'Bearer token' });
 
         expect(result.success).toBe(true);
-        expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
+        expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeaders).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeaders).toHaveBeenCalledWith(
             grafxSourceId,
             JSON.stringify({ Authorization: 'Bearer token' }),
         );
