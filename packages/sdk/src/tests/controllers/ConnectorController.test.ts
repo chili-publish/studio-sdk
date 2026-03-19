@@ -320,18 +320,13 @@ describe('ConnectorController', () => {
     });
 
     it('setHttpHeader delegates to remoteConnectorAuthenticationSetHttpHeader and returns the result', async () => {
-        const result = await mockedConnectorController.setHttpHeader(
-            grafxSourceId,
-            'Authorization',
-            'Bearer token',
-        );
+        const result = await mockedConnectorController.setHttpHeader(grafxSourceId, { Authorization: 'Bearer token' });
 
         expect(result.success).toBe(true);
         expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeader).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.remoteConnectorAuthenticationSetHttpHeader).toHaveBeenCalledWith(
             grafxSourceId,
-            'Authorization',
-            'Bearer token',
+            JSON.stringify({ Authorization: 'Bearer token' }),
         );
     });
 });

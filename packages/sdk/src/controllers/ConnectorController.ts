@@ -290,18 +290,16 @@ export class ConnectorController {
      * Sets an HTTP header on every local connector instance of the given type that uses the given remote (Environment API) id.
      *
      * @param remoteConnectorId remote connector id from the Environment API (grafx source); always required
-     * @param headerName HTTP header name (e.g. 'Authorization')
-     * @param headerValue HTTP header value (e.g. 'Bearer &lt;token&gt;')
+     * @param headers HTTP headers to set on the connector
      * @returns EditorResponse with null on success; error if the engine call fails
      */
     setHttpHeader = async (
         remoteConnectorId: string,
-        headerName: string,
-        headerValue: string,
+        headers: Record<string, string>,
     ): Promise<EditorResponse<null>> => {
         const res = await this.#editorAPI;
         return res
-            .remoteConnectorAuthenticationSetHttpHeader(remoteConnectorId, headerName, headerValue)
+            .remoteConnectorAuthenticationSetHttpHeader(remoteConnectorId, JSON.stringify(headers))
             .then((result) => getEditorResponseData<null>(result));
     };
 }
