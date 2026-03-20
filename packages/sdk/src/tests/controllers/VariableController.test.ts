@@ -11,6 +11,7 @@ import {
     VariableUsagesReport,
     VariableVisibilityType,
     VariableVisibilityVisible,
+    DataSourceVariableSourceType,
 } from '../../types/VariableTypes';
 import { EditorAPI, PrivateData } from '../../types/CommonTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -120,6 +121,8 @@ describe('VariableController', () => {
         setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
         highlightVariableUsages: async () => getEditorResponseData(castToEditorResponse(variableUsagesReport)),
         getInjectedDataSourceVariableData: async () => getEditorResponseData(castToEditorResponse(null)),
+        setDataSourceVariableSourceType: async () => getEditorResponseData(castToEditorResponse(null)),
+        setInjectedDataSourceVariableModel: async () => getEditorResponseData(castToEditorResponse(null)),
     };
 
     beforeEach(() => {
@@ -163,6 +166,8 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableIsDontBreak');
         jest.spyOn(mockEditorApi, 'highlightVariableUsages');
         jest.spyOn(mockEditorApi, 'getInjectedDataSourceVariableData');
+        jest.spyOn(mockEditorApi, 'setDataSourceVariableSourceType');
+        jest.spyOn(mockEditorApi, 'setInjectedDataSourceVariableModel');
     });
 
     it('get variable by id', async () => {
@@ -663,5 +668,18 @@ describe('VariableController', () => {
         await mockedVariableController.dataSource.getInjectedData('injected-data-source-var-1');
         expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledWith('injected-data-source-var-1');
+    });
+
+    it('sets the injected data source variable model', async () => {
+        const model = { name: 'Model 1', type: 'number' };
+        await mockedVariableController.dataSource.setInjectedModel('1', model);
+        expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledWith('1', JSON.stringify(model));
+    });
+
+    it('sets the data source variable source type', async () => {
+        await mockedVariableController.dataSource.setSourceType('1', DataSourceVariableSourceType.injected);
+        expect(mockEditorApi.setDataSourceVariableSourceType).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setDataSourceVariableSourceType).toHaveBeenCalledWith('1', DataSourceVariableSourceType.injected);
     });
 });
