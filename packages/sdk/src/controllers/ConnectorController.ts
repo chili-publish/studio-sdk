@@ -288,6 +288,7 @@ export class ConnectorController {
 
     /**
      * Sets HTTP headers on every local connector instance of the given type that uses the given remote (Environment API) connector id.
+     * It's applicable as for already registered connectors as well as for future one with same remote connector id.
      *
      * @param remoteConnectorId unique id of the remote connector from the Environment API (grafx source)
      * @param headers HTTP headers to set on the connector

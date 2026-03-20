@@ -1,6 +1,6 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { DataModelProperty, DataPage, Dictionary } from '@chili-studio/connector-types';
+import { DataItem, DataModelProperty, DataPage, Dictionary } from '@chili-studio/connector-types';
 import {
     DataSourceVariableDisplayOptionsType,
     DateRestriction,
@@ -221,9 +221,25 @@ class DataSourceVariable {
         this.#dataItemMappingTools = dataItemMappingTools;
     }
 
-    setValue = async (id: string, value: DataModelProperty[] | RowId) => {
+    /**
+     * Sets the value for a data source variable.
+     *
+     * @param id the id of the data source variable to update
+     * @param value the value to set for the data source variable. This can be a list of records, when we set the data for the data source variable in injected data mode
+     * or a single record id, when we have to change the selected record value  .
+     * @returns
+     */
+    setValue = async (id: string, value: RowId | DataItem[]) => {
         const res = await this.#editorAPI;
-        return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
+        let engineValue: string | EngineDataItem[];
+        if (Array.isArray(value)) {
+            engineValue = value.map((item) => this.#dataItemMappingTools.mapDataItemToEngine(item)) as EngineDataItem[];
+        } else {
+            engineValue = value;
+        }
+        return res
+            .setVariableValue(id, JSON.stringify(engineValue))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -259,23 +275,38 @@ class DataSourceVariable {
                 const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
                     update.parsedData = {
+                        ...resp.parsedData,
                         data: resp.parsedData.data.map((e: EngineDataItem) =>
                             this.#dataItemMappingTools.mapEngineToDataItem(e),
                         ),
-                        continuationToken: resp.parsedData.continuationToken,
                     };
                 }
                 return update;
             });
     };
 
-    setInjectedModel = async (variableId: string, model: DataModelProperty) => {
+    /**
+     * Sets the model for a data source variable. This only works for data source variables
+     * that are in injected data mode.
+     *
+     * @param variableId the id of the data source variable to update
+     * @param model the model to set for the data source variable
+     * @returns
+     */
+    setInjectedModel = async (variableId: string, model: DataModelProperty[]) => {
         const res = await this.#editorAPI;
         return res
             .setInjectedDataSourceVariableModel(variableId, JSON.stringify(model))
             .then((result) => getEditorResponseData<null>(result));
     };
 
+    /**
+     * Sets the source type for a data source variable.
+     *
+     * @param variableId the id of the data source variable to update
+     * @param sourceType the source type to set for the data source variable
+     * @returns
+     */
     setSourceType = async (variableId: string, sourceType: DataSourceVariableSourceType) => {
         const res = await this.#editorAPI;
         return res
