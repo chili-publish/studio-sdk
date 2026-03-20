@@ -1,12 +1,6 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import {
-    DataItem,
-    DataModelProperty,
-    DataPage,
-    DataSourceVariableDataModel,
-    Dictionary,
-} from '@chili-studio/connector-types';
+import { DataItem, DataPage, DataSourceVariableDataModel, Dictionary } from '@chili-studio/connector-types';
 import {
     DataSourceVariableDisplayOptionsType,
     DateRestriction,
