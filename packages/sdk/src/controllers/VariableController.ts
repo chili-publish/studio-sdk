@@ -271,12 +271,16 @@ class DataSourceVariable {
 
     setInjectedModel = async (variableId: string, model: DataModelProperty) => {
         const res = await this.#editorAPI;
-        return res.setInjectedDataSourceVariableModel(variableId, JSON.stringify(model)).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setInjectedDataSourceVariableModel(variableId, JSON.stringify(model))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     setSourceType = async (variableId: string, sourceType: DataSourceVariableSourceType) => {
         const res = await this.#editorAPI;
-        return res.setDataSourceVariableSourceType(variableId, sourceType).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setDataSourceVariableSourceType(variableId, sourceType)
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
 
@@ -292,6 +296,11 @@ export class VariableController {
 
     number: NumberVariable;
     date: DateVariable;
+    /**
+     * @experimental
+     * This controller is experimental and might change in future releases.
+     * Use at your own risk.
+     */
     dataSource: DataSourceVariable;
 
     /**
