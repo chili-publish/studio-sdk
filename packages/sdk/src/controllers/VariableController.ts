@@ -269,12 +269,12 @@ class DataSourceVariable {
             });
     };
 
-    setInjectedDataSourceVariableModel = async (variableId: string, model: DataModelProperty) => {
+    setInjectedModel = async (variableId: string, model: DataModelProperty) => {
         const res = await this.#editorAPI;
         return res.setInjectedDataSourceVariableModel(variableId, JSON.stringify(model)).then((result) => getEditorResponseData<null>(result));
     };
 
-    setDataSourceVariableSourceType = async (variableId: string, sourceType: DataSourceVariableSourceType) => {
+    setSourceType = async (variableId: string, sourceType: DataSourceVariableSourceType) => {
         const res = await this.#editorAPI;
         return res.setDataSourceVariableSourceType(variableId, sourceType).then((result) => getEditorResponseData<null>(result));
     };

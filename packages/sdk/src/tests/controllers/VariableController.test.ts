@@ -672,13 +672,13 @@ describe('VariableController', () => {
 
     it('sets the injected data source variable model', async () => {
         const model = { name: 'Model 1', type: 'number' };
-        await mockedVariableController.dataSource.setInjectedDataSourceVariableModel('1', model);
+        await mockedVariableController.dataSource.setInjectedModel('1', model);
         expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledWith('1', JSON.stringify(model));
     });
 
     it('sets the data source variable source type', async () => {
-        await mockedVariableController.dataSource.setDataSourceVariableSourceType('1', DataSourceVariableSourceType.injected);
+        await mockedVariableController.dataSource.setSourceType('1', DataSourceVariableSourceType.injected);
         expect(mockEditorApi.setDataSourceVariableSourceType).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setDataSourceVariableSourceType).toHaveBeenCalledWith('1', DataSourceVariableSourceType.injected);
     });
