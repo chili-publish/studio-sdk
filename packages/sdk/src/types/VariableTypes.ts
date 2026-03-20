@@ -355,5 +355,3 @@ export interface DataSourceVariableDisplayOptionsList {
 export type DataSourceVariableDisplayOptions =
     | DataSourceVariableDisplayOptionsTable
     | DataSourceVariableDisplayOptionsList;
-
-
