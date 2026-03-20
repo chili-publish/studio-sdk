@@ -123,6 +123,7 @@ describe('VariableController', () => {
         getInjectedDataSourceVariableData: async () => getEditorResponseData(castToEditorResponse(null)),
         setDataSourceVariableSourceType: async () => getEditorResponseData(castToEditorResponse(null)),
         setInjectedDataSourceVariableModel: async () => getEditorResponseData(castToEditorResponse(null)),
+        setDataSourceVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
     };
 
     beforeEach(() => {
@@ -168,6 +169,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'getInjectedDataSourceVariableData');
         jest.spyOn(mockEditorApi, 'setDataSourceVariableSourceType');
         jest.spyOn(mockEditorApi, 'setInjectedDataSourceVariableModel');
+        jest.spyOn(mockEditorApi, 'setDataSourceVariableConnector');
     });
 
     it('get variable by id', async () => {
@@ -671,10 +673,14 @@ describe('VariableController', () => {
     });
 
     it('sets the injected data source variable model', async () => {
-        const model = [{ name: 'Model 1', type: 'number' }];
+        const model = { properties: [{ name: 'Model 1', type: 'number' }], itemIdPropertyName: 'id' };
         await mockedVariableController.dataSource.setInjectedModel('1', model);
         expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledWith('1', JSON.stringify(model));
+        expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledWith(
+            '1',
+            JSON.stringify(model.properties),
+            model.itemIdPropertyName,
+        );
     });
 
     it('sets the data source variable source type', async () => {
@@ -684,5 +690,16 @@ describe('VariableController', () => {
             '1',
             DataSourceVariableSourceType.injected,
         );
+    });
+
+    it('sets the connector for a data source variable', async () => {
+        const registration: ConnectorRegistration = {
+            url: 'test://test.test',
+            source: ConnectorRegistrationSource.url,
+        };
+        const response = await mockedVariableController.dataSource.setConnector('1', registration);
+        expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledWith('1', JSON.stringify(registration));
+        expect(response?.parsedData).toBe('newConnectorId');
     });
 });

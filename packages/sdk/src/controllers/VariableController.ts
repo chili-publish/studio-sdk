@@ -1,6 +1,12 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { DataItem, DataModelProperty, DataPage, Dictionary } from '@chili-studio/connector-types';
+import {
+    DataItem,
+    DataModelProperty,
+    DataPage,
+    DataSourceVariableDataModel,
+    Dictionary,
+} from '@chili-studio/connector-types';
 import {
     DataSourceVariableDisplayOptionsType,
     DateRestriction,
@@ -290,13 +296,15 @@ class DataSourceVariable {
      * that are in injected data mode.
      *
      * @param variableId the id of the data source variable to update
-     * @param model the model to set for the data source variable
+     * @param value the model to set for the data source variable
      * @returns
      */
-    setInjectedModel = async (variableId: string, model: DataModelProperty[]) => {
+    setInjectedModel = async (variableId: string, value: DataSourceVariableDataModel) => {
+        const model = value.properties;
+        const itemIdPropertyName = value.itemIdPropertyName;
         const res = await this.#editorAPI;
         return res
-            .setInjectedDataSourceVariableModel(variableId, JSON.stringify(model))
+            .setInjectedDataSourceVariableModel(variableId, JSON.stringify(model), itemIdPropertyName)
             .then((result) => getEditorResponseData<null>(result));
     };
 
@@ -312,6 +320,23 @@ class DataSourceVariable {
         return res
             .setDataSourceVariableSourceType(variableId, sourceType)
             .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the connector for a data source variable. This only works for data source variables
+     * that are in connector source type.
+     *
+     * @param variableId the id of the data source variable to update
+     * @param registration the connector registration to set for the data source variable
+     * @returns The new id of the connector
+     */
+    setConnector = async (variableId: string, registration: ConnectorRegistration) => {
+        const res = await this.#editorAPI;
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const connectorRegistration = connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+        return res
+            .setDataSourceVariableConnector(variableId, JSON.stringify(connectorRegistration))
+            .then((result) => getEditorResponseData<Id>(result));
     };
 }
 
