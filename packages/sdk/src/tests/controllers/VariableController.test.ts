@@ -702,4 +702,10 @@ describe('VariableController', () => {
         expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledWith('1', JSON.stringify(registration));
         expect(response?.parsedData).toBe('newConnectorId');
     });
+
+    it('removes the connector for a data source variable', async () => {
+        await mockedVariableController.dataSource.removeConnector('1');
+        expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledWith('1', null);
+    });
 });
