@@ -233,7 +233,7 @@ class DataSourceVariable {
         const res = await this.#editorAPI;
         let engineValue: string | EngineDataItem[];
         if (Array.isArray(value)) {
-            engineValue = value.map((item) => this.#dataItemMappingTools.mapDataItemToEngine(item)) as EngineDataItem[];
+            engineValue = value.map((item) => this.#dataItemMappingTools.mapDataItemToEngine(item));
         } else {
             engineValue = value;
         }
@@ -244,19 +244,28 @@ class DataSourceVariable {
      * Sets how the data source variable is displayed in the UI (table or list with optional display column).
      * @param variableId The id of the data source variable to update
      * @param displayOptionsType Whether to show the full table or a single column (list)
-     * @param displayColumn Optional column id or name when displayOptionsType is list
+     * @param displayColumn Column name when displayOptionsType is list
      * @returns
      */
-    setDisplayOptions = async (
+    setDisplayOptions(
+        variableId: string,
+        displayOptionsType: DataSourceVariableDisplayOptionsType.table,
+    ): Promise<EditorResponse<null>>;
+    setDisplayOptions(
+        variableId: string,
+        displayOptionsType: DataSourceVariableDisplayOptionsType.list,
+        displayColumn: string,
+    ): Promise<EditorResponse<null>>;
+    async setDisplayOptions(
         variableId: string,
         displayOptionsType: DataSourceVariableDisplayOptionsType,
-        displayColumn?: string | null,
-    ) => {
+        displayColumn?: string,
+    ) {
         const res = await this.#editorAPI;
         return res
             .setDataSourceVariableDisplayOptions(variableId, displayOptionsType, displayColumn ?? undefined)
             .then((result) => getEditorResponseData<null>(result));
-    };
+    }
 
     /**
      * Get the injected data from a data source variable. This only works for data source variables
