@@ -237,9 +237,7 @@ class DataSourceVariable {
         } else {
             engineValue = value;
         }
-        return res
-            .setVariableValue(id, JSON.stringify(engineValue))
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setVariableValue(id, engineValue).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

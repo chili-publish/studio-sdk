@@ -124,6 +124,7 @@ export type GroupVariable = Variable;
 export interface DataSourceVariable extends Variable {
     value?: DataSourceVariableSource;
     displayOptions: DataSourceVariableDisplayOptions;
+    entryId?: string;
 }
 
 export type DateRestriction = RelativeDate | AbsoluteDate;
@@ -329,6 +330,7 @@ export enum DataSourceVariableSourceType {
 export type InjectedDataSourceVariableSource = {
     type: DataSourceVariableSourceType.injected;
     model: DataModelProperty[];
+    itemIdPropertyName: string;
 };
 
 export type ConnectorDataSourceVariableSource = {
