@@ -339,6 +339,20 @@ class DataSourceVariable {
             .setDataSourceVariableConnector(variableId, JSON.stringify(connectorRegistration))
             .then((result) => getEditorResponseData<Id>(result));
     };
+
+    /**
+     * Removes the connector for a data source variable. This only works for data source variables
+     * that are in connector source type.
+     *
+     * @param variableId the id of the data source variable to update
+     * @returns
+     */
+    removeConnector = async (variableId: string) => {
+        const res = await this.#editorAPI;
+        return res
+            .setDataSourceVariableConnector(variableId, null)
+            .then((result) => getEditorResponseData<null>(result));
+    };
 }
 
 /**
