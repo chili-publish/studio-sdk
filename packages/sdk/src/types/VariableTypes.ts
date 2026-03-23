@@ -124,7 +124,7 @@ export type GroupVariable = Variable;
 export interface DataSourceVariable extends Variable {
     value?: DataSourceVariableSource;
     displayOptions: DataSourceVariableDisplayOptions;
-    entryId?: string;
+    entryId?: RowId;
 }
 
 export type DateRestriction = RelativeDate | AbsoluteDate;
