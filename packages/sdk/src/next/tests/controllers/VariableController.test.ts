@@ -1,4 +1,8 @@
-import { ImageVariableController, VariableController } from '../../controllers/VariableController';
+import {
+    DataSourceVariableController,
+    ImageVariableController,
+    VariableController,
+} from '../../controllers/VariableController';
 import { ListVariableItem, Variable, VariableType, VariableVisibilityType } from '../../../types/VariableTypes';
 import type { ListVariable } from '../../../next/types/VariableTypes';
 import { EditorAPI } from '../../../types/CommonTypes';
@@ -202,6 +206,35 @@ describe('Next.VariableController.ImageVariableController', () => {
         expect(mockEditorApi.setImageVariableConnector).toHaveBeenCalledWith(
             variableId,
             JSON.stringify(grafxRegistration),
+        );
+        expect(response?.parsedData).toBe('newConnectorId');
+    });
+});
+
+describe('Next.VariableController.DataSourceVariableController', () => {
+    let mockedDataSourceVariableController: DataSourceVariableController;
+
+    const variableId = 'variableId';
+
+    const mockEditorApi: EditorAPI = {
+        setDataSourceVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
+    };
+
+    beforeEach(() => {
+        mockedDataSourceVariableController = new DataSourceVariableController(mockEditorApi);
+        jest.spyOn(mockEditorApi, 'setDataSourceVariableConnector');
+    });
+
+    it('sets the connector for a data source variable', async () => {
+        const registration: ConnectorGrafxRegistration = {
+            id: 'grafx-id',
+            source: ConnectorRegistrationSource.grafx,
+        };
+        const response = await mockedDataSourceVariableController.setConnector(variableId, registration);
+        expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setDataSourceVariableConnector).toHaveBeenCalledWith(
+            variableId,
+            JSON.stringify(registration),
         );
         expect(response?.parsedData).toBe('newConnectorId');
     });

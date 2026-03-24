@@ -1,7 +1,8 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { Dictionary } from '@chili-studio/connector-types';
+import { DataItem, DataPage, DataSourceVariableDataModel, Dictionary } from '@chili-studio/connector-types';
 import {
+    DataSourceVariableDisplayOptionsType,
     DateRestriction,
     DateVariablePropertiesDeltaUpdate,
     Day,
@@ -10,14 +11,18 @@ import {
     Locale,
     NumberVariablePropertiesDeltaUpdate,
     PrefixSuffixDeltaUpdate,
+    RowId,
     Variable,
     VariableType,
     VariableUsagesReport,
     VariableVisibility,
     VariableVisibilityType,
+    DataSourceVariableSourceType,
 } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
+import { EditorDataPage } from '../types/DataConnectorTypes';
+import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -207,6 +212,149 @@ class DateVariable {
     }
 }
 
+class DataSourceVariable {
+    #editorAPI: EditorAPI;
+    #dataItemMappingTools: DataItemMappingTools;
+
+    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
+        this.#editorAPI = editorAPI;
+        this.#dataItemMappingTools = dataItemMappingTools;
+    }
+
+    /**
+     * Sets the value for a data source variable.
+     *
+     * @param id the id of the data source variable to update
+     * @param value the value to set for the data source variable. This can be a list of records, when we set the data for the data source variable in injected data mode
+     * or a single record id, when we have to change the selected record value  .
+     * @returns
+     */
+    setValue = async (id: string, value: RowId | DataItem[]) => {
+        const res = await this.#editorAPI;
+        let engineValue: string | EngineDataItem[];
+        if (Array.isArray(value)) {
+            engineValue = value.map((item) => this.#dataItemMappingTools.mapDataItemToEngine(item));
+        } else {
+            engineValue = value;
+        }
+        return res.setVariableValue(id, engineValue).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets how the data source variable is displayed in the UI (table or list with optional display column).
+     * @param variableId The id of the data source variable to update
+     * @param displayOptionsType Whether to show the full table or a single column (list)
+     * @param displayColumn Column name when displayOptionsType is list
+     * @returns
+     */
+    setDisplayOptions(
+        variableId: string,
+        displayOptionsType: DataSourceVariableDisplayOptionsType.table,
+    ): Promise<EditorResponse<null>>;
+    setDisplayOptions(
+        variableId: string,
+        displayOptionsType: DataSourceVariableDisplayOptionsType.list,
+        displayColumn: string,
+    ): Promise<EditorResponse<null>>;
+    async setDisplayOptions(
+        variableId: string,
+        displayOptionsType: DataSourceVariableDisplayOptionsType,
+        displayColumn?: string,
+    ) {
+        const res = await this.#editorAPI;
+        return res
+            .setDataSourceVariableDisplayOptions(variableId, displayOptionsType, displayColumn ?? undefined)
+            .then((result) => getEditorResponseData<null>(result));
+    }
+
+    /**
+     * Get the injected data from a data source variable. This only works for data source variables
+     * that are in injected data mode. If no data is set, an empty list will be returned.
+     * @param variableId the id of the variable
+     * @returns a DataPage with an array of data objects
+     */
+    getInjectedData = async (variableId: string): Promise<EditorResponse<DataPage>> => {
+        const res = await this.#editorAPI;
+        return res
+            .getInjectedDataSourceVariableData(variableId)
+            .then((result) => getEditorResponseData<EditorDataPage<EngineDataItem>>(result))
+            .then((resp) => {
+                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
+                if (resp.parsedData) {
+                    update.parsedData = {
+                        ...resp.parsedData,
+                        data: resp.parsedData.data.map((e: EngineDataItem) =>
+                            this.#dataItemMappingTools.mapEngineToDataItem(e),
+                        ),
+                    };
+                }
+                return update;
+            });
+    };
+
+    /**
+     * Sets the model for a data source variable. This only works for data source variables
+     * that are in injected data mode.
+     *
+     * @param variableId the id of the data source variable to update
+     * @param value the model to set for the data source variable
+     * @returns
+     */
+    setInjectedModel = async (variableId: string, value: DataSourceVariableDataModel) => {
+        const model = value.properties;
+        const itemIdPropertyName = value.itemIdPropertyName;
+        const res = await this.#editorAPI;
+        return res
+            .setInjectedDataSourceVariableModel(variableId, JSON.stringify(model), itemIdPropertyName)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the source type for a data source variable.
+     *
+     * @param variableId the id of the data source variable to update
+     * @param sourceType the source type to set for the data source variable
+     * @returns
+     */
+    setSourceType = async (variableId: string, sourceType: DataSourceVariableSourceType) => {
+        const res = await this.#editorAPI;
+        return res
+            .setDataSourceVariableSourceType(variableId, sourceType)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * Sets the connector for a data source variable. This only works for data source variables
+     * that are in connector source type.
+     *
+     * @param variableId the id of the data source variable to update
+     * @param registration the connector registration to set for the data source variable
+     * @returns The new id of the connector
+     */
+    setConnector = async (variableId: string, registration: ConnectorRegistration) => {
+        const res = await this.#editorAPI;
+        const connectorCompatibilityTools = new ConnectorCompatibilityTools();
+        const connectorRegistration = connectorCompatibilityTools.makeConnectorSourceForwardsCompatible(registration);
+        return res
+            .setDataSourceVariableConnector(variableId, JSON.stringify(connectorRegistration))
+            .then((result) => getEditorResponseData<Id>(result));
+    };
+
+    /**
+     * Removes the connector for a data source variable. This only works for data source variables
+     * that are in connector source type.
+     *
+     * @param variableId the id of the data source variable to update
+     * @returns
+     */
+    removeConnector = async (variableId: string) => {
+        const res = await this.#editorAPI;
+        return res
+            .setDataSourceVariableConnector(variableId, null)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+}
+
 /**
  * The VariableController is responsible for all communication regarding the variables.
  * Methods inside this controller can be called by `window.SDK.variable.{method-name}`
@@ -219,14 +367,21 @@ export class VariableController {
 
     number: NumberVariable;
     date: DateVariable;
+    /**
+     * @experimental
+     * This controller is experimental and might change in future releases.
+     * Use at your own risk.
+     */
+    dataSource: DataSourceVariable;
 
     /**
      * @ignore
      */
-    constructor(editorAPI: EditorAPI) {
+    constructor(editorAPI: EditorAPI, dataItemMappingTools: DataItemMappingTools) {
         this.#editorAPI = editorAPI;
         this.number = new NumberVariable(this.#editorAPI);
         this.date = new DateVariable(this.#editorAPI);
+        this.dataSource = new DataSourceVariable(this.#editorAPI, dataItemMappingTools);
     }
 
     /**

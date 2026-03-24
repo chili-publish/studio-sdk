@@ -15,6 +15,7 @@ export class VariableController {
      */
     #editorAPI: EditorAPI;
     image: ImageVariableController;
+    dataSource: DataSourceVariableController;
 
     /**
      * @ignore
@@ -22,6 +23,7 @@ export class VariableController {
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
         this.image = new ImageVariableController(editorAPI);
+        this.dataSource = new DataSourceVariableController(editorAPI);
     }
 
     /**
@@ -146,5 +148,23 @@ export class ImageVariableController {
         return res
             .setImageVariableConnectorContext(id, JSON.stringify(context))
             .then((result) => getEditorResponseData<null>(result));
+    };
+}
+
+export class DataSourceVariableController {
+    #editorAPI: EditorAPI;
+
+    constructor(editorAPI: EditorAPI) {
+        this.#editorAPI = editorAPI;
+    }
+
+    setConnector = async (
+        id: string,
+        registration: ConnectorLocalRegistration | ConnectorGrafxRegistration | ConnectorUrlRegistration,
+    ) => {
+        const res = await this.#editorAPI;
+        return res
+            .setDataSourceVariableConnector(id, JSON.stringify(registration))
+            .then((result) => getEditorResponseData<Id>(result));
     };
 }

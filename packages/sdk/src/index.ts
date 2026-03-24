@@ -83,6 +83,8 @@ export {
     VariableVisibilityOperator,
     VariableVisibilityTargetType,
     VariableVisibilityType,
+    DataSourceVariableDisplayOptionsType,
+    DataSourceVariableSourceType,
 } from './types/VariableTypes';
 
 export type {
@@ -106,6 +108,13 @@ export type {
     VariableVisibilityConditionValue,
     VariableVisibilityLayout,
     VariableWithValue,
+    DataSourceVariable,
+    DataSourceVariableDisplayOptions,
+    DataSourceVariableDisplayOptionsList,
+    DataSourceVariableDisplayOptionsTable,
+    InjectedDataSourceVariableSource,
+    ConnectorDataSourceVariableSource,
+    DataSourceVariableSource,
 } from './types/VariableTypes';
 
 export type { Color, ColorUpdate, DocumentColor } from './types/ColorStyleTypes';
