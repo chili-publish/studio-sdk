@@ -673,7 +673,7 @@ describe('VariableController', () => {
     });
 
     it('sets the injected data source variable model', async () => {
-        const model = { properties: [{ name: 'Model 1', type: 'number' }], itemIdPropertyName: 'id' };
+        const model = { properties: [{ name: 'Model 1', type: 'number' } as const], itemIdPropertyName: 'id' };
         await mockedVariableController.dataSource.setInjectedModel('1', model);
         expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setInjectedDataSourceVariableModel).toHaveBeenCalledWith(

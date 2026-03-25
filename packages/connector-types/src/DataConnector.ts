@@ -21,7 +21,7 @@ export type DataSourceVariableDataModel = DataModel & {
 
 export type DataModelProperty = {
     name: string;
-    type: string;
+    type: 'singleLine' | 'multiLine' | 'number' | 'date' | 'boolean';
 };
 
 export interface OneDirectionalNavigation {
