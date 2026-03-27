@@ -2,14 +2,8 @@ const STUDIO_DOCUMENT = `{"selectedLayoutId":"0","sdkVersion":"1.6.2","engineVer
 
 let SELECTED_LAYOUT_ID: string;
 
-import StudioSDK, {
-  AuthRefreshTypeEnum,
-  Frame,
-  GrafxTokenAuthCredentials,
-  RefreshedAuthCredendentials,
-} from "@chili-publish/studio-sdk";
+import StudioSDK, { Frame } from "@chili-publish/studio-sdk";
 import type {
-  AuthRefreshRequest,
   FrameLayoutType,
   LayoutListItemType,
   ToolType,
@@ -33,30 +27,6 @@ const SDK = new StudioSDK({
     onToolChanged(tool);
   },
   editorId: "chili-editor-example",
-  onAuthExpired: async (editorAuthExpiredRequest: AuthRefreshRequest) => {
-    // GraFx Token is expired
-    if (editorAuthExpiredRequest.type === AuthRefreshTypeEnum.grafxToken) {
-      // NOTE: "refreshGraFxToken" should be implemented by integration
-      const newGraFxToken = await refreshGraFxToken();
-      return new GrafxTokenAuthCredentials(newGraFxToken);
-    }
-    // Connector's token is expired
-    if (editorAuthExpiredRequest.type === AuthRefreshTypeEnum.any) {
-      // When headerValue is not defined, it means connector's request comes directly from the Browser (NOT from Environment API proxy endpoint)
-      const hasNotConfiguredAuth = !!editorAuthExpiredRequest.headerValue;
-
-      if (!hasNotConfiguredAuth) {
-        return null;
-      }
-
-      // NOTE: "refreshConnectorToken" should be implemented by integration
-      const newToken = await refreshConnectorToken();
-      return new RefreshedAuthCredendentials({
-        Authorization: `Bearer ${newToken}`,
-      });
-    }
-    return null;
-  },
 });
 
 const zoomToPage = async () => {
