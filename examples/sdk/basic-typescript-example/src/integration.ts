@@ -166,9 +166,3 @@ export default {
   playAnimation,
   onLayoutClick,
 };
-function refreshGraFxToken(): Promise<string> {
-  throw new Error("Function not implemented.");
-}
-function refreshConnectorToken(): Promise<string> {
-  throw new Error("Function not implemented.");
-}
