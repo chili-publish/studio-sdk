@@ -2,8 +2,14 @@ const STUDIO_DOCUMENT = `{"selectedLayoutId":"0","sdkVersion":"1.6.2","engineVer
 
 let SELECTED_LAYOUT_ID: string;
 
-import StudioSDK, { Frame } from "@chili-publish/studio-sdk";
+import StudioSDK, {
+  AuthRefreshTypeEnum,
+  Frame,
+  GrafxTokenAuthCredentials,
+  RefreshedAuthCredendentials,
+} from "@chili-publish/studio-sdk";
 import type {
+  AuthRefreshRequest,
   FrameLayoutType,
   LayoutListItemType,
   ToolType,
@@ -27,6 +33,30 @@ const SDK = new StudioSDK({
     onToolChanged(tool);
   },
   editorId: "chili-editor-example",
+  onAuthExpired: async (editorAuthExpiredRequest: AuthRefreshRequest) => {
+    // GraFx Token is expired
+    if (editorAuthExpiredRequest.type === AuthRefreshTypeEnum.grafxToken) {
+      // NOTE: "refreshGraFxToken" should be implemented by integration
+      const newGraFxToken = await refreshGraFxToken();
+      return new GrafxTokenAuthCredentials(newGraFxToken);
+    }
+    // Connector's token is expired
+    if (editorAuthExpiredRequest.type === AuthRefreshTypeEnum.any) {
+      // When headerValue is not defined, it means connector's request comes directly from the Browser (NOT from Environment API proxy endpoint)
+      const hasNotConfiguredAuth = !!editorAuthExpiredRequest.headerValue;
+
+      if (!hasNotConfiguredAuth) {
+        return null;
+      }
+
+      // NOTE: "refreshConnectorToken" should be implemented by integration
+      const newToken = await refreshConnectorToken();
+      return new RefreshedAuthCredendentials({
+        Authorization: `Bearer ${newToken}`,
+      });
+    }
+    return null;
+  },
 });
 
 const zoomToPage = async () => {
@@ -42,11 +72,11 @@ const zoomToPage = async () => {
     top: 0,
     width: Math.floor(
       document.getElementsByTagName("iframe")?.[0]?.getBoundingClientRect()
-        .width
+        .width,
     ),
     height: Math.floor(
       document.getElementsByTagName("iframe")?.[0]?.getBoundingClientRect()
-        .height
+        .height,
     ),
   };
 
@@ -55,7 +85,7 @@ const zoomToPage = async () => {
     zoomParams.left,
     zoomParams.top,
     zoomParams.width,
-    zoomParams.height
+    zoomParams.height,
   );
 };
 
@@ -115,13 +145,13 @@ const onFrameLayoutChange = (selectedFrameLayout: FrameLayoutType) => {
     const frameWidthInput = document.getElementById("frameWidth");
     frameWidthInput.setAttribute(
       "value",
-      String(selectedFrameLayout.width.value)
+      String(selectedFrameLayout.width.value),
     );
 
     const frameHeightInput = document.getElementById("frameHeight");
     frameHeightInput.setAttribute(
       "value",
-      String(selectedFrameLayout.height.value)
+      String(selectedFrameLayout.height.value),
     );
   }
 };
@@ -166,3 +196,9 @@ export default {
   playAnimation,
   onLayoutClick,
 };
+function refreshGraFxToken(): Promise<string> {
+  throw new Error("Function not implemented.");
+}
+function refreshConnectorToken(): Promise<string> {
+  throw new Error("Function not implemented.");
+}

@@ -2,7 +2,8 @@ import { CallSender } from 'penpal';
 import { EditorAPI, EditorRawAPI, EditorResponse } from '../types/CommonTypes';
 import { Component, ComponentConnectorCapabilities, ComponentPreviewType } from '../types/ComponentConnectorTypes';
 import { ConnectorConfigOptions, MetaData, QueryOptions, QueryPage } from '../types/ConnectorTypes';
-import { getEditorResponseData, throwEditorResponseError } from '../utils/EditorResponseData';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { throwEditorResponseError } from '../exceptions';
 
 /**
  * @experimental This controller is still experimental and might change in future releases.
