@@ -1,5 +1,6 @@
 import { EditorResponse } from '../../types/CommonTypes';
-import { castToEditorResponse, ConnectorHttpError, getEditorResponseData } from '../../utils/EditorResponseData';
+import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
+import { ConnectorHttpError } from '../../exceptions';
 
 const partialMockResult = {
     status: 200,
@@ -57,6 +58,17 @@ describe('EditorResponseData Util(s)', () => {
     });
 
     describe('getEditorResponseData', () => {
+        let consoleErrorSpy: jest.SpyInstance;
+
+        beforeAll(() => {
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        });
+
+        afterAll(() => {
+            consoleErrorSpy.mockRestore();
+        });
+
         const mockErrorResponse: EditorResponse<null> = {
             status: 12345, // Dummy engine error code
             success: false,
@@ -110,6 +122,37 @@ describe('EditorResponseData Util(s)', () => {
                 expect(cause.name).toBe(mockErrorResponse.status.toString());
                 expect(cause.message).toBe(mockErrorResponse.error);
             }
+        });
+
+        it('should invoke custom onFailure when response is unsuccessful', () => {
+            const onFailure = jest.fn((response: EditorResponse<unknown>) => {
+                expect(response).toBe(mockErrorResponse);
+                throw new Error('custom-onFailure');
+            });
+
+            expect(() => getEditorResponseData(mockErrorResponse, onFailure)).toThrow('custom-onFailure');
+            expect(onFailure).toHaveBeenCalledTimes(1);
+            expect(onFailure).toHaveBeenCalledWith(mockErrorResponse);
+        });
+
+        it('should fall back to throwEditorResponseError when custom onFailure returns without throwing', () => {
+            const onFailure = jest.fn().mockReturnValue(undefined);
+
+            expect(() => getEditorResponseData(mockErrorResponse, onFailure)).toThrow(Error);
+            expect(onFailure).toHaveBeenCalledTimes(1);
+            expect(onFailure).toHaveBeenCalledWith(mockErrorResponse);
+        });
+
+        it('should not invoke custom onFailure when response is successful', () => {
+            const onFailure = jest.fn(() => {
+                throw new Error('onFailure should not run');
+            });
+            const response = castToEditorResponse({ key: 'value' });
+
+            const result = getEditorResponseData<{ key: string }>(response, onFailure);
+
+            expect(onFailure).not.toHaveBeenCalled();
+            expect(result.parsedData).toEqual({ key: 'value' });
         });
     });
 });

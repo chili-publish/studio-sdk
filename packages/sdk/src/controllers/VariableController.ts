@@ -23,6 +23,7 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 import { EditorDataPage } from '../types/DataConnectorTypes';
 import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
+import { throwVariableException } from '../exceptions';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -584,7 +585,9 @@ export class VariableController {
      */
     setValue = async (id: Id, value: string | boolean | number | null) => {
         const res = await this.#editorAPI;
-        return res.setVariableValue(id, value).then((result) => getEditorResponseData<null>(result));
+        return res.setVariableValue(id, value).then((result) =>
+            getEditorResponseData<null>(result, (r) => throwVariableException(r, { id })),
+        );
     };
 
     /**
