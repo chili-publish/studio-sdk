@@ -3,15 +3,7 @@ import { AnimationPlaybackType, FrameAnimationType } from '../types/AnimationTyp
 import { BarcodeFrameValidationResult } from '../types/BarcodeTypes';
 import { CharacterStyle } from '../types/CharacterStyleTypes';
 import { DocumentColor } from '../types/ColorStyleTypes';
-import {
-    AsyncError,
-    ConfigType,
-    Id,
-    LogLevel,
-    MaybePromise,
-    RuntimeConfigType,
-    SelectedLayoutFrame,
-} from '../types/CommonTypes';
+import { ConfigType, Id, LogLevel, MaybePromise, RuntimeConfigType, SelectedLayoutFrame } from '../types/CommonTypes';
 import { AuthCredentials, AuthRefreshRequest, ConnectorEvent, ConnectorInstance } from '../types/ConnectorTypes';
 import { DocumentIssue, UndoState } from '../types/DocumentTypes';
 import { EngineEditMode } from '../types/EngineEditModeTypes';
@@ -29,6 +21,7 @@ import { EngineCallbackHandler } from './EngineCallbackHandler';
 import { EngineEvent } from './EngineEvent';
 import { ToolType } from './Enums';
 import { BrandKitMedia } from '../types/BrandKitTypes';
+import { AsyncError } from '../exceptions';
 
 export class ConfigHelper {
     /**

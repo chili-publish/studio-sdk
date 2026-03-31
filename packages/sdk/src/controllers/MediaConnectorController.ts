@@ -17,7 +17,8 @@ import {
     MediaDownloadIntent,
     MediaDownloadType,
 } from '../types/MediaConnectorTypes';
-import { getEditorResponseData, throwEditorResponseError } from '../utils/EditorResponseData';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { throwEditorResponseError } from '../exceptions';
 
 /**
  * The MediaConnectorController is responsible for all communication regarding media connectors.

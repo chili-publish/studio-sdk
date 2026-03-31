@@ -1,5 +1,6 @@
 import { EditorAPI, EditorRawAPI, EditorResponse, Id } from '../types/CommonTypes';
-import { getEditorResponseData, throwEditorResponseError } from '../utils/EditorResponseData';
+import { getEditorResponseData } from '../utils/EditorResponseData';
+import { throwEditorResponseError } from '../exceptions';
 import { Page, SnapshotSettings } from '../types/PageTypes';
 import { CallSender } from 'penpal';
 
