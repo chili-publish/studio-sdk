@@ -1,8 +1,9 @@
+import { ActionEventErrorData } from '../exceptions';
 import { DocumentAction } from './ActionTypes';
 import { BasicAnimationsEmphasisType, BasicAnimationsIntroType, BasicAnimationsOutroType } from './AnimationTypes';
 import { CharacterStyle } from './CharacterStyleTypes';
 import { DocumentColor } from './ColorStyleTypes';
-import { ActionEventErrorData, Id } from './CommonTypes';
+import { Id } from './CommonTypes';
 import { BlendMode, FrameTypeEnum } from './FrameTypes';
 import { LayoutIntent, LayoutType } from './LayoutTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';

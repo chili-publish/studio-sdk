@@ -27,8 +27,10 @@ import {
     AuthRefreshRequest,
     AuthRefreshTypeEnum,
     ConnectorStateType,
+    ConnectorType,
     GrafxTokenAuthCredentials,
     RefreshedAuthCredendentials,
+    ConnectorSupportedAuth,
 } from '../../types/ConnectorTypes';
 import type { Page, PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
@@ -411,6 +413,15 @@ describe('SubscriberController', () => {
             remoteConnectorId: remoteConnectorId,
             type: AuthRefreshTypeEnum.grafxToken,
             headerValue: null,
+            connectorDefinition: {
+                id: 'connectorId',
+                name: 'connectorName',
+                type: ConnectorType.media,
+                supportedAuthentication: {
+                    browser: [ConnectorSupportedAuth.StaticKey],
+                    server: [ConnectorSupportedAuth.StaticKey],
+                },
+            },
         };
 
         const anyAuthRefreshRequest: AuthRefreshRequest = {
@@ -418,6 +429,15 @@ describe('SubscriberController', () => {
             remoteConnectorId: remoteConnectorId,
             type: AuthRefreshTypeEnum.any,
             headerValue: staticHeaderValue,
+            connectorDefinition: {
+                id: 'connectorId',
+                name: 'connectorName',
+                type: ConnectorType.media,
+                supportedAuthentication: {
+                    browser: [ConnectorSupportedAuth.StaticKey],
+                    server: [ConnectorSupportedAuth.StaticKey],
+                },
+            },
         };
 
         it('returns the token defined by the callback', async () => {

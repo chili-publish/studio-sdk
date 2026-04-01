@@ -1,6 +1,5 @@
 import { SDK } from './sdk';
 
-export { ConnectorHttpError } from './utils/EditorResponseData';
 export { DownloadFormats, EnvironmentType, FramePropertyNames, LayoutPropertyNames, ToolType } from './utils/Enums';
 
 export {
@@ -126,7 +125,6 @@ export type {
     FrameAnimationPropertiesType,
     FrameAnimationType,
 } from './types/AnimationTypes';
-export { ActionAsyncError, DataRowAsyncError } from './types/CommonTypes';
 export type {
     ConfigType,
     EditorResponse,
@@ -230,6 +228,9 @@ export type { Viewport } from './types/ViewportTypes';
 export * from './types/PageTypes';
 
 export * from './types/EngineEditModeTypes';
+
+export * from './exceptions/Exceptions';
+export * from './exceptions/AsyncExceptions';
 
 export default SDK;
 

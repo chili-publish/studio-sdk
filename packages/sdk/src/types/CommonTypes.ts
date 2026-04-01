@@ -1,5 +1,5 @@
 import { CallSender } from 'penpal';
-import { ActionEditorEvent, ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
+import { ConnectorInstance, DocumentAction, DocumentFontFamily, ToolType, ViewMode } from '..';
 import { EngineCallbackHandler } from '../utils/EngineCallbackHandler';
 import { EngineEvent } from '../utils/EngineEvent';
 import { AnimationPlaybackType, FrameAnimationType } from './AnimationTypes';
@@ -20,6 +20,7 @@ import { SelectedTextStyle } from './TextStyleTypes';
 import { Variable } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
 import { BrandKitMedia } from './BrandKitTypes';
+import { AsyncError } from '../exceptions';
 
 export type Id = string;
 export type BaseConfigType = {
@@ -406,62 +407,5 @@ export interface SelectedLayoutFrame {
     type: FrameTypeEnum;
     isVisible: boolean;
 }
-export interface ActionEventErrorData {
-    event: ActionEditorEvent;
-    actionIds: Id[];
-}
-
-interface AsyncErrorBase {
-    type: AsyncErrorType;
-    message: string;
-}
-
-export class ActionAsyncError implements AsyncErrorBase {
-    type: AsyncErrorType;
-    id?: string;
-    event?: ActionEditorEvent;
-    eventChain?: ActionEventErrorData[];
-    message: string;
-
-    constructor(message: string, id?: string, event?: ActionEditorEvent, eventChain?: ActionEventErrorData[]) {
-        this.type = AsyncErrorType.action;
-        this.message = message;
-        this.id = id;
-        this.event = event;
-        this.eventChain = eventChain;
-    }
-}
-
-export class DataRowAsyncError implements AsyncErrorBase {
-    type: AsyncErrorType;
-    count: number;
-    exceptions: EditorExceptionDto[];
-    message: string;
-
-    constructor(count: number, message: string, exceptions: EditorExceptionDto[]) {
-        this.type = AsyncErrorType.dataRow;
-        this.count = count;
-        this.message = message;
-        this.exceptions = exceptions;
-    }
-}
-
-export enum AsyncErrorType {
-    action = 'action',
-    dataRow = 'dataRow',
-}
-
-export interface ExceptionContext {
-    variableId?: Id;
-}
-
-export interface EditorExceptionDto {
-    type: string;
-    code: number;
-    message: string;
-    context?: ExceptionContext;
-}
-
-export type AsyncError = ActionAsyncError | DataRowAsyncError;
 
 export type PrivateData = Record<string, string>;

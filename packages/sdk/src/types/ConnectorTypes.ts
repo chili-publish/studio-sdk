@@ -331,6 +331,7 @@ export type AuthRefreshRequest = {
     remoteConnectorId: Id;
     type: AuthRefreshTypeEnum;
     headerValue: string | null;
+    connectorDefinition: ConnectorDefinition;
 };
 
 export type ConnectorOptions = ContextDictionary;
@@ -352,4 +353,21 @@ export class UploadAssetValidationError extends Error {
     constructor(message: string, public type: UploadAssetValidationErrorType) {
         super(message);
     }
+}
+
+export enum ConnectorSupportedAuth {
+    StaticKey = 'staticKey',
+    OAuth2ClientCredentials = 'oAuth2ClientCredentials',
+    OAuth2AuthorizationCode = 'oAuth2AuthorizationCode',
+    OAuth2ResourceOwnerPassword = 'oAuth2ResourceOwnerPassword',
+    OAuth2JwtBearer = 'oAuth2JwtBearer',
+    None = 'none',
+}
+
+interface ConnectorDefinition {
+    id: Id;
+    name: string;
+    type: ConnectorType;
+    supportedAuthentication: { browser: ConnectorSupportedAuth[]; server: ConnectorSupportedAuth[] };
+    externalSourceId?: string | null;
 }

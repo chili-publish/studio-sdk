@@ -42,11 +42,11 @@ const zoomToPage = async () => {
     top: 0,
     width: Math.floor(
       document.getElementsByTagName("iframe")?.[0]?.getBoundingClientRect()
-        .width
+        .width,
     ),
     height: Math.floor(
       document.getElementsByTagName("iframe")?.[0]?.getBoundingClientRect()
-        .height
+        .height,
     ),
   };
 
@@ -55,7 +55,7 @@ const zoomToPage = async () => {
     zoomParams.left,
     zoomParams.top,
     zoomParams.width,
-    zoomParams.height
+    zoomParams.height,
   );
 };
 
@@ -115,13 +115,13 @@ const onFrameLayoutChange = (selectedFrameLayout: FrameLayoutType) => {
     const frameWidthInput = document.getElementById("frameWidth");
     frameWidthInput.setAttribute(
       "value",
-      String(selectedFrameLayout.width.value)
+      String(selectedFrameLayout.width.value),
     );
 
     const frameHeightInput = document.getElementById("frameHeight");
     frameHeightInput.setAttribute(
       "value",
-      String(selectedFrameLayout.height.value)
+      String(selectedFrameLayout.height.value),
     );
   }
 };
