@@ -6,6 +6,6 @@ This PR
 
 ## Related tickets
 
--   [WRS-NUMBER](https://support.chili-publish.com/projects/WRS/issues/WRS-NUMBER)
+- [WRS-NUMBER](https://chilipublishintranet.atlassian.net/browse/WRS-NUMBER)
 
 ## Screenshots
