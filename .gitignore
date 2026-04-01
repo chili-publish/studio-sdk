@@ -22,3 +22,5 @@ packages/sdk/connector-types/
 .env.*
 
 examples/**/package-lock.json
+
+.cursor/skills

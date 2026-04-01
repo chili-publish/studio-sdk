@@ -355,7 +355,7 @@ export class UploadAssetValidationError extends Error {
     }
 }
 
-export enum SupportedAuth {
+export enum ConnectorSupportedAuth {
     StaticKey = 'staticKey',
     OAuth2ClientCredentials = 'oAuth2ClientCredentials',
     OAuth2AuthorizationCode = 'oAuth2AuthorizationCode',
@@ -368,6 +368,6 @@ interface ConnectorDefinition {
     id: Id;
     name: string;
     type: ConnectorType;
-    supportedAuthentication: { browser: SupportedAuth[]; server: SupportedAuth[] };
+    supportedAuthentication: { browser: ConnectorSupportedAuth[]; server: ConnectorSupportedAuth[] };
     externalSourceId?: string | null;
 }

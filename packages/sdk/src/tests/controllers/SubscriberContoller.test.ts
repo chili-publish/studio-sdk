@@ -30,7 +30,7 @@ import {
     ConnectorType,
     GrafxTokenAuthCredentials,
     RefreshedAuthCredendentials,
-    SupportedAuth,
+    ConnectorSupportedAuth,
 } from '../../types/ConnectorTypes';
 import type { Page, PageSize } from '../../types/PageTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
@@ -417,7 +417,10 @@ describe('SubscriberController', () => {
                 id: 'connectorId',
                 name: 'connectorName',
                 type: ConnectorType.media,
-                supportedAuthentication: { browser: [SupportedAuth.StaticKey], server: [SupportedAuth.StaticKey] },
+                supportedAuthentication: {
+                    browser: [ConnectorSupportedAuth.StaticKey],
+                    server: [ConnectorSupportedAuth.StaticKey],
+                },
             },
         };
 
@@ -430,7 +433,10 @@ describe('SubscriberController', () => {
                 id: 'connectorId',
                 name: 'connectorName',
                 type: ConnectorType.media,
-                supportedAuthentication: { browser: [SupportedAuth.StaticKey], server: [SupportedAuth.StaticKey] },
+                supportedAuthentication: {
+                    browser: [ConnectorSupportedAuth.StaticKey],
+                    server: [ConnectorSupportedAuth.StaticKey],
+                },
             },
         };
 
