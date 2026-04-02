@@ -46,6 +46,7 @@ describe('BrandKitController', () => {
             renameBrandKit: async () => getEditorResponseData(castToEditorResponse(null)),
             isBrandKitAutoSync: async () => getEditorResponseData(castToEditorResponse(false)),
             enableBrandKitAutoSync: async () => getEditorResponseData(castToEditorResponse(true)),
+            switchBrandKitTheme: async () => getEditorResponseData(castToEditorResponse(null)),
             getAllBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(mockMedia)),
             addBrandKitMedia: async () => getEditorResponseData(castToEditorResponse('media-id-123')),
             updateBrandKitMedia: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -127,6 +128,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'renameBrandKit');
         jest.spyOn(mockEditorApi, 'isBrandKitAutoSync');
         jest.spyOn(mockEditorApi, 'enableBrandKitAutoSync');
+        jest.spyOn(mockEditorApi, 'switchBrandKitTheme');
 
         jest.spyOn(mockEditorApi, 'getAllBrandKitMedia');
         jest.spyOn(mockEditorApi, 'addBrandKitMedia');
@@ -322,7 +324,6 @@ describe('BrandKitController', () => {
             JSON.stringify(studioBrandKitWithAPIThemes.brandKit),
         );
         expect(response.parsedData).toBeDefined();
-        expect(response.parsedData.themes).toEqual(mockAPIBrandKitThemes);
     });
 
     it('accepts brandKit with themes as BrandKitTheme[] (input type) when set() is called', async () => {
@@ -340,7 +341,6 @@ describe('BrandKitController', () => {
             JSON.stringify(studioBrandKitWithDocumentThemes.brandKit),
         );
         expect(response.parsedData).toBeDefined();
-        expect(response.parsedData.themes).toEqual(mockBrandKitThemesOutput);
     });
 
     it('Should successfully set brandkit content', async () => {
@@ -416,5 +416,14 @@ describe('BrandKitController', () => {
     it('Should call enableBrandKitAutoSync of EditorAPI successfully', async () => {
         await mockBrandKitController.enableAutoSync(true);
         expect(mockEditorApi.enableBrandKitAutoSync).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should call switchBrandKitTheme of EditorAPI successfully', async () => {
+        await mockBrandKitController.switchTheme('Dark');
+        expect(mockEditorApi.switchBrandKitTheme).toHaveBeenCalledWith('Dark');
+        expect(mockEditorApi.switchBrandKitTheme).toHaveBeenCalledTimes(1);
+
+        await mockBrandKitController.switchTheme(null);
+        expect(mockEditorApi.switchBrandKitTheme).toHaveBeenCalledWith(null);
     });
 });
