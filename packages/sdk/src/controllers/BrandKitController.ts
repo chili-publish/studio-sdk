@@ -264,4 +264,16 @@ export class BrandKitController {
         const res = await this.#editorAPI;
         return res.enableBrandKitAutoSync(enableAutoSync).then((result) => getEditorResponseData<boolean>(result));
     };
+
+    /**
+     * Switches the active brand kit theme.
+     * @param themeName - Theme name to apply, or `null` / `undefined` to use the default (root) brand kit theme
+     * @returns
+     */
+    switchTheme = async (themeName: string | null | undefined) => {
+        const res = await this.#editorAPI;
+        return res
+            .switchBrandKitTheme(themeName ?? null)
+            .then((result) => getEditorResponseData<null>(result));
+    };
 }

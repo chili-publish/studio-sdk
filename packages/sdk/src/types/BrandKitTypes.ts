@@ -164,7 +164,7 @@ export type BrandKitInternal = {
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
     media: BrandKitMedia[];
-    themes: BrandKitTheme[];
+
 };
 
 /**
@@ -174,11 +174,12 @@ export type EngineBrandKit = {
     id: string | null;
     version: string | null;
     name: string | null;
+    selectedThemeName: string | null;
     colors: DocumentColor[];
     gradients: DocumentGradient[];
     fontFamilies: DocumentFontFamily[];
     characterStyles: CharacterStyle[];
     paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];
-    themes: BrandKitTheme[];
+    isAutoSync: boolean | null;
 };
