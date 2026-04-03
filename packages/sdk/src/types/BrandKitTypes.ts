@@ -147,6 +147,8 @@ export type BrandKitTheme = {
 export type StudioBrandKit = {
     id: string;
     name: string;
+    // This is here to be non-breaking but will be removed in next versions
+    selectedThemeName: string | null;
     fontConnectorId: string;
     brandKit: APIBrandKit;
 };
@@ -158,13 +160,13 @@ export type BrandKitInternal = {
     id: string;
     version: string;
     name: string;
+    selectedThemeName: string | null;
     colors: DocumentColor[];
     gradients: DocumentGradient[];
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
     media: BrandKitMedia[];
-
 };
 
 /**
