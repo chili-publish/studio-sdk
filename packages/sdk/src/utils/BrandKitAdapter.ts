@@ -32,6 +32,7 @@ export function engineBrandKitToStudioBrandKit(engine: EngineBrandKit): StudioBr
     return {
         id: engine.id ?? '',
         name: engine.name ?? '',
+        selectedThemeName: engine.selectedThemeName,
         fontConnectorId,
         brandKit,
     };
@@ -45,6 +46,7 @@ export function engineBrandKitToBrandKitInternal(engine: EngineBrandKit): BrandK
         id: engine.id ?? '',
         version: engine.version ?? '',
         name: engine.name ?? '',
+        selectedThemeName: engine.selectedThemeName,
         colors: engine.colors,
         gradients: engine.gradients,
         fonts: engine.fontFamilies,
