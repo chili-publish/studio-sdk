@@ -314,7 +314,7 @@ export const mockMedia = [
 ];
 
 /** Document-style colors for BrandKit theme mocks (DocumentColor[]). */
-export const mockBrandKitThemeDocumentColors = [
+const mockBrandKitThemeDocumentColors = [
     {
         id: 'c09480cd-d662-4460-9aa4-11e7d5a327df',
         name: 'Black',
@@ -323,7 +323,7 @@ export const mockBrandKitThemeDocumentColors = [
 ] as const;
 
 /** Document-style character style for BrandKit theme mocks (CharacterStyle). */
-export const mockBrandKitThemeCharacterStyle = {
+const mockBrandKitThemeCharacterStyle = {
     id: '410e4ffb-ecd9-4f02-bcaf-7ace11104ab1',
     name: 'New CharacterStyle',
     fontSize: 12,
@@ -351,7 +351,7 @@ export const mockBrandKitThemeCharacterStyle = {
 };
 
 /** Document-style paragraph style for BrandKit theme mocks (ParagraphStyle). */
-export const mockBrandKitThemeParagraphStyle = {
+const mockBrandKitThemeParagraphStyle = {
     id: '760f651b-2aba-47e8-b99d-61f2619f2714',
     name: 'Basic Paragraph',
     fontKey: '8a0788ff-cf05-403d-9893-120bc3773603',

@@ -11,9 +11,6 @@ import {
     mockParagraphStyles,
     mockStudioBrandKit,
     mockMedia,
-    mockBrandKitThemeDocumentColors,
-    mockBrandKitThemeCharacterStyle,
-    mockBrandKitThemeParagraphStyle,
     mockBrandKitThemesOutput,
     mockAPIBrandKitThemes,
 } from '../__mocks__/Brandkit';
@@ -256,7 +253,7 @@ describe('BrandKitController', () => {
         expect(response.parsedData.brandKit.characterStyles).toHaveLength(mockCharacterStyles.length);
         expect(response.parsedData.brandKit.paragraphStyles).toHaveLength(mockParagraphStyles.length);
         expect(response.parsedData.brandKit.media).toHaveLength(mockMedia.length);
-        expect(response.parsedData.brandKit.themes).toHaveLength(mockBrandKitThemesOutput.length);
+        expect(response.parsedData.brandKit.themes).toEqual([]);
     });
 
     it('Should successfully remove brandkit content', async () => {
@@ -295,18 +292,10 @@ describe('BrandKitController', () => {
         ).toEqual(mockCharacterStyles.map((style) => style.id));
     });
 
-    it('returns brandKit.themes as BrandKitTheme[] (output type) when get() is called', async () => {
+    it('does not expose engine themes on get(); brandKit.themes is always empty', async () => {
         const response = await mockBrandKitController.get();
 
-        expect(response.parsedData.brandKit.themes).toEqual(mockBrandKitThemesOutput);
-        expect(response.parsedData.brandKit.themes[0]).toMatchObject({
-            id: 'theme-id-1',
-            name: 'Output Theme',
-            colors: [...mockBrandKitThemeDocumentColors],
-            characterStyles: [mockBrandKitThemeCharacterStyle],
-            paragraphStyles: [mockBrandKitThemeParagraphStyle],
-            media: mockMedia,
-        });
+        expect(response.parsedData.brandKit.themes).toEqual([]);
     });
 
     it('accepts brandKit with themes as APIBrandKitTheme[] (input type) when set() is called', async () => {
