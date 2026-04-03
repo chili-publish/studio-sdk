@@ -26,7 +26,8 @@ export function engineBrandKitToStudioBrandKit(engine: EngineBrandKit): StudioBr
         characterStyles: engine.characterStyles as unknown as BrandKitCharacterStyle[],
         paragraphStyles: engine.paragraphStyles as unknown as BrandKitParagraphStyle[],
         media: engine.media as unknown as APIBrandKitMedia[],
-        themes: engine.themes,
+        // BrandKit themes are not exposed from engine
+        themes: [],
     };
     return {
         id: engine.id ?? '',
@@ -50,6 +51,5 @@ export function engineBrandKitToBrandKitInternal(engine: EngineBrandKit): BrandK
         characterStyles: engine.characterStyles,
         paragraphStyles: engine.paragraphStyles,
         media: engine.media,
-        themes: engine.themes,
     };
 }
