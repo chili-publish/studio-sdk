@@ -46,3 +46,22 @@ export enum CornerRadiusType {
     only = 'only',
     none = 'none',
 }
+
+export type CornerRadius = CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
+
+export type ShapeFrameRect = {
+    type: ShapeType.rectangle;
+    cornerRadius?: CornerRadius;
+};
+
+export type ShapeFrameEllipse = {
+    type: ShapeType.ellipse;
+};
+
+export type ShapeFramePolygon = {
+    type: ShapeType.polygon;
+    sides: number;
+    cornerRadius?: CornerRadius;
+};
+
+export type ShapeFrameSource = ShapeFrameRect | ShapeFrameEllipse | ShapeFramePolygon;

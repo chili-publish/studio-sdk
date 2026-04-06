@@ -1,6 +1,6 @@
 import { FrameController } from '../../controllers/FrameController';
 import { BarcodeType } from '../../types/BarcodeTypes';
-import { ColorUsage, ColorUsageType } from '../../types/ColorStyleTypes';
+import { ColorType, ColorUsage, ColorUsageType } from '../../types/ColorStyleTypes';
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
     AnchorTargetEdgeType,
@@ -20,7 +20,7 @@ import {
     VerticalAlign,
 } from '../../types/FrameTypes';
 import { GradientType } from '../../types/GradientStyleTypes';
-import { ShapeType } from '../../types/ShapeTypes';
+import { ShapeFrameSource, ShapeProperties, ShapeType } from '../../types/ShapeTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
@@ -94,6 +94,8 @@ const mockedEditorApi: EditorAPI = {
     resetAllAssetCropOverrides: async () => getEditorResponseData(castToEditorResponse(null)),
     updateFrameGradientSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setSmartCropSubjectId: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameContainerShape: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameContainerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -162,6 +164,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'resetAllAssetCropOverrides');
     jest.spyOn(mockedEditorApi, 'updateFrameGradientSettings');
     jest.spyOn(mockedEditorApi, 'setSmartCropSubjectId');
+    jest.spyOn(mockedEditorApi, 'setFrameContainerShape');
+    jest.spyOn(mockedEditorApi, 'setFrameContainerProperties');
 
     id = mockSelectFrame.id;
 });
@@ -838,6 +842,40 @@ describe('Anchoring', () => {
         expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ gradient: gradient }),
+        );
+    });
+
+    it('should be possible to set frame container shape', async () => {
+        const shapeFrameSource: ShapeFrameSource = {
+            type: ShapeType.rectangle,
+        };
+        await mockedFrameController.setFrameContainerShape(id, shapeFrameSource);
+        expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledWith(
+            id,
+            JSON.stringify(shapeFrameSource),
+        );
+    });
+
+    it('should be possible to set frame container properties', async () => {
+        const shapeProperties: ShapeProperties = {
+            enableFill: true,
+            fillColor: { 
+                type: ColorUsageType.local, 
+                color: { type: ColorType.hex, value: '#FF0000' } 
+            },
+            enableStroke: true,
+            strokeColor: { 
+                type: ColorUsageType.local, 
+                color: { type: ColorType.hex, value: '#000000' } 
+            },
+            strokeWeight: 2,
+        };
+        await mockedFrameController.setFrameContainerProperties(id, shapeProperties);
+        expect(mockedEditorApi.setFrameContainerProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameContainerProperties).toHaveBeenCalledWith(
+            id,
+            JSON.stringify(shapeProperties),
         );
     });
 });
