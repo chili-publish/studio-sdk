@@ -1,4 +1,4 @@
-import type { APIBrandKitTheme, BrandKitTheme } from '../../types/BrandKitTypes';
+import type { APIBrandKitTheme } from '../../types/BrandKitTypes';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 import { Alignment, Case, Scripting } from '../../types/TextStyleTypes';
 import {
@@ -401,21 +401,6 @@ const mockBrandKitThemeParagraphStyle = {
         ],
     },
 };
-
-/** BrandKit themes in document/output shape, as returned by get(). */
-export const mockBrandKitThemesOutput: BrandKitTheme[] = [
-    {
-        id: 'theme-id-1',
-        name: 'Output Theme',
-        inheritsFrom: null,
-        dateCreated: null,
-        lastModifiedDate: null,
-        colors: [...mockBrandKitThemeDocumentColors],
-        characterStyles: [mockBrandKitThemeCharacterStyle],
-        paragraphStyles: [mockBrandKitThemeParagraphStyle],
-        media: mockMedia,
-    },
-];
 
 /** BrandKit themes in API/input shape, as accepted by set(). */
 export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [

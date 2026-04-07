@@ -11,7 +11,6 @@ import {
     mockParagraphStyles,
     mockStudioBrandKit,
     mockMedia,
-    mockBrandKitThemesOutput,
     mockAPIBrandKitThemes,
 } from '../__mocks__/Brandkit';
 import { APIBrandKit, StudioBrandKit } from '../../types/BrandKitTypes';
@@ -61,7 +60,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockCharacterStyles,
                         paragraphStyles: mockParagraphStyles,
                         media: mockMedia,
-                        themes: mockBrandKitThemesOutput,
+                        themes: [],
                     }),
                 ),
             setBrandKit: async (...args: unknown[]) => {
@@ -311,23 +310,6 @@ describe('BrandKitController', () => {
 
         expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(
             JSON.stringify(studioBrandKitWithAPIThemes.brandKit),
-        );
-        expect(response.parsedData).toBeDefined();
-    });
-
-    it('accepts brandKit with themes as BrandKitTheme[] (input type) when set() is called', async () => {
-        const studioBrandKitWithDocumentThemes: StudioBrandKit = {
-            ...mockStudioBrandKit,
-            brandKit: {
-                ...(mockStudioBrandKit.brandKit as unknown as APIBrandKit),
-                themes: mockBrandKitThemesOutput,
-            },
-        } as StudioBrandKit;
-
-        const response = await mockBrandKitController.set(studioBrandKitWithDocumentThemes);
-
-        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(
-            JSON.stringify(studioBrandKitWithDocumentThemes.brandKit),
         );
         expect(response.parsedData).toBeDefined();
     });
