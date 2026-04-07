@@ -126,20 +126,9 @@ export type APIBrandKit = {
     characterStyles: BrandKitCharacterStyle[];
     paragraphStyles: BrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
-    themes: APIBrandKitTheme[] | BrandKitTheme[];
+    themes: APIBrandKitTheme[];
 };
 
-export type BrandKitTheme = {
-    id: string;
-    name: string;
-    inheritsFrom: string | null;
-    dateCreated: string | null;
-    lastModifiedDate: string | null;
-    colors: DocumentColor[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
-};
 
 /**
  * User-facing brand kit type returned by BrandKitController.get() and accepted by BrandKitController.set().
