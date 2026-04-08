@@ -9,7 +9,6 @@ import {
     mockFonts,
     mockParagraphStyles,
     mockMedia,
-    mockBrandKitThemesOutput,
 } from '../../../tests/__mocks__/Brandkit';
 
 const mockBrandKitResponse = {
@@ -44,7 +43,7 @@ beforeEach(() => {
                     characterStyles: mockCharacterStyles,
                     paragraphStyles: mockParagraphStyles,
                     media: mockMedia,
-                    themes: mockBrandKitThemesOutput,
+                    themes: [],
                 }),
             );
         },
