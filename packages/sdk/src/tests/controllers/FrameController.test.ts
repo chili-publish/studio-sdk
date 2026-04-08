@@ -1,6 +1,6 @@
 import { FrameController } from '../../controllers/FrameController';
 import { BarcodeType } from '../../types/BarcodeTypes';
-import { ColorType, ColorUsage, ColorUsageType } from '../../types/ColorStyleTypes';
+import { ColorUsage, ColorUsageType } from '../../types/ColorStyleTypes';
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
     AnchorTargetEdgeType,
@@ -20,7 +20,7 @@ import {
     VerticalAlign,
 } from '../../types/FrameTypes';
 import { GradientType } from '../../types/GradientStyleTypes';
-import { ShapeFrameSource, ShapeProperties, ShapeType } from '../../types/ShapeTypes';
+import { ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';

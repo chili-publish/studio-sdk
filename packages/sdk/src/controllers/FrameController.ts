@@ -29,7 +29,7 @@ import {
     VerticalAlign,
 } from '../types/FrameTypes';
 import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
-import { ShapeProperties, ShapeType, ShapeFrameSource } from '../types/ShapeTypes';
+import { ShapeType, ShapeFrameSource } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
 
