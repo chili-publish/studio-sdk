@@ -225,7 +225,6 @@ export type {
     SpotHEXColorValue,
     SpotRGBColorValue,
     StudioBrandKit,
-    BrandKitTheme,
 } from './types/BrandKitTypes';
 
 export type { ComponentGridSettings, FixedComponentGridSettings } from './types/ComponentGridTypes';
