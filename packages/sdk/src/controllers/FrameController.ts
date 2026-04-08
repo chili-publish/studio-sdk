@@ -748,17 +748,6 @@ export class FrameController {
     };
 
     /**
-     * This method will set the container properties of a specified frame
-     * @param frameId the id of the frame that needs to get updated
-     * @param delta the delta object for updating container properties
-     * @returns
-     */
-    setFrameContainerProperties = async (frameId: Id, delta: ShapeProperties) => {
-        const res = await this.#editorAPI;
-        return res.setFrameContainerProperties(frameId, JSON.stringify(delta)).then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * This method will make the specified image frame go into cropping mode.
      * @param id the id of a specific image frame
      * @param type the type of cropping mode to enter. Defaults to frameCrop.

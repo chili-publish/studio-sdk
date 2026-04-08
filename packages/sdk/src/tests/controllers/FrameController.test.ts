@@ -856,26 +856,4 @@ describe('Anchoring', () => {
             JSON.stringify(shapeFrameSource),
         );
     });
-
-    it('should be possible to set frame container properties', async () => {
-        const shapeProperties: ShapeProperties = {
-            enableFill: true,
-            fillColor: { 
-                type: ColorUsageType.local, 
-                color: { type: ColorType.hex, value: '#FF0000' } 
-            },
-            enableStroke: true,
-            strokeColor: { 
-                type: ColorUsageType.local, 
-                color: { type: ColorType.hex, value: '#000000' } 
-            },
-            strokeWeight: 2,
-        };
-        await mockedFrameController.setFrameContainerProperties(id, shapeProperties);
-        expect(mockedEditorApi.setFrameContainerProperties).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameContainerProperties).toHaveBeenCalledWith(
-            id,
-            JSON.stringify(shapeProperties),
-        );
-    });
 });
