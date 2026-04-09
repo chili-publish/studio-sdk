@@ -4,6 +4,7 @@ import {
     BidirectionalDataPageItem,
     BidirectionalPageConfig,
     DataPage,
+    DataSourceVariableDataModel,
     PageConfig,
     PageItemOptions,
 } from '../../types/DataConnectorTypes';
@@ -122,6 +123,12 @@ describe('DataConnectorController', () => {
 
     it('Should call the getModel method', async () => {
         await mockedDataConnectorController.getModel(connectorId, context);
+        expect(mockedEditorApi.dataConnectorGetModel).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.dataConnectorGetModel).toHaveBeenCalledWith(connectorId, JSON.stringify(context));
+    });
+
+    it('Should call the getModel method with a DataSourceVariableDataModel', async () => {
+        await mockedDataConnectorController.getModel<DataSourceVariableDataModel>(connectorId, context);
         expect(mockedEditorApi.dataConnectorGetModel).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.dataConnectorGetModel).toHaveBeenCalledWith(connectorId, JSON.stringify(context));
     });

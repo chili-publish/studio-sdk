@@ -18,6 +18,7 @@ export type {
     DataConnectorCapabilities,
     DataItem,
     DataModel,
+    DataSourceVariableDataModel,
     DataPage,
     BidirectionalDataPage,
     BidirectionalDataPageItem,
