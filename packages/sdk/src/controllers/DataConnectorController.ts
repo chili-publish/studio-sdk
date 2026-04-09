@@ -143,7 +143,7 @@ export class DataConnectorController {
      */
     async getModel<R extends DataModel = DataModel>(
         connectorId: string,
-        context: MetaData,
+        context: MetaData = {},
     ): Promise<EditorResponse<R>> {
         const res = await this.#editorAPI;
         return res
