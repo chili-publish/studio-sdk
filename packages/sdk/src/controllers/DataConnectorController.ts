@@ -139,14 +139,17 @@ export class DataConnectorController {
      * Query a specific DataConnector for a data model using the dynamic context as parameter.
      * @param connectorId unique id of the data connector
      * @param context context that will be available in the connector script.
-     * @returns DataModel
+     * @returns DataModel or DataSourceVariableDataModel
      */
-    getModel = async (connectorId: string, context: MetaData = {}) => {
+    async getModel<R extends DataModel = DataModel>(
+        connectorId: string,
+        context: MetaData = {},
+    ): Promise<EditorResponse<R>> {
         const res = await this.#editorAPI;
         return res
             .dataConnectorGetModel(connectorId, JSON.stringify(context))
-            .then((result) => getEditorResponseData<DataModel>(result));
-    };
+            .then((result) => getEditorResponseData<R>(result));
+    }
 
     /**
      * All connectors have a certain set of mappings they allow to be passed into the connector methods their context. This
