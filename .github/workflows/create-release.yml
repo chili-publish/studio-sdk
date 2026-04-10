@@ -418,6 +418,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 
+  publish-docs:
+    needs: [production]
+    if: needs.production.result == 'success'
+    uses: ./.github/workflows/publish-docs.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      packages: read
+
   notify-teams:
     needs: [configure-parameters, uat-regular, uat-hotfix, production]
     if: always() && (needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.production.result == 'success')
