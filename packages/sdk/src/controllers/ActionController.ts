@@ -163,6 +163,7 @@ export class ActionController {
     /**
      * This method enables the execution of Component Actions.
      * Note this is enabled by default.
+     * @param shouldEnable whether to enable or disable component actions
      * @returns
      */
     enableComponentActions = async (shouldEnable: boolean) => {
