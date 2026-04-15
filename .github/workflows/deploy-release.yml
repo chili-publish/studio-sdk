@@ -468,11 +468,31 @@ jobs:
         if: steps.check_hotfix.outputs.is_hotfix != 'true'
         run: node ./.github/scripts/replicate-version.js
 
+      - name: Update engine version from release
+        if: steps.check_hotfix.outputs.is_hotfix != 'true'
+        run: |
+          TAG_NAME="${{ needs.detect-release-type.outputs.tag_name }}"
+          ENGINE_JSON="packages/sdk/editor-engine.json"
+
+          # Read engine version from the released tag
+          ENGINE_VERSION=$(git show "${TAG_NAME}:${ENGINE_JSON}" | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).current")
+
+          echo "Engine version from release tag: $ENGINE_VERSION"
+
+          # Update editor-engine.json on main
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('$ENGINE_JSON', 'utf8'));
+            data.current = '$ENGINE_VERSION';
+            fs.writeFileSync('$ENGINE_JSON', JSON.stringify(data, null, 4));
+          "
+
       - name: Commit and push version bump
         if: steps.check_hotfix.outputs.is_hotfix != 'true'
         run: |
           git add package.json yarn.lock || true
           git add packages/*/package.json packages/*/yarn.lock || true
+          git add packages/sdk/editor-engine.json || true
           git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
           git push origin main
           echo "Pushed version bump to main branch"
