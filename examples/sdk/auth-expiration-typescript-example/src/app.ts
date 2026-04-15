@@ -1,17 +1,16 @@
 import {
+  GrafxTokenAuthCredentials,
+  RefreshedAuthCredendentials,
+} from "@chili-publish/studio-sdk";
+import {
   createOnAuthExpiredHandler,
   mockBrowserNoneInjectionRequest,
   mockGrafxTokenRefreshRequest,
 } from "./authExpiredHandler";
 import { initStudio } from "./integration";
 
-const GRAFX_TOKEN_INITIAL = "mock-grafx-access-token";
-
-const getGrafxAccessToken = async (forceRefresh: boolean): Promise<string | null> => {
-  if (forceRefresh) {
-    return `mock-grafx-access-token-refreshed-${Date.now()}`;
-  }
-  return GRAFX_TOKEN_INITIAL;
+const getGrafxAccessToken = async (): Promise<string> => {
+  return `mock-grafx-access-token-refreshed-${Date.now()}`;
 };
 
 function setSimulateOutput(message: string): void {
@@ -23,9 +22,15 @@ function setSimulateOutput(message: string): void {
 
 window.onload = () => {
   const onAuthExpired = createOnAuthExpiredHandler({
-    getGrafxAccessToken,
-    getConnectorAccessTokenForInjection: async () => {
-      return "placeholder-connector-access-token";
+    refreshGrafxCredentials: async () => {
+      const token = await getGrafxAccessToken();
+      return new GrafxTokenAuthCredentials(token);
+    },
+    refreshConnectorCredentials: async () => {
+      const connectorToken = "placeholder-connector-access-token";
+      return new RefreshedAuthCredendentials({
+        Authorization: `Bearer ${connectorToken}`,
+      });
     },
   });
 
@@ -55,8 +60,7 @@ window.onload = () => {
       await initStudio({
         onAuthExpired,
         getAccessTokenForInitialConfig: async () => {
-          const t = await getGrafxAccessToken(false);
-          return t ?? "";
+          return getGrafxAccessToken();
         },
       });
       setSimulateOutput("Editor ready.");

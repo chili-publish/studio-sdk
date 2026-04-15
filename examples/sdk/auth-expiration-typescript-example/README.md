@@ -1,18 +1,20 @@
 # Studio SDK — `onAuthExpired` example
 
-Demonstrates wiring `onAuthExpired` and mapping `AuthRefreshRequest` to `GrafxTokenAuthCredentials`.
+Demonstrates wiring `onAuthExpired` and mapping `AuthRefreshRequest` to `GrafxTokenAuthCredentials` / `RefreshedAuthCredendentials`.
 
 ## SDK types
 
 - [`AuthRefreshRequest`](../../../packages/sdk/src/types/ConnectorTypes.ts)
-- [`GrafxTokenAuthCredentials`](../../../packages/sdk/src/types/ConnectorTypes.ts)
+- [`GrafxTokenAuthCredentials`](../../../packages/sdk/src/types/ConnectorTypes.ts) / [`RefreshedAuthCredendentials`](../../../packages/sdk/src/types/ConnectorTypes.ts)
 
 ## Handler branches
 
-| Case                      | Request                                                           | Returns                                                                    |
-| ------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| GraFx / Environment token | `type: grafxToken`                                                | `new GrafxTokenAuthCredentials(token)`                                     |
-| Browser + `none`          | `type: any` + `ConnectorSupportedAuth.None`                       | `new GrafxTokenAuthCredentials(grafxToken, { Authorization: 'Bearer …' })` |
+The handler dispatches on `request.type` and delegates credential construction to callbacks:
+
+| `request.type` | Callback                     | Expected return type           |
+| --------------- | ---------------------------- | ------------------------------ |
+| `grafxToken`    | `refreshGrafxCredentials`     | `GrafxTokenAuthCredentials`    |
+| `any`           | `refreshConnectorCredentials` | `RefreshedAuthCredendentials`  |
 
 ## Run locally
 

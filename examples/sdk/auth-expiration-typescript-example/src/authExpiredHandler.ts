@@ -6,12 +6,13 @@ import {
   AuthRefreshTypeEnum,
   ConnectorSupportedAuth,
   ConnectorType,
-  GrafxTokenAuthCredentials,
 } from "@chili-publish/studio-sdk";
 
 export interface AuthExpiredHandlerCallbacks {
-  getGrafxAccessToken: (forceRefresh: boolean) => Promise<string | null>;
-  getConnectorAccessTokenForInjection: () => Promise<string | null>;
+  refreshGrafxCredentials: () => Promise<AuthCredentials | null>;
+  refreshConnectorCredentials: (
+    request: AuthRefreshRequest,
+  ) => Promise<AuthCredentials | null>;
 }
 
 export const createOnAuthExpiredHandler = (
@@ -22,27 +23,11 @@ export const createOnAuthExpiredHandler = (
   ): Promise<AuthCredentials | null> => {
     try {
       if (request.type === AuthRefreshTypeEnum.grafxToken) {
-        const token = await deps.getGrafxAccessToken(true);
-        if (token) {
-          return new GrafxTokenAuthCredentials(token);
-        }
-        return null;
+        return await deps.refreshGrafxCredentials();
       }
 
-      if (
-        request.type === AuthRefreshTypeEnum.any &&
-        request.connectorDefinition.supportedAuthentication.browser.includes(
-          ConnectorSupportedAuth.None,
-        )
-      ) {
-        const grafxToken = await deps.getGrafxAccessToken(true);
-        const connectorToken = await deps.getConnectorAccessTokenForInjection();
-        if (grafxToken && connectorToken) {
-          return new GrafxTokenAuthCredentials(grafxToken, {
-            Authorization: `Bearer ${connectorToken}`,
-          });
-        }
-        return null;
+      if (request.type === AuthRefreshTypeEnum.any) {
+        return await deps.refreshConnectorCredentials(request);
       }
 
       console.warn("Unsupported auth refresh request:", request);
