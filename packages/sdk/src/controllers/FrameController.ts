@@ -29,7 +29,7 @@ import {
     VerticalAlign,
 } from '../types/FrameTypes';
 import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
-import { ShapeType } from '../types/ShapeTypes';
+import { ShapeType, ShapeFrameSource } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
 
@@ -734,6 +734,17 @@ export class FrameController {
     setBlendMode = async (id: Id, blendMode: BlendMode) => {
         const res = await this.#editorAPI;
         return res.setFrameBlendMode(id, blendMode).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the container shape of a specified frame
+     * @param frameId the id of the frame that needs to get updated
+     * @param value the shape frame source object
+     * @returns
+     */
+    setFrameContainerShape = async (frameId: Id, value: ShapeFrameSource) => {
+        const res = await this.#editorAPI;
+        return res.setFrameContainerShape(frameId, JSON.stringify(value)).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
