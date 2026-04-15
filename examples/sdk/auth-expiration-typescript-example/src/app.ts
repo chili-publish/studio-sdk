@@ -2,7 +2,6 @@ import {
   createOnAuthExpiredHandler,
   mockBrowserNoneInjectionRequest,
   mockGrafxTokenRefreshRequest,
-  mockProxyConnectorRefreshRequest,
 } from "./authExpiredHandler";
 import { initStudio } from "./integration";
 
@@ -25,17 +24,12 @@ function setSimulateOutput(message: string): void {
 window.onload = () => {
   const onAuthExpired = createOnAuthExpiredHandler({
     getGrafxAccessToken,
-    refreshConnectorAuthForProxy: async (request) => {
-      console.log(request);
-      return { Authorization: "Bearer placeholder-proxy-refreshed-token" };
-    },
     getConnectorAccessTokenForInjection: async () => {
       return "placeholder-connector-access-token";
     },
   });
 
   const simulateGrafxBtn = document.getElementById("simulateGrafx");
-  const simulateProxyBtn = document.getElementById("simulateProxy");
   const simulateBrowserNoneBtn = document.getElementById("simulateBrowserNone");
 
   const runSimulation = async (
@@ -50,9 +44,6 @@ window.onload = () => {
 
   simulateGrafxBtn?.addEventListener("click", () => {
     void runSimulation("GraFx token", mockGrafxTokenRefreshRequest);
-  });
-  simulateProxyBtn?.addEventListener("click", () => {
-    void runSimulation("Proxy connector", mockProxyConnectorRefreshRequest);
   });
   simulateBrowserNoneBtn?.addEventListener("click", () => {
     void runSimulation("Browser / token injection", mockBrowserNoneInjectionRequest);
