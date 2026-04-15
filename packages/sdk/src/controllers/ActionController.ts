@@ -159,4 +159,14 @@ export class ActionController {
         const res = await this.#editorAPI;
         return res.enableActions().then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method enables the execution of Component Actions.
+     * Note this is enabled by default.
+     * @returns
+     */
+    enableComponentActions = async (shouldEnable: boolean) => {
+        const res = await this.#editorAPI;
+        return res.enableComponentActions().then((result) => getEditorResponseData<null>(result));
+    };
 }
