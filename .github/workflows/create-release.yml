@@ -292,6 +292,7 @@ jobs:
       pull-requests: read
     outputs:
       notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
+      version_commit_sha: ${{ steps.apply_version.outputs.version_commit_sha }}
     steps:
       - name: Validate branch
         run: |
@@ -422,6 +423,8 @@ jobs:
     needs: [production]
     if: needs.production.result == 'success'
     uses: ./.github/workflows/publish-docs.yml
+    with:
+      release_commit_sha: ${{ needs.production.outputs.version_commit_sha }}
     permissions:
       contents: read
       pages: write
