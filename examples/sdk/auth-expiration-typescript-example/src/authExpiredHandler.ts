@@ -1,4 +1,7 @@
-import type { AuthCredentials, AuthRefreshRequest } from "@chili-publish/studio-sdk";
+import type {
+  AuthCredentials,
+  AuthRefreshRequest,
+} from "@chili-publish/studio-sdk";
 import {
   AuthRefreshTypeEnum,
   ConnectorSupportedAuth,
@@ -6,15 +9,17 @@ import {
   GrafxTokenAuthCredentials,
 } from "@chili-publish/studio-sdk";
 
-export interface AuthExpiredHandlerDeps {
+export interface AuthExpiredHandlerCallbacks {
   getGrafxAccessToken: (forceRefresh: boolean) => Promise<string | null>;
   getConnectorAccessTokenForInjection: () => Promise<string | null>;
 }
 
 export const createOnAuthExpiredHandler = (
-  deps: AuthExpiredHandlerDeps,
+  deps: AuthExpiredHandlerCallbacks,
 ): ((request: AuthRefreshRequest) => Promise<AuthCredentials | null>) => {
-  return async (request: AuthRefreshRequest): Promise<AuthCredentials | null> => {
+  return async (
+    request: AuthRefreshRequest,
+  ): Promise<AuthCredentials | null> => {
     try {
       if (request.type === AuthRefreshTypeEnum.grafxToken) {
         const token = await deps.getGrafxAccessToken(true);
