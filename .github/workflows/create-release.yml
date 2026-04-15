@@ -292,7 +292,6 @@ jobs:
       pull-requests: read
     outputs:
       notification_text: ${{ steps.create_release_and_notify.outputs.notification_text }}
-      version_commit_sha: ${{ steps.apply_version.outputs.version_commit_sha }}
     steps:
       - name: Validate branch
         run: |
@@ -418,18 +417,6 @@ jobs:
           target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
         env:
           GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
-
-  publish-docs:
-    needs: [production]
-    if: needs.production.result == 'success'
-    uses: ./.github/workflows/publish-docs.yml
-    with:
-      release_commit_sha: ${{ needs.production.outputs.version_commit_sha }}
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-      packages: read
 
   notify-teams:
     needs: [configure-parameters, uat-regular, uat-hotfix, production]
