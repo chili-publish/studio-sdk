@@ -15,6 +15,13 @@ export interface ShapeProperties {
     allCornersSame?: boolean;
 }
 
+export interface ShapeContainerProperties {
+    enableStroke: boolean;
+    strokeColor: ColorUsage;
+    strokeWeight: number;
+    allCornersSame: boolean;
+}
+
 export interface CornerRadiusUpdateModel {
     radiusAll?: number;
     topLeft?: number;
