@@ -347,7 +347,7 @@ class DataSourceVariable {
             throwEditorResponseError({
                 success: false,
                 status: 400,
-                error: `Variable is not a injected data source variable`,
+                error: `Variable is not an injected data source variable`,
                 parsedData: null,
             });
         }

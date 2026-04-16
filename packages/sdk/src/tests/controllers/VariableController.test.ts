@@ -727,7 +727,7 @@ describe('VariableController', () => {
 
     it('throws when the variable is not an injected data source variable', async () => {
         await expect(mockedVariableController.dataSource.getInjectedItemById('1', '1')).rejects.toThrow(
-            'Variable is not a injected data source variable',
+            'Variable is not an injected data source variable',
         );
         expect(mockEditorApi.getInjectedDataSourceVariableData).not.toHaveBeenCalled();
     });
