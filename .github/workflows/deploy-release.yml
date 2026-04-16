@@ -168,8 +168,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
           scope: ${{ needs.detect-release-type.outputs.npm_scope }}
-      - name: Update to latest npm version
-        run: npm i -g npm@latest
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         env:
