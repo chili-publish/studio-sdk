@@ -168,8 +168,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
           scope: ${{ needs.detect-release-type.outputs.npm_scope }}
-      - name: Update to latest npm version
-        run: npm i -g npm@latest
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         env:
@@ -320,6 +318,18 @@ jobs:
               --source packages/actions/cdn/ \
               --overwrite true \
               --auth-mode login
+
+  publish-docs:
+    needs: [validate-tag-release, detect-release-type, preflight]
+    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
+    uses: ./.github/workflows/publish-docs.yml
+    with:
+      release_commit_sha: ${{ needs.detect-release-type.outputs.tag_name }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      packages: read
 
   purge-cdn:
     needs: [validate-tag-release, detect-release-type, deploy-azure]
