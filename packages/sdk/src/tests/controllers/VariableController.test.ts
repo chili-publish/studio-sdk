@@ -1,5 +1,6 @@
 import { VariableController } from '../../controllers/VariableController';
 import {
+    DataSourceVariable,
     DataSourceVariableDisplayOptionsType,
     Day,
     ImageVariable,
@@ -81,6 +82,25 @@ describe('VariableController', () => {
         outputDataSource: true,
     };
 
+    const injectedDataSourceVariable: DataSourceVariable = {
+        id: 'injected-data-source-var-1',
+        type: VariableType.dataSource,
+        name: '',
+        label: '',
+        isReadonly: false,
+        isRequired: false,
+        isVisible: true,
+        visibility: { type: VariableVisibilityType.visible },
+        occurrences: 0,
+        privateData: {},
+        displayOptions: { type: DataSourceVariableDisplayOptionsType.table },
+        value: {
+            type: DataSourceVariableSourceType.injected,
+            model: [{ name: 'id', type: 'singleLine' }],
+            itemIdPropertyName: 'id',
+        },
+    };
+
     const mockEditorApi: EditorAPI = {
         getVariableById: async () => getEditorResponseData(castToEditorResponse(variable)),
         getVariableByName: async () => getEditorResponseData(castToEditorResponse(listVar)),
@@ -120,7 +140,14 @@ describe('VariableController', () => {
         setVariableCharacterLimit: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableIsDontBreak: async () => getEditorResponseData(castToEditorResponse(null)),
         highlightVariableUsages: async () => getEditorResponseData(castToEditorResponse(variableUsagesReport)),
-        getInjectedDataSourceVariableData: async () => getEditorResponseData(castToEditorResponse(null)),
+        getInjectedDataSourceVariableData: async () =>
+            getEditorResponseData(
+                castToEditorResponse({
+                    data: [{ id: '1' }, { id: '2' }, { id: '3' }],
+                    continuationToken: null,
+                    previousPageToken: null,
+                }),
+            ),
         setDataSourceVariableSourceType: async () => getEditorResponseData(castToEditorResponse(null)),
         setInjectedDataSourceVariableModel: async () => getEditorResponseData(castToEditorResponse(null)),
         setDataSourceVariableConnector: async () => getEditorResponseData(castToEditorResponse('newConnectorId')),
@@ -670,6 +697,39 @@ describe('VariableController', () => {
         await mockedVariableController.dataSource.getInjectedData('injected-data-source-var-1');
         expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledWith('injected-data-source-var-1');
+    });
+
+    it('returns a single injected data item by id', async () => {
+        (mockEditorApi.getVariableById as jest.Mock).mockResolvedValue(
+            getEditorResponseData(castToEditorResponse(injectedDataSourceVariable)),
+        );
+        const response = await mockedVariableController.dataSource.getInjectedItemById(
+            'injected-data-source-var-1',
+            '2',
+        );
+        expect(mockEditorApi.getVariableById).toHaveBeenCalledWith('injected-data-source-var-1');
+        expect(mockEditorApi.getInjectedDataSourceVariableData).toHaveBeenCalledWith('injected-data-source-var-1');
+        expect(response.parsedData).toStrictEqual({
+            data: { id: '2' },
+            continuationToken: null,
+            previousPageToken: null,
+        });
+    });
+
+    it('throws when the injected item id is not found', async () => {
+        (mockEditorApi.getVariableById as jest.Mock).mockResolvedValue(
+            getEditorResponseData(castToEditorResponse(injectedDataSourceVariable)),
+        );
+        await expect(
+            mockedVariableController.dataSource.getInjectedItemById('injected-data-source-var-1', 'missing'),
+        ).rejects.toThrow('Item not found in injected data for variable injected-data-source-var-1');
+    });
+
+    it('throws when the variable is not an injected data source variable', async () => {
+        await expect(mockedVariableController.dataSource.getInjectedItemById('1', '1')).rejects.toThrow(
+            'Variable is not a injected data source variable',
+        );
+        expect(mockEditorApi.getInjectedDataSourceVariableData).not.toHaveBeenCalled();
     });
 
     it('sets the injected data source variable model', async () => {
