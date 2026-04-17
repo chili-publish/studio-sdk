@@ -1,6 +1,7 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
 import {
+    BidirectionalDataPage,
     BidirectionalDataPageItem,
     DataItem,
     DataPage,
@@ -281,13 +282,13 @@ class DataSourceVariable {
      * @param variableId the id of the variable
      * @returns a DataPage with an array of data objects
      */
-    getInjectedData = async (variableId: string): Promise<EditorResponse<DataPage>> => {
+    getInjectedData = async (variableId: string): Promise<EditorResponse<BidirectionalDataPage>> => {
         const res = await this.#editorAPI;
         return res
             .getInjectedDataSourceVariableData(variableId)
             .then((result) => getEditorResponseData<EditorDataPage<EngineDataItem>>(result))
             .then((resp) => {
-                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
+                const update: EditorResponse<BidirectionalDataPage> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
                     update.parsedData = {
                         ...resp.parsedData,
