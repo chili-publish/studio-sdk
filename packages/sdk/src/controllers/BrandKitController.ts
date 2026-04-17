@@ -267,10 +267,10 @@ export class BrandKitController {
 
     /**
      * Switches the active brand kit theme.
-     * @param themeName - Theme name or root brand kit name to apply
+     * @param themeName - Theme name
      * @returns
      */
-    switchTheme = async (themeName: string | null) => {
+    switchTheme = async (themeName: string) => {
         const res = await this.#editorAPI;
         return res
             .switchBrandKitTheme(themeName)
