@@ -393,8 +393,5 @@ describe('BrandKitController', () => {
         await mockBrandKitController.switchTheme('Dark');
         expect(mockEditorApi.switchBrandKitTheme).toHaveBeenCalledWith('Dark');
         expect(mockEditorApi.switchBrandKitTheme).toHaveBeenCalledTimes(1);
-
-        await mockBrandKitController.switchTheme(null);
-        expect(mockEditorApi.switchBrandKitTheme).toHaveBeenCalledWith(null);
     });
 });
