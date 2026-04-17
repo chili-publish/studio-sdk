@@ -16,10 +16,10 @@ export interface ShapeProperties {
 }
 
 export interface ShapeContainerProperties {
-    enableStroke: boolean;
-    strokeColor: ColorUsage;
-    strokeWeight: number;
-    allCornersSame: boolean;
+    enableStroke?: boolean;
+    strokeColor?: ColorUsage;
+    strokeWeight?: number;
+    allCornersSame?: boolean;
 }
 
 export interface CornerRadiusUpdateModel {
