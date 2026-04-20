@@ -404,12 +404,12 @@ jobs:
             exit 1
           fi
 
-          if ! REL_JSON=$(gh release view "$BASE_RAW" --json tagName,isDraft,prerelease 2>/dev/null); then
+          if ! REL_JSON=$(gh release view "$BASE_RAW" --json tagName,isDraft,isPrerelease 2>/dev/null); then
             echo "❌ Error: No GitHub release found for tag $BASE_RAW"
             exit 1
           fi
           IS_DRAFT=$(echo "$REL_JSON" | jq -r '.isDraft')
-          IS_PRERELEASE=$(echo "$REL_JSON" | jq -r '.prerelease')
+          IS_PRERELEASE=$(echo "$REL_JSON" | jq -r '.isPrerelease')
           if [ "$IS_DRAFT" = "true" ]; then
             echo "❌ Error: old_prd_hotfix_base_tag ($BASE_RAW) is a draft release. Only finalized releases can be patched."
             exit 1
