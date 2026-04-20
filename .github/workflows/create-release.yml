@@ -423,6 +423,17 @@ jobs:
           fi
 
           TAG_FOR_NOTES=$(echo "$REL_JSON" | jq -r '.tagName')
+
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_VERSION" != "$BASE_RAW" ]; then
+            echo "❌ Error: package.json version ($CURRENT_VERSION) must match old_prd_hotfix_base_tag ($BASE_RAW)."
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$BASE_RAW" HEAD; then
+            echo "❌ Error: Current branch is not based on tag $BASE_RAW."
+            exit 1
+          fi
+
           REPO="${{ github.repository }}"
           HIGHEST=$(gh api "repos/$REPO/releases" --paginate --jq '.[] | select(.draft == false and .prerelease == false) | .tag_name' \
             | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
