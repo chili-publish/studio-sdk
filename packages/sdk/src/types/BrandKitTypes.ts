@@ -1,10 +1,8 @@
-import { CharacterStyle } from './CharacterStyleTypes';
-import { APIColorType, DocumentColor } from './ColorStyleTypes';
-import { Id } from './CommonTypes';
-import { DocumentCharacterStyle, DocumentParagraphStyle } from './DocumentTypes';
+import { APIColorType, ColorUsage, DocumentColor } from './ColorStyleTypes';
+import { Id, PropertyState } from './CommonTypes';
 import { DocumentFontFamily } from './FontTypes';
 import { DocumentGradient } from './GradientStyleTypes';
-import { ParagraphStyle } from './ParagraphStyleTypes';
+import { BulletListStyle, NumericListStyle } from './ParagraphStyleTypes';
 import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type RGB = { r: number; g: number; b: number };
@@ -129,7 +127,6 @@ export type APIBrandKit = {
     themes: APIBrandKitTheme[];
 };
 
-
 /**
  * User-facing brand kit type returned by BrandKitController.get() and accepted by BrandKitController.set().
  */
@@ -143,34 +140,72 @@ export type StudioBrandKit = {
 };
 
 /**
- * Internal brand kit shape returned by BrandKitController.set() with document-style resources.
+ * Response shape from getBrandKit() / setBrandKit().
  */
-export type BrandKitInternal = {
-    id: string;
-    version: string;
-    name: string;
-    selectedThemeName: string | null;
-    colors: DocumentColor[];
-    gradients: DocumentGradient[];
-    fonts: DocumentFontFamily[];
-    characterStyles: DocumentCharacterStyle[];
-    paragraphStyles: DocumentParagraphStyle[];
-    media: BrandKitMedia[];
-};
-
-/**
- * Engine response shape from getBrandKit() / setBrandKit(). Used internally to adapt to StudioBrandKit / BrandKitInternal.
- */
-export type EngineBrandKit = {
+export type BrandKit = {
     id: string | null;
     version: string | null;
     name: string | null;
     selectedThemeName: string | null;
-    colors: DocumentColor[];
-    gradients: DocumentGradient[];
-    fontFamilies: DocumentFontFamily[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
+    colors: PropertyState<DocumentColor>[];
+    gradients: PropertyState<DocumentGradient>[];
+    fontFamilies: PropertyState<DocumentFontFamily>[];
+    characterStyles: PropertyState<CharacterStyleWithThemeOverrides>[];
+    paragraphStyles: PropertyState<ParagraphStyleWithThemeOverrides>[];
+    media: PropertyState<BrandKitMedia>[];
     isAutoSync: boolean | null;
+};
+
+export type CharacterStyleWithThemeOverrides = {
+    id: string;
+    name: string;
+    fontKey: PropertyState<string | null>;
+    fontSize: PropertyState<number | null>;
+    typographicCase: PropertyState<Case | null>;
+    kerningOn: PropertyState<boolean | null>;
+    subSuperScript: PropertyState<Scripting | null>;
+    trackingLeft: PropertyState<number | null>;
+    trackingRight: PropertyState<number | null>;
+    baselineShiftValue: PropertyState<string | null>;
+    lineHeight: PropertyState<number | null>;
+    textOverprint: PropertyState<boolean | null>;
+    color: PropertyState<ColorUsage>;
+    strokeColor: PropertyState<ColorUsage>;
+    fillColorApplied: PropertyState<boolean | null>;
+    strokeColorApplied: PropertyState<boolean | null>;
+    underline: PropertyState<boolean | null>;
+    lineThrough: PropertyState<boolean | null>;
+    strokeWidth: PropertyState<number | null>;
+};
+
+export type ParagraphStyleWithThemeOverrides = {
+    id: string;
+    name: string;
+    fontKey: PropertyState<string | null>;
+    fontSize: PropertyState<number | null>;
+    typographicCase: PropertyState<Case | null>;
+    kerningOn: PropertyState<boolean | null>;
+    subSuperScript: PropertyState<Scripting | null>;
+    trackingLeft: PropertyState<number | null>;
+    trackingRight: PropertyState<number | null>;
+    indentStart: PropertyState<string | null>;
+    indentEnd: PropertyState<string | null>;
+    spaceBefore: PropertyState<string | null>;
+    spaceAfter: PropertyState<string | null>;
+    textIndent: PropertyState<string | null>;
+    strokeWidth: PropertyState<number | null>;
+    alignToBaseLine: PropertyState<boolean | null>;
+    baselineShiftValue: PropertyState<string | null>;
+    lineHeight: PropertyState<number | null>;
+    textAlign: PropertyState<Alignment | null>;
+    textAlignLast: PropertyState<Alignment | null>;
+    textOverprint: PropertyState<boolean | null>;
+    color: PropertyState<ColorUsage>;
+    strokeColor: PropertyState<ColorUsage>;
+    fillColorApplied: PropertyState<boolean | null>;
+    strokeColorApplied: PropertyState<boolean | null>;
+    underline: PropertyState<boolean | null>;
+    lineThrough: PropertyState<boolean | null>;
+    bulletListStyle: PropertyState<BulletListStyle>;
+    numericListStyle: PropertyState<NumericListStyle>;
 };
