@@ -47,19 +47,3 @@ export type APIBrandKit = {
     media: APIBrandKitMedia[];
     themes: APIBrandKitTheme[];
 };
-
-/**
- * Unified brand kit type for the next API (output of get() and set()).
- * Represents the flat engine shape (id, version, name, and document-style resources).
- */
-export type BrandKit = {
-    id: string | null;
-    version: string | null;
-    name: string | null;
-    colors: DocumentColor[];
-    gradients: DocumentGradient[];
-    fontFamilies: DocumentFontFamily[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
-};
