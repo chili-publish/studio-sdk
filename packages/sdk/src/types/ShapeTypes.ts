@@ -67,7 +67,7 @@ export type ShapeFrameEllipse = {
 
 export type ShapeFramePolygon = {
     type: ShapeType.polygon;
-    sides: number;
+    sides?: number;
     cornerRadius?: CornerRadius;
 };
 
