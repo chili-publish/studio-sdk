@@ -1,5 +1,5 @@
 name: "Merge and Delete Branch"
-description: "Merge source branch to target branch using --strategy=ours, then delete source branch"
+description: "Optionally merge source into target (--strategy=ours), then delete the source branch"
 inputs:
   source_branch:
     required: true
@@ -7,10 +7,15 @@ inputs:
   target_branch:
     required: true
     description: "Target branch to merge to"
+  merge_into_target:
+    required: false
+    default: "true"
+    description: "When false, skip merging source into target (e.g. old-line PRD hotfix); source branch is still deleted."
 runs:
   using: composite
   steps:
     - name: Merge source branch to target branch
+      if: inputs.merge_into_target == 'true'
       shell: bash
       run: |
         SOURCE_BRANCH="${{ inputs.source_branch }}"
@@ -39,6 +44,12 @@ runs:
       run: |
         SOURCE_BRANCH="${{ inputs.source_branch }}"
         TARGET_BRANCH="${{ inputs.target_branch }}"
+
+        # Ensure target exists locally (needed when merge step was skipped)
+        git fetch origin "$TARGET_BRANCH" || {
+          echo "❌ Failed to fetch target branch: $TARGET_BRANCH"
+          exit 1
+        }
 
         # Checkout target branch first to avoid being on the branch we want to delete
         git checkout "$TARGET_BRANCH" || {

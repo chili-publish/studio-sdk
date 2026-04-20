@@ -60,6 +60,7 @@ jobs:
       npm_scope: ${{ steps.detect.outputs.npm_scope }}
       subscription_id: ${{ steps.detect.outputs.subscription_id }}
       storage_account_name: ${{ steps.detect.outputs.storage_account_name }}
+      update_global_latest: ${{ steps.global_latest.outputs.update_global_latest }}
     steps:
       - name: Detect release type
         id: detect
@@ -95,6 +96,37 @@ jobs:
           # Extract version from tag (remove v prefix if present)
           VERSION=$(echo "$TAG_NAME" | sed 's/^v//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Compute global latest for CDN / main bump
+        id: global_latest
+        run: |
+          if [ "${{ steps.detect.outputs.is_prd }}" != "true" ]; then
+            echo "update_global_latest=true" >> $GITHUB_OUTPUT
+            echo "Non-PRD release: always update upload/latest"
+            exit 0
+          fi
+
+          VERSION="${{ steps.detect.outputs.version }}"
+          HIGHEST=$(gh api "repos/${{ github.repository }}/releases" --paginate --jq '.[] | select(.draft == false and .prerelease == false) | .tag_name' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V \
+            | tail -1)
+
+          if [ -z "$HIGHEST" ]; then
+            echo "update_global_latest=true" >> $GITHUB_OUTPUT
+            echo "No stable semver releases found; updating upload/latest"
+            exit 0
+          fi
+
+          if [ "$VERSION" = "$HIGHEST" ]; then
+            echo "update_global_latest=true" >> $GITHUB_OUTPUT
+            echo "PRD tag $VERSION is global highest stable; will update upload/latest and allow main bump"
+          else
+            echo "update_global_latest=false" >> $GITHUB_OUTPUT
+            echo "PRD tag $VERSION is below global highest stable ($HIGHEST); skipping global upload/latest and main bump"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   preflight:
     needs: [validate-tag-release]
@@ -274,14 +306,19 @@ jobs:
         if: needs.detect-release-type.outputs.is_prd == 'true'
         env:
           RELEASE_NAME: ${{ needs.detect-release-type.outputs.version }}
+          UPDATE_GLOBAL_LATEST: ${{ needs.detect-release-type.outputs.update_global_latest }}
         run: |
           path=packages/sdk/upload/latest
           minorversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+")
           patchversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+" | cut -d. -f3)
           minorlatestpath=packages/sdk/upload/$minorversion/latest
           patchlatestpath=packages/sdk/upload/$minorversion/$patchversion/latest
-          mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          if [ "$UPDATE_GLOBAL_LATEST" = "true" ]; then
+            mkdir -p ${path%"/merge"}
+            cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          else
+            echo "Skipping global packages/sdk/upload/latest (not global highest stable PRD)"
+          fi
           mkdir -p ${minorlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
           mkdir -p ${patchlatestpath%"/merge"}
@@ -386,7 +423,7 @@ jobs:
 
   bump-main-version:
     needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
-    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
+    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true' && needs.detect-release-type.outputs.update_global_latest == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write

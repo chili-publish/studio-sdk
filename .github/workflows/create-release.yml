@@ -21,6 +21,11 @@ on:
         description: "Engine version to use (e.g., 2.15.latest) - optional. Applies only when environment is 'uat' and release_type is 'regular'"
         required: false
         type: string
+      old_prd_hotfix_base_tag:
+        description: "Optional. Old-line PRD hotfix only: existing stable PRD tag being patched (e.g. 1.37.2). Empty keeps current behavior."
+        required: false
+        type: string
+        default: ""
 
 env:
   NODE_VERSION: 22.x
@@ -36,6 +41,7 @@ jobs:
       release_type: ${{ steps.prepare.outputs.release_type }}
       engine_version: ${{ steps.prepare.outputs.engine_version }}
       target_branch: ${{ steps.prepare.outputs.target_branch }}
+      old_prd_hotfix_base_tag: ${{ steps.prepare.outputs.old_prd_hotfix_base_tag }}
     steps:
       - name: Prepare release parameters
         id: prepare
@@ -56,13 +62,23 @@ jobs:
           # Engine version is optional (only used for UAT regular)
           ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
 
-          # Define target branch. It states for the branch that will be used for release commit history merges.
+          OLD_PRD_HOTFIX_BASE_TAG="${{ github.event.inputs.old_prd_hotfix_base_tag }}"
+          OLD_PRD_HOTFIX_BASE_TAG=$(echo "$OLD_PRD_HOTFIX_BASE_TAG" | xargs)
+          if [ -n "$OLD_PRD_HOTFIX_BASE_TAG" ]; then
+            if [ "$ENVIRONMENT" != "prd" ] || [ "$RELEASE_TYPE" != "hotfix" ]; then
+              echo "❌ Error: old_prd_hotfix_base_tag may only be set when environment is prd and release_type is hotfix."
+              exit 1
+            fi
+          fi
+
+          # Merge-back uses target_branch unless old_prd_hotfix_base_tag is set (production skips merge to main).
           TARGET_BRANCH="main"
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
           echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
           echo "engine_version=$ENGINE_VERSION" >> $GITHUB_OUTPUT
           echo "target_branch=$TARGET_BRANCH" >> $GITHUB_OUTPUT
+          echo "old_prd_hotfix_base_tag=$OLD_PRD_HOTFIX_BASE_TAG" >> $GITHUB_OUTPUT
 
   uat-regular:
     needs: configure-parameters
@@ -348,6 +364,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate UAT tag exists
+        if: needs.configure-parameters.outputs.old_prd_hotfix_base_tag == ''
         run: |
           RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
@@ -374,10 +391,79 @@ jobs:
 
           echo "✅ UAT tag '$CURRENT_VERSION' found in GitHub releases"
 
+      - name: Validate old-line PRD base tag
+        id: old_line_context
+        if: needs.configure-parameters.outputs.old_prd_hotfix_base_tag != ''
+        run: |
+          set -euo pipefail
+          BASE_RAW="${{ needs.configure-parameters.outputs.old_prd_hotfix_base_tag }}"
+          BASE_RAW=$(echo "$BASE_RAW" | xargs)
+
+          if ! [[ "$BASE_RAW" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Error: old_prd_hotfix_base_tag must be semver X.Y.Z (e.g. 1.37.2), got: $BASE_RAW"
+            exit 1
+          fi
+
+          if ! REL_JSON=$(gh release view "$BASE_RAW" --json tagName,isDraft,prerelease 2>/dev/null); then
+            echo "❌ Error: No GitHub release found for tag $BASE_RAW"
+            exit 1
+          fi
+          IS_DRAFT=$(echo "$REL_JSON" | jq -r '.isDraft')
+          IS_PRERELEASE=$(echo "$REL_JSON" | jq -r '.prerelease')
+          if [ "$IS_DRAFT" = "true" ]; then
+            echo "❌ Error: old_prd_hotfix_base_tag ($BASE_RAW) is a draft release. Only finalized releases can be patched."
+            exit 1
+          fi
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            echo "❌ Error: old_prd_hotfix_base_tag ($BASE_RAW) is a prerelease. Only stable PRD releases can be patched."
+            exit 1
+          fi
+
+          TAG_FOR_NOTES=$(echo "$REL_JSON" | jq -r '.tagName')
+          REPO="${{ github.repository }}"
+          HIGHEST=$(gh api "repos/$REPO/releases" --paginate --jq '.[] | select(.draft == false and .prerelease == false) | .tag_name' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V \
+            | tail -1)
+
+          if [ -z "$HIGHEST" ]; then
+            echo "❌ Error: Could not determine highest stable PRD version from GitHub releases."
+            exit 1
+          fi
+
+          LOWEST=$(printf '%s\n%s\n' "$BASE_RAW" "$HIGHEST" | sort -V | head -1)
+          if [ "$BASE_RAW" = "$HIGHEST" ] || [ "$LOWEST" != "$BASE_RAW" ]; then
+            echo "❌ Error: Old-line hotfix requires base ($BASE_RAW) to be strictly less than the global highest stable release ($HIGHEST)."
+            echo "❌ If you are releasing the current line, leave old_prd_hotfix_base_tag empty."
+            exit 1
+          fi
+
+          BASE_LINE="${BASE_RAW%.*}"
+          HIGHEST_LINE="${HIGHEST%.*}"
+          if [ "$BASE_LINE" = "$HIGHEST_LINE" ]; then
+            echo "❌ Error: old_prd_hotfix_base_tag ($BASE_RAW) is on the current release line ($HIGHEST_LINE). Leave it empty for current-line hotfixes."
+            exit 1
+          fi
+
+          echo "is_old_line=true" >> $GITHUB_OUTPUT
+          echo "skip_github_latest=true" >> $GITHUB_OUTPUT
+          echo "base_normalized=$BASE_RAW" >> $GITHUB_OUTPUT
+          echo "previous_tag_for_notes=$TAG_FOR_NOTES" >> $GITHUB_OUTPUT
+          echo "✅ Old-line PRD base validated: $TAG_FOR_NOTES < global max $HIGHEST"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Find previous release tag
         id: previous_tag
         run: |
           RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
+
+          if [ "${{ steps.old_line_context.outputs.is_old_line }}" = "true" ]; then
+            PREVIOUS_TAG="${{ steps.old_line_context.outputs.previous_tag_for_notes }}"
+            echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+            echo "📎 Using old-line base as previous tag for release notes: $PREVIOUS_TAG"
+            exit 0
+          fi
 
           # For PRD releases, always use the latest production release as previous tag
           PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
@@ -399,6 +485,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Assert old-line bump matches expected patch
+        if: steps.old_line_context.outputs.is_old_line == 'true'
+        run: |
+          BASE="${{ steps.old_line_context.outputs.base_normalized }}"
+          NEW_TAG="${{ steps.apply_version.outputs.tag_name }}"
+          IFS=. read -r ma mi pa <<< "$BASE"
+          EXPECTED="${ma}.${mi}.$((pa + 1))"
+          if [ "$NEW_TAG" != "$EXPECTED" ]; then
+            echo "❌ Error: Expected bumped tag $EXPECTED after base $BASE, got $NEW_TAG"
+            exit 1
+          fi
+          echo "✅ Bumped tag $NEW_TAG matches expected patch after base $BASE"
+
       - name: Create release and prepare notification
         id: create_release_and_notify
         uses: ./.github/actions/create-gh-release
@@ -407,6 +506,7 @@ jobs:
           previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
           target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
           release_type: "production"
+          skip_github_latest: ${{ steps.old_line_context.outputs.skip_github_latest || 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -415,6 +515,7 @@ jobs:
         with:
           source_branch: ${{ env.workflow_branch }}
           target_branch: ${{ needs.configure-parameters.outputs.target_branch }}
+          merge_into_target: ${{ needs.configure-parameters.outputs.old_prd_hotfix_base_tag == '' && 'true' || 'false' }}
         env:
           GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 

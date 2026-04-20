@@ -13,6 +13,10 @@ inputs:
   release_type:
     required: true
     description: "Release type: uat or production"
+  skip_github_latest:
+    required: false
+    default: "false"
+    description: "Production only: when true, gh release create uses --latest=false (old-line PRD hotfix)."
 outputs:
   notification_text:
     description: "Prepared notification text"
@@ -28,6 +32,7 @@ runs:
         PREVIOUS_TAG="${{ inputs.previous_tag }}"
         TARGET_REF="${{ inputs.target_ref }}"
         RELEASE_TYPE="${{ inputs.release_type }}"
+        SKIP_GITHUB_LATEST="${{ inputs.skip_github_latest }}"
 
         # UAT releases are prereleases, production releases are not
         if [ "$RELEASE_TYPE" = "uat" ]; then
@@ -38,11 +43,20 @@ runs:
             --notes-start-tag "$PREVIOUS_TAG" \
             --prerelease
         else
-          gh release create $TAG_NAME \
-            --target $TARGET_REF \
-            --title "$TAG_NAME" \
-            --generate-notes \
-            --notes-start-tag "$PREVIOUS_TAG"
+          if [ "$SKIP_GITHUB_LATEST" = "true" ]; then
+            gh release create $TAG_NAME \
+              --target $TARGET_REF \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG" \
+              --latest=false
+          else
+            gh release create $TAG_NAME \
+              --target $TARGET_REF \
+              --title "$TAG_NAME" \
+              --generate-notes \
+              --notes-start-tag "$PREVIOUS_TAG"
+          fi
         fi
 
         RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
