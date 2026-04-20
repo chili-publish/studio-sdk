@@ -45,6 +45,8 @@ jobs:
     steps:
       - name: Prepare release parameters
         id: prepare
+        env:
+          OLD_PRD_HOTFIX_BASE_TAG: ${{ github.event.inputs.old_prd_hotfix_base_tag }}
         run: |
           # Read values from workflow_dispatch inputs (required)
           if [ -z "${{ github.event.inputs.environment }}" ]; then
@@ -62,7 +64,6 @@ jobs:
           # Engine version is optional (only used for UAT regular)
           ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
 
-          OLD_PRD_HOTFIX_BASE_TAG="${{ github.event.inputs.old_prd_hotfix_base_tag }}"
           OLD_PRD_HOTFIX_BASE_TAG=$(echo "$OLD_PRD_HOTFIX_BASE_TAG" | xargs)
           if [ -n "$OLD_PRD_HOTFIX_BASE_TAG" ]; then
             if [ "$ENVIRONMENT" != "prd" ] || [ "$RELEASE_TYPE" != "hotfix" ]; then
@@ -394,10 +395,12 @@ jobs:
       - name: Validate old-line PRD base tag
         id: old_line_context
         if: needs.configure-parameters.outputs.old_prd_hotfix_base_tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OLD_PRD_HOTFIX_BASE_TAG: ${{ needs.configure-parameters.outputs.old_prd_hotfix_base_tag }}
         run: |
           set -euo pipefail
-          BASE_RAW="${{ needs.configure-parameters.outputs.old_prd_hotfix_base_tag }}"
-          BASE_RAW=$(echo "$BASE_RAW" | xargs)
+          BASE_RAW=$(echo "$OLD_PRD_HOTFIX_BASE_TAG" | xargs)
 
           if ! [[ "$BASE_RAW" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "❌ Error: old_prd_hotfix_base_tag must be semver X.Y.Z (e.g. 1.37.2), got: $BASE_RAW"
@@ -450,8 +453,6 @@ jobs:
           echo "base_normalized=$BASE_RAW" >> $GITHUB_OUTPUT
           echo "previous_tag_for_notes=$TAG_FOR_NOTES" >> $GITHUB_OUTPUT
           echo "✅ Old-line PRD base validated: $TAG_FOR_NOTES < global max $HIGHEST"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find previous release tag
         id: previous_tag
