@@ -3,7 +3,7 @@ import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZon
 import { ColorUsage } from './ColorStyleTypes';
 import { HasOverrideState, Id, PropertyState } from './CommonTypes';
 import { GradientUsage } from './GradientStyleTypes';
-import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeType } from './ShapeTypes';
+import { CornerRadiusAll, CornerRadiusNone, CornerRadiusOnly, ShapeFrameSource, ShapeType, ShapeContainerProperties } from './ShapeTypes';
 
 export type FrameLayoutType = {
     id: Id;
@@ -80,6 +80,10 @@ export type ImageFrame = {
     src?: ImageFrameSource;
     blendMode: BlendMode;
     dropShadowSettings?: DropShadowSettings;
+    container: {
+        source: ShapeFrameSource;
+        properties: ShapeContainerProperties;
+    }
 };
 
 export type ShapeFrame = {
