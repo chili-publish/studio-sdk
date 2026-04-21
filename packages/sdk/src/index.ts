@@ -210,12 +210,12 @@ export { WellKnownConfigurationKeys, FrameEditingMode } from './types/Configurat
 export type {
     APIBrandKit,
     APIBrandKitMedia,
-    BrandKitCharacterStyle,
-    BrandKitColor,
-    BrandKitFont,
+    APIBrandKitCharacterStyle,
+    APIBrandKitColor,
+    APIBrandKitFont,
     APIBrandKitTheme,
     BrandKitMedia,
-    BrandKitParagraphStyle,
+    APIBrandKitParagraphStyle,
     CMYK,
     CMYKColorValue,
     HEXColorValue,
@@ -224,7 +224,7 @@ export type {
     SpotCMYKColorValue,
     SpotHEXColorValue,
     SpotRGBColorValue,
-    StudioBrandKit,
+    BrandKit,
 } from './types/BrandKitTypes';
 
 export type { ComponentGridSettings, FixedComponentGridSettings } from './types/ComponentGridTypes';
