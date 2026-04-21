@@ -3,15 +3,9 @@ import {
     BrandKitCharacterStyle,
     BrandKitParagraphStyle,
     APIBrandKitMedia as MainAPIBrandKitMedia,
-    BrandKitMedia,
     APIBrandKitTheme,
 } from '../../types/BrandKitTypes';
-import { CharacterStyle } from '../../types/CharacterStyleTypes';
-import { DocumentColor } from '../../types/ColorStyleTypes';
 import { Id } from '../../types/CommonTypes';
-import { DocumentFontFamily } from '../../types/FontTypes';
-import { DocumentGradient } from '../../types/GradientStyleTypes';
-import { ParagraphStyle } from '../../types/ParagraphStyleTypes';
 
 /** API-style color union (alias of main BrandKitColor). */
 export type APIBrandKitColor = BrandKitColor;

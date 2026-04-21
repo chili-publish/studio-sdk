@@ -13,7 +13,7 @@ import {
     mockMedia,
     mockAPIBrandKitThemes,
 } from '../__mocks__/Brandkit';
-import { APIBrandKit, StudioBrandKit } from '../../types/BrandKitTypes';
+import { APIBrandKit, BrandKit, StudioBrandKit } from '../../types/BrandKitTypes';
 import type { DocumentFontFamily } from '../../types/FontTypes';
 import { FontController } from '../../controllers/FontController';
 import { ColorStyleController } from '../../controllers/ColorStyleController';
@@ -238,7 +238,7 @@ describe('BrandKitController', () => {
 
         expect(mockEditorApi.getBrandKit).toHaveBeenCalledTimes(1);
         expect(response.parsedData).toBeDefined();
-        const brandKit = response.parsedData!;
+        const brandKit = response.parsedData as BrandKit;
         expect(brandKit).toMatchObject({
             id: 'test-brand-kit-id',
             name: 'Test Brand Kit',
@@ -295,9 +295,9 @@ describe('BrandKitController', () => {
 
     it('does not expose engine themes on get(); BrandKit response has no themes field', async () => {
         const response = await mockBrandKitController.get();
-
-        expect(response.parsedData).toBeDefined();
-        expect(response.parsedData!).not.toHaveProperty('themes');
+        const brandKit = response.parsedData as BrandKit;
+        expect(brandKit).toBeDefined();
+        expect(brandKit).not.toHaveProperty('themes');
     });
 
     it('accepts brandKit with themes as APIBrandKitTheme[] (input type) when set() is called', async () => {
@@ -323,7 +323,7 @@ describe('BrandKitController', () => {
         expect(mockEditorApi.setBrandKit).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(mockStudioBrandKit.brandKit));
         expect(response.parsedData).toBeDefined();
-        const setBrandKitResult = response.parsedData!;
+        const setBrandKitResult = response.parsedData as BrandKit;
         expect(setBrandKitResult).toMatchObject({
             id: mockStudioBrandKit.id,
             version: mockStudioBrandKit.brandKit.lastModifiedDate,

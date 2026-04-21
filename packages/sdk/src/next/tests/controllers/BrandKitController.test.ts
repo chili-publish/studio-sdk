@@ -11,18 +11,6 @@ import {
     mockMedia,
 } from '../../../tests/__mocks__/Brandkit';
 
-const mockBrandKitResponse = {
-    id: 'test-brand-kit-id',
-    version: '2025-06-12T12:10:29.354877',
-    name: 'Test Brand Kit',
-    colors: mockColors,
-    gradients: mockGradients,
-    fontFamilies: mockFonts,
-    characterStyles: mockCharacterStyles,
-    paragraphStyles: mockParagraphStyles,
-    media: mockMedia,
-};
-
 let mockBrandKitController: BrandKitController;
 let mockEditorApi: EditorAPI;
 
