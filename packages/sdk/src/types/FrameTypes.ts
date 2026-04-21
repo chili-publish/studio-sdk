@@ -80,7 +80,7 @@ export type ImageFrame = {
     src?: ImageFrameSource;
     blendMode: BlendMode;
     dropShadowSettings?: DropShadowSettings;
-    container?: {
+    container: {
         source: ShapeFrameSource;
         properties: ShapeContainerProperties;
     }

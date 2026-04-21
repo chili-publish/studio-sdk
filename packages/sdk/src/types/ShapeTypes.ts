@@ -16,10 +16,10 @@ export interface ShapeProperties {
 }
 
 export interface ShapeContainerProperties {
-    enableStroke?: boolean;
-    strokeColor?: ColorUsage;
-    strokeWeight?: number;
-    allCornersSame?: boolean;
+    enableStroke: boolean;
+    strokeColor: ColorUsage;
+    strokeWeight: number;
+    allCornersSame: boolean;
 }
 
 export interface CornerRadiusUpdateModel {
@@ -56,19 +56,19 @@ export enum CornerRadiusType {
 
 export type CornerRadius = CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
 
-export type ShapeFrameRect = {
+export type ShapeFrameRectSource = {
     type: ShapeType.rectangle;
     cornerRadius?: CornerRadius;
 };
 
-export type ShapeFrameEllipse = {
+export type ShapeFrameEllipseSource = {
     type: ShapeType.ellipse;
 };
 
-export type ShapeFramePolygon = {
+export type ShapeFramePolygonSource = {
     type: ShapeType.polygon;
     sides?: number;
     cornerRadius?: CornerRadius;
 };
 
-export type ShapeFrameSource = ShapeFrameRect | ShapeFrameEllipse | ShapeFramePolygon;
+export type ShapeFrameSource = ShapeFrameRectSource | ShapeFrameEllipseSource | ShapeFramePolygonSource;
