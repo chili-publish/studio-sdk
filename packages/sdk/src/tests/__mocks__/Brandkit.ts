@@ -1,4 +1,6 @@
-import type { APIBrandKitTheme } from '../../types/BrandKitTypes';
+import type { APIBrandKit, APIBrandKitTheme } from '../../types/BrandKitTypes';
+import { APIColorType } from '../../types/ColorStyleTypes';
+import { Alignment, Case, Scripting } from '../../types/TextStyleTypes';
 
 export const mockColors = [
     {
@@ -307,7 +309,6 @@ export const mockMedia = [
     },
 ];
 
-/** BrandKit themes in API/input shape, as accepted by set(). */
 export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
     {
         id: 'api-theme-id',
@@ -318,109 +319,104 @@ export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
         colors: [],
         characterStyles: [],
         paragraphStyles: [],
-        media: mockMedia,
+        media: [],
     },
 ];
 
-export const mockStudioBrandKit = {
+export const mockAPIBrandKit: APIBrandKit = {
     id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
+    lastModifiedDate: '2025-06-12T12:10:29.354877',
     name: 'BrandkitTest1',
-    fontConnectorId: 'fontConnectorId',
-    brandKit: {
-        id: 'a5203c84-bb1a-46a2-90ec-6dcc1554f2bb',
-        lastModifiedDate: '2025-06-12T12:10:29.354877',
-        name: 'BrandkitTest1',
-        dateCreated: '2025-06-12T12:10:29.354877',
-        fonts: [
-            {
-                fontFamilyId: 'af0dc036-8867-4f63-9b03-933944a1a1fa',
-                fontFamilyBrandKitGuid: '29d22ca1-ae25-4f04-a1fd-0ca2fd35011d',
+    dateCreated: '2025-06-12T12:10:29.354877',
+    fonts: [
+        {
+            fontFamilyId: 'af0dc036-8867-4f63-9b03-933944a1a1fa',
+            fontFamilyBrandKitGuid: '29d22ca1-ae25-4f04-a1fd-0ca2fd35011d',
+            fontConnectorId: 'fontConnectorId',
+        },
+        {
+            fontFamilyId: '30b500bf-b310-4063-aa6d-66523f180f4f',
+            fontFamilyBrandKitGuid: '4564ea03-193a-40df-82b7-e7705e6c19ee',
+            fontConnectorId: 'fontConnectorId',
+        },
+    ],
+    colors: [
+        {
+            name: 'Color 5',
+            guid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
+            value: 'Color 5 - Spot RGB',
+            displayValue: { r: 224, g: 179, b: 215 },
+            type: APIColorType.spotRgb,
+        },
+        {
+            name: 'Color 4',
+            guid: '88dd8c03-5995-4d1a-bf11-c3b0431fb124',
+            value: 'Color 4- SPOT cmyk',
+            displayValue: {
+                c: 0,
+                m: 0,
+                y: 0,
+                k: 0.19069767441860466,
             },
-            {
-                fontFamilyId: '30b500bf-b310-4063-aa6d-66523f180f4f',
-                fontFamilyBrandKitGuid: '4564ea03-193a-40df-82b7-e7705e6c19ee',
-            },
-        ],
-        colors: [
-            {
-                value: 'Color 5 - Spot RGB',
-                displayValue: {
-                    r: 224,
-                    g: 179,
-                    b: 215,
-                    a: 1,
-                    spotName: 'Color 5 - Spot RGB',
-                },
-                name: 'Color 5',
-                type: 'spotRgb',
-                guid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
-            },
-            {
-                value: 'Color 4- SPOT cmyk',
-                displayValue: {
-                    c: 0,
-                    m: 0,
-                    y: 0,
-                    k: 0.19069767441860466,
-                    spotName: 'Color 4- SPOT cmyk',
-                },
-                name: 'Color 4',
-                type: 'spotCmyk',
-                guid: '88dd8c03-5995-4d1a-bf11-c3b0431fb124',
-            },
-            {
-                value: '#6cb29d',
-                displayValue: null,
-                name: 'Color 2',
-                type: 'hex',
-                guid: 'a1900046-8bc3-46b4-8b13-65ab0cdc9b34',
-            },
-        ],
-        characterStyles: [
-            {
-                name: 'Character style 22',
-                brandKitFontFamilyGuid: null,
-                fontStyleId: null,
-                fillColorApplied: false,
-                fontSize: 2,
-                subSuperScript: 'superscript',
-                brandKitColorGuid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
-                lineHeight: null,
-            },
-        ],
-        paragraphStyles: [
-            {
-                name: 'Paragraph style 1',
-                textAlign: 'left',
-                brandKitColorGuid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
-                brandKitFontFamilyGuid: '29d22ca1-ae25-4f04-a1fd-0ca2fd35011d',
-                textStrokeColorGuid: '88dd8c03-5995-4d1a-bf11-c3b0431fb124',
-                fontStyleId: '8cb18f2f-56a9-4f9e-bbb2-c7687ead7ef8',
-                fontSize: 1,
-                lineHeight: 0,
-                trackingRight: 0,
-                fillColorApplied: true,
-                textStrokeColorApplied: true,
-                textStrokeWidth: 7,
-            },
-        ],
-        media: [
-            {
-                name: 'd0ff2bf4-e9a6-4fff-b378-1d1c554bba56_Final_template story_1080x1920.png',
-                mediaConnectorId: 'grafxmedia',
-                mediaId: 'bb7de06a-0c70-4ca1-97a0-892351ed8444',
-            },
-            {
-                name: 'c9aaa676-a6c0-4a3e-aa67-afdb2f1359f8_bg-hk-25.jpg',
-                mediaConnectorId: 'grafxmedia',
-                mediaId: '62000e62-55e2-4ef7-8486-c722c913aa88',
-            },
-            {
-                name: '0f0e652c-86da-41b7-b312-e487c3e58fa0_bg-hk-25.jpg',
-                mediaConnectorId: 'grafxmedia',
-                mediaId: 'f6a50d37-a859-4c07-b915-0bb0f43c6c6b',
-            },
-        ],
-        themes: [],
-    },
+            type: APIColorType.spotCmyk,
+        },
+        {
+            name: 'Color 2',
+            guid: 'a1900046-8bc3-46b4-8b13-65ab0cdc9b34',
+            value: '#6cb29d',
+            type: APIColorType.hex,
+        },
+    ],
+    characterStyles: [
+        {
+            name: 'Character style 22',
+            fillColorApplied: false,
+            fontSize: 2,
+            subSuperScript: Scripting.SUPERSCRIPT,
+            brandKitColorGuid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
+        },
+    ],
+    paragraphStyles: [
+        {
+            name: 'Paragraph style 1',
+            brandKitFontFamilyGuid: '29d22ca1-ae25-4f04-a1fd-0ca2fd35011d',
+            fontStyleId: '8cb18f2f-56a9-4f9e-bbb2-c7687ead7ef8',
+            fontSize: 1,
+            typographicCase: Case.NORMAL,
+            kerningOn: false,
+            subSuperScript: Scripting.NORMAL,
+            trackingLeft: 0,
+            trackingRight: 0,
+            textAlign: Alignment.LEFT,
+            textIndent: null,
+            baselineShiftValue: null,
+            lineHeight: 0,
+            textOverprint: null,
+            brandKitColorGuid: '5cc0e9f5-e339-4b94-a550-ad9c45524ed7',
+            fillColorApplied: true,
+            textStrokeColorGuid: '88dd8c03-5995-4d1a-bf11-c3b0431fb124',
+            textStrokeColorApplied: true,
+            textStrokeWidth: 7,
+            underline: false,
+            lineThrough: false,
+        },
+    ],
+    media: [
+        {
+            name: 'd0ff2bf4-e9a6-4fff-b378-1d1c554bba56_Final_template story_1080x1920.png',
+            mediaConnectorId: 'grafxmedia',
+            mediaId: 'bb7de06a-0c70-4ca1-97a0-892351ed8444',
+        },
+        {
+            name: 'c9aaa676-a6c0-4a3e-aa67-afdb2f1359f8_bg-hk-25.jpg',
+            mediaConnectorId: 'grafxmedia',
+            mediaId: '62000e62-55e2-4ef7-8486-c722c913aa88',
+        },
+        {
+            name: '0f0e652c-86da-41b7-b312-e487c3e58fa0_bg-hk-25.jpg',
+            mediaConnectorId: 'grafxmedia',
+            mediaId: 'f6a50d37-a859-4c07-b915-0bb0f43c6c6b',
+        },
+    ],
+    themes: [],
 };

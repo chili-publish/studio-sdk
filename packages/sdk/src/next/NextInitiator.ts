@@ -1,6 +1,5 @@
 import { Connection } from 'penpal';
 import { EditorAPI, RuntimeConfigType } from '../types/CommonTypes';
-import { BrandKitController } from './controllers/BrandKitController';
 import { SubscriberController } from './controllers/SubscriberController';
 import { VariableController } from './controllers/VariableController';
 import { ConnectorController } from './controllers/ConnectorController';
@@ -30,7 +29,6 @@ export class NextInitiator {
     connector: ConnectorController;
     page: PageController;
     canvas: CanvasController;
-    brandKit: BrandKitController;
 
     /**
      * The next initiator is a split off on SDK level to tag next features
@@ -47,6 +45,5 @@ export class NextInitiator {
         this.connector = new ConnectorController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
-        this.brandKit = new BrandKitController(this.editorAPI);
     }
 }
