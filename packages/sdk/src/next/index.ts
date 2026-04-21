@@ -17,5 +17,4 @@ export type {
     APIBrandKitFont,
     APIBrandKitMedia,
     APIBrandKitParagraphStyle,
-    BrandKit,
 } from './types/BrandKitTypes';
