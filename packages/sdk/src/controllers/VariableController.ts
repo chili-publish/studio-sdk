@@ -4,7 +4,6 @@ import {
     BidirectionalDataPage,
     BidirectionalDataPageItem,
     DataItem,
-    DataPage,
     DataSourceVariableDataModel,
     Dictionary,
 } from '@chili-studio/connector-types';
@@ -318,33 +317,7 @@ class DataSourceVariable {
             .getVariableById(variableId)
             .then((result) => getEditorResponseData<Variable>(result));
 
-        if (isInjectedDataSourceVariable(variable.parsedData)) {
-            const itemIdPropertyName = variable.parsedData?.value?.itemIdPropertyName;
-
-            const injectedData = await this.getInjectedData(variableId);
-
-            const item = injectedData.parsedData?.data.find(
-                (item) => item[itemIdPropertyName]?.toString() === itemId.toString(),
-            );
-
-            if (!item) {
-                throwEditorResponseError({
-                    success: false,
-                    status: 404,
-                    error: `Item not found in injected data for variable ${variableId}`,
-                    parsedData: null,
-                });
-            }
-            return {
-                success: true,
-                status: 200,
-                parsedData: {
-                    data: item,
-                    continuationToken: null,
-                    previousPageToken: null,
-                },
-            };
-        } else {
+        if (!isInjectedDataSourceVariable(variable.parsedData)) {
             throwEditorResponseError({
                 success: false,
                 status: 400,
@@ -352,6 +325,32 @@ class DataSourceVariable {
                 parsedData: null,
             });
         }
+
+        const itemIdPropertyName = variable.parsedData.value.itemIdPropertyName;
+
+        const injectedData = await this.getInjectedData(variableId);
+
+        const item = injectedData.parsedData?.data.find(
+            (item) => item[itemIdPropertyName]?.toString() === itemId.toString(),
+        );
+
+        if (!item) {
+            throwEditorResponseError({
+                success: false,
+                status: 404,
+                error: `Item not found in injected data for variable ${variableId}`,
+                parsedData: null,
+            });
+        }
+        return {
+            success: true,
+            status: 200,
+            parsedData: {
+                data: item,
+                continuationToken: null,
+                previousPageToken: null,
+            },
+        };
     };
 
     /**
