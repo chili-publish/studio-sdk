@@ -434,20 +434,20 @@ jobs:
             exit 1
           fi
 
-          REPO="${{ github.repository }}"
-          HIGHEST=$(gh api "repos/$REPO/releases" --paginate --jq '.[] | select(.draft == false and .prerelease == false) | .tag_name' \
-            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
-            | sort -V \
-            | tail -1)
-
-          if [ -z "$HIGHEST" ]; then
-            echo "❌ Error: Could not determine highest stable PRD version from GitHub releases."
+          LATEST_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
+          if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" = "null" ]; then
+            echo "❌ Error: Could not determine latest release tag (gh release view)."
             exit 1
           fi
+          if ! [[ "$LATEST_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Error: Latest release tag must be semver X.Y.Z for this check, got: $LATEST_TAG"
+            exit 1
+          fi
+          HIGHEST="$LATEST_TAG"
 
           LOWEST=$(printf '%s\n%s\n' "$BASE_RAW" "$HIGHEST" | sort -V | head -1)
           if [ "$BASE_RAW" = "$HIGHEST" ] || [ "$LOWEST" != "$BASE_RAW" ]; then
-            echo "❌ Error: Old-line hotfix requires base ($BASE_RAW) to be strictly less than the global highest stable release ($HIGHEST)."
+            echo "❌ Error: Old-line hotfix requires base ($BASE_RAW) to be strictly less than the current latest stable release ($HIGHEST)."
             echo "❌ If you are releasing the current line, leave previous_prd_release_version empty."
             exit 1
           fi
@@ -463,7 +463,7 @@ jobs:
           echo "skip_github_latest=true" >> $GITHUB_OUTPUT
           echo "base_normalized=$BASE_RAW" >> $GITHUB_OUTPUT
           echo "previous_tag_for_notes=$TAG_FOR_NOTES" >> $GITHUB_OUTPUT
-          echo "✅ Old-line PRD base validated: $TAG_FOR_NOTES < global max $HIGHEST"
+          echo "✅ Old-line PRD base validated: $TAG_FOR_NOTES < latest $LATEST_TAG"
 
       - name: Find previous release tag
         id: previous_tag
