@@ -19,7 +19,7 @@ const mockEditorApi: EditorAPI = {
     setActionTypeError: async () => getEditorResponseData(castToEditorResponse(null)),
     disableActions: async () => getEditorResponseData(castToEditorResponse(null)),
     enableActions: async () => getEditorResponseData(castToEditorResponse(null)),
-    enableForComponents: async () => getEditorResponseData(castToEditorResponse(null)),
+    enableComponentActions: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -37,7 +37,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'setActionTypeError');
     jest.spyOn(mockEditorApi, 'disableActions');
     jest.spyOn(mockEditorApi, 'enableActions');
-    jest.spyOn(mockEditorApi, 'enableForComponents');
+    jest.spyOn(mockEditorApi, 'enableComponentActions');
 });
 
 afterEach(() => {
@@ -164,6 +164,6 @@ describe('Should call all of the ActionController functions of child successfull
 
     it('Should call the enableForComponents method', async () => {
         await mockedActionController.enableForComponents(true);
-        expect(mockEditorApi.enableForComponents).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.enableComponentActions).toHaveBeenCalledTimes(1);
     });
 });
