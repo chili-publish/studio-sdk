@@ -107,23 +107,26 @@ jobs:
           fi
 
           VERSION="${{ steps.detect.outputs.version }}"
-          HIGHEST=$(gh api "repos/${{ github.repository }}/releases" --paginate --jq '.[] | select(.draft == false and .prerelease == false) | .tag_name' \
-            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
-            | sort -V \
-            | tail -1)
+          # GitHub "latest" full release (marked as latest, not UAT not old-line)
+          LATEST_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
+          CLEANED=$(printf '%s\n' "$LATEST_TAG" | sed 's/^v//')
+          HIGHEST=""
+          if [ -n "$CLEANED" ] && echo "$CLEANED" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            HIGHEST=$CLEANED
+          fi
 
           if [ -z "$HIGHEST" ]; then
             echo "update_global_latest=true" >> $GITHUB_OUTPUT
-            echo "No stable semver releases found; updating upload/latest"
+            echo "No valid semver for GitHub latest release; updating upload/latest"
             exit 0
           fi
 
           if [ "$VERSION" = "$HIGHEST" ]; then
             echo "update_global_latest=true" >> $GITHUB_OUTPUT
-            echo "PRD tag $VERSION is global highest stable; will update upload/latest and allow main bump"
+            echo "PRD tag $VERSION is GitHub latest; will update upload/latest and allow main bump"
           else
             echo "update_global_latest=false" >> $GITHUB_OUTPUT
-            echo "PRD tag $VERSION is below global highest stable ($HIGHEST); skipping global upload/latest and main bump"
+            echo "PRD tag $VERSION is not GitHub latest ($HIGHEST); skipping global upload/latest and main bump"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -317,7 +320,7 @@ jobs:
             mkdir -p ${path%"/merge"}
             cp -R packages/sdk/_bundles/* ${path%"/merge"}
           else
-            echo "Skipping global packages/sdk/upload/latest (not global highest stable PRD)"
+            echo "Skipping global packages/sdk/upload/latest (not GitHub latest PRD)"
           fi
           mkdir -p ${minorlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
