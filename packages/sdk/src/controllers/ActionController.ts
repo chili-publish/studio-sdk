@@ -166,8 +166,8 @@ export class ActionController {
      * @param shouldEnable whether to enable or disable component actions
      * @returns
      */
-    enableComponentActions = async (shouldEnable: boolean) => {
+    enableForComponents = async (shouldEnable: boolean) => {
         const res = await this.#editorAPI;
-        return res.enableComponentActions(shouldEnable).then((result) => getEditorResponseData<null>(result));
+        return res.enableForComponents(shouldEnable).then((result) => getEditorResponseData<null>(result));
     };
 }
