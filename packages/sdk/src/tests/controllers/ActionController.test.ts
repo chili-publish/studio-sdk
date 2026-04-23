@@ -162,7 +162,7 @@ describe('Should call all of the ActionController functions of child successfull
         expect(mockEditorApi.enableActions).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call the enableForComponents method', async () => {
+    it('Should call the enableComponentActions method', async () => {
         await mockedActionController.enableForComponents(true);
         expect(mockEditorApi.enableComponentActions).toHaveBeenCalledTimes(1);
     });
