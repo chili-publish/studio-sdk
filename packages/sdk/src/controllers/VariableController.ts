@@ -1,6 +1,12 @@
 import { EditorAPI, EditorResponse, Id, PrivateData } from '../types/CommonTypes';
 import { ConnectorRegistration } from '../types/ConnectorTypes';
-import { DataItem, DataPage, DataSourceVariableDataModel, Dictionary } from '@chili-studio/connector-types';
+import {
+    BidirectionalDataPage,
+    BidirectionalDataPageItem,
+    DataItem,
+    DataSourceVariableDataModel,
+    Dictionary,
+} from '@chili-studio/connector-types';
 import {
     DataSourceVariableDisplayOptionsType,
     DateRestriction,
@@ -23,7 +29,8 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ConnectorCompatibilityTools } from '../utils/ConnectorCompatibilityTools';
 import { EditorDataPage } from '../types/DataConnectorTypes';
 import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
-import { throwVariableException } from '../exceptions';
+import { throwEditorResponseError, throwVariableException } from '../exceptions';
+import { isInjectedDataSourceVariable } from '../utils/VariableHelper';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -274,13 +281,13 @@ class DataSourceVariable {
      * @param variableId the id of the variable
      * @returns a DataPage with an array of data objects
      */
-    getInjectedData = async (variableId: string): Promise<EditorResponse<DataPage>> => {
+    getInjectedData = async (variableId: string): Promise<EditorResponse<BidirectionalDataPage>> => {
         const res = await this.#editorAPI;
         return res
             .getInjectedDataSourceVariableData(variableId)
             .then((result) => getEditorResponseData<EditorDataPage<EngineDataItem>>(result))
             .then((resp) => {
-                const update: EditorResponse<DataPage> = { ...resp, parsedData: null };
+                const update: EditorResponse<BidirectionalDataPage> = { ...resp, parsedData: null };
                 if (resp.parsedData) {
                     update.parsedData = {
                         ...resp.parsedData,
@@ -291,6 +298,59 @@ class DataSourceVariable {
                 }
                 return update;
             });
+    };
+
+    /**
+     * Get a single item from injected data of a data source variable. This only works for data source variables
+     * that are in injected data mode.
+     * @param variableId the id of the variable
+     * @param itemId the id of the item to get
+     * @returns a BidirectionalDataPageItem with the item and empty navigation tokens
+     */
+    getInjectedItemById = async (
+        variableId: string,
+        itemId: string,
+    ): Promise<EditorResponse<BidirectionalDataPageItem>> => {
+        const res = await this.#editorAPI;
+
+        const variable = await res
+            .getVariableById(variableId)
+            .then((result) => getEditorResponseData<Variable>(result));
+
+        if (!isInjectedDataSourceVariable(variable.parsedData)) {
+            throwEditorResponseError({
+                success: false,
+                status: 400,
+                error: `Variable is not an injected data source variable`,
+                parsedData: null,
+            });
+        }
+
+        const itemIdPropertyName = variable.parsedData.value.itemIdPropertyName;
+
+        const injectedData = await this.getInjectedData(variableId);
+
+        const item = injectedData.parsedData?.data.find(
+            (item) => item[itemIdPropertyName]?.toString() === itemId.toString(),
+        );
+
+        if (!item) {
+            throwEditorResponseError({
+                success: false,
+                status: 404,
+                error: `Item not found in injected data for variable ${variableId}`,
+                parsedData: null,
+            });
+        }
+        return {
+            success: true,
+            status: 200,
+            parsedData: {
+                data: item,
+                continuationToken: null,
+                previousPageToken: null,
+            },
+        };
     };
 
     /**
@@ -585,9 +645,9 @@ export class VariableController {
      */
     setValue = async (id: Id, value: string | boolean | number | null) => {
         const res = await this.#editorAPI;
-        return res.setVariableValue(id, value).then((result) =>
-            getEditorResponseData<null>(result, (r) => throwVariableException(r, { id })),
-        );
+        return res
+            .setVariableValue(id, value)
+            .then((result) => getEditorResponseData<null>(result, (r) => throwVariableException(r, { id })));
     };
 
     /**
