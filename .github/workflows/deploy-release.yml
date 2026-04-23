@@ -101,8 +101,36 @@ jobs:
         id: global_latest
         run: |
           if [ "${{ steps.detect.outputs.is_prd }}" != "true" ]; then
-            echo "update_global_latest=true" >> $GITHUB_OUTPUT
-            echo "Non-PRD release: always update upload/latest"
+            # UAT: set global upload/latest only when this UAT's base semver (tag without -rc) is >=
+            # GitHub latest stable (gh release view). If UAT base < latest, treat as old-line: skip
+            # upload/latest only; versioned path still updates.
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            VER="${TAG_NAME#v}"
+            UAT_BASE="${VER%%-rc*}"
+            if ! echo "$UAT_BASE" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              echo "update_global_latest=true" >> $GITHUB_OUTPUT
+              echo "UAT: could not parse base semver from $TAG_NAME; defaulting to update global upload/latest"
+              exit 0
+            fi
+            LATEST_STABLE_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
+            CLEANED=$(printf '%s\n' "$LATEST_STABLE_TAG" | sed 's/^v//')
+            LATEST=""
+            if [ -n "$CLEANED" ] && echo "$CLEANED" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              LATEST=$CLEANED
+            fi
+            if [ -z "$LATEST" ]; then
+              echo "update_global_latest=true" >> $GITHUB_OUTPUT
+              echo "UAT: no valid GitHub latest stable; defaulting to update global upload/latest"
+              exit 0
+            fi
+            MIN_VER=$(printf '%s\n' "$UAT_BASE" "$LATEST" | sort -V | head -1)
+            if [ "$MIN_VER" = "$UAT_BASE" ] && [ "$UAT_BASE" != "$LATEST" ]; then
+              echo "update_global_latest=false" >> $GITHUB_OUTPUT
+              echo "UAT: $UAT_BASE < latest stable $LATEST; skipping only upload/latest (versioned path still updated)"
+            else
+              echo "update_global_latest=true" >> $GITHUB_OUTPUT
+              echo "UAT: $UAT_BASE >= or same line as latest $LATEST; updating global upload/latest"
+            fi
             exit 0
           fi
 
@@ -297,11 +325,17 @@ jobs:
 
       - name: Prepare CDN upload (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
+        env:
+          UPDATE_GLOBAL_LATEST: ${{ needs.detect-release-type.outputs.update_global_latest }}
         run: |
           path=packages/sdk/upload/latest
           versionpath=packages/sdk/upload/${{ needs.detect-release-type.outputs.version }}
-          mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          if [ "$UPDATE_GLOBAL_LATEST" = "true" ]; then
+            mkdir -p ${path%"/merge"}
+            cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          else
+            echo "Skipping global packages/sdk/upload/latest (UAT: old release line; versioned path still updated)"
+          fi
           mkdir -p ${versionpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
 

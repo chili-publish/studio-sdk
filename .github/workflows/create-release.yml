@@ -22,7 +22,7 @@ on:
         required: false
         type: string
       previous_prd_release_version:
-        description: "Optional. Only for old-line PRD hotfix releases. Existing stable PRD version to patch (e.g. 1.37.2). Empty keeps current behavior."
+        description: "Optional. Only for old-line PRD hotfix. Stable PRD to patch (e.g. 1.37.2). Empty = current line. UAT old-line: deploy infers from tag vs GitHub latest."
         required: false
         type: string
         default: ""
@@ -423,17 +423,6 @@ jobs:
           fi
 
           TAG_FOR_NOTES=$(echo "$REL_JSON" | jq -r '.tagName')
-
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          if [ "$CURRENT_VERSION" != "$BASE_RAW" ]; then
-            echo "❌ Error: package.json version ($CURRENT_VERSION) must match previous_prd_release_version ($BASE_RAW)."
-            exit 1
-          fi
-          if ! git merge-base --is-ancestor "$BASE_RAW" HEAD; then
-            echo "❌ Error: Current branch is not based on tag $BASE_RAW."
-            exit 1
-          fi
-
           LATEST_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
           if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" = "null" ]; then
             echo "❌ Error: Could not determine latest release tag (gh release view)."
@@ -445,6 +434,8 @@ jobs:
           fi
           HIGHEST="$LATEST_TAG"
 
+          # We need to make sure that the entered version (BASE_RAW) is strictly less than the current latest stable release
+          # LOWEST is min(base, highest)
           LOWEST=$(printf '%s\n%s\n' "$BASE_RAW" "$HIGHEST" | sort -V | head -1)
           if [ "$BASE_RAW" = "$HIGHEST" ] || [ "$LOWEST" != "$BASE_RAW" ]; then
             echo "❌ Error: Old-line hotfix requires base ($BASE_RAW) to be strictly less than the current latest stable release ($HIGHEST)."
