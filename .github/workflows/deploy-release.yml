@@ -6,7 +6,8 @@ on:
       - "*"
 
 env:
-  NODE_VERSION: 22.x
+  # NOTE: Stick to this node version because of the bug https://github.com/nodejs/node/issues/62425
+  NODE_VERSION: 22.22.1
 
 jobs:
   validate-tag-release:
@@ -168,6 +169,10 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ needs.detect-release-type.outputs.registry_url }}
           scope: ${{ needs.detect-release-type.outputs.npm_scope }}
+
+      - name: Update to latest npm version
+        if: needs.detect-release-type.outputs.is_prd == 'true'
+        run: npm i -g npm@11.13.0
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         env:
