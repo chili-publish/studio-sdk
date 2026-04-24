@@ -60,6 +60,7 @@ jobs:
       npm_scope: ${{ steps.detect.outputs.npm_scope }}
       subscription_id: ${{ steps.detect.outputs.subscription_id }}
       storage_account_name: ${{ steps.detect.outputs.storage_account_name }}
+      update_global_latest: ${{ steps.global_latest.outputs.update_global_latest }}
     steps:
       - name: Detect release type
         id: detect
@@ -95,6 +96,68 @@ jobs:
           # Extract version from tag (remove v prefix if present)
           VERSION=$(echo "$TAG_NAME" | sed 's/^v//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Compute global latest for CDN / main bump
+        id: global_latest
+        run: |
+          if [ "${{ steps.detect.outputs.is_prd }}" != "true" ]; then
+            # UAT: set global upload/latest only when this UAT's base semver (tag without -rc) is >=
+            # GitHub latest stable (gh release view). If UAT base < latest, treat as old-line: skip
+            # upload/latest only; versioned path still updates.
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            VER="${TAG_NAME#v}"
+            UAT_BASE="${VER%%-rc*}"
+            if ! echo "$UAT_BASE" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              echo "update_global_latest=true" >> $GITHUB_OUTPUT
+              echo "UAT: could not parse base semver from $TAG_NAME; defaulting to update global upload/latest"
+              exit 0
+            fi
+            LATEST_STABLE_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
+            CLEANED=$(printf '%s\n' "$LATEST_STABLE_TAG" | sed 's/^v//')
+            LATEST=""
+            if [ -n "$CLEANED" ] && echo "$CLEANED" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              LATEST=$CLEANED
+            fi
+            if [ -z "$LATEST" ]; then
+              echo "update_global_latest=true" >> $GITHUB_OUTPUT
+              echo "UAT: no valid GitHub latest stable; defaulting to update global upload/latest"
+              exit 0
+            fi
+            MIN_VER=$(printf '%s\n' "$UAT_BASE" "$LATEST" | sort -V | head -1)
+            if [ "$MIN_VER" = "$UAT_BASE" ] && [ "$UAT_BASE" != "$LATEST" ]; then
+              echo "update_global_latest=false" >> $GITHUB_OUTPUT
+              echo "UAT: $UAT_BASE < latest stable $LATEST; skipping only upload/latest (versioned path still updated)"
+            else
+              echo "update_global_latest=true" >> $GITHUB_OUTPUT
+              echo "UAT: $UAT_BASE >= or same line as latest $LATEST; updating global upload/latest"
+            fi
+            exit 0
+          fi
+
+          VERSION="${{ steps.detect.outputs.version }}"
+          # GitHub "latest" full release (marked as latest, not UAT not old-line)
+          LATEST_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
+          CLEANED=$(printf '%s\n' "$LATEST_TAG" | sed 's/^v//')
+          HIGHEST=""
+          if [ -n "$CLEANED" ] && echo "$CLEANED" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            HIGHEST=$CLEANED
+          fi
+
+          if [ -z "$HIGHEST" ]; then
+            echo "update_global_latest=true" >> $GITHUB_OUTPUT
+            echo "No valid semver for GitHub latest release; updating upload/latest"
+            exit 0
+          fi
+
+          if [ "$VERSION" = "$HIGHEST" ]; then
+            echo "update_global_latest=true" >> $GITHUB_OUTPUT
+            echo "PRD tag $VERSION is GitHub latest; will update upload/latest and allow main bump"
+          else
+            echo "update_global_latest=false" >> $GITHUB_OUTPUT
+            echo "PRD tag $VERSION is not GitHub latest ($HIGHEST); skipping global upload/latest and main bump"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   preflight:
     needs: [validate-tag-release]
@@ -262,11 +325,17 @@ jobs:
 
       - name: Prepare CDN upload (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
+        env:
+          UPDATE_GLOBAL_LATEST: ${{ needs.detect-release-type.outputs.update_global_latest }}
         run: |
           path=packages/sdk/upload/latest
           versionpath=packages/sdk/upload/${{ needs.detect-release-type.outputs.version }}
-          mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          if [ "$UPDATE_GLOBAL_LATEST" = "true" ]; then
+            mkdir -p ${path%"/merge"}
+            cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          else
+            echo "Skipping global packages/sdk/upload/latest (UAT: old release line; versioned path still updated)"
+          fi
           mkdir -p ${versionpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
 
@@ -274,14 +343,19 @@ jobs:
         if: needs.detect-release-type.outputs.is_prd == 'true'
         env:
           RELEASE_NAME: ${{ needs.detect-release-type.outputs.version }}
+          UPDATE_GLOBAL_LATEST: ${{ needs.detect-release-type.outputs.update_global_latest }}
         run: |
           path=packages/sdk/upload/latest
           minorversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+")
           patchversion=$(echo $RELEASE_NAME | grep -o "^[0-9]\+\.[0-9]\+\.[0-9]\+" | cut -d. -f3)
           minorlatestpath=packages/sdk/upload/$minorversion/latest
           patchlatestpath=packages/sdk/upload/$minorversion/$patchversion/latest
-          mkdir -p ${path%"/merge"}
-          cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          if [ "$UPDATE_GLOBAL_LATEST" = "true" ]; then
+            mkdir -p ${path%"/merge"}
+            cp -R packages/sdk/_bundles/* ${path%"/merge"}
+          else
+            echo "Skipping global packages/sdk/upload/latest (not GitHub latest PRD)"
+          fi
           mkdir -p ${minorlatestpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${minorlatestpath%"/merge"}
           mkdir -p ${patchlatestpath%"/merge"}
@@ -386,7 +460,7 @@ jobs:
 
   bump-main-version:
     needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
-    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true'
+    if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true' && needs.detect-release-type.outputs.update_global_latest == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write

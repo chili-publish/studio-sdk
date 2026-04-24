@@ -56,7 +56,7 @@ jobs:
           # Engine version is optional (only used for UAT regular)
           ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
 
-          # Define target branch. It states for the branch that will be used for release commit history merges.
+          # Old-line is inferred per-job from package.json vs GitHub latest stable.
           TARGET_BRANCH="main"
 
           echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
@@ -347,7 +347,60 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Detect old-line PRD purely from package.json vs the GitHub latest stable release.
+      # Old line = candidate stable (package.json with -rc* stripped) is on a different
+      # major.minor line than the current GitHub latest, AND strictly less than it.
+      - name: Detect old-line PRD
+        id: old_line_context
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ -z "$CURRENT_VERSION" ]; then
+            echo "❌ Error: Could not read version from package.json"
+            exit 1
+          fi
+          CANDIDATE_STABLE="${CURRENT_VERSION%%-*}"
+          if ! [[ "$CANDIDATE_STABLE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Error: Could not derive stable semver from package.json version: $CURRENT_VERSION"
+            exit 1
+          fi
+
+          LATEST_TAG=$(gh release view --json tagName -q .tagName 2>/dev/null || true)
+          if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" = "null" ] || ! [[ "$LATEST_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "ℹ️ No valid GitHub latest stable; treating as current-line PRD"
+            echo "is_old_line=false" >> $GITHUB_OUTPUT
+            echo "skip_github_latest=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          HIGHEST="$LATEST_TAG"
+
+          BASE_LINE="${CANDIDATE_STABLE%.*}"
+          HIGHEST_LINE="${HIGHEST%.*}"
+
+          LOWEST=$(printf '%s\n%s\n' "$CANDIDATE_STABLE" "$HIGHEST" | sort -V | head -1)
+          if [ "$BASE_LINE" != "$HIGHEST_LINE" ] && [ "$LOWEST" = "$CANDIDATE_STABLE" ] && [ "$CANDIDATE_STABLE" != "$HIGHEST" ]; then
+            # Highest stable git tag on the same minor line (X.Y.Z, no prerelease suffix).
+            PREVIOUS_ON_LINE=$(git tag --list "${BASE_LINE}.*" --sort=version:refname \
+              | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" \
+              | tail -n 1)
+            if [ -z "$PREVIOUS_ON_LINE" ]; then
+              echo "❌ Error: Old-line PRD detected ($CANDIDATE_STABLE on $BASE_LINE.x, latest $HIGHEST) but no previous stable git tag found on $BASE_LINE.x"
+              exit 1
+            fi
+            echo "is_old_line=true" >> $GITHUB_OUTPUT
+            echo "skip_github_latest=true" >> $GITHUB_OUTPUT
+            echo "previous_tag_for_notes=$PREVIOUS_ON_LINE" >> $GITHUB_OUTPUT
+            echo "✅ Old-line PRD: candidate $CANDIDATE_STABLE on $BASE_LINE.x, latest stable $HIGHEST; previous stable on line: $PREVIOUS_ON_LINE"
+          else
+            echo "is_old_line=false" >> $GITHUB_OUTPUT
+            echo "skip_github_latest=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ Current-line PRD: candidate $CANDIDATE_STABLE, latest stable $HIGHEST"
+          fi
+
       - name: Validate UAT tag exists
+        if: steps.old_line_context.outputs.is_old_line != 'true'
         run: |
           RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
@@ -379,6 +432,13 @@ jobs:
         run: |
           RELEASES_FILE="${{ steps.fetch_releases.outputs.releases_file }}"
 
+          if [ "${{ steps.old_line_context.outputs.is_old_line }}" = "true" ]; then
+            PREVIOUS_TAG="${{ steps.old_line_context.outputs.previous_tag_for_notes }}"
+            echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+            echo "📎 Using old-line base as previous tag for release notes: $PREVIOUS_TAG"
+            exit 0
+          fi
+
           # For PRD releases, always use the latest production release as previous tag
           PREVIOUS_TAG=$(jq -r '.[] | select(.isPrerelease == false) | .tagName' "$RELEASES_FILE" | head -1)
 
@@ -399,6 +459,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Assert old-line bump matches expected patch
+        if: steps.old_line_context.outputs.is_old_line == 'true'
+        run: |
+          BASE="${{ steps.old_line_context.outputs.previous_tag_for_notes }}"
+          NEW_TAG="${{ steps.apply_version.outputs.tag_name }}"
+          IFS=. read -r ma mi pa <<< "$BASE"
+          EXPECTED="${ma}.${mi}.$((pa + 1))"
+          if [ "$NEW_TAG" != "$EXPECTED" ]; then
+            echo "❌ Error: Expected bumped tag $EXPECTED after base $BASE, got $NEW_TAG"
+            exit 1
+          fi
+          echo "✅ Bumped tag $NEW_TAG matches expected patch after base $BASE"
+
       - name: Create release and prepare notification
         id: create_release_and_notify
         uses: ./.github/actions/create-gh-release
@@ -407,6 +480,7 @@ jobs:
           previous_tag: ${{ steps.previous_tag.outputs.previous_tag }}
           target_ref: ${{ steps.apply_version.outputs.version_commit_sha }}
           release_type: "production"
+          skip_github_latest: ${{ steps.old_line_context.outputs.skip_github_latest || 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
