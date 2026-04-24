@@ -1,8 +1,9 @@
-import { APIColorType, ColorUsage, DocumentColor } from './ColorStyleTypes';
+import { CharacterStyle } from './CharacterStyleTypes';
+import { APIColorType, DocumentColor } from './ColorStyleTypes';
 import { Id, PropertyState } from './CommonTypes';
 import { DocumentFontFamily } from './FontTypes';
 import { DocumentGradient } from './GradientStyleTypes';
-import { BulletListStyle, NumericListStyle } from './ParagraphStyleTypes';
+import { ParagraphStyle } from './ParagraphStyleTypes';
 import { Alignment, Case, Scripting } from './TextStyleTypes';
 
 export type RGB = { r: number; g: number; b: number };
@@ -150,62 +151,8 @@ export type BrandKit = {
     colors: PropertyState<DocumentColor>[];
     gradients: PropertyState<DocumentGradient>[];
     fontFamilies: PropertyState<DocumentFontFamily>[];
-    characterStyles: PropertyState<CharacterStyleWithThemeOverrides>[];
-    paragraphStyles: PropertyState<ParagraphStyleWithThemeOverrides>[];
+    characterStyles: PropertyState<CharacterStyle>[];
+    paragraphStyles: PropertyState<ParagraphStyle>[];
     media: PropertyState<BrandKitMedia>[];
     isAutoSync: boolean | null;
-};
-
-export type CharacterStyleWithThemeOverrides = {
-    id: string;
-    name: string;
-    fontKey: PropertyState<string | null>;
-    fontSize: PropertyState<number | null>;
-    typographicCase: PropertyState<Case | null>;
-    kerningOn: PropertyState<boolean | null>;
-    subSuperScript: PropertyState<Scripting | null>;
-    trackingLeft: PropertyState<number | null>;
-    trackingRight: PropertyState<number | null>;
-    baselineShiftValue: PropertyState<string | null>;
-    lineHeight: PropertyState<number | null>;
-    textOverprint: PropertyState<boolean | null>;
-    color: PropertyState<ColorUsage>;
-    strokeColor: PropertyState<ColorUsage>;
-    fillColorApplied: PropertyState<boolean | null>;
-    strokeColorApplied: PropertyState<boolean | null>;
-    underline: PropertyState<boolean | null>;
-    lineThrough: PropertyState<boolean | null>;
-    strokeWidth: PropertyState<number | null>;
-};
-
-export type ParagraphStyleWithThemeOverrides = {
-    id: string;
-    name: string;
-    fontKey: PropertyState<string | null>;
-    fontSize: PropertyState<number | null>;
-    typographicCase: PropertyState<Case | null>;
-    kerningOn: PropertyState<boolean | null>;
-    subSuperScript: PropertyState<Scripting | null>;
-    trackingLeft: PropertyState<number | null>;
-    trackingRight: PropertyState<number | null>;
-    indentStart: PropertyState<string | null>;
-    indentEnd: PropertyState<string | null>;
-    spaceBefore: PropertyState<string | null>;
-    spaceAfter: PropertyState<string | null>;
-    textIndent: PropertyState<string | null>;
-    strokeWidth: PropertyState<number | null>;
-    alignToBaseLine: PropertyState<boolean | null>;
-    baselineShiftValue: PropertyState<string | null>;
-    lineHeight: PropertyState<number | null>;
-    textAlign: PropertyState<Alignment | null>;
-    textAlignLast: PropertyState<Alignment | null>;
-    textOverprint: PropertyState<boolean | null>;
-    color: PropertyState<ColorUsage>;
-    strokeColor: PropertyState<ColorUsage>;
-    fillColorApplied: PropertyState<boolean | null>;
-    strokeColorApplied: PropertyState<boolean | null>;
-    underline: PropertyState<boolean | null>;
-    lineThrough: PropertyState<boolean | null>;
-    bulletListStyle: PropertyState<BulletListStyle>;
-    numericListStyle: PropertyState<NumericListStyle>;
 };
