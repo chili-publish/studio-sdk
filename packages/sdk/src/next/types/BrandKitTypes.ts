@@ -3,15 +3,9 @@ import {
     BrandKitCharacterStyle,
     BrandKitParagraphStyle,
     APIBrandKitMedia as MainAPIBrandKitMedia,
-    BrandKitMedia,
     APIBrandKitTheme,
 } from '../../types/BrandKitTypes';
-import { CharacterStyle } from '../../types/CharacterStyleTypes';
-import { DocumentColor } from '../../types/ColorStyleTypes';
 import { Id } from '../../types/CommonTypes';
-import { DocumentFontFamily } from '../../types/FontTypes';
-import { DocumentGradient } from '../../types/GradientStyleTypes';
-import { ParagraphStyle } from '../../types/ParagraphStyleTypes';
 
 /** API-style color union (alias of main BrandKitColor). */
 export type APIBrandKitColor = BrandKitColor;
@@ -46,20 +40,4 @@ export type APIBrandKit = {
     paragraphStyles: APIBrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
     themes: APIBrandKitTheme[];
-};
-
-/**
- * Unified brand kit type for the next API (output of get() and set()).
- * Represents the flat engine shape (id, version, name, and document-style resources).
- */
-export type BrandKit = {
-    id: string | null;
-    version: string | null;
-    name: string | null;
-    colors: DocumentColor[];
-    gradients: DocumentGradient[];
-    fontFamilies: DocumentFontFamily[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
 };

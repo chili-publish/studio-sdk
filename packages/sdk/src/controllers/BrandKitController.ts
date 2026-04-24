@@ -1,11 +1,10 @@
 import SDK from '..';
 import {
     BrandKitMedia,
-    EngineBrandKit,
+    BrandKit,
     StudioBrandKit,
 } from '../types/BrandKitTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { engineBrandKitToBrandKitInternal, engineBrandKitToStudioBrandKit } from '../utils/BrandKitAdapter';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
 import { ColorStyleController } from './ColorStyleController';
@@ -109,16 +108,7 @@ export class BrandKitController {
      */
     get = async () => {
         const res = await this.#editorAPI;
-        const result = await res.getBrandKit();
-        const response = getEditorResponseData<EngineBrandKit>(result);
-        const engineData = response.parsedData;
-        if (engineData == null) {
-            throw new Error('Brand kit response has no data');
-        }
-        return {
-            ...response,
-            parsedData: engineBrandKitToStudioBrandKit(engineData),
-        };
+        return res.getBrandKit().then((result) => getEditorResponseData<BrandKit>(result));
     };
 
     /**
@@ -227,20 +217,11 @@ export class BrandKitController {
     /**
      * @experimental This method updates a brand kit and all related resources assigned to it
      * @param studioBrandKit the content of the brand kit
-     * @returns
+     * @returns the local brandkit
      */
     set = async (studioBrandKit: StudioBrandKit) => {
         const res = await this.#editorAPI;
-        const result = await res.setBrandKit(JSON.stringify(studioBrandKit.brandKit));
-        const response = getEditorResponseData<EngineBrandKit>(result);
-        const engineData = response.parsedData;
-        if (engineData == null) {
-            throw new Error('Brand kit set response has no data');
-        }
-        return {
-            ...response,
-            parsedData: engineBrandKitToBrandKitInternal(engineData),
-        };
+        return res.setBrandKit(JSON.stringify(studioBrandKit.brandKit)).then((result) => getEditorResponseData<BrandKit>(result));
     };
 
 
