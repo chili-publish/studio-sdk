@@ -6,7 +6,8 @@ on:
       - "*"
 
 env:
-  NODE_VERSION: 22.x
+  # NOTE: Stick to this node version because of the bug https://github.com/nodejs/node/issues/62425
+  NODE_VERSION: 22.22.1
 
 jobs:
   validate-tag-release:
