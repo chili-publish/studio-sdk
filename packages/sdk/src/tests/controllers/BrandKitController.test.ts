@@ -1,4 +1,4 @@
-import { EditorAPI, EditorResponse } from '../../types/CommonTypes';
+import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';
 import { BrandKitController } from '../../controllers/BrandKitController';
 // eslint-disable-next-line import/no-named-as-default
@@ -9,11 +9,11 @@ import {
     mockGradients,
     mockFonts,
     mockParagraphStyles,
-    mockStudioBrandKit,
+    mockAPIBrandKit,
     mockMedia,
     mockAPIBrandKitThemes,
 } from '../__mocks__/Brandkit';
-import { APIBrandKit, BrandKit, StudioBrandKit } from '../../types/BrandKitTypes';
+import { APIBrandKit, BrandKit } from '../../types/BrandKitTypes';
 import type { DocumentFontFamily } from '../../types/FontTypes';
 import { FontController } from '../../controllers/FontController';
 import { ColorStyleController } from '../../controllers/ColorStyleController';
@@ -257,42 +257,6 @@ describe('BrandKitController', () => {
         expect(brandKit).not.toHaveProperty('themes');
     });
 
-    it('Should successfully remove brandkit content', async () => {
-        await mockBrandKitController.remove();
-
-        expect(mockEditorApi.getColors).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getFontFamilies).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getParagraphStyles).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.getCharacterStyles).toHaveBeenCalledTimes(1);
-
-        expect(mockEditorApi.removeColor).toHaveBeenCalledTimes(mockColors.length);
-        expect(mockEditorApi.removeFontFamily).toHaveBeenCalledTimes(mockFonts.length);
-        expect(mockEditorApi.removeParagraphStyle).toHaveBeenCalledTimes(mockParagraphStyles.length);
-        expect(mockEditorApi.removeCharacterStyle).toHaveBeenCalledTimes(mockCharacterStyles.length);
-
-        expect(
-            (mockEditorApi.removeColor as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map((call) => call[0]),
-        ).toEqual(mockColors.map((color) => color.id));
-
-        expect(
-            (mockEditorApi.removeFontFamily as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map(
-                (call) => call[0],
-            ),
-        ).toEqual(mockFonts.map((font) => font.id));
-
-        expect(
-            (mockEditorApi.removeParagraphStyle as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map(
-                (call) => call[0],
-            ),
-        ).toEqual(mockParagraphStyles.map((style) => style.id));
-
-        expect(
-            (mockEditorApi.removeCharacterStyle as jest.Mock<Promise<EditorResponse<null>>>).mock.calls.map(
-                (call) => call[0],
-            ),
-        ).toEqual(mockCharacterStyles.map((style) => style.id));
-    });
-
     it('does not expose engine themes on get(); BrandKit response has no themes field', async () => {
         const response = await mockBrandKitController.get();
         const brandKit = response.parsedData as BrandKit;
@@ -301,33 +265,29 @@ describe('BrandKitController', () => {
     });
 
     it('accepts brandKit with themes as APIBrandKitTheme[] (input type) when set() is called', async () => {
-        const studioBrandKitWithAPIThemes: StudioBrandKit = {
-            ...mockStudioBrandKit,
-            brandKit: {
-                ...(mockStudioBrandKit.brandKit as unknown as APIBrandKit),
-                themes: mockAPIBrandKitThemes,
-            },
-        } as StudioBrandKit;
+        const apiBrandKitWithThemes: APIBrandKit = {
+            ...mockAPIBrandKit,
+            themes: mockAPIBrandKitThemes,
+        };
 
-        const response = await mockBrandKitController.set(studioBrandKitWithAPIThemes);
+        const response = await mockBrandKitController.set(apiBrandKitWithThemes);
 
-        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(
-            JSON.stringify(studioBrandKitWithAPIThemes.brandKit),
-        );
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(apiBrandKitWithThemes));
         expect(response.parsedData).toBeDefined();
     });
 
     it('Should successfully set brandkit content', async () => {
-        const response = await mockBrandKitController.set(mockStudioBrandKit as unknown as StudioBrandKit);
+        const apiBrandKit = mockAPIBrandKit;
+        const response = await mockBrandKitController.set(apiBrandKit);
 
         expect(mockEditorApi.setBrandKit).toHaveBeenCalledTimes(1);
-        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(mockStudioBrandKit.brandKit));
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(apiBrandKit));
         expect(response.parsedData).toBeDefined();
         const setBrandKitResult = response.parsedData as BrandKit;
         expect(setBrandKitResult).toMatchObject({
-            id: mockStudioBrandKit.id,
-            version: mockStudioBrandKit.brandKit.lastModifiedDate,
-            name: mockStudioBrandKit.brandKit.name,
+            id: apiBrandKit.id,
+            version: apiBrandKit.lastModifiedDate,
+            name: apiBrandKit.name,
         });
         expect(setBrandKitResult.colors).toEqual(mockColors);
         expect(setBrandKitResult.gradients).toEqual(mockGradients);

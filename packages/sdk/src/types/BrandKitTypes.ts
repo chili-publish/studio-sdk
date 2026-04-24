@@ -11,15 +11,15 @@ export type CMYK = { c: number; m: number; y: number; k: number };
 
 type BaseBrandKitColor = { name: string; guid: string };
 
-export type RGBColorValue = BaseBrandKitColor & { value: RGB; type: APIColorType.rgb };
-export type CMYKColorValue = BaseBrandKitColor & { value: CMYK; type: APIColorType.cmyk };
-export type HEXColorValue = BaseBrandKitColor & { value: string; type: APIColorType.hex };
+export type RGBColorValue = BaseBrandKitColor & { value: RGB | null; type: APIColorType.rgb };
+export type CMYKColorValue = BaseBrandKitColor & { value: CMYK | null; type: APIColorType.cmyk };
+export type HEXColorValue = BaseBrandKitColor & { value: string | null; type: APIColorType.hex };
 
-export type SpotRGBColorValue = BaseBrandKitColor & { displayValue: RGB; value: string; type: APIColorType.spotRgb };
-export type SpotCMYKColorValue = BaseBrandKitColor & { displayValue: CMYK; value: string; type: APIColorType.spotCmyk };
-export type SpotHEXColorValue = BaseBrandKitColor & { displayValue: string; value: string; type: APIColorType.spotHex };
+export type SpotRGBColorValue = BaseBrandKitColor & { displayValue: RGB | null; value: string | null; type: APIColorType.spotRgb };
+export type SpotCMYKColorValue = BaseBrandKitColor & { displayValue: CMYK | null; value: string | null; type: APIColorType.spotCmyk };
+export type SpotHEXColorValue = BaseBrandKitColor & { displayValue: string | null; value: string | null; type: APIColorType.spotHex };
 
-export type BrandKitColor =
+export type APIBrandKitColor =
     | RGBColorValue
     | CMYKColorValue
     | HEXColorValue
@@ -27,13 +27,13 @@ export type BrandKitColor =
     | SpotCMYKColorValue
     | SpotHEXColorValue;
 
-export type BrandKitFont = {
+export type APIBrandKitFont = {
     fontFamilyId: string;
-    fontFamilyBrandKitGuid: string;
-    fontConnectorId?: string | null;
+    fontFamilyBrandKitGuid: string | null;
+    fontConnectorId: string | null;
 };
 
-export type BrandKitCharacterStyle = {
+export type APIBrandKitCharacterStyle = {
     name: string;
     brandKitFontFamilyGuid?: string;
     fontStyleId?: string;
@@ -61,7 +61,7 @@ export type BrandKitCharacterStyle = {
     lineThrough?: boolean;
 };
 
-export type BrandKitParagraphStyle = {
+export type APIBrandKitParagraphStyle = {
     name: string;
     brandKitFontFamilyGuid: string;
     fontStyleId: string;
@@ -72,20 +72,20 @@ export type BrandKitParagraphStyle = {
     trackingLeft: number;
     trackingRight: number;
 
-    textAlign: Alignment;
+    textAlign: Alignment | null;
 
-    textIndent: string;
+    textIndent: string | null;
 
-    baselineShiftValue: string;
+    baselineShiftValue: string | null;
     lineHeight: number;
-    textOverprint: boolean;
+    textOverprint: boolean | null;
 
     brandKitColorGuid: string;
-    fillColorApplied: boolean;
+    fillColorApplied: boolean | null;
 
-    textStrokeColorGuid: string;
-    textStrokeColorApplied: boolean;
-    textStrokeWidth: number;
+    textStrokeColorGuid: string | null;
+    textStrokeColorApplied: boolean | null;
+    textStrokeWidth: number | null;
 
     underline: boolean;
     lineThrough: boolean;
@@ -99,8 +99,8 @@ export type BrandKitMedia = {
 
 export type APIBrandKitMedia = {
     name: string;
-    mediaConnectorId: Id;
-    mediaId: Id;
+    mediaConnectorId: Id | null;
+    mediaId: Id | null;
 };
 
 export type APIBrandKitTheme = {
@@ -109,40 +109,25 @@ export type APIBrandKitTheme = {
     inheritsFrom: string | null;
     dateCreated: string | null;
     lastModifiedDate: string | null;
-    colors: BrandKitColor[];
-    characterStyles: BrandKitCharacterStyle[];
-    paragraphStyles: BrandKitParagraphStyle[];
-    media: BrandKitMedia[];
+    colors: APIBrandKitColor[];
+    characterStyles: APIBrandKitCharacterStyle[];
+    paragraphStyles: APIBrandKitParagraphStyle[];
+    media: APIBrandKitMedia[];
 };
 
 export type APIBrandKit = {
     id: Id;
-    name: string;
+    name: string | null;
     dateCreated: string;
     lastModifiedDate: string;
-    fonts: BrandKitFont[];
-    colors: BrandKitColor[];
-    characterStyles: BrandKitCharacterStyle[];
-    paragraphStyles: BrandKitParagraphStyle[];
+    fonts: APIBrandKitFont[];
+    colors: APIBrandKitColor[];
+    characterStyles: APIBrandKitCharacterStyle[];
+    paragraphStyles: APIBrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
     themes: APIBrandKitTheme[];
 };
 
-/**
- * User-facing brand kit type returned by BrandKitController.get() and accepted by BrandKitController.set().
- */
-export type StudioBrandKit = {
-    id: string;
-    name: string;
-    // This is here to be non-breaking but will be removed in next versions
-    selectedThemeName: string | null;
-    fontConnectorId: string;
-    brandKit: APIBrandKit;
-};
-
-/**
- * Response shape from getBrandKit() / setBrandKit().
- */
 export type BrandKit = {
     id: string | null;
     version: string | null;
