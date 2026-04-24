@@ -126,20 +126,9 @@ export type APIBrandKit = {
     characterStyles: BrandKitCharacterStyle[];
     paragraphStyles: BrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
-    themes: APIBrandKitTheme[] | BrandKitTheme[];
+    themes: APIBrandKitTheme[];
 };
 
-export type BrandKitTheme = {
-    id: string;
-    name: string;
-    inheritsFrom: string | null;
-    dateCreated: string | null;
-    lastModifiedDate: string | null;
-    colors: DocumentColor[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
-};
 
 /**
  * User-facing brand kit type returned by BrandKitController.get() and accepted by BrandKitController.set().
@@ -147,6 +136,8 @@ export type BrandKitTheme = {
 export type StudioBrandKit = {
     id: string;
     name: string;
+    // This is here to be non-breaking but will be removed in next versions
+    selectedThemeName: string | null;
     fontConnectorId: string;
     brandKit: APIBrandKit;
 };
@@ -158,13 +149,13 @@ export type BrandKitInternal = {
     id: string;
     version: string;
     name: string;
+    selectedThemeName: string | null;
     colors: DocumentColor[];
     gradients: DocumentGradient[];
     fonts: DocumentFontFamily[];
     characterStyles: DocumentCharacterStyle[];
     paragraphStyles: DocumentParagraphStyle[];
     media: BrandKitMedia[];
-    themes: BrandKitTheme[];
 };
 
 /**
@@ -174,11 +165,12 @@ export type EngineBrandKit = {
     id: string | null;
     version: string | null;
     name: string | null;
+    selectedThemeName: string | null;
     colors: DocumentColor[];
     gradients: DocumentGradient[];
     fontFamilies: DocumentFontFamily[];
     characterStyles: CharacterStyle[];
     paragraphStyles: ParagraphStyle[];
     media: BrandKitMedia[];
-    themes: BrandKitTheme[];
+    isAutoSync: boolean | null;
 };
