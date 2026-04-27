@@ -344,6 +344,11 @@ export const mockBrandKitThemeCharacterStyle = {
         opacity: 1,
         type: ColorUsageType.local,
     },
+    backgroundColor: {
+      color: { r: 0, g: 0, b: 0, type: ColorType.rgb },
+      opacity: 0.15,
+      type: ColorUsageType.local,
+    },
     fillColorApplied: true,
     strokeColorApplied: false,
     underline: false,
@@ -382,6 +387,11 @@ export const mockBrandKitThemeParagraphStyle = {
         color: { r: 0, g: 0, b: 0, type: ColorType.rgb },
         opacity: 1,
         type: ColorUsageType.local,
+    },
+    backgroundColor: {
+      color: { r: 0, g: 0, b: 0, type: ColorType.rgb },
+      opacity: 0.15,
+      type: ColorUsageType.local,
     },
     fillColorApplied: true,
     strokeColorApplied: false,
