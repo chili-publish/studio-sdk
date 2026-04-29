@@ -33,6 +33,7 @@ export interface ResolvedMedia {
 export enum VariableType {
     shortText = 'shortText',
     longText = 'longText',
+    richText = 'richText',
     image = 'image',
     list = 'list',
     boolean = 'boolean',
@@ -125,6 +126,10 @@ export interface DataSourceVariable extends Variable {
     value?: DataSourceVariableSource;
     displayOptions: DataSourceVariableDisplayOptions;
     entryId?: RowId;
+}
+
+export interface RichTextVariable extends Variable {
+    value: null;
 }
 
 export type DateRestriction = RelativeDate | AbsoluteDate;

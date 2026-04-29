@@ -242,7 +242,7 @@ declare module 'grafx-studio-actions' {
         export type Variable =
             | ShortTextVariable
             | LongTextVariable
-            | FormattedTextVariable
+            | RichTextVariable
             | ImageVariable
             | ListVariable
             | BooleanVariable
@@ -307,7 +307,7 @@ declare module 'grafx-studio-actions' {
         export enum VariableType {
             shortText = 'shortText',
             longText = 'longText',
-            formattedText = 'formattedText',
+            richText = 'richText',
             image = 'image',
             list = 'list',
             boolean = 'boolean',
@@ -435,8 +435,8 @@ declare module 'grafx-studio-actions' {
             readonly type: VariableType.longText;
         }
 
-        export interface FormattedTextVariable extends BaseVariable {
-            readonly type: VariableType.formattedText;
+        export interface RichTextVariable extends BaseVariable {
+            readonly type: VariableType.richText;
         }
 
         export interface ImageVariable extends BaseVariable {
@@ -869,7 +869,7 @@ declare module 'grafx-studio-actions' {
              */
             readonly type: 'hex';
         }
-        
+
         /**
          * Controller for manipulating brand kit paragraph styles.
          */
