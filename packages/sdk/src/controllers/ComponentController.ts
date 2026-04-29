@@ -32,7 +32,7 @@ export class ComponentController {
     linkVariable = async (frameId: Id, target: Id, source?: Id, sourceField?: string) => {
         const res = await this.#editorAPI;
         return res
-            .linkComponentVariable(frameId, target, source, sourceField)
+            .linkComponentVariable(frameId, target, source, sourceField ?? null)
             .then((result) => getEditorResponseData<null>(result));
     };
 
