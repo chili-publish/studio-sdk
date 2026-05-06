@@ -15,7 +15,6 @@ export enum StructuredTextStyleKind {
     paragraph = 'paragraph',
     character = 'character',
     lineBreak = 'lineBreak',
-    list = 'list',
     inlineStyle = 'inlineStyle',
 }
 
@@ -26,7 +25,6 @@ export type StructuredTextStyleRule =
     | ParagraphTextStyleRule
     | CharacterTextStyleRule
     | LineBreakTextStyleRule
-    | ListTextStyleRule
     | InlineStyleTextStyleRule;
 
 export interface ParagraphTextStyleRule {
@@ -46,18 +44,6 @@ export interface LineBreakTextStyleRule {
     styleKind: StructuredTextStyleKind.lineBreak;
 }
 
-/**
- * A style rule for list container or list item tags (`ul`, `ol`, `li`).
- *
- * Applying a `paragraphStyleName` to a list container causes all its items
- * to inherit that paragraph style. Applying it to a list item (`li`) causes
- * only that individual item to use the style.
- */
-export interface ListTextStyleRule {
-    matcher: StructuredTextNodeMatcher;
-    paragraphStyleName: string;
-    styleKind: StructuredTextStyleKind.list;
-}
 
 /**
  * A style rule that applies inline character styling directly to matched
