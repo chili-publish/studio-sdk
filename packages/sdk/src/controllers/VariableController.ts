@@ -612,6 +612,17 @@ export class VariableController {
     };
 
     /**
+     * This method sets the rule set id for a rich text variable
+     * @param id id of the variable
+     * @param ruleSetId id of the rule set
+     * @returns
+     */
+    setRuleSetId = async (id: string, ruleSetId: string) => {
+        const res = await this.#editorAPI;
+        return res.setVariableRuleSetId(id, ruleSetId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method sets the items of the list variable
      *
      * The items need to be unique and are not case sensitive.

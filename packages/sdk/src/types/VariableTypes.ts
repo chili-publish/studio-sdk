@@ -130,6 +130,7 @@ export interface DataSourceVariable extends Variable {
 
 export interface RichTextVariable extends Variable {
     value: null;
+    ruleSetId: string;
 }
 
 export type DateRestriction = RelativeDate | AbsoluteDate;
