@@ -102,6 +102,9 @@ runs:
         fi
 
         curl --request POST \
+          --silent --show-error \
+          --fail \
+          --max-time 30 \
           --header "Content-Type: application/json" \
           --data "$payload" \
           "$WEBHOOK_URL"
