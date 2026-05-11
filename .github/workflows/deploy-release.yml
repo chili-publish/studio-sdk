@@ -434,29 +434,30 @@ jobs:
           https://api.github.com/repos/chili-publish/delivery-infrastructure/actions/workflows/ops-cloudflare-cdn-purge.yml/dispatches \
           -d '{"ref":"main","inputs":{"destination":"${{ needs.detect-release-type.outputs.is_prd == 'true' && 'PRD' || 'UAT' }}","purge-prefixes":"sdk"}}'
 
-  notify:
+  notify-teams-success:
     needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
     if: needs.validate-tag-release.outputs.release_exists == 'true'
     runs-on: ubuntu-latest
-    permissions: {}
+    permissions:
+      contents: read
     steps:
-      - name: Notify Teams
-        run: |
-          VERSION="${{ needs.detect-release-type.outputs.version }}"
-          TAG_NAME="${{ needs.detect-release-type.outputs.tag_name }}"
-          RELEASE_TYPE="${{ needs.detect-release-type.outputs.is_uat == 'true' && 'UAT' || 'Production' }}"
-          EMOJI="${{ needs.detect-release-type.outputs.is_uat == 'true' && '🧪' || '🎉' }}"
+      - uses: actions/checkout@v4
 
-          payload=$(cat <<EOF
-          {
-              "text": "$EMOJI **$RELEASE_TYPE Deployment Completed**\n\n**Version:** $VERSION\n**Tag:** $TAG_NAME\n\nDeployment to $RELEASE_TYPE environment completed successfully."
-          }
-          EOF
-          )
-          curl --request POST \
-          --header "Content-Type: application/json" \
-          --data "$payload" \
-          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
+      - name: Notify Teams success
+        uses: ./.github/actions/cd-notify
+        with:
+          status: success
+          pipeline_name: Deploy Release (Studio SDK)
+          step_name: Deployment
+          environment: ${{ needs.detect-release-type.outputs.environment }}
+          version: ${{ needs.detect-release-type.outputs.version }}
+          tag_name: ${{ needs.detect-release-type.outputs.tag_name }}
+          is_uat: ${{ needs.detect-release-type.outputs.is_uat }}
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_RELEASE_HOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   bump-main-version:
     needs: [validate-tag-release, detect-release-type, publish, deploy-azure]
@@ -585,3 +586,100 @@ jobs:
           git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
           git push origin main
           echo "Pushed version bump to main branch"
+
+  notify-teams-failure:
+    name: Notify Teams on failure
+    needs:
+      [
+        validate-tag-release,
+        detect-release-type,
+        preflight,
+        publish,
+        deploy-azure,
+        publish-docs,
+        purge-cdn,
+        notify-teams-success,
+        bump-main-version,
+      ]
+    if: |
+      always() && (
+        needs.validate-tag-release.result == 'failure' ||
+        needs.detect-release-type.result == 'failure' ||
+        needs.preflight.result == 'failure' ||
+        needs.publish.result == 'failure' ||
+        needs.deploy-azure.result == 'failure' ||
+        needs.publish-docs.result == 'failure' ||
+        needs.purge-cdn.result == 'failure' ||
+        needs.notify-teams-success.result == 'failure' ||
+        needs.bump-main-version.result == 'failure'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine failed step
+        id: failed-step
+        run: |
+          ENV="${{ needs.detect-release-type.outputs.environment }}"
+          if [ -z "$ENV" ]; then
+            ENV="unknown"
+          fi
+          TAG="${{ needs.validate-tag-release.outputs.tag_name }}"
+          TAG_SUFFIX=""
+          if [ -n "$TAG" ]; then
+            TAG_SUFFIX=", tag ${TAG}"
+          fi
+
+          if [ "${{ needs.validate-tag-release.result }}" == "failure" ]; then
+            echo "step=Validate tag and GitHub release" >> $GITHUB_OUTPUT
+            echo "environment=tag / pre-deploy${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.detect-release-type.result }}" == "failure" ]; then
+            echo "step=Detect release type (tag format / CDN rules)" >> $GITHUB_OUTPUT
+            echo "environment=${ENV}${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.preflight.result }}" == "failure" ]; then
+            echo "step=Preflight (lint and tests)" >> $GITHUB_OUTPUT
+            echo "environment=${ENV}${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.publish.result }}" == "failure" ]; then
+            echo "step=Publish packages (npm / GitHub Packages)" >> $GITHUB_OUTPUT
+            echo "environment=${ENV}${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.deploy-azure.result }}" == "failure" ]; then
+            echo "step=Deploy to Azure Blob Storage (SDK bundles and actions)" >> $GITHUB_OUTPUT
+            echo "environment=${ENV}${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.publish-docs.result }}" == "failure" ]; then
+            echo "step=Publish docs (reusable workflow)" >> $GITHUB_OUTPUT
+            echo "environment=prd${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=false" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.purge-cdn.result }}" == "failure" ]; then
+            echo "step=Cloudflare CDN purge dispatch" >> $GITHUB_OUTPUT
+            echo "environment=${ENV}${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=false" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.notify-teams-success.result }}" == "failure" ]; then
+            echo "step=Teams success notification" >> $GITHUB_OUTPUT
+            echo "environment=${ENV}${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=false" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.bump-main-version.result }}" == "failure" ]; then
+            echo "step=Bump main branch version after production" >> $GITHUB_OUTPUT
+            echo "environment=main / post-prod${TAG_SUFFIX}" >> $GITHUB_OUTPUT
+            echo "is_blocking=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify Teams - Failure
+        uses: ./.github/actions/cd-notify
+        with:
+          status: failure
+          pipeline_name: Deploy Release (Studio SDK)
+          step_name: ${{ steps.failed-step.outputs.step }}
+          environment: ${{ steps.failed-step.outputs.environment }}
+          is_blocking: ${{ steps.failed-step.outputs.is_blocking }}
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_RELEASE_HOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

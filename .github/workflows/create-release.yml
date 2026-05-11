@@ -492,7 +492,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
 
-  notify-teams:
+  notify-teams-success:
     needs: [configure-parameters, uat-regular, uat-hotfix, production]
     if: always() && (needs.uat-regular.result == 'success' || needs.uat-hotfix.result == 'success' || needs.production.result == 'success')
     runs-on: ubuntu-latest
@@ -521,18 +521,69 @@ jobs:
 
           echo "text=$TEXT" >> $GITHUB_OUTPUT
 
-      - name: Notify Teams
+      - uses: actions/checkout@v4
+
+      - name: Notify Teams success
+        uses: ./.github/actions/cd-notify
+        with:
+          status: success
+          pipeline_name: Create GitHub Release (Studio SDK)
+          step_name: Release published
+          environment: ${{ needs.configure-parameters.outputs.environment }}
+          notification_text: ${{ steps.extract_text.outputs.text }}
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_RELEASE_HOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+  notify-teams-failure:
+    name: Notify Teams on failure
+    needs: [configure-parameters, uat-regular, uat-hotfix, production]
+    if: |
+      always() && (
+        needs.configure-parameters.result == 'failure' ||
+        needs.uat-regular.result == 'failure' ||
+        needs.uat-hotfix.result == 'failure' ||
+        needs.production.result == 'failure'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine failed step
+        id: failed-step
         run: |
-          TEXT="${{ steps.extract_text.outputs.text }}"
+          if [ "${{ needs.configure-parameters.result }}" == "failure" ]; then
+            echo "step=Configure release parameters" >> $GITHUB_OUTPUT
+            echo "environment=workflow inputs" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.uat-regular.result }}" == "failure" ]; then
+            echo "step=UAT regular (release, tag, merge)" >> $GITHUB_OUTPUT
+            echo "environment=uat" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.uat-hotfix.result }}" == "failure" ]; then
+            echo "step=UAT hotfix (release, tag, merge)" >> $GITHUB_OUTPUT
+            echo "environment=uat" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          elif [ "${{ needs.production.result }}" == "failure" ]; then
+            echo "step=Production release (release, tag, merge)" >> $GITHUB_OUTPUT
+            echo "environment=prd" >> $GITHUB_OUTPUT
+            echo "is_blocking=true" >> $GITHUB_OUTPUT
+          fi
 
-          payload=$(cat <<EOF
-          {
-              "text": "$TEXT"
-          }
-          EOF
-          )
-
-          curl --request POST \
-          --header "Content-Type: application/json" \
-          --data "$payload" \
-          "${{ secrets.TEAMS_RELEASE_HOOK_URL }}"
+      - name: Notify Teams - Failure
+        uses: ./.github/actions/cd-notify
+        with:
+          status: failure
+          pipeline_name: Create GitHub Release (Studio SDK)
+          step_name: ${{ steps.failed-step.outputs.step }}
+          environment: ${{ steps.failed-step.outputs.environment }}
+          is_blocking: ${{ steps.failed-step.outputs.is_blocking }}
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_RELEASE_HOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
