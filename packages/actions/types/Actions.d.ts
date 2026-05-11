@@ -796,6 +796,11 @@ declare module 'grafx-studio-actions' {
              * An object to manipulate brand kit character styles.
              */
             readonly characterStyles: BrandKitChacterStylesController;
+
+            /**
+             * An object to read and switch the active brand kit theme.
+             */
+            readonly themes: BrandKitThemesController;
         }
 
         /**
@@ -869,7 +874,7 @@ declare module 'grafx-studio-actions' {
              */
             readonly type: 'hex';
         }
-        
+
         /**
          * Controller for manipulating brand kit paragraph styles.
          */
@@ -894,6 +899,24 @@ declare module 'grafx-studio-actions' {
              * @returns
              */
             copy(fromName: string, toName: string): void;
+        }
+
+        /**
+         * Controller for reading and switching the active brand kit theme.
+         */
+        export interface BrandKitThemesController {
+            /**
+             * Returns the name of the active theme. For the root brand kit the name may be
+             * `null` when it has not been defined; only the root allows a null name.
+             */
+            getActiveName(): string | null;
+
+            /**
+             * Switches the active theme to the one identified by `name`. `null` is a valid
+             * value for the root brand kit when its name has not been defined (nullable only on root).
+             * @param name the theme name, or `null` for the unnamed root brand kit
+             */
+            switch(name: string | null): void;
         }
     }
 }
