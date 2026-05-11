@@ -660,6 +660,26 @@ function setPageSize(width: number | VariableValue, height: number | VariableVal
 }
 
 /**
+ * Returns the name of the active brand kit theme. For the root brand kit the name may be
+ * `null` when it has not been defined; only the root allows a null name.
+ *
+ * @returns {string | null} The active theme name.
+ */
+function getActiveThemeName(): string | null {
+    return studio.brandKit.themes.getActiveName();
+}
+
+/**
+ * Switches the active brand kit theme. `null` is a valid value for the root brand kit when
+ * its name has not been defined (nullable only on root).
+ *
+ * @param {string | null} name - The theme name, or `null` for the unnamed root brand kit.
+ */
+function switchTheme(name: string | null) {
+    studio.brandKit.themes.switch(name);
+}
+
+/**
  * Copy a brand kit color.
  *
  * @param {string} from - The name of the source character style.
