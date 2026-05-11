@@ -11,25 +11,11 @@ import {
     mockMedia,
 } from '../../../tests/__mocks__/Brandkit';
 
-const mockBrandKitResponse = {
-    id: 'test-brand-kit-id',
-    version: '2025-06-12T12:10:29.354877',
-    name: 'Test Brand Kit',
-    colors: mockColors,
-    gradients: mockGradients,
-    fontFamilies: mockFonts,
-    characterStyles: mockCharacterStyles,
-    paragraphStyles: mockParagraphStyles,
-    media: mockMedia,
-};
-
 let mockBrandKitController: BrandKitController;
 let mockEditorApi: EditorAPI;
 
 beforeEach(() => {
     mockEditorApi = {
-        getBrandKit: async () =>
-            getEditorResponseData(castToEditorResponse(mockBrandKitResponse)),
         setBrandKit: async (...args: unknown[]) => {
             const apiBrandKit = JSON.parse(args[0] as string) as APIBrandKit;
             return getEditorResponseData(
@@ -48,7 +34,6 @@ beforeEach(() => {
             );
         },
     };
-    jest.spyOn(mockEditorApi, 'getBrandKit');
     jest.spyOn(mockEditorApi, 'setBrandKit');
     mockBrandKitController = new BrandKitController(mockEditorApi);
 });
@@ -58,23 +43,6 @@ afterEach(() => {
 });
 
 describe('Next.BrandKitController', () => {
-    it('Should call get and return BrandKit shape', async () => {
-        const response = await mockBrandKitController.get();
-
-        expect(mockEditorApi.getBrandKit).toHaveBeenCalledTimes(1);
-        expect(response.parsedData).toBeDefined();
-        expect(response.parsedData).toMatchObject({
-            id: 'test-brand-kit-id',
-            version: '2025-06-12T12:10:29.354877',
-            name: 'Test Brand Kit',
-        });
-        expect(response.parsedData?.colors).toHaveLength(mockColors.length);
-        expect(response.parsedData?.fontFamilies).toHaveLength(mockFonts.length);
-        expect(response.parsedData?.characterStyles).toHaveLength(mockCharacterStyles.length);
-        expect(response.parsedData?.paragraphStyles).toHaveLength(mockParagraphStyles.length);
-        expect(response.parsedData?.media).toHaveLength(mockMedia.length);
-    });
-
     it('Should call set with APIBrandKit and return BrandKit shape', async () => {
         const apiBrandKit: APIBrandKit = {
             id: 'api-brand-kit-id',
