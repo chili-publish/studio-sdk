@@ -1,6 +1,7 @@
+import { BrandKit } from '../../types/BrandKitTypes';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData } from '../../utils/EditorResponseData';
-import type { APIBrandKit, BrandKit } from '../types/BrandKitTypes';
+import type { APIBrandKit } from '../types/BrandKitTypes';
 
 /**
  * Next BrandKitController: get/set use the same unified BrandKit type.
@@ -18,15 +19,6 @@ export class BrandKitController {
     constructor(editorAPI: EditorAPI) {
         this.#editorAPI = editorAPI;
     }
-
-    /**
-     * Returns the current brand kit (unified BrandKit shape).
-     * @returns The brand kit with all assigned resources
-     */
-    get = async () => {
-        const res = await this.#editorAPI;
-        return res.getBrandKit().then((result) => getEditorResponseData<BrandKit>(result));
-    };
 
     /**
      * Updates the brand kit with the given API data. Returns the updated brand kit (BrandKit shape).
