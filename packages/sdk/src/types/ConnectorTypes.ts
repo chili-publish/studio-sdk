@@ -342,7 +342,7 @@ export type UploadValidationConfiguration = {
     maxWidthPixels?: number | null;
     minHeightPixels?: number | null;
     maxHeightPixels?: number | null;
-    mimeTypes?: ('image/jpg' | 'image/jpeg' | 'image/png')[];
+    mimeTypes?: string[];
 };
 
 export enum UploadAssetValidationErrorType {
