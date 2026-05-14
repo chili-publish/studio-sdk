@@ -101,6 +101,7 @@ export type {
     RelativeDate,
     ShortTextVariable,
     ValueWithStyle,
+    RichTextVariable,
     Variable,
     VariableVisibility,
     VariableVisibilityConditional,
