@@ -1,4 +1,9 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
+import {
+    ComponentGridLayoutAlgorithm,
+    ComponentGridSettings,
+    ComponentGridSettingsDeltaUpdate,
+} from '../../types/ComponentGridTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { ComponentGridController } from '../../controllers/ComponentGridController';
@@ -35,7 +40,10 @@ afterEach(() => {
 describe('ComponentGridController', () => {
     describe('updateComponentGridProperties', () => {
         it('Should be possible to update component grid properties', async () => {
-            const deltaUpdate = { rows: 3, columns: 4 };
+            const deltaUpdate: ComponentGridSettingsDeltaUpdate = {
+                numberOfColumns: { value: 4 },
+                numberOfRows: { value: 3 },
+            };
             await mockedComponentGridController.updateComponentGridProperties(id, deltaUpdate);
             expect(mockedEditorApi.updateComponentGridProperties).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.updateComponentGridProperties).toHaveBeenCalledWith(
@@ -64,8 +72,33 @@ describe('ComponentGridController', () => {
     });
 
     describe('setComponentGridSettings', () => {
-        it('Should be possible to set component grid settings', async () => {
-            const settings = { gap: 10, padding: 5 };
+        it('Should be possible to set fixed component grid settings', async () => {
+            const settings: ComponentGridSettings = {
+                type: ComponentGridLayoutAlgorithm.fixed,
+                numberOfColumns: 3,
+                numberOfRows: 2,
+                componentConnectorId: 'connector-id',
+                componentId: 'component-id',
+                horizontalSpacing: '10',
+                verticalSpacing: '5',
+            };
+            await mockedComponentGridController.setComponentGridSettings(id, settings);
+            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(
+                id,
+                JSON.stringify(settings),
+            );
+        });
+
+        it('Should be possible to set slotting component grid settings', async () => {
+            const settings: ComponentGridSettings = {
+                type: ComponentGridLayoutAlgorithm.slotting,
+                numberOfColumns: 4,
+                numberOfRows: 3,
+                allowReordering: true,
+                componentConnectorId: null,
+                componentId: null,
+            };
             await mockedComponentGridController.setComponentGridSettings(id, settings);
             expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(
