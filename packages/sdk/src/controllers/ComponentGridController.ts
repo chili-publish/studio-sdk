@@ -1,4 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
+import { ComponentGridSettings, ComponentGridSettingsDeltaUpdate } from '../types/ComponentGridTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -25,7 +26,7 @@ export class ComponentGridController {
      * @param deltaUpdate the delta update object containing the properties to update
      * @returns
      */
-    updateComponentGridProperties = async (frameId: Id, deltaUpdate: Record<string, unknown>) => {
+    updateComponentGridProperties = async (frameId: Id, deltaUpdate: ComponentGridSettingsDeltaUpdate) => {
         const res = await this.#editorAPI;
         return res
             .updateComponentGridProperties(frameId, JSON.stringify(deltaUpdate))
@@ -52,7 +53,7 @@ export class ComponentGridController {
      * @param settings the settings object to apply
      * @returns
      */
-    setComponentGridSettings = async (frameId: Id, settings: Record<string, unknown>) => {
+    setComponentGridSettings = async (frameId: Id, settings: ComponentGridSettings) => {
         const res = await this.#editorAPI;
         return res
             .setComponentGridSettings(frameId, JSON.stringify(settings))
