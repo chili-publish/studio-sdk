@@ -1,5 +1,5 @@
 export interface Dictionary {
-    [Key: string]: string | boolean;
+    [Key: string]: string | boolean | number;
 }
 
 export type QueryOptions = {
