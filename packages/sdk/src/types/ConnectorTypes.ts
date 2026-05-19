@@ -47,6 +47,7 @@ export enum SortOrder {
 export enum ConnectorConfigValueType {
     text = 'text',
     boolean = 'boolean',
+    number = 'number',
 }
 
 export enum ConnectorConfigContextType {
@@ -145,14 +146,14 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
     constructor(
         contextProperty: string,
         mapFrom: ConnectorMappingSource,
-        sourceValue: string | boolean,
+        sourceValue: string | boolean | number,
         direction?: ConnectorMappingDirection.engineToConnector,
     );
-    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string | boolean);
+    constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string | boolean | number);
     constructor(
         contextProperty: string,
         mapFrom: ConnectorMappingSource,
-        sourceValue: string | boolean,
+        sourceValue: string | boolean | number,
         direction = ConnectorMappingDirection.engineToConnector,
     ) {
         this.name = contextProperty;
