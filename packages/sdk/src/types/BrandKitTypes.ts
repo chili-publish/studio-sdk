@@ -1,7 +1,6 @@
 import { CharacterStyle } from './CharacterStyleTypes';
 import { APIColorType, DocumentColor } from './ColorStyleTypes';
-import { Id } from './CommonTypes';
-import { DocumentCharacterStyle, DocumentParagraphStyle } from './DocumentTypes';
+import { Id, PropertyState } from './CommonTypes';
 import { DocumentFontFamily } from './FontTypes';
 import { DocumentGradient } from './GradientStyleTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -126,19 +125,7 @@ export type APIBrandKit = {
     characterStyles: BrandKitCharacterStyle[];
     paragraphStyles: BrandKitParagraphStyle[];
     media: APIBrandKitMedia[];
-    themes: APIBrandKitTheme[] | BrandKitTheme[];
-};
-
-export type BrandKitTheme = {
-    id: string;
-    name: string;
-    inheritsFrom: string | null;
-    dateCreated: string | null;
-    lastModifiedDate: string | null;
-    colors: DocumentColor[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
+    themes: APIBrandKitTheme[];
 };
 
 /**
@@ -147,38 +134,25 @@ export type BrandKitTheme = {
 export type StudioBrandKit = {
     id: string;
     name: string;
+    // This is here to be non-breaking but will be removed in next versions
+    selectedThemeName: string | null;
     fontConnectorId: string;
     brandKit: APIBrandKit;
 };
 
 /**
- * Internal brand kit shape returned by BrandKitController.set() with document-style resources.
+ * Response shape from getBrandKit() / setBrandKit().
  */
-export type BrandKitInternal = {
-    id: string;
-    version: string;
-    name: string;
-    colors: DocumentColor[];
-    gradients: DocumentGradient[];
-    fonts: DocumentFontFamily[];
-    characterStyles: DocumentCharacterStyle[];
-    paragraphStyles: DocumentParagraphStyle[];
-    media: BrandKitMedia[];
-    themes: BrandKitTheme[];
-};
-
-/**
- * Engine response shape from getBrandKit() / setBrandKit(). Used internally to adapt to StudioBrandKit / BrandKitInternal.
- */
-export type EngineBrandKit = {
+export type BrandKit = {
     id: string | null;
     version: string | null;
     name: string | null;
-    colors: DocumentColor[];
-    gradients: DocumentGradient[];
-    fontFamilies: DocumentFontFamily[];
-    characterStyles: CharacterStyle[];
-    paragraphStyles: ParagraphStyle[];
-    media: BrandKitMedia[];
-    themes: BrandKitTheme[];
+    selectedThemeName: string | null;
+    colors: PropertyState<DocumentColor>[];
+    gradients: PropertyState<DocumentGradient>[];
+    fontFamilies: PropertyState<DocumentFontFamily>[];
+    characterStyles: PropertyState<CharacterStyle>[];
+    paragraphStyles: PropertyState<ParagraphStyle>[];
+    media: PropertyState<BrandKitMedia>[];
+    isAutoSync: boolean | null;
 };
