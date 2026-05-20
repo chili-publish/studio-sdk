@@ -65,6 +65,8 @@ export type {
     StartFrameAnchor,
     TextFrame,
     TextFrameConstraints,
+    ComponentGridFrame,
+    VariableIdToSourceFieldMapping,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
