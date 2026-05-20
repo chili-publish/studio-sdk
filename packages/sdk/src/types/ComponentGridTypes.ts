@@ -1,4 +1,4 @@
-export interface ComponentGridSettingsDeltaUpdate {
+export type ComponentGridSettingsDeltaUpdate = {
     numberOfColumns?: {
         value: number;
     };
