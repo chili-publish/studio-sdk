@@ -250,13 +250,27 @@ describe('ConnectorController', () => {
                 direction: 'engineToConnector',
                 name: 'data',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
+                type: ConnectorMappingSource.variable,
             }),
-            JSON.stringify({ direction: 'engineToConnector', name: 'plain', value: 'plain value' }),
-            JSON.stringify({ direction: 'engineToConnector', name: 'switch', value: true }),
+            JSON.stringify({
+                direction: 'engineToConnector',
+                name: 'plain',
+                value: 'plain value',
+                type: ConnectorMappingSource.value,
+            }),
+            JSON.stringify({
+                direction: 'engineToConnector',
+                name: 'switch',
+                value: true,
+                type: ConnectorMappingSource.value,
+            }),
             JSON.stringify({
                 direction: 'connectorToEngine',
                 name: 'price',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
+                type: ConnectorMappingSource.variable,
             }),
         ]);
 
@@ -269,31 +283,39 @@ describe('ConnectorController', () => {
             {
                 name: 'data',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                type: ConnectorMappingSource.variable,
+                id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
                 direction: ConnectorMappingDirection.connectorToEngine,
             },
             {
                 name: 'price',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                type: ConnectorMappingSource.variable,
+                id: '6B29FC40-CA47-1067-B31D-00DD010662CC',
                 direction: ConnectorMappingDirection.connectorToEngine,
             },
             {
                 name: 'hasDiscount',
                 value: true,
+                type: ConnectorMappingSource.value,
                 direction: ConnectorMappingDirection.engineToConnector,
             },
             {
                 name: 'invalid value',
                 value: '',
+                type: ConnectorMappingSource.value,
                 direction: ConnectorMappingDirection.engineToConnector,
             },
             {
                 name: '',
                 value: 'invalid name',
+                type: ConnectorMappingSource.value,
                 direction: ConnectorMappingDirection.engineToConnector,
             },
             {
                 name: '',
                 value: '',
+                type: ConnectorMappingSource.value,
                 direction: ConnectorMappingDirection.engineToConnector,
             },
         ]);
@@ -304,16 +326,21 @@ describe('ConnectorController', () => {
             JSON.stringify({
                 name: 'data',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                type: ConnectorMappingSource.variable,
+                id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
                 direction: ConnectorMappingDirection.connectorToEngine,
             }),
             JSON.stringify({
                 name: 'price',
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662CC',
+                type: ConnectorMappingSource.variable,
+                id: '6B29FC40-CA47-1067-B31D-00DD010662CC',
                 direction: ConnectorMappingDirection.connectorToEngine,
             }),
             JSON.stringify({
                 name: 'hasDiscount',
                 value: true,
+                type: ConnectorMappingSource.value,
                 direction: ConnectorMappingDirection.engineToConnector,
             }),
         ]);
