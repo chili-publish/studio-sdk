@@ -80,7 +80,9 @@ export class ComponentGridController {
      */
     setComponentSource = async (frameId: Id, src: ComponentSource) => {
         const res = await this.#editorAPI;
-        return res.setComponentGridComponentSource(frameId, src).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setComponentGridComponentSource(frameId, JSON.stringify(src))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
