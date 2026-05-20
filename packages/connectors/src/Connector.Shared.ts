@@ -5,7 +5,7 @@ export type {
 } from '@chili-studio/connector-types';
 
 export type ChiliPlatform = 'web' | 'server';
-export type ConnectorConfigValueType = 'text' | 'boolean';
+export type ConnectorConfigValueType = 'text' | 'boolean' | 'number';
 export type ConnectorConfigContextType = 'query' | 'upload';
 
 export type ConnectorConfigValue = GenericConnectorConfigValue<ConnectorConfigValueType, ConnectorConfigContextType>;
