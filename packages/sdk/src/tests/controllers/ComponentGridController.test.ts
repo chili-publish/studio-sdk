@@ -51,10 +51,7 @@ describe('ComponentGridController', () => {
             };
             await mockedComponentGridController.updateSettings(id, deltaUpdate);
             expect(mockedEditorApi.updateComponentGridSettings).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.updateComponentGridSettings).toHaveBeenCalledWith(
-                id,
-                JSON.stringify(deltaUpdate),
-            );
+            expect(mockedEditorApi.updateComponentGridSettings).toHaveBeenCalledWith(id, JSON.stringify(deltaUpdate));
         });
     });
 
@@ -95,10 +92,7 @@ describe('ComponentGridController', () => {
             };
             await mockedComponentGridController.setSettings(id, settings);
             expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(
-                id,
-                JSON.stringify(settings),
-            );
+            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(id, JSON.stringify(settings));
         });
 
         it('Should be possible to set slotting component grid settings', async () => {
@@ -112,10 +106,7 @@ describe('ComponentGridController', () => {
             };
             await mockedComponentGridController.setSettings(id, settings);
             expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(
-                id,
-                JSON.stringify(settings),
-            );
+            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(id, JSON.stringify(settings));
         });
     });
 
@@ -136,7 +127,7 @@ describe('ComponentGridController', () => {
             } as const;
             await mockedComponentGridController.setComponentSource(id, src);
             expect(mockedEditorApi.setComponentGridComponentSource).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.setComponentGridComponentSource).toHaveBeenCalledWith(id, src);
+            expect(mockedEditorApi.setComponentGridComponentSource).toHaveBeenCalledWith(id, JSON.stringify(src));
         });
     });
 
