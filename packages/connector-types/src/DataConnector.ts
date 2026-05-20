@@ -7,8 +7,18 @@ export type DataConnectorCapabilities = {
     dataSourceVariable?: boolean;
 };
 
+export type JsonPrimitive = string | number | boolean | null;
+
+export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+
+export type JsonObject = {
+    [key: string]: JsonValue;
+};
+
+export type JsonArray = JsonValue[];
+
 export type DataItem = {
-    [key: string]: string | number | boolean | Date | null;
+    [key: string]: string | number | boolean | Date | JsonObject | JsonArray | null;
 };
 
 export type DataModel = {
@@ -21,7 +31,7 @@ export type DataSourceVariableDataModel = DataModel & {
 
 export type DataModelProperty = {
     name: string;
-    type: 'singleLine' | 'multiLine' | 'number' | 'date' | 'boolean';
+    type: 'singleLine' | 'multiLine' | 'number' | 'date' | 'boolean' | 'json';
 };
 
 export interface OneDirectionalNavigation {
