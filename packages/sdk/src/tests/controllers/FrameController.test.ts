@@ -16,6 +16,9 @@ import {
     FrameTypeEnum,
     ImageSourceTypeEnum,
     PageAnchorTarget,
+    SmartCropAxisBias,
+    SmartCropSettingsV2,
+    SmartCropVersion,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
@@ -96,6 +99,7 @@ const mockedEditorApi: EditorAPI = {
     setSmartCropSubjectId: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameContainerShape: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameContainerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    setImageFrameSmartCropSettings: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -166,6 +170,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setSmartCropSubjectId');
     jest.spyOn(mockedEditorApi, 'setFrameContainerShape');
     jest.spyOn(mockedEditorApi, 'setFrameContainerProperties');
+    jest.spyOn(mockedEditorApi, 'setImageFrameSmartCropSettings');
 
     id = mockSelectFrame.id;
 });
@@ -593,6 +598,16 @@ describe('FrameController', () => {
         expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setSmartCropSubjectId).toHaveBeenCalledWith(id, undefined);
     });
+    it('Should be possible to set the image frame smart crop settings', async () => {
+        const settings: SmartCropSettingsV2 = {
+            version: SmartCropVersion.v2,
+            horizontalBias: SmartCropAxisBias.start,
+            verticalBias: SmartCropAxisBias.end,
+        };
+        await mockedFrameController.setImageFrameSmartCropSettings(id, settings);
+        expect(mockedEditorApi.setImageFrameSmartCropSettings).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setImageFrameSmartCropSettings).toHaveBeenCalledWith(id, JSON.stringify(settings));
+    });
 });
 
 describe('ImageFrameSource manipulations', () => {
@@ -851,9 +866,6 @@ describe('Anchoring', () => {
         };
         await mockedFrameController.setFrameContainerShape(id, shapeFrameSource);
         expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledWith(
-            id,
-            JSON.stringify(shapeFrameSource),
-        );
+        expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledWith(id, JSON.stringify(shapeFrameSource));
     });
 });
