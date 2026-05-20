@@ -118,12 +118,17 @@ export enum ConnectorRegistrationSource {
 export interface EngineToConnectorMapping {
     name: string;
     value: ContextDictionary[keyof ContextDictionary];
+    id?: Id;
+    type: ConnectorMappingSource;
     direction: ConnectorMappingDirection.engineToConnector;
 }
 
 export interface ConnectorToEngineMapping {
     name: string;
+    /** @deprecated Use id instead. This property holds a string representation of the id in the form: var.<id> */
     value: string;
+    id?: Id;
+    type: ConnectorMappingSource.variable;
     direction: ConnectorMappingDirection.connectorToEngine;
 }
 
@@ -135,6 +140,9 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
     value: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     direction: any = ConnectorMappingDirection.engineToConnector;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type: any;
+    id?: Id;
 
     constructor(
         contextProperty: string,
@@ -159,9 +167,12 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
         this.direction = direction;
 
         if (mapFrom === ConnectorMappingSource.variable) {
-            this.value = `${mapFrom}.${sourceValue}`;
+            this.value = `var.${sourceValue}`;
+            this.id = sourceValue as Id;
+            this.type = ConnectorMappingSource.variable;
         } else {
             this.value = sourceValue;
+            this.type = ConnectorMappingSource.value;
         }
     }
 }
