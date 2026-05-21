@@ -57,23 +57,25 @@ describe('ComponentGridController', () => {
 
     describe('setMapping', () => {
         it('Should be possible to set component grid mapping', async () => {
-            await mockedComponentGridController.setMapping(id, 'component-id', 'variable-id', 'source-field');
+            await mockedComponentGridController.setMapping(id, 'component-id', 'target-variable-id', 'source-variable-id', 'source-field');
             expect(mockedEditorApi.setComponentGridMapping).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.setComponentGridMapping).toHaveBeenCalledWith(
                 id,
                 'component-id',
-                'variable-id',
+                'target-variable-id',
+                'source-variable-id',
                 'source-field',
             );
         });
 
         it('Should be possible to unset component grid mapping', async () => {
-            await mockedComponentGridController.setMapping(id, 'component-id', 'variable-id', null);
+            await mockedComponentGridController.setMapping(id, 'component-id', 'target-variable-id', null, null);
             expect(mockedEditorApi.setComponentGridMapping).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.setComponentGridMapping).toHaveBeenCalledWith(
                 id,
                 'component-id',
-                'variable-id',
+                'target-variable-id',
+                null,
                 null,
             );
         });

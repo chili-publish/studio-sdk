@@ -38,14 +38,15 @@ export class ComponentGridController {
      * This method will set the component grid mapping for a specified frame.
      * @param frameId the id of the frame that needs to get updated
      * @param componentId the id of the component to map
-     * @param variableId the id of the variable to map
-     * @param sourceField the source field to map to, or null to unset
+     * @param targetVariableId the id of the target variable to map to
+     * @param sourceVariableId the id of the source variable to map from, or null to unset
+     * @param sourceField the source field to map to
      * @returns
      */
-    setMapping = async (frameId: Id, componentId: string, variableId: string, sourceField: string | null) => {
+    setMapping = async (frameId: Id, componentId: string, targetVariableId: string, sourceVariableId: string | null, sourceField: string | null) => {
         const res = await this.#editorAPI;
         return res
-            .setComponentGridMapping(frameId, componentId, variableId, sourceField)
+            .setComponentGridMapping(frameId, componentId, targetVariableId, sourceVariableId, sourceField)
             .then((result) => getEditorResponseData<null>(result));
     };
 
