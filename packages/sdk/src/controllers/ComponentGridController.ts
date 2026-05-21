@@ -78,7 +78,7 @@ export class ComponentGridController {
      * @param src the component source to set, or null to unset
      * @returns
      */
-    setComponentSource = async (frameId: Id, src: ComponentSource) => {
+    setComponentSource = async (frameId: Id, src: ComponentSource | null) => {
         const res = await this.#editorAPI;
         return res
             .setComponentGridComponentSource(frameId, JSON.stringify(src))
