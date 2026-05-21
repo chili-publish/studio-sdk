@@ -242,7 +242,11 @@ declare module 'grafx-studio-actions' {
         export type Variable =
             | ShortTextVariable
             | LongTextVariable
+            /**
+             * @deprecated Use `RichTextVariable` instead
+             */
             | FormattedTextVariable
+            | RichTextVariable
             | ImageVariable
             | ListVariable
             | BooleanVariable
@@ -308,7 +312,11 @@ declare module 'grafx-studio-actions' {
         export enum VariableType {
             shortText = 'shortText',
             longText = 'longText',
+            /**
+             * @deprecated Use `richText` instead
+             */
             formattedText = 'formattedText',
+            richText = 'richText',
             image = 'image',
             list = 'list',
             boolean = 'boolean',
@@ -436,8 +444,15 @@ declare module 'grafx-studio-actions' {
             readonly type: VariableType.longText;
         }
 
+        /**
+         * @deprecated Use `RichTextVariable` instead
+         */
         export interface FormattedTextVariable extends BaseVariable {
             readonly type: VariableType.formattedText;
+        }
+
+        export interface RichTextVariable extends BaseVariable {
+            readonly type: VariableType.richText;
         }
 
         export interface ImageVariable extends BaseVariable {
