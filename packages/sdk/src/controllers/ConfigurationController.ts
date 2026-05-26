@@ -1,6 +1,7 @@
-import { EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, EditorResponse } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { StudioOptionsDeltaUpdate, WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
+import { LATEST_SMART_CROP_VERSION, SmartCropVersion } from '../types/FrameTypes';
 
 /**
  * The ConfigurationController allows setting editor session data. This data is not stored in the document and
@@ -57,5 +58,17 @@ export abstract class ConfigurationController {
     async getEngineSessionId() {
         const res = await this.#editorAPI;
         return res.getEngineSessionId().then((result) => getEditorResponseData<string>(result));
+    }
+
+    /**
+     * This method returns the latest version of smart crop algorithm
+     * @returns the latest version of smart crop algorithm
+     */
+    async getLatestSmartCropVersion(): Promise<EditorResponse<SmartCropVersion>> {
+        return {
+            success: true,
+            status: 200,
+            parsedData: LATEST_SMART_CROP_VERSION,
+        };
     }
 }

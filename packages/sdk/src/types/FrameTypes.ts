@@ -623,6 +623,12 @@ export enum SmartCropVersion {
     v2 = 'v2',
 }
 
+/**
+ * Latest version of the smart crop algorithm.
+ * Keep in sync with @SmartCropVersion enum.
+ */
+export const LATEST_SMART_CROP_VERSION = SmartCropVersion.v2;
+
 export enum SmartCropAxisBias {
     start = 'start',
     center = 'center',

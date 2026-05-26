@@ -15,6 +15,7 @@ import {
     FrameAnchorType,
     FrameTypeEnum,
     ImageSourceTypeEnum,
+    LATEST_SMART_CROP_VERSION,
     PageAnchorTarget,
     SmartCropAxisBias,
     SmartCropSettingsV2,
@@ -607,6 +608,12 @@ describe('FrameController', () => {
         await mockedFrameController.setImageFrameSmartCropSettings(id, settings);
         expect(mockedEditorApi.setImageFrameSmartCropSettings).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageFrameSmartCropSettings).toHaveBeenCalledWith(id, JSON.stringify(settings));
+    });
+    it('Should keep LATEST_SMART_CROP_VERSION in sync with SmartCropVersion enum', async () => {
+        const latest = Object.values(SmartCropVersion).reduce((a, b) =>
+            a.localeCompare(b, undefined, { numeric: true }) >= 0 ? a : b,
+        );
+        expect(latest).toBe(LATEST_SMART_CROP_VERSION);
     });
 });
 
