@@ -26,12 +26,13 @@ export class ComponentController {
      * @param id the id of the componentFrame that needs to be updated.
      * @param target the id of the variable, inside the component, that will be linked (or unlinked) to the source variable.
      * @param source the id of the source variable from the template. If not provided, the variable will be unlinked.
-     * @returns
+     * @param sourceField the field of the data source variable.
+    * @returns
      */
-    linkVariable = async (frameId: Id, target: Id, source?: Id) => {
+    linkVariable = async (frameId: Id, target: Id, source?: Id, sourceField?: string) => {
         const res = await this.#editorAPI;
         return res
-            .linkComponentVariable(frameId, target, source, null)
+            .linkComponentVariable(frameId, target, source, sourceField ?? null)
             .then((result) => getEditorResponseData<null>(result));
     };
 

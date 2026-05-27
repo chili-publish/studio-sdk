@@ -1,0 +1,110 @@
+name: 'Release / CD Notify Teams'
+description: 'Send Teams notifications for release pipeline success or failure'
+
+inputs:
+  status:
+    description: 'success or failure'
+    required: true
+  pipeline_name:
+    description: 'Short name shown in failure titles and some success lines'
+    required: false
+    default: 'Release pipeline'
+  step_name:
+    description: 'Failed stage name, or success label (e.g. Deployment)'
+    required: true
+  environment:
+    description: 'Environment or stage context'
+    required: true
+  version:
+    description: 'Version for deployment-style success messages'
+    required: false
+    default: ''
+  tag_name:
+    description: 'Git tag for deployment-style success messages'
+    required: false
+    default: ''
+  is_uat:
+    description: "When 'true', UAT emoji and wording for deployment success"
+    required: false
+    default: 'false'
+  notification_text:
+    description: 'Full Teams message body for success (from create-gh-release, etc.)'
+    required: false
+    default: ''
+  is_blocking:
+    description: 'Whether this failure blocks further release steps'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Notify Teams
+      shell: bash
+      env:
+        NOTIFICATION_TEXT: ${{ inputs.notification_text }}
+      run: |
+        WEBHOOK_URL="${{ env.TEAMS_WEBHOOK_URL }}"
+
+        if [ -z "$WEBHOOK_URL" ]; then
+          echo "Teams webhook URL not available - skipping notification"
+          exit 0
+        fi
+
+        STATUS="${{ inputs.status }}"
+        RUN_URL="${{ env.RUN_URL }}"
+        REPOSITORY="${{ env.REPOSITORY }}"
+        COMMIT_SHA="${{ env.COMMIT_SHA }}"
+
+        if [ "$STATUS" = "failure" ]; then
+          STEP="${{ inputs.step_name }}"
+          ENVIRONMENT="${{ inputs.environment }}"
+          PIPELINE="${{ inputs.pipeline_name }}"
+          BLOCKING_MSG=""
+          if [ "${{ inputs.is_blocking }}" = "true" ]; then
+            BLOCKING_MSG="\n\nPipeline stopped - further release steps may be blocked"
+          fi
+          payload=$(cat <<EOF
+        {
+            "text": "❌ **${PIPELINE} failed - ${STEP}**\n\n**Context:** ${ENVIRONMENT}\n**Repository:** ${REPOSITORY}\n**Commit:** ${COMMIT_SHA}${BLOCKING_MSG}\n\n[View run](${RUN_URL})"
+        }
+        EOF
+        )
+        elif [ "$STATUS" = "success" ]; then
+          if [ -n "${NOTIFICATION_TEXT}" ]; then
+            payload=$(python3 -c "import json, os; print(json.dumps({'text': os.environ['NOTIFICATION_TEXT']}))")
+          else
+            VERSION="${{ inputs.version }}"
+            TAG="${{ inputs.tag_name }}"
+            IS_UAT="${{ inputs.is_uat }}"
+            if [ -z "$VERSION" ]; then
+              echo "No notification_text or version for success notify - skipping"
+              exit 0
+            fi
+            if [ "$IS_UAT" = "true" ]; then
+              EMOJI="🧪"
+              RELEASE_TYPE="UAT"
+            else
+              EMOJI="🎉"
+              RELEASE_TYPE="Production"
+            fi
+            TAG_BLOCK=""
+            if [ -n "$TAG" ]; then
+              TAG_BLOCK="**Tag:** ${TAG}\n\n"
+            fi
+            BODY="${EMOJI} **${RELEASE_TYPE} Deployment Completed**\n\n**Version:** ${VERSION}\n${TAG_BLOCK}Deployment to ${RELEASE_TYPE} environment completed successfully.\n\n[View run](${RUN_URL})"
+            export BODY
+            payload=$(python3 -c "import json, os; print(json.dumps({'text': os.environ['BODY']}))")
+          fi
+        else
+          echo "Unknown status: $STATUS"
+          exit 1
+        fi
+
+        curl --request POST \
+          --silent --show-error \
+          --fail \
+          --max-time 30 \
+          --header "Content-Type: application/json" \
+          --data "$payload" \
+          "$WEBHOOK_URL"

@@ -111,6 +111,7 @@ describe('VariableController', () => {
         setVariablePlaceholder: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableHelpText: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableRuleSetId: async () => getEditorResponseData(castToEditorResponse(null)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableValue: async () => getEditorResponseData(castToEditorResponse(null)),
         setDataSourceVariableDisplayOptions: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -164,6 +165,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariablePlaceholder');
         jest.spyOn(mockEditorApi, 'setVariableHelpText');
         jest.spyOn(mockEditorApi, 'setVariableType');
+        jest.spyOn(mockEditorApi, 'setVariableRuleSetId');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
         jest.spyOn(mockEditorApi, 'setVariableValue');
         jest.spyOn(mockEditorApi, 'setDataSourceVariableDisplayOptions');
@@ -274,6 +276,13 @@ describe('VariableController', () => {
         await mockedVariableController.setType('3', VariableType.group);
         expect(mockEditorApi.setVariableType).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableType).toHaveBeenCalledWith('3', VariableType.group);
+    });
+
+    it('sets the variable rule set id', async () => {
+        const ruleSetId = 'rule-set-42';
+        await mockedVariableController.setRuleSetId('3', ruleSetId);
+        expect(mockEditorApi.setVariableRuleSetId).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableRuleSetId).toHaveBeenCalledWith('3', ruleSetId);
     });
 
     it('sets the variable list items', async () => {

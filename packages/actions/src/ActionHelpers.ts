@@ -238,7 +238,7 @@ function getVariableIsVisible(name: string | Variable): boolean {
 }
 
 /**
- * @deprecated
+ * @deprecated Use visibility conditions instead
  * Sets the visibility status of a variable by its name or variable object.
  *
  * @param {string | Variable} name - The name of the variable to update or a variable object.
@@ -694,7 +694,7 @@ function copyCharacterStyleFromTo(from: string, to: string) {
  *
  *
  * @param {string} name - The name of the color
- * @param {ColorValue} value - The new ColorValue value (ensure correct types are used). 
+ * @param {ColorValue} value - The new ColorValue value (ensure correct types are used).
  */
 function setColorValue(name: string, value: ColorValue) {
     studio.brandKit.colors.set(name, value);
@@ -715,7 +715,7 @@ function rgb(r: number, g: number, b: number): RGBColorValue {
         r: r,
         g: g,
         b: b,
-        type: 'rgb'
+        type: 'rgb',
     };
 }
 /**
@@ -725,7 +725,7 @@ function rgb(r: number, g: number, b: number): RGBColorValue {
  * @param {number} m - The magenta component (0-100).
  * @param {number} y - The yellow component (0-100).
  * @param {number} k - The black component (0-100).
- * 
+ *
  * @returns {CMYKColorValue} The CMYK color value.
  */
 function cmyk(c: number, m: number, y: number, k: number): CMYKColorValue {
@@ -734,7 +734,7 @@ function cmyk(c: number, m: number, y: number, k: number): CMYKColorValue {
         m: m,
         y: y,
         k: k,
-        type: 'cmyk'
+        type: 'cmyk',
     };
 }
 
@@ -742,12 +742,12 @@ function cmyk(c: number, m: number, y: number, k: number): CMYKColorValue {
  * Creates a HEX color value.
  *
  * @param {string} hexString - The hex color string (e.g. "#RRGGBB").
- * 
+ *
  * @returns {HEXColorValue} The HEX color value.
  */
 function hex(hexString: string): HEXColorValue {
     return {
         hex: hexString,
-        type: 'hex'
+        type: 'hex',
     };
 }

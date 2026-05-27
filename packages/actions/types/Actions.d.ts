@@ -67,8 +67,8 @@ declare module 'grafx-studio-actions' {
             layouts: LayoutsController;
             /** An object for manipulating the pages */
             pages: PageController;
-            /** 
-             * @deprecated Use `studio.brandKit` instead. 
+            /**
+             * @deprecated Use `studio.brandKit` instead.
              * An object for manipulating brand kit items */
             stylekit: BrandKit;
             /** An object for manipulating brand kit items */
@@ -242,7 +242,11 @@ declare module 'grafx-studio-actions' {
         export type Variable =
             | ShortTextVariable
             | LongTextVariable
+            /**
+             * @deprecated Use `RichTextVariable` instead
+             */
             | FormattedTextVariable
+            | RichTextVariable
             | ImageVariable
             | ListVariable
             | BooleanVariable
@@ -277,6 +281,7 @@ declare module 'grafx-studio-actions' {
             setRequired(value: boolean | VariableValue): void;
 
             /**
+             * @deprecated Use visibility conditions instead
              * Set the visible state of a variable
              * @param isVisible whether the variable is visible
              * @returns
@@ -307,7 +312,11 @@ declare module 'grafx-studio-actions' {
         export enum VariableType {
             shortText = 'shortText',
             longText = 'longText',
+            /**
+             * @deprecated Use `richText` instead
+             */
             formattedText = 'formattedText',
+            richText = 'richText',
             image = 'image',
             list = 'list',
             boolean = 'boolean',
@@ -435,8 +444,15 @@ declare module 'grafx-studio-actions' {
             readonly type: VariableType.longText;
         }
 
+        /**
+         * @deprecated Use `RichTextVariable` instead
+         */
         export interface FormattedTextVariable extends BaseVariable {
             readonly type: VariableType.formattedText;
+        }
+
+        export interface RichTextVariable extends BaseVariable {
+            readonly type: VariableType.richText;
         }
 
         export interface ImageVariable extends BaseVariable {
@@ -703,6 +719,7 @@ declare module 'grafx-studio-actions' {
             setRequired(name: string | Variable, value: boolean | VariableValue): void;
 
             /**
+             * @deprecated Use visibility conditions instead
              * Set the visible state of a variable
              * @param name the variable name
              * @param isVisible whether the variable is visible
@@ -819,10 +836,7 @@ declare module 'grafx-studio-actions' {
             set(name: string, value: ColorValue): void;
         }
 
-        export type ColorValue =
-            | RGBColorValue
-            | CMYKColorValue
-            | HEXColorValue;
+        export type ColorValue = RGBColorValue | CMYKColorValue | HEXColorValue;
 
         export interface BaseColorValue extends HasName {
             readonly guid: string;
@@ -840,7 +854,6 @@ declare module 'grafx-studio-actions' {
              * The color type
              */
             readonly type: 'rgb';
-
         }
 
         export interface CMYKColorValue {
@@ -869,7 +882,7 @@ declare module 'grafx-studio-actions' {
              */
             readonly type: 'hex';
         }
-        
+
         /**
          * Controller for manipulating brand kit paragraph styles.
          */
