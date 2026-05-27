@@ -14,7 +14,7 @@ let mockedComponentGridController: ComponentGridController;
 const mockedEditorApi: EditorAPI = {
     updateComponentGridSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setComponentGridMapping: async () => getEditorResponseData(castToEditorResponse(null)),
-    setComponentGridSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    setComponentGridDataSourceVariable: async () => getEditorResponseData(castToEditorResponse(null)),
     resetComponentGridSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     setComponentGridComponentSource: async () => getEditorResponseData(castToEditorResponse(null)),
     setComponentGridResizeMode: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -25,9 +25,9 @@ beforeEach(() => {
 
     jest.spyOn(mockedEditorApi, 'updateComponentGridSettings');
     jest.spyOn(mockedEditorApi, 'setComponentGridMapping');
-    jest.spyOn(mockedEditorApi, 'setComponentGridSettings');
     jest.spyOn(mockedEditorApi, 'resetComponentGridSettings');
     jest.spyOn(mockedEditorApi, 'setComponentGridComponentSource');
+    jest.spyOn(mockedEditorApi, 'setComponentGridDataSourceVariable');
     jest.spyOn(mockedEditorApi, 'setComponentGridResizeMode');
 
     id = mockSelectFrame.id;

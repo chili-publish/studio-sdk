@@ -223,7 +223,6 @@ export type {
 export type {
     ComponentGridSettings,
     FixedComponentGridSettings,
-    SlottingComponentGridSettings,
 } from './types/ComponentGridTypes';
 
 export { ComponentGridLayoutAlgorithm } from './types/ComponentGridTypes';
