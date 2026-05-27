@@ -1,9 +1,5 @@
 import SDK from '..';
-import {
-    BrandKitMedia,
-    BrandKit,
-    StudioBrandKit,
-} from '../types/BrandKitTypes';
+import { BrandKitMedia, BrandKit, StudioBrandKit } from '../types/BrandKitTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { CharacterStyleController } from './CharacterStyleController';
@@ -221,9 +217,10 @@ export class BrandKitController {
      */
     set = async (studioBrandKit: StudioBrandKit) => {
         const res = await this.#editorAPI;
-        return res.setBrandKit(JSON.stringify(studioBrandKit.brandKit)).then((result) => getEditorResponseData<BrandKit>(result));
+        return res
+            .setBrandKit(JSON.stringify(studioBrandKit.brandKit))
+            .then((result) => getEditorResponseData<BrandKit>(result));
     };
-
 
     /**
      * This method returns the value indicating whether the brand kit auto-sync is enabled or not
@@ -253,8 +250,6 @@ export class BrandKitController {
      */
     switchTheme = async (themeName: string) => {
         const res = await this.#editorAPI;
-        return res
-            .switchBrandKitTheme(themeName)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.switchBrandKitTheme(themeName).then((result) => getEditorResponseData<null>(result));
     };
 }
