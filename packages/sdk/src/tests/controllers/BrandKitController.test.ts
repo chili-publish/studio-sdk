@@ -311,9 +311,7 @@ describe('BrandKitController', () => {
 
         const response = await mockBrandKitController.set(studioBrandKitWithAPIThemes);
 
-        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(
-            JSON.stringify(studioBrandKitWithAPIThemes.brandKit),
-        );
+        expect(mockEditorApi.setBrandKit).toHaveBeenCalledWith(JSON.stringify(studioBrandKitWithAPIThemes.brandKit));
         expect(response.parsedData).toBeDefined();
     });
 
