@@ -5,41 +5,24 @@ export type ComponentGridSettingsDeltaUpdate = {
     numberOfRows?: {
         value: number;
     };
-    horizontalSpacing?: {
+    columnGap?: {
         value: string;
     };
-    verticalSpacing?: {
+    rowGap?: {
         value: string;
-    };
-    allowReordering?: {
-        value: boolean;
     };
 }
 
 export enum ComponentGridLayoutAlgorithm {
     fixed = 'fixed',
-    slotting = 'slotting',
 }
 
 export type FixedComponentGridSettings = {
     type: ComponentGridLayoutAlgorithm.fixed;
     numberOfColumns: number;
     numberOfRows: number;
-    componentConnectorId: string | null;
-    componentId: string | null;
-    horizontalSpacing?: string;
-    verticalSpacing?: string;
+    columnGap: number;
+    rowGap: number;
 };
 
-export type SlottingComponentGridSettings = {
-    type: ComponentGridLayoutAlgorithm.slotting;
-    numberOfColumns: number;
-    numberOfRows: number;
-    allowReordering: boolean;
-    componentConnectorId: string | null;
-    componentId: string | null;
-    horizontalSpacing?: string;
-    verticalSpacing?: string;
-};
-
-export type ComponentGridSettings = FixedComponentGridSettings | SlottingComponentGridSettings;
+export type ComponentGridSettings = FixedComponentGridSettings /* | More will be added later */; 

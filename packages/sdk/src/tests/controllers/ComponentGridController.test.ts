@@ -1,7 +1,5 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
 import {
-    ComponentGridLayoutAlgorithm,
-    ComponentGridSettings,
     ComponentGridSettingsDeltaUpdate,
 } from '../../types/ComponentGridTypes';
 import { ComponentFitEnum, ComponentSourceTypeEnum } from '../../types/FrameTypes';
@@ -81,37 +79,6 @@ describe('ComponentGridController', () => {
         });
     });
 
-    describe('setSettings', () => {
-        it('Should be possible to set fixed component grid settings', async () => {
-            const settings: ComponentGridSettings = {
-                type: ComponentGridLayoutAlgorithm.fixed,
-                numberOfColumns: 3,
-                numberOfRows: 2,
-                componentConnectorId: 'connector-id',
-                componentId: 'component-id',
-                horizontalSpacing: '10',
-                verticalSpacing: '5',
-            };
-            await mockedComponentGridController.setSettings(id, settings);
-            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(id, JSON.stringify(settings));
-        });
-
-        it('Should be possible to set slotting component grid settings', async () => {
-            const settings: ComponentGridSettings = {
-                type: ComponentGridLayoutAlgorithm.slotting,
-                numberOfColumns: 4,
-                numberOfRows: 3,
-                allowReordering: true,
-                componentConnectorId: null,
-                componentId: null,
-            };
-            await mockedComponentGridController.setSettings(id, settings);
-            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledTimes(1);
-            expect(mockedEditorApi.setComponentGridSettings).toHaveBeenCalledWith(id, JSON.stringify(settings));
-        });
-    });
-
     describe('resetSettings', () => {
         it('Should be possible to reset component grid settings', async () => {
             await mockedComponentGridController.resetSettings(id);
@@ -130,6 +97,15 @@ describe('ComponentGridController', () => {
             await mockedComponentGridController.setComponentSource(id, src);
             expect(mockedEditorApi.setComponentGridComponentSource).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.setComponentGridComponentSource).toHaveBeenCalledWith(id, JSON.stringify(src));
+        });
+    });
+
+    describe('setDataSourceVariable', () => {
+        it('Should be possible to set the data source variable', async () => {
+            const dataSourceVariableId = 'data-source-variable-id';
+            await mockedComponentGridController.setDataSourceVariable(id, dataSourceVariableId);
+            expect(mockedEditorApi.setComponentGridDataSourceVariable).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.setComponentGridDataSourceVariable).toHaveBeenCalledWith(id, dataSourceVariableId);
         });
     });
 

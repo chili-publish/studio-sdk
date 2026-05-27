@@ -1,5 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { ComponentGridSettings, ComponentGridSettingsDeltaUpdate } from '../types/ComponentGridTypes';
+import { ComponentGridSettingsDeltaUpdate } from '../types/ComponentGridTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ComponentSource, ComponentFitEnum } from '../types/FrameTypes';
 
@@ -51,19 +51,6 @@ export class ComponentGridController {
     };
 
     /**
-     * This method will set the component grid settings for a specified frame.
-     * @param frameId the id of the frame that needs to get updated
-     * @param settings the settings object to apply
-     * @returns
-     */
-    setSettings = async (frameId: Id, settings: ComponentGridSettings) => {
-        const res = await this.#editorAPI;
-        return res
-            .setComponentGridSettings(frameId, JSON.stringify(settings))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
      * This method will reset the component grid properties of a specified frame to their defaults.
      * @param frameId the id of the frame to reset
      * @returns
@@ -83,6 +70,19 @@ export class ComponentGridController {
         const res = await this.#editorAPI;
         return res
             .setComponentGridComponentSource(frameId, src ? JSON.stringify(src) : null)
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the data source variable of a specified component grid frame.
+     * @param frameId the id of the frame to reset
+     * @param dataSourceVariableId the data source variable to set, or null to unset
+     * @returns
+     */
+    setDataSourceVariable = async (frameId: Id, dataSourceVariableId: Id | null) => {
+        const res = await this.#editorAPI;
+        return res
+            .setComponentGridDataSourceVariable(frameId, dataSourceVariableId)
             .then((result) => getEditorResponseData<null>(result));
     };
 

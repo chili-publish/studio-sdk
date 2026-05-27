@@ -199,9 +199,9 @@ export type ComponentGridFrame = {
     opacity: number;
     type: FrameTypeEnum.componentGrid;
     blendMode: BlendMode;
-    src: ComponentSource | null;
+    dataSourceVariable?: Id | null;
+    src?: ComponentSource | null;
     variableMappings: GridVariableMapping;
-    isVirtual: boolean;
 
     /**
      * How the component grid fits within the frame.
