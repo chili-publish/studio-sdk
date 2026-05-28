@@ -1,4 +1,4 @@
-import { EditorAPI, EditorResponse } from '../types/CommonTypes';
+import { EditorAPI } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { StudioOptionsDeltaUpdate, WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import { LATEST_SMART_CROP_VERSION, SmartCropVersion } from '../types/FrameTypes';
@@ -64,11 +64,7 @@ export abstract class ConfigurationController {
      * This method returns the latest version of smart crop algorithm
      * @returns the latest version of smart crop algorithm
      */
-    async getLatestSmartCropVersion(): Promise<EditorResponse<SmartCropVersion>> {
-        return {
-            success: true,
-            status: 200,
-            parsedData: LATEST_SMART_CROP_VERSION,
-        };
+    getLatestSmartCropVersion(): SmartCropVersion {
+        return LATEST_SMART_CROP_VERSION;
     }
 }
