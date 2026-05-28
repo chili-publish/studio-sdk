@@ -41,36 +41,36 @@ export type APIBrandKitColor =
 
 export type APIBrandKitFont = {
     fontFamilyId: string;
-    fontFamilyBrandKitGuid: string | null;
-    fontConnectorId: string | null;
+    fontFamilyBrandKitGuid?: string | null;
+    fontConnectorId?: string | null;
 };
 
 export type APIBrandKitCharacterStyle = {
     name: string;
-    brandKitFontFamilyGuid?: string;
-    fontStyleId?: string;
-    fontSize?: number;
-    typographicCase?: Case;
-    kerningOn?: boolean;
-    subSuperScript?: Scripting;
-    trackingLeft?: number;
-    trackingRight?: number;
+    brandKitFontFamilyGuid?: string | null;
+    fontStyleId?: string | null;
+    fontSize?: number | null;
+    typographicCase?: Case | null;
+    kerningOn?: boolean | null;
+    subSuperScript?: Scripting | null;
+    trackingLeft?: number | null;
+    trackingRight?: number | null;
 
-    textIndent?: string;
+    textIndent?: string | null;
 
-    baselineShiftValue?: string;
-    lineHeight?: number;
-    textOverprint?: boolean;
+    baselineShiftValue?: string | null;
+    lineHeight?: number | null;
+    textOverprint?: boolean | null;
 
-    brandKitColorGuid?: string;
-    fillColorApplied?: boolean;
+    brandKitColorGuid?: string | null;
+    fillColorApplied?: boolean | null;
 
     textStrokeColorGuid?: string | null;
     textStrokeColorApplied?: boolean | null;
     textStrokeWidth?: number | null;
 
-    underline?: boolean;
-    lineThrough?: boolean;
+    underline?: boolean | null;
+    lineThrough?: boolean | null;
 };
 
 export type APIBrandKitParagraphStyle = {
@@ -78,29 +78,29 @@ export type APIBrandKitParagraphStyle = {
     brandKitFontFamilyGuid: string;
     fontStyleId: string;
     fontSize: number;
-    typographicCase: Case;
-    kerningOn: boolean;
-    subSuperScript: Scripting;
-    trackingLeft: number;
-    trackingRight: number;
+    typographicCase: Case | null;
+    kerningOn?: boolean | null;
+    subSuperScript: Scripting | null;
+    trackingLeft?: number | null;
+    trackingRight?: number | null;
 
-    textAlign: Alignment | null;
+    textAlign?: Alignment | null;
 
-    textIndent: string | null;
+    textIndent?: string | null;
 
-    baselineShiftValue: string | null;
+    baselineShiftValue?: string | null;
     lineHeight: number;
-    textOverprint: boolean | null;
+    textOverprint?: boolean | null;
 
     brandKitColorGuid: string;
-    fillColorApplied: boolean | null;
+    fillColorApplied?: boolean | null;
 
-    textStrokeColorGuid: string | null;
-    textStrokeColorApplied: boolean | null;
-    textStrokeWidth: number | null;
+    textStrokeColorGuid?: string | null;
+    textStrokeColorApplied?: boolean | null;
+    textStrokeWidth?: number | null;
 
-    underline: boolean;
-    lineThrough: boolean;
+    underline?: boolean | null;
+    lineThrough?: boolean | null;
 };
 
 export type BrandKitMedia = {
@@ -111,8 +111,8 @@ export type BrandKitMedia = {
 
 export type APIBrandKitMedia = {
     name: string;
-    mediaConnectorId: Id | null;
-    mediaId: Id | null;
+    mediaConnectorId?: Id | null;
+    mediaId?: Id | null;
 };
 
 export type APIBrandKitTheme = {
