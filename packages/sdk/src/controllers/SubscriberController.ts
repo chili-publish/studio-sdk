@@ -422,6 +422,15 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on when injected data has changed
+     *
+     * @param variableId the id of the injected data source variable
+     */
+    onInjectedDataChanged = (variableId: Id) => {
+        this.config.events.onInjectedDataChanged.trigger(variableId);
+    };
+
+    /**
      * Listener on document issues, if this changes, this listener will get triggered with the updates
      * @param documentIssues Stringified object of document issues
      */

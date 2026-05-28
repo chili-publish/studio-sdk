@@ -204,6 +204,10 @@ export class ConfigHelper {
                 () => clone.onDataSourceIdChanged,
                 clone.logging.logger,
             ),
+            onInjectedDataChanged: new EngineEvent<(variableId: Id) => MaybePromise<void>>(
+                () => clone.onInjectedDataChanged,
+                clone.logging.logger,
+            ),
             onDocumentIssueListChanged: new EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>(
                 () => clone.onDocumentIssueListChanged,
                 clone.logging.logger,
