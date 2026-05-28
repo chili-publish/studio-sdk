@@ -132,12 +132,12 @@ export type APIBrandKit = {
     name: string | null;
     dateCreated: string;
     lastModifiedDate: string;
-    fonts: APIBrandKitFont[];
-    colors: APIBrandKitColor[];
-    characterStyles: APIBrandKitCharacterStyle[];
-    paragraphStyles: APIBrandKitParagraphStyle[];
-    media: APIBrandKitMedia[];
-    themes: APIBrandKitTheme[];
+    fonts?: APIBrandKitFont[];
+    colors?: APIBrandKitColor[];
+    characterStyles?: APIBrandKitCharacterStyle[];
+    paragraphStyles?: APIBrandKitParagraphStyle[];
+    media?: APIBrandKitMedia[];
+    themes?: APIBrandKitTheme[];
 };
 
 export type BrandKit = {
