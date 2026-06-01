@@ -104,6 +104,7 @@ export type {
     RelativeDate,
     ShortTextVariable,
     ValueWithStyle,
+    RichTextVariable,
     Variable,
     VariableVisibility,
     VariableVisibilityConditional,
@@ -225,6 +226,8 @@ export * from './types/ActionTypes';
 export * from './types/ShapeTypes';
 
 export * from './types/BarcodeTypes';
+
+export * from './types/RichTextRuleTypes';
 
 export type { Viewport } from './types/ViewportTypes';
 

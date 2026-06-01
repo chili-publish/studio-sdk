@@ -36,7 +36,7 @@ export type FrameLayoutType = {
     autoGrow: AutoGrowSettings;
     isShowingCustomCroppedAsset: boolean;
     customCroppedAssetCount: number;
-    subjectId: Id | null;
+    subjectId: PropertyState<Id | null>;
 } | null;
 
 //Frame.image

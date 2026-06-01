@@ -31,6 +31,7 @@ import { EditorDataPage } from '../types/DataConnectorTypes';
 import { DataItemMappingTools, EngineDataItem } from '../utils/DataItemMappingTools';
 import { throwEditorResponseError, throwVariableException } from '../exceptions';
 import { isInjectedDataSourceVariable } from '../utils/VariableHelper';
+import { StructuredTextTextFlowDefinition } from '../types/RichTextRuleTypes';
 
 class NumberVariable {
     #editorAPI: EditorAPI;
@@ -612,6 +613,17 @@ export class VariableController {
     };
 
     /**
+     * This method sets the rule set id for a rich text variable
+     * @param id id of the variable
+     * @param ruleSetId id of the rule set
+     * @returns
+     */
+    setRuleSetId = async (id: string, ruleSetId: string) => {
+        const res = await this.#editorAPI;
+        return res.setVariableRuleSetId(id, ruleSetId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method sets the items of the list variable
      *
      * The items need to be unique and are not case sensitive.
@@ -980,6 +992,18 @@ export class VariableController {
     highlightUsages = async (id: string): Promise<EditorResponse<VariableUsagesReport>> => {
         const res = await this.#editorAPI;
         return res.highlightVariableUsages(id).then((result) => getEditorResponseData<VariableUsagesReport>(result));
+    };
+
+    /**
+     * This method sets the global rich text rules available for all rich text variables. This should be set
+     * before a document is loaded to ensure the rules are available when they are needed.
+     *
+     * @param rules The rules to set, these replace the existing rules entirely.
+     * @returns
+     */
+    setRichTextRules = async (rules: StructuredTextTextFlowDefinition[]) => {
+        const res = await this.#editorAPI;
+        return res.setRichTextRulesets(JSON.stringify(rules)).then((result) => getEditorResponseData<null>(result));
     };
 
     private makeVariablesBackwardsCompatible(variables: Variable[]) {
