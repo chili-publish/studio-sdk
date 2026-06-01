@@ -50,3 +50,41 @@ Because of the nature of an async stream, be aware that you may react on an item
 Eventual consistency means that you will _eventually_ get the correct state from the stream.
 
 See: https://en.wikipedia.org/wiki/Eventual_consistency
+
+## SDK Method Invocation Listeners
+
+The SDK supports observing outbound controller method calls in two ways:
+
+- Per-method listeners via `addEventListener` / `removeEventListener`
+- Global SDK events via `sdk.sdkEvents`
+
+This mechanism is observational only and does not modify method parameters or results.
+
+### Per-method listener
+
+```ts
+const sdk = new StudioSDK({ editorId: 'chili-editor-example' });
+
+sdk.tool.setZoom.addEventListener((event) => {
+    if (event.phase === 'invoke') {
+        console.log('setZoom called with args:', event.args);
+    }
+    if (event.phase === 'complete') {
+        console.log('setZoom completed:', event.success, event.result, event.error);
+    }
+});
+```
+
+### Global SDK method events
+
+```ts
+const sdk = new StudioSDK({ editorId: 'chili-editor-example' });
+
+sdk.sdkEvents.onMethodInvoked.registerCallback((event) => {
+    console.log('Method invoked:', event.path, event.args);
+});
+
+sdk.sdkEvents.onMethodCompleted.registerCallback((event) => {
+    console.log('Method completed:', event.path, event.success, event.result, event.error);
+});
+```

@@ -5,6 +5,7 @@ import Connect from './interactions/Connector';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
+import { Instrumented } from './types/MethodInvocationTypes';
 import { DocumentType } from './types/DocumentTypes';
 
 import { ActionController } from './controllers/ActionController';
@@ -46,6 +47,8 @@ import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator
 import { GradientStyleController } from './controllers/GradientStyleController';
 import { ComponentConnectorController } from './controllers/ComponentConnectorController';
 import { ComponentController } from './controllers/ComponentController';
+import { MethodListenerRegistry, instrumentController } from './utils/MethodInstrumentation';
+import { SdkEvents } from './utils/SdkEvents';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -61,50 +64,94 @@ export class SDK {
      * @ignore
      */
     editorAPI: EditorAPI;
+    /**
+     * SDK method invocation events.
+     *
+     * Use this to observe which SDK controller method was called and with which parameters/result.
+     * These are SDK-level events (SDK -> consumer), separate from engine subscriber events (`config.events`).
+     */
+    sdkEvents: SdkEvents;
 
-    action: ActionController;
-    layout: LayoutController;
-    frame: FrameController;
-    shape: ShapeController;
-    barcode: BarcodeController;
+    action: Instrumented<ActionController>;
+    layout: Instrumented<LayoutController>;
+    frame: Instrumented<FrameController>;
+    shape: Instrumented<ShapeController>;
+    barcode: Instrumented<BarcodeController>;
     /** @experimental */
-    component: ComponentController;
-    connector: ConnectorController;
-    mediaConnector: MediaConnectorController;
-    fontConnector: FontConnectorController;
+    component: Instrumented<ComponentController>;
+    connector: Instrumented<ConnectorController>;
+    mediaConnector: Instrumented<MediaConnectorController>;
+    fontConnector: Instrumented<FontConnectorController>;
     /**
      * @experimental This controller is still experimental and might change in future releases.
      */
-    componentConnector: ComponentConnectorController;
-    dataConnector: DataConnectorController;
-    dataSource: DataSourceController;
-    animation: AnimationController;
-    document: DocumentController;
-    configuration: ConfigurationController;
-    variable: VariableController;
-    utils: UtilsController;
-    tool: ToolController;
-    page: PageController;
-    debug: DebugController;
-    undoManager: UndoManagerController;
-    textSelection: TextStyleController;
-    paragraphStyle: ParagraphStyleController;
-    characterStyle: CharacterStyleController;
-    colorStyle: ColorStyleController;
-    gradientStyle: GradientStyleController;
-    font: FontController;
-    experiment: ExperimentController;
-    canvas: CanvasController;
-    colorConversion: ColorConversionController;
-    info: InfoController;
-    clipboard: ClipboardController;
-    brandKit: BrandKitController;
+    componentConnector: Instrumented<ComponentConnectorController>;
+    dataConnector: Instrumented<DataConnectorController>;
+    dataSource: Instrumented<DataSourceController>;
+    animation: Instrumented<AnimationController>;
+    document: Instrumented<DocumentController>;
+    configuration: Instrumented<ConfigurationController>;
+    variable: Instrumented<VariableController>;
+    utils: Instrumented<UtilsController>;
+    tool: Instrumented<ToolController>;
+    page: Instrumented<PageController>;
+    debug: Instrumented<DebugController>;
+    undoManager: Instrumented<UndoManagerController>;
+    textSelection: Instrumented<TextStyleController>;
+    paragraphStyle: Instrumented<ParagraphStyleController>;
+    characterStyle: Instrumented<CharacterStyleController>;
+    colorStyle: Instrumented<ColorStyleController>;
+    gradientStyle: Instrumented<GradientStyleController>;
+    font: Instrumented<FontController>;
+    experiment: Instrumented<ExperimentController>;
+    canvas: Instrumented<CanvasController>;
+    colorConversion: Instrumented<ColorConversionController>;
+    info: Instrumented<InfoController>;
+    clipboard: Instrumented<ClipboardController>;
+    brandKit: Instrumented<BrandKitController>;
     next: NextInitiator;
 
     private subscriber: SubscriberController;
     private enabledNextSubscribers: NextSubscribers | undefined;
     private localConfig = new Map<string, string>();
     private dataItemMappingTools = new DataItemMappingTools();
+    private methodListeners = new MethodListenerRegistry();
+
+    private readonly instrumentedControllers = [
+        'action',
+        'layout',
+        'frame',
+        'shape',
+        'barcode',
+        'component',
+        'connector',
+        'mediaConnector',
+        'fontConnector',
+        'componentConnector',
+        'dataConnector',
+        'dataSource',
+        'animation',
+        'document',
+        'configuration',
+        'variable',
+        'utils',
+        'tool',
+        'page',
+        'debug',
+        'undoManager',
+        'textSelection',
+        'paragraphStyle',
+        'characterStyle',
+        'colorStyle',
+        'gradientStyle',
+        'font',
+        'experiment',
+        'canvas',
+        'colorConversion',
+        'info',
+        'clipboard',
+        'brandKit',
+    ] as const;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -112,50 +159,53 @@ export class SDK {
      */
     constructor(config: ConfigType) {
         this.config = ConfigHelper.createRuntimeConfig(config);
+        this.sdkEvents = new SdkEvents(this.config.logging?.logger);
 
         this.connection = connection;
-        this.editorAPI = connection?.promise.then((child) => {
+        this.editorAPI = connection?.promise.then((child: unknown) => {
             return child;
         }) as unknown as EditorAPI;
 
-        this.action = new ActionController(this.editorAPI);
-        this.layout = new LayoutController(this.editorAPI);
-        this.frame = new FrameController(this.editorAPI);
-        this.shape = new ShapeController(this.editorAPI);
-        this.barcode = new BarcodeController(this.editorAPI);
-        this.component = new ComponentController(this.editorAPI);
-        this.undoManager = new UndoManagerController(this.editorAPI, this);
-        this.connector = new ConnectorController(this.editorAPI, this.localConfig);
-        this.mediaConnector = new MediaConnectorController(this.editorAPI);
-        this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.componentConnector = new ComponentConnectorController(this.editorAPI);
-        this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
-        this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
-        this.animation = new AnimationController(this.editorAPI);
-        this.document = new DocumentController(this.editorAPI);
+        this.action = this.toInstrumented(new ActionController(this.editorAPI));
+        this.layout = this.toInstrumented(new LayoutController(this.editorAPI));
+        this.frame = this.toInstrumented(new FrameController(this.editorAPI));
+        this.shape = this.toInstrumented(new ShapeController(this.editorAPI));
+        this.barcode = this.toInstrumented(new BarcodeController(this.editorAPI));
+        this.component = this.toInstrumented(new ComponentController(this.editorAPI));
+        this.undoManager = this.toInstrumented(new UndoManagerController(this.editorAPI, this));
+        this.connector = this.toInstrumented(new ConnectorController(this.editorAPI, this.localConfig));
+        this.mediaConnector = this.toInstrumented(new MediaConnectorController(this.editorAPI));
+        this.fontConnector = this.toInstrumented(new FontConnectorController(this.editorAPI));
+        this.componentConnector = this.toInstrumented(new ComponentConnectorController(this.editorAPI));
+        this.dataConnector = this.toInstrumented(new DataConnectorController(this.editorAPI, this.dataItemMappingTools));
+        this.dataSource = this.toInstrumented(new DataSourceController(this.editorAPI, this.dataItemMappingTools));
+        this.animation = this.toInstrumented(new AnimationController(this.editorAPI));
+        this.document = this.toInstrumented(new DocumentController(this.editorAPI));
 
-        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
-        this.variable = new VariableController(this.editorAPI, this.dataItemMappingTools);
-        this.utils = new UtilsController(this.editorAPI, this.localConfig);
+        this.configuration = this.toInstrumented(new LocalConfigurationDecorator(this.editorAPI, this.localConfig));
+        this.variable = this.toInstrumented(new VariableController(this.editorAPI, this.dataItemMappingTools));
+        this.utils = this.toInstrumented(new UtilsController(this.editorAPI, this.localConfig));
         this.subscriber = new SubscriberController(this.config, this.localConfig);
-        this.tool = new ToolController(this.editorAPI);
-        this.page = new PageController(this.editorAPI);
-        this.debug = new DebugController(this.editorAPI);
+        this.tool = this.toInstrumented(new ToolController(this.editorAPI));
+        this.page = this.toInstrumented(new PageController(this.editorAPI));
+        this.debug = this.toInstrumented(new DebugController(this.editorAPI));
         // To be renamed textSelection > textStyle
-        this.textSelection = new TextStyleController(this.editorAPI);
-        this.colorStyle = new ColorStyleController(this.editorAPI);
-        this.gradientStyle = new GradientStyleController(this.editorAPI);
-        this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
-        this.characterStyle = new CharacterStyleController(this.editorAPI);
-        this.font = new FontController(this.editorAPI);
-        this.experiment = new ExperimentController(this.editorAPI);
-        this.canvas = new CanvasController(this.editorAPI);
-        this.colorConversion = new ColorConversionController(this.editorAPI);
-        this.info = new InfoController();
-        this.clipboard = new ClipboardController(this.editorAPI);
+        this.textSelection = this.toInstrumented(new TextStyleController(this.editorAPI));
+        this.colorStyle = this.toInstrumented(new ColorStyleController(this.editorAPI));
+        this.gradientStyle = this.toInstrumented(new GradientStyleController(this.editorAPI));
+        this.paragraphStyle = this.toInstrumented(new ParagraphStyleController(this.editorAPI));
+        this.characterStyle = this.toInstrumented(new CharacterStyleController(this.editorAPI));
+        this.font = this.toInstrumented(new FontController(this.editorAPI));
+        this.experiment = this.toInstrumented(new ExperimentController(this.editorAPI));
+        this.canvas = this.toInstrumented(new CanvasController(this.editorAPI));
+        this.colorConversion = this.toInstrumented(new ColorConversionController(this.editorAPI));
+        this.info = this.toInstrumented(new InfoController());
+        this.clipboard = this.toInstrumented(new ClipboardController(this.editorAPI));
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
-        this.brandKit = new BrandKitController(this.editorAPI, this);
+        this.brandKit = this.toInstrumented(new BrandKitController(this.editorAPI, this));
+
+        this.applyMethodInstrumentation();
     }
 
     /**
@@ -233,44 +283,46 @@ export class SDK {
                 this.config.onConnectionError?.(error);
             },
         );
-        this.editorAPI = connection?.promise.then((editorAPI) => {
+        this.editorAPI = connection?.promise.then((editorAPI: unknown) => {
             return editorAPI;
         }) as unknown as EditorAPI;
 
-        this.action = new ActionController(this.editorAPI);
-        this.layout = new LayoutController(this.editorAPI);
-        this.frame = new FrameController(this.editorAPI);
-        this.barcode = new BarcodeController(this.editorAPI);
-        this.component = new ComponentController(this.editorAPI);
-        this.animation = new AnimationController(this.editorAPI);
-        this.document = new DocumentController(this.editorAPI);
-        this.configuration = new LocalConfigurationDecorator(this.editorAPI, this.localConfig);
-        this.utils = new UtilsController(this.editorAPI, this.localConfig);
-        this.tool = new ToolController(this.editorAPI);
-        this.page = new PageController(this.editorAPI);
-        this.debug = new DebugController(this.editorAPI);
-        this.undoManager = new UndoManagerController(this.editorAPI, this);
-        this.textSelection = new TextStyleController(this.editorAPI);
-        this.colorStyle = new ColorStyleController(this.editorAPI);
-        this.gradientStyle = new GradientStyleController(this.editorAPI);
-        this.paragraphStyle = new ParagraphStyleController(this.editorAPI);
-        this.characterStyle = new CharacterStyleController(this.editorAPI);
-        this.mediaConnector = new MediaConnectorController(this.editorAPI);
-        this.fontConnector = new FontConnectorController(this.editorAPI);
-        this.componentConnector = new ComponentConnectorController(this.editorAPI);
-        this.dataConnector = new DataConnectorController(this.editorAPI, this.dataItemMappingTools);
-        this.dataSource = new DataSourceController(this.editorAPI, this.dataItemMappingTools);
-        this.connector = new ConnectorController(this.editorAPI, this.localConfig);
-        this.variable = new VariableController(this.editorAPI, this.dataItemMappingTools);
-        this.font = new FontController(this.editorAPI);
-        this.experiment = new ExperimentController(this.editorAPI);
-        this.canvas = new CanvasController(this.editorAPI);
-        this.shape = new ShapeController(this.editorAPI);
-        this.colorConversion = new ColorConversionController(this.editorAPI);
-        this.info = new InfoController();
-        this.clipboard = new ClipboardController(this.editorAPI);
-        this.brandKit = new BrandKitController(this.editorAPI, this);
+        this.action = this.toInstrumented(new ActionController(this.editorAPI));
+        this.layout = this.toInstrumented(new LayoutController(this.editorAPI));
+        this.frame = this.toInstrumented(new FrameController(this.editorAPI));
+        this.barcode = this.toInstrumented(new BarcodeController(this.editorAPI));
+        this.component = this.toInstrumented(new ComponentController(this.editorAPI));
+        this.animation = this.toInstrumented(new AnimationController(this.editorAPI));
+        this.document = this.toInstrumented(new DocumentController(this.editorAPI));
+        this.configuration = this.toInstrumented(new LocalConfigurationDecorator(this.editorAPI, this.localConfig));
+        this.utils = this.toInstrumented(new UtilsController(this.editorAPI, this.localConfig));
+        this.tool = this.toInstrumented(new ToolController(this.editorAPI));
+        this.page = this.toInstrumented(new PageController(this.editorAPI));
+        this.debug = this.toInstrumented(new DebugController(this.editorAPI));
+        this.undoManager = this.toInstrumented(new UndoManagerController(this.editorAPI, this));
+        this.textSelection = this.toInstrumented(new TextStyleController(this.editorAPI));
+        this.colorStyle = this.toInstrumented(new ColorStyleController(this.editorAPI));
+        this.gradientStyle = this.toInstrumented(new GradientStyleController(this.editorAPI));
+        this.paragraphStyle = this.toInstrumented(new ParagraphStyleController(this.editorAPI));
+        this.characterStyle = this.toInstrumented(new CharacterStyleController(this.editorAPI));
+        this.mediaConnector = this.toInstrumented(new MediaConnectorController(this.editorAPI));
+        this.fontConnector = this.toInstrumented(new FontConnectorController(this.editorAPI));
+        this.componentConnector = this.toInstrumented(new ComponentConnectorController(this.editorAPI));
+        this.dataConnector = this.toInstrumented(new DataConnectorController(this.editorAPI, this.dataItemMappingTools));
+        this.dataSource = this.toInstrumented(new DataSourceController(this.editorAPI, this.dataItemMappingTools));
+        this.connector = this.toInstrumented(new ConnectorController(this.editorAPI, this.localConfig));
+        this.variable = this.toInstrumented(new VariableController(this.editorAPI, this.dataItemMappingTools));
+        this.font = this.toInstrumented(new FontController(this.editorAPI));
+        this.experiment = this.toInstrumented(new ExperimentController(this.editorAPI));
+        this.canvas = this.toInstrumented(new CanvasController(this.editorAPI));
+        this.shape = this.toInstrumented(new ShapeController(this.editorAPI));
+        this.colorConversion = this.toInstrumented(new ColorConversionController(this.editorAPI));
+        this.info = this.toInstrumented(new InfoController());
+        this.clipboard = this.toInstrumented(new ClipboardController(this.editorAPI));
+        this.brandKit = this.toInstrumented(new BrandKitController(this.editorAPI, this));
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
+
+        this.applyMethodInstrumentation();
 
         // as soon as the editor loads, provide it with the SDK version
         // used to make it start. This enables engine compatibility checks
@@ -300,6 +352,24 @@ export class SDK {
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
+    };
+
+    private toInstrumented = <T extends object>(controller: T): Instrumented<T> => {
+        return controller as unknown as Instrumented<T>;
+    };
+
+    private applyMethodInstrumentation = () => {
+        const sdkControllers = this as unknown as Record<(typeof this.instrumentedControllers)[number], object>;
+        for (const controllerName of this.instrumentedControllers) {
+            const controller = sdkControllers[controllerName];
+            sdkControllers[controllerName] = instrumentController(
+                controller,
+                controllerName,
+                this.methodListeners,
+                this.sdkEvents,
+                this.config.logging?.logger,
+            ) as object;
+        }
     };
 }
 

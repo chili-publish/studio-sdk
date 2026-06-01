@@ -62,6 +62,7 @@ export enum LogCategory {
     connector = 'connector',
     event = 'event',
     engine = 'engine',
+    sdk = 'sdk',
 }
 
 /**

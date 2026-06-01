@@ -7,13 +7,6 @@ import {
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { engineBrandKitToBrandKitInternal, engineBrandKitToStudioBrandKit } from '../utils/BrandKitAdapter';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { CharacterStyleController } from './CharacterStyleController';
-import { ColorStyleController } from './ColorStyleController';
-import { FontController } from './FontController';
-import { GradientStyleController } from './GradientStyleController';
-import { MediaConnectorController } from './MediaConnectorController';
-import { ParagraphStyleController } from './ParagraphStyleController';
-import { UndoManagerController } from './UndoManagerController';
 
 /**
  * The BrandKitController is responsible for all communication regarding Brand Kits.
@@ -41,19 +34,19 @@ export class BrandKitController {
         this.undoManagerController = sdk.undoManager;
     }
 
-    private colorStyleController: ColorStyleController;
+    private colorStyleController: SDK['colorStyle'];
 
-    private gradientStyleController: GradientStyleController;
+    private gradientStyleController: SDK['gradientStyle'];
 
-    private fontController: FontController;
+    private fontController: SDK['font'];
 
-    private mediaController: MediaConnectorController;
+    private mediaController: SDK['mediaConnector'];
 
-    private paragraphStyleController: ParagraphStyleController;
+    private paragraphStyleController: SDK['paragraphStyle'];
 
-    private characterStyleController: CharacterStyleController;
+    private characterStyleController: SDK['characterStyle'];
 
-    private undoManagerController: UndoManagerController;
+    private undoManagerController: SDK['undoManager'];
 
     /**
      * This method returns the current brand kit id.
