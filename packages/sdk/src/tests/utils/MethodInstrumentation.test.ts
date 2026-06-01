@@ -1,6 +1,6 @@
 import { LogCategory, LogLevel } from '../../types/CommonTypes';
 import { MethodInvocationEvent } from '../../types/MethodInvocationTypes';
-import { MethodListenerRegistry, instrumentController } from '../../utils/MethodInstrumentation';
+import { MethodListenerRegistry, wrapWithInvocationObserver } from '../../utils/MethodInstrumentation';
 import { SdkEvents } from '../../utils/SdkEvents';
 
 class NestedController {
@@ -20,7 +20,7 @@ describe('MethodInstrumentation', () => {
     test('fires per-method and global listeners before and after execution', async () => {
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents();
-        const controller = instrumentController(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const controller = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
 
         const methodEvents: MethodInvocationEvent[] = [];
         controller.multiply.addEventListener((event) => {
@@ -76,7 +76,7 @@ describe('MethodInstrumentation', () => {
     test('supports removeEventListener and unsubscriber', async () => {
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents();
-        const controller = instrumentController(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const controller = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
 
         const listener = jest.fn();
         const unsubscribe = controller.multiply.addEventListener(listener);
@@ -91,7 +91,7 @@ describe('MethodInstrumentation', () => {
     test('emits failure completion event and rethrows method errors', async () => {
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents();
-        const controller = instrumentController(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const controller = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
 
         const events: MethodInvocationEvent[] = [];
         controller.nested.fail.addEventListener((event) => {
@@ -121,11 +121,11 @@ describe('MethodInstrumentation', () => {
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents();
 
-        const initialController = instrumentController(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const initialController = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
         const listener = jest.fn();
         initialController.multiply.addEventListener(listener);
 
-        const refreshedController = instrumentController(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const refreshedController = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
         refreshedController.multiply(4, 5);
 
         expect(listener).toHaveBeenCalledTimes(2);
@@ -150,7 +150,7 @@ describe('MethodInstrumentation', () => {
         const logger = jest.fn();
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents(logger);
-        const controller = instrumentController(new ExampleController(), 'variable', listenerRegistry, sdkEvents, logger);
+        const controller = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents, logger);
 
         controller.multiply.addEventListener(() => {
             throw new Error('listener-crash');

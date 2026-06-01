@@ -47,7 +47,7 @@ import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator
 import { GradientStyleController } from './controllers/GradientStyleController';
 import { ComponentConnectorController } from './controllers/ComponentConnectorController';
 import { ComponentController } from './controllers/ComponentController';
-import { MethodListenerRegistry, instrumentController } from './utils/MethodInstrumentation';
+import { MethodListenerRegistry, wrapWithInvocationObserver } from './utils/MethodInstrumentation';
 import { SdkEvents } from './utils/SdkEvents';
 
 declare const __ENGINE_DOMAIN__: string;
@@ -362,7 +362,7 @@ export class SDK {
         const sdkControllers = this as unknown as Record<(typeof this.instrumentedControllers)[number], object>;
         for (const controllerName of this.instrumentedControllers) {
             const controller = sdkControllers[controllerName];
-            sdkControllers[controllerName] = instrumentController(
+            sdkControllers[controllerName] = wrapWithInvocationObserver(
                 controller,
                 controllerName,
                 this.methodListeners,

@@ -95,7 +95,7 @@ const notifyListeners = (
     }
 };
 
-export function instrumentController<T extends object>(
+export function wrapWithInvocationObserver<T extends object>(
     target: T,
     basePath: string,
     listenerRegistry: MethodListenerRegistry,
@@ -208,7 +208,7 @@ export function instrumentController<T extends object>(
                 }
 
                 const nestedPath = `${basePath}.${String(propKey)}`;
-                const wrappedNestedController = instrumentController(
+                const wrappedNestedController = wrapWithInvocationObserver(
                     value,
                     nestedPath,
                     listenerRegistry,
