@@ -1,5 +1,4 @@
-import { JsonValue } from '../../../connector-types/src/DataConnector';
-import { DataItem } from '../types/DataConnectorTypes';
+import { DataItem, JsonValue } from '../types/DataConnectorTypes';
 
 /**
  * Utility tools for mapping between `EngineDataItem` and `DataItem`.
@@ -17,7 +16,9 @@ export class DataItemMappingTools {
             value !== null &&
             !Array.isArray(value) &&
             'type' in value &&
-            value.type === 'date'
+            value.type === 'date' &&
+            'chiliReservedTag' in value &&
+            value.chiliReservedTag === 'date'
         );
     }
 
@@ -64,7 +65,7 @@ export class DataItemMappingTools {
 
         Object.entries(dataItem).forEach(([key, value]) => {
             parsedItem[key] = this.isDateObject(value)
-                ? ({ value: value.getTime(), type: 'date' } as DatePropertyWrapper)
+                ? ({ value: value.getTime(), type: 'date', chiliReservedTag: 'date' } as DatePropertyWrapper)
                 : value;
         });
 
@@ -78,6 +79,7 @@ export class DataItemMappingTools {
 export type DatePropertyWrapper = {
     value: number;
     type: 'date';
+    chiliReservedTag: 'date';
 };
 
 /**

@@ -25,4 +25,5 @@ export type {
     PageConfig,
     PageItemOptions,
     BidirectionalPageConfig,
+    JsonValue,
 } from '@chili-studio/connector-types';
