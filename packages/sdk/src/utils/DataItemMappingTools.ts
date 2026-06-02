@@ -1,3 +1,4 @@
+import { JsonValue } from '../../../connector-types/src/DataConnector';
 import { DataItem } from '../types/DataConnectorTypes';
 
 /**
@@ -10,10 +11,14 @@ export class DataItemMappingTools {
      * @param value The value to check.
      * @returns `true` if the value is a `DatePropertyWrapper`, otherwise `false`.
      */
-    private isDatePropertyWrapper(
-        value: string | number | boolean | DatePropertyWrapper | null,
-    ): value is DatePropertyWrapper {
-        return typeof value === 'object' && value?.type === 'date';
+    private isDatePropertyWrapper(value: JsonValue | DatePropertyWrapper): value is DatePropertyWrapper {
+        return (
+            typeof value === 'object' &&
+            value !== null &&
+            !Array.isArray(value) &&
+            'type' in value &&
+            value.type === 'date'
+        );
     }
 
     /**
@@ -22,7 +27,7 @@ export class DataItemMappingTools {
      * @param value The value to check.
      * @returns `true` if the value is a `Date` object, otherwise `false`.
      */
-    private isDateObject(value: string | number | boolean | Date | null): value is Date {
+    private isDateObject(value: Date | JsonValue): value is Date {
         return value instanceof Date;
     }
 
@@ -79,5 +84,5 @@ export type DatePropertyWrapper = {
  * Engine data item type.
  */
 export type EngineDataItem = {
-    [key: string]: string | number | boolean | DatePropertyWrapper | null;
+    [key: string]: JsonValue | DatePropertyWrapper;
 };
