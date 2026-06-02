@@ -1,4 +1,4 @@
-import { DataItem } from '../types/DataConnectorTypes';
+import { DataItem, JsonValue } from '../types/DataConnectorTypes';
 
 /**
  * Utility tools for mapping between `EngineDataItem` and `DataItem`.
@@ -10,10 +10,16 @@ export class DataItemMappingTools {
      * @param value The value to check.
      * @returns `true` if the value is a `DatePropertyWrapper`, otherwise `false`.
      */
-    private isDatePropertyWrapper(
-        value: string | number | boolean | DatePropertyWrapper | null,
-    ): value is DatePropertyWrapper {
-        return typeof value === 'object' && value?.type === 'date';
+    private isDatePropertyWrapper(value: JsonValue | DatePropertyWrapper): value is DatePropertyWrapper {
+        return (
+            typeof value === 'object' &&
+            value !== null &&
+            !Array.isArray(value) &&
+            'type' in value &&
+            value.type === 'date' &&
+            'chiliReservedTag' in value &&
+            value.chiliReservedTag === 'date'
+        );
     }
 
     /**
@@ -22,7 +28,7 @@ export class DataItemMappingTools {
      * @param value The value to check.
      * @returns `true` if the value is a `Date` object, otherwise `false`.
      */
-    private isDateObject(value: string | number | boolean | Date | null): value is Date {
+    private isDateObject(value: Date | JsonValue): value is Date {
         return value instanceof Date;
     }
 
@@ -59,7 +65,7 @@ export class DataItemMappingTools {
 
         Object.entries(dataItem).forEach(([key, value]) => {
             parsedItem[key] = this.isDateObject(value)
-                ? ({ value: value.getTime(), type: 'date' } as DatePropertyWrapper)
+                ? ({ value: value.getTime(), type: 'date', chiliReservedTag: 'date' } as DatePropertyWrapper)
                 : value;
         });
 
@@ -73,11 +79,12 @@ export class DataItemMappingTools {
 export type DatePropertyWrapper = {
     value: number;
     type: 'date';
+    chiliReservedTag: 'date';
 };
 
 /**
  * Engine data item type.
  */
 export type EngineDataItem = {
-    [key: string]: string | number | boolean | DatePropertyWrapper | null;
+    [key: string]: JsonValue | DatePropertyWrapper;
 };
