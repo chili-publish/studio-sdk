@@ -77,6 +77,9 @@ export type ShortcutOptionsDeltaUpdate = {
 
     /** The view mode shortcut. */
     viewMode?: ShortcutOption;
+
+    /** The component grid shortcut. */
+    componentGrid?: ShortcutOption;
 };
 
 /**
@@ -104,6 +107,7 @@ export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
         zoom: { enabled: false },
         copyPaste: { enabled: false },
         viewMode: { enabled: false },
+        componentGrid: { enabled: false },
     },
     frameEditingMode: FrameEditingMode.full,
 };

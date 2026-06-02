@@ -100,4 +100,11 @@ export class ToolController {
     setShapePolygon = async () => {
         return this.setTool(ToolType.SHAPE_POLYGON);
     };
+
+    /**
+     * This method sets the used tool to the ComponentGrid tool
+     */
+    setComponentGrid = async () => {
+        return this.setTool(ToolType.COMPONENT_GRID_FRAME);
+    };
 }
