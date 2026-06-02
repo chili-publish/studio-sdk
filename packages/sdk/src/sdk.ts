@@ -221,6 +221,7 @@ export class SDK {
                 onViewModeChanged: this.subscriber.onViewModeChanged,
                 onBarcodeValidationChanged: this.subscriber.onBarcodeValidationChanged,
                 onDataSourceIdChanged: this.subscriber.onDataSourceIdChanged,
+                onInjectedDataChanged: this.subscriber.onInjectedDataChanged,
                 onDocumentIssueListChanged: this.subscriber.onDocumentIssueListChanged,
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
                 onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
