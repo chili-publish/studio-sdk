@@ -18,7 +18,7 @@ export type JsonObject = {
 export type JsonArray = JsonValue[];
 
 export type DataItem = {
-    [key: string]: string | number | boolean | Date | JsonObject | JsonArray | null;
+    [key: string]: Date | JsonValue;
 };
 
 export type DataModel = {
