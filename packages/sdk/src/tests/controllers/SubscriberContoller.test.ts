@@ -85,6 +85,7 @@ const mockEditorApi: EditorAPI = {
     onViewportRequested: async () => getEditorResponseData(castToEditorResponse(null)),
     onBarcodeValidationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDataSourceIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onInjectedDataChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -132,6 +133,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBarcodeValidationChanged');
     jest.spyOn(mockEditorApi, 'onViewportRequested');
     jest.spyOn(mockEditorApi, 'onDataSourceIdChanged');
+    jest.spyOn(mockEditorApi, 'onInjectedDataChanged');
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
     jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
@@ -554,6 +556,14 @@ describe('SubscriberController', () => {
 
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.onDataSourceIdChanged).toHaveBeenCalledWith(connectorId);
+    });
+
+    it('should be possible to subscribe to onInjectedDataChanged', async () => {
+        const variableId: Id = 'injected-data-source-var-1';
+        await mockedSubscriberController.onInjectedDataChanged(variableId);
+
+        expect(mockEditorApi.onInjectedDataChanged).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.onInjectedDataChanged).toHaveBeenCalledWith(variableId);
     });
 
     it('should be possible to subscribe to onDocumentIssueListChanged', async () => {
