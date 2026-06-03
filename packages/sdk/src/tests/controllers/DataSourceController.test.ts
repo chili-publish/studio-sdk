@@ -62,8 +62,16 @@ describe('DataSourceController', () => {
 
         expect(mockEditorApi.setDataRow).toHaveBeenCalledWith(
             JSON.stringify({
-                createDate: { value: new Date(1111).getTime(), type: 'date' } as EngineDataItem,
-                anotherDate: { value: new Date(2222).getTime(), type: 'date' } as EngineDataItem,
+                createDate: {
+                    value: new Date(1111).getTime(),
+                    type: 'date',
+                    chiliReservedTag: 'date',
+                } as EngineDataItem,
+                anotherDate: {
+                    value: new Date(2222).getTime(),
+                    type: 'date',
+                    chiliReservedTag: 'date',
+                } as EngineDataItem,
                 stringValue: 'hola',
                 numberValue: 5,
             }),
