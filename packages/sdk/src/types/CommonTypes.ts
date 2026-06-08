@@ -127,6 +127,7 @@ export type ManagedCallbacksConfigType = {
             (validationResults: BarcodeFrameValidationResult[]) => MaybePromise<void>
         >;
         onDataSourceIdChanged: EngineEvent<(connectorId?: Id) => MaybePromise<void>>;
+        onInjectedDataChanged: EngineEvent<(variableId: Id) => MaybePromise<void>>;
         onDocumentIssueListChanged: EngineEvent<(documentIssues: DocumentIssue[]) => MaybePromise<void>>;
         onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
@@ -333,6 +334,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onDataSourceIdChanged` instead
      */
     onDataSourceIdChanged?: (connectorId?: Id) => void;
+
+    /**
+     * @deprecated use `events.onInjectedDataChanged` instead
+     */
+    onInjectedDataChanged?: (variableId: Id) => void;
 
     /**
      * @deprecated use `events.onDocumentIssueListChanged` instead

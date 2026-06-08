@@ -27,6 +27,8 @@ export {
     VerticalAlign,
     ComponentSourceTypeEnum,
     ComponentFitEnum,
+    SmartCropVersion,
+    SmartCropAxisBias,
 } from './types/FrameTypes';
 export { ConstraintMode, LayoutIntent, LayoutType, PositionEnum, MeasurementUnit } from './types/LayoutTypes';
 export type { LayoutAspect, ResizableLayoutProperties, ResizableLayoutPropertiesUpdate } from './types/LayoutTypes';
@@ -65,6 +67,7 @@ export type {
     StartFrameAnchor,
     TextFrame,
     TextFrameConstraints,
+    SmartCropSettings,
 } from './types/FrameTypes';
 export type {
     FrameProperties,

@@ -78,17 +78,17 @@ describe('DataConnectorController', () => {
             data: JSON.stringify({
                 data: [
                     {
-                        createDate: { type: 'date', value: 1111 },
+                        createDate: { type: 'date', value: 1111, chiliReservedTag: 'date' },
                         stringDate: '01-01-2021',
                         epochDate: 1111,
                     },
                     {
-                        createDate: { type: 'date', value: 2222 },
+                        createDate: { type: 'date', value: 2222, chiliReservedTag: 'date' },
                         stringDate: '02-02-2022',
                         epochDate: 1111,
                     },
                     {
-                        createDate: { type: 'date', value: 3333 },
+                        createDate: { type: 'date', value: 3333, chiliReservedTag: 'date' },
                         stringDate: '03-03-2023',
                         epochDate: 3333,
                     },
@@ -161,7 +161,7 @@ describe('DataConnectorController', () => {
         (mockedEditorApi.dataConnectorGetPageItemById as jest.Mock).mockResolvedValueOnce({
             success: true,
             data: JSON.stringify({
-                data: { createDate: { type: 'date', value: 1111 }, label: 'hello' },
+                data: { createDate: { type: 'date', value: 1111, chiliReservedTag: 'date' }, label: 'hello' },
                 previousPageToken: 'prev-token',
                 continuationToken: 'next-token',
             }),
