@@ -39,7 +39,7 @@ export class DocumentController {
      * In this case, you would need to configure your connectors appropriately
      * beforehand.
      *
-     * Note: This methid must be called with valid authentication tokens set up (via ConfigurationController),
+     * Note: This method must be called with valid authentication tokens set up (via ConfigurationController),
      * this method WILL NOT trigger a token refresh flow if the authentication is invalid or expired
      * @param doc the document to load in
      * @param options the options object for setting up the document load
@@ -58,7 +58,7 @@ export class DocumentController {
     /**
      * This method will create a new document, based on a document preset
      *
-     * Note: This methid must be called with valid authentication tokens set up (via ConfigurationController),
+     * Note: This method must be called with valid authentication tokens set up (via ConfigurationController),
      * this method WILL NOT trigger a token refresh flow if the authentication is invalid or expired
      * @param preset the preset where we will create a document of.
      * @returns the new document created and loaded inside of the canvas
