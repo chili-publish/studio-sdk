@@ -12,6 +12,9 @@ class NestedController {
 
 class ExampleController {
     nested = new NestedController();
+    plainNested = {
+        subtract: (a: number, b: number) => a - b,
+    };
     multiply = (a: number, b: number) => a * b;
     asyncEcho = async (value: string) => `echo:${value}`;
 }
@@ -142,6 +145,36 @@ describe('MethodInstrumentation', () => {
                 phase: 'complete',
                 path: 'variable.multiply',
                 success: true,
+            }),
+        );
+    });
+
+    test('instruments nested methods on plain object properties', () => {
+        const listenerRegistry = new MethodListenerRegistry();
+        const sdkEvents = new SdkEvents();
+        const controller = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+
+        const listener = jest.fn();
+        controller.plainNested.subtract.addEventListener(listener);
+
+        const result = controller.plainNested.subtract(7, 3);
+
+        expect(result).toBe(4);
+        expect(listener).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                phase: 'invoke',
+                path: 'variable.plainNested.subtract',
+                args: [7, 3],
+            }),
+        );
+        expect(listener).toHaveBeenNthCalledWith(
+            2,
+            expect.objectContaining({
+                phase: 'complete',
+                path: 'variable.plainNested.subtract',
+                success: true,
+                result: 4,
             }),
         );
     });

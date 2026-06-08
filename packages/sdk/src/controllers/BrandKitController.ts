@@ -22,31 +22,15 @@ export class BrandKitController {
     /**
      * @ignore
      */
+    private sdk: SDK;
+
+    /**
+     * @ignore
+     */
     constructor(editorAPI: EditorAPI, sdk: SDK) {
         this.#editorAPI = editorAPI;
-        this.colorStyleController = sdk.colorStyle;
-        this.gradientStyleController = sdk.gradientStyle;
-        this.fontController = sdk.font;
-        this.mediaController = sdk.mediaConnector;
-        this.paragraphStyleController = sdk.paragraphStyle;
-        this.characterStyleController = sdk.characterStyle;
-
-        this.undoManagerController = sdk.undoManager;
+        this.sdk = sdk;
     }
-
-    private colorStyleController: SDK['colorStyle'];
-
-    private gradientStyleController: SDK['gradientStyle'];
-
-    private fontController: SDK['font'];
-
-    private mediaController: SDK['mediaConnector'];
-
-    private paragraphStyleController: SDK['paragraphStyle'];
-
-    private characterStyleController: SDK['characterStyle'];
-
-    private undoManagerController: SDK['undoManager'];
 
     /**
      * This method returns the current brand kit id.
@@ -177,25 +161,25 @@ export class BrandKitController {
      * @returns
      */
     remove = async () => {
-        const colors = await this.colorStyleController.getAll();
+        const colors = await this.sdk.colorStyle.getAll();
         const colorsList = colors.parsedData || [];
 
-        const gradients = await this.gradientStyleController.getAll();
+        const gradients = await this.sdk.gradientStyle.getAll();
         const gradientsList = gradients.parsedData || [];
 
-        const paragraphStyles = await this.paragraphStyleController.getAll();
+        const paragraphStyles = await this.sdk.paragraphStyle.getAll();
         const paragraphStylesList = paragraphStyles.parsedData || [];
 
-        const characterStyles = await this.characterStyleController.getAll();
+        const characterStyles = await this.sdk.characterStyle.getAll();
         const characterStylesList = characterStyles.parsedData || [];
 
-        const fonts = await this.fontController.getFontFamilies();
+        const fonts = await this.sdk.font.getFontFamilies();
         const fontsList = fonts.parsedData || [];
 
         const media = await this.getAllMedia();
         const mediaList = media.parsedData || [];
 
-        await this.undoManagerController.record('brandKit.remove', async (sdk) => {
+        await this.sdk.undoManager.record('brandKit.remove', async (sdk) => {
             for (const color of colorsList) {
                 await sdk.colorStyle.remove(color.id);
             }

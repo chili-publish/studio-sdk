@@ -18,7 +18,8 @@ export class SdkEvent<T extends (...args: any[]) => void> extends EngineEventTri
     }
 
     trigger(...args: Parameters<T>): ReturnType<T> {
-        for (const callback of this.subscriptions) {
+        const callbacks = Array.from(this.subscriptions);
+        for (const callback of callbacks) {
             callback(...args);
         }
         return undefined as ReturnType<T>;

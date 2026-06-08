@@ -51,4 +51,21 @@ describe('SdkEvent', () => {
 
         expect(() => sdkEvent.trigger()).toThrow('Sdk event callback failed');
     });
+
+    test('uses a snapshot when callbacks mutate subscriptions during trigger', () => {
+        const sdkEvent = new SdkEvent<() => void>();
+        const callback2 = jest.fn();
+        const callback3 = jest.fn();
+        const unsubscribe2 = sdkEvent.registerCallback(callback2);
+        sdkEvent.registerCallback(() => {
+            unsubscribe2();
+            sdkEvent.registerCallback(callback3);
+        });
+
+        sdkEvent.trigger();
+        sdkEvent.trigger();
+
+        expect(callback2).toHaveBeenCalledTimes(1);
+        expect(callback3).toHaveBeenCalledTimes(1);
+    });
 });

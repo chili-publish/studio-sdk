@@ -55,8 +55,8 @@ See: https://en.wikipedia.org/wiki/Eventual_consistency
 
 The SDK supports observing outbound controller method calls in two ways:
 
-- Per-method listeners via `addEventListener` / `removeEventListener`
-- Global SDK events via `sdk.sdkEvents`
+- Per-method listeners via `addEventListener` (returns `unsubscribe`)
+- Global SDK events via `sdk.sdkEvents` (each registration returns `unsubscribe`)
 
 This mechanism is observational only and does not modify method parameters or results.
 
@@ -65,7 +65,7 @@ This mechanism is observational only and does not modify method parameters or re
 ```ts
 const sdk = new StudioSDK({ editorId: 'chili-editor-example' });
 
-sdk.tool.setZoom.addEventListener((event) => {
+const unsubscribeSetZoom = sdk.tool.setZoom.addEventListener((event) => {
     if (event.phase === 'invoke') {
         console.log('setZoom called with args:', event.args);
     }
@@ -73,6 +73,9 @@ sdk.tool.setZoom.addEventListener((event) => {
         console.log('setZoom completed:', event.success, event.result, event.error);
     }
 });
+
+// Later, when you no longer need updates:
+unsubscribeSetZoom();
 ```
 
 ### Global SDK method events
@@ -80,11 +83,15 @@ sdk.tool.setZoom.addEventListener((event) => {
 ```ts
 const sdk = new StudioSDK({ editorId: 'chili-editor-example' });
 
-sdk.sdkEvents.onMethodInvoked.registerCallback((event) => {
+const unsubscribeInvoked = sdk.sdkEvents.onMethodInvoked.registerCallback((event) => {
     console.log('Method invoked:', event.path, event.args);
 });
 
-sdk.sdkEvents.onMethodCompleted.registerCallback((event) => {
+const unsubscribeCompleted = sdk.sdkEvents.onMethodCompleted.registerCallback((event) => {
     console.log('Method completed:', event.path, event.success, event.result, event.error);
 });
+
+// Later, when you no longer need updates:
+unsubscribeInvoked();
+unsubscribeCompleted();
 ```
