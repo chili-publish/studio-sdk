@@ -25,6 +25,7 @@ import {
     ImageFrameUrlSource,
     ImageSourceTypeEnum,
     ShadowSettingsDeltaUpdate,
+    SmartCropSettings,
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../types/FrameTypes';
@@ -556,6 +557,21 @@ export class FrameController {
     };
 
     /**
+     * This method sets the smart crop settings of a specified image frame. The frame does not have
+     * to be in smart crop mode to set the smart crop settings. This method does not change the mode of the image frame
+     *
+     * @param imageFrameId the id of the imageFrame that needs to get updated.
+     * @param settings the new smart crop settings to be set to the imageFrame.
+     * @returns
+     */
+    setImageFrameSmartCropSettings = async (imageFrameId: Id, settings: SmartCropSettings) => {
+        const res = await this.#editorAPI;
+        return res
+            .setImageFrameSmartCropSettings(imageFrameId, JSON.stringify(settings))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * @deprecated the constrain proportions setter is not supported anymore.
      *
      * This method will set the constrainProportions property of a specified frame. If constrainProportionsReadOnly is
@@ -744,7 +760,9 @@ export class FrameController {
      */
     setFrameContainerShape = async (frameId: Id, value: ShapeFrameSource) => {
         const res = await this.#editorAPI;
-        return res.setFrameContainerShape(frameId, JSON.stringify(value)).then((result) => getEditorResponseData<null>(result));
+        return res
+            .setFrameContainerShape(frameId, JSON.stringify(value))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -1286,9 +1304,7 @@ export class FrameController {
      */
     setSmartCropSubjectId = async (id: Id, subjectId?: Id) => {
         const res = await this.#editorAPI;
-        return res
-            .setSmartCropSubjectId(id, subjectId)
-            .then((result) => getEditorResponseData<null>(result));
+        return res.setSmartCropSubjectId(id, subjectId).then((result) => getEditorResponseData<null>(result));
     };
 }
 

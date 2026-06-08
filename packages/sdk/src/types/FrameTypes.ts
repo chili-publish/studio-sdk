@@ -27,6 +27,7 @@ export type FrameLayoutType = {
     isVisible: PropertyState<boolean>;
     fitMode: PropertyState<FitMode>;
     fitModePosition: PropertyState<FitModePosition>;
+    smartCropSettings: PropertyState<SmartCropSettings>;
     hasImageCrop: PropertyState<boolean>;
     hasFrameSubjectArea: PropertyState<boolean>;
     minCopyfitting: PropertyState<number>;
@@ -603,4 +604,33 @@ export interface FrameConstraintsDeltaUpdate {
     image?: ImageFrameConstraintsDeltaUpdate;
     /** Text-specific constraints update. */
     text?: TextFrameConstraintsDeltaUpdate;
+}
+
+export type SmartCropSettings = SmartCropSettingsV1 | SmartCropSettingsV2;
+
+export type SmartCropSettingsV1 = {
+    version: SmartCropVersion.v1;
+};
+
+export type SmartCropSettingsV2 = {
+    version: SmartCropVersion.v2;
+    horizontalBias: SmartCropAxisBias;
+    verticalBias: SmartCropAxisBias;
+};
+
+export enum SmartCropVersion {
+    v1 = 'v1',
+    v2 = 'v2',
+}
+
+/**
+ * Latest version of the smart crop algorithm.
+ * Keep in sync with @SmartCropVersion enum.
+ */
+export const LATEST_SMART_CROP_VERSION = SmartCropVersion.v2;
+
+export enum SmartCropAxisBias {
+    start = 'start',
+    center = 'center',
+    end = 'end',
 }
