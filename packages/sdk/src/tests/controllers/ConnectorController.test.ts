@@ -222,7 +222,13 @@ describe('ConnectorController', () => {
         await mockedConnectorController.configure(connectorId, async (configurator) => {
             configurator.setHttpHeader(headerName, headerValue);
             configurator.setMappings([
-                new ConnectorMapping('data', ConnectorMappingSource.variable, '6B29FC40-CA47-1067-B31D-00DD010662DA'),
+                new ConnectorMapping(
+                    'data',
+                    ConnectorMappingSource.variable,
+                    '6B29FC40-CA47-1067-B31D-00DD010662DA',
+                    ConnectorMappingDirection.engineToConnector,
+                    'productName',
+                ),
                 new ConnectorMapping('plain', ConnectorMappingSource.value, 'plain value'),
                 new ConnectorMapping('switch', ConnectorMappingSource.value, true),
                 new ConnectorMapping(
@@ -252,6 +258,7 @@ describe('ConnectorController', () => {
                 value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
                 id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
                 type: ConnectorMappingSource.variable,
+                sourceField: 'productName',
             }),
             JSON.stringify({
                 direction: 'engineToConnector',
@@ -295,6 +302,14 @@ describe('ConnectorController', () => {
                 direction: ConnectorMappingDirection.connectorToEngine,
             },
             {
+                name: 'productName',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                type: ConnectorMappingSource.variable,
+                id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
+                sourceField: 'name',
+                direction: ConnectorMappingDirection.engineToConnector,
+            },
+            {
                 name: 'hasDiscount',
                 value: true,
                 type: ConnectorMappingSource.value,
@@ -336,6 +351,14 @@ describe('ConnectorController', () => {
                 type: ConnectorMappingSource.variable,
                 id: '6B29FC40-CA47-1067-B31D-00DD010662CC',
                 direction: ConnectorMappingDirection.connectorToEngine,
+            }),
+            JSON.stringify({
+                name: 'productName',
+                value: 'var.6B29FC40-CA47-1067-B31D-00DD010662DA',
+                type: ConnectorMappingSource.variable,
+                id: '6B29FC40-CA47-1067-B31D-00DD010662DA',
+                sourceField: 'name',
+                direction: ConnectorMappingDirection.engineToConnector,
             }),
             JSON.stringify({
                 name: 'hasDiscount',
