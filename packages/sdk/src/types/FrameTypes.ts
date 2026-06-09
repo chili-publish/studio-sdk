@@ -210,13 +210,8 @@ export type ComponentGridFrame = {
     fitMode: ComponentFitEnum;
 };
 
-export type VariableIdToSourceFieldMapping = {
-    variableId: string;
-    sourceField: string;
-}
-
 export type GridVariableMapping = {
-    mappings: Record<string, VariableIdToSourceFieldMapping[]>;
+    mappings: Record<string, VariableMapping[] | null>;
 }
 
 export type ComponentSource = ConnectorComponentSource;

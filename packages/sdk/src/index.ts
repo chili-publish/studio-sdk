@@ -69,7 +69,6 @@ export type {
     TextFrameConstraints,
     SmartCropSettings,
     ComponentGridFrame,
-    VariableIdToSourceFieldMapping,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
