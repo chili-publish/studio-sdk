@@ -46,6 +46,7 @@ import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator
 import { GradientStyleController } from './controllers/GradientStyleController';
 import { ComponentConnectorController } from './controllers/ComponentConnectorController';
 import { ComponentController } from './controllers/ComponentController';
+import { ComponentGridController } from './controllers/ComponentGridController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -99,6 +100,7 @@ export class SDK {
     info: InfoController;
     clipboard: ClipboardController;
     brandKit: BrandKitController;
+    componentGrid: ComponentGridController;
     next: NextInitiator;
 
     private subscriber: SubscriberController;
@@ -156,6 +158,7 @@ export class SDK {
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
         this.brandKit = new BrandKitController(this.editorAPI, this);
+        this.componentGrid = new ComponentGridController(this.editorAPI);
     }
 
     /**
@@ -271,6 +274,7 @@ export class SDK {
         this.info = new InfoController();
         this.clipboard = new ClipboardController(this.editorAPI);
         this.brandKit = new BrandKitController(this.editorAPI, this);
+        this.componentGrid = new ComponentGridController(this.editorAPI);
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         // as soon as the editor loads, provide it with the SDK version

@@ -3,6 +3,7 @@ import { BarcodeCharacterSet, BarcodeErrorCorrectionLevel, BarcodeType, QuietZon
 import { ColorUsage } from './ColorStyleTypes';
 import { HasOverrideState, Id, PropertyState } from './CommonTypes';
 import { GradientUsage } from './GradientStyleTypes';
+import { ComponentGridSettings } from '../types/ComponentGridTypes';
 import {
     CornerRadiusAll,
     CornerRadiusNone,
@@ -37,6 +38,7 @@ export type FrameLayoutType = {
     isShowingCustomCroppedAsset: boolean;
     customCroppedAssetCount: number;
     subjectId: PropertyState<Id | null>;
+    componentGridSettings: PropertyState<ComponentGridSettings>;
 } | null;
 
 //Frame.image
@@ -50,7 +52,7 @@ export type FrameType = {
     opacity: number;
 };
 
-export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame | ComponentFrame;
+export type Frame = TextFrame | ImageFrame | ShapeFrame | BarcodeFrame | ComponentFrame | ComponentGridFrame;
 
 export type ImageFrameVariableSource = {
     type: ImageSourceTypeEnum.variable;
@@ -192,12 +194,32 @@ export type ComponentFrame = {
     fitMode: ComponentFitEnum;
 };
 
+export type ComponentGridFrame = {
+    id: Id;
+    name: string;
+    opacity: number;
+    type: FrameTypeEnum.componentGrid;
+    blendMode: BlendMode;
+    dataSourceVariableId?: Id | null;
+    src?: ComponentSource | null;
+    variableMappings: GridVariableMapping;
+
+    /**
+     * How the component grid fits within the frame.
+     */
+    fitMode: ComponentFitEnum;
+};
+
+export type GridVariableMapping = {
+    mappings: Record<string, VariableMapping[] | null>;
+}
+
 export type ComponentSource = ConnectorComponentSource;
 
 export type ConnectorComponentSource = {
     type: ComponentSourceTypeEnum.connector;
     id: Id;
-    assetId: Id;
+    assetId: Id | null;
 };
 
 export type VariableMapping = {
@@ -317,6 +339,7 @@ export enum FrameTypeEnum {
     shape = 'shape',
     barcode = 'barcode',
     component = 'component',
+    componentGrid = 'componentGrid',
 }
 
 export enum BarcodeSourceTypeEnum {

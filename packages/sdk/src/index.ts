@@ -68,6 +68,7 @@ export type {
     TextFrame,
     TextFrameConstraints,
     SmartCropSettings,
+    ComponentGridFrame,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
@@ -221,6 +222,12 @@ export type {
     BrandKitTheme,
 } from './types/BrandKitTypes';
 
+export type {
+    ComponentGridSettings,
+    FixedComponentGridSettings,
+} from './types/ComponentGridTypes';
+
+export { ComponentGridLayoutAlgorithm } from './types/ComponentGridTypes';
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';
