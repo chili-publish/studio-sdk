@@ -118,7 +118,7 @@ export type APIBrandKitMedia = {
 export type APIBrandKitTheme = {
     id: Id;
     name: string;
-    inheritsFrom: string | null;
+    inheritedFrom: string | null;
     dateCreated: string | null;
     lastModifiedDate: string | null;
     colors: APIBrandKitColor[];

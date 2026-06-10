@@ -326,7 +326,7 @@ export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
     {
         id: 'api-theme-id',
         name: 'API Theme',
-        inheritsFrom: null,
+        inheritedFrom: null,
         dateCreated: null,
         lastModifiedDate: null,
         colors: [],
