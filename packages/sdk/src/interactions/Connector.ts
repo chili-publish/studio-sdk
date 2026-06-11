@@ -133,6 +133,7 @@ interface ConfigParameterTypes {
     onViewModeChanged: (viewMode: string) => void;
     onBarcodeValidationChanged: (validationResults: string) => void;
     onDataSourceIdChanged: (connectorId?: Id) => void;
+    onInjectedDataChanged: (variableId: Id) => void;
     onDocumentIssueListChanged: (documentIssues: string) => void;
     onCustomUndoDataChanged: (customData: string) => void;
     onEngineEditModeChanged: (engineEditMode: string) => void;
@@ -250,6 +251,7 @@ const Connect = (
                 barcodeValidationChanged: params.onBarcodeValidationChanged,
                 selectedPageIdChanged: params.onSelectedPageIdChanged,
                 dataSourceIdChanged: params.onDataSourceIdChanged,
+                injectedDataChanged: params.onInjectedDataChanged,
                 documentIssueListChanged: params.onDocumentIssueListChanged,
                 customUndoDataChanged: params.onCustomUndoDataChanged,
                 engineEditingModeChanged: params.onEngineEditModeChanged,

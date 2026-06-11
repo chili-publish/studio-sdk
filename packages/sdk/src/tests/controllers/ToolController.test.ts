@@ -80,4 +80,11 @@ describe('ToolController', () => {
         expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.SHAPE_POLYGON);
         expect(response.success).toBeTruthy();
     });
+
+    it('sets the component grid tool', async () => {
+        const response = await mockedToolController.setComponentGrid();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.COMPONENT_GRID_FRAME);
+        expect(response.success).toBeTruthy();
+    });
 });
