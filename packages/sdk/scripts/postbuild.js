@@ -7,7 +7,6 @@ const libDir = path.join(__dirname, '../lib');
 const sdkDir = path.join(libDir, 'sdk');
 const connectorTypesDir = path.join(libDir, 'connector-types');
 
-// Function to move files from src to dest
 function moveFiles(src, dest) {
     if (!fs.existsSync(src)) return;
 
@@ -29,19 +28,18 @@ function moveFiles(src, dest) {
     }
 }
 
-// Move files from lib/sdk to lib
+// Flatten declaration files emitted by vite-plugin-dts
 if (fs.existsSync(sdkDir)) {
     moveFiles(sdkDir, libDir);
     fs.rmSync(sdkDir, { recursive: true, force: true });
 }
 
-// Move connector-types one level up
+// Declaration files in lib/ reference ../../../connector-types/src
 if (fs.existsSync(connectorTypesDir)) {
-    const parentDir = path.join(libDir, '..');
-    const newConnectorTypesDir = path.join(parentDir, 'connector-types');
+    const connectorTypesOutputDir = path.join(libDir, '..', 'connector-types');
 
-    moveFiles(connectorTypesDir, newConnectorTypesDir);
+    moveFiles(connectorTypesDir, connectorTypesOutputDir);
     fs.rmSync(connectorTypesDir, { recursive: true, force: true });
 }
 
-console.log('Post-build file reorganization completed successfully!'); 
+console.log('Post-build file reorganization completed successfully!');

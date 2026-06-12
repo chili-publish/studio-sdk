@@ -68,6 +68,8 @@ export type {
     TextFrame,
     TextFrameConstraints,
     SmartCropSettings,
+    SmartCropSettingsV2,
+    ComponentFrame,
     ComponentGridFrame,
 } from './types/FrameTypes';
 export type {
@@ -137,6 +139,7 @@ export type {
     InitialStateType,
     PageType,
     PrivateData,
+    PropertyState,
     SelectedLayoutFrame,
 } from './types/CommonTypes';
 export type {
