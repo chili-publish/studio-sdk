@@ -142,6 +142,7 @@ export type {
     PropertyState,
     SelectedLayoutFrame,
 } from './types/CommonTypes';
+export { SDKUnauthorizedError } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
     ActionExecutionDocumentIssue,
@@ -225,10 +226,7 @@ export type {
     BrandKitTheme,
 } from './types/BrandKitTypes';
 
-export type {
-    ComponentGridSettings,
-    FixedComponentGridSettings,
-} from './types/ComponentGridTypes';
+export type { ComponentGridSettings, FixedComponentGridSettings } from './types/ComponentGridTypes';
 
 export { ComponentGridLayoutAlgorithm } from './types/ComponentGridTypes';
 export * from './types/ActionTypes';
