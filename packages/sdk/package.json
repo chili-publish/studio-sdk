@@ -18,6 +18,7 @@
         "@babel/preset-env": "^7.14.8",
         "@babel/preset-typescript": "^7.14.5",
         "@babel/runtime": "^7.14.8",
+        "cross-env": "^7.0.3",
         "@inthepocket/npm-license-scraper": "^2.3.0",
         "@testing-library/jest-dom": "^5.14.1",
         "@types/jest": "^29.5.0",
@@ -46,8 +47,8 @@
     },
     "scripts": {
         "clean": "shx rm -rf _bundles lib connector-types",
-        "build": "yarn clean && vite build && SDK_BUILD_TARGET=lib vite build && node scripts/postbuild.js",
-        "build:dev": "yarn clean && vite build --mode development && SDK_BUILD_TARGET=lib vite build --mode development && node scripts/postbuild.js",
+        "build": "yarn clean && vite build && cross-env SDK_BUILD_TARGET=lib vite build && node scripts/postbuild.js",
+        "build:dev": "yarn clean && vite build --mode development && cross-env SDK_BUILD_TARGET=lib vite build --mode development && node scripts/postbuild.js",
         "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
         "testw": "jest --watch",
         "test": "jest",
