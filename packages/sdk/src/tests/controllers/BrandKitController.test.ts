@@ -12,9 +12,14 @@ import {
     mockStudioBrandKit,
     mockMedia,
     mockAPIBrandKitThemes,
+    mockBrandKitColors,
+    mockBrandKitGradients,
+    mockBrandKitFontFamilies,
+    mockBrandKitCharacterStyles,
+    mockBrandKitParagraphStyles,
+    mockBrandKitMedia,
 } from '../__mocks__/Brandkit';
 import { APIBrandKit, BrandKit, StudioBrandKit } from '../../types/BrandKitTypes';
-import type { DocumentFontFamily } from '../../types/FontTypes';
 import { FontController } from '../../controllers/FontController';
 import { ColorStyleController } from '../../controllers/ColorStyleController';
 import { MediaConnectorController } from '../../controllers/MediaConnectorController';
@@ -56,12 +61,12 @@ describe('BrandKitController', () => {
                         version: '2025-06-12T12:10:29.354877',
                         name: 'Test Brand Kit',
                         selectedThemeName: null,
-                        colors: mockColors,
-                        gradients: mockGradients,
-                        fontFamilies: mockFonts,
-                        characterStyles: mockCharacterStyles,
-                        paragraphStyles: mockParagraphStyles,
-                        media: mockMedia,
+                        colors: mockBrandKitColors,
+                        gradients: mockBrandKitGradients,
+                        fontFamilies: mockBrandKitFontFamilies,
+                        characterStyles: mockBrandKitCharacterStyles,
+                        paragraphStyles: mockBrandKitParagraphStyles,
+                        media: mockBrandKitMedia,
                         isAutoSync: false,
                     }),
                 ),
@@ -73,12 +78,12 @@ describe('BrandKitController', () => {
                         version: apiBrandKit?.lastModifiedDate ?? null,
                         name: apiBrandKit?.name ?? null,
                         selectedThemeName: null,
-                        colors: mockColors,
-                        gradients: mockGradients,
-                        fontFamilies: mockFonts,
-                        characterStyles: mockCharacterStyles,
-                        paragraphStyles: mockParagraphStyles,
-                        media: mockMedia,
+                        colors: mockBrandKitColors,
+                        gradients: mockBrandKitGradients,
+                        fontFamilies: mockBrandKitFontFamilies,
+                        characterStyles: mockBrandKitCharacterStyles,
+                        paragraphStyles: mockBrandKitParagraphStyles,
+                        media: mockBrandKitMedia,
                         isAutoSync: null,
                     }),
                 );
@@ -246,14 +251,14 @@ describe('BrandKitController', () => {
             selectedThemeName: null,
             isAutoSync: false,
         });
-        const firstFontFamily = brandKit.fontFamilies[0] as unknown as DocumentFontFamily;
-        expect(firstFontFamily.connectorId).toBe(mockFonts[0]?.connectorId ?? '');
-        expect(brandKit.colors).toHaveLength(mockColors.length);
-        expect(brandKit.gradients).toHaveLength(mockGradients.length);
-        expect(brandKit.fontFamilies).toHaveLength(mockFonts.length);
-        expect(brandKit.characterStyles).toHaveLength(mockCharacterStyles.length);
-        expect(brandKit.paragraphStyles).toHaveLength(mockParagraphStyles.length);
-        expect(brandKit.media).toHaveLength(mockMedia.length);
+        const firstFontFamily = brandKit.fontFamilies[0];
+        expect(firstFontFamily?.value.connectorId).toBe(mockFonts[0]?.connectorId ?? '');
+        expect(brandKit.colors).toEqual(mockBrandKitColors);
+        expect(brandKit.gradients).toEqual(mockBrandKitGradients);
+        expect(brandKit.fontFamilies).toEqual(mockBrandKitFontFamilies);
+        expect(brandKit.characterStyles).toEqual(mockBrandKitCharacterStyles);
+        expect(brandKit.paragraphStyles).toEqual(mockBrandKitParagraphStyles);
+        expect(brandKit.media).toEqual(mockBrandKitMedia);
         expect(brandKit).not.toHaveProperty('themes');
     });
 
@@ -327,12 +332,12 @@ describe('BrandKitController', () => {
             version: mockStudioBrandKit.brandKit.lastModifiedDate,
             name: mockStudioBrandKit.brandKit.name,
         });
-        expect(setBrandKitResult.colors).toEqual(mockColors);
-        expect(setBrandKitResult.gradients).toEqual(mockGradients);
-        expect(setBrandKitResult.fontFamilies).toEqual(mockFonts);
-        expect(setBrandKitResult.characterStyles).toEqual(mockCharacterStyles);
-        expect(setBrandKitResult.paragraphStyles).toEqual(mockParagraphStyles);
-        expect(setBrandKitResult.media).toEqual(mockMedia);
+        expect(setBrandKitResult.colors).toEqual(mockBrandKitColors);
+        expect(setBrandKitResult.gradients).toEqual(mockBrandKitGradients);
+        expect(setBrandKitResult.fontFamilies).toEqual(mockBrandKitFontFamilies);
+        expect(setBrandKitResult.characterStyles).toEqual(mockBrandKitCharacterStyles);
+        expect(setBrandKitResult.paragraphStyles).toEqual(mockBrandKitParagraphStyles);
+        expect(setBrandKitResult.media).toEqual(mockBrandKitMedia);
     });
 
     it('Should call getAllBrandKitMedia of EditorAPI successfully', async () => {

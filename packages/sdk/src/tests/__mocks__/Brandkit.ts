@@ -1,4 +1,9 @@
 import type { APIBrandKitTheme } from '../../types/BrandKitTypes';
+import type { PropertyState } from '../../types/CommonTypes';
+
+/** Wraps document resources in the PropertyState shape returned by getBrandKit() / setBrandKit(). */
+export const wrapInPropertyState = <T>(items: T[]): PropertyState<T>[] =>
+    items.map((value) => ({ value, isOverride: false, isReadOnly: false }));
 
 export const mockColors = [
     {
@@ -306,6 +311,14 @@ export const mockMedia = [
         assetId: '62000e62-55e2-4ef7-8486-c722c913aa88',
     },
 ];
+
+/** PropertyState-wrapped resources as returned by getBrandKit() / setBrandKit(). */
+export const mockBrandKitColors = wrapInPropertyState(mockColors);
+export const mockBrandKitGradients = wrapInPropertyState(mockGradients);
+export const mockBrandKitFontFamilies = wrapInPropertyState(mockFonts);
+export const mockBrandKitCharacterStyles = wrapInPropertyState(mockCharacterStyles);
+export const mockBrandKitParagraphStyles = wrapInPropertyState(mockParagraphStyles);
+export const mockBrandKitMedia = wrapInPropertyState(mockMedia);
 
 /** BrandKit themes in API/input shape, as accepted by set(). */
 export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
