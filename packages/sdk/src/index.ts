@@ -68,6 +68,9 @@ export type {
     TextFrame,
     TextFrameConstraints,
     SmartCropSettings,
+    SmartCropSettingsV2,
+    ComponentFrame,
+    ComponentGridFrame,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
@@ -136,8 +139,10 @@ export type {
     InitialStateType,
     PageType,
     PrivateData,
+    PropertyState,
     SelectedLayoutFrame,
 } from './types/CommonTypes';
+export { SDKUnauthorizedError } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
     ActionExecutionDocumentIssue,
@@ -221,6 +226,9 @@ export type {
     BrandKitTheme,
 } from './types/BrandKitTypes';
 
+export type { ComponentGridSettings, FixedComponentGridSettings } from './types/ComponentGridTypes';
+
+export { ComponentGridLayoutAlgorithm } from './types/ComponentGridTypes';
 export * from './types/ActionTypes';
 
 export * from './types/ShapeTypes';

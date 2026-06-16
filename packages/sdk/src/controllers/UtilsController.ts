@@ -1,4 +1,4 @@
-import type { EditorAPI, Id } from '../types/CommonTypes';
+import { SDKUnauthorizedError, type EditorAPI, type Id } from '../types/CommonTypes';
 import { WellKnownConfigurationKeys } from '../types/ConfigurationTypes';
 import {
     FilePointer,
@@ -106,6 +106,11 @@ export class UtilsController {
         if (response.status === 422) {
             const data = await response.json();
             throw new UploadAssetValidationError(data.message, UploadAssetValidationErrorType.minDimension);
+        }
+
+        if (response.status === 401) {
+            const data = await response.json();
+            throw new SDKUnauthorizedError(data.message);
         }
 
         if (!response.ok) {

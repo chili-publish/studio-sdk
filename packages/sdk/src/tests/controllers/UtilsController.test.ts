@@ -2,7 +2,7 @@ import { UtilsController } from '../../controllers/UtilsController';
 import { WellKnownConfigurationKeys } from '../../types/ConfigurationTypes';
 import { UploadAssetValidationError, UploadAssetValidationErrorType } from '../../types/ConnectorTypes';
 import { EnvironmentType } from '../../utils/Enums';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, SDKUnauthorizedError } from '../../types/CommonTypes';
 import { castToEditorResponse } from '../../utils/EditorResponseData';
 import * as MathUtils from '../../utils/MathUtils';
 import { MeasurementUnit } from '../../types/LayoutTypes';
@@ -82,51 +82,83 @@ describe('UtilsController', () => {
             }),
         );
     });
-    it('should call the stageFiles method with a blob', async () => {
-        mockFetch.mockResolvedValue({
-            ok: true,
-            json: async () => ({
-                filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
-            }),
+
+    describe('stageFiles', () => {
+        it('should call the stageFiles method with a blob', async () => {
+            mockFetch.mockResolvedValue({
+                ok: true,
+                json: async () => ({
+                    filePointers: [{ id: '123', name: 'test.jpg', type: 'image/jpeg' }],
+                }),
+            });
+            await mockedUtilsController.stageFiles([new Blob(['test'], { type: 'image/jpeg' })], connectorId, {});
+            expect(fetch).toHaveBeenCalledTimes(1);
+            expect(fetch).toHaveBeenCalledWith(
+                'ENVIRONMENT_API/connectors/dam/stage',
+                expect.objectContaining({
+                    method: 'POST',
+                    body: expect.any(FormData),
+                    headers: {
+                        Authorization: 'Bearer GRAFX_AUTH_TOKEN',
+                    },
+                }),
+            );
         });
-        await mockedUtilsController.stageFiles([new Blob(['test'], { type: 'image/jpeg' })], connectorId, {});
-        expect(fetch).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledWith(
-            'ENVIRONMENT_API/connectors/dam/stage',
-            expect.objectContaining({
-                method: 'POST',
-                body: expect.any(FormData),
-                headers: {
-                    Authorization: 'Bearer GRAFX_AUTH_TOKEN',
-                },
-            }),
-        );
-    });
-    it('Should throw an "UploadAssetValidationError" exception when file is too small', async () => {
-        mockFetch.mockResolvedValue({
-            ok: false,
-            status: 422,
-            json: async () => ({
-                message: 'File is too small',
-            }),
+        it('Should throw an "UploadAssetValidationError" exception when file is too small', async () => {
+            mockFetch.mockResolvedValue({
+                ok: false,
+                status: 422,
+                json: async () => ({
+                    message: 'File is too small',
+                }),
+            });
+            await expect(
+                mockedUtilsController.stageFiles(
+                    [new File(['test'], 'test.jpg', { type: 'image/jpeg' })],
+                    connectorId,
+                    {},
+                ),
+            ).rejects.toThrow(
+                new UploadAssetValidationError('File is too small', UploadAssetValidationErrorType.minDimension),
+            );
         });
-        await expect(
-            mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
-        ).rejects.toThrow(
-            new UploadAssetValidationError('File is too small', UploadAssetValidationErrorType.minDimension),
-        );
-    });
-    it('should throw when stageFiles is called without auth token  ', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
-        await expect(
-            mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
-        ).rejects.toThrow('GraFx Studio Auth Token is not set');
-    });
-    it('should throw when stageFiles is called without environment api url', async () => {
-        mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
-        await expect(
-            mockedUtilsController.stageFiles([new File(['test'], 'test.jpg', { type: 'image/jpeg' })], connectorId, {}),
-        ).rejects.toThrow('GraFx Studio Environment API URL is not set');
+        it('should throw when stageFiles is called without configured auth token  ', async () => {
+            mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+            await expect(
+                mockedUtilsController.stageFiles(
+                    [new File(['test'], 'test.jpg', { type: 'image/jpeg' })],
+                    connectorId,
+                    {},
+                ),
+            ).rejects.toThrow('GraFx Studio Auth Token is not set');
+        });
+        it('should throw when stageFiles is called without environment api url', async () => {
+            mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl);
+            await expect(
+                mockedUtilsController.stageFiles(
+                    [new File(['test'], 'test.jpg', { type: 'image/jpeg' })],
+                    connectorId,
+                    {},
+                ),
+            ).rejects.toThrow('GraFx Studio Environment API URL is not set');
+        });
+
+        it('should throw the "SDKUnauthorizedError" exception', async () => {
+            mockFetch.mockResolvedValue({
+                ok: false,
+                status: 401,
+                json: async () => ({
+                    message: 'Unauthorized',
+                }),
+            });
+            await expect(
+                mockedUtilsController.stageFiles(
+                    [new File(['test'], 'test.jpg', { type: 'image/jpeg' })],
+                    connectorId,
+                    {},
+                ),
+            ).rejects.toThrow(new SDKUnauthorizedError('Unauthorized'));
+        });
     });
 
     it('evaluates unit expression with conversion unit', async () => {

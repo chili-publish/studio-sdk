@@ -416,3 +416,9 @@ export interface SelectedLayoutFrame {
 }
 
 export type PrivateData = Record<string, string>;
+
+export class SDKUnauthorizedError extends Error {
+    constructor(message: string) {
+        super(message);
+    }
+}

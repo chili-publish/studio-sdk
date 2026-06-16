@@ -47,6 +47,7 @@ import { LocalConfigurationDecorator } from './utils/LocalConfigurationDecorator
 import { GradientStyleController } from './controllers/GradientStyleController';
 import { ComponentConnectorController } from './controllers/ComponentConnectorController';
 import { ComponentController } from './controllers/ComponentController';
+import { ComponentGridController } from './controllers/ComponentGridController';
 import { MethodListenerRegistry, wrapWithInvocationObserver } from './utils/MethodInstrumentation';
 import { SdkEvents } from './utils/SdkEvents';
 
@@ -109,6 +110,8 @@ export class SDK {
     info: Instrumented<InfoController>;
     clipboard: Instrumented<ClipboardController>;
     brandKit: Instrumented<BrandKitController>;
+    componentGrid: Instrumented<ComponentGridController>;
+
     next: NextInitiator;
 
     private subscriber: SubscriberController;
@@ -204,6 +207,7 @@ export class SDK {
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
         this.brandKit = this.toInstrumented(new BrandKitController(this.editorAPI, this));
+        this.componentGrid = this.toInstrumented(new ComponentGridController(this.editorAPI));
 
         this.applyMethodInstrumentation();
     }
@@ -321,6 +325,7 @@ export class SDK {
         this.info = this.toInstrumented(new InfoController());
         this.clipboard = this.toInstrumented(new ClipboardController(this.editorAPI));
         this.brandKit = this.toInstrumented(new BrandKitController(this.editorAPI, this));
+        this.componentGrid = this.toInstrumented(new ComponentGridController(this.editorAPI));
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         this.applyMethodInstrumentation();
