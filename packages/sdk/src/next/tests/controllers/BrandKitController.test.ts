@@ -3,12 +3,12 @@ import { castToEditorResponse, getEditorResponseData } from '../../../utils/Edit
 import { BrandKitController } from '../../controllers/BrandKitController';
 import type { APIBrandKit } from '../../types/BrandKitTypes';
 import {
-    mockCharacterStyles,
-    mockColors,
-    mockGradients,
-    mockFonts,
-    mockParagraphStyles,
-    mockMedia,
+    mockBrandKitColors,
+    mockBrandKitGradients,
+    mockBrandKitFontFamilies,
+    mockBrandKitCharacterStyles,
+    mockBrandKitParagraphStyles,
+    mockBrandKitMedia,
 } from '../../../tests/__mocks__/Brandkit';
 
 let mockBrandKitController: BrandKitController;
@@ -23,13 +23,14 @@ beforeEach(() => {
                     id: apiBrandKit?.id ?? null,
                     version: apiBrandKit?.lastModifiedDate ?? null,
                     name: apiBrandKit?.name ?? null,
-                    colors: mockColors,
-                    gradients: mockGradients,
-                    fontFamilies: mockFonts,
-                    characterStyles: mockCharacterStyles,
-                    paragraphStyles: mockParagraphStyles,
-                    media: mockMedia,
-                    themes: [],
+                    selectedThemeName: null,
+                    colors: mockBrandKitColors,
+                    gradients: mockBrandKitGradients,
+                    fontFamilies: mockBrandKitFontFamilies,
+                    characterStyles: mockBrandKitCharacterStyles,
+                    paragraphStyles: mockBrandKitParagraphStyles,
+                    media: mockBrandKitMedia,
+                    isAutoSync: null,
                 }),
             );
         },
@@ -73,8 +74,8 @@ describe('Next.BrandKitController', () => {
             version: apiBrandKit.lastModifiedDate,
             name: apiBrandKit.name,
         });
-        expect(response.parsedData?.colors).toEqual(mockColors);
-        expect(response.parsedData?.gradients).toEqual(mockGradients);
-        expect(response.parsedData?.fontFamilies).toEqual(mockFonts);
+        expect(response.parsedData?.colors).toEqual(mockBrandKitColors);
+        expect(response.parsedData?.gradients).toEqual(mockBrandKitGradients);
+        expect(response.parsedData?.fontFamilies).toEqual(mockBrandKitFontFamilies);
     });
 });
