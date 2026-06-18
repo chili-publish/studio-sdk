@@ -411,19 +411,7 @@ describe('SubscriberController', () => {
         const staticHeaderValue = 'Static, 1234';
 
         const grafxAuthRefreshRequest: AuthRefreshRequest = {
-            connectorId: connectorId,
-            remoteConnectorId: remoteConnectorId,
             type: AuthRefreshTypeEnum.grafxToken,
-            headerValue: null,
-            connectorDefinition: {
-                id: 'connectorId',
-                name: 'connectorName',
-                type: ConnectorType.media,
-                supportedAuthentication: {
-                    browser: [ConnectorSupportedAuth.StaticKey],
-                    server: [ConnectorSupportedAuth.StaticKey],
-                },
-            },
         };
 
         const anyAuthRefreshRequest: AuthRefreshRequest = {
