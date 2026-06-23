@@ -55,6 +55,10 @@ jobs:
 
           # Engine version is optional (only used for UAT regular)
           ENGINE_VERSION="${{ github.event.inputs.engine_version }}"
+          if [ -n "$ENGINE_VERSION" ] && ! [[ "$ENGINE_VERSION" =~ ^[0-9]+\.[0-9]+\.latest$ ]]; then
+            echo "❌ Error: engine_version must be in format x.y.latest (e.g., 2.15.latest), got: '$ENGINE_VERSION'"
+            exit 1
+          fi
 
           # Old-line is inferred per-job from package.json vs GitHub latest stable.
           TARGET_BRANCH="main"
