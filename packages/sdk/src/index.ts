@@ -59,8 +59,6 @@ export type {
     ImageFrame,
     ImageFrameConstraints,
     ImageFrameSource,
-    ImageFrameUrlSource,
-    ImageFrameVariableSource,
     RelativeFrameAnchor,
     ShapeFrame,
     StartAndEndFrameAnchor,
@@ -71,6 +69,10 @@ export type {
     SmartCropSettingsV2,
     ComponentFrame,
     ComponentGridFrame,
+    ImageFrameBrandkitMediaSource,
+    ImageFrameConnectorSource,
+    ImageFrameVariableSource,
+    ImageFrameUrlSource,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
