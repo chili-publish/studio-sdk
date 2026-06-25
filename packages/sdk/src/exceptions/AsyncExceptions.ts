@@ -18,6 +18,7 @@ enum AsyncErrorType {
 
 interface ExceptionContext {
     variableId?: Id;
+    columnName?: string;
 }
 
 interface EditorExceptionDto {
