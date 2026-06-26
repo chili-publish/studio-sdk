@@ -132,6 +132,12 @@ export type ManagedCallbacksConfigType = {
         onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
         onBrandKitMediaChanged: EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>;
+        /**
+         * Fires when frames are manipulated (e.g. moved, resized, rotated).
+         * Note: this event only fires when the manipulation was caused by direct user interaction;
+         * programmatic changes do not trigger this event.
+         */
+        onFramesManipulatedOnCanvas: EngineEvent<(frameIds: Id[]) => MaybePromise<void>>;
     };
 };
 
@@ -359,6 +365,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onBrandKitMediaChanged` instead
      */
     onBrandKitMediaChanged?: (brandKitMedia: BrandKitMedia[]) => void;
+
+    /**
+     * @deprecated use `events.onFramesManipulatedOnCanvas` instead
+     */
+    onFramesManipulatedOnCanvas?: (frameIds: Id[]) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;
