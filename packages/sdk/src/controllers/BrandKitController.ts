@@ -1,5 +1,5 @@
 import SDK from '..';
-import { BrandKitMedia, BrandKit, StudioBrandKit } from '../types/BrandKitTypes';
+import { BrandKitMedia, BrandKit, APIBrandKit } from '../types/BrandKitTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -76,8 +76,8 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method returns the local brandkit
-     * @returns brandkit with all assigned resources
+     * @experimental This method returns the local brand kit
+     * @returns brand kit with all assigned resources
      */
     get = async () => {
         const res = await this.#editorAPI;
@@ -143,60 +143,13 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method removes a brand kit and all related resources assigned to it
-     * @returns
-     */
-    remove = async () => {
-        const colors = await this.sdk.colorStyle.getAll();
-        const colorsList = colors.parsedData || [];
-
-        const gradients = await this.sdk.gradientStyle.getAll();
-        const gradientsList = gradients.parsedData || [];
-
-        const paragraphStyles = await this.sdk.paragraphStyle.getAll();
-        const paragraphStylesList = paragraphStyles.parsedData || [];
-
-        const characterStyles = await this.sdk.characterStyle.getAll();
-        const characterStylesList = characterStyles.parsedData || [];
-
-        const fonts = await this.sdk.font.getFontFamilies();
-        const fontsList = fonts.parsedData || [];
-
-        const media = await this.getAllMedia();
-        const mediaList = media.parsedData || [];
-
-        await this.sdk.undoManager.record('brandKit.remove', async (sdk) => {
-            for (const color of colorsList) {
-                await sdk.colorStyle.remove(color.id);
-            }
-            for (const gradient of gradientsList) {
-                await sdk.gradientStyle.remove(gradient.id);
-            }
-            for (const style of paragraphStylesList) {
-                await sdk.paragraphStyle.remove(style.id);
-            }
-            for (const style of characterStylesList) {
-                await sdk.characterStyle.remove(style.id);
-            }
-            for (const font of fontsList) {
-                await sdk.font.removeFontFamily(font.id);
-            }
-            for (const media of mediaList) {
-                await this.removeMedia(media.name);
-            }
-        });
-    };
-
-    /**
      * @experimental This method updates a brand kit and all related resources assigned to it
-     * @param studioBrandKit the content of the brand kit
-     * @returns the local brandkit
+     * @param apiBrandKit the brand kit from the environment api
+     * @returns the local brand kit
      */
-    set = async (studioBrandKit: StudioBrandKit) => {
+    set = async (apiBrandKit: APIBrandKit) => {
         const res = await this.#editorAPI;
-        return res
-            .setBrandKit(JSON.stringify(studioBrandKit.brandKit))
-            .then((result) => getEditorResponseData<BrandKit>(result));
+        return res.setBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<BrandKit>(result));
     };
 
     /**

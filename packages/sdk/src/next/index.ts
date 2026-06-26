@@ -9,12 +9,3 @@ export type { NextSubscribers } from './types/NextSubscribers';
 export type { ListVariable } from './types/VariableTypes';
 
 export type { PageSize } from './types/PageTypes';
-
-export type {
-    APIBrandKit,
-    APIBrandKitCharacterStyle,
-    APIBrandKitColor,
-    APIBrandKitFont,
-    APIBrandKitMedia,
-    APIBrandKitParagraphStyle,
-} from './types/BrandKitTypes';
