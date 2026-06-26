@@ -88,6 +88,24 @@ describe('BrandKitController', () => {
                     }),
                 );
             },
+            syncBrandKit: async (...args: unknown[]) => {
+                const apiBrandKit = JSON.parse(args[0] as string) as APIBrandKit;
+                return getEditorResponseData(
+                    castToEditorResponse({
+                        id: apiBrandKit?.id ?? null,
+                        version: apiBrandKit?.lastModifiedDate ?? null,
+                        name: apiBrandKit?.name ?? null,
+                        selectedThemeName: null,
+                        colors: mockBrandKitColors,
+                        gradients: mockBrandKitGradients,
+                        fontFamilies: mockBrandKitFontFamilies,
+                        characterStyles: mockBrandKitCharacterStyles,
+                        paragraphStyles: mockBrandKitParagraphStyles,
+                        media: mockBrandKitMedia,
+                        isAutoSync: null,
+                    }),
+                );
+            },
             getColors: async () => getEditorResponseData(castToEditorResponse(mockColors)),
             removeColor: async () => getEditorResponseData(castToEditorResponse(null)),
             createColor: async () => getEditorResponseData(castToEditorResponse(mockColorId)),
@@ -141,6 +159,7 @@ describe('BrandKitController', () => {
         jest.spyOn(mockEditorApi, 'removeBrandKitMedia');
         jest.spyOn(mockEditorApi, 'getBrandKit');
         jest.spyOn(mockEditorApi, 'setBrandKit');
+        jest.spyOn(mockEditorApi, 'syncBrandKit');
 
         jest.spyOn(mockEditorApi, 'getColors');
         jest.spyOn(mockEditorApi, 'removeColor');
@@ -300,6 +319,27 @@ describe('BrandKitController', () => {
         expect(setBrandKitResult.characterStyles).toEqual(mockBrandKitCharacterStyles);
         expect(setBrandKitResult.paragraphStyles).toEqual(mockBrandKitParagraphStyles);
         expect(setBrandKitResult.media).toEqual(mockBrandKitMedia);
+    });
+
+    it('Should successfully sync brandkit content in place', async () => {
+        const apiBrandKit = mockAPIBrandKit;
+        const response = await mockBrandKitController.sync(apiBrandKit);
+
+        expect(mockEditorApi.syncBrandKit).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.syncBrandKit).toHaveBeenCalledWith(JSON.stringify(apiBrandKit));
+        expect(response.parsedData).toBeDefined();
+        const syncBrandKitResult = response.parsedData as BrandKit;
+        expect(syncBrandKitResult).toMatchObject({
+            id: apiBrandKit.id,
+            version: apiBrandKit.lastModifiedDate,
+            name: apiBrandKit.name,
+        });
+        expect(syncBrandKitResult.colors).toEqual(mockBrandKitColors);
+        expect(syncBrandKitResult.gradients).toEqual(mockBrandKitGradients);
+        expect(syncBrandKitResult.fontFamilies).toEqual(mockBrandKitFontFamilies);
+        expect(syncBrandKitResult.characterStyles).toEqual(mockBrandKitCharacterStyles);
+        expect(syncBrandKitResult.paragraphStyles).toEqual(mockBrandKitParagraphStyles);
+        expect(syncBrandKitResult.media).toEqual(mockBrandKitMedia);
     });
 
     it('Should call getAllBrandKitMedia of EditorAPI successfully', async () => {

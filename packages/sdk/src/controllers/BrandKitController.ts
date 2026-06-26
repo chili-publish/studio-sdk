@@ -166,13 +166,23 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method updates a brand kit and all related resources assigned to it
+     * @experimental This method replaces the full brand kit and all related resources assigned to it
      * @param apiBrandKit the brand kit from the environment api
      * @returns the local brand kit
      */
     set = async (apiBrandKit: APIBrandKit) => {
         const res = await this.#editorAPI;
         return res.setBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<BrandKit>(result));
+    };
+
+    /**
+     * @experimental This method syncs brand kit items and structure in place without replacing the existing brand kit
+     * @param apiBrandKit the brand kit from the environment api
+     * @returns the local brand kit
+     */
+    sync = async (apiBrandKit: APIBrandKit) => {
+        const res = await this.#editorAPI;
+        return res.syncBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<BrandKit>(result));
     };
 
     /**
