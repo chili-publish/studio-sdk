@@ -6,7 +6,7 @@ inputs:
     description: "Version bump strategy: 'prerelease', 'prerelease-conditional', or 'patch'"
   engine_version:
     required: false
-    description: "Engine version to update (optional, only for UAT regular)"
+    description: "Engine version in x.y.latest format (e.g., 2.15.latest). Optional, only for UAT regular."
   version_branch:
     required: false
     description: "Branch name to commit version changes to (if provided, commits directly to this branch; otherwise creates a temporary version branch)"
@@ -23,6 +23,16 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Validate engine version format
+      if: inputs.engine_version != ''
+      shell: bash
+      run: |
+        ENGINE_VERSION="${{ inputs.engine_version }}"
+        if ! [[ "$ENGINE_VERSION" =~ ^[0-9]+\.[0-9]+\.latest$ ]]; then
+          echo "❌ Error: engine_version must be in format x.y.latest (e.g., 2.15.latest), got: '$ENGINE_VERSION'"
+          exit 1
+        fi
+
     - name: Bump version in memory
       id: bump_version
       shell: bash
