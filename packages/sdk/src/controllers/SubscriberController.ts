@@ -453,4 +453,14 @@ export class SubscriberController {
     onBrandKitMediaChanged = (brandKitMedia: string) => {
         this.config.events.onBrandKitMediaChanged.trigger(JSON.parse(brandKitMedia));
     };
+
+    /**
+     * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped) by the user.
+     * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
+     * programmatic changes do not trigger this event.
+     * @param frameIds Stringified array of frame Id strings
+     */
+    onFramesManipulatedOnCanvas = (frameIds: string) => {
+        this.config.events.onFramesManipulatedOnCanvas.trigger(JSON.parse(frameIds));
+    };
 }
