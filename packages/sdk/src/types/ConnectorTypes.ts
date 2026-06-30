@@ -120,6 +120,7 @@ export interface EngineToConnectorMapping {
     name: string;
     value: ContextDictionary[keyof ContextDictionary];
     id?: Id;
+    sourceField?: string; // for data source variables
     type: ConnectorMappingSource;
     direction: ConnectorMappingDirection.engineToConnector;
 }
@@ -139,6 +140,7 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
     name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
+    sourceField?: string; // for data source variables
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     direction: any = ConnectorMappingDirection.engineToConnector;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -156,6 +158,7 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
         mapFrom: ConnectorMappingSource,
         sourceValue: string | boolean | number,
         direction?: ConnectorMappingDirection.engineToConnector,
+        sourceField?: string,
     );
     constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string | boolean | number);
     constructor(
@@ -163,6 +166,7 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
         mapFrom: ConnectorMappingSource,
         sourceValue: string | boolean | number,
         direction = ConnectorMappingDirection.engineToConnector,
+        sourceField?: string,
     ) {
         this.name = contextProperty;
         this.direction = direction;
@@ -171,6 +175,7 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
             this.value = `var.${sourceValue}`;
             this.id = sourceValue as Id;
             this.type = ConnectorMappingSource.variable;
+            this.sourceField = sourceField;
         } else {
             this.value = sourceValue;
             this.type = ConnectorMappingSource.value;
