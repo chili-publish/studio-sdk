@@ -127,6 +127,8 @@ export type {
 
 export type { Color, ColorUpdate, DocumentColor } from './types/ColorStyleTypes';
 
+export { APIColorType } from './types/ColorStyleTypes';
+
 export type {
     AnimationPlaybackType,
     BasicAnimationsType,
