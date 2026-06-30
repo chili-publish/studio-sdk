@@ -1,6 +1,6 @@
 import { EditorResponse, Id } from '../types/CommonTypes';
 import { connectorHttpErrorErrorCode, variableInvalidValueErrorCode } from './Codes';
-import { ConnectorHttpError , VariableValueConstrainsViolationError } from './Exceptions';
+import { ConnectorHttpError, VariableValueConstrainsViolationError } from './Exceptions';
 
 export function throwEditorResponseError(response: EditorResponse<unknown>): never {
     const parsedError = response.error ?? 'Yikes, something went wrong';
@@ -20,8 +20,6 @@ export function throwEditorResponseError(response: EditorResponse<unknown>): nev
         throw new Error(parsedError, parsedCause);
     }
 }
-
-
 
 function parseVariableConstraintError(errorMsg: string): { valid: boolean; variableId?: string } {
     // Only the listed formats are considered valid for constraint errors.

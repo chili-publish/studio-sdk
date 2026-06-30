@@ -174,9 +174,9 @@ export class ConnectorController {
                 !direction
                     ? result
                     : {
-                        ...result,
-                        parsedData: result.parsedData?.filter((cm) => cm.direction === direction),
-                    },
+                          ...result,
+                          parsedData: result.parsedData?.filter((cm) => cm.direction === direction),
+                      },
             );
     }
 
@@ -287,11 +287,11 @@ export class ConnectorController {
     };
 
     /**
-        * Sets the mappings for a given connector, replacing the existing mappings with the new ones.
-        * @param id the id of your registered connector
-        * @param mappings An array of mapping objects to set
-        * @returns
-        */
+     * Sets the mappings for a given connector, replacing the existing mappings with the new ones.
+     * @param id the id of your registered connector
+     * @param mappings An array of mapping objects to set
+     * @returns
+     */
     applyMappings = async (id: Id, mappings: ConnectorMappingType[]) => {
         return await this.configure(id, async (config) => {
             const validMappings = mappings.filter((i) => i.name !== '' && i.value !== '');
