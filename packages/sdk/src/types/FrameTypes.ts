@@ -39,6 +39,7 @@ export type FrameLayoutType = {
     customCroppedAssetCount: number;
     subjectId: PropertyState<Id | null>;
     componentGridSettings: PropertyState<ComponentGridSettings>;
+    componentFit: PropertyState<ComponentFitEnum>;
 } | null;
 
 //Frame.image
@@ -203,11 +204,6 @@ export type ComponentGridFrame = {
     dataSourceVariableId?: Id | null;
     src?: ComponentSource | null;
     variableMappings: GridVariableMapping;
-
-    /**
-     * How the component grid fits within the frame.
-     */
-    fitMode: ComponentFitEnum;
 };
 
 export type GridVariableMapping = {
