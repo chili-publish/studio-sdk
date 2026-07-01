@@ -119,12 +119,18 @@ export enum ConnectorRegistrationSource {
 export interface EngineToConnectorMapping {
     name: string;
     value: ContextDictionary[keyof ContextDictionary];
+    id?: Id;
+    sourceField?: string; // for data source variables
+    type: ConnectorMappingSource;
     direction: ConnectorMappingDirection.engineToConnector;
 }
 
 export interface ConnectorToEngineMapping {
     name: string;
+    /** @deprecated Use id instead. This property holds a string representation of the id in the form: var.<id> */
     value: string;
+    id?: Id;
+    type: ConnectorMappingSource.variable;
     direction: ConnectorMappingDirection.connectorToEngine;
 }
 
@@ -134,8 +140,12 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
     name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
+    sourceField?: string; // for data source variables
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     direction: any = ConnectorMappingDirection.engineToConnector;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    type: any;
+    id?: Id;
 
     constructor(
         contextProperty: string,
@@ -148,6 +158,7 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
         mapFrom: ConnectorMappingSource,
         sourceValue: string | boolean | number,
         direction?: ConnectorMappingDirection.engineToConnector,
+        sourceField?: string,
     );
     constructor(contextProperty: string, mapFrom: ConnectorMappingSource, sourceValue: string | boolean | number);
     constructor(
@@ -155,14 +166,19 @@ export class ConnectorMapping implements EngineToConnectorMapping, ConnectorToEn
         mapFrom: ConnectorMappingSource,
         sourceValue: string | boolean | number,
         direction = ConnectorMappingDirection.engineToConnector,
+        sourceField?: string,
     ) {
         this.name = contextProperty;
         this.direction = direction;
 
         if (mapFrom === ConnectorMappingSource.variable) {
-            this.value = `${mapFrom}.${sourceValue}`;
+            this.value = `var.${sourceValue}`;
+            this.id = sourceValue as Id;
+            this.type = ConnectorMappingSource.variable;
+            this.sourceField = sourceField;
         } else {
             this.value = sourceValue;
+            this.type = ConnectorMappingSource.value;
         }
     }
 }
@@ -317,23 +333,28 @@ export enum AuthRefreshTypeEnum {
     any = 'any',
 }
 
+export type GrafxAuthRefreshRequest = {
+    type: AuthRefreshTypeEnum.grafxToken;
+};
+
 /**
  * @param connectorId connector id
  * @param remoteConnectorId remote connector id
- * @param type type of auth renewal needed
  * @param headerValue the value of the X-GRAFX-UNAUTHORIZED header. This
  *      will notify that the dam authentication expired if it went through the
  *      proxy.
  *      Example: "Static, 1234", "OAuthClientCredentials, 5678"
  *      If the http request did not go through the proxy, headerValue is null.
  */
-export type AuthRefreshRequest = {
+export type AnyAuthRefreshRequest = {
+    type: AuthRefreshTypeEnum.any;
     connectorId: Id;
     remoteConnectorId: Id;
-    type: AuthRefreshTypeEnum;
     headerValue: string | null;
     connectorDefinition: ConnectorDefinition;
 };
+
+export type AuthRefreshRequest = GrafxAuthRefreshRequest | AnyAuthRefreshRequest;
 
 export type ConnectorOptions = ContextDictionary;
 export type MetaData = ContextDictionary;

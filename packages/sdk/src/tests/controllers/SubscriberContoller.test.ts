@@ -39,6 +39,7 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 import { ToolType } from '../../utils/Enums';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 import { EngineEditModeType } from '../../types/EngineEditModeTypes';
+import { DataRowAsyncError } from '../../exceptions';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
@@ -405,25 +406,43 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
     });
 
+    it('Should parse dataRow async errors into DataRowAsyncError with column metadata in exception context', async () => {
+        const asyncError = {
+            type: 'dataRow',
+            count: 1,
+            message: 'Data row error',
+            exceptions: [
+                {
+                    type: 'VariableException',
+                    code: 403032,
+                    message: 'Invalid value',
+                    context: {
+                        variableId: 'var-1',
+                        columnName: 'email',
+                    },
+                },
+            ],
+        };
+        await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
+
+        expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
+        const error = (mockEditorApi.onAsyncError as jest.Mock).mock.calls[0][0];
+        expect(error).toBeInstanceOf(DataRowAsyncError);
+        expect(error.count).toBe(1);
+        expect(error.message).toBe('Data row error');
+        expect(error.exceptions[0].context).toEqual({
+            variableId: 'var-1',
+            columnName: 'email',
+        });
+    });
+
     describe('onAuthExpired', () => {
         const connectorId = 'connectorId';
         const remoteConnectorId = 'remoteConnectorId';
         const staticHeaderValue = 'Static, 1234';
 
         const grafxAuthRefreshRequest: AuthRefreshRequest = {
-            connectorId: connectorId,
-            remoteConnectorId: remoteConnectorId,
             type: AuthRefreshTypeEnum.grafxToken,
-            headerValue: null,
-            connectorDefinition: {
-                id: 'connectorId',
-                name: 'connectorName',
-                type: ConnectorType.media,
-                supportedAuthentication: {
-                    browser: [ConnectorSupportedAuth.StaticKey],
-                    server: [ConnectorSupportedAuth.StaticKey],
-                },
-            },
         };
 
         const anyAuthRefreshRequest: AuthRefreshRequest = {
