@@ -57,6 +57,24 @@ const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}
 
 let connection: Connection;
 
+// Marks a freshly created controller as "needs instrumentation" without requiring
+// its property name to be tracked anywhere. `applyMethodInstrumentation` later scans
+// the SDK instance for properties carrying this marker and wraps them automatically,
+// so a controller can never be silently skipped just because a list wasn't updated.
+const PENDING_INSTRUMENTATION = Symbol('pendingInstrumentation');
+
+const markForInstrumentation = (controller: object): void => {
+    Object.defineProperty(controller, PENDING_INSTRUMENTATION, {
+        value: true,
+        enumerable: false,
+        configurable: true,
+    });
+};
+
+const isPendingInstrumentation = (value: unknown): value is object => {
+    return typeof value === 'object' && value !== null && (value as Record<symbol, unknown>)[PENDING_INSTRUMENTATION] === true;
+};
+
 export class SDK {
     config: RuntimeConfigType;
     connection: Connection;
@@ -119,42 +137,6 @@ export class SDK {
     private localConfig = new Map<string, string>();
     private dataItemMappingTools = new DataItemMappingTools();
     private methodListeners = new MethodListenerRegistry();
-
-    private readonly instrumentedControllers = [
-        'action',
-        'layout',
-        'frame',
-        'shape',
-        'barcode',
-        'component',
-        'connector',
-        'mediaConnector',
-        'fontConnector',
-        'componentConnector',
-        'dataConnector',
-        'dataSource',
-        'animation',
-        'document',
-        'configuration',
-        'variable',
-        'utils',
-        'tool',
-        'page',
-        'debug',
-        'undoManager',
-        'textSelection',
-        'paragraphStyle',
-        'characterStyle',
-        'colorStyle',
-        'gradientStyle',
-        'font',
-        'experiment',
-        'canvas',
-        'colorConversion',
-        'info',
-        'clipboard',
-        'brandKit',
-    ] as const;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -361,20 +343,29 @@ export class SDK {
     };
 
     private toInstrumented = <T extends object>(controller: T): Instrumented<T> => {
+        markForInstrumentation(controller);
         return controller as unknown as Instrumented<T>;
     };
 
+    /**
+     * Wraps every controller previously handed to `toInstrumented` with the invocation
+     * observer, discovering them by their marker rather than a manually maintained
+     * list of property names. Any property assigned via `toInstrumented` is picked up
+     * automatically, using its own property key as the controller name.
+     */
     private applyMethodInstrumentation = () => {
-        const sdkControllers = this as unknown as Record<(typeof this.instrumentedControllers)[number], object>;
-        for (const controllerName of this.instrumentedControllers) {
-            const controller = sdkControllers[controllerName];
-            sdkControllers[controllerName] = wrapWithInvocationObserver(
-                controller,
-                controllerName,
-                this.methodListeners,
-                this.sdkEvents,
-                this.config.logging?.logger,
-            ) as object;
+        const sdkProperties = this as unknown as Record<string, unknown>;
+        for (const propertyName of Object.keys(sdkProperties)) {
+            const value = sdkProperties[propertyName];
+            if (isPendingInstrumentation(value)) {
+                sdkProperties[propertyName] = wrapWithInvocationObserver(
+                    value,
+                    propertyName,
+                    this.methodListeners,
+                    this.sdkEvents,
+                    this.config.logging?.logger,
+                );
+            }
         }
     };
 }
