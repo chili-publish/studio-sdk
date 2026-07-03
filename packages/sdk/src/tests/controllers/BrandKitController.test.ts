@@ -187,11 +187,11 @@ describe('BrandKitController', () => {
             mediaConnector: mediaController,
             characterStyle: characterStyleController,
             paragraphStyle: paragraphStyleController,
-        } as SDK;
-        mockSDK.undoManager = new UndoManagerController(mockEditorApi, mockSDK);
+        } as unknown as SDK;
+        mockSDK.undoManager = new UndoManagerController(mockEditorApi, mockSDK) as unknown as SDK['undoManager'];
 
         mockBrandKitController = new BrandKitController(mockEditorApi, mockSDK);
-        mockSDK.brandKit = mockBrandKitController;
+        mockSDK.brandKit = mockBrandKitController as unknown as SDK['brandKit'];
     });
 
     afterEach(() => {

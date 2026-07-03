@@ -7,13 +7,6 @@ import {
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { engineBrandKitToBrandKitInternal, engineBrandKitToStudioBrandKit } from '../utils/BrandKitAdapter';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { CharacterStyleController } from './CharacterStyleController';
-import { ColorStyleController } from './ColorStyleController';
-import { FontController } from './FontController';
-import { GradientStyleController } from './GradientStyleController';
-import { MediaConnectorController } from './MediaConnectorController';
-import { ParagraphStyleController } from './ParagraphStyleController';
-import { UndoManagerController } from './UndoManagerController';
 
 /**
  * The BrandKitController is responsible for all communication regarding Brand Kits.
@@ -29,31 +22,15 @@ export class BrandKitController {
     /**
      * @ignore
      */
+    private sdk: SDK;
+
+    /**
+     * @ignore
+     */
     constructor(editorAPI: EditorAPI, sdk: SDK) {
         this.#editorAPI = editorAPI;
-        this.colorStyleController = sdk.colorStyle;
-        this.gradientStyleController = sdk.gradientStyle;
-        this.fontController = sdk.font;
-        this.mediaController = sdk.mediaConnector;
-        this.paragraphStyleController = sdk.paragraphStyle;
-        this.characterStyleController = sdk.characterStyle;
-
-        this.undoManagerController = sdk.undoManager;
+        this.sdk = sdk;
     }
-
-    private colorStyleController: ColorStyleController;
-
-    private gradientStyleController: GradientStyleController;
-
-    private fontController: FontController;
-
-    private mediaController: MediaConnectorController;
-
-    private paragraphStyleController: ParagraphStyleController;
-
-    private characterStyleController: CharacterStyleController;
-
-    private undoManagerController: UndoManagerController;
 
     /**
      * This method returns the current brand kit id.
@@ -184,25 +161,25 @@ export class BrandKitController {
      * @returns
      */
     remove = async () => {
-        const colors = await this.colorStyleController.getAll();
+        const colors = await this.sdk.colorStyle.getAll();
         const colorsList = colors.parsedData || [];
 
-        const gradients = await this.gradientStyleController.getAll();
+        const gradients = await this.sdk.gradientStyle.getAll();
         const gradientsList = gradients.parsedData || [];
 
-        const paragraphStyles = await this.paragraphStyleController.getAll();
+        const paragraphStyles = await this.sdk.paragraphStyle.getAll();
         const paragraphStylesList = paragraphStyles.parsedData || [];
 
-        const characterStyles = await this.characterStyleController.getAll();
+        const characterStyles = await this.sdk.characterStyle.getAll();
         const characterStylesList = characterStyles.parsedData || [];
 
-        const fonts = await this.fontController.getFontFamilies();
+        const fonts = await this.sdk.font.getFontFamilies();
         const fontsList = fonts.parsedData || [];
 
         const media = await this.getAllMedia();
         const mediaList = media.parsedData || [];
 
-        await this.undoManagerController.record('brandKit.remove', async (sdk) => {
+        await this.sdk.undoManager.record('brandKit.remove', async (sdk) => {
             for (const color of colorsList) {
                 await sdk.colorStyle.remove(color.id);
             }
