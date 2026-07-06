@@ -56,4 +56,14 @@ export class ComponentController {
         const res = await this.#editorAPI;
         return res.setComponentLayoutFit(frameId, fitMode).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method resets the fit mode of a component frame to its default value.
+     * @param frameId the id of the component frame.
+     * @returns
+     */
+    resetFitMode = async (frameId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetComponentLayoutFit(frameId).then((result) => getEditorResponseData<null>(result));
+    };
 }
