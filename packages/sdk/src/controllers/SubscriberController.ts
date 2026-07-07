@@ -455,7 +455,7 @@ export class SubscriberController {
     };
 
     /**
-     * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped) by the user.
+     * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
      * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
      * programmatic changes do not trigger this event.
      * @param frameIds Stringified array of frame Id strings
