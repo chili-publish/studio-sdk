@@ -262,7 +262,7 @@ export class SDK {
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
                 onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
                 onBrandKitMediaChanged: this.subscriber.onBrandKitMediaChanged,
-                onFramesManipulatedOnCanvas: this.subscriber.onFramesManipulatedOnCanvas,
+                onCanvasFramesManipulated: this.subscriber.onCanvasFramesManipulated,
             },
             this.setConnection,
             this.config.editorId,

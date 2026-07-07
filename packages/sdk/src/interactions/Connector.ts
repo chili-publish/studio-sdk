@@ -138,7 +138,7 @@ interface ConfigParameterTypes {
     onCustomUndoDataChanged: (customData: string) => void;
     onEngineEditModeChanged: (engineEditMode: string) => void;
     onBrandKitMediaChanged: (brandKitMedia: string) => void;
-    onFramesManipulatedOnCanvas: (frameIds: string) => void;
+    onCanvasFramesManipulated: (frameIds: string) => void;
 }
 
 let messageHandler: ((event: MessageEvent) => void) | null = null;
@@ -257,7 +257,7 @@ const Connect = (
                 customUndoDataChanged: params.onCustomUndoDataChanged,
                 engineEditingModeChanged: params.onEngineEditModeChanged,
                 brandKitMediaChanged: params.onBrandKitMediaChanged,
-                frameManipulated: params.onFramesManipulatedOnCanvas,
+                frameManipulated: params.onCanvasFramesManipulated,
             },
         }),
     );

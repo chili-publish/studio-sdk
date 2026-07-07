@@ -460,7 +460,7 @@ export class SubscriberController {
      * programmatic changes do not trigger this event.
      * @param frameIds Stringified array of frame Id strings
      */
-    onFramesManipulatedOnCanvas = (frameIds: string) => {
-        this.config.events.onFramesManipulatedOnCanvas.trigger(JSON.parse(frameIds));
+    onCanvasFramesManipulated = (frameIds: string) => {
+        this.config.events.onCanvasFramesManipulated.trigger(JSON.parse(frameIds));
     };
 }

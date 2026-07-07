@@ -137,7 +137,7 @@ export type ManagedCallbacksConfigType = {
          * Note: this event only fires when the manipulation was caused by direct user interaction;
          * programmatic changes do not trigger this event.
          */
-        onFramesManipulatedOnCanvas: EngineEvent<(frameIds: Id[]) => MaybePromise<void>>;
+        onCanvasFramesManipulated: EngineEvent<(frameIds: Id[]) => MaybePromise<void>>;
     };
 };
 
@@ -367,9 +367,9 @@ export type InitialCallbacksConfigType = {
     onBrandKitMediaChanged?: (brandKitMedia: BrandKitMedia[]) => void;
 
     /**
-     * @deprecated use `events.onFramesManipulatedOnCanvas` instead
+     * @deprecated use `events.onCanvasFramesManipulated` instead
      */
-    onFramesManipulatedOnCanvas?: (frameIds: Id[]) => void;
+    onCanvasFramesManipulated?: (frameIds: Id[]) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;

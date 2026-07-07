@@ -91,7 +91,7 @@ const mockEditorApi: EditorAPI = {
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onFramesManipulatedOnCanvas: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCanvasFramesManipulated: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -611,10 +611,10 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalledWith({});
     });
 
-    it('Should call onFramesManipulatedOnCanvas subscriber with parsed frame ids when triggered', async () => {
+    it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {
         const callback = jest.fn();
-        mockedConfig.events.onFramesManipulatedOnCanvas.registerCallback(callback);
-        await mockedSubscriberController.onFramesManipulatedOnCanvas(JSON.stringify(['frame-1', 'frame-2']));
+        mockedConfig.events.onCanvasFramesManipulated.registerCallback(callback);
+        await mockedSubscriberController.onCanvasFramesManipulated(JSON.stringify(['frame-1', 'frame-2']));
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenCalledWith(['frame-1', 'frame-2']);
     });

@@ -224,8 +224,8 @@ export class ConfigHelper {
                 () => clone.onBrandKitMediaChanged,
                 clone.logging.logger,
             ),
-            onFramesManipulatedOnCanvas: new EngineEvent<(frameIds: Id[]) => MaybePromise<void>>(
-                () => clone.onFramesManipulatedOnCanvas,
+            onCanvasFramesManipulated: new EngineEvent<(frameIds: Id[]) => MaybePromise<void>>(
+                () => clone.onCanvasFramesManipulated,
                 clone.logging.logger,
             ),
         };
