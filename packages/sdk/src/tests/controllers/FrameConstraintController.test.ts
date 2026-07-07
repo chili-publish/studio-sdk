@@ -445,7 +445,10 @@ describe('FrameConstraintController', () => {
             await frameConstraintController.setResize(id, false, true);
             await frameConstraintController.setCrop(id, true);
             await frameConstraintController.setTextEditingAllowed(id, true);
-            await frameConstraintController.setAllowedParagraphStyles(id, { allowed: true, ids: ['style-1', 'style-2'] });
+            await frameConstraintController.setAllowedParagraphStyles(id, {
+                allowed: true,
+                ids: ['style-1', 'style-2'],
+            });
             await frameConstraintController.setAllowedCharacterStyles(id, { allowed: true, ids: ['char-style-1'] });
             await frameConstraintController.setAllowedColors(id, { allowed: true, ids: ['color-1', 'color-2'] });
             await frameConstraintController.setAllowedFontSizes(id, { allowed: true, min: 10, max: 72 });
@@ -465,10 +468,24 @@ describe('FrameConstraintController', () => {
             ]);
             expect(lastElevenCalls[5]).toEqual([id, JSON.stringify({ image: { cropAllowed: { value: true } } })]);
             expect(lastElevenCalls[6]).toEqual([id, JSON.stringify({ text: { editingAllowed: { value: true } } })]);
-            expect(lastElevenCalls[7]).toEqual([id, JSON.stringify({ text: { paragraphStyles: { value: { allowed: true, ids: ['style-1', 'style-2'] } } } })]);
-            expect(lastElevenCalls[8]).toEqual([id, JSON.stringify({ text: { characterStyles: { value: { allowed: true, ids: ['char-style-1'] } } } })]);
-            expect(lastElevenCalls[9]).toEqual([id, JSON.stringify({ text: { colors: { value: { allowed: true, ids: ['color-1', 'color-2'] } } } })]);
-            expect(lastElevenCalls[10]).toEqual([id, JSON.stringify({ text: { fontSizes: { value: { allowed: true, min: 10, max: 72 } } } })]);
+            expect(lastElevenCalls[7]).toEqual([
+                id,
+                JSON.stringify({
+                    text: { paragraphStyles: { value: { allowed: true, ids: ['style-1', 'style-2'] } } },
+                }),
+            ]);
+            expect(lastElevenCalls[8]).toEqual([
+                id,
+                JSON.stringify({ text: { characterStyles: { value: { allowed: true, ids: ['char-style-1'] } } } }),
+            ]);
+            expect(lastElevenCalls[9]).toEqual([
+                id,
+                JSON.stringify({ text: { colors: { value: { allowed: true, ids: ['color-1', 'color-2'] } } } }),
+            ]);
+            expect(lastElevenCalls[10]).toEqual([
+                id,
+                JSON.stringify({ text: { fontSizes: { value: { allowed: true, min: 10, max: 72 } } } }),
+            ]);
         });
 
         it('should work with different frame IDs', async () => {
