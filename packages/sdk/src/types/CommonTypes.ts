@@ -133,8 +133,8 @@ export type ManagedCallbacksConfigType = {
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
         onBrandKitMediaChanged: EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>;
         /**
-         * Fires when frames are manipulated (e.g. moved, resized, rotated).
-         * Note: this event only fires when the manipulation was caused by direct user interaction;
+         * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
+         * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
          * programmatic changes do not trigger this event.
          */
         onCanvasFramesManipulated: EngineEvent<(frameIds: Id[]) => MaybePromise<void>>;
