@@ -155,11 +155,11 @@ export class BrandKitController {
     /**
      * @experimental This method syncs brand kit items and structure in place without replacing the existing brand kit
      * @param apiBrandKit the brand kit from the environment api
-     * @returns the local brand kit
+     * @returns boolean indicating whether the brand kit changed after the sync attempt
      */
     sync = async (apiBrandKit: APIBrandKit) => {
         const res = await this.#editorAPI;
-        return res.syncBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<BrandKit>(result));
+        return res.syncBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<boolean>(result));
     };
 
     /**
