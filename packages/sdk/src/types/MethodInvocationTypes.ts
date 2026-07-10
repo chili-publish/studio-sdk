@@ -34,6 +34,6 @@ export type Instrumented<T> = {
     [K in keyof T]: T[K] extends (...args: any[]) => any
         ? MethodListenable<T[K]>
         : T[K] extends object
-          ? Instrumented<T[K]>
-          : T[K];
+        ? Instrumented<T[K]>
+        : T[K];
 };

@@ -208,7 +208,7 @@ export type ComponentGridFrame = {
 
 export type GridVariableMapping = {
     mappings: Record<string, VariableMapping[] | null>;
-}
+};
 
 export type ComponentSource = ConnectorComponentSource;
 
