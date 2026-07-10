@@ -319,6 +319,25 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
     setVariableValue(variableName, item);
 }
 
+function setListVariableAvailableItems(variableName: string | Variable, availableItems: string[] | null) {
+    const list = studio.variables.byName(variableName);
+    if (list.type !== 'list') {
+        throw new Error('Expected a list variable but got one of type ' + list.type);
+    }
+    if (availableItems && !Array.isArray(availableItems)) {
+        throw new Error('Expected an array of items');
+    }
+    list.setAvailableItems(availableItems);
+}
+
+function getListVariableAvailableItems(variableName: string | Variable): string[] {
+    const list = studio.variables.byName(variableName);
+    if (list.type !== 'list') {
+        throw new Error('Expected a list variable but got one of type ' + list.type);
+    }
+    return list.availableItems;
+}
+
 /**
  * Set the prefix of the variable.
  *
