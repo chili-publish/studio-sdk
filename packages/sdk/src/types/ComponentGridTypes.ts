@@ -11,7 +11,7 @@ export type ComponentGridSettingsDeltaUpdate = {
     rowGap?: {
         value: string;
     };
-}
+};
 
 export enum ComponentGridLayoutAlgorithm {
     fixed = 'fixed',
@@ -25,4 +25,4 @@ export type FixedComponentGridSettings = {
     rowGap: number;
 };
 
-export type ComponentGridSettings = FixedComponentGridSettings /* | More will be added later */; 
+export type ComponentGridSettings = FixedComponentGridSettings /* | More will be added later */;
