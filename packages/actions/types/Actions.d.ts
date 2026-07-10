@@ -299,6 +299,13 @@ declare module 'grafx-studio-actions' {
              * @param suffix the suffix to set
              */
             setSuffix(suffix: string | null): void;
+
+            /**
+             * Sets the available items for a list variable
+             *
+             * @param availableItems the list of available items. Set to null to allow all available items
+             */
+            setAvailableItems(availableItems: string[] | null): void;
         }
 
         /**
@@ -461,6 +468,11 @@ declare module 'grafx-studio-actions' {
             readonly type: VariableType.list;
             readonly items: string[];
             readonly selected: string | null;
+            /**
+             * The items that are currently available for selection in the dropdown.
+             * If not set, all items in `items` are considered available and returned.
+             */
+            readonly availableItems: string[];
         }
 
         /**
@@ -699,6 +711,22 @@ declare module 'grafx-studio-actions' {
              * Gets the date value of a variable
              */
             getDateValue(name: string | Variable): Date | null;
+
+            /**
+             * Gets the available items for a list variable.
+             * Note: If no filter has been set via setListVariableAvailableItems, this will return all items in the list variable
+             *
+             * @param name the variable name
+             * @returns the list of available items.
+             */
+            getListVariableAvailableItems(name: string | Variable): string[];
+
+            /**
+             * Sets the available items for a list variable
+             * @param name the variable name
+             * @param availableItems the list of available items. Set to null to allow all available items
+             */
+            setListVariableAvailableItems(name: string | Variable, availableItems: string[] | null): void;
 
             /**
              * Set the readonly state of a variable
