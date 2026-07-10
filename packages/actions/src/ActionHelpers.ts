@@ -319,17 +319,36 @@ function setSelectedItemFromListVariable(variableName: string | Variable, item: 
     setVariableValue(variableName, item);
 }
 
+/**
+ * Set the available items in a list variable. Setting these values filters the items that can be selected in the list variable.
+ * When set to null, all items are available for selection.
+ *
+ * @param {string | Variable} variableName - The name of the list variable or a variable object.
+ * @param availableItems The array of available items to set, or `null` to allow all items.
+ */
 function setListVariableAvailableItems(variableName: string | Variable, availableItems: string[] | null) {
     const list = studio.variables.byName(variableName);
     if (list.type !== 'list') {
         throw new Error('Expected a list variable but got one of type ' + list.type);
     }
-    if (availableItems && !Array.isArray(availableItems)) {
-        throw new Error('Expected an array of items');
+
+    if (
+        availableItems !== null &&
+        (!Array.isArray(availableItems) || availableItems.some((item) => typeof item !== 'string'))
+    ) {
+        throw new Error('Expected null or an array of strings');
     }
+
     list.setAvailableItems(availableItems);
 }
 
+/**
+ * Gets the list of items currently available for selection in a list variable.
+ * If the available items have not been set, this will return all items in the list variable.
+ *
+ * @param {string | Variable} variableName - The name of the list variable or a variable object.
+ * @returns The available items in the list variable.
+ */
 function getListVariableAvailableItems(variableName: string | Variable): string[] {
     const list = studio.variables.byName(variableName);
     if (list.type !== 'list') {
