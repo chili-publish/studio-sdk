@@ -62,6 +62,7 @@ export enum LogCategory {
     connector = 'connector',
     event = 'event',
     engine = 'engine',
+    sdk = 'sdk',
 }
 
 /**
@@ -131,6 +132,12 @@ export type ManagedCallbacksConfigType = {
         onCustomUndoDataChanged: EngineEvent<(customData: Record<string, string>) => MaybePromise<void>>;
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
         onBrandKitMediaChanged: EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>;
+        /**
+         * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
+         * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
+         * programmatic changes do not trigger this event.
+         */
+        onCanvasFramesManipulated: EngineEvent<(frameIds: Id[]) => MaybePromise<void>>;
     };
 };
 
@@ -358,6 +365,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onBrandKitMediaChanged` instead
      */
     onBrandKitMediaChanged?: (brandKitMedia: BrandKitMedia[]) => void;
+
+    /**
+     * @deprecated use `events.onCanvasFramesManipulated` instead
+     */
+    onCanvasFramesManipulated?: (frameIds: Id[]) => void;
 };
 
 export type ConfigType = InitialCallbacksConfigType & BaseConfigType;

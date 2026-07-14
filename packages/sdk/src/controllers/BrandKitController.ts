@@ -1,19 +1,7 @@
 import SDK from '..';
-import {
-    BrandKitMedia,
-    EngineBrandKit,
-    StudioBrandKit,
-} from '../types/BrandKitTypes';
+import { BrandKitMedia, BrandKit, APIBrandKit } from '../types/BrandKitTypes';
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { engineBrandKitToBrandKitInternal, engineBrandKitToStudioBrandKit } from '../utils/BrandKitAdapter';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { CharacterStyleController } from './CharacterStyleController';
-import { ColorStyleController } from './ColorStyleController';
-import { FontController } from './FontController';
-import { GradientStyleController } from './GradientStyleController';
-import { MediaConnectorController } from './MediaConnectorController';
-import { ParagraphStyleController } from './ParagraphStyleController';
-import { UndoManagerController } from './UndoManagerController';
 
 /**
  * The BrandKitController is responsible for all communication regarding Brand Kits.
@@ -29,31 +17,15 @@ export class BrandKitController {
     /**
      * @ignore
      */
+    private sdk: SDK;
+
+    /**
+     * @ignore
+     */
     constructor(editorAPI: EditorAPI, sdk: SDK) {
         this.#editorAPI = editorAPI;
-        this.colorStyleController = sdk.colorStyle;
-        this.gradientStyleController = sdk.gradientStyle;
-        this.fontController = sdk.font;
-        this.mediaController = sdk.mediaConnector;
-        this.paragraphStyleController = sdk.paragraphStyle;
-        this.characterStyleController = sdk.characterStyle;
-
-        this.undoManagerController = sdk.undoManager;
+        this.sdk = sdk;
     }
-
-    private colorStyleController: ColorStyleController;
-
-    private gradientStyleController: GradientStyleController;
-
-    private fontController: FontController;
-
-    private mediaController: MediaConnectorController;
-
-    private paragraphStyleController: ParagraphStyleController;
-
-    private characterStyleController: CharacterStyleController;
-
-    private undoManagerController: UndoManagerController;
 
     /**
      * This method returns the current brand kit id.
@@ -104,21 +76,12 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method returns the local brandkit
-     * @returns brandkit with all assigned resources
+     * @experimental This method returns the local brand kit
+     * @returns brand kit with all assigned resources
      */
     get = async () => {
         const res = await this.#editorAPI;
-        const result = await res.getBrandKit();
-        const response = getEditorResponseData<EngineBrandKit>(result);
-        const engineData = response.parsedData;
-        if (engineData == null) {
-            throw new Error('Brand kit response has no data');
-        }
-        return {
-            ...response,
-            parsedData: engineBrandKitToStudioBrandKit(engineData),
-        };
+        return res.getBrandKit().then((result) => getEditorResponseData<BrandKit>(result));
     };
 
     /**
@@ -180,69 +143,24 @@ export class BrandKitController {
     };
 
     /**
-     * @experimental This method removes a brand kit and all related resources assigned to it
-     * @returns
+     * @experimental This method replaces the full brand kit and all related resources assigned to it
+     * @param apiBrandKit the brand kit from the environment api
+     * @returns the local brand kit
      */
-    remove = async () => {
-        const colors = await this.colorStyleController.getAll();
-        const colorsList = colors.parsedData || [];
-
-        const gradients = await this.gradientStyleController.getAll();
-        const gradientsList = gradients.parsedData || [];
-
-        const paragraphStyles = await this.paragraphStyleController.getAll();
-        const paragraphStylesList = paragraphStyles.parsedData || [];
-
-        const characterStyles = await this.characterStyleController.getAll();
-        const characterStylesList = characterStyles.parsedData || [];
-
-        const fonts = await this.fontController.getFontFamilies();
-        const fontsList = fonts.parsedData || [];
-
-        const media = await this.getAllMedia();
-        const mediaList = media.parsedData || [];
-
-        await this.undoManagerController.record('brandKit.remove', async (sdk) => {
-            for (const color of colorsList) {
-                await sdk.colorStyle.remove(color.id);
-            }
-            for (const gradient of gradientsList) {
-                await sdk.gradientStyle.remove(gradient.id);
-            }
-            for (const style of paragraphStylesList) {
-                await sdk.paragraphStyle.remove(style.id);
-            }
-            for (const style of characterStylesList) {
-                await sdk.characterStyle.remove(style.id);
-            }
-            for (const font of fontsList) {
-                await sdk.font.removeFontFamily(font.id);
-            }
-            for (const media of mediaList) {
-                await this.removeMedia(media.name);
-            }
-        });
+    set = async (apiBrandKit: APIBrandKit) => {
+        const res = await this.#editorAPI;
+        return res.setBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<BrandKit>(result));
     };
 
     /**
-     * @experimental This method updates a brand kit and all related resources assigned to it
-     * @param studioBrandKit the content of the brand kit
-     * @returns
+     * @experimental This method syncs brand kit items and structure in place without replacing the existing brand kit
+     * @param apiBrandKit the brand kit from the environment api
+     * @returns boolean indicating whether the brand kit changed after the sync attempt
      */
-    set = async (studioBrandKit: StudioBrandKit) => {
+    sync = async (apiBrandKit: APIBrandKit) => {
         const res = await this.#editorAPI;
-        const result = await res.setBrandKit(JSON.stringify(studioBrandKit.brandKit));
-        const response = getEditorResponseData<EngineBrandKit>(result);
-        const engineData = response.parsedData;
-        if (engineData == null) {
-            throw new Error('Brand kit set response has no data');
-        }
-        return {
-            ...response,
-            parsedData: engineBrandKitToBrandKitInternal(engineData),
-        };
+        return res.syncBrandKit(JSON.stringify(apiBrandKit)).then((result) => getEditorResponseData<boolean>(result));
     };
-
 
     /**
      * This method returns the value indicating whether the brand kit auto-sync is enabled or not
@@ -263,5 +181,15 @@ export class BrandKitController {
     enableAutoSync = async (enableAutoSync: boolean) => {
         const res = await this.#editorAPI;
         return res.enableBrandKitAutoSync(enableAutoSync).then((result) => getEditorResponseData<boolean>(result));
+    };
+
+    /**
+     * Switches the active brand kit theme.
+     * @param themeName - Theme name
+     * @returns
+     */
+    switchTheme = async (themeName: string) => {
+        const res = await this.#editorAPI;
+        return res.switchBrandKitTheme(themeName).then((result) => getEditorResponseData<null>(result));
     };
 }

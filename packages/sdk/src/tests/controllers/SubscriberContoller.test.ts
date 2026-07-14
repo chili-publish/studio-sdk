@@ -20,7 +20,7 @@ import { FrameAnimationType } from '../../types/AnimationTypes';
 import { VariableType } from '../../types/VariableTypes';
 
 import * as Next from '../../next/types/ConnectorTypes';
-import { EditorAPI } from '../../types/CommonTypes';
+import { EditorAPI, RuntimeConfigType } from '../../types/CommonTypes';
 import {
     AuthCredentials,
     AuthCredentialsTypeEnum,
@@ -39,9 +39,11 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 import { ToolType } from '../../utils/Enums';
 import { mockBaseUrl, mockLocalConfig } from '../__mocks__/localConfig';
 import { EngineEditModeType } from '../../types/EngineEditModeTypes';
+import { DataRowAsyncError } from '../../exceptions';
 
 let mockedAnimation: FrameAnimationType;
 let mockedSubscriberController: SubscriberController;
+let mockedConfig: RuntimeConfigType;
 
 const mockEditorApi: EditorAPI = {
     onAnimationChanged: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -89,6 +91,7 @@ const mockEditorApi: EditorAPI = {
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onCanvasFramesManipulated: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -138,10 +141,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
 
-    mockedSubscriberController = new SubscriberController(
-        ConfigHelper.createRuntimeConfig(mockEditorApi),
-        mockLocalConfig,
-    );
+    mockedConfig = ConfigHelper.createRuntimeConfig(mockEditorApi);
+    mockedSubscriberController = new SubscriberController(mockedConfig, mockLocalConfig);
     mockedAnimation = mockFrameAnimation;
 });
 
@@ -405,6 +406,36 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onAsyncError).toHaveBeenCalledWith(asyncError);
     });
 
+    it('Should parse dataRow async errors into DataRowAsyncError with column metadata in exception context', async () => {
+        const asyncError = {
+            type: 'dataRow',
+            count: 1,
+            message: 'Data row error',
+            exceptions: [
+                {
+                    type: 'VariableException',
+                    code: 403032,
+                    message: 'Invalid value',
+                    context: {
+                        variableId: 'var-1',
+                        columnName: 'email',
+                    },
+                },
+            ],
+        };
+        await mockedSubscriberController.onAsyncError(JSON.stringify(asyncError));
+
+        expect(mockEditorApi.onAsyncError).toHaveBeenCalledTimes(1);
+        const error = (mockEditorApi.onAsyncError as jest.Mock).mock.calls[0][0];
+        expect(error).toBeInstanceOf(DataRowAsyncError);
+        expect(error.count).toBe(1);
+        expect(error.message).toBe('Data row error');
+        expect(error.exceptions[0].context).toEqual({
+            variableId: 'var-1',
+            columnName: 'email',
+        });
+    });
+
     describe('onAuthExpired', () => {
         const connectorId = 'connectorId';
         const remoteConnectorId = 'remoteConnectorId';
@@ -578,5 +609,13 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onBrandKitMediaChanged(JSON.stringify({}));
         expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalled();
         expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalledWith({});
+    });
+
+    it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {
+        const callback = jest.fn();
+        mockedConfig.events.onCanvasFramesManipulated.registerCallback(callback);
+        await mockedSubscriberController.onCanvasFramesManipulated(JSON.stringify(['frame-1', 'frame-2']));
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback).toHaveBeenCalledWith(['frame-1', 'frame-2']);
     });
 });

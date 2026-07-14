@@ -224,6 +224,10 @@ export class ConfigHelper {
                 () => clone.onBrandKitMediaChanged,
                 clone.logging.logger,
             ),
+            onCanvasFramesManipulated: new EngineEvent<(frameIds: Id[]) => MaybePromise<void>>(
+                () => clone.onCanvasFramesManipulated,
+                clone.logging.logger,
+            ),
         };
         return clone;
     }

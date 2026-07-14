@@ -59,8 +59,6 @@ export type {
     ImageFrame,
     ImageFrameConstraints,
     ImageFrameSource,
-    ImageFrameUrlSource,
-    ImageFrameVariableSource,
     RelativeFrameAnchor,
     ShapeFrame,
     StartAndEndFrameAnchor,
@@ -71,6 +69,10 @@ export type {
     SmartCropSettingsV2,
     ComponentFrame,
     ComponentGridFrame,
+    ImageFrameBrandkitMediaSource,
+    ImageFrameConnectorSource,
+    ImageFrameVariableSource,
+    ImageFrameUrlSource,
 } from './types/FrameTypes';
 export type {
     FrameProperties,
@@ -124,6 +126,8 @@ export type {
 } from './types/VariableTypes';
 
 export type { Color, ColorUpdate, DocumentColor } from './types/ColorStyleTypes';
+
+export { APIColorType } from './types/ColorStyleTypes';
 
 export type {
     AnimationPlaybackType,
@@ -208,12 +212,12 @@ export { WellKnownConfigurationKeys, FrameEditingMode } from './types/Configurat
 export type {
     APIBrandKit,
     APIBrandKitMedia,
-    BrandKitCharacterStyle,
-    BrandKitColor,
-    BrandKitFont,
+    APIBrandKitCharacterStyle,
+    APIBrandKitColor,
+    APIBrandKitFont,
     APIBrandKitTheme,
     BrandKitMedia,
-    BrandKitParagraphStyle,
+    APIBrandKitParagraphStyle,
     CMYK,
     CMYKColorValue,
     HEXColorValue,
@@ -222,8 +226,7 @@ export type {
     SpotCMYKColorValue,
     SpotHEXColorValue,
     SpotRGBColorValue,
-    StudioBrandKit,
-    BrandKitTheme,
+    BrandKit,
 } from './types/BrandKitTypes';
 
 export type { ComponentGridSettings, FixedComponentGridSettings } from './types/ComponentGridTypes';

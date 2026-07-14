@@ -5,6 +5,10 @@ export abstract class EngineEventTrigger<T extends (...args: any[]) => any> {
 
     abstract trigger(...args: Parameters<T>): ReturnType<T>;
 
+    protected getLogCategory(): LogCategory {
+        return LogCategory.event;
+    }
+
     protected createEventHandlerFn(callbackFn: T, errorBehavior: CallbackErrorBehavior): T {
         const wrapper: any = (...args: Parameters<T>) => {
             try {
@@ -23,7 +27,7 @@ export abstract class EngineEventTrigger<T extends (...args: any[]) => any> {
 
     private handleError(error: unknown, errorBehavior: CallbackErrorBehavior, fnName: string) {
         if (errorBehavior === CallbackErrorBehavior.log) {
-            this.logger?.(LogLevel.error, LogCategory.event, `Error in callback ${fnName}: ${error}`);
+            this.logger?.(LogLevel.error, this.getLogCategory(), `Error in callback ${fnName}: ${error}`);
         } else {
             throw error;
         }

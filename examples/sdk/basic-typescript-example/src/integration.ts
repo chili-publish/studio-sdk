@@ -29,6 +29,27 @@ const SDK = new StudioSDK({
   editorId: "chili-editor-example",
 });
 
+// Per-method listener example: observe a specific controller method
+SDK.tool.setZoom.addEventListener((event) => {
+  if (event.phase === "invoke") {
+    console.log("[MethodListener] tool.setZoom invoked with args:", event.args);
+  } else {
+    console.log(
+      "[MethodListener] tool.setZoom completed:",
+      event.success ? "success" : "error",
+      event.error,
+    );
+  }
+});
+
+// Global SDK events example: observe all controller method invocations
+SDK.sdkEvents.onMethodInvoked.registerCallback((event) => {
+  console.log("[SdkEvent] invoked:", event.path, event.args);
+});
+SDK.sdkEvents.onMethodCompleted.registerCallback((event) => {
+  console.log("[SdkEvent] completed:", event.path, event.success);
+});
+
 const zoomToPage = async () => {
   const zoomParams: {
     pageId: null;

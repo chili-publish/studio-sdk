@@ -44,7 +44,6 @@ export interface LineBreakTextStyleRule {
     styleKind: StructuredTextStyleKind.lineBreak;
 }
 
-
 /**
  * A style rule that applies inline character styling directly to matched
  * elements without requiring a named style.
