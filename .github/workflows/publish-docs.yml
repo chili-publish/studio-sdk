@@ -77,9 +77,9 @@ jobs:
           cp -R packages/sdk/docs/html/. site/
           cp -R packages/actions/docs/html/. site/actions/
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v5
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "./site"
           name: docs

@@ -242,9 +242,7 @@ declare module 'grafx-studio-actions' {
         export type Variable =
             | ShortTextVariable
             | LongTextVariable
-            /**
-             * @deprecated Use `RichTextVariable` instead
-             */
+            /** Deprecated. Use `RichTextVariable` instead. */
             | FormattedTextVariable
             | RichTextVariable
             | ImageVariable
