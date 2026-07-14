@@ -16,8 +16,8 @@
         "cover": "node cicd.js sdk yarn cover",
         "make-badges": "node cicd.js sdk yarn make-badges",
         "validate-licenses": "node cicd.js sdk yarn validate-licenses",
-        "build-docs-md": "node cicd.js sdk yarn build-docs-md",
-        "build-docs-html": "node cicd.js sdk yarn build-docs-html"
+        "build-docs-md": "node cicd.js sdk,actions yarn build-docs-md",
+        "build-docs-html": "node cicd.js sdk,actions yarn build-docs-html"
     },
     "dependencies": {
         "glob": "^10.3.5"
