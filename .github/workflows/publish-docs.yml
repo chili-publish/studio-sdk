@@ -46,7 +46,9 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: packages/sdk/node_modules
+          path: |
+            packages/sdk/node_modules
+            packages/actions/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}-0
           restore-keys: |
             ${{ runner.os }}-node-
@@ -64,16 +66,22 @@ jobs:
         run: yarn build-docs-md
       - name: build documentation to html
         run: yarn build-docs-html
-      - name: Verify docs directory
+      - name: Verify docs directories
         run: |
           ls -la packages/sdk/docs/html
+          ls -la packages/actions/docs/html
           echo "Verifying documentation files exist..."
+      - name: Assemble Pages site
+        run: |
+          mkdir -p site/actions
+          cp -R packages/sdk/docs/html/. site/
+          cp -R packages/actions/docs/html/. site/actions/
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v5
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
-          path: "./packages/sdk/docs/html"
+          path: "./site"
           name: docs
       - name: Deploy to GitHub Pages
         id: deployment

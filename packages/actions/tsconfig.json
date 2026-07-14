@@ -18,5 +18,14 @@
         "src/ActionHelpers.ts"
     ],
     "exclude": [
-        "node_modules"]
+        "node_modules"
+    ],
+    "typedocOptions": {
+        "entryPoints": [
+            "types/Actions.d.ts",
+            "src/ActionHelpers.ts"
+        ],
+        "out": "docs",
+        "excludePrivate": true
+    }
 }
