@@ -10,7 +10,6 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
 import { round } from '../utils/MathUtils';
 import { MeasurementUnit } from '../types/LayoutTypes';
-import { ConfigurationController } from './ConfigurationController';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier
