@@ -10,6 +10,7 @@ import { getEditorResponseData } from '../utils/EditorResponseData';
 import { EnvironmentType } from '../utils/Enums';
 import { round } from '../utils/MathUtils';
 import { MeasurementUnit } from '../types/LayoutTypes';
+import { ConfigurationController } from './ConfigurationController';
 
 /**
  * The UtilsController exposes a set of useful utilities that can be used to make some repeated tasks a bit easier
@@ -69,7 +70,10 @@ export class UtilsController {
 
         const stageUrl = `${envApiUrl}connectors/${remoteConnectorId}/stage`;
 
-        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        // fetch the freshest access token
+        const res = await this.#editorAPI;
+        const accessTokenResult = await res.getConfigValue(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        const accessToken = getEditorResponseData<string>(accessTokenResult)?.parsedData;
         if (!accessToken) {
             throw new Error('GraFx Studio Auth Token is not set');
         }
