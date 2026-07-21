@@ -1,4 +1,5 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
+import { ComponentFitEnum } from '../../types/FrameTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { ComponentController } from '../../controllers/ComponentController';
@@ -10,6 +11,8 @@ let mockedComponentController: ComponentController;
 const mockedEditorApi: EditorAPI = {
     linkComponentVariable: async () => getEditorResponseData(castToEditorResponse(null)),
     getComponentVariables: async () => getEditorResponseData(castToEditorResponse(null)),
+    setComponentLayoutFit: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetComponentLayoutFit: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -17,6 +20,8 @@ beforeEach(() => {
 
     jest.spyOn(mockedEditorApi, 'linkComponentVariable');
     jest.spyOn(mockedEditorApi, 'getComponentVariables');
+    jest.spyOn(mockedEditorApi, 'setComponentLayoutFit');
+    jest.spyOn(mockedEditorApi, 'resetComponentLayoutFit');
 
     id = mockSelectFrame.id;
 });
@@ -56,6 +61,20 @@ describe('ComponentController', () => {
             await mockedComponentController.getComponentVariables(id);
             expect(mockedEditorApi.getComponentVariables).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.getComponentVariables).toHaveBeenCalledWith(id);
+        });
+    });
+    describe('setFitMode', () => {
+        it('Should be possible to set the fit mode of a component frame', async () => {
+            await mockedComponentController.setFitMode(id, ComponentFitEnum.resize);
+            expect(mockedEditorApi.setComponentLayoutFit).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.setComponentLayoutFit).toHaveBeenCalledWith(id, ComponentFitEnum.resize);
+        });
+    });
+    describe('resetFitMode', () => {
+        it('Should be possible to reset the fit mode of a component frame', async () => {
+            await mockedComponentController.resetFitMode(id);
+            expect(mockedEditorApi.resetComponentLayoutFit).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.resetComponentLayoutFit).toHaveBeenCalledWith(id);
         });
     });
 });
