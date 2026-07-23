@@ -69,7 +69,10 @@ export class UtilsController {
 
         const stageUrl = `${envApiUrl}connectors/${remoteConnectorId}/stage`;
 
-        const accessToken = this.#localConfig.get(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        // fetch the freshest access token
+        const res = await this.#editorAPI;
+        const accessTokenResult = await res.getConfigValue(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+        const accessToken = getEditorResponseData<string>(accessTokenResult)?.parsedData;
         if (!accessToken) {
             throw new Error('GraFx Studio Auth Token is not set');
         }
