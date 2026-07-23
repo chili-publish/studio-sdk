@@ -1,0 +1,11 @@
+name: Check PR description for JIRA ticket
+on:
+    pull_request:
+        types: [opened, edited, labeled, unlabeled, reopened]
+jobs:
+    check-description:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check description of the Pull Request
+              if: ${{ !contains(github.event.pull_request.labels.*.name, 'No JIRA ticket') }}
+              uses: pkgacek/check-pr-description-for-jira-ticket@v1.6

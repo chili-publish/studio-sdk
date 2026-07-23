@@ -58,8 +58,14 @@ Here are a few things you can do that will increase the likelihood of your pull 
 -   Write [good commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 -   Prefix the title with [Fix] or [Feature] to describe what the scope is
 
+## Related tickets
+
+Prefer a JIRA ticket link in the PR description when one exists (enforced by CI unless the PR has the `No JIRA ticket` label). Related tickets may also link a **GitHub issue**. The `No JIRA ticket` label means there is no JIRA ticket (skip the JIRA check); it does not mean there is no ticket of any kind.
+
 ## Resources
 
 -   [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
 -   [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
 -   [GitHub Help](https://help.github.com/)
+
+AI coding agents: see [AGENTS.md](AGENTS.md) for agent-specific workflow rules and coding conventions.
