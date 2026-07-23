@@ -2,6 +2,8 @@ name: Check PR description for JIRA ticket
 on:
     pull_request:
         types: [opened, edited, labeled, unlabeled, reopened]
+permissions:
+    contents: read
 jobs:
     check-description:
         runs-on: ubuntu-latest
