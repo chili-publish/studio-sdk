@@ -41,4 +41,12 @@ declare global {
     var ConnectorHttpError: ConnectorHttpErrorConstructor;
     var StudioFormData: StudioFormDataConstructor;
     var FilePointer: FilePointerConstructor;
+
+    /**
+     * Suspends execution for the given duration.
+     * Provided by the connector host runtime (e.g. Studio QuickJS / CLI debugger).
+     *
+     * @param ms - Duration to sleep in milliseconds.
+     */
+    function sleep(ms: number): Promise<void>;
 }
