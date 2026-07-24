@@ -47,6 +47,12 @@ export type BaseConfigType = {
      * @param error The error that occurred during setup or connection
      */
     onConnectionError?: (error: Error) => void;
+    /**
+     * Whether the engine is running in an integration context (e.g. embedded in another application).
+     * When true, the engine may adjust its behavior to better fit the integration context 
+     * (eg. try to load connectors with different authentication mode)
+     */
+    isIntegration?: boolean;
 };
 
 export type LoggerFunction = (logLevel: LogLevel, category: LogCategory, message: string) => void;
