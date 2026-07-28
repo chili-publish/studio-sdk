@@ -23,7 +23,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
-import { GradientType } from '../../types/GradientStyleTypes';
+import { GradientType, RelativeOffsets } from '../../types/GradientStyleTypes';
 import { ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
@@ -840,6 +840,18 @@ describe('Anchoring', () => {
         expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ isApplied: enabled }),
+        );
+    });
+
+    it('should be possible to set start/stop for a gradient on a frame', async () => {
+        const start = 0.1;
+        const stop = 0.9;
+        const startStop = { startX: start, startY: start, endX: stop, endY: stop };
+        await mockedFrameController.setGradientStartStop(id, startStop);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ startStop: startStop }),
         );
     });
 
