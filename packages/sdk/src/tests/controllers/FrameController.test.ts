@@ -23,7 +23,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../../types/FrameTypes';
-import { GradientType, RelativeOffsets } from '../../types/GradientStyleTypes';
+import { GradientType } from '../../types/GradientStyleTypes';
 import { ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
