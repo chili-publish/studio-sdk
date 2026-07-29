@@ -30,7 +30,7 @@ import {
     VerticalAlign,
 } from '../types/FrameTypes';
 import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
-import { ShapeType, ShapeFrameSource } from '../types/ShapeTypes';
+import { ShapeFrameSource, ShapeType } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
 
@@ -1305,6 +1305,17 @@ export class FrameController {
     setSmartCropSubjectId = async (id: Id, subjectId?: Id) => {
         const res = await this.#editorAPI;
         return res.setSmartCropSubjectId(id, subjectId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will return the list of layouts (ids) where the specified frame is visible. This is done
+     * without executing any layout change actions.
+     * @param id The frame id to check for visibility in layouts
+     * @returns The list of layout ids where the frame is visible
+     */
+    getLayoutsWhereFrameIsVisible = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.getLayoutsWhereFrameIsVisible(id).then((result) => getEditorResponseData<Id[]>(result));
     };
 }
 
