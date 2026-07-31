@@ -369,6 +369,8 @@ export class SDK {
 
         teardownFrame();
 
+        this.connection = undefined as unknown as Connection;
+
         // Clear the module level reference so a later `new SDK(...)` does not adopt the
         // connection of the instance that was just destroyed.
         connection = undefined as unknown as Connection;
