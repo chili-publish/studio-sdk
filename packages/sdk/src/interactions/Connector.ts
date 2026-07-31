@@ -142,6 +142,30 @@ interface ConfigParameterTypes {
 }
 
 let messageHandler: ((event: MessageEvent) => void) | null = null;
+let domContentLoadedHandler: (() => void) | null = null;
+let currentIframe: HTMLIFrameElement | null = null;
+
+/**
+ * Releases everything `Connect` attached outside of the penpal connection.
+ *
+ * Both the `message` listener and the iframe are tracked at module level because
+ * the listener closes over the iframe. As long as that listener stays registered on
+ * `window`, the iframe element - and with it the entire engine realm (Dart heap,
+ * CanvasKit and QuickJS WASM memory) - stays reachable and can never be collected,
+ * even when the consumer has dropped every reference of its own.
+ */
+export const teardownFrame = () => {
+    if (messageHandler) {
+        window.removeEventListener('message', messageHandler);
+        messageHandler = null;
+    }
+    if (domContentLoadedHandler) {
+        document.removeEventListener('DOMContentLoaded', domContentLoadedHandler);
+        domContentLoadedHandler = null;
+    }
+    currentIframe?.remove();
+    currentIframe = null;
+};
 
 const Connect = (
     editorLink: string,
@@ -151,9 +175,9 @@ const Connect = (
     styling?: StudioStyling,
     onSetupFrameError?: (error: Error) => void,
 ) => {
-    if (messageHandler) {
-        window.removeEventListener('message', messageHandler);
-    }
+    // A previous engine frame is fully released before a new one is created, so
+    // calling `loadEditor` twice can never leave an orphaned engine behind.
+    teardownFrame();
     const editorSelectorId = `#${editorId}`;
     const iframe = document.createElement('iframe');
     iframe.setAttribute('srcdoc', ' ');
@@ -161,6 +185,7 @@ const Connect = (
     iframe.setAttribute('style', 'width: 100%; height: 100%;');
     iframe.setAttribute('frameBorder', '0');
     iframe.setAttribute('referrerpolicy', 'origin');
+    currentIframe = iframe;
     const setupNewFrame = () => {
         const iframeContainer = document.querySelector(editorSelectorId);
         if (iframeContainer) {
@@ -190,9 +215,11 @@ const Connect = (
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         setupNewFrame();
     } else {
-        document.addEventListener('DOMContentLoaded', () => {
+        domContentLoadedHandler = () => {
+            domContentLoadedHandler = null;
             setupNewFrame();
-        });
+        };
+        document.addEventListener('DOMContentLoaded', domContentLoadedHandler, { once: true });
     }
 
     messageHandler = (event: MessageEvent) => {

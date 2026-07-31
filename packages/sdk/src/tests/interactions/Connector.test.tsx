@@ -30,6 +30,49 @@ describe('Connector helpers', () => {
         // expect(iframe.title).toEqual('Chili-Editor');
     });
 
+    it('removes the engine iframe and its message listener on teardown', () => {
+        const container = document.createElement('div');
+        container.id = 'chili-editor';
+        document.body.appendChild(container);
+        const addSpy = jest.spyOn(window, 'addEventListener');
+        const removeSpy = jest.spyOn(window, 'removeEventListener');
+
+        ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+
+        expect(container.getElementsByTagName('iframe')).toHaveLength(1);
+        const messageListener = addSpy.mock.calls.find(([type]) => type === 'message')?.[1];
+        expect(messageListener).toBeDefined();
+
+        ConnectorFunctions.teardownFrame();
+
+        expect(container.getElementsByTagName('iframe')).toHaveLength(0);
+        expect(removeSpy).toHaveBeenCalledWith('message', messageListener);
+
+        container.remove();
+        addSpy.mockRestore();
+        removeSpy.mockRestore();
+    });
+
+    it('releases the previous engine iframe when a new one is connected', () => {
+        const container = document.createElement('div');
+        container.id = 'chili-editor';
+        document.body.appendChild(container);
+
+        ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+        const first = container.getElementsByTagName('iframe')[0];
+
+        ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+
+        // The previous frame must be gone, otherwise a second load leaves a fully
+        // live engine (Dart heap + CanvasKit + QuickJS) behind.
+        expect(container.getElementsByTagName('iframe')).toHaveLength(1);
+        expect(container.getElementsByTagName('iframe')[0]).not.toBe(first);
+        expect(first.isConnected).toBe(false);
+
+        ConnectorFunctions.teardownFrame();
+        container.remove();
+    });
+
     it('sets the studioStyling script in iFrame head', () => {
         const styling = { uiBackgroundColorHex: '000000' };
 

@@ -1,7 +1,7 @@
 import { Connection } from 'penpal';
 import engineInfo from '../editor-engine.json';
 import packageInfo from '../package.json';
-import Connect from './interactions/Connector';
+import Connect, { teardownFrame } from './interactions/Connector';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
@@ -341,6 +341,37 @@ export class SDK {
 
     setConnection = (newConnection: Connection) => {
         connection = newConnection;
+        // Also keep the instance in sync: `this.connection` is assigned in the constructor,
+        // which runs before `loadEditor`, so without this it would keep pointing at the
+        // connection of a previously loaded editor (or be undefined on a first load).
+        this.connection = newConnection;
+    };
+
+    /**
+     * Shuts this SDK instance down and releases the engine it loaded.
+     *
+     * This tears down the postMessage connection, removes the engine iframe from the
+     * document and drops the references the SDK itself holds. Removing the iframe is what
+     * lets the browser discard the engine realm, which is where the bulk of the memory
+     * lives (the Dart heap plus the CanvasKit and QuickJS WASM memory).
+     *
+     * Call this whenever an integration unmounts an editor it previously created with
+     * {@link loadEditor}. Without it every mount leaves a fully live engine behind.
+     * The method is safe to call more than once.
+     */
+    destroy = () => {
+        try {
+            this.connection?.destroy();
+        } catch {
+            // A connection that was already destroyed (for example by penpal's own
+            // iframe-removal monitor) must not prevent the rest of the teardown.
+        }
+
+        teardownFrame();
+
+        // Clear the module level reference so a later `new SDK(...)` does not adopt the
+        // connection of the instance that was just destroyed.
+        connection = undefined as unknown as Connection;
     };
 
     private toInstrumented = <T extends object>(controller: T): Instrumented<T> => {
