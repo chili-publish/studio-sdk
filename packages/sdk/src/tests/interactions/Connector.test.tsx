@@ -37,13 +37,13 @@ describe('Connector helpers', () => {
         const addSpy = jest.spyOn(window, 'addEventListener');
         const removeSpy = jest.spyOn(window, 'removeEventListener');
 
-        ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+        const teardown = ConnectorFunctions.default(editorLink, {} as never, jest.fn());
 
         expect(container.getElementsByTagName('iframe')).toHaveLength(1);
         const messageListener = addSpy.mock.calls.find(([type]) => type === 'message')?.[1];
         expect(messageListener).toBeDefined();
 
-        ConnectorFunctions.teardownFrame();
+        teardown();
 
         expect(container.getElementsByTagName('iframe')).toHaveLength(0);
         expect(removeSpy).toHaveBeenCalledWith('message', messageListener);
@@ -53,23 +53,27 @@ describe('Connector helpers', () => {
         removeSpy.mockRestore();
     });
 
-    it('releases the previous engine iframe when a new one is connected', () => {
+    it('keeps frames of other Connect calls alive and only releases its own', () => {
         const container = document.createElement('div');
         container.id = 'chili-editor';
         document.body.appendChild(container);
 
-        ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+        const firstTeardown = ConnectorFunctions.default(editorLink, {} as never, jest.fn());
         const first = container.getElementsByTagName('iframe')[0];
 
-        ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+        const secondTeardown = ConnectorFunctions.default(editorLink, {} as never, jest.fn());
 
-        // The previous frame must be gone, otherwise a second load leaves a fully
-        // live engine (Dart heap + CanvasKit + QuickJS) behind.
-        expect(container.getElementsByTagName('iframe')).toHaveLength(1);
-        expect(container.getElementsByTagName('iframe')[0]).not.toBe(first);
+        // Multiple live editors must be able to coexist: connecting a new engine
+        // must not remove the frame a previous Connect call created.
+        expect(container.getElementsByTagName('iframe')).toHaveLength(2);
+
+        firstTeardown();
         expect(first.isConnected).toBe(false);
+        expect(container.getElementsByTagName('iframe')).toHaveLength(1);
 
-        ConnectorFunctions.teardownFrame();
+        secondTeardown();
+        expect(container.getElementsByTagName('iframe')).toHaveLength(0);
+
         container.remove();
     });
 

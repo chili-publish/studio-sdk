@@ -1,7 +1,7 @@
 import { Connection } from 'penpal';
 import engineInfo from '../editor-engine.json';
 import packageInfo from '../package.json';
-import Connect, { teardownFrame } from './interactions/Connector';
+import Connect from './interactions/Connector';
 import { defaultStudioOptions, WellKnownConfigurationKeys } from './types/ConfigurationTypes';
 
 import type { ConfigType, EditorAPI, RuntimeConfigType } from './types/CommonTypes';
@@ -55,8 +55,6 @@ declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
 const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}/web`;
 
-let connection: Connection;
-
 // Marks a freshly created controller as "needs instrumentation" without requiring
 // its property name to be tracked anywhere. `applyMethodInstrumentation` later scans
 // the SDK instance for properties carrying this marker and wraps them automatically,
@@ -77,7 +75,8 @@ const isPendingInstrumentation = (value: unknown): value is object => {
 
 export class SDK {
     config: RuntimeConfigType;
-    connection: Connection;
+    // Set by `loadEditor` via `setConnection`; stays `undefined` until then.
+    connection!: Connection;
 
     /**
      * @ignore
@@ -137,6 +136,8 @@ export class SDK {
     private localConfig = new Map<string, string>();
     private dataItemMappingTools = new DataItemMappingTools();
     private methodListeners = new MethodListenerRegistry();
+    // Releases this instance's engine frame (iframe + listeners); set by `loadEditor`.
+    private teardownFrame: (() => void) | null = null;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -146,8 +147,9 @@ export class SDK {
         this.config = ConfigHelper.createRuntimeConfig(config);
         this.sdkEvents = new SdkEvents(this.config.logging?.logger);
 
-        this.connection = connection;
-        this.editorAPI = connection?.promise.then((child: unknown) => {
+        // `this.connection` only exists once `loadEditor` ran, so the controllers
+        // created here get no live editorAPI yet; `loadEditor` rebuilds them with one.
+        this.editorAPI = this.connection?.promise.then((child: unknown) => {
             return child;
         }) as unknown as EditorAPI;
 
@@ -199,7 +201,11 @@ export class SDK {
      * It will generate an iframe in the document
      */
     loadEditor = () => {
-        Connect(
+        // Reloading first releases this instance's previous engine frame, so a second
+        // `loadEditor` can never orphan a live engine. Frames loaded by other SDK
+        // instances are tracked per instance and stay untouched.
+        this.teardownFrame?.();
+        this.teardownFrame = Connect(
             this.config.editorLink || FIXED_EDITOR_LINK,
             {
                 onActionsChanged: this.subscriber.onActionsChanged,
@@ -271,7 +277,9 @@ export class SDK {
                 this.config.onConnectionError?.(error);
             },
         );
-        this.editorAPI = connection?.promise.then((editorAPI: unknown) => {
+        // `Connect` invokes `setConnection` synchronously, so `this.connection`
+        // already points at the fresh connection here.
+        this.editorAPI = this.connection?.promise.then((editorAPI: unknown) => {
             return editorAPI;
         }) as unknown as EditorAPI;
 
@@ -340,10 +348,6 @@ export class SDK {
     };
 
     setConnection = (newConnection: Connection) => {
-        connection = newConnection;
-        // Also keep the instance in sync: `this.connection` is assigned in the constructor,
-        // which runs before `loadEditor`, so without this it would keep pointing at the
-        // connection of a previously loaded editor (or be undefined on a first load).
         this.connection = newConnection;
     };
 
@@ -367,11 +371,10 @@ export class SDK {
             // iframe-removal monitor) must not prevent the rest of the teardown.
         }
 
-        teardownFrame();
-
-        // Clear the module level reference so a later `new SDK(...)` does not adopt the
-        // connection of the instance that was just destroyed.
-        connection = undefined as unknown as Connection;
+        // Null the handle as well: the closure closes over the iframe, so keeping it
+        // would keep the removed engine realm reachable.
+        this.teardownFrame?.();
+        this.teardownFrame = null;
     };
 
     private toInstrumented = <T extends object>(controller: T): Instrumented<T> => {
