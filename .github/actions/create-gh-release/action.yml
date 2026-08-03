@@ -1,84 +1,93 @@
-name: "Create GitHub Release"
-description: "Create GitHub release and prepare notification text"
+name: 'Create GitHub Release'
+description: 'Create GitHub release and prepare notification text'
 inputs:
-  tag_name:
-    required: true
-    description: "Tag name for the release"
-  previous_tag:
-    required: true
-    description: "Previous tag for release notes"
-  target_ref:
-    required: true
-    description: "Target commit SHA for the release"
-  release_type:
-    required: true
-    description: "Release type: uat or production"
-  skip_github_latest:
-    required: false
-    default: "false"
-    description: "Production only: when true, gh release create uses --latest=false (old-line PRD hotfix)."
+    tag_name:
+        required: true
+        description: 'Tag name for the release'
+    previous_tag:
+        required: true
+        description: 'Previous tag for release notes'
+    target_ref:
+        required: true
+        description: 'Target commit SHA for the release'
+    release_type:
+        required: true
+        description: 'Release type: uat or production'
+    skip_github_latest:
+        required: false
+        default: 'false'
+        description: 'Production only: when true, gh release create uses --latest=false (old-line PRD hotfix).'
 outputs:
-  notification_text:
-    description: "Prepared notification text"
-    value: ${{ steps.prepare_notification.outputs.text }}
+    notification_text:
+        description: 'Prepared notification text'
+        value: ${{ steps.prepare_notification.outputs.text }}
 runs:
-  using: composite
-  steps:
-    - name: Create GitHub release
-      id: create_release
-      shell: bash
-      run: |
-        TAG_NAME="${{ inputs.tag_name }}"
-        PREVIOUS_TAG="${{ inputs.previous_tag }}"
-        TARGET_REF="${{ inputs.target_ref }}"
-        RELEASE_TYPE="${{ inputs.release_type }}"
-        SKIP_GITHUB_LATEST="${{ inputs.skip_github_latest }}"
+    using: composite
+    steps:
+        - name: Create GitHub release
+          id: create_release
+          shell: bash
+          run: |
+              TAG_NAME="${{ inputs.tag_name }}"
+              PREVIOUS_TAG="${{ inputs.previous_tag }}"
+              TARGET_REF="${{ inputs.target_ref }}"
+              RELEASE_TYPE="${{ inputs.release_type }}"
+              SKIP_GITHUB_LATEST="${{ inputs.skip_github_latest }}"
 
-        # UAT releases are prereleases, production releases are not
-        if [ "$RELEASE_TYPE" = "uat" ]; then
-          gh release create $TAG_NAME \
-            --target $TARGET_REF \
-            --title "$TAG_NAME" \
-            --generate-notes \
-            --notes-start-tag "$PREVIOUS_TAG" \
-            --prerelease
-        else
-          if [ "$SKIP_GITHUB_LATEST" = "true" ]; then
-            gh release create $TAG_NAME \
-              --target $TARGET_REF \
-              --title "$TAG_NAME" \
-              --generate-notes \
-              --notes-start-tag "$PREVIOUS_TAG" \
-              --latest=false
-          else
-            gh release create $TAG_NAME \
-              --target $TARGET_REF \
-              --title "$TAG_NAME" \
-              --generate-notes \
-              --notes-start-tag "$PREVIOUS_TAG"
-          fi
-        fi
+              # UAT releases are prereleases, production releases are not
+              if [ "$RELEASE_TYPE" = "uat" ]; then
+                gh release create $TAG_NAME \
+                  --target $TARGET_REF \
+                  --title "$TAG_NAME" \
+                  --generate-notes \
+                  --notes-start-tag "$PREVIOUS_TAG" \
+                  --prerelease
+              else
+                if [ "$SKIP_GITHUB_LATEST" = "true" ]; then
+                  gh release create $TAG_NAME \
+                    --target $TARGET_REF \
+                    --title "$TAG_NAME" \
+                    --generate-notes \
+                    --notes-start-tag "$PREVIOUS_TAG" \
+                    --latest=false
+                else
+                  gh release create $TAG_NAME \
+                    --target $TARGET_REF \
+                    --title "$TAG_NAME" \
+                    --generate-notes \
+                    --notes-start-tag "$PREVIOUS_TAG"
+                fi
+              fi
 
-        RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
-        echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
-      env:
-        GH_TOKEN: ${{ env.GITHUB_TOKEN }}
+              RELEASE_URL=$(gh release view $TAG_NAME --json url -q '.url')
+              echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+          env:
+              GH_TOKEN: ${{ env.GITHUB_TOKEN }}
 
-    - name: Prepare notification text
-      id: prepare_notification
-      shell: bash
-      run: |
-        RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
-        VERSION="${{ inputs.tag_name }}"
-        RELEASE_TYPE="${{ inputs.release_type }}"
+        - name: Prepare notification text
+          id: prepare_notification
+          shell: bash
+          run: |
+              RELEASE_URL="${{ steps.create_release.outputs.release_url }}"
+              VERSION="${{ inputs.tag_name }}"
+              RELEASE_TYPE="${{ inputs.release_type }}"
 
-        if [ "$RELEASE_TYPE" = "uat" ]; then
-          EMOJI="🧪"
-          TYPE="UAT Release Created"
-        else
-          EMOJI="🎉"
-          TYPE="Production Release Created"
-        fi
+              if [ "$RELEASE_TYPE" = "uat" ]; then
+                EMOJI="🧪"
+                TYPE="UAT Release Created"
+              else
+                EMOJI="🎉"
+                TYPE="Production Release Created"
+              fi
 
-        TEXT="${EMOJI} **${TYPE}**\n\n**Release:** $RELEASE_URL\n\n**Version:** $VERSION\n\nRelease has been created and deployment will be triggered automatically."
-        echo "text=$TEXT" >> $GITHUB_OUTPUT
+              # Real newlines + multiline output (bash-literal \n breaks Teams formatting).
+              TEXT=$(printf '%s\n\n%s\n\n%s\n\n%s' \
+                "${EMOJI} ${TYPE}" \
+                "**Version:** ${VERSION}" \
+                "**Release:** ${RELEASE_URL}" \
+                "Release has been created and deployment will be triggered automatically.")
+              {
+                echo "text<<NOTIFICATION_EOF"
+                printf '%s\n' "$TEXT"
+                echo "NOTIFICATION_EOF"
+              } >> "$GITHUB_OUTPUT"
