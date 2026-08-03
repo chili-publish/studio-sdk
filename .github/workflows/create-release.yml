@@ -523,7 +523,11 @@ jobs:
             exit 0
           fi
 
-          echo "text=$TEXT" >> $GITHUB_OUTPUT
+          {
+            echo "text<<NOTIFICATION_EOF"
+            echo "$TEXT"
+            echo "NOTIFICATION_EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
 
