@@ -190,6 +190,7 @@ export type ComponentFrame = {
     variableMappings: VariableMapping[];
 
     /**
+     * @deprecated Use `componentFit` on frame properties instead. This property is deprecated and will be removed in a future version.
      * How the component fits within the frame.
      */
     fitMode: ComponentFitEnum;
