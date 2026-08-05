@@ -141,8 +141,6 @@ interface ConfigParameterTypes {
     onCanvasFramesManipulated: (frameIds: string) => void;
 }
 
-let messageHandler: ((event: MessageEvent) => void) | null = null;
-
 const Connect = (
     editorLink: string,
     params: ConfigParameterTypes,
@@ -151,9 +149,6 @@ const Connect = (
     styling?: StudioStyling,
     onSetupFrameError?: (error: Error) => void,
 ) => {
-    if (messageHandler) {
-        window.removeEventListener('message', messageHandler);
-    }
     const editorSelectorId = `#${editorId}`;
     const iframe = document.createElement('iframe');
     iframe.setAttribute('srcdoc', ' ');
@@ -161,6 +156,33 @@ const Connect = (
     iframe.setAttribute('style', 'width: 100%; height: 100%;');
     iframe.setAttribute('frameBorder', '0');
     iframe.setAttribute('referrerpolicy', 'origin');
+
+    // Everything this call attaches outside of the penpal connection is tracked per
+    // invocation, so releasing one engine frame can never tear down the frame another
+    // SDK instance is still using. The `message` listener closes over the iframe: as
+    // long as that listener stays registered on `window`, the iframe element - and with
+    // it the entire engine realm (Dart heap, CanvasKit and QuickJS WASM memory) - stays
+    // reachable and can never be collected, even when the consumer has dropped every
+    // reference of its own.
+    let messageHandler: ((event: MessageEvent) => void) | null = null;
+    let domContentLoadedHandler: (() => void) | null = null;
+
+    /**
+     * Releases the iframe and listeners this `Connect` call attached. Safe to call
+     * more than once, and leaves frames of other `Connect` calls untouched.
+     */
+    const teardownFrame = () => {
+        if (messageHandler) {
+            window.removeEventListener('message', messageHandler);
+            messageHandler = null;
+        }
+        if (domContentLoadedHandler) {
+            document.removeEventListener('DOMContentLoaded', domContentLoadedHandler);
+            domContentLoadedHandler = null;
+        }
+        iframe.remove();
+    };
+
     const setupNewFrame = () => {
         const iframeContainer = document.querySelector(editorSelectorId);
         if (iframeContainer) {
@@ -190,9 +212,11 @@ const Connect = (
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         setupNewFrame();
     } else {
-        document.addEventListener('DOMContentLoaded', () => {
+        domContentLoadedHandler = () => {
+            domContentLoadedHandler = null;
             setupNewFrame();
-        });
+        };
+        document.addEventListener('DOMContentLoaded', domContentLoadedHandler, { once: true });
     }
 
     messageHandler = (event: MessageEvent) => {
@@ -261,5 +285,7 @@ const Connect = (
             },
         }),
     );
+
+    return teardownFrame;
 };
 export default Connect;
