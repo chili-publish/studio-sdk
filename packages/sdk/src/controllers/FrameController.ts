@@ -29,7 +29,7 @@ import {
     UpdateZIndexMethod,
     VerticalAlign,
 } from '../types/FrameTypes';
-import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
+import { GradientDeltaUpdate, GradientUpdate, RelativeOffsets } from '../types/GradientStyleTypes';
 import { ShapeType, ShapeFrameSource } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
@@ -1262,6 +1262,20 @@ export class FrameController {
      */
     setGradientApplied = async (id: Id, value: boolean) => {
         const update: GradientDeltaUpdate = { isApplied: value };
+        const res = await this.#editorAPI;
+        return res
+            .updateFrameGradientSettings(id, JSON.stringify(update))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the start and stop positions of the gradient on a specified frame.
+     * @param id the id of the frame that needs to get updated
+     * @param value the new start and stop positions to be set
+     * @returns
+     */
+    setGradientStartStop = async (id: Id, value: RelativeOffsets) => {
+        const update: GradientDeltaUpdate = { startStop: value };
         const res = await this.#editorAPI;
         return res
             .updateFrameGradientSettings(id, JSON.stringify(update))
