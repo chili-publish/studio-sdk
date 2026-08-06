@@ -742,6 +742,28 @@ export class FrameController {
     };
 
     /**
+     * This method will set the overprint property of a specified frame's fill.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value whether the frame's fill should overprint
+     * @returns
+     */
+    setFillOverprint = async (frameId: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setFrameFillOverprint(frameId, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the overprint property of a specified frame's stroke.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value whether the frame's stroke should overprint
+     * @returns
+     */
+    setStrokeOverprint = async (frameId: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setFrameStrokeOverprint(frameId, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the blend mode of a specified frame
      * @param id the id of a specific frame
      * @param blendMode the blend mode
