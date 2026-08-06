@@ -65,7 +65,10 @@ const updateCharacterStyle: CharacterStyleUpdate = {
     lineHeight: {
         value: 100.0,
     },
-    textOverprint: {
+    fillOverprint: {
+        value: false,
+    },
+    strokeOverprint: {
         value: false,
     },
     color: {
