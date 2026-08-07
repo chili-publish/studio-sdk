@@ -596,11 +596,17 @@ jobs:
         env:
           APP_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
         run: |
+          echo "::add-mask::${APP_TOKEN}"
           git add package.json yarn.lock || true
           git add packages/*/package.json packages/*/yarn.lock || true
           git add packages/sdk/editor-engine.json || true
           git commit -m "chore: bump version to ${{ steps.bump_version.outputs.new_version }} for next dev cycle [skip ci]"
-          git push "https://x-access-token:${APP_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+          AUTHORIZATION=$(printf 'x-access-token:%s' "${APP_TOKEN}" | base64 | tr -d '\n')
+          echo "::add-mask::${AUTHORIZATION}"
+          GIT_CONFIG_COUNT=1 \
+          GIT_CONFIG_KEY_0=http.https://github.com/.extraheader \
+          GIT_CONFIG_VALUE_0="AUTHORIZATION: basic ${AUTHORIZATION}" \
+            git push "https://github.com/${{ github.repository }}.git" HEAD:main
           echo "Pushed version bump to main branch"
 
   notify-teams-failure:
