@@ -25,6 +25,7 @@ on:
 env:
   NODE_VERSION: 22.x
   RELEASES_LIMIT: 10
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   configure-parameters:

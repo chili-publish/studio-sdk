@@ -30,6 +30,7 @@ concurrency:
   cancel-in-progress: true
 env:
   NODE_VERSION: 22.x
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   # Single deploy job since we're just deploying
   deploy_to_pages:
