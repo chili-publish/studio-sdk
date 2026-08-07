@@ -5,6 +5,12 @@ on:
       - main
 env:
   NODE_VERSION: 22.x
+  # REQUIRED AT WORKFLOW SCOPE — do not move this to the install step only.
+  # actions/setup-node with `registry-url` writes an .npmrc containing
+  # `${NODE_AUTH_TOKEN}`. Yarn Classic expands that placeholder on EVERY
+  # yarn/npm command (test, build, lint, …), not only on `yarn install`.
+  # Scoping the token to install alone fails later steps with:
+  # Failed to replace env in config: ${NODE_AUTH_TOKEN}.
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 permissions:
   contents: write
@@ -21,9 +27,12 @@ jobs:
           app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
           owner: ${{ github.repository_owner }}
+          repositories: ${{ github.repository }}
+          permission-contents: write
       - uses: actions/checkout@v7
         with:
           token: ${{ steps.github-app-access-token.outputs.token }}
+          persist-credentials: false
       - name: Check cache
         id: cache
         uses: actions/cache@v6
@@ -40,8 +49,6 @@ jobs:
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: run linting
         run: yarn ci-lint
       - name: run tests
@@ -61,9 +68,9 @@ jobs:
         run: yarn build
       - name: publish sdk build
         run: node cicd.js sdk,connectors yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: execute commit script
+        env:
+          GITHUB_TOKEN: ${{ steps.github-app-access-token.outputs.token }}
         run: node ./.github/scripts/commit.js
       - name: get new npm version
         id: package-version

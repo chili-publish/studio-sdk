@@ -40,9 +40,21 @@ runCommand("git", [
 console.info(`Adding tag`);
 runCommand("git", ["tag", `${version}`]);
 
+const token = process.env.GITHUB_TOKEN;
+const repository = process.env.GITHUB_REPOSITORY;
+
+if (!token || !repository) {
+  console.error(
+    "GITHUB_TOKEN and GITHUB_REPOSITORY are required for authenticated git push"
+  );
+  process.exit(1);
+}
+
+const remote = `https://x-access-token:${token}@github.com/${repository}.git`;
+
 // publish tag
-console.info(`Committing changes to git`);
-runCommand("git", ["push", "origin", `${version}`]);
+console.info(`Pushing tag to git`);
+runCommand("git", ["push", remote, `${version}`]);
 
 console.info(`Pushing changes to git`);
-runCommand("git", ["push"]);
+runCommand("git", ["push", remote, "HEAD:main"]);

@@ -30,6 +30,12 @@ concurrency:
   cancel-in-progress: true
 env:
   NODE_VERSION: 22.x
+  # REQUIRED AT WORKFLOW SCOPE — do not move this to the install step only.
+  # actions/setup-node with `registry-url` writes an .npmrc containing
+  # `${NODE_AUTH_TOKEN}`. Yarn Classic expands that placeholder on EVERY
+  # yarn/npm command (test, build, lint, …), not only on `yarn install`.
+  # Scoping the token to install alone fails later steps with:
+  # Failed to replace env in config: ${NODE_AUTH_TOKEN}.
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   # Single deploy job since we're just deploying
@@ -61,8 +67,6 @@ jobs:
           scope: "@chili-publish"
       - name: install dependencies
         run: yarn install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: build documentation to md
         run: yarn build-docs-md
       - name: build documentation to html
