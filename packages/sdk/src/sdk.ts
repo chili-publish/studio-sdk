@@ -345,6 +345,11 @@ export class SDK {
             WellKnownConfigurationKeys.QueryCallCacheEnabled,
             this.config.enableQueryCallCache?.toString() || 'false',
         );
+
+        this.configuration.setValue(
+            WellKnownConfigurationKeys.GraFxStudioIsIntegration,
+            this.config.isIntegration?.toString() || 'false',
+        );
     };
 
     setConnection = (newConnection: Connection) => {
