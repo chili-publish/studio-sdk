@@ -475,9 +475,7 @@ jobs:
     if: needs.validate-tag-release.outputs.release_exists == 'true' && needs.detect-release-type.outputs.is_prd == 'true' && needs.detect-release-type.outputs.update_global_latest == 'true'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      contents: read
     steps:
       - name: Get GitHub App Access Token
         id: github-app-access-token
@@ -518,6 +516,8 @@ jobs:
 
       - name: Check if hotfix release
         id: check_hotfix
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           CURRENT_TAG="${{ needs.detect-release-type.outputs.version }}"
 

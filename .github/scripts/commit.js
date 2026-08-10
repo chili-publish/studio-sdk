@@ -9,16 +9,18 @@ function runCommand(command, args, env = process.env) {
     stdio: "inherit",
   });
 
+  const exitCode = spawned.status == null ? 1 : spawned.status;
+
   if (spawned.error) {
     console.error(`Error running ${command}:`, spawned.error);
-    process.exit(spawned.status);
+    process.exit(exitCode);
   }
 
-  if (spawned.status !== 0) {
+  if (exitCode !== 0) {
     console.error(
-      `Command ${command} exited with status code ${spawned.status}`
+      `Command ${command} exited with status code ${exitCode}`
     );
-    process.exit(spawned.status);
+    process.exit(exitCode);
   }
 }
 
