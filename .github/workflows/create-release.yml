@@ -23,7 +23,7 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 22.x
+  NODE_VERSION: 24.x
   RELEASES_LIMIT: 10
   # REQUIRED AT WORKFLOW SCOPE — do not move this to the install step only.
   # actions/setup-node with `registry-url` writes an .npmrc containing

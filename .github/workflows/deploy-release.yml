@@ -6,8 +6,10 @@ on:
       - "*"
 
 env:
-  # NOTE: Stick to this node version because of the bug https://github.com/nodejs/node/issues/62425
-  NODE_VERSION: 22.22.1
+  # NOTE: previously pinned to an exact patch (22.22.1) to dodge a broken bundled-npm
+  # regression in Node 22.22.2 (https://github.com/nodejs/node/issues/62425, fixed in 22.22.3)
+  # so migration to Node 24 would not break this workflow.
+  NODE_VERSION: 24.x
   # REQUIRED AT WORKFLOW SCOPE — do not move this to the install step only.
   # actions/setup-node with `registry-url` writes an .npmrc containing
   # `${NODE_AUTH_TOKEN}`. Yarn Classic expands that placeholder on EVERY

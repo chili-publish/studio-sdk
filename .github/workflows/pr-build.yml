@@ -1,7 +1,7 @@
 name: PR Build
 on: [pull_request]
 env:
-  NODE_VERSION: 22.x
+  NODE_VERSION: 24.x
   # REQUIRED AT WORKFLOW SCOPE — do not move this to the install step only.
   # actions/setup-node with `registry-url` writes an .npmrc containing
   # `${NODE_AUTH_TOKEN}`. Yarn Classic expands that placeholder on EVERY
@@ -16,7 +16,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build (18)
+    name: build (24)
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v7
