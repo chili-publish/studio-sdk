@@ -16,7 +16,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build (24)
+    name: build (18)
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v7
