@@ -14,13 +14,13 @@ global.fetch = mockFetch;
 
 const mockedEditorApi: EditorAPI = {
     unitEvaluate: jest.fn().mockResolvedValue(castToEditorResponse(null)),
+    getConfigValue: jest.fn().mockResolvedValue(castToEditorResponse('GRAFX_AUTH_TOKEN')),
 };
 
 const mockedLocalConfig = new Map<string, string>();
 beforeEach(() => {
     jest.spyOn(MathUtils, 'round');
     mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioEnvironmentApiUrl, 'ENVIRONMENT_API/');
-    mockedLocalConfig.set(WellKnownConfigurationKeys.GraFxStudioAuthToken, 'GRAFX_AUTH_TOKEN');
     mockedUtilsController = new UtilsController(mockedEditorApi, mockedLocalConfig);
 });
 
@@ -84,6 +84,9 @@ describe('UtilsController', () => {
     });
 
     describe('stageFiles', () => {
+        beforeEach(() => {
+            (mockedEditorApi.getConfigValue as jest.Mock).mockResolvedValue(castToEditorResponse('GRAFX_AUTH_TOKEN'));
+        });
         it('should call the stageFiles method with a blob', async () => {
             mockFetch.mockResolvedValue({
                 ok: true,
@@ -123,7 +126,7 @@ describe('UtilsController', () => {
             );
         });
         it('should throw when stageFiles is called without configured auth token  ', async () => {
-            mockedLocalConfig.delete(WellKnownConfigurationKeys.GraFxStudioAuthToken);
+            (mockedEditorApi.getConfigValue as jest.Mock).mockResolvedValue(castToEditorResponse(undefined));
             await expect(
                 mockedUtilsController.stageFiles(
                     [new File(['test'], 'test.jpg', { type: 'image/jpeg' })],
@@ -144,6 +147,7 @@ describe('UtilsController', () => {
         });
 
         it('should throw the "SDKUnauthorizedError" exception', async () => {
+
             mockFetch.mockResolvedValue({
                 ok: false,
                 status: 401,
