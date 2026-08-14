@@ -101,6 +101,7 @@ const mockedEditorApi: EditorAPI = {
     setFrameContainerShape: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameContainerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameSmartCropSettings: async () => getEditorResponseData(castToEditorResponse(null)),
+    getLayoutsWhereFrameIsVisible: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -172,6 +173,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameContainerShape');
     jest.spyOn(mockedEditorApi, 'setFrameContainerProperties');
     jest.spyOn(mockedEditorApi, 'setImageFrameSmartCropSettings');
+    jest.spyOn(mockedEditorApi, 'getLayoutsWhereFrameIsVisible');
 
     id = mockSelectFrame.id;
 });
@@ -874,5 +876,11 @@ describe('Anchoring', () => {
         await mockedFrameController.setFrameContainerShape(id, shapeFrameSource);
         expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameContainerShape).toHaveBeenCalledWith(id, JSON.stringify(shapeFrameSource));
+    });
+
+    it('should be possible to get layouts where frame is visible', async () => {
+        await mockedFrameController.getLayoutsWhereFrameIsVisible(id);
+        expect(mockedEditorApi.getLayoutsWhereFrameIsVisible).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getLayoutsWhereFrameIsVisible).toHaveBeenCalledWith(id);
     });
 });
