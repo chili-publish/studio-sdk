@@ -843,10 +843,22 @@ describe('Anchoring', () => {
         );
     });
 
+    it('should be possible to set start/stop for a gradient on a frame', async () => {
+        const start = 0.1;
+        const stop = 0.9;
+        const startStop = { startX: start, startY: start, endX: stop, endY: stop };
+        await mockedFrameController.setGradientStartStop(id, startStop);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
+            id,
+            JSON.stringify({ startStop: startStop }),
+        );
+    });
+
     it('should be possible to set the gradient to a brand kit gradient', async () => {
         const gradientId = 'gradient-id';
         await mockedFrameController.setBrandKitGradient(id, gradientId);
-        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(2);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(3);
         expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ id: gradientId }),
@@ -860,7 +872,7 @@ describe('Anchoring', () => {
             type: GradientType.linear,
         };
         await mockedFrameController.setLocalGradient(id, gradient);
-        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(3);
+        expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledTimes(4);
         expect(mockedEditorApi.updateFrameGradientSettings).toHaveBeenCalledWith(
             id,
             JSON.stringify({ gradient: gradient }),
