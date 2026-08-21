@@ -30,6 +30,53 @@ describe('Connector helpers', () => {
         // expect(iframe.title).toEqual('Chili-Editor');
     });
 
+    it('removes the engine iframe and its message listener on teardown', () => {
+        const container = document.createElement('div');
+        container.id = 'chili-editor';
+        document.body.appendChild(container);
+        const addSpy = jest.spyOn(window, 'addEventListener');
+        const removeSpy = jest.spyOn(window, 'removeEventListener');
+
+        const teardown = ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+
+        expect(container.getElementsByTagName('iframe')).toHaveLength(1);
+        const messageListener = addSpy.mock.calls.find(([type]) => type === 'message')?.[1];
+        expect(messageListener).toBeDefined();
+
+        teardown();
+
+        expect(container.getElementsByTagName('iframe')).toHaveLength(0);
+        expect(removeSpy).toHaveBeenCalledWith('message', messageListener);
+
+        container.remove();
+        addSpy.mockRestore();
+        removeSpy.mockRestore();
+    });
+
+    it('keeps frames of other Connect calls alive and only releases its own', () => {
+        const container = document.createElement('div');
+        container.id = 'chili-editor';
+        document.body.appendChild(container);
+
+        const firstTeardown = ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+        const first = container.getElementsByTagName('iframe')[0];
+
+        const secondTeardown = ConnectorFunctions.default(editorLink, {} as never, jest.fn());
+
+        // Multiple live editors must be able to coexist: connecting a new engine
+        // must not remove the frame a previous Connect call created.
+        expect(container.getElementsByTagName('iframe')).toHaveLength(2);
+
+        firstTeardown();
+        expect(first.isConnected).toBe(false);
+        expect(container.getElementsByTagName('iframe')).toHaveLength(1);
+
+        secondTeardown();
+        expect(container.getElementsByTagName('iframe')).toHaveLength(0);
+
+        container.remove();
+    });
+
     it('sets the studioStyling script in iFrame head', () => {
         const styling = { uiBackgroundColorHex: '000000' };
 
