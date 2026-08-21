@@ -60,7 +60,8 @@ export type APIBrandKitCharacterStyle = {
 
     baselineShiftValue?: string | null;
     lineHeight?: number | null;
-    textOverprint?: boolean | null;
+    fillOverprint?: boolean | null;
+    strokeOverprint?: boolean | null;
 
     brandKitColorGuid?: string | null;
     fillColorApplied?: boolean | null;
@@ -90,7 +91,8 @@ export type APIBrandKitParagraphStyle = {
 
     baselineShiftValue?: string | null;
     lineHeight: number;
-    textOverprint?: boolean | null;
+    fillOverprint?: boolean | null;
+    strokeOverprint?: boolean | null;
 
     brandKitColorGuid: string;
     fillColorApplied?: boolean | null;
