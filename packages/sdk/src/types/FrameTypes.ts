@@ -77,10 +77,7 @@ export type ImageFrameBrandkitMediaSource = {
 };
 
 export type ImageFrameSource =
-    | ImageFrameConnectorSource
-    | ImageFrameVariableSource
-    | ImageFrameUrlSource
-    | ImageFrameBrandkitMediaSource;
+    ImageFrameConnectorSource | ImageFrameVariableSource | ImageFrameUrlSource | ImageFrameBrandkitMediaSource;
 
 // used by new getter methods
 export type ImageFrame = {
@@ -437,7 +434,8 @@ export class FrameAnchorTarget {
     type = AnchorTargetType.frame;
 
     constructor(id: Id, edge: AnchorTargetEdgeType) {
-        (this.frameId = id), (this.edge = edge);
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        ((this.frameId = id), (this.edge = edge));
     }
 }
 
@@ -477,11 +475,7 @@ export type CenterFrameAnchor = {
 } & HasOverrideState;
 
 export type FrameAnchor =
-    | RelativeFrameAnchor
-    | StartFrameAnchor
-    | EndFrameAnchor
-    | StartAndEndFrameAnchor
-    | CenterFrameAnchor;
+    RelativeFrameAnchor | StartFrameAnchor | EndFrameAnchor | StartAndEndFrameAnchor | CenterFrameAnchor;
 
 export type FrameAnchorProperties = {
     horizontal: boolean;

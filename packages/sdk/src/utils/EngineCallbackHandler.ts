@@ -3,7 +3,10 @@ import { CallbackErrorBehavior, LoggerFunction } from '../types/CommonTypes';
 import { EngineEventTrigger } from './EngineEventTrigger';
 
 export class EngineCallbackHandler<T extends (...args: any[]) => any> extends EngineEventTrigger<T> {
-    constructor(private handler: () => T | undefined, logger?: LoggerFunction) {
+    constructor(
+        private handler: () => T | undefined,
+        logger?: LoggerFunction,
+    ) {
         super(logger);
     }
     /**
