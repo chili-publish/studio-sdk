@@ -110,6 +110,8 @@ export type ShapeFrame = {
         strokeWeight: number;
         strokeColor: ColorUsage;
         allCornersSame: boolean;
+        fillOverprint: boolean;
+        strokeOverprint: boolean;
     };
     src: {
         type: ShapeType;
@@ -162,6 +164,8 @@ export type BarcodeFrame = {
         errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
         characterSet?: BarcodeCharacterSet;
         drawStartStopChars: boolean;
+        barOverprint: boolean;
+        backgroundOverprint: boolean;
     };
     src?: BarcodeSource;
     barcodeType: BarcodeType;
