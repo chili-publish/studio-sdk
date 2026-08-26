@@ -66,8 +66,14 @@ jobs:
       npm_scope: ${{ steps.detect.outputs.npm_scope }}
       subscription_id: ${{ steps.detect.outputs.subscription_id }}
       storage_account_name: ${{ steps.detect.outputs.storage_account_name }}
+      engine_domain: ${{ steps.studio_cdn_uat.outputs.hostname || steps.studio_cdn_prd.outputs.hostname }}
       update_global_latest: ${{ steps.global_latest.outputs.update_global_latest }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref }}
+
       - name: Detect release type
         id: detect
         run: |
@@ -102,6 +108,21 @@ jobs:
           # Extract version from tag (remove v prefix if present)
           VERSION=$(echo "$TAG_NAME" | sed 's/^v//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      # Mutually exclusive: empty env hostname must reach the resolver and fail (no cross-env || fallback)
+      - name: Resolve Studio CDN hostname (UAT)
+        id: studio_cdn_uat
+        if: steps.detect.outputs.is_uat == 'true'
+        uses: ./.github/actions/resolve-studio-cdn-hostname
+        with:
+          hostname: ${{ vars.STUDIO_CDN_HOSTNAME_UAT }}
+
+      - name: Resolve Studio CDN hostname (PRD)
+        id: studio_cdn_prd
+        if: steps.detect.outputs.is_prd == 'true'
+        uses: ./.github/actions/resolve-studio-cdn-hostname
+        with:
+          hostname: ${{ vars.STUDIO_CDN_HOSTNAME_PROD }}
 
       - name: Compute global latest for CDN / main bump
         id: global_latest
@@ -250,7 +271,7 @@ jobs:
       - name: Build code
         run: yarn build
         env:
-          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
+          ENGINE_DOMAIN: ${{ needs.detect-release-type.outputs.engine_domain }}
 
       - name: Publish SDK to GitHub Packages (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
@@ -327,7 +348,7 @@ jobs:
       - name: Build code
         run: yarn build
         env:
-          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
+          ENGINE_DOMAIN: ${{ needs.detect-release-type.outputs.engine_domain }}
 
       - name: Prepare CDN upload (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
