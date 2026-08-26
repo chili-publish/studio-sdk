@@ -66,7 +66,7 @@ jobs:
       npm_scope: ${{ steps.detect.outputs.npm_scope }}
       subscription_id: ${{ steps.detect.outputs.subscription_id }}
       storage_account_name: ${{ steps.detect.outputs.storage_account_name }}
-      engine_domain: ${{ steps.studio_cdn.outputs.hostname }}
+      engine_domain: ${{ steps.studio_cdn_uat.outputs.hostname || steps.studio_cdn_prd.outputs.hostname }}
       update_global_latest: ${{ steps.global_latest.outputs.update_global_latest }}
     steps:
       - name: Checkout code
@@ -109,11 +109,20 @@ jobs:
           VERSION=$(echo "$TAG_NAME" | sed 's/^v//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Resolve Studio CDN hostname
-        id: studio_cdn
+      # Mutually exclusive: empty env hostname must reach the resolver and fail (no cross-env || fallback)
+      - name: Resolve Studio CDN hostname (UAT)
+        id: studio_cdn_uat
+        if: steps.detect.outputs.is_uat == 'true'
         uses: ./.github/actions/resolve-studio-cdn-hostname
         with:
-          hostname: ${{ steps.detect.outputs.is_uat == 'true' && vars.STUDIO_CDN_HOSTNAME_UAT || vars.STUDIO_CDN_HOSTNAME_PROD }}
+          hostname: ${{ vars.STUDIO_CDN_HOSTNAME_UAT }}
+
+      - name: Resolve Studio CDN hostname (PRD)
+        id: studio_cdn_prd
+        if: steps.detect.outputs.is_prd == 'true'
+        uses: ./.github/actions/resolve-studio-cdn-hostname
+        with:
+          hostname: ${{ vars.STUDIO_CDN_HOSTNAME_PROD }}
 
       - name: Compute global latest for CDN / main bump
         id: global_latest

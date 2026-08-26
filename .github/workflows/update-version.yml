@@ -27,19 +27,27 @@ jobs:
     env:
       STORAGE_ACCOUNT_NAME: ${{ (inputs.environment == 'PRD') && vars.STORAGE_ACCOUNT_NAME_PROD || vars.STORAGE_ACCOUNT_NAME_UAT }}
       SUBSCRIPTION_ID: ${{ (inputs.environment == 'PRD') && vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD || vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}
-      STUDIO_CDN_HOSTNAME: ${{ (inputs.environment == 'PRD') && vars.STUDIO_CDN_HOSTNAME_PROD || vars.STUDIO_CDN_HOSTNAME_UAT }}
     steps:
       - uses: actions/checkout@v7
 
-      - name: Resolve Studio CDN hostname
-        id: studio_cdn
+      # Mutually exclusive: empty env hostname must reach the resolver and fail (no cross-env || fallback)
+      - name: Resolve Studio CDN hostname (PRD)
+        id: studio_cdn_prd
+        if: inputs.environment == 'PRD'
         uses: ./.github/actions/resolve-studio-cdn-hostname
         with:
-          hostname: ${{ env.STUDIO_CDN_HOSTNAME }}
+          hostname: ${{ vars.STUDIO_CDN_HOSTNAME_PROD }}
+
+      - name: Resolve Studio CDN hostname (UAT)
+        id: studio_cdn_uat
+        if: inputs.environment == 'UAT'
+        uses: ./.github/actions/resolve-studio-cdn-hostname
+        with:
+          hostname: ${{ vars.STUDIO_CDN_HOSTNAME_UAT }}
 
       - name: Download and update versions file
         env:
-          STORAGE_BASE_URL: https://${{ steps.studio_cdn.outputs.hostname }}
+          STORAGE_BASE_URL: https://${{ steps.studio_cdn_prd.outputs.hostname || steps.studio_cdn_uat.outputs.hostname }}
         run: |
           # Create temporary directory
           mkdir -p temp
