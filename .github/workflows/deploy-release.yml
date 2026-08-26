@@ -66,9 +66,14 @@ jobs:
       npm_scope: ${{ steps.detect.outputs.npm_scope }}
       subscription_id: ${{ steps.detect.outputs.subscription_id }}
       storage_account_name: ${{ steps.detect.outputs.storage_account_name }}
-      engine_domain: ${{ steps.detect.outputs.engine_domain }}
+      engine_domain: ${{ steps.studio_cdn.outputs.hostname }}
       update_global_latest: ${{ steps.global_latest.outputs.update_global_latest }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref }}
+
       - name: Detect release type
         id: detect
         run: |
@@ -85,7 +90,6 @@ jobs:
             echo "npm_scope=@chili-publish" >> $GITHUB_OUTPUT
             echo "subscription_id=${{ vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}" >> $GITHUB_OUTPUT
             echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_UAT }}" >> $GITHUB_OUTPUT
-            echo "engine_domain=studio-cdn.chiligrafx-uat.com" >> $GITHUB_OUTPUT
             echo "Detected UAT release: $TAG_NAME"
           elif [[ "$TAG_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "is_uat=false" >> $GITHUB_OUTPUT
@@ -95,7 +99,6 @@ jobs:
             echo "npm_scope=" >> $GITHUB_OUTPUT
             echo "subscription_id=${{ vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD }}" >> $GITHUB_OUTPUT
             echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_PROD }}" >> $GITHUB_OUTPUT
-            echo "engine_domain=studio-cdn.chiligrafx.com" >> $GITHUB_OUTPUT
             echo "Detected PRD release: $TAG_NAME"
           else
             echo "❌ Error: Tag format not recognized. Expected format: X.Y.Z (PRD) or X.Y.Z-rc.N (UAT)"
@@ -105,6 +108,12 @@ jobs:
           # Extract version from tag (remove v prefix if present)
           VERSION=$(echo "$TAG_NAME" | sed 's/^v//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Resolve Studio CDN hostname
+        id: studio_cdn
+        uses: ./.github/actions/resolve-studio-cdn-hostname
+        with:
+          hostname: ${{ steps.detect.outputs.is_uat == 'true' && vars.STUDIO_CDN_HOSTNAME_UAT || vars.STUDIO_CDN_HOSTNAME_PROD }}
 
       - name: Compute global latest for CDN / main bump
         id: global_latest
