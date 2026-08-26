@@ -60,6 +60,7 @@ jobs:
       npm_scope: ${{ steps.detect.outputs.npm_scope }}
       subscription_id: ${{ steps.detect.outputs.subscription_id }}
       storage_account_name: ${{ steps.detect.outputs.storage_account_name }}
+      engine_domain: ${{ steps.detect.outputs.engine_domain }}
       update_global_latest: ${{ steps.global_latest.outputs.update_global_latest }}
     steps:
       - name: Detect release type
@@ -78,6 +79,7 @@ jobs:
             echo "npm_scope=@chili-publish" >> $GITHUB_OUTPUT
             echo "subscription_id=${{ vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}" >> $GITHUB_OUTPUT
             echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_UAT }}" >> $GITHUB_OUTPUT
+            echo "engine_domain=studio-cdn.chiligrafx-uat.com" >> $GITHUB_OUTPUT
             echo "Detected UAT release: $TAG_NAME"
           elif [[ "$TAG_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "is_uat=false" >> $GITHUB_OUTPUT
@@ -87,6 +89,7 @@ jobs:
             echo "npm_scope=" >> $GITHUB_OUTPUT
             echo "subscription_id=${{ vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD }}" >> $GITHUB_OUTPUT
             echo "storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME_PROD }}" >> $GITHUB_OUTPUT
+            echo "engine_domain=studio-cdn.chiligrafx.com" >> $GITHUB_OUTPUT
             echo "Detected PRD release: $TAG_NAME"
           else
             echo "❌ Error: Tag format not recognized. Expected format: X.Y.Z (PRD) or X.Y.Z-rc.N (UAT)"
@@ -244,7 +247,7 @@ jobs:
       - name: Build code
         run: yarn build
         env:
-          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
+          ENGINE_DOMAIN: ${{ needs.detect-release-type.outputs.engine_domain }}
 
       - name: Publish SDK to GitHub Packages (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
@@ -321,7 +324,7 @@ jobs:
       - name: Build code
         run: yarn build
         env:
-          ENGINE_DOMAIN: ${{ vars.ENGINE_DOMAIN }}
+          ENGINE_DOMAIN: ${{ needs.detect-release-type.outputs.engine_domain }}
 
       - name: Prepare CDN upload (UAT)
         if: needs.detect-release-type.outputs.is_uat == 'true'
