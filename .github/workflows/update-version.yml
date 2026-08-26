@@ -29,7 +29,7 @@ jobs:
       SUBSCRIPTION_ID: ${{ (inputs.environment == 'PRD') && vars.AZ_SUBSCRIPTION_ID_GRAFX_PRD || vars.AZ_SUBSCRIPTION_ID_SAAS_UAT }}
       STORAGE_BASE_URL: ${{ (inputs.environment == 'PRD') && 'https://studio-cdn.chiligrafx.com' || 'https://studio-cdn.chiligrafx-uat.com' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - name: Download and update versions file
         run: |
