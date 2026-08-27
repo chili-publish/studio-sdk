@@ -1,8 +1,4 @@
-import {
-    ConnectorMapping,
-    ConnectorMappingDirection,
-    ConnectorMappingSource,
-} from '../../types/ConnectorTypes';
+import { ConnectorMapping, ConnectorMappingDirection, ConnectorMappingSource } from '../../types/ConnectorTypes';
 
 describe('ConnectorMapping', () => {
     it('sets sourceField for variable engineToConnector mappings', () => {

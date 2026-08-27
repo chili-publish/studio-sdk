@@ -372,7 +372,10 @@ export enum UploadAssetValidationErrorType {
 }
 
 export class UploadAssetValidationError extends Error {
-    constructor(message: string, public type: UploadAssetValidationErrorType) {
+    constructor(
+        message: string,
+        public type: UploadAssetValidationErrorType,
+    ) {
         super(message);
     }
 }

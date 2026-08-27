@@ -91,15 +91,7 @@ export type HexColor = {
 };
 
 export type Color =
-    | RGBColor
-    | CMYKColor
-    | HSLColor
-    | GrayColor
-    | SpotColor
-    | HexColor
-    | SpotColorCMYK
-    | SpotColorRGB
-    | SpotColorHEX;
+    RGBColor | CMYKColor | HSLColor | GrayColor | SpotColor | HexColor | SpotColorCMYK | SpotColorRGB | SpotColorHEX;
 
 export type ColorUpdate = Color;
 
@@ -159,5 +151,6 @@ export enum ColorUsageType {
      *
      * The color is referencing a brand kit color
      */
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     stylekit = 'brandKit',
 }
