@@ -54,7 +54,7 @@ jobs:
       - name: run tests
         run: yarn cover
       - name: bump version
-        uses: phips28/gh-action-bump-version@v11.0.7
+        uses: phips28/gh-action-bump-version@fdad52b3b3bbe8fad96b8ca18c56127a96f603db # v11.0.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -74,7 +74,7 @@ jobs:
         run: node ./.github/scripts/commit.js
       - name: get new npm version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
+        run: echo "current-version=$(node -p "require('./packages/sdk/package.json').version")" >> $GITHUB_OUTPUT
       - name: copy file branch
         run: |
           path=packages/sdk/upload/latest
@@ -84,7 +84,7 @@ jobs:
           mkdir -p ${versionpath%"/merge"}
           cp -R packages/sdk/_bundles/* ${versionpath%"/merge"}
       - name: Azure Login
-        uses: azure/login@v2
+        uses: azure/login@7ddb5af1ef8758cf1353cf3b42f940aee27ba21c # v3.0.2
         with:
           creds: >-
             {
@@ -94,7 +94,7 @@ jobs:
               "subscriptionId": "${{ vars.AZ_SUBSCRIPTION_ID_SAAS_DEV }}"
             }
       - name: Copy to Azure Blob Storage (SDK)
-        uses: azure/cli@v2
+        uses: azure/cli@9eb25b8360668fb0ecbafa808d40e2197b2f5f52 # v3.0.0
         with:
           inlineScript: |
             az storage blob upload-batch \
@@ -108,7 +108,7 @@ jobs:
         run: |
           node cicd.js actions node scripts/prepare-release.mjs
       - name: Copy to Azure Blob Storage (Actions)
-        uses: azure/cli@v2
+        uses: azure/cli@9eb25b8360668fb0ecbafa808d40e2197b2f5f52 # v3.0.0
         with:
           inlineScript: |
             az storage blob upload-batch \
