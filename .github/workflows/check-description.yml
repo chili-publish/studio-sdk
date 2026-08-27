@@ -14,7 +14,7 @@ jobs:
               with:
                   script: |
                       const body = context.payload.pull_request.body ?? '';
-                      const jiraPattern = /(?:https:\/\/[\w.-]+\.atlassian\.net\/browse\/|[A-Z][A-Z0-9]+-\d+)/i;
+                      const jiraPattern = /(?:https:\/\/[\w.-]+\.atlassian\.net\/browse\/[A-Z][A-Z0-9]+-\d+|[A-Z][A-Z0-9]+-\d+)/i;
                       if (!jiraPattern.test(body)) {
                           core.setFailed('PR description must contain a JIRA ticket link or key (e.g. GRAFX-1234). Add the `No JIRA ticket` label to skip.');
                       }
