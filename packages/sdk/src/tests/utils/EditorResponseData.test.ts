@@ -61,7 +61,6 @@ describe('EditorResponseData Util(s)', () => {
         let consoleErrorSpy: jest.SpyInstance;
 
         beforeAll(() => {
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
             consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         });
 

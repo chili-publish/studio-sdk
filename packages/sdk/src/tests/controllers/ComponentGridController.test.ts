@@ -1,7 +1,5 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
-import {
-    ComponentGridSettingsDeltaUpdate,
-} from '../../types/ComponentGridTypes';
+import { ComponentGridSettingsDeltaUpdate } from '../../types/ComponentGridTypes';
 import { ComponentFitEnum, ComponentSourceTypeEnum } from '../../types/FrameTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
@@ -55,7 +53,13 @@ describe('ComponentGridController', () => {
 
     describe('setMapping', () => {
         it('Should be possible to set component grid mapping', async () => {
-            await mockedComponentGridController.setMapping(id, 'component-id', 'target-variable-id', 'source-variable-id', 'source-field');
+            await mockedComponentGridController.setMapping(
+                id,
+                'component-id',
+                'target-variable-id',
+                'source-variable-id',
+                'source-field',
+            );
             expect(mockedEditorApi.setComponentGridMapping).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.setComponentGridMapping).toHaveBeenCalledWith(
                 id,

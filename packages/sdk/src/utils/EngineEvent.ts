@@ -9,7 +9,10 @@ interface Unsubscriber {
 export class EngineEvent<T extends (...args: any[]) => void> extends EngineEventTrigger<T> {
     private subscriptions: Set<T> = new Set();
 
-    constructor(private legacyHandler: () => T | undefined, logger?: LoggerFunction) {
+    constructor(
+        private legacyHandler: () => T | undefined,
+        logger?: LoggerFunction,
+    ) {
         super(logger);
     }
 
