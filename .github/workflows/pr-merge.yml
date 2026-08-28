@@ -54,7 +54,7 @@ jobs:
       - name: run tests
         run: yarn cover
       - name: bump version
-        uses: phips28/gh-action-bump-version@fdad52b3b3bbe8fad96b8ca18c56127a96f603db # v11.0.7
+        uses: phips28/gh-action-bump-version@e25d05e139958e4b7688a467846f673eaf86ce47 # v12.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
