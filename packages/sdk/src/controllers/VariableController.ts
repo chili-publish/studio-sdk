@@ -602,6 +602,33 @@ export class VariableController {
     };
 
     /**
+     * Internal private method to set/reset a description for a variable
+     */
+    #setDescription = async (id: string, description: string | null) => {
+        const res = await this.#editorAPI;
+        return res.setVariableDescription(id, description).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method sets a new description for a variable
+     * @param id id of the variable
+     * @param description description of the variable
+     * @returns
+     */
+    setDescription = async (id: string, description: string) => {
+        return this.#setDescription(id, description);
+    };
+
+    /**
+     * This method resets a description for a variable
+     * @param id id of the variable
+     * @returns
+     */
+    resetDescription = async (id: string) => {
+        return this.#setDescription(id, null);
+    };
+
+    /**
      * This method sets a new type for a variable
      * @param id id of the variable
      * @param type type of the variable
