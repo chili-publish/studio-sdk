@@ -1,7 +1,20 @@
 import * as ConnectorFunctions from '../../interactions/Connector';
 
 const editorLink = 'https://test.test.net/';
+const createObjectURLMock = URL.createObjectURL as jest.MockedFunction<typeof URL.createObjectURL>;
+const revokeObjectURLMock = URL.revokeObjectURL as jest.MockedFunction<typeof URL.revokeObjectURL>;
+
+const readBlob = (blob: Blob) =>
+    new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => resolve(String(reader.result)));
+        reader.addEventListener('error', () => reject(reader.error));
+        reader.readAsText(blob);
+    });
+
 beforeEach(() => {
+    createObjectURLMock.mockClear();
+    revokeObjectURLMock.mockClear();
     jest.spyOn(ConnectorFunctions, 'validateEditorLink');
     jest.spyOn(ConnectorFunctions, 'setupFrame');
     Object.defineProperty(window, 'initializeStudioEngine', {
@@ -18,16 +31,23 @@ describe('Connector helpers', () => {
         expect(validatedLink).toEqual(editorLink);
     });
 
-    it('setups an Iframe from a link', () => {
+    it('loads the iframe HTML from a blob URL', async () => {
         const iframe = document.createElement('iframe');
-        iframe.setAttribute('srcdoc', ' ');
         iframe.setAttribute('title', 'Chili-Editor');
         iframe.setAttribute('style', 'width: 100%; height: 100%;');
         iframe.setAttribute('frameBorder', '0');
         iframe.setAttribute('referrerpolicy', 'origin');
-        ConnectorFunctions.setupFrame(iframe, editorLink);
-        // expect(iframe.srcdoc).toEqual('placeholder');
-        // expect(iframe.title).toEqual('Chili-Editor');
+        const blobUrl = ConnectorFunctions.setupFrame(iframe, editorLink);
+
+        expect(createObjectURLMock).toHaveBeenCalledTimes(1);
+        const blob = createObjectURLMock.mock.calls[0][0];
+        if (!(blob instanceof Blob)) {
+            throw new Error('Expected setupFrame to create a Blob');
+        }
+        expect(blob.type).toBe('text/html');
+        expect(await readBlob(blob)).toContain(`<script src="${editorLink}flutter_bootstrap.js"></script>`);
+        expect(iframe.getAttribute('src')).toBe(blobUrl);
+        expect(iframe).not.toHaveAttribute('srcdoc');
     });
 
     it('removes the engine iframe and its message listener on teardown', () => {
@@ -47,6 +67,7 @@ describe('Connector helpers', () => {
 
         expect(container.getElementsByTagName('iframe')).toHaveLength(0);
         expect(removeSpy).toHaveBeenCalledWith('message', messageListener);
+        expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-studio-frame');
 
         container.remove();
         addSpy.mockRestore();
@@ -77,21 +98,16 @@ describe('Connector helpers', () => {
         container.remove();
     });
 
-    it('sets the studioStyling script in iFrame head', () => {
+    it('sets the studioStyling metadata in the iframe HTML blob', async () => {
         const styling = { uiBackgroundColorHex: '000000' };
 
         const iframe = document.createElement('iframe');
         ConnectorFunctions.setupFrame(iframe, editorLink, styling);
-        const doc = iframe.ownerDocument;
-
-        const metas = doc.head.getElementsByTagName('meta');
-
-        for (let i = 0; i < metas.length; i++) {
-            const meta = metas[i];
-            if (meta.getAttribute('name') === 'studio-styling') {
-                const content = meta.getAttribute('content');
-                expect(content).toEqual(JSON.stringify(styling));
-            }
+        const blob = createObjectURLMock.mock.calls[0][0];
+        if (!(blob instanceof Blob)) {
+            throw new Error('Expected setupFrame to create a Blob');
         }
+
+        expect(await readBlob(blob)).toContain(`<meta name="studio-styling" content='${JSON.stringify(styling)}'>`);
     });
 });
