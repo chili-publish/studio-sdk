@@ -70,7 +70,11 @@ const markForInstrumentation = (controller: object): void => {
 };
 
 const isPendingInstrumentation = (value: unknown): value is object => {
-    return typeof value === 'object' && value !== null && (value as Record<symbol, unknown>)[PENDING_INSTRUMENTATION] === true;
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        (value as Record<symbol, unknown>)[PENDING_INSTRUMENTATION] === true
+    );
 };
 
 export class SDK {
@@ -164,7 +168,9 @@ export class SDK {
         this.mediaConnector = this.toInstrumented(new MediaConnectorController(this.editorAPI));
         this.fontConnector = this.toInstrumented(new FontConnectorController(this.editorAPI));
         this.componentConnector = this.toInstrumented(new ComponentConnectorController(this.editorAPI));
-        this.dataConnector = this.toInstrumented(new DataConnectorController(this.editorAPI, this.dataItemMappingTools));
+        this.dataConnector = this.toInstrumented(
+            new DataConnectorController(this.editorAPI, this.dataItemMappingTools),
+        );
         this.dataSource = this.toInstrumented(new DataSourceController(this.editorAPI, this.dataItemMappingTools));
         this.animation = this.toInstrumented(new AnimationController(this.editorAPI));
         this.document = this.toInstrumented(new DocumentController(this.editorAPI));
@@ -304,7 +310,9 @@ export class SDK {
         this.mediaConnector = this.toInstrumented(new MediaConnectorController(this.editorAPI));
         this.fontConnector = this.toInstrumented(new FontConnectorController(this.editorAPI));
         this.componentConnector = this.toInstrumented(new ComponentConnectorController(this.editorAPI));
-        this.dataConnector = this.toInstrumented(new DataConnectorController(this.editorAPI, this.dataItemMappingTools));
+        this.dataConnector = this.toInstrumented(
+            new DataConnectorController(this.editorAPI, this.dataItemMappingTools),
+        );
         this.dataSource = this.toInstrumented(new DataSourceController(this.editorAPI, this.dataItemMappingTools));
         this.connector = this.toInstrumented(new ConnectorController(this.editorAPI, this.localConfig));
         this.variable = this.toInstrumented(new VariableController(this.editorAPI, this.dataItemMappingTools));
