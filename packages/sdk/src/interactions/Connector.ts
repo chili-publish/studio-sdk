@@ -20,7 +20,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     const stylingJson = JSON.stringify(styling || {});
     const html = `<html>
     <head>
-        <base href="/" />
+        <base href="${link}" />
             <meta charset="UTF-8"/>
         <!--  use this property to pass the StudioStyling to the engine -->
             <meta name="studio-styling" content='${stylingJson}'>
