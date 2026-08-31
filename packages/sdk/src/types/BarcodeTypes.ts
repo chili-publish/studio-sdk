@@ -19,7 +19,7 @@ export interface BarcodeProperties {
     backgroundOverprint?: boolean;
     enableBars?: boolean;
     barColor?: ColorUsage;
-    barOverprint?: boolean;
+    barcodeOverprint?: boolean;
     enableText?: boolean;
     barHeight?: string;
     magnification?: number;

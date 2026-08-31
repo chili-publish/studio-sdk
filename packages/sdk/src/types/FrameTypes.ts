@@ -164,7 +164,7 @@ export type BarcodeFrame = {
         errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
         characterSet?: BarcodeCharacterSet;
         drawStartStopChars: boolean;
-        barOverprint: boolean;
+        barcodeOverprint: boolean;
         backgroundOverprint: boolean;
     };
     src?: BarcodeSource;
