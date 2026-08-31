@@ -45,7 +45,9 @@ describe('Connector helpers', () => {
             throw new Error('Expected setupFrame to create a Blob');
         }
         expect(blob.type).toBe('text/html');
-        expect(await readBlob(blob)).toContain(`<script src="${editorLink}flutter_bootstrap.js"></script>`);
+        const html = await readBlob(blob);
+        expect(html).toContain(`<base href="${editorLink}" />`);
+        expect(html).toContain(`<script src="${editorLink}flutter_bootstrap.js"></script>`);
         expect(iframe.getAttribute('src')).toBe(blobUrl);
         expect(iframe).not.toHaveAttribute('srcdoc');
     });
