@@ -14,6 +14,7 @@ export enum BarcodeType {
 }
 
 export interface BarcodeProperties {
+    enableBars?: boolean;
     enableBackground?: boolean;
     backgroundColor?: ColorUsage;
     backgroundOverprint?: boolean;

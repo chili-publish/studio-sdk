@@ -153,6 +153,7 @@ export type BarcodeFrame = {
     type: FrameTypeEnum.barcode;
     blendMode: BlendMode;
     barcodeProperties: {
+        enableBars: boolean;
         enableBackground: boolean;
         backgroundColor: ColorUsage;
         enableBarColor: boolean;
