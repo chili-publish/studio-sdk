@@ -18,7 +18,6 @@ export interface BarcodeProperties {
     enableBackground?: boolean;
     backgroundColor?: ColorUsage;
     backgroundOverprint?: boolean;
-    enableBars?: boolean;
     barColor?: ColorUsage;
     barcodeOverprint?: boolean;
     enableText?: boolean;
