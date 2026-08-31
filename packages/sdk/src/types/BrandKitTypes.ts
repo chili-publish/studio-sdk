@@ -32,12 +32,7 @@ export type SpotHEXColorValue = BaseBrandKitColor & {
 };
 
 export type APIBrandKitColor =
-    | RGBColorValue
-    | CMYKColorValue
-    | HEXColorValue
-    | SpotRGBColorValue
-    | SpotCMYKColorValue
-    | SpotHEXColorValue;
+    RGBColorValue | CMYKColorValue | HEXColorValue | SpotRGBColorValue | SpotCMYKColorValue | SpotHEXColorValue;
 
 export type APIBrandKitFont = {
     fontFamilyId: string;

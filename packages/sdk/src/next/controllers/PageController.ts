@@ -15,6 +15,7 @@ export class PageController {
     /**
      * @ignore
      */
+    // eslint-disable-next-line no-unused-private-class-members
     #blobAPI: EditorRawAPI;
 
     /**

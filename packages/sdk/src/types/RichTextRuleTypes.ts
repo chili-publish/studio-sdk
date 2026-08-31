@@ -22,10 +22,7 @@ export enum StructuredTextStyleKind {
  * A style rule for rich text parsing.
  */
 export type StructuredTextStyleRule =
-    | ParagraphTextStyleRule
-    | CharacterTextStyleRule
-    | LineBreakTextStyleRule
-    | InlineStyleTextStyleRule;
+    ParagraphTextStyleRule | CharacterTextStyleRule | LineBreakTextStyleRule | InlineStyleTextStyleRule;
 
 export interface ParagraphTextStyleRule {
     matcher: StructuredTextNodeMatcher;

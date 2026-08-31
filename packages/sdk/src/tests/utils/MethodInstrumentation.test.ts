@@ -124,11 +124,21 @@ describe('MethodInstrumentation', () => {
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents();
 
-        const initialController = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const initialController = wrapWithInvocationObserver(
+            new ExampleController(),
+            'variable',
+            listenerRegistry,
+            sdkEvents,
+        );
         const listener = jest.fn();
         initialController.multiply.addEventListener(listener);
 
-        const refreshedController = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents);
+        const refreshedController = wrapWithInvocationObserver(
+            new ExampleController(),
+            'variable',
+            listenerRegistry,
+            sdkEvents,
+        );
         refreshedController.multiply(4, 5);
 
         expect(listener).toHaveBeenCalledTimes(2);
@@ -183,7 +193,13 @@ describe('MethodInstrumentation', () => {
         const logger = jest.fn();
         const listenerRegistry = new MethodListenerRegistry();
         const sdkEvents = new SdkEvents(logger);
-        const controller = wrapWithInvocationObserver(new ExampleController(), 'variable', listenerRegistry, sdkEvents, logger);
+        const controller = wrapWithInvocationObserver(
+            new ExampleController(),
+            'variable',
+            listenerRegistry,
+            sdkEvents,
+            logger,
+        );
 
         controller.multiply.addEventListener(() => {
             throw new Error('listener-crash');

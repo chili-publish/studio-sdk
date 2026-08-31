@@ -147,7 +147,6 @@ describe('UtilsController', () => {
         });
 
         it('should throw the "SDKUnauthorizedError" exception', async () => {
-
             mockFetch.mockResolvedValue({
                 ok: false,
                 status: 401,

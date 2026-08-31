@@ -76,16 +76,13 @@ export type ShapeFramePolygonSource = {
 
 export type ShapeFrameCustomSource = {
     type: ShapeType.custom;
-    /**  
-     * The shape path is in relative coordinates to the frame, 
-     * with the top left corner of the frame being (0, 0) and the 
-     * bottom right corner being (1, 1). The path should be a valid SVG path string. 
+    /**
+     * The shape path is in relative coordinates to the frame,
+     * with the top left corner of the frame being (0, 0) and the
+     * bottom right corner being (1, 1). The path should be a valid SVG path string.
      */
     path: string;
 };
 
 export type ShapeFrameSource =
-    | ShapeFrameRectSource
-    | ShapeFrameEllipseSource
-    | ShapeFramePolygonSource
-    | ShapeFrameCustomSource;
+    ShapeFrameRectSource | ShapeFrameEllipseSource | ShapeFramePolygonSource | ShapeFrameCustomSource;
