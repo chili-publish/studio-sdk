@@ -20,7 +20,7 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     const stylingJson = JSON.stringify(styling || {});
     const html = `<html>
     <head>
-        <base href="/" />
+        <base href="${link}" />
             <meta charset="UTF-8"/>
         <!--  use this property to pass the StudioStyling to the engine -->
             <meta name="studio-styling" content='${stylingJson}'>
@@ -87,9 +87,9 @@ export const setupFrame = (iframe: HTMLIFrameElement, editorLink: string, stylin
     </body>
 </html>`;
 
-    // Set the iframe's content using DOM manipulation
-    // eslint-disable-next-line no-param-reassign
-    iframe.srcdoc = html;
+    const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    iframe.setAttribute('src', blobUrl);
+    return blobUrl;
 };
 
 interface ConfigParameterTypes {
@@ -151,7 +151,7 @@ const Connect = (
 ) => {
     const editorSelectorId = `#${editorId}`;
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('srcdoc', ' ');
+    iframe.setAttribute('src', 'about:blank');
     iframe.setAttribute('title', 'Chili-Editor');
     iframe.setAttribute('style', 'width: 100%; height: 100%;');
     iframe.setAttribute('frameBorder', '0');
@@ -166,6 +166,7 @@ const Connect = (
     // reference of its own.
     let messageHandler: ((event: MessageEvent) => void) | null = null;
     let domContentLoadedHandler: (() => void) | null = null;
+    let frameBlobUrl: string | null = null;
 
     /**
      * Releases the iframe and listeners this `Connect` call attached. Safe to call
@@ -181,6 +182,10 @@ const Connect = (
             domContentLoadedHandler = null;
         }
         iframe.remove();
+        if (frameBlobUrl) {
+            URL.revokeObjectURL(frameBlobUrl);
+            frameBlobUrl = null;
+        }
     };
 
     const setupNewFrame = () => {
@@ -198,7 +203,7 @@ const Connect = (
             );
 
             try {
-                setupFrame(iframe, editorLink, styling);
+                frameBlobUrl = setupFrame(iframe, editorLink, styling);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     onSetupFrameError?.(error);
