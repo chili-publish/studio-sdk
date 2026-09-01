@@ -56,6 +56,7 @@ export interface Variable {
     occurrences: number;
     placeholder?: string | null;
     helpText?: string | null;
+    description?: string | null;
     privateData: PrivateData;
 }
 
