@@ -218,6 +218,7 @@ declare module 'grafx-studio-actions' {
         export interface Layout extends HasName {
             readonly width: number;
             readonly height: number;
+            readonly intent: LayoutIntent;
         }
 
         export interface LayoutMethods {
@@ -335,6 +336,12 @@ declare module 'grafx-studio-actions' {
             shape = 'shape',
             image = 'image',
             barcode = 'barcode',
+        }
+
+        export enum LayoutIntent {
+            print = 'print',
+            digitalStatic = 'digitalStatic',
+            digitalAnimated = 'digitalAnimated',
         }
 
         /**
