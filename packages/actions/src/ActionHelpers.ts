@@ -660,6 +660,19 @@ function getSelectedLayoutName(): string {
 }
 
 /**
+ * Get the intent of a layout.
+ *
+ * @param {string | Layout | VariableValue} name - The name of the layout, a layout object, or a variable value holding the layout name.
+ *
+ * @returns {LayoutIntent} The intent of the layout (`print`, `digitalStatic`, or `digitalAnimated`).
+ *
+ * @throws {Error} Throws an error if the specified layout does not exist.
+ */
+function getLayoutIntent(name: string | Layout | VariableValue): LayoutIntent {
+    return studio.layouts.byName(name).intent;
+}
+
+/**
  * Selects a layout by its name or layout object.
  *
  * @param {string | Layout | VariableValue} layoutName - The name of the layout or a variable value holding the layout name or a layout object to select.
