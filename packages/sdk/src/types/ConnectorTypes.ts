@@ -393,6 +393,10 @@ interface ConnectorDefinition {
     id: Id;
     name: string;
     type: ConnectorType;
-    supportedAuthentication: { browser: ConnectorSupportedAuth[]; server: ConnectorSupportedAuth[] };
+    supportedAuthentication: {
+        browser: ConnectorSupportedAuth[];
+        server: ConnectorSupportedAuth[];
+        integration: ConnectorSupportedAuth[];
+    };
     externalSourceId?: string | null;
 }
