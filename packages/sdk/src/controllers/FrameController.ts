@@ -753,7 +753,12 @@ export class FrameController {
     };
 
     /**
-     * This method will set the container shape of a specified frame
+     * This method will set the container shape of a specified frame (the mask/crop shape a
+     * frame, e.g. an image frame, is clipped to).
+     *
+     * This is the counterpart of {@link ShapeController.setShapeFrameSource}, which sets the
+     * geometry of a shape frame's own source instead of a frame's container. Both accept the
+     * same {@link ShapeFrameSource} shape.
      * @param frameId the id of the frame that needs to get updated
      * @param value the shape frame source object
      * @returns

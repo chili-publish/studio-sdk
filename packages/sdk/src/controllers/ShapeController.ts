@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
-import { CornerRadiusUpdateModel, ShapeProperties } from '../types/ShapeTypes';
+import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeProperties } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -163,5 +163,25 @@ export class ShapeController {
     setRadiusBottomRight = async (id: Id, radius: number) => {
         const cornerRadius: CornerRadiusUpdateModel = { bottomRight: radius };
         return this.setShapeCorners(id, cornerRadius);
+    };
+
+    /**
+     * This method sets the shape source (geometry) of a shape frame, e.g. its type
+     * (`rectangle`, `ellipse`, `polygon` or `custom`), corner radius, polygon side count or,
+     * for a `custom` shape, its path. Note that the `path` of a `custom` shape is expressed
+     * in coordinates relative to the frame (`0` to `1`), not absolute units.
+     *
+     * This is the counterpart of {@link FrameController.setFrameContainerShape}, which sets
+     * the mask/crop shape of an image frame's container instead of a shape frame's own
+     * geometry. Both accept the same {@link ShapeFrameSource} shape.
+     * @param id the id of the shapeFrame that needs to get updated.
+     * @param source the new shape source to set on the shape frame.
+     * @returns
+     */
+    setShapeFrameSource = async (id: Id, source: ShapeFrameSource) => {
+        const res = await this.#editorAPI;
+        return res
+            .setShapeFrameSource(id, JSON.stringify(source))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }

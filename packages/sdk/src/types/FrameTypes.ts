@@ -110,8 +110,13 @@ export type ShapeFrame = {
     };
     src: {
         type: ShapeType;
-        cornerRadius: CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
+        // present for `rectangle` and `polygon`, absent for `ellipse` and `custom`
+        cornerRadius?: CornerRadiusNone | CornerRadiusAll | CornerRadiusOnly;
+        // present for `polygon` only
         sides?: number;
+        // present for `custom` only; an SVG-style path string (`M`/`L`/`C`/`Z` commands only)
+        // in coordinates relative to the frame (`0` to `1`), not absolute units
+        path?: string;
     };
     dropShadowSettings?: DropShadowSettings;
     gradient?: GradientUsage;
