@@ -43,7 +43,13 @@ export class ComponentGridController {
      * @param sourceField the source field to map to
      * @returns
      */
-    setMapping = async (frameId: Id, componentId: string, targetVariableId: string, sourceVariableId: string | null, sourceField: string | null) => {
+    setMapping = async (
+        frameId: Id,
+        componentId: string,
+        targetVariableId: string,
+        sourceVariableId: string | null,
+        sourceField: string | null,
+    ) => {
         const res = await this.#editorAPI;
         return res
             .setComponentGridMapping(frameId, componentId, targetVariableId, sourceVariableId, sourceField)

@@ -1,9 +1,11 @@
 {
-    "version": "1.46.0-alpha.4",
+    "version": "1.47.0-alpha.3",
     "name": "studio-sdk-monorepo",
     "description": "The umbrella project of grafx studio sdk",
+    "private": true,
     "scripts": {
         "install": "node cicd.js sdk,actions,connectors yarn install",
+        "postinstall": "node ./node_modules/husky/lib/bin install",
         "clean": "node cicd.js sdk yarn clean",
         "build": "node cicd.js sdk,actions,connectors yarn build",
         "build:dev": "node cicd.js sdk yarn build:dev",
@@ -21,5 +23,8 @@
     },
     "dependencies": {
         "glob": "^10.3.5"
+    },
+    "devDependencies": {
+        "husky": "^8.0.3"
     }
 }

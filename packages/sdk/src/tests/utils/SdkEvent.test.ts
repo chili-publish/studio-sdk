@@ -42,12 +42,9 @@ describe('SdkEvent', () => {
 
     test('throws callback errors when configured', () => {
         const sdkEvent = new SdkEvent<() => void>();
-        sdkEvent.registerCallback(
-            () => {
-                throw new Error('Sdk event callback failed');
-            },
-            CallbackErrorBehavior.throw,
-        );
+        sdkEvent.registerCallback(() => {
+            throw new Error('Sdk event callback failed');
+        }, CallbackErrorBehavior.throw);
 
         expect(() => sdkEvent.trigger()).toThrow('Sdk event callback failed');
     });

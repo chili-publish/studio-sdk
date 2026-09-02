@@ -1,0 +1,48 @@
+name: 'Resolve Studio CDN hostname'
+description: >-
+  Validate STUDIO_CDN_HOSTNAME_UAT / STUDIO_CDN_HOSTNAME_PROD and expose the
+  hostname (callers prepend https:// when a full URL is needed).
+
+inputs:
+    hostname:
+        description: 'Studio CDN hostname (e.g. studio-cdn.chiligrafx-uat.com)'
+        required: true
+
+outputs:
+    hostname:
+        description: 'Validated CDN hostname for ENGINE_DOMAIN and https:// URL construction'
+        value: ${{ steps.resolve.outputs.hostname }}
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Resolve and validate Studio CDN hostname
+          id: resolve
+          shell: bash
+          env:
+              HOSTNAME_INPUT: ${{ inputs.hostname }}
+          run: |
+              if [ -z "$HOSTNAME_INPUT" ]; then
+                echo "❌ Error: Studio CDN hostname is not defined or empty."
+                echo "Set the STUDIO_CDN_HOSTNAME_UAT or STUDIO_CDN_HOSTNAME_PROD repo/org variable"
+                echo "(expected a hostname such as studio-cdn.chiligrafx-uat.com)."
+                echo "Aborting so the Studio CDN hostname is not silently defaulted to production."
+                exit 1
+              fi
+
+              if [[ "$HOSTNAME_INPUT" == *"://"* ]] || [[ "$HOSTNAME_INPUT" == *"/"* ]]; then
+                echo "❌ Error: Studio CDN hostname must be a bare hostname without scheme or path (got: $HOSTNAME_INPUT)."
+                echo "Set the STUDIO_CDN_HOSTNAME_UAT or STUDIO_CDN_HOSTNAME_PROD repo/org variable"
+                echo "(expected a hostname such as studio-cdn.chiligrafx-uat.com)."
+                exit 1
+              fi
+
+              HOSTNAME=$(echo "$HOSTNAME_INPUT" | sed -E 's|\.$||')
+
+              if [ -z "$HOSTNAME" ]; then
+                echo "❌ Error: Studio CDN hostname is not usable (got: $HOSTNAME_INPUT)."
+                exit 1
+              fi
+
+              echo "Resolved Studio CDN hostname → $HOSTNAME"
+              echo "hostname=$HOSTNAME" >> "$GITHUB_OUTPUT"

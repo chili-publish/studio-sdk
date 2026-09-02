@@ -479,7 +479,7 @@ describe('SubscriberController', () => {
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(grafxAuthRefreshRequest),
             );
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
             const resultAuth: GrafxTokenAuthCredentials = JSON.parse(resultJsonString!);
 
             expect(resultAuth.token).toBe(refreshedToken);
@@ -501,7 +501,7 @@ describe('SubscriberController', () => {
             const resultJsonString = await mockedSubscriberController.onAuthExpired(
                 JSON.stringify(anyAuthRefreshRequest),
             );
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
             const resultAuth = JSON.parse(resultJsonString!);
 
             expect(resultAuth.type).toBe(AuthCredentialsTypeEnum.refreshed);
@@ -550,7 +550,7 @@ describe('SubscriberController', () => {
             const mockedSubscriberController = new SubscriberController(localMockConfig, new Map<string, string>());
 
             const resultJsonString = mockedSubscriberController.onViewportRequested();
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
             const resultViewport: Viewport = JSON.parse(resultJsonString!);
 
             expect(resultViewport).toStrictEqual(viewport);

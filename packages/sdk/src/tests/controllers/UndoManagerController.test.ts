@@ -1,5 +1,5 @@
 import { AdvancedUndoManagerController, UndoManagerController } from '../../controllers/UndoManagerController';
-// eslint-disable-next-line import/no-named-as-default
+
 import SDK from '../../sdk';
 import { EditorAPI } from '../../types/CommonTypes';
 import { getEditorResponseData, castToEditorResponse } from '../../utils/EditorResponseData';

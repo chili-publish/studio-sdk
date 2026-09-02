@@ -9,7 +9,9 @@ jobs:
     if: github.event.label.name == 'Ready for QA' || github.event.label.name == 'Skip QA'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Skip tests notification
         if: github.event.label.name == 'Skip QA'
         run: |
@@ -23,7 +25,9 @@ jobs:
           gh-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
           gh-app-id: ${{ vars.GH_APP_ID_CHILI_REPO_ACTIONS }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Get GitHub application installation access token
         if: github.event.label.name == 'Ready for QA'
         id: get-gh-app-installation-access-token
@@ -34,7 +38,7 @@ jobs:
 
       - name: Trigger the automated tests
         if: github.event.label.name == 'Ready for QA'
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        uses: step-security/trigger-workflow-and-wait@0269af83b7e0798d945daedac4ed85dcd4b14733 # v1.6.7
         with:
           owner: chili-publish
           repo: editor-qa-framework

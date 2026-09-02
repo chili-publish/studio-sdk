@@ -55,8 +55,6 @@ declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
 const FIXED_EDITOR_LINK = `https://${ENGINE_DOMAIN}/editor/${engineInfo.current}/web`;
 
-let connection: Connection;
-
 // Marks a freshly created controller as "needs instrumentation" without requiring
 // its property name to be tracked anywhere. `applyMethodInstrumentation` later scans
 // the SDK instance for properties carrying this marker and wraps them automatically,
@@ -72,12 +70,17 @@ const markForInstrumentation = (controller: object): void => {
 };
 
 const isPendingInstrumentation = (value: unknown): value is object => {
-    return typeof value === 'object' && value !== null && (value as Record<symbol, unknown>)[PENDING_INSTRUMENTATION] === true;
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        (value as Record<symbol, unknown>)[PENDING_INSTRUMENTATION] === true
+    );
 };
 
 export class SDK {
     config: RuntimeConfigType;
-    connection: Connection;
+    // Set by `loadEditor` via `setConnection`; stays `undefined` until then.
+    connection!: Connection;
 
     /**
      * @ignore
@@ -137,6 +140,8 @@ export class SDK {
     private localConfig = new Map<string, string>();
     private dataItemMappingTools = new DataItemMappingTools();
     private methodListeners = new MethodListenerRegistry();
+    // Releases this instance's engine frame (iframe + listeners); set by `loadEditor`.
+    private teardownFrame: (() => void) | null = null;
 
     /**
      * The SDK should be configured clientside and it exposes all controllers to work with in other applications
@@ -146,8 +151,9 @@ export class SDK {
         this.config = ConfigHelper.createRuntimeConfig(config);
         this.sdkEvents = new SdkEvents(this.config.logging?.logger);
 
-        this.connection = connection;
-        this.editorAPI = connection?.promise.then((child: unknown) => {
+        // `this.connection` only exists once `loadEditor` ran, so the controllers
+        // created here get no live editorAPI yet; `loadEditor` rebuilds them with one.
+        this.editorAPI = this.connection?.promise.then((child: unknown) => {
             return child;
         }) as unknown as EditorAPI;
 
@@ -162,7 +168,9 @@ export class SDK {
         this.mediaConnector = this.toInstrumented(new MediaConnectorController(this.editorAPI));
         this.fontConnector = this.toInstrumented(new FontConnectorController(this.editorAPI));
         this.componentConnector = this.toInstrumented(new ComponentConnectorController(this.editorAPI));
-        this.dataConnector = this.toInstrumented(new DataConnectorController(this.editorAPI, this.dataItemMappingTools));
+        this.dataConnector = this.toInstrumented(
+            new DataConnectorController(this.editorAPI, this.dataItemMappingTools),
+        );
         this.dataSource = this.toInstrumented(new DataSourceController(this.editorAPI, this.dataItemMappingTools));
         this.animation = this.toInstrumented(new AnimationController(this.editorAPI));
         this.document = this.toInstrumented(new DocumentController(this.editorAPI));
@@ -199,7 +207,11 @@ export class SDK {
      * It will generate an iframe in the document
      */
     loadEditor = () => {
-        Connect(
+        // Reloading first releases this instance's previous engine frame, so a second
+        // `loadEditor` can never orphan a live engine. Frames loaded by other SDK
+        // instances are tracked per instance and stay untouched.
+        this.teardownFrame?.();
+        this.teardownFrame = Connect(
             this.config.editorLink || FIXED_EDITOR_LINK,
             {
                 onActionsChanged: this.subscriber.onActionsChanged,
@@ -271,7 +283,9 @@ export class SDK {
                 this.config.onConnectionError?.(error);
             },
         );
-        this.editorAPI = connection?.promise.then((editorAPI: unknown) => {
+        // `Connect` invokes `setConnection` synchronously, so `this.connection`
+        // already points at the fresh connection here.
+        this.editorAPI = this.connection?.promise.then((editorAPI: unknown) => {
             return editorAPI;
         }) as unknown as EditorAPI;
 
@@ -296,7 +310,9 @@ export class SDK {
         this.mediaConnector = this.toInstrumented(new MediaConnectorController(this.editorAPI));
         this.fontConnector = this.toInstrumented(new FontConnectorController(this.editorAPI));
         this.componentConnector = this.toInstrumented(new ComponentConnectorController(this.editorAPI));
-        this.dataConnector = this.toInstrumented(new DataConnectorController(this.editorAPI, this.dataItemMappingTools));
+        this.dataConnector = this.toInstrumented(
+            new DataConnectorController(this.editorAPI, this.dataItemMappingTools),
+        );
         this.dataSource = this.toInstrumented(new DataSourceController(this.editorAPI, this.dataItemMappingTools));
         this.connector = this.toInstrumented(new ConnectorController(this.editorAPI, this.localConfig));
         this.variable = this.toInstrumented(new VariableController(this.editorAPI, this.dataItemMappingTools));
@@ -345,7 +361,33 @@ export class SDK {
     };
 
     setConnection = (newConnection: Connection) => {
-        connection = newConnection;
+        this.connection = newConnection;
+    };
+
+    /**
+     * Shuts this SDK instance down and releases the engine it loaded.
+     *
+     * This tears down the postMessage connection, removes the engine iframe from the
+     * document and drops the references the SDK itself holds. Removing the iframe is what
+     * lets the browser discard the engine realm, which is where the bulk of the memory
+     * lives (the Dart heap plus the CanvasKit and QuickJS WASM memory).
+     *
+     * Call this whenever an integration unmounts an editor it previously created with
+     * {@link loadEditor}. Without it every mount leaves a fully live engine behind.
+     * The method is safe to call more than once.
+     */
+    destroy = () => {
+        try {
+            this.connection?.destroy();
+        } catch {
+            // A connection that was already destroyed (for example by penpal's own
+            // iframe-removal monitor) must not prevent the rest of the teardown.
+        }
+
+        // Null the handle as well: the closure closes over the iframe, so keeping it
+        // would keep the removed engine realm reachable.
+        this.teardownFrame?.();
+        this.teardownFrame = null;
     };
 
     private toInstrumented = <T extends object>(controller: T): Instrumented<T> => {

@@ -25,4 +25,4 @@ export type FixedComponentGridSettings = {
     rowGap: number;
 };
 
-export type ComponentGridSettings = FixedComponentGridSettings /* | More will be added later */;
+export type ComponentGridSettings = FixedComponentGridSettings; /* | More will be added later */

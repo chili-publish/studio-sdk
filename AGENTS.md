@@ -153,7 +153,7 @@ Use **Yarn Classic (v1)** — not npm, not pnpm, not Yarn Berry.
 | Requirement | Value |
 | ----------- | ----- |
 | Yarn | Classic v1 (per-package lockfiles) |
-| Node | CI uses `22.x` |
+| Node | CI uses `24.x` |
 
 ```bash
 yarn install

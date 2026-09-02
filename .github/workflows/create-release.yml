@@ -23,8 +23,15 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 22.x
+  NODE_VERSION: 24.x
   RELEASES_LIMIT: 10
+  # REQUIRED AT WORKFLOW SCOPE — do not move this to the install step only.
+  # actions/setup-node with `registry-url` writes an .npmrc containing
+  # `${NODE_AUTH_TOKEN}`. Yarn Classic expands that placeholder on EVERY
+  # yarn/npm command (test, build, lint, …), not only on `yarn install`.
+  # Scoping the token to install alone fails later steps with:
+  # Failed to replace env in config: ${NODE_AUTH_TOKEN}.
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   configure-parameters:
@@ -92,27 +99,29 @@ jobs:
 
       - name: Get GitHub App Access Token
         id: github-app-access-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
           owner: ${{ github.repository_owner }}
+          repositories: ${{ github.repository }}
+          permission-contents: write
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ github.ref }}
           token: ${{ steps.github-app-access-token.outputs.token }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Check cache
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             node_modules
@@ -199,27 +208,29 @@ jobs:
 
       - name: Get GitHub App Access Token
         id: github-app-access-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
           owner: ${{ github.repository_owner }}
+          repositories: ${{ github.repository }}
+          permission-contents: write
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ github.ref }}
           token: ${{ steps.github-app-access-token.outputs.token }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Check cache
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             node_modules
@@ -312,27 +323,29 @@ jobs:
 
       - name: Get GitHub App Access Token
         id: github-app-access-token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
           owner: ${{ github.repository_owner }}
+          repositories: ${{ github.repository }}
+          permission-contents: write
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ github.ref }}
           token: ${{ steps.github-app-access-token.outputs.token }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Check cache
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             node_modules
@@ -523,9 +536,15 @@ jobs:
             exit 0
           fi
 
-          echo "text=$TEXT" >> $GITHUB_OUTPUT
+          {
+            echo "text<<NOTIFICATION_EOF"
+            echo "$TEXT"
+            echo "NOTIFICATION_EOF"
+          } >> "$GITHUB_OUTPUT"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Notify Teams success
         uses: ./.github/actions/cd-notify
@@ -555,7 +574,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Determine failed step
         id: failed-step

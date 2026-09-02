@@ -77,6 +77,7 @@ export interface ListVariable extends Variable {
     selected?: string;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
+    availableItems: string[];
 }
 
 export interface BooleanVariable extends Variable {
@@ -276,9 +277,7 @@ export interface VariableVisibilityConditional extends VariableVisibilityBase {
 }
 
 export type VariableVisibility =
-    | VariableVisibilityVisible
-    | VariableVisibilityInvisible
-    | VariableVisibilityConditional;
+    VariableVisibilityVisible | VariableVisibilityInvisible | VariableVisibilityConditional;
 
 export interface VariableVisibilityLayout {
     layoutId: string;
@@ -361,5 +360,4 @@ export interface DataSourceVariableDisplayOptionsList {
 }
 
 export type DataSourceVariableDisplayOptions =
-    | DataSourceVariableDisplayOptionsTable
-    | DataSourceVariableDisplayOptionsList;
+    DataSourceVariableDisplayOptionsTable | DataSourceVariableDisplayOptionsList;
