@@ -360,7 +360,19 @@ declare module 'grafx-studio-actions' {
          * - "sv"
          */
         export type Language =
-            'en_US' | 'cs' | 'da' | 'nl' | 'fi' | 'fr' | 'de' | 'it' | 'no' | 'pl' | 'pt_PT' | 'es_ES' | 'sv';
+            | 'en_US'
+            | 'cs'
+            | 'da'
+            | 'nl'
+            | 'fi'
+            | 'fr'
+            | 'de'
+            | 'it'
+            | 'no'
+            | 'pl'
+            | 'pt_PT'
+            | 'es_ES'
+            | 'sv';
 
         /**
          * The different values a Variable can have depending on the Variable Type.
