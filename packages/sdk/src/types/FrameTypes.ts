@@ -107,6 +107,8 @@ export type ShapeFrame = {
         strokeWeight: number;
         strokeColor: ColorUsage;
         allCornersSame: boolean;
+        fillOverprint: boolean;
+        strokeOverprint: boolean;
     };
     src: {
         type: ShapeType;
@@ -148,6 +150,7 @@ export type BarcodeFrame = {
     type: FrameTypeEnum.barcode;
     blendMode: BlendMode;
     barcodeProperties: {
+        enableBars: boolean;
         enableBackground: boolean;
         backgroundColor: ColorUsage;
         enableBarColor: boolean;
@@ -159,6 +162,8 @@ export type BarcodeFrame = {
         errorCorrectionLevel?: BarcodeErrorCorrectionLevel;
         characterSet?: BarcodeCharacterSet;
         drawStartStopChars: boolean;
+        barcodeOverprint: boolean;
+        backgroundOverprint: boolean;
     };
     src?: BarcodeSource;
     barcodeType: BarcodeType;

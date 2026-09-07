@@ -78,6 +78,8 @@ const mockedEditorApi: EditorAPI = {
     setFrameZIndex: async () => getEditorResponseData(castToEditorResponse(null)),
     setShapeProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     setFrameBlendMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameFillOverprint: async () => getEditorResponseData(castToEditorResponse(null)),
+    setFrameStrokeOverprint: async () => getEditorResponseData(castToEditorResponse(null)),
     renameFrame: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageSource: async () => getEditorResponseData(castToEditorResponse(null)),
     enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -149,6 +151,8 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setFrameZIndex');
     jest.spyOn(mockedEditorApi, 'setShapeProperties');
     jest.spyOn(mockedEditorApi, 'setFrameBlendMode');
+    jest.spyOn(mockedEditorApi, 'setFrameFillOverprint');
+    jest.spyOn(mockedEditorApi, 'setFrameStrokeOverprint');
     jest.spyOn(mockedEditorApi, 'renameFrame');
     jest.spyOn(mockedEditorApi, 'setImageSource');
     jest.spyOn(mockedEditorApi, 'enterCropMode');
@@ -525,6 +529,18 @@ describe('FrameController', () => {
         await mockedFrameController.setBlendMode(id, BlendMode.darken);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setFrameBlendMode).toHaveBeenCalledWith(id, BlendMode.darken);
+    });
+
+    it('Should be possible to set the fill overprint of a specific frame', async () => {
+        await mockedFrameController.setFillOverprint(id, true);
+        expect(mockedEditorApi.setFrameFillOverprint).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameFillOverprint).toHaveBeenCalledWith(id, true);
+    });
+
+    it('Should be possible to set the stroke overprint of a specific frame', async () => {
+        await mockedFrameController.setStrokeOverprint(id, true);
+        expect(mockedEditorApi.setFrameStrokeOverprint).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setFrameStrokeOverprint).toHaveBeenCalledWith(id, true);
     });
 
     it('Should be possible to enter cropping mode on a specific frame', async () => {

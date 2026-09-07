@@ -95,7 +95,8 @@ export interface SelectedTextStyle {
     copyfittingScale?: number;
     textAlign?: HorizontalAlign;
     textAlignLast?: HorizontalAlign;
-    textOverprint?: boolean;
+    fillOverprint?: boolean;
+    strokeOverprint?: boolean;
     color?: DisplayColor;
     strokeColor?: DisplayColor;
     backgroundColor?: DisplayColor;
