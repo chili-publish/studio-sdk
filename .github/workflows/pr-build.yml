@@ -13,8 +13,11 @@ permissions:
   contents: read
   actions: read
   packages: read
+# The single `build` job also deploys (SonarQube, Azure) with secrets a Dependabot
+# PR does not get, so it is skipped for `dependabot[bot]`
 jobs:
   build:
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     name: build (18)
     steps:

@@ -1,20 +1,23 @@
 name: Check PR description for JIRA ticket
 on:
-    pull_request:
-        types: [opened, edited, labeled, unlabeled, reopened]
+  pull_request:
+    types: [opened, edited, labeled, unlabeled, reopened]
 permissions:
-    contents: read
+  contents: read
 jobs:
-    check-description:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Check description of the Pull Request
-              if: ${{ !contains(github.event.pull_request.labels.*.name, 'No JIRA ticket') }}
-              uses: actions/github-script@v9
-              with:
-                  script: |
-                      const body = context.payload.pull_request.body ?? '';
-                      const jiraPattern = /(?:https:\/\/[\w.-]+\.atlassian\.net\/browse\/[A-Z][A-Z0-9]+-\d+|[A-Z][A-Z0-9]+-\d+)/i;
-                      if (!jiraPattern.test(body)) {
-                          core.setFailed('PR description must contain a JIRA ticket link or key (e.g. GRAFX-1234). Add the `No JIRA ticket` label to skip.');
-                      }
+  check-description:
+    # Dependabot github-actions PRs are auto-labeled `No JIRA ticket`; skip the
+    # check outright so a label-timing race on `opened` cannot fail the PR.
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check description of the Pull Request
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'No JIRA ticket') }}
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const body = context.payload.pull_request.body ?? '';
+            const jiraPattern = /(?:https:\/\/[\w.-]+\.atlassian\.net\/browse\/[A-Z][A-Z0-9]+-\d+|[A-Z][A-Z0-9]+-\d+)/i;
+            if (!jiraPattern.test(body)) {
+                core.setFailed('PR description must contain a JIRA ticket link or key (e.g. GRAFX-1234). Add the `No JIRA ticket` label to skip.');
+            }

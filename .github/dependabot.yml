@@ -1,6 +1,12 @@
 version: 2
 updates:
+  # github-actions scope only: a `uses:` bump can't touch code, tests or the
+  # build, so pr-build.yml skips its build job for dependabot[bot]. Adding an
+  # npm/yarn ecosystem here means removing that skip first.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    labels:
+      - "No JIRA ticket"
+      - "Skip QA"
