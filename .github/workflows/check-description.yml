@@ -6,9 +6,6 @@ permissions:
   contents: read
 jobs:
   check-description:
-    # Dependabot github-actions PRs are auto-labeled `No JIRA ticket`; skip the
-    # check outright so a label-timing race on `opened` cannot fail the PR.
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Check description of the Pull Request

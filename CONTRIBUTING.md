@@ -64,9 +64,9 @@ Prefer a JIRA ticket link in the PR description when one exists (enforced by CI 
 
 ## Dependabot
 
-Dependabot `github-actions` PRs are auto-labeled `No JIRA ticket` and `Skip QA`, and the `build` job is skipped on them (Dependabot PRs run without the deploy secrets). Review them as pin bumps — check the publisher, the pinned SHA and the changelog — not as CI-certified changes. The next human PR or the merge-to-`main` build is the real integration test; revert the bump if that build fails.
+Dependabot `github-actions` PRs are auto-labeled `No JIRA ticket` and `Skip QA`. They run the full install / lint / test / build (the FontAwesome token is in the Dependabot secrets store); only the steps that are skipped are secret-backed steps that Dependabot does not have (SonarQube, Azure, Playwright integration secrets).
 
-Because `build` is skipped, **do not enable auto-merge for these PRs and do not merge one without a human review**. A person must confirm the pin bump, then click merge.
+Because those steps are skipped on the bot's own runs, a bump that only touches one of them is not exercised there. **Do not enable auto-merge for these PRs and do not merge one without a human review** — check the publisher, the pinned SHA and the changelog. The next human PR or the merge-to-`main` build is what actually exercises the new action version; revert the bump if that build fails.
 
 ## Resources
 

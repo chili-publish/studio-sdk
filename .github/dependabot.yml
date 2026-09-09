@@ -1,8 +1,7 @@
 version: 2
 updates:
-  # github-actions scope only: a `uses:` bump can't touch code, tests or the
-  # build, so pr-build.yml skips its build job for dependabot[bot]. Adding an
-  # npm/yarn ecosystem here means removing that skip first.
+  # github-actions scope only. These PRs run the full build/test; only the
+  # secret-backed steps (Sonar, Azure, PR comment) skip for the dependabot[bot] actor.
   - package-ecosystem: github-actions
     directory: /
     schedule:

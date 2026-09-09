@@ -4,15 +4,13 @@ on:
     types: [opened]
 jobs:
   comment:
-    # Skip for Dependabot: its PR runs get a read-only token, so createComment
-    # fails. This is a courtesy comment, not a check.
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - name: "Comment on PR"
         uses: actions/github-script@v9
-        if: github.event_name == 'pull_request'
+        # Skip for Dependabot: its PR runs get a read-only token, so createComment fails.
+        if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
