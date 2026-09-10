@@ -17,24 +17,17 @@ jobs:
         run: |
           echo "::notice::Automated tests are being skipped due to 'Skip QA' label"
           exit 0
-      - name: Get GitHub application JWT
+      - name: Create GitHub application token
         if: github.event.label.name == 'Ready for QA'
-        id: get-gh-app-jwt
-        uses: ./.github/actions/get-gh-app-jwt
+        id: create-github-app-token
+        uses: actions/create-github-app-token@v3
         with:
-          gh-app-private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
-          gh-app-id: ${{ vars.GH_APP_ID_CHILI_REPO_ACTIONS }}
+          client-id: ${{ vars.GH_APP_ID_CHILI_REPO_ACTIONS }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
 
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - name: Get GitHub application installation access token
-        if: github.event.label.name == 'Ready for QA'
-        id: get-gh-app-installation-access-token
-        uses: ./.github/actions/get-gh-app-installation-access-token
-        with:
-          gh-app-jwt: ${{ steps.get-gh-app-jwt.outputs.gh-app-jwt }}
-          gh-app-installation-id: ${{ vars.GH_APP_INSTALL_ID_CHILI_REPO_ACTIONS }}
 
       - name: Trigger the automated tests
         if: github.event.label.name == 'Ready for QA'
@@ -42,7 +35,7 @@ jobs:
         with:
           owner: chili-publish
           repo: editor-qa-framework
-          github_token: ${{ steps.get-gh-app-installation-access-token.outputs.gh-app-installation-access-token }}
+          github_token: ${{ steps.create-github-app-token.outputs.token }}
           workflow_file_name: parallel_run_trigger.yml
           ref: main
           wait_interval: 10
