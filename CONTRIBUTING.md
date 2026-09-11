@@ -14,8 +14,8 @@ This section provides a step-by-step guide on how to set up this project for loc
 
 Before you begin, ensure you have the following software installed on your local machine:
 
-* Node.js: This is the runtime environment that will allow you to execute the project. You can download it from [here](https://nodejs.org/).
-* Yarn: This is the package manager we use for managing project dependencies. If you haven't installed Yarn already, you can do so globally by running the following command in your terminal:
+- Node.js: This is the runtime environment that will allow you to execute the project. You can download it from [here](https://nodejs.org/).
+- Yarn: This is the package manager we use for managing project dependencies. If you haven't installed Yarn already, you can do so globally by running the following command in your terminal:
 
 ```bash
 npm install -g yarn
@@ -46,26 +46,32 @@ We hope these instructions make your setup process smooth and straightforward. H
 
 \*replace my-branch-name with something specific. We use the prefixes fix and feature in our branches to indicate what they represent. An example for a branch that fixes a bug in playAnimation f.e. could be `fix/play-animation-fixdescription`
 
-\*\*Pull request titles determine the automatic version behavior. Please use the following diagram to determine the correct title prefix: 
+\*\*Pull request titles determine the automatic version behavior. Please use the following diagram to determine the correct title prefix:
 ![Title Prefix Flow](images/pr_flow.svg)
 
 ## Acceptance criteria
 
 Here are a few things you can do that will increase the likelihood of your pull request being accepted:
 
--   Write tests.
--   Keep your change as focused as possible. If there are multiple changes you would like to make that are not dependent upon each other, submit them as separate pull requests.
--   Write [good commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
--   Prefix the title with [Fix] or [Feature] to describe what the scope is
+- Write tests.
+- Keep your change as focused as possible. If there are multiple changes you would like to make that are not dependent upon each other, submit them as separate pull requests.
+- Write [good commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
+- Prefix the title with [Fix] or [Feature] to describe what the scope is
 
 ## Related tickets
 
 Prefer a JIRA ticket link in the PR description when one exists (enforced by CI unless the PR has the `No JIRA ticket` label). Related tickets may also link a **GitHub issue**. The `No JIRA ticket` label means there is no JIRA ticket (skip the JIRA check); it does not mean there is no ticket of any kind.
 
+## Dependabot
+
+Dependabot `github-actions` PRs are auto-labeled `No JIRA ticket` and `Skip QA`. They run the full install / lint / test / build. The SonarQube analysis, the Azure uploads and the PR comment are skipped on the bot's own runs, so a bump that only affects one of those is not exercised there.
+
+**Do not enable auto-merge for these PRs and do not merge one without a human review** — check the publisher, the pinned SHA and the changelog. The next human PR or the merge-to-`main` build is what actually exercises the new action version; revert the bump if that build fails.
+
 ## Resources
 
--   [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
--   [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
--   [GitHub Help](https://help.github.com/)
+- [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+- [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
+- [GitHub Help](https://help.github.com/)
 
 AI coding agents: see [AGENTS.md](AGENTS.md) for agent-specific workflow rules and coding conventions.
