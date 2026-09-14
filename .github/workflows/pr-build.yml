@@ -47,10 +47,11 @@ jobs:
       - name: Publish Unit Test Results
         continue-on-error: true
         uses: EnricoMi/publish-unit-test-result-action@b9f6c61d965bcaa18acc02d6daf706373a448f02 # v1
-        if: always()
+        if: ${{ always() && github.actor != 'dependabot[bot]' }}
         with:
           files: packages/sdk/coverage/**/*.xml
       - name: SonarQube analysis
+        if: github.actor != 'dependabot[bot]'
         uses: sonarsource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,6 +70,7 @@ jobs:
         run: |
           cp -R packages/sdk/_bundles packages/sdk/upload/dev-packages/${{ github.event.pull_request.number }}
       - name: Azure Login
+        if: github.actor != 'dependabot[bot]'
         uses: azure/login@7ddb5af1ef8758cf1353cf3b42f940aee27ba21c # v3.0.2
         with:
           creds: >-
@@ -79,6 +81,7 @@ jobs:
               "subscriptionId": "${{ vars.AZ_SUBSCRIPTION_ID_SAAS_DEV }}"
             }
       - name: Copy to Azure Blob Storage
+        if: github.actor != 'dependabot[bot]'
         uses: azure/cli@9eb25b8360668fb0ecbafa808d40e2197b2f5f52 # v3.0.0
         with:
           inlineScript: |
@@ -89,6 +92,7 @@ jobs:
               --overwrite true \
               --auth-mode login
       - name: Copy to Azure Blob Storage (Connectors)
+        if: github.actor != 'dependabot[bot]'
         uses: azure/cli@9eb25b8360668fb0ecbafa808d40e2197b2f5f52 # v3.0.0
         with:
           inlineScript: |
@@ -102,6 +106,7 @@ jobs:
         run: |
           node cicd.js actions node scripts/prepare-release.mjs
       - name: Copy to Azure Blob Storage (Actions)
+        if: github.actor != 'dependabot[bot]'
         uses: azure/cli@9eb25b8360668fb0ecbafa808d40e2197b2f5f52 # v3.0.0
         with:
           inlineScript: |

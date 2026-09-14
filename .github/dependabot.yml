@@ -1,6 +1,11 @@
 version: 2
 updates:
+  # github-actions scope only. These PRs run the full build/test; only the
+  # secret-backed steps (Sonar, Azure, PR comment) skip for the dependabot[bot] actor.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    labels:
+      - "No JIRA ticket"
+      - "Skip QA"
