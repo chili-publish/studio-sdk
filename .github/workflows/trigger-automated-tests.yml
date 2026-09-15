@@ -22,7 +22,7 @@ jobs:
         id: create-github-app-token
         uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ vars.GH_APP_ID_CHILI_REPO_ACTIONS }}
+          client-id: ${{ vars.GH_APP_CLIENT_ID_CHILI_REPO_ACTIONS }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_REPO_ACTIONS }}
           owner: ${{ github.repository_owner }}
           repositories: editor-qa-framework
