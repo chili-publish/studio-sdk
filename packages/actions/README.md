@@ -25,6 +25,8 @@ The type definitions can be used to provide autocomplete and type checking in Gr
 
 ## Compressing for GPT format (Experimental)
 
-To optimize the size of the `actions.d.ts` file when consuming it in GraFx Genie, it is compressed using the `scripts/compress.mjs` file. This file simply generates a json representation
-of the AST of both the `actions.d.ts` and `actionsHelpers.ts` files.
+`scripts/compress.mjs` writes Genie-facing copies of the action typings:
+
+* `Actions.genie.d.ts` / `ActionHelpers.genie.d.ts` — same declarations as the editor typings, with every `@deprecated` API removed (including union members that only referenced a removed type). GraFx Genie loads these from the CDN as LLM context.
+* `Actions.json` / `ActionHelpers.json` — a minified JSON AST of those stripped declarations.
 

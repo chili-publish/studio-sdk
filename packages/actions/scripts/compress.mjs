@@ -1,11 +1,152 @@
 import ts from "typescript";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-parseFile("./out/Actions.d.ts");
-parseFile("./out/ActionHelpers.d.ts");
+if (isMainModule()) {
+    parseFile("./out/Actions.d.ts");
+    parseFile("./out/ActionHelpers.d.ts");
+}
+
+function isDeprecated(node) {
+    return ts.getJSDocDeprecatedTag(node) != null;
+}
+
+function isStrippableDeclaration(node) {
+    return (
+        ts.isFunctionDeclaration(node) ||
+        ts.isMethodDeclaration(node) ||
+        ts.isMethodSignature(node) ||
+        ts.isPropertyDeclaration(node) ||
+        ts.isPropertySignature(node) ||
+        ts.isClassDeclaration(node) ||
+        ts.isInterfaceDeclaration(node) ||
+        ts.isTypeAliasDeclaration(node) ||
+        ts.isEnumDeclaration(node) ||
+        ts.isEnumMember(node) ||
+        ts.isVariableStatement(node) ||
+        ts.isGetAccessorDeclaration(node) ||
+        ts.isSetAccessorDeclaration(node) ||
+        ts.isConstructorDeclaration(node) ||
+        ts.isIndexSignatureDeclaration(node) ||
+        ts.isModuleDeclaration(node)
+    );
+}
+
+function declaredTypeName(node) {
+    if (ts.isEnumMember(node) && ts.isEnumDeclaration(node.parent) && node.parent.name && ts.isIdentifier(node.name)) {
+        return `${node.parent.name.text}.${node.name.text}`;
+    }
+
+    if (
+        node.name &&
+        ts.isIdentifier(node.name) &&
+        (ts.isInterfaceDeclaration(node) ||
+            ts.isClassDeclaration(node) ||
+            ts.isTypeAliasDeclaration(node) ||
+            ts.isEnumDeclaration(node))
+    ) {
+        return node.name.text;
+    }
+
+    return null;
+}
+
+function typeNodeName(typeNode) {
+    if (!ts.isTypeReferenceNode(typeNode)) {
+        return null;
+    }
+
+    if (ts.isIdentifier(typeNode.typeName)) {
+        return typeNode.typeName.text;
+    }
+
+    if (ts.isQualifiedName(typeNode.typeName)) {
+        return typeNode.typeName.getText();
+    }
+
+    return null;
+}
+
+function compositeMemberRange(composite, index) {
+    const member = composite.types[index];
+    return {
+        start: index === 0 ? member.getFullStart() : composite.types[index - 1].end,
+        end: member.end,
+    };
+}
+
+function mergeRanges(ranges) {
+    const sorted = [...ranges].sort((a, b) => a.start - b.start || a.end - b.end);
+    const merged = [];
+
+    for (const range of sorted) {
+        const last = merged[merged.length - 1];
+        if (last && range.start <= last.end) {
+            last.end = Math.max(last.end, range.end);
+        } else {
+            merged.push({ start: range.start, end: range.end });
+        }
+    }
+
+    return merged;
+}
+
+function applyRemovals(sourceText, ranges) {
+    let result = sourceText;
+
+    for (const range of mergeRanges(ranges).sort((a, b) => b.start - a.start)) {
+        result = result.slice(0, range.start) + result.slice(range.end);
+    }
+
+    return result;
+}
+
+/**
+ * Drop every @deprecated declaration (and union/intersection references to
+ * removed types) so GraFx Genie never sees those APIs.
+ */
+export function stripDeprecatedDeclarations(sourceText, fileName = "file.d.ts") {
+    const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    const ranges = [];
+    const removedTypeNames = new Set();
+
+    function collectDeprecated(node) {
+        if (isStrippableDeclaration(node) && isDeprecated(node)) {
+            ranges.push({ start: node.getFullStart(), end: node.end });
+            const name = declaredTypeName(node);
+            if (name) {
+                removedTypeNames.add(name);
+            }
+            return;
+        }
+
+        ts.forEachChild(node, collectDeprecated);
+    }
+
+    function collectDanglingTypeRefs(node) {
+        if (ts.isUnionTypeNode(node) || ts.isIntersectionTypeNode(node)) {
+            node.types.forEach((member, index) => {
+                const name = typeNodeName(member);
+                if (name && removedTypeNames.has(name)) {
+                    ranges.push(compositeMemberRange(node, index));
+                }
+            });
+        }
+
+        ts.forEachChild(node, collectDanglingTypeRefs);
+    }
+
+    collectDeprecated(sourceFile);
+    collectDanglingTypeRefs(sourceFile);
+
+    return applyRemovals(sourceText, ranges);
+}
 
 function visit(root, node, output) {
     if (node == null)
+        return;
+    if (isDeprecated(node))
         return;
     if (ts.isFunctionDeclaration(node)) {
         const functionInfo = {
@@ -24,6 +165,9 @@ function visit(root, node, output) {
             properties: [],
         };
         for (const member of node.members) {
+            if (isDeprecated(member)) {
+                continue;
+            }
             if (ts.isMethodSignature(member)) {
                 const methodInfo = {
                     name: member.name.escapedText,
@@ -47,7 +191,7 @@ function visit(root, node, output) {
     } else if (ts.isEnumDeclaration(node)) {
         const enumInfo = {
             name: getType(root, node.name.escapedText),
-            values: node.members.map(m => m.name.escapedText),
+            values: node.members.filter(m => !isDeprecated(m)).map(m => m.name.escapedText),
         };
         output.enums.push(enumInfo);
     } else if (ts.isModuleDeclaration(node)) {
@@ -86,13 +230,13 @@ function getType(root, type) {
 }
 
 function parseFile(fileName) {
-    // copy the file, appending .genie to the name
-    fs.copyFileSync(fileName, fileName.replace(".d.ts", ".genie.d.ts"));
-    
-    const program = ts.createProgram([fileName], {
-        allowJs: true
-    });
-    const sourceFile = program.getSourceFile(fileName);
+    const sourceText = fs.readFileSync(fileName, "utf8");
+    const stripped = stripDeprecatedDeclarations(sourceText, fileName);
+    const genieFileName = fileName.replace(".d.ts", ".genie.d.ts");
+
+    fs.writeFileSync(genieFileName, stripped);
+
+    const sourceFile = ts.createSourceFile(fileName, stripped, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
 
     const output = {
         functions: [],
@@ -141,4 +285,12 @@ function parseFile(fileName) {
     const outFileName = fileName.replace(".d.ts", ".json");
 
     fs.writeFileSync(outFileName, JSON.stringify(minifiedOutput, null, 0));
+}
+
+function isMainModule() {
+    try {
+        return path.resolve(fileURLToPath(import.meta.url)) === path.resolve(fs.realpathSync(process.argv[1]));
+    } catch {
+        return false;
+    }
 }
