@@ -146,8 +146,6 @@ export function stripDeprecatedDeclarations(sourceText, fileName = "file.d.ts") 
 function visit(root, node, output) {
     if (node == null)
         return;
-    if (isDeprecated(node))
-        return;
     if (ts.isFunctionDeclaration(node)) {
         const functionInfo = {
             name: node.name.escapedText,
@@ -165,9 +163,6 @@ function visit(root, node, output) {
             properties: [],
         };
         for (const member of node.members) {
-            if (isDeprecated(member)) {
-                continue;
-            }
             if (ts.isMethodSignature(member)) {
                 const methodInfo = {
                     name: member.name.escapedText,
@@ -191,7 +186,7 @@ function visit(root, node, output) {
     } else if (ts.isEnumDeclaration(node)) {
         const enumInfo = {
             name: getType(root, node.name.escapedText),
-            values: node.members.filter(m => !isDeprecated(m)).map(m => m.name.escapedText),
+            values: node.members.map(m => m.name.escapedText),
         };
         output.enums.push(enumInfo);
     } else if (ts.isModuleDeclaration(node)) {

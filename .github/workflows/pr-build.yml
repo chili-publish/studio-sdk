@@ -44,6 +44,8 @@ jobs:
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
+      - name: run actions tests
+        run: node cicd.js actions yarn test
       - name: Publish Unit Test Results
         continue-on-error: true
         uses: EnricoMi/publish-unit-test-result-action@b9f6c61d965bcaa18acc02d6daf706373a448f02 # v1
