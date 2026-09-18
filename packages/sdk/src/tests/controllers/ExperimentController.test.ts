@@ -107,12 +107,4 @@ describe('ExperimentController', () => {
         expect(mockedEditorApi.setCustomUndoData).toHaveBeenCalledTimes(2);
         expect(mockedEditorApi.setCustomUndoData).toHaveBeenCalledWith(key, value, false);
     });
-
-    it('Should call insertImageBrandkitMediaToFrame correctly and set the imageSource', async () => {
-        await mockedExperimentController.insertBrandkitMediaToFrame('image-frame-id', 'brandkit-media-name');
-        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
-            'image-frame-id',
-            JSON.stringify({ name: 'brandkit-media-name', type: 'brandKitMedia' }),
-        );
-    });
 });

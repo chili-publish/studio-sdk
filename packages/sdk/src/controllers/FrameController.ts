@@ -20,6 +20,7 @@ import {
     FrameType,
     FrameTypeEnum,
     IdSetManagedConstraint,
+    ImageFrameBrandkitMediaSource,
     ImageFrameConnectorSource,
     ImageFrameSource,
     ImageFrameUrlSource,
@@ -530,6 +531,20 @@ export class FrameController {
     setImageFromUrl = async (imageFrameId: Id, url: string) => {
         const source: ImageFrameUrlSource = { url: url, type: ImageSourceTypeEnum.url };
         return this.updateImageSource(imageFrameId, source);
+    };
+
+    /**
+     * This method will set the image source of an image frame to a brandkit media
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
+     * @param name the name of the brandkit media which contains the image
+     * @returns
+     */
+    setImageFromBrandkitMedia = async (imageFrameId: Id, name: string) => {
+        const res = await this.#editorAPI;
+        const src: ImageFrameBrandkitMediaSource = { name, type: ImageSourceTypeEnum.brandKitMedia };
+        return res
+            .setImageSource(imageFrameId, JSON.stringify(src))
+            .then((result) => getEditorResponseData<null>(result));
     };
 
     /**

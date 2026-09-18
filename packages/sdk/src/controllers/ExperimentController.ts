@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
-import { ImageSourceTypeEnum, ImageFrameVariableSource, ImageFrameBrandkitMediaSource } from '../types/FrameTypes';
+import { ImageSourceTypeEnum, ImageFrameVariableSource } from '../types/FrameTypes';
 import { TextType } from '../types/TextTypes';
 
 /**
@@ -31,20 +31,6 @@ export class ExperimentController {
     insertImageVariableToFrame = async (imageFrameId: Id, variableId: Id) => {
         const res = await this.#editorAPI;
         const src: ImageFrameVariableSource = { id: variableId, type: ImageSourceTypeEnum.variable };
-        return res
-            .setImageSource(imageFrameId, JSON.stringify(src))
-            .then((result) => getEditorResponseData<null>(result));
-    };
-
-    /**
-     * This method will insert an image from a brandkit media to the correct ImageFrame
-     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
-     * @param name the name of the brandkit media which contains the image
-     * @returns
-     */
-    insertBrandkitMediaToFrame = async (imageFrameId: Id, name: string) => {
-        const res = await this.#editorAPI;
-        const src: ImageFrameBrandkitMediaSource = { name, type: ImageSourceTypeEnum.brandKitMedia };
         return res
             .setImageSource(imageFrameId, JSON.stringify(src))
             .then((result) => getEditorResponseData<null>(result));
