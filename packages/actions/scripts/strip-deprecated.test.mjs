@@ -1,10 +1,10 @@
-import assert from "node:assert/strict";
-import fs from "node:fs";
-import path from "node:path";
-import { describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
-import ts from "typescript";
-import { stripDeprecatedDeclarations } from "./compress.mjs";
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import ts from 'typescript';
+import { stripDeprecatedDeclarations } from './strip-deprecated.mjs';
 
 const thisDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,16 +13,16 @@ const thisDir = path.dirname(fileURLToPath(import.meta.url));
  * produce something that no longer parses. Every case asserts the result is
  * still valid TypeScript.
  */
-function assertParses(source, fileName = "stripped.d.ts") {
+function assertParses(source, fileName = 'stripped.d.ts') {
     const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
     const host = {
         getSourceFile: (name) => (name === fileName ? sourceFile : undefined),
-        getDefaultLibFileName: () => "lib.d.ts",
+        getDefaultLibFileName: () => 'lib.d.ts',
         writeFile: () => {},
-        getCurrentDirectory: () => "",
+        getCurrentDirectory: () => '',
         getCanonicalFileName: (name) => name,
         useCaseSensitiveFileNames: () => true,
-        getNewLine: () => "\n",
+        getNewLine: () => '\n',
         fileExists: (name) => name === fileName,
         readFile: (name) => (name === fileName ? source : undefined),
     };
@@ -30,20 +30,20 @@ function assertParses(source, fileName = "stripped.d.ts") {
     const program = ts.createProgram([fileName], { noResolve: true, noLib: true }, host);
     const errors = program.getSyntacticDiagnostics(sourceFile).map((diagnostic) => {
         const { line } = sourceFile.getLineAndCharacterOfPosition(diagnostic.start);
-        return `${line + 1}: ${ts.flattenDiagnosticMessageText(diagnostic.messageText, " ")} — ${source.split("\n")[line]}`;
+        return `${line + 1}: ${ts.flattenDiagnosticMessageText(diagnostic.messageText, ' ')} — ${source.split('\n')[line]}`;
     });
 
     assert.deepEqual(errors, [], `${fileName} no longer parses after stripping`);
 }
 
-function strip(source, fileName = "stripped.d.ts") {
+function strip(source, fileName = 'stripped.d.ts') {
     const result = stripDeprecatedDeclarations(source, fileName);
     assertParses(result, fileName);
     return result;
 }
 
-describe("stripDeprecatedDeclarations", () => {
-    it("removes @deprecated properties, methods, enum members, and types", () => {
+describe('stripDeprecatedDeclarations', () => {
+    it('removes @deprecated properties, methods, enum members, and types', () => {
         const source = `
 declare module 'grafx-studio-actions' {
     global {
@@ -107,13 +107,13 @@ declare module 'grafx-studio-actions' {
 
         const result = strip(source);
 
-        assert.equal(result.includes("stylekit"), false);
-        assert.equal(result.includes("FormattedTextVariable"), false);
-        assert.equal(result.includes("formattedText"), false);
-        assert.equal(result.includes("@deprecated"), false);
+        assert.equal(result.includes('stylekit'), false);
+        assert.equal(result.includes('FormattedTextVariable'), false);
+        assert.equal(result.includes('formattedText'), false);
+        assert.equal(result.includes('@deprecated'), false);
         assert.match(result, /brandKit: BrandKit/);
         assert.match(result, /export interface FrameMethods[\s\S]*setVisible\(isVisible: boolean\): void/);
-        assert.equal(result.includes("VariableMethods") && result.includes("setReadonly"), true);
+        assert.match(result, /setReadonly\(value: boolean\): void/);
         assert.equal(/interface VariableMethods[\s\S]*setVisible/.test(result), false);
         assert.match(result, /readonly isReadonly: boolean/);
         assert.equal(/readonly isVisible: boolean/.test(result), false);
@@ -121,7 +121,7 @@ declare module 'grafx-studio-actions' {
         assert.match(result, /\| RichTextVariable/);
     });
 
-    it("takes the separator along when removing the first member of a leading-pipe union", () => {
+    it('takes the separator along when removing the first member of a leading-pipe union', () => {
         const source = `
 /** @deprecated Use \`Kept\` instead */
 export interface Legacy { a: string; }
@@ -133,27 +133,37 @@ export type Thing =
 
         const result = strip(source);
 
-        assert.equal(result.includes("Legacy"), false);
+        assert.equal(result.includes('Legacy'), false);
         assert.match(result, /export type Thing =\s*\| Kept;/);
     });
 
-    it("removes the declaration when every member of a union is deprecated", () => {
-        const source = `
+    it('removes the declaration when every member of a union or intersection is deprecated', () => {
+        const union = strip(`
 /** @deprecated */
 export interface LegacyA { a: string; }
 /** @deprecated */
 export interface LegacyB { b: string; }
 export type Legacy = LegacyA | LegacyB;
 export interface Kept { c: string; }
-`;
+`);
 
-        const result = strip(source);
+        assert.equal(union.includes('Legacy'), false);
+        assert.match(union, /export interface Kept/);
 
-        assert.equal(result.includes("Legacy"), false);
-        assert.match(result, /export interface Kept/);
+        const intersection = strip(`
+/** @deprecated */
+export interface LegacyA { a: string; }
+/** @deprecated */
+export interface LegacyB { b: string; }
+export type Legacy = LegacyA & LegacyB;
+export interface Kept { c: string; }
+`);
+
+        assert.equal(intersection.includes('Legacy'), false);
+        assert.match(intersection, /export interface Kept/);
     });
 
-    it("removes the enum member separator so the survivors still parse", () => {
+    it('removes the enum member separator so the survivors still parse', () => {
         const source = `
 export enum Alone {
     /** @deprecated */
@@ -175,7 +185,7 @@ export enum Several {
         assert.match(result, /first = 'first'/);
     });
 
-    it("keeps the survivors when a parenthesised union collapses", () => {
+    it('keeps the survivors when a parenthesised union collapses', () => {
         const source = `
 /** @deprecated */
 export interface LegacyA { a: string; }
@@ -189,7 +199,7 @@ export type Thing = (LegacyA | LegacyB) | string;
         assert.match(result, /export type Thing = string;/);
     });
 
-    it("removes @deprecated call and construct signatures from a kept interface", () => {
+    it('removes @deprecated call and construct signatures from a kept interface', () => {
         const source = `
 export interface Api {
     /** @deprecated */
@@ -202,11 +212,11 @@ export interface Api {
 
         const result = strip(source);
 
-        assert.equal(result.includes("name: string"), false);
+        assert.equal(result.includes('name: string'), false);
         assert.match(result, /kept\(\): void/);
     });
 
-    it("removes future @deprecated helper functions while keeping the rest", () => {
+    it('removes future @deprecated helper functions while keeping the rest', () => {
         const source = `
 /**
  * Gets a number variable.
@@ -230,31 +240,31 @@ function copyVariableValueFromTo(fromName: string, toName: string) {}
 
         assert.match(result, /function getNumberVariable/);
         assert.match(result, /function copyVariableValueFromTo/);
-        assert.equal(result.includes("setVariableVisible"), false);
-        assert.equal(result.includes("getVariableIsVisible"), false);
-        assert.equal(result.includes("@deprecated"), false);
+        assert.equal(result.includes('setVariableVisible'), false);
+        assert.equal(result.includes('getVariableIsVisible'), false);
+        assert.equal(result.includes('@deprecated'), false);
     });
 
-    it("strips current @deprecated helpers from ActionHelpers.ts", () => {
-        const source = fs.readFileSync(path.join(thisDir, "../src/ActionHelpers.ts"), "utf8");
-        const result = strip(source, "ActionHelpers.ts");
+    it('strips current @deprecated helpers from ActionHelpers.ts', () => {
+        const source = fs.readFileSync(path.join(thisDir, '../src/ActionHelpers.ts'), 'utf8');
+        const result = strip(source, 'ActionHelpers.ts');
 
-        assert.equal(result.includes("@deprecated"), false);
-        assert.equal(result.includes("getVariableIsVisible"), false);
-        assert.equal(result.includes("setVariableVisible"), false);
+        assert.equal(result.includes('@deprecated'), false);
+        assert.equal(result.includes('getVariableIsVisible'), false);
+        assert.equal(result.includes('setVariableVisible'), false);
         assert.match(result, /function getNumberVariable/);
         assert.match(result, /function setFrameVisible/);
         assert.match(result, /function getFrameVisible/);
     });
 
-    it("strips every current @deprecated API from Actions.d.ts", () => {
-        const source = fs.readFileSync(path.join(thisDir, "../types/Actions.d.ts"), "utf8");
-        const result = strip(source, "Actions.d.ts");
+    it('strips every current @deprecated API from Actions.d.ts', () => {
+        const source = fs.readFileSync(path.join(thisDir, '../types/Actions.d.ts'), 'utf8');
+        const result = strip(source, 'Actions.d.ts');
 
-        assert.equal(result.includes("@deprecated"), false);
-        assert.equal(result.includes("stylekit"), false);
-        assert.equal(result.includes("FormattedTextVariable"), false);
-        assert.equal(result.includes("formattedText"), false);
+        assert.equal(result.includes('@deprecated'), false);
+        assert.equal(result.includes('stylekit'), false);
+        assert.equal(result.includes('FormattedTextVariable'), false);
+        assert.equal(result.includes('formattedText'), false);
         assert.match(result, /brandKit: BrandKit/);
         assert.match(result, /richText = 'richText'/);
 
@@ -265,11 +275,31 @@ function copyVariableValueFromTo(fromName: string, toName: string) {}
             return result.slice(start, end);
         };
 
-        assert.match(between("export interface Frame ", "export interface FrameMethods"), /readonly isVisible: boolean/);
-        assert.match(between("export interface FrameMethods", "export type FrameWithMethods"), /setVisible\(isVisible: boolean/);
-        assert.equal(between("export interface VariableMethods", "export type VariableWithMethods").includes("setVisible"), false);
-        assert.equal(between("export interface VariablesController", "export interface LayoutsController").includes("setVisible"), false);
-        assert.equal(between("export interface BaseVariable", "export interface ShortTextVariable").includes("isVisible"), false);
-        assert.match(between("export interface FramesController", "export interface VariablesController"), /setVisible\(name: string \| Frame/);
+        assert.match(
+            between('export interface Frame ', 'export interface FrameMethods'),
+            /readonly isVisible: boolean/,
+        );
+        assert.match(
+            between('export interface FrameMethods', 'export type FrameWithMethods'),
+            /setVisible\(isVisible: boolean/,
+        );
+        assert.equal(
+            between('export interface VariableMethods', 'export type VariableWithMethods').includes('setVisible'),
+            false,
+        );
+        assert.equal(
+            between('export interface VariablesController', 'export interface LayoutsController').includes(
+                'setVisible',
+            ),
+            false,
+        );
+        assert.equal(
+            between('export interface BaseVariable', 'export interface ShortTextVariable').includes('isVisible'),
+            false,
+        );
+        assert.match(
+            between('export interface FramesController', 'export interface VariablesController'),
+            /setVisible\(name: string \| Frame/,
+        );
     });
 });
