@@ -3,9 +3,44 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
+import ts from "typescript";
 import { stripDeprecatedDeclarations } from "./compress.mjs";
 
 const thisDir = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Stripping works on raw text ranges, so a mishandled separator can silently
+ * produce something that no longer parses. Every case asserts the result is
+ * still valid TypeScript.
+ */
+function assertParses(source, fileName = "stripped.d.ts") {
+    const sourceFile = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    const host = {
+        getSourceFile: (name) => (name === fileName ? sourceFile : undefined),
+        getDefaultLibFileName: () => "lib.d.ts",
+        writeFile: () => {},
+        getCurrentDirectory: () => "",
+        getCanonicalFileName: (name) => name,
+        useCaseSensitiveFileNames: () => true,
+        getNewLine: () => "\n",
+        fileExists: (name) => name === fileName,
+        readFile: (name) => (name === fileName ? source : undefined),
+    };
+
+    const program = ts.createProgram([fileName], { noResolve: true, noLib: true }, host);
+    const errors = program.getSyntacticDiagnostics(sourceFile).map((diagnostic) => {
+        const { line } = sourceFile.getLineAndCharacterOfPosition(diagnostic.start);
+        return `${line + 1}: ${ts.flattenDiagnosticMessageText(diagnostic.messageText, " ")} — ${source.split("\n")[line]}`;
+    });
+
+    assert.deepEqual(errors, [], `${fileName} no longer parses after stripping`);
+}
+
+function strip(source, fileName = "stripped.d.ts") {
+    const result = stripDeprecatedDeclarations(source, fileName);
+    assertParses(result, fileName);
+    return result;
+}
 
 describe("stripDeprecatedDeclarations", () => {
     it("removes @deprecated properties, methods, enum members, and types", () => {
@@ -70,7 +105,7 @@ declare module 'grafx-studio-actions' {
 }
 `;
 
-        const result = stripDeprecatedDeclarations(source);
+        const result = strip(source);
 
         assert.equal(result.includes("stylekit"), false);
         assert.equal(result.includes("FormattedTextVariable"), false);
@@ -84,6 +119,91 @@ declare module 'grafx-studio-actions' {
         assert.equal(/readonly isVisible: boolean/.test(result), false);
         assert.match(result, /\| ShortTextVariable/);
         assert.match(result, /\| RichTextVariable/);
+    });
+
+    it("takes the separator along when removing the first member of a leading-pipe union", () => {
+        const source = `
+/** @deprecated Use \`Kept\` instead */
+export interface Legacy { a: string; }
+export interface Kept { b: string; }
+export type Thing =
+    | Legacy
+    | Kept;
+`;
+
+        const result = strip(source);
+
+        assert.equal(result.includes("Legacy"), false);
+        assert.match(result, /export type Thing =\s*\| Kept;/);
+    });
+
+    it("removes the declaration when every member of a union is deprecated", () => {
+        const source = `
+/** @deprecated */
+export interface LegacyA { a: string; }
+/** @deprecated */
+export interface LegacyB { b: string; }
+export type Legacy = LegacyA | LegacyB;
+export interface Kept { c: string; }
+`;
+
+        const result = strip(source);
+
+        assert.equal(result.includes("Legacy"), false);
+        assert.match(result, /export interface Kept/);
+    });
+
+    it("removes the enum member separator so the survivors still parse", () => {
+        const source = `
+export enum Alone {
+    /** @deprecated */
+    only = 'only',
+}
+
+export enum Several {
+    first = 'first',
+    /** @deprecated */
+    middle = 'middle',
+    /** @deprecated */
+    last = 'last',
+}
+`;
+
+        const result = strip(source);
+
+        assert.equal(/only|middle|last/.test(result), false);
+        assert.match(result, /first = 'first'/);
+    });
+
+    it("keeps the survivors when a parenthesised union collapses", () => {
+        const source = `
+/** @deprecated */
+export interface LegacyA { a: string; }
+/** @deprecated */
+export interface LegacyB { b: string; }
+export type Thing = (LegacyA | LegacyB) | string;
+`;
+
+        const result = strip(source);
+
+        assert.match(result, /export type Thing = string;/);
+    });
+
+    it("removes @deprecated call and construct signatures from a kept interface", () => {
+        const source = `
+export interface Api {
+    /** @deprecated */
+    (name: string): void;
+    /** @deprecated */
+    new (name: string): Api;
+    kept(): void;
+}
+`;
+
+        const result = strip(source);
+
+        assert.equal(result.includes("name: string"), false);
+        assert.match(result, /kept\(\): void/);
     });
 
     it("removes future @deprecated helper functions while keeping the rest", () => {
@@ -106,7 +226,7 @@ function getVariableIsVisible(name: string): boolean {}
 function copyVariableValueFromTo(fromName: string, toName: string) {}
 `;
 
-        const result = stripDeprecatedDeclarations(source);
+        const result = strip(source);
 
         assert.match(result, /function getNumberVariable/);
         assert.match(result, /function copyVariableValueFromTo/);
@@ -117,7 +237,7 @@ function copyVariableValueFromTo(fromName: string, toName: string) {}
 
     it("strips current @deprecated helpers from ActionHelpers.ts", () => {
         const source = fs.readFileSync(path.join(thisDir, "../src/ActionHelpers.ts"), "utf8");
-        const result = stripDeprecatedDeclarations(source, "ActionHelpers.ts");
+        const result = strip(source, "ActionHelpers.ts");
 
         assert.equal(result.includes("@deprecated"), false);
         assert.equal(result.includes("getVariableIsVisible"), false);
@@ -129,7 +249,7 @@ function copyVariableValueFromTo(fromName: string, toName: string) {}
 
     it("strips every current @deprecated API from Actions.d.ts", () => {
         const source = fs.readFileSync(path.join(thisDir, "../types/Actions.d.ts"), "utf8");
-        const result = stripDeprecatedDeclarations(source, "Actions.d.ts");
+        const result = strip(source, "Actions.d.ts");
 
         assert.equal(result.includes("@deprecated"), false);
         assert.equal(result.includes("stylekit"), false);
