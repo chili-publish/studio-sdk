@@ -27,6 +27,7 @@ const mockedEditorApi: EditorAPI = {
     renameLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     selectLayoutWithOptions: async () => getEditorResponseData(castToEditorResponse(null)),
     duplicateLayout: async () => getEditorResponseData(castToEditorResponse(null)),
+    reorderLayouts: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayout: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutHeight: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayoutWidth: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -63,6 +64,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'renameLayout');
     jest.spyOn(mockedEditorApi, 'selectLayoutWithOptions');
     jest.spyOn(mockedEditorApi, 'duplicateLayout');
+    jest.spyOn(mockedEditorApi, 'reorderLayouts');
     jest.spyOn(mockedEditorApi, 'resetLayout');
     jest.spyOn(mockedEditorApi, 'setLayoutHeight');
     jest.spyOn(mockedEditorApi, 'setLayoutWidth');
@@ -175,6 +177,11 @@ describe('LayoutController', () => {
         await mockedLayoutController.duplicate('1');
         expect(mockedEditorApi.duplicateLayout).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.duplicateLayout).toHaveBeenCalledWith('1');
+    });
+    it('Should be possible to reorder layouts under the same parent', async () => {
+        await mockedLayoutController.reorderLayouts('1', 2, ['3', '4']);
+        expect(mockedEditorApi.reorderLayouts).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.reorderLayouts).toHaveBeenCalledWith('1', 2, ['3', '4']);
     });
     it('Should be possible to reset a layout', async () => {
         await mockedLayoutController.reset('1');
