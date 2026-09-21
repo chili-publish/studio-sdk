@@ -542,9 +542,7 @@ export class FrameController {
     setImageFromBrandkitMedia = async (imageFrameId: Id, name: string) => {
         const res = await this.#editorAPI;
         const src: ImageFrameBrandkitMediaSource = { name, type: ImageSourceTypeEnum.brandKitMedia };
-        return res
-            .setImageSource(imageFrameId, JSON.stringify(src))
-            .then((result) => getEditorResponseData<null>(result));
+        return this.updateImageSource(imageFrameId, src);
     };
 
     /**
