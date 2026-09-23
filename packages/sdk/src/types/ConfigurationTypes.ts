@@ -80,7 +80,7 @@ export type ShortcutOptionsDeltaUpdate = {
 
     /** The component grid shortcut. */
     componentGrid?: ShortcutOption;
-    
+
     /** The pen tool shortcut. */
     pen?: ShortcutOption;
 };
