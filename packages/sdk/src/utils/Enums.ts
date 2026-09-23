@@ -25,7 +25,7 @@ export enum ToolType {
     SHAPE_ELLIPSE = 'ellipse',
     SHAPE_POLYGON = 'polygon',
     COMPONENT_GRID_FRAME = 'componentGridFrame',
-    PEN = 'pen'
+    PEN = 'pen',
 }
 export enum DownloadFormats {
     MP4 = 'mp4',
