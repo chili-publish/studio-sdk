@@ -1,18 +1,18 @@
-import ts from "typescript";
-import fs from "fs";
+import ts from 'typescript';
+import fs from 'fs';
+import { stripDeprecatedDeclarations } from './strip-deprecated.mjs';
 
-parseFile("./out/Actions.d.ts");
-parseFile("./out/ActionHelpers.d.ts");
+parseFile('./out/Actions.d.ts');
+parseFile('./out/ActionHelpers.d.ts');
 
 function visit(root, node, output) {
-    if (node == null)
-        return;
+    if (node == null) return;
     if (ts.isFunctionDeclaration(node)) {
         const functionInfo = {
             name: node.name.escapedText,
-            parameters: node.parameters.map(p => ({
+            parameters: node.parameters.map((p) => ({
                 name: p.name.escapedText,
-                type: getType(root, p.type)
+                type: getType(root, p.type),
             })),
             returnType: getType(root, node.type),
         };
@@ -27,9 +27,9 @@ function visit(root, node, output) {
             if (ts.isMethodSignature(member)) {
                 const methodInfo = {
                     name: member.name.escapedText,
-                    parameters: member.parameters.map(p => ({
+                    parameters: member.parameters.map((p) => ({
                         name: p.name.escapedText,
-                        type: getType(p.type.getText(root))
+                        type: getType(root, p.type),
                     })),
                     returnType: getType(root, member.type),
                 };
@@ -47,19 +47,18 @@ function visit(root, node, output) {
     } else if (ts.isEnumDeclaration(node)) {
         const enumInfo = {
             name: getType(root, node.name.escapedText),
-            values: node.members.map(m => m.name.escapedText),
+            values: node.members.map((m) => m.name.escapedText),
         };
         output.enums.push(enumInfo);
     } else if (ts.isModuleDeclaration(node)) {
-
         const moduleInfo = {
             name: node.name.escapedText,
-            fields: []
+            fields: [],
         };
 
         for (const member of node.body.statements) {
-
-            if (ts.isFunctionDeclaration(member)) {} else if (ts.isVariableStatement(member)) {
+            if (ts.isFunctionDeclaration(member)) {
+            } else if (ts.isVariableStatement(member)) {
                 for (const declaration of member.declarationList.declarations) {
                     if (ts.isIdentifier(declaration.name)) {
                         moduleInfo.fields.push({
@@ -76,23 +75,21 @@ function visit(root, node, output) {
 }
 
 function getType(root, type) {
-    if (type == null)
-        return null;
+    if (type == null) return null;
 
-    if (typeof type == "string")
-        return type;
+    if (typeof type == 'string') return type;
 
     return type.getText(root);
 }
 
 function parseFile(fileName) {
-    // copy the file, appending .genie to the name
-    fs.copyFileSync(fileName, fileName.replace(".d.ts", ".genie.d.ts"));
-    
-    const program = ts.createProgram([fileName], {
-        allowJs: true
-    });
-    const sourceFile = program.getSourceFile(fileName);
+    const sourceText = fs.readFileSync(fileName, 'utf8');
+    const stripped = stripDeprecatedDeclarations(sourceText, fileName);
+    const genieFileName = fileName.replace('.d.ts', '.genie.d.ts');
+
+    fs.writeFileSync(genieFileName, stripped);
+
+    const sourceFile = ts.createSourceFile(fileName, stripped, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
 
     const output = {
         functions: [],
@@ -106,14 +103,11 @@ function parseFile(fileName) {
     // recursive delete empty arrays and properties with null values
     function clean(obj) {
         for (const key in obj) {
-            if (obj[key] == null)
-                delete obj[key];
+            if (obj[key] == null) delete obj[key];
             else if (Array.isArray(obj[key])) {
-                if (obj[key].length == 0)
-                    delete obj[key];
-                else
-                    obj[key].forEach(clean);
-            } else if (typeof obj[key] == "object") {
+                if (obj[key].length == 0) delete obj[key];
+                else obj[key].forEach(clean);
+            } else if (typeof obj[key] == 'object') {
                 clean(obj[key]);
             }
         }
@@ -126,9 +120,7 @@ function parseFile(fileName) {
             return obj.map(rename);
         } else if (typeof obj === 'object' && obj !== null) {
             // If the object is a non-array object, create a new object with renamed properties
-            return Object.fromEntries(
-                Object.entries(obj).map(([key, value]) => [key.charAt(0), rename(value)])
-            );
+            return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key.charAt(0), rename(value)]));
         } else {
             // If the object is not an array or object, return it unchanged
             return obj;
@@ -138,7 +130,7 @@ function parseFile(fileName) {
     clean(output);
     const minifiedOutput = rename(output);
 
-    const outFileName = fileName.replace(".d.ts", ".json");
+    const outFileName = fileName.replace('.d.ts', '.json');
 
     fs.writeFileSync(outFileName, JSON.stringify(minifiedOutput, null, 0));
 }

@@ -5,6 +5,7 @@
     "license": "MIT",
     "scripts": {
         "build": "yarn tsc && yarn tsc -p tsconfig.types.json && cp training.json out/training.json && cp types/Actions.d.ts out/Actions.d.ts && node scripts/actionhelpers-monaco.mjs && node scripts/compress.mjs",
+        "test": "node --test scripts/*.test.mjs",
         "build-docs-md": "npx typedoc --plugin typedoc-plugin-markdown --out ./docs/md",
         "build-docs-html": "npx typedoc --out ./docs/html --readme ./src/README_HTML.md"
     },

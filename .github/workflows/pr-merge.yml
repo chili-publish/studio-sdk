@@ -53,6 +53,8 @@ jobs:
         run: yarn ci-lint
       - name: run tests
         run: yarn cover
+      - name: run actions tests
+        run: node cicd.js actions yarn test
       - name: bump version
         uses: phips28/gh-action-bump-version@fdad52b3b3bbe8fad96b8ca18c56127a96f603db # v11.0.7
         env:
