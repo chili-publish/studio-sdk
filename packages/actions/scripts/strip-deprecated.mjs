@@ -27,16 +27,6 @@ function isCompositeTypeNode(node) {
     return ts.isUnionTypeNode(node) || ts.isIntersectionTypeNode(node);
 }
 
-function unwrapParentheses(typeNode) {
-    let current = typeNode;
-
-    while (ts.isParenthesizedTypeNode(current)) {
-        current = current.type;
-    }
-
-    return current;
-}
-
 function declaredTypeName(node) {
     if (ts.isEnumMember(node) && ts.isEnumDeclaration(node.parent) && node.parent.name && ts.isIdentifier(node.name)) {
         return `${node.parent.name.text}.${node.name.text}`;
@@ -56,8 +46,17 @@ function declaredTypeName(node) {
     return null;
 }
 
-function typeNodeName(typeNode) {
-    return ts.isTypeReferenceNode(typeNode) ? typeNode.typeName.getText() : null;
+function referencedTypeName(node) {
+    if (ts.isTypeReferenceNode(node)) {
+        return node.typeName.getText();
+    }
+
+    // `extends Base` / `implements Base` in a heritage clause
+    if (ts.isExpressionWithTypeArguments(node)) {
+        return node.expression.getText();
+    }
+
+    return null;
 }
 
 /**
@@ -96,14 +95,9 @@ function removalRange(node) {
     return { start: node.getFullStart(), end: node.end };
 }
 
-function enclosingRemovableDeclaration(node) {
-    let current = node.parent;
-
-    while (current && !isStrippableDeclaration(current)) {
-        current = current.parent;
-    }
-
-    return current ?? null;
+function memberRange(member) {
+    const list = ts.isHeritageClause(member) ? member.parent.heritageClauses : member.parent.types;
+    return listElementRange(list, list.indexOf(member));
 }
 
 function applyRemovals(sourceText, ranges) {
@@ -128,22 +122,39 @@ function applyRemovals(sourceText, ranges) {
 }
 
 /**
- * Drop every `@deprecated` declaration (and union/intersection references to
- * removed types) so GraFx Genie never sees those APIs.
+ * Drop every `@deprecated` declaration, plus whatever can no longer be written
+ * without one, so GraFx Genie never sees those APIs.
  */
 export function stripDeprecatedDeclarations(sourceText, fileName = 'file.d.ts') {
     const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
-    const ranges = [];
+    const removed = new Set();
     const removedTypeNames = new Set();
-    const prunedComposites = new Set();
+    // Union/intersection members, heritage types and heritage clauses dropped on their own.
+    const droppedMembers = new Set();
+
+    function remove(declaration) {
+        removed.add(declaration);
+        const name = declaredTypeName(declaration);
+        if (name) {
+            removedTypeNames.add(name);
+        }
+    }
+
+    // `VariableType.formattedText` dangles when either the member or the whole enum is gone.
+    function isRemovedTypeName(name) {
+        let prefix = '';
+        for (const part of name.split('.')) {
+            prefix = prefix ? `${prefix}.${part}` : part;
+            if (removedTypeNames.has(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function collectDeprecated(node) {
         if (isStrippableDeclaration(node) && ts.getJSDocDeprecatedTag(node) != null) {
-            ranges.push(removalRange(node));
-            const name = declaredTypeName(node);
-            if (name) {
-                removedTypeNames.add(name);
-            }
+            remove(node);
             return;
         }
 
@@ -151,54 +162,64 @@ export function stripDeprecatedDeclarations(sourceText, fileName = 'file.d.ts') 
     }
 
     /**
-     * Drops the members that point at removed types. Returns true when nothing
-     * is left, in which case the caller drops the composite itself rather than
-     * leaving `type Legacy = ;` behind.
-     *
-     * Nested composites are recorded in `prunedComposites` so a later walk of
-     * the same subtree does not treat a fully-collapsed inner union as a reason
-     * to delete the outer declaration.
+     * Climbs from a reference to a removed type until something can absorb the
+     * loss. A union, intersection or heritage clause with other members left
+     * drops just this one. Otherwise the nearest declaration goes, and if that
+     * declared a type, references to it are dangling on the next pass.
      */
-    function pruneComposite(composite) {
-        prunedComposites.add(composite);
+    function dropReference(reference) {
+        let node = reference;
 
-        const doomed = composite.types.map((member) => {
-            const inner = unwrapParentheses(member);
+        while (node.parent) {
+            const parent = node.parent;
 
-            if (isCompositeTypeNode(inner)) {
-                return pruneComposite(inner);
+            if (ts.isHeritageClause(parent)) {
+                // Losing its base leaves the interface or class itself intact.
+                droppedMembers.add(node);
+                if (parent.types.every((type) => droppedMembers.has(type))) {
+                    droppedMembers.add(parent);
+                }
+                return;
             }
 
-            const name = typeNodeName(inner);
-            return name != null && removedTypeNames.has(name);
-        });
+            if (isCompositeTypeNode(parent)) {
+                droppedMembers.add(node);
+                if (!parent.types.every((type) => droppedMembers.has(type))) {
+                    return;
+                }
+            } else if (isStrippableDeclaration(parent)) {
+                // Never take a whole module down over one reference.
+                if (!ts.isModuleDeclaration(parent)) {
+                    remove(parent);
+                }
+                return;
+            }
 
-        if (doomed.every(Boolean)) {
-            return true;
+            node = parent;
         }
-
-        doomed.forEach((remove, index) => {
-            if (remove) {
-                ranges.push(listElementRange(composite.types, index));
-            }
-        });
-
-        return false;
     }
 
-    function collectDanglingTypeRefs(node) {
-        if (isCompositeTypeNode(node) && !prunedComposites.has(node) && pruneComposite(node)) {
-            const declaration = enclosingRemovableDeclaration(node);
-            if (declaration) {
-                ranges.push(removalRange(declaration));
-            }
+    function collectDanglingReferences(node) {
+        if (removed.has(node) || droppedMembers.has(node)) {
+            return;
         }
 
-        ts.forEachChild(node, collectDanglingTypeRefs);
+        const name = referencedTypeName(node);
+        if (name != null && isRemovedTypeName(name)) {
+            dropReference(node);
+            return;
+        }
+
+        ts.forEachChild(node, collectDanglingReferences);
     }
 
     collectDeprecated(sourceFile);
-    collectDanglingTypeRefs(sourceFile);
 
-    return applyRemovals(sourceText, ranges);
+    let size;
+    do {
+        size = removed.size + droppedMembers.size;
+        collectDanglingReferences(sourceFile);
+    } while (removed.size + droppedMembers.size > size);
+
+    return applyRemovals(sourceText, [...[...removed].map(removalRange), ...[...droppedMembers].map(memberRange)]);
 }

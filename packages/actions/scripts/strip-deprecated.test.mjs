@@ -216,6 +216,72 @@ export interface Api {
         assert.match(result, /kept\(\): void/);
     });
 
+    it('removes declarations that can no longer be written without a removed type', () => {
+        const result = strip(`
+/** @deprecated */
+export interface Legacy { a: string; }
+export function create(): Legacy;
+export type Values = Legacy[];
+export type Box = Array<Legacy>;
+export interface Api {
+    load(legacy: Legacy): void;
+    readonly current: Legacy;
+    kept(): void;
+}
+`);
+
+        assert.equal(/Legacy|Values|Box|create|load|current/.test(result), false);
+        assert.match(result, /export interface Api \{\s*kept\(\): void;\s*\}/);
+    });
+
+    it('follows removals through aliases and collapsed unions', () => {
+        const result = strip(`
+/** @deprecated */
+export interface LegacyA { a: string; }
+/** @deprecated */
+export interface LegacyB { b: string; }
+export type Legacy = LegacyA | LegacyB;
+export type Legacies = Legacy[];
+export type Thing = Legacy | string;
+export interface Holder {
+    all: Legacies;
+    kept: string;
+}
+`);
+
+        assert.equal(/Legac/.test(result), false);
+        assert.match(result, /export type Thing = string;/);
+        assert.match(result, /export interface Holder \{\s*kept: string;\s*\}/);
+    });
+
+    it('drops a removed base type from extends clauses and keeps the interface', () => {
+        const result = strip(`
+/** @deprecated */
+export interface HasLegacyName { name: string; }
+export interface HasId { id: string; }
+export interface Frame extends HasLegacyName { visible: boolean; }
+export interface Layout extends HasLegacyName, HasId { width: number; }
+`);
+
+        assert.equal(result.includes('HasLegacyName'), false);
+        assert.match(result, /export interface Frame \{ visible: boolean; \}/);
+        assert.match(result, /export interface Layout extends HasId \{ width: number; \}/);
+    });
+
+    it('drops references to members of a removed enum', () => {
+        const result = strip(`
+/** @deprecated */
+export enum LegacyType { a = 'a', b = 'b' }
+export interface Thing {
+    readonly type: LegacyType.a;
+    readonly name: string;
+}
+`);
+
+        assert.equal(result.includes('LegacyType'), false);
+        assert.match(result, /readonly name: string;/);
+    });
+
     it('removes future @deprecated helper functions while keeping the rest', () => {
         const source = `
 /**

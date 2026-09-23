@@ -27,5 +27,5 @@ The type definitions can be used to provide autocomplete and type checking in Gr
 
 `scripts/compress.mjs` writes Genie-facing copies of the action typings:
 
-- `Actions.genie.d.ts` / `ActionHelpers.genie.d.ts` — same declarations as the editor typings, with every `@deprecated` API removed (including union members that only referenced a removed type). GraFx Genie loads these from the CDN as LLM context.
+- `Actions.genie.d.ts` / `ActionHelpers.genie.d.ts` — same declarations as the editor typings, with every `@deprecated` API removed, along with anything that referenced one: union members and `extends` entries are dropped, other declarations are removed. GraFx Genie loads these from the CDN as LLM context.
 - `Actions.json` / `ActionHelpers.json` — a minified JSON AST of those stripped declarations.
