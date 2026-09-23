@@ -29,7 +29,7 @@ function visit(root, node, output) {
                     name: member.name.escapedText,
                     parameters: member.parameters.map((p) => ({
                         name: p.name.escapedText,
-                        type: getType(p.type.getText(root)),
+                        type: getType(root, p.type),
                     })),
                     returnType: getType(root, member.type),
                 };
