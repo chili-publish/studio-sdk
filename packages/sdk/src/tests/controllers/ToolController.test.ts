@@ -31,6 +31,12 @@ describe('ToolController', () => {
         expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.SELECT);
         expect(response.success).toBeTruthy();
+    });    
+    it('sets the pen tool', async () => {
+        const response = await mockedToolController.setPen();
+        expect(mockEditorApi.setTool).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setTool).toHaveBeenCalledWith(ToolType.PEN);
+        expect(response.success).toBeTruthy();
     });
     it('sets the move tool', async () => {
         const response = await mockedToolController.setHand();
