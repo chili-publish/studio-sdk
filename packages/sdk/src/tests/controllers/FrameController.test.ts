@@ -667,6 +667,14 @@ describe('ImageFrameSource manipulations', () => {
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(id, null);
     });
+
+    it('Should call setImageFromBrandkitMedia correctly and set the imageSource', async () => {
+        await mockedFrameController.setImageFromBrandkitMedia('image-frame-id', 'brandkit-media-name');
+        expect(mockedEditorApi.setImageSource).toHaveBeenCalledWith(
+            'image-frame-id',
+            JSON.stringify({ name: 'brandkit-media-name', type: 'brandKitMedia' }),
+        );
+    });
 });
 
 describe('Auto grow updating', () => {
