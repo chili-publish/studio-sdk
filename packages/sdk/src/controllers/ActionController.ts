@@ -170,4 +170,17 @@ export class ActionController {
         const res = await this.#editorAPI;
         return res.enableComponentActions(shouldEnable).then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method sets the enabled state of a specific action. A disabled action will not be executed when it's
+     * triggers are activated. Setting an action as enabled, does not immediately execute it, it waits for
+     * the next time its triggers are activated.
+     * @param id the id of the action
+     * @param enabled whether the action should be enabled or disabled
+     * @returns the result of the operation
+     */
+    setEnabled = async (id: string, enabled: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setActionEnabled(id, enabled).then((result) => getEditorResponseData<null>(result));
+    };
 }
