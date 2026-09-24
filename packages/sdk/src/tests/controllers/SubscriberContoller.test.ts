@@ -335,6 +335,7 @@ describe('SubscriberController', () => {
                 id: 'id',
                 script: 'script',
                 triggers: [{ triggers: ['1'], event: ActionEditorEvent.frameMoved }],
+                enabled: true,
             },
         ];
         await mockedSubscriberController.onActionsChanged(JSON.stringify(actions));

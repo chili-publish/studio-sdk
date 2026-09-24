@@ -20,6 +20,7 @@ const mockEditorApi: EditorAPI = {
     disableActions: async () => getEditorResponseData(castToEditorResponse(null)),
     enableActions: async () => getEditorResponseData(castToEditorResponse(null)),
     enableComponentActions: async () => getEditorResponseData(castToEditorResponse(null)),
+    setActionEnabled: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -38,6 +39,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'disableActions');
     jest.spyOn(mockEditorApi, 'enableActions');
     jest.spyOn(mockEditorApi, 'enableComponentActions');
+    jest.spyOn(mockEditorApi, 'setActionEnabled');
 });
 
 afterEach(() => {
@@ -83,6 +85,12 @@ describe('Should call all of the ActionController functions of child successfull
         await mockedActionController.rename('0', name);
         expect(mockEditorApi.updateAction).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.updateAction).toHaveBeenCalledWith('0', JSON.stringify(update));
+    });
+
+    it('should call setActionEnabled function of EditorAPI with the provided params', async () => {
+        await mockedActionController.setEnabled('0', true);
+        expect(mockEditorApi.setActionEnabled).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setActionEnabled).toHaveBeenCalledWith('0', true);
     });
 
     it('should call removeAction function of EditorAPI', async () => {
