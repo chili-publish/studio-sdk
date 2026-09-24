@@ -588,6 +588,11 @@ describe('SubscriberController', () => {
     it('should be possible to subscribe to onDocumentIssueListChanged', async () => {
         const documentIssues: DocumentIssue[] = [
             { fontId: 'fontId', name: 'fontName', type: DocumentIssueTypeEnum.fontLoading },
+            {
+                frameId: 'frameId',
+                variableId: 'variableId',
+                type: DocumentIssueTypeEnum.unconfiguredInjectedDataSource,
+            },
         ];
         await mockedSubscriberController.onDocumentIssueListChanged(JSON.stringify(documentIssues));
 
