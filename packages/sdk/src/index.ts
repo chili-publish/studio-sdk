@@ -155,7 +155,7 @@ export type {
     DocumentIssue,
     FontLoadingDocumentIssue,
     OverflowDocumentIssue,
-    UnconfiguredInjectedDataSourceDocumentIssue,
+    UnconfiguredGridDataSourceDocumentIssue,
 } from './types/DocumentTypes';
 
 export type {

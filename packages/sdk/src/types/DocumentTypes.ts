@@ -18,7 +18,7 @@ export enum DocumentIssueTypeEnum {
     actionRegister = 'actionRegister',
     actionExecution = 'actionExecution',
     actionCircular = 'actionCircular',
-    unconfiguredInjectedDataSource = 'unconfiguredInjectedDataSource',
+    unconfiguredGridDataSource = 'unconfiguredGridDataSource',
 }
 
 export type OverflowDocumentIssue = {
@@ -47,10 +47,10 @@ export type ActionCircularDocumentIssue = {
     type: DocumentIssueTypeEnum.actionCircular;
 };
 
-export type UnconfiguredInjectedDataSourceDocumentIssue = {
+export type UnconfiguredGridDataSourceDocumentIssue = {
     frameId: Id;
     variableId: Id;
-    type: DocumentIssueTypeEnum.unconfiguredInjectedDataSource;
+    type: DocumentIssueTypeEnum.unconfiguredGridDataSource;
 };
 
 export type DocumentIssue =
@@ -59,7 +59,7 @@ export type DocumentIssue =
     | ActionExecutionDocumentIssue
     | ActionRegisterDocumentIssue
     | ActionCircularDocumentIssue
-    | UnconfiguredInjectedDataSourceDocumentIssue;
+    | UnconfiguredGridDataSourceDocumentIssue;
 
 export type UndoState = {
     canUndo: boolean;
