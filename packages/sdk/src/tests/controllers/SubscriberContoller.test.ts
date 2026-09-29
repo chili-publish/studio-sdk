@@ -591,7 +591,7 @@ describe('SubscriberController', () => {
             {
                 frameId: 'frameId',
                 variableId: 'variableId',
-                type: DocumentIssueTypeEnum.unconfiguredInjectedDataSource,
+                type: DocumentIssueTypeEnum.unconfiguredGridDataSource,
             },
         ];
         await mockedSubscriberController.onDocumentIssueListChanged(JSON.stringify(documentIssues));
