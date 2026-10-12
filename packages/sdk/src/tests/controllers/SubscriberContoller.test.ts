@@ -91,6 +91,7 @@ const mockEditorApi: EditorAPI = {
     onDocumentIssueListChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onBrandKitThemeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCanvasFramesManipulated: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -140,6 +141,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onDocumentIssueListChanged');
     jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
+    jest.spyOn(mockEditorApi, 'onBrandKitThemeChanged');
 
     mockedConfig = ConfigHelper.createRuntimeConfig(mockEditorApi);
     mockedSubscriberController = new SubscriberController(mockedConfig, mockLocalConfig);
@@ -609,6 +611,24 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onBrandKitMediaChanged(JSON.stringify({}));
         expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalled();
         expect(mockEditorApi.onBrandKitMediaChanged).toHaveBeenCalledWith({});
+    });
+
+    it('Should call onBrandKitThemeChanged subscriber with the theme name when triggered', async () => {
+        const callback = jest.fn();
+        mockedConfig.events.onBrandKitThemeChanged.registerCallback(callback);
+        await mockedSubscriberController.onBrandKitThemeChanged('Dark');
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback).toHaveBeenCalledWith('Dark');
+        expect(mockEditorApi.onBrandKitThemeChanged).toHaveBeenCalledWith('Dark');
+    });
+
+    it('Should call onBrandKitThemeChanged subscriber with null when no theme is active', async () => {
+        const callback = jest.fn();
+        mockedConfig.events.onBrandKitThemeChanged.registerCallback(callback);
+        await mockedSubscriberController.onBrandKitThemeChanged(null);
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback).toHaveBeenCalledWith(null);
+        expect(mockEditorApi.onBrandKitThemeChanged).toHaveBeenCalledWith(null);
     });
 
     it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {
