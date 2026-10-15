@@ -455,6 +455,14 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on the active brand kit theme. Fires with the theme name, or `null` when no theme is active.
+     * @param name Active brand kit theme name, or `null`
+     */
+    onBrandKitThemeChanged = (name: string | null) => {
+        this.config.events.onBrandKitThemeChanged.trigger(name);
+    };
+
+    /**
      * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
      * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
      * programmatic changes do not trigger this event.

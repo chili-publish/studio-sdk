@@ -274,6 +274,7 @@ export class SDK {
                 onCustomUndoDataChanged: this.subscriber.onCustomUndoDataChanged,
                 onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
                 onBrandKitMediaChanged: this.subscriber.onBrandKitMediaChanged,
+                onBrandKitThemeChanged: this.subscriber.onBrandKitThemeChanged,
                 onCanvasFramesManipulated: this.subscriber.onCanvasFramesManipulated,
             },
             this.setConnection,
