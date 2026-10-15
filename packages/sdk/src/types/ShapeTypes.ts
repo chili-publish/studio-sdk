@@ -10,8 +10,10 @@ export enum ShapeType {
 export interface ShapeProperties {
     enableFill?: boolean;
     fillColor?: ColorUsage;
+    fillOverprint?: boolean;
     enableStroke?: boolean;
     strokeColor?: ColorUsage;
+    strokeOverprint?: boolean;
     strokeWeight?: number;
     allCornersSame?: boolean;
 }

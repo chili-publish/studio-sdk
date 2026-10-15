@@ -20,6 +20,7 @@ import {
     FrameType,
     FrameTypeEnum,
     IdSetManagedConstraint,
+    ImageFrameBrandkitMediaSource,
     ImageFrameConnectorSource,
     ImageFrameSource,
     ImageFrameUrlSource,
@@ -533,6 +534,17 @@ export class FrameController {
     };
 
     /**
+     * This method will set the image source of an image frame to a brandkit media
+     * @param imageFrameId the id of the imageFrame where an image needs to be assigned to
+     * @param name the name of the brandkit media which contains the image
+     * @returns
+     */
+    setImageFromBrandkitMedia = async (imageFrameId: Id, name: string) => {
+        const src: ImageFrameBrandkitMediaSource = { name, type: ImageSourceTypeEnum.brandKitMedia };
+        return this.updateImageSource(imageFrameId, src);
+    };
+
+    /**
      * This method will set the fitMode property of a specified image frame.
      * @param imageFrameId the id of the imageFrame that needs to get updated.
      * @param fitMode the new fitMode that you want to set to the imageFrame.
@@ -742,6 +754,28 @@ export class FrameController {
     };
 
     /**
+     * This method will set the overprint property of a specified frame's fill.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value whether the frame's fill should overprint
+     * @returns
+     */
+    setFillOverprint = async (frameId: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setFrameFillOverprint(frameId, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will set the overprint property of a specified frame's stroke.
+     * @param frameId the id of the frame that needs to get updated
+     * @param value whether the frame's stroke should overprint
+     * @returns
+     */
+    setStrokeOverprint = async (frameId: Id, value: boolean) => {
+        const res = await this.#editorAPI;
+        return res.setFrameStrokeOverprint(frameId, value).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will set the blend mode of a specified frame
      * @param id the id of a specific frame
      * @param blendMode the blend mode
@@ -753,7 +787,12 @@ export class FrameController {
     };
 
     /**
-     * This method will set the container shape of a specified frame
+     * This method will set the container shape of a specified frame (the mask/crop shape a
+     * frame, e.g. an image frame, is clipped to).
+     *
+     * This is the counterpart of {@link ShapeController.setShapeFrameSource}, which sets the
+     * geometry of a shape frame's own source instead of a frame's container. Both accept the
+     * same {@link ShapeFrameSource} shape.
      * @param frameId the id of the frame that needs to get updated
      * @param value the shape frame source object
      * @returns

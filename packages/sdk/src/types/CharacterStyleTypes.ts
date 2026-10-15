@@ -20,7 +20,8 @@ export type CharacterStyle = {
 
     baselineShiftValue?: string;
     lineHeight?: number;
-    textOverprint?: boolean;
+    fillOverprint?: boolean;
+    strokeOverprint?: boolean;
     color: ColorUsage;
     strokeColor: ColorUsage;
     backgroundColor: ColorUsage;
@@ -63,7 +64,10 @@ export type CharacterStyleUpdate = {
     lineHeight?: {
         value: number;
     };
-    textOverprint?: {
+    fillOverprint?: {
+        value: boolean;
+    };
+    strokeOverprint?: {
         value: boolean;
     };
     color?: {

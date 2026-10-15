@@ -74,7 +74,10 @@ const updateParagraphStyle: ParagraphStyleUpdate = {
     textAlignLast: {
         value: Alignment.LEFT,
     },
-    textOverprint: {
+    fillOverprint: {
+        value: false,
+    },
+    strokeOverprint: {
         value: false,
     },
     color: {

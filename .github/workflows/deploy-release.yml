@@ -447,7 +447,7 @@ jobs:
         id: github-app-access-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          client-id: ${{ vars.GH_APP_CLIENT_ID_CHILI_FRONTEND_VERSION_MANAGER }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
           owner: ${{ github.repository_owner }}
           repositories: delivery-infrastructure
@@ -501,7 +501,7 @@ jobs:
         id: github-app-access-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.GH_APP_ID_CHILI_FRONTEND_VERSION_MANAGER }}
+          client-id: ${{ vars.GH_APP_CLIENT_ID_CHILI_FRONTEND_VERSION_MANAGER }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY_CHILI_FRONTEND_VERSION_MANAGER }}
           owner: ${{ github.repository_owner }}
           repositories: ${{ github.repository }}

@@ -110,6 +110,7 @@ describe('VariableController', () => {
         setVariableLabel: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariablePlaceholder: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableHelpText: async () => getEditorResponseData(castToEditorResponse(null)),
+        setVariableDescription: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableType: async () => getEditorResponseData(castToEditorResponse(null)),
         setVariableRuleSetId: async () => getEditorResponseData(castToEditorResponse(null)),
         setListVariableItems: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -164,6 +165,7 @@ describe('VariableController', () => {
         jest.spyOn(mockEditorApi, 'setVariableLabel');
         jest.spyOn(mockEditorApi, 'setVariablePlaceholder');
         jest.spyOn(mockEditorApi, 'setVariableHelpText');
+        jest.spyOn(mockEditorApi, 'setVariableDescription');
         jest.spyOn(mockEditorApi, 'setVariableType');
         jest.spyOn(mockEditorApi, 'setVariableRuleSetId');
         jest.spyOn(mockEditorApi, 'setListVariableItems');
@@ -270,6 +272,18 @@ describe('VariableController', () => {
         await mockedVariableController.resetHelpText('3');
         expect(mockEditorApi.setVariableHelpText).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.setVariableHelpText).toHaveBeenCalledWith('3', null);
+    });
+
+    it('set variable description', async () => {
+        await mockedVariableController.setDescription('3', 'newDescription');
+        expect(mockEditorApi.setVariableDescription).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableDescription).toHaveBeenCalledWith('3', 'newDescription');
+    });
+
+    it('reset variable description', async () => {
+        await mockedVariableController.resetDescription('3');
+        expect(mockEditorApi.setVariableDescription).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.setVariableDescription).toHaveBeenCalledWith('3', null);
     });
 
     it('set variable type', async () => {

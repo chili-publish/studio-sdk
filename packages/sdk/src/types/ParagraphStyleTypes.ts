@@ -25,7 +25,8 @@ export type ParagraphStyle = {
     lineHeight: number;
     textAlign: Alignment;
     textAlignLast: Alignment;
-    textOverprint: boolean;
+    fillOverprint: boolean;
+    strokeOverprint: boolean;
     color: ColorUsage;
     strokeColor: ColorUsage;
     backgroundColor: ColorUsage;
@@ -85,7 +86,10 @@ export type ParagraphStyleUpdate = {
     textAlignLast?: {
         value: Alignment;
     };
-    textOverprint?: {
+    fillOverprint?: {
+        value: boolean;
+    };
+    strokeOverprint?: {
         value: boolean;
     };
     color?: {

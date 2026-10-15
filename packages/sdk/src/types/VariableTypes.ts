@@ -56,6 +56,7 @@ export interface Variable {
     occurrences: number;
     placeholder?: string | null;
     helpText?: string | null;
+    description?: string | null;
     privateData: PrivateData;
 }
 
@@ -77,7 +78,6 @@ export interface ListVariable extends Variable {
     selected?: string;
     prefix?: ValueWithStyle;
     suffix?: ValueWithStyle;
-    availableItems: string[];
 }
 
 export interface BooleanVariable extends Variable {
