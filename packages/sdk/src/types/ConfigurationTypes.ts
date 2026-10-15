@@ -5,6 +5,7 @@ export enum WellKnownConfigurationKeys {
     GraFxStudioTemplateId = 'TEMPLATE_ID',
     GraFxStudioAuthToken = 'GRAFX_AUTH_TOKEN',
     QueryCallCacheEnabled = 'ENABLE_QUERY_CALL_CACHE',
+    GraFxStudioIsIntegration = 'IS_INTEGRATION',
 }
 
 export enum FrameEditingMode {
