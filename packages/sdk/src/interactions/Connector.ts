@@ -139,6 +139,7 @@ interface ConfigParameterTypes {
     onEngineEditModeChanged: (engineEditMode: string) => void;
     onBrandKitMediaChanged: (brandKitMedia: string) => void;
     onBrandKitThemeChanged: (name: string | null) => void;
+    onLayersChanged: (layers: string) => void;
     onCanvasFramesManipulated: (frameIds: string) => void;
 }
 
@@ -288,6 +289,7 @@ const Connect = (
                 engineEditingModeChanged: params.onEngineEditModeChanged,
                 brandKitMediaChanged: params.onBrandKitMediaChanged,
                 brandKitThemeChanged: params.onBrandKitThemeChanged,
+                layersChanged: params.onLayersChanged,
                 frameManipulated: params.onCanvasFramesManipulated,
             },
         }),

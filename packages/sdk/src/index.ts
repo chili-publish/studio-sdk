@@ -257,3 +257,5 @@ export * from './exceptions/AsyncExceptions';
 export default SDK;
 
 export * as Next from './next';
+
+export * from './types/LayerTypes';
