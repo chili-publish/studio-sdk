@@ -50,6 +50,7 @@ import { ComponentController } from './controllers/ComponentController';
 import { ComponentGridController } from './controllers/ComponentGridController';
 import { MethodListenerRegistry, wrapWithInvocationObserver } from './utils/MethodInstrumentation';
 import { SdkEvents } from './utils/SdkEvents';
+import { LayerController } from './controllers/LayerController';
 
 declare const __ENGINE_DOMAIN__: string;
 const ENGINE_DOMAIN = typeof __ENGINE_DOMAIN__ !== 'undefined' ? __ENGINE_DOMAIN__ : 'studio-cdn.chiligrafx.com';
@@ -117,6 +118,7 @@ export class SDK {
     utils: Instrumented<UtilsController>;
     tool: Instrumented<ToolController>;
     page: Instrumented<PageController>;
+    layer: Instrumented<LayerController>;
     debug: Instrumented<DebugController>;
     undoManager: Instrumented<UndoManagerController>;
     textSelection: Instrumented<TextStyleController>;
@@ -181,6 +183,7 @@ export class SDK {
         this.subscriber = new SubscriberController(this.config, this.localConfig);
         this.tool = this.toInstrumented(new ToolController(this.editorAPI));
         this.page = this.toInstrumented(new PageController(this.editorAPI));
+        this.layer = this.toInstrumented(new LayerController(this.editorAPI));
         this.debug = this.toInstrumented(new DebugController(this.editorAPI));
         // To be renamed textSelection > textStyle
         this.textSelection = this.toInstrumented(new TextStyleController(this.editorAPI));
@@ -275,6 +278,7 @@ export class SDK {
                 onEngineEditModeChanged: this.subscriber.onEngineEditModeChanged,
                 onBrandKitMediaChanged: this.subscriber.onBrandKitMediaChanged,
                 onBrandKitThemeChanged: this.subscriber.onBrandKitThemeChanged,
+                onLayersChanged: this.subscriber.onLayersChanged,
                 onCanvasFramesManipulated: this.subscriber.onCanvasFramesManipulated,
             },
             this.setConnection,
@@ -301,6 +305,7 @@ export class SDK {
         this.utils = this.toInstrumented(new UtilsController(this.editorAPI, this.localConfig));
         this.tool = this.toInstrumented(new ToolController(this.editorAPI));
         this.page = this.toInstrumented(new PageController(this.editorAPI));
+        this.layer = this.toInstrumented(new LayerController(this.editorAPI));
         this.debug = this.toInstrumented(new DebugController(this.editorAPI));
         this.undoManager = this.toInstrumented(new UndoManagerController(this.editorAPI, this));
         this.textSelection = this.toInstrumented(new TextStyleController(this.editorAPI));

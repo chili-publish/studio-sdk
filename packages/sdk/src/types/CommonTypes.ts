@@ -12,6 +12,7 @@ import { DocumentIssue, DocumentType, UndoState } from './DocumentTypes';
 import { EngineEditMode } from './EngineEditModeTypes';
 import type { FrameType } from './FrameTypes';
 import { Frame, FrameLayoutType, FrameTypeEnum } from './FrameTypes';
+import { Layer } from './LayerTypes';
 import { LayoutListItemType, LayoutPropertiesType, LayoutWithFrameProperties, MeasurementUnit } from './LayoutTypes';
 import { Page, PageSize } from './PageTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
@@ -133,6 +134,12 @@ export type ManagedCallbacksConfigType = {
         onEngineEditModeChanged: EngineEvent<(engineEditMode: EngineEditMode) => MaybePromise<void>>;
         onBrandKitMediaChanged: EngineEvent<(brandKitMedia: BrandKitMedia[]) => MaybePromise<void>>;
         onBrandKitThemeChanged: EngineEvent<(name: string | null) => MaybePromise<void>>;
+        /**
+         * Listener that fires with all layers, ordered from bottom to top, when layers are added, deleted, renamed,
+         * locked or reordered, or when frames are added to or removed from a layer.
+         * Note: this event does not fire when the layer properties or the selected layer change.
+         */
+        onLayersChanged: EngineEvent<(layers: Layer[]) => MaybePromise<void>>;
         /**
          * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
          * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
@@ -371,6 +378,11 @@ export type InitialCallbacksConfigType = {
      * @deprecated use `events.onBrandKitThemeChanged` instead
      */
     onBrandKitThemeChanged?: (name: string | null) => void;
+
+    /**
+     * @deprecated use `events.onLayersChanged` instead
+     */
+    onLayersChanged?: (layers: Layer[]) => void;
 
     /**
      * @deprecated use `events.onCanvasFramesManipulated` instead

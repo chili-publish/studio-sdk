@@ -9,6 +9,7 @@ import { DocumentIssue, UndoState } from '../types/DocumentTypes';
 import { EngineEditMode } from '../types/EngineEditModeTypes';
 import { DocumentFontFamily } from '../types/FontTypes';
 import { Frame, FrameLayoutType } from '../types/FrameTypes';
+import { Layer } from '../types/LayerTypes';
 import { LayoutListItemType, LayoutPropertiesType, MeasurementUnit } from '../types/LayoutTypes';
 import { Page, PageSize } from '../types/PageTypes';
 import { ParagraphStyle } from '../types/ParagraphStyleTypes';
@@ -226,6 +227,10 @@ export class ConfigHelper {
             ),
             onBrandKitThemeChanged: new EngineEvent<(name: string | null) => MaybePromise<void>>(
                 () => clone.onBrandKitThemeChanged,
+                clone.logging.logger,
+            ),
+            onLayersChanged: new EngineEvent<(layers: Layer[]) => MaybePromise<void>>(
+                () => clone.onLayersChanged,
                 clone.logging.logger,
             ),
             onCanvasFramesManipulated: new EngineEvent<(frameIds: Id[]) => MaybePromise<void>>(
