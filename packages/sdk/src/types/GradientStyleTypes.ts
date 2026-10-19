@@ -67,6 +67,10 @@ export type GradientDeltaUpdate = {
      * Indicates if the gradient will be applied or not.
      */
     isApplied?: boolean;
+    /**
+     * The start and stop positions of the gradient. Relative to the frame size
+     */
+    startStop?: RelativeOffsets;
 };
 
 /**
