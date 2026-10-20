@@ -1,4 +1,4 @@
-import { EditorAPI } from '../types/CommonTypes';
+import { EditorAPI, Id } from '../types/CommonTypes';
 import type { ChiliDocument, DocumentLoadOptions } from '../types/DocumentTypes';
 import { LayoutPreset } from '../types/LayoutTypes';
 
@@ -69,5 +69,23 @@ export class DocumentController {
         const parsedDoc = JSON.stringify(preset);
 
         return res.createAndLoadDocument(parsedDoc).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method creates a component document out of frames of the current document.
+     * The current document is not modified.
+     *
+     * The component gets the frames (in the z-order of the page), the selected layout (flattened, its page sized to
+     * the bounding box of the frames), the variables the frames depend on and the brand kit.
+     * Duplicated ids are ignored. To use the current selection, pass the ids of the selected frames.
+     *
+     * The method throws when no frame is provided, when a frame does not exist, is virtual, is a component or a
+     * component grid, when the frames are on different pages or when they have no width or no height.
+     * @param frameIds the ids of the frames to create the component from, they must be on the same page
+     * @returns the component document
+     */
+    createComponentFromFrames = async (frameIds: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.createComponentFromFrames(frameIds).then((result) => getEditorResponseData<ChiliDocument>(result));
     };
 }
