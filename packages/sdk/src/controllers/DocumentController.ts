@@ -86,6 +86,8 @@ export class DocumentController {
      */
     createComponentFromFrames = async (frameIds: Id[]) => {
         const res = await this.#editorAPI;
-        return res.createComponentFromFrames(frameIds).then((result) => getEditorResponseData<ChiliDocument>(result));
+        return res
+            .createComponentFromFrames(frameIds)
+            .then((result) => getEditorResponseData<Record<string, unknown>>(result));
     };
 }
