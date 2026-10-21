@@ -3,7 +3,7 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { ShapeController } from '../../controllers/ShapeController';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
-import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
+import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
 
 let id: Id;
 
@@ -12,12 +12,14 @@ let mockedShapeController: ShapeController;
 const mockedEditorApi: EditorAPI = {
     setShapeProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     setShapeCorners: async () => getEditorResponseData(castToEditorResponse(null)),
+    setShapeFrameSource: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
     mockedShapeController = new ShapeController(mockedEditorApi);
     jest.spyOn(mockedEditorApi, 'setShapeProperties');
     jest.spyOn(mockedEditorApi, 'setShapeCorners');
+    jest.spyOn(mockedEditorApi, 'setShapeFrameSource');
 
     id = mockSelectFrame.id;
 });
@@ -95,6 +97,20 @@ describe('ShapeController', () => {
             await mockedShapeController.setRadiusBottomRight(id, radius.bottomRight ?? 5);
             expect(mockedEditorApi.setShapeCorners).toHaveBeenCalledTimes(5);
             expect(mockedEditorApi.setShapeCorners).toHaveBeenCalledWith(id, JSON.stringify(radius));
+        });
+    });
+    describe('setShapeFrameSource', () => {
+        it('Should be possible to set a rectangle shape source', async () => {
+            const source: ShapeFrameSource = { type: ShapeType.rectangle };
+            await mockedShapeController.setShapeFrameSource(id, source);
+            expect(mockedEditorApi.setShapeFrameSource).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.setShapeFrameSource).toHaveBeenCalledWith(id, JSON.stringify(source));
+        });
+        it('Should be possible to set a custom shape source with a path', async () => {
+            const source: ShapeFrameSource = { type: ShapeType.custom, path: 'M0 0 L1 0 L1 1 Z' };
+            await mockedShapeController.setShapeFrameSource(id, source);
+            expect(mockedEditorApi.setShapeFrameSource).toHaveBeenCalledTimes(2);
+            expect(mockedEditorApi.setShapeFrameSource).toHaveBeenCalledWith(id, JSON.stringify(source));
         });
     });
 });
