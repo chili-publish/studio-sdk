@@ -233,6 +233,10 @@ export class ConfigHelper {
                 () => clone.onLayersChanged,
                 clone.logging.logger,
             ),
+            onSelectedLayerIdChanged: new EngineEvent<(layerId: Id) => MaybePromise<void>>(
+                () => clone.onSelectedLayerIdChanged,
+                clone.logging.logger,
+            ),
             onCanvasFramesManipulated: new EngineEvent<(frameIds: Id[]) => MaybePromise<void>>(
                 () => clone.onCanvasFramesManipulated,
                 clone.logging.logger,

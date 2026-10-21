@@ -473,6 +473,14 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on selected layer id, this listener will get triggered when a different layer is selected.
+     * @param layerId the currently selected layer id
+     */
+    onSelectedLayerIdChanged = (layerId: Id) => {
+        this.config.events.onSelectedLayerIdChanged.trigger(layerId);
+    };
+
+    /**
      * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
      * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
      * programmatic changes do not trigger this event.
