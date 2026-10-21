@@ -463,6 +463,24 @@ export class SubscriberController {
     };
 
     /**
+     * Listener on layers list, this listener will get triggered when layers are added, deleted, renamed, locked or reordered,
+     * or when frames are added to, removed from or reordered within a layer.
+     * It does not fire when the layer properties or the selected layer change.
+     * @param layers Stringified array of Layer objects, ordered from bottom to top
+     */
+    onLayersChanged = (layers: string) => {
+        this.config.events.onLayersChanged.trigger(JSON.parse(layers));
+    };
+
+    /**
+     * Listener on selected layer id, this listener will get triggered when a different layer is selected.
+     * @param layerId the currently selected layer id
+     */
+    onSelectedLayerIdChanged = (layerId: Id) => {
+        this.config.events.onSelectedLayerIdChanged.trigger(layerId);
+    };
+
+    /**
      * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
      * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
      * programmatic changes do not trigger this event.

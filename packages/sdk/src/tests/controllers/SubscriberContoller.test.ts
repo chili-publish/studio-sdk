@@ -33,6 +33,7 @@ import {
     ConnectorSupportedAuth,
 } from '../../types/ConnectorTypes';
 import type { Page, PageSize } from '../../types/PageTypes';
+import type { Layer } from '../../types/LayerTypes';
 import { CornerRadiusUpdateModel } from '../../types/ShapeTypes';
 import { ConfigHelper } from '../../utils/ConfigHelper';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -92,6 +93,8 @@ const mockEditorApi: EditorAPI = {
     onEngineEditModeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitThemeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onLayersChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayerIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCanvasFramesManipulated: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -142,6 +145,8 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onEngineEditModeChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitThemeChanged');
+    jest.spyOn(mockEditorApi, 'onLayersChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayerIdChanged');
 
     mockedConfig = ConfigHelper.createRuntimeConfig(mockEditorApi);
     mockedSubscriberController = new SubscriberController(mockedConfig, mockLocalConfig);
@@ -629,6 +634,24 @@ describe('SubscriberController', () => {
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenCalledWith(null);
         expect(mockEditorApi.onBrandKitThemeChanged).toHaveBeenCalledWith(null);
+    });
+
+    it('Should call onLayersChanged subscriber with parsed layers when triggered', async () => {
+        const layers: Layer[] = [
+            { id: 'layer-1', name: 'Layer 1', frameIds: ['frame-1'], isLocked: false },
+            { id: 'layer-2', name: 'Layer 2', frameIds: [], isLocked: true },
+        ];
+        const callback = jest.fn();
+        mockedConfig.events.onLayersChanged.registerCallback(callback);
+        await mockedSubscriberController.onLayersChanged(JSON.stringify(layers));
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback).toHaveBeenCalledWith(layers);
+        expect(mockEditorApi.onLayersChanged).toHaveBeenCalledWith(layers);
+    });
+
+    it('Should be possible to subscribe to onSelectedLayerIdChanged', async () => {
+        await mockedSubscriberController.onSelectedLayerIdChanged('new id');
+        expect(mockEditorApi.onSelectedLayerIdChanged).toHaveBeenCalledWith('new id');
     });
 
     it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {
