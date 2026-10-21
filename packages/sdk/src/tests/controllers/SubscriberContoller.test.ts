@@ -94,6 +94,7 @@ const mockEditorApi: EditorAPI = {
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitThemeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onLayersChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayerIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCanvasFramesManipulated: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -145,6 +146,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitThemeChanged');
     jest.spyOn(mockEditorApi, 'onLayersChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayerIdChanged');
 
     mockedConfig = ConfigHelper.createRuntimeConfig(mockEditorApi);
     mockedSubscriberController = new SubscriberController(mockedConfig, mockLocalConfig);
@@ -645,6 +647,11 @@ describe('SubscriberController', () => {
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenCalledWith(layers);
         expect(mockEditorApi.onLayersChanged).toHaveBeenCalledWith(layers);
+    });
+
+    it('Should be possible to subscribe to onSelectedLayerIdChanged', async () => {
+        await mockedSubscriberController.onSelectedLayerIdChanged('new id');
+        expect(mockEditorApi.onSelectedLayerIdChanged).toHaveBeenCalledWith('new id');
     });
 
     it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {
