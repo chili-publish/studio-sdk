@@ -112,6 +112,19 @@ export type APIBrandKitMedia = {
     mediaId?: Id | null;
 };
 
+export type BrandKitComponent = {
+    componentId: Id;
+    name: string;
+    description?: string | null;
+};
+
+export type APIBrandKitComponent = {
+    componentId: Id;
+    name: string;
+    description?: string | null;
+    guid?: string | null;
+};
+
 export type APIBrandKitTheme = {
     id: Id;
     name: string;
@@ -134,6 +147,7 @@ export type APIBrandKit = {
     characterStyles?: APIBrandKitCharacterStyle[] | null;
     paragraphStyles?: APIBrandKitParagraphStyle[] | null;
     media?: APIBrandKitMedia[] | null;
+    components?: APIBrandKitComponent[] | null;
     themes?: APIBrandKitTheme[] | null;
 };
 
@@ -148,5 +162,6 @@ export type BrandKit = {
     characterStyles: PropertyState<CharacterStyle>[];
     paragraphStyles: PropertyState<ParagraphStyle>[];
     media: PropertyState<BrandKitMedia>[];
+    components: PropertyState<BrandKitComponent>[];
     isAutoSync: boolean | null;
 };
