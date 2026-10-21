@@ -5,11 +5,11 @@ export type Layer = {
     id: Id;
     name: string;
     /**
-     * The ids of the frames on this layer.
+     * The ids of the frames on this layer, ordered from bottom to top.
      */
     frameIds: Id[];
     /**
-     * A locked layer can't be deleted, selected or reordered, and frames can't be added to it.
+     * Frames on a locked layer can't be selected on the canvas. Frames added, pasted or moved to a locked layer are not selected.
      */
     isLocked: boolean;
 };
