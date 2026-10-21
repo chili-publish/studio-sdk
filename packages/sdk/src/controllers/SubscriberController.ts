@@ -464,7 +464,7 @@ export class SubscriberController {
 
     /**
      * Listener on layers list, this listener will get triggered when layers are added, deleted, renamed, locked or reordered,
-     * or when frames are added to or removed from a layer.
+     * or when frames are added to, removed from or reordered within a layer.
      * It does not fire when the layer properties or the selected layer change.
      * @param layers Stringified array of Layer objects, ordered from bottom to top
      */

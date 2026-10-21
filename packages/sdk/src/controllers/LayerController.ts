@@ -6,7 +6,7 @@ import { Layer, LayerProperties, LayerPropertiesUpdate } from '../types/LayerTyp
  * The LayerController is responsible for all communication regarding Layers.
  * Methods inside this controller can be called by `window.SDK.layer.{method-name}`
  *
- * A document always has at least one layer and at least one unlocked layer.
+ * A document always has at least one layer.
  */
 export class LayerController {
     /**
@@ -43,7 +43,7 @@ export class LayerController {
 
     /**
      * This method returns the selected layer, which new and pasted frames are added to.
-     * The selected layer is never locked.
+     * When a document is loaded, the first layer is selected.
      * @returns the selected layer
      */
     getSelectedLayer = async () => {
@@ -72,7 +72,7 @@ export class LayerController {
     };
 
     /**
-     * This method deletes a layer and all frames on it. Locked layers can't be deleted.
+     * This method deletes a layer and all frames on it. Deleting the selected layer selects the next layer, or the previous one when it is the last layer.
      * @param layerId the id of the layer
      * @returns
      */
@@ -83,7 +83,7 @@ export class LayerController {
 
     /**
      * This method locks or unlocks a layer.
-     * Locking the selected layer moves the selection to the next unlocked layer.
+     * The selected layer stays selected when it is locked.
      * @param layerId the id of the layer
      * @param isLocked whether the layer should be locked
      * @returns
@@ -94,7 +94,7 @@ export class LayerController {
     };
 
     /**
-     * This method moves frames to a layer, keeping their relative order. Frames can't be moved to a locked layer.
+     * This method moves frames to a layer, keeping their relative order. Frames moved to a locked layer are deselected.
      * @param layerId the id of the target layer
      * @param frameIds An array of all frame IDs you want to move to the layer
      * @param order the position within the target layer's frames, 0 is the back.
@@ -118,7 +118,7 @@ export class LayerController {
     };
 
     /**
-     * This method changes the order of layers. Locked layers can't be reordered.
+     * This method changes the order of layers.
      * The layer list is ordered from bottom to top, so index 0 is the bottom layer.
      * Frames are restacked so each layer stays one band in the z-order.
      * @param order the index in the list to move to, from 0 to the number of layers
@@ -132,7 +132,6 @@ export class LayerController {
 
     /**
      * This method selects a layer, new and pasted frames are added to the selected layer.
-     * Locked layers can't be selected.
      * @param layerId the id of the layer
      * @returns
      */

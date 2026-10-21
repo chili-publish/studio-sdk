@@ -136,7 +136,7 @@ export type ManagedCallbacksConfigType = {
         onBrandKitThemeChanged: EngineEvent<(name: string | null) => MaybePromise<void>>;
         /**
          * Listener that fires with all layers, ordered from bottom to top, when layers are added, deleted, renamed,
-         * locked or reordered, or when frames are added to or removed from a layer.
+         * locked or reordered, or when frames are added to, removed from or reordered within a layer.
          * Note: this event does not fire when the layer properties or the selected layer change.
          */
         onLayersChanged: EngineEvent<(layers: Layer[]) => MaybePromise<void>>;
