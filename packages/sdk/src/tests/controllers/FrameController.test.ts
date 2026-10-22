@@ -91,6 +91,9 @@ const mockedEditorApi: EditorAPI = {
     enterGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    enterPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    applyPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    cancelPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateFrameShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -164,6 +167,9 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'enterGradientMode');
     jest.spyOn(mockedEditorApi, 'applyGradientMode');
     jest.spyOn(mockedEditorApi, 'cancelGradientMode');
+    jest.spyOn(mockedEditorApi, 'enterPathEditMode');
+    jest.spyOn(mockedEditorApi, 'applyPathEditMode');
+    jest.spyOn(mockedEditorApi, 'cancelPathEditMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateFrameShadowSettings');
@@ -589,6 +595,22 @@ describe('FrameController', () => {
     it('Should be possible to cancel gradient mode without saving the applied gradient', async () => {
         await mockedFrameController.cancelGradientMode();
         expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to enter path edit mode on a specific frame', async () => {
+        await mockedFrameController.enterPathEditMode(id);
+        expect(mockedEditorApi.enterPathEditMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.enterPathEditMode).toHaveBeenCalledWith(id);
+    });
+
+    it('Should be possible to apply the current path to the frame', async () => {
+        await mockedFrameController.applyPathEditMode();
+        expect(mockedEditorApi.applyPathEditMode).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should be possible to cancel path edit mode without saving the applied path', async () => {
+        await mockedFrameController.cancelPathEditMode();
+        expect(mockedEditorApi.cancelPathEditMode).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to reset asset crop override', async () => {
