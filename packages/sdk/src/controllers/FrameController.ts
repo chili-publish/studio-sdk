@@ -907,6 +907,34 @@ export class FrameController {
     };
 
     /**
+     * This method will make the specified image frame go into path edit mode.
+     * @param id the id of a specific shape frame
+     * @returns
+     */
+    enterPathEditMode = async (id: Id) => {
+        const res = await this.#editorAPI;
+        return res.enterPathEditMode(id).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit path edit mode while saving the applied path.
+     * @returns
+     */
+    applyPathEditMode = async () => {
+        const res = await this.#editorAPI;
+        return res.applyPathEditMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit path edit mode.
+     * @returns
+     */
+    cancelPathEditMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelPathEditMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will enable auto grow on a specified frame.
      * @param id the id of the frame that needs to get updated
      * @param value the new value to be set to the frame.
