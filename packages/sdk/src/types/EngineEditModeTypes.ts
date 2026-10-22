@@ -12,4 +12,5 @@ export enum EngineEditModeType {
     frameSubjectArea = 'frameSubjectArea',
     perAssetCrop = 'perAssetCrop',
     gradient = 'gradient',
+    pathEdit = 'pathEdit',
 }
