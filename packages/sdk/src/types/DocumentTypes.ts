@@ -50,6 +50,7 @@ export type ActionCircularDocumentIssue = {
 export type UnconfiguredGridDataSourceDocumentIssue = {
     frameId: Id;
     variableId: Id;
+    componentFrameId?: Id | null;
     type: DocumentIssueTypeEnum.unconfiguredGridDataSource;
 };
 
