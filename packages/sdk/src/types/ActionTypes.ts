@@ -55,6 +55,11 @@ export interface DocumentAction {
      * The JavaScript based action script.
      */
     script: string;
+
+    /**
+     * Indicates whether the action is enabled or disabled
+     */
+    enabled: boolean;
 }
 
 /**
