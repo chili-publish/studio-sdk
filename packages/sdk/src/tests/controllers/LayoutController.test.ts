@@ -16,6 +16,28 @@ import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
 let mockedLayoutController: LayoutController;
 let mockId: Id;
 
+const layoutWithLayerProperties = {
+    id: '1',
+    name: 'Layout 1',
+    parentId: '0',
+    layerProperties: {
+        value: [
+            { layerId: '0', visibilityMode: 'visible', isPrintable: true, visibilityConditions: [] },
+            {
+                layerId: 'f3a9',
+                visibilityMode: 'conditional',
+                isPrintable: false,
+                visibilityConditions: [
+                    { id: 'var-1', value: { type: 'boolean', value: true } },
+                    { id: 'var-2', value: { type: 'text', value: 'premium', operator: 'contains' } },
+                ],
+            },
+        ],
+        isOverride: true,
+        isReadOnly: false,
+    },
+};
+
 const mockedEditorApi: EditorAPI = {
     getLayouts: async () => getEditorResponseData(castToEditorResponse(null)),
     getLayoutById: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -112,6 +134,25 @@ describe('LayoutController', () => {
     it('Should be possible to get the selected layout', async () => {
         await mockedLayoutController.getSelected();
         expect(mockedEditorApi.getSelectedLayout).toHaveBeenCalledTimes(1);
+    });
+    it('Should call the getSelected method and parse the layer properties of the layout', async () => {
+        (mockedEditorApi.getSelectedLayout as jest.Mock).mockResolvedValueOnce(
+            getEditorResponseData(castToEditorResponse(layoutWithLayerProperties)),
+        );
+        const response = await mockedLayoutController.getSelected();
+        expect(mockedEditorApi.getSelectedLayout).toHaveBeenCalledTimes(1);
+        expect(response.parsedData).toStrictEqual(layoutWithLayerProperties);
+        expect(response.parsedData?.layerProperties).toStrictEqual(layoutWithLayerProperties.layerProperties);
+    });
+    it('Should call the getById method and parse the layer properties of the layout', async () => {
+        (mockedEditorApi.getLayoutById as jest.Mock).mockResolvedValueOnce(
+            getEditorResponseData(castToEditorResponse(layoutWithLayerProperties)),
+        );
+        const response = await mockedLayoutController.getById('1');
+        expect(mockedEditorApi.getLayoutById).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.getLayoutById).toHaveBeenCalledWith('1');
+        expect(response.parsedData).toStrictEqual(layoutWithLayerProperties);
+        expect(response.parsedData?.layerProperties).toStrictEqual(layoutWithLayerProperties.layerProperties);
     });
     it('Should be possible to remove a layout', async () => {
         await mockedLayoutController.remove('1');
