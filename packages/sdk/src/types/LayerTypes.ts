@@ -1,4 +1,4 @@
-import { Id } from './CommonTypes';
+import { Id, PropertyState, VisibilityMode, VisibilityProperties } from './CommonTypes';
 import { VariableWithValue } from './VariableTypes';
 
 export type Layer = {
@@ -14,23 +14,15 @@ export type Layer = {
     isLocked: boolean;
 };
 
-export enum LayerVisibilityMode {
-    visible = 'visible',
-    hidden = 'hidden',
-    conditional = 'conditional',
-}
-
 /**
  * The properties of a layer on a layout.
+ * `visibilityProperties.value` always holds the resolved settings, including inherited ones.
+ * `visibilityProperties.isOverride` is `true` only when this layout sets the visibility properties of this layer itself.
+ * It is `false` on the top layout, and `false` when a child layout inherits them from its parent.
  */
 export type LayerProperties = {
     layerId: Id;
-    visibilityMode: LayerVisibilityMode;
-    isPrintable: boolean;
-    /**
-     * The conditions that make the layer visible when `visibilityMode` is `conditional`.
-     */
-    visibilityConditions: VariableWithValue[];
+    visibilityProperties: PropertyState<VisibilityProperties>;
 };
 
 /**
@@ -38,6 +30,6 @@ export type LayerProperties = {
  */
 export type LayerPropertiesUpdate = {
     isPrintable?: boolean;
-    visibilityMode?: LayerVisibilityMode;
+    visibilityMode?: VisibilityMode;
     visibilityConditions?: VariableWithValue[];
 };

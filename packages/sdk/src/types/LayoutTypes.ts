@@ -20,7 +20,7 @@ export type LayoutPropertiesType = {
     selectedByUser: boolean;
     timelineLengthMs: PropertyState<number | undefined>;
     resizableByUser: ResizableLayoutProperties;
-    layerProperties: PropertyState<LayerProperties[]>;
+    layerProperties: LayerProperties[];
 } | null;
 
 export type FrameProperties = {
@@ -71,7 +71,7 @@ export type Layout = {
     availableForUser: boolean;
     selectedByUser: boolean;
     resizableByUser: ResizableLayoutProperties;
-    layerProperties: PropertyState<LayerProperties[]>;
+    layerProperties: LayerProperties[];
 };
 
 // used by onLayoutsChanged

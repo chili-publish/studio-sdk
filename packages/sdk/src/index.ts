@@ -145,8 +145,9 @@ export type {
     PrivateData,
     PropertyState,
     SelectedLayoutFrame,
+    VisibilityProperties,
 } from './types/CommonTypes';
-export { SDKUnauthorizedError } from './types/CommonTypes';
+export { SDKUnauthorizedError, VisibilityMode } from './types/CommonTypes';
 export type {
     ActionCircularDocumentIssue,
     ActionExecutionDocumentIssue,
