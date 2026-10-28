@@ -44,7 +44,7 @@ export class LayerController {
     /**
      * This method returns the selected layer, which new and pasted frames are added to.
      * When a document is loaded, the first layer is selected.
-     * @returns the selected layer
+     * @returns the active layer
      */
     getSelectedLayer = async () => {
         const res = await this.#editorAPI;
@@ -63,7 +63,7 @@ export class LayerController {
     };
 
     /**
-     * This method adds a new layer on top and selects it.
+     * This method adds a new layer on top. The new layer becomes the only selected layer.
      * @returns the id of the new layer
      */
     addLayer = async () => {
@@ -72,25 +72,29 @@ export class LayerController {
     };
 
     /**
-     * This method deletes a layer and all frames on it. Deleting the selected layer selects the next layer, or the previous one when it is the last layer.
-     * @param layerId the id of the layer
+     * This method deletes layers and all frames on them. Deleting every layer is not allowed and throws an error.
+     * Selected layers that aren't deleted stay selected. If all selected layers are deleted, the layer after the
+     * active layer is selected. If no layer after it remains, the last remaining layer is selected.
+     * An empty array does nothing, duplicate ids are ignored, and an unknown layer id throws an error before anything changes.
+     * @param layerIds An array of all layer IDs you want to delete
      * @returns
      */
-    deleteLayer = async (layerId: Id) => {
+    deleteLayers = async (layerIds: Id[]) => {
         const res = await this.#editorAPI;
-        return res.deleteLayer(layerId).then((result) => getEditorResponseData<null>(result));
+        return res.deleteLayers(layerIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
-     * This method locks or unlocks a layer.
-     * The selected layer stays selected when it is locked.
-     * @param layerId the id of the layer
-     * @param isLocked whether the layer should be locked
+     * This method locks or unlocks layers. Frames on newly locked layers are deselected.
+     * The layer selection doesn't change, so a locked layer can stay selected.
+     * An empty array does nothing, duplicate ids are ignored, and an unknown layer id throws an error before anything changes.
+     * @param layerIds An array of all layer IDs you want to lock or unlock
+     * @param isLocked whether the layers should be locked
      * @returns
      */
-    lockLayer = async (layerId: Id, isLocked: boolean) => {
+    lockLayers = async (layerIds: Id[], isLocked: boolean) => {
         const res = await this.#editorAPI;
-        return res.lockLayer(layerId, isLocked).then((result) => getEditorResponseData<null>(result));
+        return res.lockLayers(layerIds, isLocked).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
@@ -131,13 +135,16 @@ export class LayerController {
     };
 
     /**
-     * This method selects a layer, new and pasted frames are added to the selected layer.
-     * @param layerId the id of the layer
+     * This method selects layers, and the first one becomes the active layer. New and pasted frames are added to the active layer.
+     * It also selects all frames of these layers on the selected page, including frames on locked layers.
+     * If the layers have no frames on that page, all frames are deselected.
+     * An empty array does nothing, duplicate ids are ignored, and an unknown layer id throws an error before anything changes.
+     * @param layerIds An array of all layer IDs you want to select, the first one becomes the active layer
      * @returns
      */
-    selectLayer = async (layerId: Id) => {
+    selectLayers = async (layerIds: Id[]) => {
         const res = await this.#editorAPI;
-        return res.selectLayer(layerId).then((result) => getEditorResponseData<null>(result));
+        return res.selectLayers(layerIds).then((result) => getEditorResponseData<null>(result));
     };
 
     /**

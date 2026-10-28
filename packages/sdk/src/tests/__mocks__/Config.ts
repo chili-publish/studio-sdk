@@ -39,6 +39,6 @@ const mockConfig: RuntimeConfigType = ConfigHelper.createRuntimeConfig({
     onPagesChanged: defaultMockReturn,
     onPageSizeChanged: defaultMockReturn,
     onViewModeChanged: defaultMockReturn,
-    onSelectedLayerIdChanged: defaultMockReturn,
+    onSelectedLayerIdsChanged: defaultMockReturn,
 });
 export default mockConfig;

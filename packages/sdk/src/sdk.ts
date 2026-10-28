@@ -279,7 +279,7 @@ export class SDK {
                 onBrandKitMediaChanged: this.subscriber.onBrandKitMediaChanged,
                 onBrandKitThemeChanged: this.subscriber.onBrandKitThemeChanged,
                 onLayersChanged: this.subscriber.onLayersChanged,
-                onSelectedLayerIdChanged: this.subscriber.onSelectedLayerIdChanged,
+                onSelectedLayerIdsChanged: this.subscriber.onSelectedLayerIdsChanged,
                 onCanvasFramesManipulated: this.subscriber.onCanvasFramesManipulated,
             },
             this.setConnection,
