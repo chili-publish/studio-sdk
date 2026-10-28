@@ -56,7 +56,8 @@ export type TextContentParagraph = {
     list?: TextContentList;
     /**
      * The runs of the paragraph, an empty list is an empty paragraph.
-     * An empty paragraph can carry character formatting through a single text run with an empty text.
+     * A leading text run with an empty text holds the formatting of the (hidden) paragraph mark when it differs from
+     * the first run, this is also how an empty paragraph carries character formatting.
      */
     content: TextContentInline[];
 };
@@ -116,7 +117,7 @@ export type TextStyleReference = { id: Id; name?: string } | { id?: Id; name: st
 export type TextContentList = {
     type: EnumOrValue<MarkedListType>;
     /**
-     * Zero based nesting level, from 0 to 3.
+     * Zero based nesting level, from 0 to 4.
      */
     level?: number;
     /**
