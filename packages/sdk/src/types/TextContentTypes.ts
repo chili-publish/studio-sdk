@@ -143,13 +143,11 @@ export type TextContentLocalColor = {
  */
 export type TextContentBrandKitColor = {
     type: ColorUsageType.brandKit | 'brandKit';
-    id?: Id;
-    name?: string;
     /**
      * Opacity in the range 0 - 1.
      */
     opacity?: number;
-};
+} & ({ id: Id; name?: string } | { id?: Id; name: string });
 
 export type TextContentColor = TextContentLocalColor | TextContentBrandKitColor;
 
