@@ -137,10 +137,14 @@ export type ManagedCallbacksConfigType = {
         /**
          * Listener that fires with all layers, ordered from bottom to top, when layers are added, deleted, renamed,
          * locked or reordered, or when frames are added to, removed from or reordered within a layer.
-         * Note: this event does not fire when the layer properties or the selected layer change.
+         * Note: this event does not fire when the layer properties or the selected layers change.
          */
         onLayersChanged: EngineEvent<(layers: Layer[]) => MaybePromise<void>>;
-        onSelectedLayerIdChanged: EngineEvent<(layerId: Id) => MaybePromise<void>>;
+        /**
+         * Listener that fires with the ids of the selected layers when the selected layers change.
+         * The first id is the active layer.
+         */
+        onSelectedLayerIdsChanged: EngineEvent<(layerIds: Id[]) => MaybePromise<void>>;
         /**
          * Listener that fires when frames are manipulated (e.g. moved, resized, rotated, cropped, text changed) by the user.
          * Note: this event only fires when the manipulation was caused by direct user interaction on the canvas;
@@ -386,9 +390,9 @@ export type InitialCallbacksConfigType = {
     onLayersChanged?: (layers: Layer[]) => void;
 
     /**
-     * @deprecated use `events.onSelectedLayerIdChanged` instead
+     * @deprecated use `events.onSelectedLayerIdsChanged` instead
      */
-    onSelectedLayerIdChanged?: (layerId: Id) => void;
+    onSelectedLayerIdsChanged?: (layerIds: Id[]) => void;
 
     /**
      * @deprecated use `events.onCanvasFramesManipulated` instead

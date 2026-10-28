@@ -36,12 +36,12 @@ const mockedEditorApi: EditorAPI = {
     getSelectedLayer: async () => getEditorResponseData(castToEditorResponse(layers[0])),
     getLayerPropertiesOnSelectedLayout: async () => getEditorResponseData(castToEditorResponse(layerProperties)),
     addLayer: async () => getEditorResponseData(castToEditorResponse('layer-3')),
-    deleteLayer: async () => getEditorResponseData(castToEditorResponse(null)),
-    lockLayer: async () => getEditorResponseData(castToEditorResponse(null)),
+    deleteLayers: async () => getEditorResponseData(castToEditorResponse(null)),
+    lockLayers: async () => getEditorResponseData(castToEditorResponse(null)),
     moveFramesToLayer: async () => getEditorResponseData(castToEditorResponse(null)),
     renameLayer: async () => getEditorResponseData(castToEditorResponse(null)),
     reorderLayers: async () => getEditorResponseData(castToEditorResponse(null)),
-    selectLayer: async () => getEditorResponseData(castToEditorResponse(null)),
+    selectLayers: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -53,12 +53,12 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getSelectedLayer');
     jest.spyOn(mockedEditorApi, 'getLayerPropertiesOnSelectedLayout');
     jest.spyOn(mockedEditorApi, 'addLayer');
-    jest.spyOn(mockedEditorApi, 'deleteLayer');
-    jest.spyOn(mockedEditorApi, 'lockLayer');
+    jest.spyOn(mockedEditorApi, 'deleteLayers');
+    jest.spyOn(mockedEditorApi, 'lockLayers');
     jest.spyOn(mockedEditorApi, 'moveFramesToLayer');
     jest.spyOn(mockedEditorApi, 'renameLayer');
     jest.spyOn(mockedEditorApi, 'reorderLayers');
-    jest.spyOn(mockedEditorApi, 'selectLayer');
+    jest.spyOn(mockedEditorApi, 'selectLayers');
     jest.spyOn(mockedEditorApi, 'setLayerProperties');
 });
 
@@ -101,16 +101,16 @@ describe('LayerController', () => {
         expect(response.parsedData).toBe('layer-3');
     });
 
-    it('Should call the deleteLayer method', async () => {
-        await mockedLayerController.deleteLayer('layer-1');
-        expect(mockedEditorApi.deleteLayer).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.deleteLayer).toHaveBeenCalledWith('layer-1');
+    it('Should call the deleteLayers method with the layer ids', async () => {
+        await mockedLayerController.deleteLayers(['layer-1', 'layer-2']);
+        expect(mockedEditorApi.deleteLayers).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.deleteLayers).toHaveBeenCalledWith(['layer-1', 'layer-2']);
     });
 
-    it('Should call the lockLayer method', async () => {
-        await mockedLayerController.lockLayer('layer-1', true);
-        expect(mockedEditorApi.lockLayer).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.lockLayer).toHaveBeenCalledWith('layer-1', true);
+    it('Should call the lockLayers method with the layer ids', async () => {
+        await mockedLayerController.lockLayers(['layer-1', 'layer-2'], true);
+        expect(mockedEditorApi.lockLayers).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.lockLayers).toHaveBeenCalledWith(['layer-1', 'layer-2'], true);
     });
 
     it('Should call the moveFramesToLayer method with an order', async () => {
@@ -137,10 +137,10 @@ describe('LayerController', () => {
         expect(mockedEditorApi.reorderLayers).toHaveBeenCalledWith(1, ['layer-1']);
     });
 
-    it('Should call the selectLayer method', async () => {
-        await mockedLayerController.selectLayer('layer-1');
-        expect(mockedEditorApi.selectLayer).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.selectLayer).toHaveBeenCalledWith('layer-1');
+    it('Should call the selectLayers method with the layer ids', async () => {
+        await mockedLayerController.selectLayers(['layer-2', 'layer-1']);
+        expect(mockedEditorApi.selectLayers).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.selectLayers).toHaveBeenCalledWith(['layer-2', 'layer-1']);
     });
 
     it('Should call the setLayerProperties method with the stringified update and the layout id', async () => {

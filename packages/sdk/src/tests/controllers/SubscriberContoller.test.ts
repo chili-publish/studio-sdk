@@ -94,7 +94,7 @@ const mockEditorApi: EditorAPI = {
     onBrandKitMediaChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onBrandKitThemeChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onLayersChanged: async () => getEditorResponseData(castToEditorResponse(null)),
-    onSelectedLayerIdChanged: async () => getEditorResponseData(castToEditorResponse(null)),
+    onSelectedLayerIdsChanged: async () => getEditorResponseData(castToEditorResponse(null)),
     onCanvasFramesManipulated: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
@@ -146,7 +146,7 @@ beforeEach(() => {
     jest.spyOn(mockEditorApi, 'onBrandKitMediaChanged');
     jest.spyOn(mockEditorApi, 'onBrandKitThemeChanged');
     jest.spyOn(mockEditorApi, 'onLayersChanged');
-    jest.spyOn(mockEditorApi, 'onSelectedLayerIdChanged');
+    jest.spyOn(mockEditorApi, 'onSelectedLayerIdsChanged');
 
     mockedConfig = ConfigHelper.createRuntimeConfig(mockEditorApi);
     mockedSubscriberController = new SubscriberController(mockedConfig, mockLocalConfig);
@@ -649,9 +649,12 @@ describe('SubscriberController', () => {
         expect(mockEditorApi.onLayersChanged).toHaveBeenCalledWith(layers);
     });
 
-    it('Should be possible to subscribe to onSelectedLayerIdChanged', async () => {
-        await mockedSubscriberController.onSelectedLayerIdChanged('new id');
-        expect(mockEditorApi.onSelectedLayerIdChanged).toHaveBeenCalledWith('new id');
+    it('Should call onSelectedLayerIdsChanged subscriber with parsed layer ids when triggered', async () => {
+        const callback = jest.fn();
+        mockedConfig.events.onSelectedLayerIdsChanged.registerCallback(callback);
+        await mockedSubscriberController.onSelectedLayerIdsChanged(JSON.stringify(['layer-2', 'layer-1']));
+        expect(callback).toHaveBeenCalledTimes(1);
+        expect(callback).toHaveBeenCalledWith(['layer-2', 'layer-1']);
     });
 
     it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {

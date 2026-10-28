@@ -140,7 +140,7 @@ interface ConfigParameterTypes {
     onBrandKitMediaChanged: (brandKitMedia: string) => void;
     onBrandKitThemeChanged: (name: string | null) => void;
     onLayersChanged: (layers: string) => void;
-    onSelectedLayerIdChanged: (layerId: string) => void;
+    onSelectedLayerIdsChanged: (layerIds: string) => void;
     onCanvasFramesManipulated: (frameIds: string) => void;
 }
 
@@ -291,7 +291,7 @@ const Connect = (
                 brandKitMediaChanged: params.onBrandKitMediaChanged,
                 brandKitThemeChanged: params.onBrandKitThemeChanged,
                 layersChanged: params.onLayersChanged,
-                selectedLayerIdChanged: params.onSelectedLayerIdChanged,
+                selectedLayerIdsChanged: params.onSelectedLayerIdsChanged,
                 frameManipulated: params.onCanvasFramesManipulated,
             },
         }),
