@@ -20,22 +20,31 @@ const layoutWithLayerProperties = {
     id: '1',
     name: 'Layout 1',
     parentId: '0',
-    layerProperties: {
-        value: [
-            { layerId: '0', visibilityMode: 'visible', isPrintable: true, visibilityConditions: [] },
-            {
-                layerId: 'f3a9',
-                visibilityMode: 'conditional',
-                isPrintable: false,
-                visibilityConditions: [
-                    { id: 'var-1', value: { type: 'boolean', value: true } },
-                    { id: 'var-2', value: { type: 'text', value: 'premium', operator: 'contains' } },
-                ],
+    layerProperties: [
+        {
+            layerId: '0',
+            visibilityProperties: {
+                value: { visibilityMode: 'visible', isPrintable: true, visibilityConditions: [] },
+                isOverride: false,
+                isReadOnly: false,
             },
-        ],
-        isOverride: true,
-        isReadOnly: false,
-    },
+        },
+        {
+            layerId: 'f3a9',
+            visibilityProperties: {
+                value: {
+                    visibilityMode: 'conditional',
+                    isPrintable: false,
+                    visibilityConditions: [
+                        { id: 'var-1', value: { type: 'boolean', value: true } },
+                        { id: 'var-2', value: { type: 'text', value: 'premium', operator: 'contains' } },
+                    ],
+                },
+                isOverride: true,
+                isReadOnly: false,
+            },
+        },
+    ],
 };
 
 const mockedEditorApi: EditorAPI = {

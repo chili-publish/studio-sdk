@@ -1,6 +1,6 @@
 import { LayerController } from '../../controllers/LayerController';
-import { EditorAPI } from '../../types/CommonTypes';
-import { Layer, LayerProperties, LayerPropertiesUpdate, LayerVisibilityMode } from '../../types/LayerTypes';
+import { EditorAPI, VisibilityMode } from '../../types/CommonTypes';
+import { Layer, LayerProperties, LayerPropertiesUpdate } from '../../types/LayerTypes';
 import { VariableVisibilityOperator, VariableVisibilityTargetType } from '../../types/VariableTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -12,21 +12,34 @@ const layers: Layer[] = [
 ];
 
 const layerProperties: LayerProperties[] = [
-    { layerId: 'layer-1', visibilityMode: LayerVisibilityMode.visible, isPrintable: true, visibilityConditions: [] },
+    {
+        layerId: 'layer-1',
+        visibilityProperties: {
+            value: { visibilityMode: VisibilityMode.visible, isPrintable: true, visibilityConditions: [] },
+            isOverride: false,
+            isReadOnly: false,
+        },
+    },
     {
         layerId: 'layer-2',
-        visibilityMode: LayerVisibilityMode.conditional,
-        isPrintable: false,
-        visibilityConditions: [
-            {
-                id: 'variable-1',
-                value: {
-                    type: VariableVisibilityTargetType.text,
-                    value: 'Belgium',
-                    operator: VariableVisibilityOperator.equals,
-                },
+        visibilityProperties: {
+            value: {
+                visibilityMode: VisibilityMode.conditional,
+                isPrintable: false,
+                visibilityConditions: [
+                    {
+                        id: 'variable-1',
+                        value: {
+                            type: VariableVisibilityTargetType.text,
+                            value: 'Belgium',
+                            operator: VariableVisibilityOperator.equals,
+                        },
+                    },
+                ],
             },
-        ],
+            isOverride: true,
+            isReadOnly: false,
+        },
     },
 ];
 
@@ -145,7 +158,7 @@ describe('LayerController', () => {
 
     it('Should call the setLayerProperties method with the stringified update and the layout id', async () => {
         const update: LayerPropertiesUpdate = {
-            visibilityMode: LayerVisibilityMode.conditional,
+            visibilityMode: VisibilityMode.conditional,
             visibilityConditions: [
                 {
                     id: 'variable-1',

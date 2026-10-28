@@ -18,7 +18,7 @@ import { Page, PageSize } from './PageTypes';
 import { ParagraphStyle } from './ParagraphStyleTypes';
 import { CornerRadiusUpdateModel } from './ShapeTypes';
 import { SelectedTextStyle } from './TextStyleTypes';
-import { Variable } from './VariableTypes';
+import { Variable, VariableWithValue } from './VariableTypes';
 import { Viewport } from './ViewportTypes';
 import { BrandKitMedia } from './BrandKitTypes';
 import { AsyncError } from '../exceptions';
@@ -441,6 +441,24 @@ export interface PropertyState<T> {
     isOverride: boolean;
     isReadOnly: boolean;
 }
+
+export enum VisibilityMode {
+    visible = 'visible',
+    hidden = 'hidden',
+    conditional = 'conditional',
+}
+
+/**
+ * The visibility settings of a layer on a layout.
+ */
+export type VisibilityProperties = {
+    visibilityMode: VisibilityMode;
+    isPrintable: boolean;
+    /**
+     * The conditions that make the layer visible when `visibilityMode` is `conditional`.
+     */
+    visibilityConditions: VariableWithValue[];
+};
 
 export interface HasOverrideState {
     isOverride: boolean;
