@@ -64,7 +64,8 @@ export class LayerController {
     };
 
     /**
-     * This method adds a new layer on top. The new layer becomes the only selected layer.
+     * This method deselects all frames and adds a new layer on top.
+     * The new layer becomes the only selected layer, so it is the active layer that new and pasted frames can be added to.
      * @returns the id of the new layer
      */
     addLayer = async () => {
@@ -86,8 +87,10 @@ export class LayerController {
     };
 
     /**
-     * This method locks or unlocks layers. Frames on newly locked layers are deselected.
+     * This method locks or unlocks layers.
      * The layer selection doesn't change, so a locked layer can stay selected.
+     * The frame selection doesn't change either: frames on a newly locked layer stay selected, but they can't be moved
+     * or edited while the layer is locked. An ongoing edit of one of these frames, such as text editing or crop, is finished.
      * An empty array does nothing, duplicate ids are ignored, and an unknown layer id throws an error before anything changes.
      * @param layerIds An array of all layer IDs you want to lock or unlock
      * @param isLocked whether the layers should be locked
@@ -99,7 +102,12 @@ export class LayerController {
     };
 
     /**
-     * This method moves frames to a layer, keeping their relative order. Frames moved to a locked layer are deselected.
+     * This method moves frames to a layer, keeping their relative order.
+     * The target layer becomes the only selected layer, so it is the active layer.
+     * This also applies to a locked target layer: the moved frames stay selected, and an ongoing edit of them,
+     * such as text editing or crop, is finished first.
+     * An empty `frameIds` array does nothing, and an unknown layer id, an unknown frame id or a negative order throws
+     * an error before anything changes.
      * @param layerId the id of the target layer
      * @param frameIds An array of all frame IDs you want to move to the layer
      * @param order the position within the target layer's frames, 0 is the back.
