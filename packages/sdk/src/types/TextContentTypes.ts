@@ -131,7 +131,10 @@ export type TextContentList = {
  */
 export type TextContentLocalColor = {
     type: ColorUsageType.local | 'local';
-    color: Color;
+    /**
+     * Without a color, only the opacity is set and the color is inherited from the styles.
+     */
+    color?: Color;
     /**
      * Opacity in the range 0 - 1.
      */
