@@ -32,6 +32,7 @@ import {
 } from '../types/FrameTypes';
 import { GradientDeltaUpdate, GradientUpdate } from '../types/GradientStyleTypes';
 import { ShapeType, ShapeFrameSource } from '../types/ShapeTypes';
+import { TextContent, TextRange } from '../types/TextContentTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { ShapeController } from './ShapeController';
 
@@ -606,6 +607,76 @@ export class FrameController {
 
         return getEditorResponseData<null>(res);
     };
+
+    /**
+     * This method returns the content of a text frame, or of a range of it, in the {@link TextContent} format.
+     * The frame does not have to be in text editing mode.
+     * @param id the id of the text frame
+     * @param range optional range in the plain text of the frame, see {@link TextRange}. Without a range the whole
+     * content is returned.
+     * @returns the content of the text frame
+     */
+    getTextContent = async (id: Id, range?: TextRange) => {
+        const res = await this.#editorAPI;
+        return res
+            .getTextContent(id, this.#rangeToJson(range))
+            .then((result) => getEditorResponseData<TextContent>(result));
+    };
+
+    /**
+     * This method replaces the content of a text frame, or of a range of it, as a single undoable step.
+     * The frame does not have to be in text editing mode, an active text selection is not taken into account.
+     *
+     * Without a range the content is replaced as is. With a range only that part is replaced: the first paragraph of
+     * `content` continues the paragraph in which the range starts and keeps its paragraph formatting. When `content`
+     * has more paragraphs, the text after the range continues its last paragraph.
+     *
+     * Every reference (styles, colors, fonts and variables) is validated, invalid content is rejected with the path
+     * of the offending value, e.g. `paragraphs[1].content[0].characterStyle.name`.
+     * @param id the id of the text frame
+     * @param content the new content
+     * @param range optional range in the plain text of the frame to replace, see {@link TextRange}
+     * @returns
+     */
+    setTextContent = async (id: Id, content: TextContent, range?: TextRange) => {
+        const res = await this.#editorAPI;
+        return res
+            .setTextContent(id, JSON.stringify(content), this.#rangeToJson(range))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method returns the plain text of a text frame, or of a range of it.
+     * Paragraphs are separated by a new line (`\n`), a line break is `\u2028` and variables are replaced by their
+     * current value.
+     * The frame does not have to be in text editing mode.
+     * @param id the id of the text frame
+     * @param range optional range in the plain text of the frame, see {@link TextRange}
+     * @returns the plain text of the text frame
+     */
+    getPlainText = async (id: Id, range?: TextRange) => {
+        const res = await this.#editorAPI;
+        return res.getPlainText(id, this.#rangeToJson(range)).then((result) => getEditorResponseData<string>(result));
+    };
+
+    /**
+     * This method replaces the content of a text frame, or of a range of it, with plain text as a single undoable
+     * step. A new line (`\n`) starts a new paragraph and `\u2028` is a line break. The text gets the formatting at the start of
+     * the range, or at the start of the frame without a range.
+     * The frame does not have to be in text editing mode, an active text selection is not taken into account.
+     * @param id the id of the text frame
+     * @param text the new text
+     * @param range optional range in the plain text of the frame to replace, see {@link TextRange}
+     * @returns
+     */
+    setPlainText = async (id: Id, text: string, range?: TextRange) => {
+        const res = await this.#editorAPI;
+        return res
+            .setPlainText(id, text, this.#rangeToJson(range))
+            .then((result) => getEditorResponseData<null>(result));
+    };
+
+    #rangeToJson = (range?: TextRange) => (range ? JSON.stringify(range) : null);
 
     /**
      * This method will set the vertical alignment property of a specified frame.

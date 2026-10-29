@@ -240,6 +240,9 @@ export * from './types/BarcodeTypes';
 
 export * from './types/RichTextRuleTypes';
 
+export * from './types/TextContentTypes';
+export { TextContentBuilder } from './utils/TextContentBuilder';
+
 export type { Viewport } from './types/ViewportTypes';
 
 export * from './types/PageTypes';
