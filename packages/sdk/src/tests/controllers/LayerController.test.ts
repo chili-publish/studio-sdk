@@ -184,9 +184,15 @@ describe('LayerController', () => {
         );
     });
 
-    it('Should call the resetLayerProperties method with the layout id', async () => {
-        await mockedLayerController.resetLayerProperties('layout-1');
+    it('Should call the resetLayerProperties method with the layer id and the layout id', async () => {
+        await mockedLayerController.resetLayerProperties('layer-1', 'layout-1');
         expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledTimes(1);
-        expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledWith('layout-1');
+        expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledWith('layer-1', 'layout-1');
+    });
+
+    it('Should call the resetLayerProperties method without a layout id', async () => {
+        await mockedLayerController.resetLayerProperties('layer-1');
+        expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledWith('layer-1', undefined);
     });
 });
