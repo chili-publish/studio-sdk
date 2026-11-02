@@ -56,6 +56,7 @@ const mockedEditorApi: EditorAPI = {
     reorderLayers: async () => getEditorResponseData(castToEditorResponse(null)),
     selectLayers: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
+    resetLayerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -73,6 +74,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'reorderLayers');
     jest.spyOn(mockedEditorApi, 'selectLayers');
     jest.spyOn(mockedEditorApi, 'setLayerProperties');
+    jest.spyOn(mockedEditorApi, 'resetLayerProperties');
 });
 
 afterAll(() => {
@@ -180,5 +182,11 @@ describe('LayerController', () => {
             JSON.stringify({ isPrintable: false }),
             undefined,
         );
+    });
+
+    it('Should call the resetLayerProperties method with the layout id', async () => {
+        await mockedLayerController.resetLayerProperties('layout-1');
+        expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledWith('layout-1');
     });
 });
