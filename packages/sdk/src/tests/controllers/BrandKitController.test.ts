@@ -18,6 +18,7 @@ import {
     mockBrandKitCharacterStyles,
     mockBrandKitParagraphStyles,
     mockBrandKitMedia,
+    mockBrandKitComponents,
 } from '../__mocks__/Brandkit';
 import { APIBrandKit, BrandKit } from '../../types/BrandKitTypes';
 import { FontController } from '../../controllers/FontController';
@@ -67,6 +68,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockBrandKitCharacterStyles,
                         paragraphStyles: mockBrandKitParagraphStyles,
                         media: mockBrandKitMedia,
+                        components: mockBrandKitComponents,
                         isAutoSync: false,
                     }),
                 ),
@@ -84,6 +86,7 @@ describe('BrandKitController', () => {
                         characterStyles: mockBrandKitCharacterStyles,
                         paragraphStyles: mockBrandKitParagraphStyles,
                         media: mockBrandKitMedia,
+                        components: mockBrandKitComponents,
                         isAutoSync: null,
                     }),
                 );
@@ -261,6 +264,7 @@ describe('BrandKitController', () => {
         expect(brandKit.characterStyles).toEqual(mockBrandKitCharacterStyles);
         expect(brandKit.paragraphStyles).toEqual(mockBrandKitParagraphStyles);
         expect(brandKit.media).toEqual(mockBrandKitMedia);
+        expect(brandKit.components).toEqual(mockBrandKitComponents);
         expect(brandKit).not.toHaveProperty('themes');
     });
 
@@ -302,6 +306,7 @@ describe('BrandKitController', () => {
         expect(setBrandKitResult.characterStyles).toEqual(mockBrandKitCharacterStyles);
         expect(setBrandKitResult.paragraphStyles).toEqual(mockBrandKitParagraphStyles);
         expect(setBrandKitResult.media).toEqual(mockBrandKitMedia);
+        expect(setBrandKitResult.components).toEqual(mockBrandKitComponents);
     });
 
     it('Should successfully sync brandkit content in place', async () => {
