@@ -43,7 +43,7 @@ export class LayerController {
 
     /**
      * This method returns the selected layer, which new and pasted frames are added to.
-     * When a document is loaded, the first layer is selected.
+     * When a document is loaded, the top layer (the last one returned by `getLayers`) is selected.
      * @returns the active layer
      */
     getSelectedLayer = async () => {
