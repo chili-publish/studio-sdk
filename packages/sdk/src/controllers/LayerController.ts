@@ -169,4 +169,17 @@ export class LayerController {
             .setLayerProperties(layerId, JSON.stringify(properties), layoutId)
             .then((result) => getEditorResponseData<null>(result));
     };
+
+    /**
+     * This method resets the properties of all layers on a child layout, so every layer gets its properties from the
+     * parent layout again and its `visibilityProperties.isOverride` becomes `false`.
+     * Nothing happens when the layout overrides no layer.
+     * A top layout has no parent to inherit from, so it throws an error. An unknown layout id also throws an error.
+     * @param layoutId the id of the child layout
+     * @returns
+     */
+    resetLayerProperties = async (layoutId: Id) => {
+        const res = await this.#editorAPI;
+        return res.resetLayerProperties(layoutId).then((result) => getEditorResponseData<null>(result));
+    };
 }
