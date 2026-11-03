@@ -146,6 +146,21 @@ export class LayoutController {
     };
 
     /**
+     * This method moves layouts to a given index under a destination parent.
+     * Currently only same-parent reordering is supported: every layout in `layoutIds` must already
+     * have `targetLayout` as its parent. Cross-parent moves and root changes are rejected.
+     * `targetLayout` is included so moving layouts to a different parent can be supported in the future.
+     * @param targetLayout the destination parent layout id
+     * @param order the index in the sibling list to move to
+     * @param layoutIds an array of layout IDs to move to the given index
+     * @returns
+     */
+    reorderLayouts = async (targetLayout: Id, order: number, layoutIds: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.reorderLayouts(targetLayout, order, layoutIds).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
      * This method will reset a specific layout to its original value
      * @param id the id of a specific layout
      * @returns
