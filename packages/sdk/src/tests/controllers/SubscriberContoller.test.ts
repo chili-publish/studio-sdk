@@ -459,6 +459,7 @@ describe('SubscriberController', () => {
                 supportedAuthentication: {
                     browser: [ConnectorSupportedAuth.StaticKey],
                     server: [ConnectorSupportedAuth.StaticKey],
+                    integration: [ConnectorSupportedAuth.None],
                 },
             },
         };
