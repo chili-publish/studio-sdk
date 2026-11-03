@@ -1,6 +1,7 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { Layer, LayerProperties, LayerPropertiesUpdate } from '../types/LayerTypes';
+import { UpdateZIndexMethod } from '../types/FrameTypes';
 
 /**
  * The LayerController is responsible for all communication regarding Layers.
@@ -87,6 +88,19 @@ export class LayerController {
     };
 
     /**
+     * This method duplicates layers together with their frames.
+     * The new layers are added on top of all layers, keeping the order of the duplicated layers.
+     * Each new layer gets the locked state and the properties of its layer, and a copy of each of its frames.
+     * The new layers become the selected layers, the first one the active layer.
+     * @param ids the ids of the layers to duplicate
+     * @returns the ids of the new layers, in the order of `ids`
+     */
+    duplicateLayers = async (ids: Id[]) => {
+        const res = await this.#editorAPI;
+        return res.duplicateLayers(ids).then((result) => getEditorResponseData<Id[]>(result));
+    };
+
+    /**
      * This method locks or unlocks layers.
      * The layer selection doesn't change, so a locked layer can stay selected.
      * The frame selection doesn't change either: frames on a newly locked layer stay selected, but they can't be moved
@@ -141,6 +155,19 @@ export class LayerController {
     reorderLayers = async (order: number, layerIds: Id[]) => {
         const res = await this.#editorAPI;
         return res.reorderLayers(order, layerIds).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method moves a layer in the layer order, together with its frames.
+     * Layers are ordered bottom to top, as returned by `getLayers`.
+     * A layer that can't move further stays where it is.
+     * @param id the id of the layer
+     * @param method how to move the layer: to the top or the bottom, or one layer up or down
+     * @returns
+     */
+    setLayerZIndex = async (id: Id, method: UpdateZIndexMethod) => {
+        const res = await this.#editorAPI;
+        return res.setLayerZIndex(id, method).then((result) => getEditorResponseData<null>(result));
     };
 
     /**
