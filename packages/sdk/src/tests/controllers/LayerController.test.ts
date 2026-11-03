@@ -1,6 +1,7 @@
 import { LayerController } from '../../controllers/LayerController';
 import { EditorAPI, VisibilityMode } from '../../types/CommonTypes';
 import { Layer, LayerProperties, LayerPropertiesUpdate } from '../../types/LayerTypes';
+import { UpdateZIndexMethod } from '../../types/FrameTypes';
 import { VariableVisibilityOperator, VariableVisibilityTargetType } from '../../types/VariableTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 
@@ -50,10 +51,12 @@ const mockedEditorApi: EditorAPI = {
     getLayerPropertiesOnSelectedLayout: async () => getEditorResponseData(castToEditorResponse(layerProperties)),
     addLayer: async () => getEditorResponseData(castToEditorResponse('layer-3')),
     deleteLayers: async () => getEditorResponseData(castToEditorResponse(null)),
+    duplicateLayers: async () => getEditorResponseData(castToEditorResponse(['layer-3', 'layer-4'])),
     lockLayers: async () => getEditorResponseData(castToEditorResponse(null)),
     moveFramesToLayer: async () => getEditorResponseData(castToEditorResponse(null)),
     renameLayer: async () => getEditorResponseData(castToEditorResponse(null)),
     reorderLayers: async () => getEditorResponseData(castToEditorResponse(null)),
+    setLayerZIndex: async () => getEditorResponseData(castToEditorResponse(null)),
     selectLayers: async () => getEditorResponseData(castToEditorResponse(null)),
     setLayerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
     resetLayerProperties: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -68,10 +71,12 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getLayerPropertiesOnSelectedLayout');
     jest.spyOn(mockedEditorApi, 'addLayer');
     jest.spyOn(mockedEditorApi, 'deleteLayers');
+    jest.spyOn(mockedEditorApi, 'duplicateLayers');
     jest.spyOn(mockedEditorApi, 'lockLayers');
     jest.spyOn(mockedEditorApi, 'moveFramesToLayer');
     jest.spyOn(mockedEditorApi, 'renameLayer');
     jest.spyOn(mockedEditorApi, 'reorderLayers');
+    jest.spyOn(mockedEditorApi, 'setLayerZIndex');
     jest.spyOn(mockedEditorApi, 'selectLayers');
     jest.spyOn(mockedEditorApi, 'setLayerProperties');
     jest.spyOn(mockedEditorApi, 'resetLayerProperties');
@@ -122,6 +127,13 @@ describe('LayerController', () => {
         expect(mockedEditorApi.deleteLayers).toHaveBeenCalledWith(['layer-1', 'layer-2']);
     });
 
+    it('Should call the duplicateLayers method and return the new layer ids', async () => {
+        const response = await mockedLayerController.duplicateLayers(['layer-1', 'layer-2']);
+        expect(mockedEditorApi.duplicateLayers).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.duplicateLayers).toHaveBeenCalledWith(['layer-1', 'layer-2']);
+        expect(response.parsedData).toStrictEqual(['layer-3', 'layer-4']);
+    });
+
     it('Should call the lockLayers method with the layer ids', async () => {
         await mockedLayerController.lockLayers(['layer-1', 'layer-2'], true);
         expect(mockedEditorApi.lockLayers).toHaveBeenCalledTimes(1);
@@ -150,6 +162,12 @@ describe('LayerController', () => {
         await mockedLayerController.reorderLayers(1, ['layer-1']);
         expect(mockedEditorApi.reorderLayers).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.reorderLayers).toHaveBeenCalledWith(1, ['layer-1']);
+    });
+
+    it('Should call the setLayerZIndex method with the id and the method', async () => {
+        await mockedLayerController.setLayerZIndex('layer-1', UpdateZIndexMethod.sendBackward);
+        expect(mockedEditorApi.setLayerZIndex).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.setLayerZIndex).toHaveBeenCalledWith('layer-1', UpdateZIndexMethod.sendBackward);
     });
 
     it('Should call the selectLayers method with the layer ids', async () => {
