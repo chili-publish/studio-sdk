@@ -27,7 +27,7 @@ export class LayerController {
      * index 0 is the bottom layer, the last layer renders on top.
      * @returns list of all layers
      */
-    getLayers = async () => {
+    getAll = async () => {
         const res = await this.#editorAPI;
         return res.getLayers().then((result) => getEditorResponseData<Layer[]>(result));
     };
@@ -37,17 +37,17 @@ export class LayerController {
      * @param layerId the id of a specific layer
      * @returns layer properties
      */
-    getLayerById = async (layerId: Id) => {
+    getById = async (layerId: Id) => {
         const res = await this.#editorAPI;
         return res.getLayerById(layerId).then((result) => getEditorResponseData<Layer>(result));
     };
 
     /**
      * This method returns the selected layer, which new and pasted frames are added to.
-     * When a document is loaded, the top layer (the last one returned by `getLayers`) is selected.
+     * When a document is loaded, the top layer (the last one returned by `getAll`) is selected.
      * @returns the active layer
      */
-    getSelectedLayer = async () => {
+    getSelected = async () => {
         const res = await this.#editorAPI;
         return res.getSelectedLayer().then((result) => getEditorResponseData<Layer>(result));
     };
@@ -57,7 +57,7 @@ export class LayerController {
      * Each layer's `visibilityProperties.isOverride` says whether the selected layout overrides that layer.
      * @returns list of the layer properties on the selected layout
      */
-    getLayerPropertiesOnSelectedLayout = async () => {
+    getPropertiesOnSelectedLayout = async () => {
         const res = await this.#editorAPI;
         return res
             .getLayerPropertiesOnSelectedLayout()
@@ -69,7 +69,7 @@ export class LayerController {
      * The new layer becomes the only selected layer, so it is the active layer that new and pasted frames can be added to.
      * @returns the id of the new layer
      */
-    addLayer = async () => {
+    create = async () => {
         const res = await this.#editorAPI;
         return res.addLayer().then((result) => getEditorResponseData<Id>(result));
     };
@@ -82,7 +82,7 @@ export class LayerController {
      * @param layerIds An array of all layer IDs you want to delete
      * @returns
      */
-    deleteLayers = async (layerIds: Id[]) => {
+    removeLayers = async (layerIds: Id[]) => {
         const res = await this.#editorAPI;
         return res.deleteLayers(layerIds).then((result) => getEditorResponseData<null>(result));
     };
@@ -139,7 +139,7 @@ export class LayerController {
      * @param name the new name, it is trimmed and must be non-empty and unique (case-insensitive)
      * @returns
      */
-    renameLayer = async (layerId: Id, name: string) => {
+    rename = async (layerId: Id, name: string) => {
         const res = await this.#editorAPI;
         return res.renameLayer(layerId, name).then((result) => getEditorResponseData<null>(result));
     };
@@ -159,7 +159,7 @@ export class LayerController {
 
     /**
      * This method moves a layer in the layer order, together with its frames.
-     * Layers are ordered bottom to top, as returned by `getLayers`.
+     * Layers are ordered bottom to top, as returned by `getAll`.
      * A layer that can't move further stays where it is.
      * @param id the id of the layer
      * @param method how to move the layer: to the top or the bottom, or one layer up or down
@@ -190,7 +190,7 @@ export class LayerController {
      * @param layoutId the id of the layout, when omitted the selected layout is used
      * @returns
      */
-    setLayerProperties = async (layerId: Id, properties: LayerPropertiesUpdate, layoutId?: Id) => {
+    setProperties = async (layerId: Id, properties: LayerPropertiesUpdate, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res
             .setLayerProperties(layerId, JSON.stringify(properties), layoutId)
@@ -207,7 +207,7 @@ export class LayerController {
      * @param layoutId the id of the layout, when omitted the selected layout is used
      * @returns
      */
-    resetLayerProperties = async (layerId: Id, layoutId?: Id) => {
+    resetProperties = async (layerId: Id, layoutId?: Id) => {
         const res = await this.#editorAPI;
         return res.resetLayerProperties(layerId, layoutId).then((result) => getEditorResponseData<null>(result));
     };
