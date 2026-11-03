@@ -317,6 +317,18 @@ export const mockMedia = [
     },
 ];
 
+export const mockComponents = [
+    {
+        componentId: '9aa08e6f-1c1a-4cd8-af7e-7b7ce52e7289',
+        name: 'Main',
+        description: 'My component',
+    },
+    {
+        componentId: '3c5f2a1d-7e4b-4f6a-9d8c-1b2a3c4d5e6f',
+        name: 'Footer',
+    },
+];
+
 /** PropertyState-wrapped resources as returned by getBrandKit() / setBrandKit(). */
 export const mockBrandKitColors = wrapInPropertyState(mockColors);
 export const mockBrandKitGradients = wrapInPropertyState(mockGradients);
@@ -324,6 +336,7 @@ export const mockBrandKitFontFamilies = wrapInPropertyState(mockFonts);
 export const mockBrandKitCharacterStyles = wrapInPropertyState(mockCharacterStyles);
 export const mockBrandKitParagraphStyles = wrapInPropertyState(mockParagraphStyles);
 export const mockBrandKitMedia = wrapInPropertyState(mockMedia);
+export const mockBrandKitComponents = wrapInPropertyState(mockComponents);
 
 export const mockAPIBrandKitThemes: APIBrandKitTheme[] = [
     {
@@ -433,6 +446,19 @@ export const mockAPIBrandKit: APIBrandKit = {
             name: '0f0e652c-86da-41b7-b312-e487c3e58fa0_bg-hk-25.jpg',
             mediaConnectorId: 'grafxmedia',
             mediaId: 'f6a50d37-a859-4c07-b915-0bb0f43c6c6b',
+        },
+    ],
+    components: [
+        {
+            componentId: '9aa08e6f-1c1a-4cd8-af7e-7b7ce52e7289',
+            name: 'Main',
+            description: 'My component',
+            guid: '5d0b3f1e-2c4a-4e8b-9a7d-6f1e2b3c4d5e',
+        },
+        {
+            componentId: '3c5f2a1d-7e4b-4f6a-9d8c-1b2a3c4d5e6f',
+            name: 'Footer',
+            guid: 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d',
         },
     ],
     themes: [],
