@@ -90,39 +90,39 @@ afterEach(() => {
 });
 
 describe('LayerController', () => {
-    it('Should call the getLayers method and parse the layers', async () => {
-        const response = await mockedLayerController.getLayers();
+    it('Should call the getAll method and parse the layers', async () => {
+        const response = await mockedLayerController.getAll();
         expect(mockedEditorApi.getLayers).toHaveBeenCalledTimes(1);
         expect(response.parsedData).toStrictEqual(layers);
     });
 
-    it('Should call the getLayerById method and parse the layer', async () => {
-        const response = await mockedLayerController.getLayerById('layer-1');
+    it('Should call the getById method and parse the layer', async () => {
+        const response = await mockedLayerController.getById('layer-1');
         expect(mockedEditorApi.getLayerById).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.getLayerById).toHaveBeenCalledWith('layer-1');
         expect(response.parsedData).toStrictEqual(layers[0]);
     });
 
-    it('Should call the getSelectedLayer method and parse the layer', async () => {
-        const response = await mockedLayerController.getSelectedLayer();
+    it('Should call the getSelected method and parse the layer', async () => {
+        const response = await mockedLayerController.getSelected();
         expect(mockedEditorApi.getSelectedLayer).toHaveBeenCalledTimes(1);
         expect(response.parsedData).toStrictEqual(layers[0]);
     });
 
-    it('Should call the getLayerPropertiesOnSelectedLayout method and parse the layer properties', async () => {
-        const response = await mockedLayerController.getLayerPropertiesOnSelectedLayout();
+    it('Should call the getPropertiesOnSelectedLayout method and parse the layer properties', async () => {
+        const response = await mockedLayerController.getPropertiesOnSelectedLayout();
         expect(mockedEditorApi.getLayerPropertiesOnSelectedLayout).toHaveBeenCalledTimes(1);
         expect(response.parsedData).toStrictEqual(layerProperties);
     });
 
-    it('Should call the addLayer method and return the new layer id', async () => {
-        const response = await mockedLayerController.addLayer();
+    it('Should call the create method and return the new layer id', async () => {
+        const response = await mockedLayerController.create();
         expect(mockedEditorApi.addLayer).toHaveBeenCalledTimes(1);
         expect(response.parsedData).toBe('layer-3');
     });
 
-    it('Should call the deleteLayers method with the layer ids', async () => {
-        await mockedLayerController.deleteLayers(['layer-1', 'layer-2']);
+    it('Should call the removeLayers method with the layer ids', async () => {
+        await mockedLayerController.removeLayers(['layer-1', 'layer-2']);
         expect(mockedEditorApi.deleteLayers).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.deleteLayers).toHaveBeenCalledWith(['layer-1', 'layer-2']);
     });
@@ -152,8 +152,8 @@ describe('LayerController', () => {
         expect(mockedEditorApi.moveFramesToLayer).toHaveBeenCalledWith('layer-2', ['frame-1'], undefined);
     });
 
-    it('Should call the renameLayer method', async () => {
-        await mockedLayerController.renameLayer('layer-1', 'Background');
+    it('Should call the rename method', async () => {
+        await mockedLayerController.rename('layer-1', 'Background');
         expect(mockedEditorApi.renameLayer).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.renameLayer).toHaveBeenCalledWith('layer-1', 'Background');
     });
@@ -176,7 +176,7 @@ describe('LayerController', () => {
         expect(mockedEditorApi.selectLayers).toHaveBeenCalledWith(['layer-2', 'layer-1']);
     });
 
-    it('Should call the setLayerProperties method with the stringified update and the layout id', async () => {
+    it('Should call the setProperties method with the stringified update and the layout id', async () => {
         const update: LayerPropertiesUpdate = {
             visibilityMode: VisibilityMode.conditional,
             visibilityConditions: [
@@ -186,14 +186,14 @@ describe('LayerController', () => {
                 },
             ],
         };
-        await mockedLayerController.setLayerProperties('layer-1', update, 'layout-1');
+        await mockedLayerController.setProperties('layer-1', update, 'layout-1');
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledWith('layer-1', JSON.stringify(update), 'layout-1');
     });
 
-    it('Should call the setLayerProperties method without a layout id', async () => {
+    it('Should call the setProperties method without a layout id', async () => {
         const update: LayerPropertiesUpdate = { isPrintable: false };
-        await mockedLayerController.setLayerProperties('layer-1', update);
+        await mockedLayerController.setProperties('layer-1', update);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledWith(
             'layer-1',
@@ -202,14 +202,14 @@ describe('LayerController', () => {
         );
     });
 
-    it('Should call the resetLayerProperties method with the layer id and the layout id', async () => {
-        await mockedLayerController.resetLayerProperties('layer-1', 'layout-1');
+    it('Should call the resetProperties method with the layer id and the layout id', async () => {
+        await mockedLayerController.resetProperties('layer-1', 'layout-1');
         expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledWith('layer-1', 'layout-1');
     });
 
-    it('Should call the resetLayerProperties method without a layout id', async () => {
-        await mockedLayerController.resetLayerProperties('layer-1');
+    it('Should call the resetProperties method without a layout id', async () => {
+        await mockedLayerController.resetProperties('layer-1');
         expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.resetLayerProperties).toHaveBeenCalledWith('layer-1', undefined);
     });
