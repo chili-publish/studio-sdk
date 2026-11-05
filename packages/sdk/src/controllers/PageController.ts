@@ -29,7 +29,11 @@ export class PageController {
 
     /**
      * @experimental
-     * This method adds a new page.
+     * This method adds a new page, which becomes the selected page.
+     * It only works on a print layout, so on a static or animated layout it throws an error.
+     * In a component it throws an error, because a component must have exactly one page,
+     * even when the layout is static or animated.
+     * Nothing changes in the document when it throws an error.
      * @returns the id of the new page
      */
     add = async () => {
@@ -39,7 +43,11 @@ export class PageController {
 
     /**
      * @experimental
-     * This method removes a certain page.
+     * This method removes a page. If the removed page was selected, the first page becomes selected
+     * (the second page, if the first page was removed).
+     * It only works on a print layout, so on a static or animated layout it throws an error.
+     * An unknown page id, or removing the last page or the last visible page, throws an error before the layout check.
+     * Nothing changes in the document when it throws an error.
      * @param pageId the id of the page
      * @returns the id of the current active page
      */
@@ -73,7 +81,12 @@ export class PageController {
 
     /**
      * @experimental
-     * This method duplicates a certain page.
+     * This method duplicates a page. The copy is inserted directly after the original page and becomes the selected page.
+     * It only works on a print layout, so on a static or animated layout it throws an error.
+     * In a component it throws an error, because a component must have exactly one page,
+     * even when the layout is static or animated.
+     * An unknown page id throws an error before any of these checks.
+     * Nothing changes in the document when it throws an error.
      * @param pageId the id of the page
      * @returns
      */
