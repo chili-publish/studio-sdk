@@ -883,8 +883,18 @@ export class FrameController {
     /**
      * This method will exit gradient mode without saving the applied gradient.
      * @returns
+     * @deprecated Use exitGradientMode instead
      */
     cancelGradientMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelGradientMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit gradient mode without saving the applied gradient.
+     * @returns
+     */
+    exitGradientMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelGradientMode().then((result) => getEditorResponseData<null>(result));
     };
@@ -926,10 +936,10 @@ export class FrameController {
     };
 
     /**
-     * This method will exit path edit mode.
+     * This method will exit path edit mode and save the applied path.
      * @returns
      */
-    cancelPathEditMode = async () => {
+    exitPathEditMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelPathEditMode().then((result) => getEditorResponseData<null>(result));
     };
