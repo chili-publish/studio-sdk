@@ -597,6 +597,11 @@ describe('FrameController', () => {
         expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
     });
 
+    it('Should be possible to exit gradient mode without saving the applied gradient', async () => {
+        await mockedFrameController.exitGradientMode();
+        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(2);
+    });
+
     it('Should be possible to enter path edit mode on a specific frame', async () => {
         await mockedFrameController.enterPathEditMode(id);
         expect(mockedEditorApi.enterPathEditMode).toHaveBeenCalledTimes(1);
@@ -608,8 +613,8 @@ describe('FrameController', () => {
         expect(mockedEditorApi.applyPathEditMode).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to cancel path edit mode without saving the applied path', async () => {
-        await mockedFrameController.cancelPathEditMode();
+    it('Should be possible to exit path edit mode without saving the applied path', async () => {
+        await mockedFrameController.exitPathEditMode();
         expect(mockedEditorApi.cancelPathEditMode).toHaveBeenCalledTimes(1);
     });
 
