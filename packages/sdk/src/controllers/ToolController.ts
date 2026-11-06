@@ -107,4 +107,10 @@ export class ToolController {
     setComponentGrid = async () => {
         return this.setTool(ToolType.COMPONENT_GRID_FRAME);
     };
+    /**
+     * This method sets the used tool to the Pen tool
+     */
+    setPen = async () => {
+        return this.setTool(ToolType.PEN);
+    };
 }
