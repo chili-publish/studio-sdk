@@ -15,17 +15,16 @@ export type Layer = {
 };
 
 /**
- * The properties of a layer on a layout (engine DTO; Dart name `LayerPropertiesDto`).
- * Each group has its own `isOverride` and `isReadOnly`. Both default to `false` and are always written.
- * `value` is the settings stored on this layout, and `null` when this layout does not set that group.
- * On a top layout both values are set and `isOverride` is `false`.
- * On a child layout a group is set only when that layout overrides it. The other value is `null`
- * with `isOverride` `false`, so a child can override one group without the other.
+ * The properties of a layer on a layout.
+ * `visibilityProperties.value` always holds the resolved visibility settings, including inherited ones.
+ * `visibilityProperties.isOverride` is `true` only when this layout sets the visibility of this layer itself.
+ * It is `false` on the top layout, and `false` when a child layout inherits visibility from its parent.
+ * `outputProperties` is not inherited. `outputIntent` defaults to `sameAsVisibility`.
  */
 export type LayerProperties = {
     layerId: Id;
-    visibilityProperties: PropertyState<VisibilityProperties | null>;
-    outputProperties: PropertyState<OutputProperties | null>;
+    visibilityProperties: PropertyState<VisibilityProperties>;
+    outputProperties: OutputProperties;
 };
 
 /**

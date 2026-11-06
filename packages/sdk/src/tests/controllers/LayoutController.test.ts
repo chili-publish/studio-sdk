@@ -28,11 +28,7 @@ const layoutWithLayerProperties = {
                 isOverride: false,
                 isReadOnly: false,
             },
-            outputProperties: {
-                value: { outputIntent: 'alwaysIncluded' },
-                isOverride: false,
-                isReadOnly: false,
-            },
+            outputProperties: { outputIntent: 'alwaysIncluded' },
         },
         {
             layerId: 'f3a9',
@@ -47,11 +43,7 @@ const layoutWithLayerProperties = {
                 isOverride: true,
                 isReadOnly: false,
             },
-            outputProperties: {
-                value: null,
-                isOverride: false,
-                isReadOnly: false,
-            },
+            outputProperties: { outputIntent: 'notIncluded' },
         },
     ],
 };

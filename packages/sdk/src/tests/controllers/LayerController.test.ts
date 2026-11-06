@@ -20,11 +20,7 @@ const layerProperties: LayerProperties[] = [
             isOverride: false,
             isReadOnly: false,
         },
-        outputProperties: {
-            value: { outputIntent: LayerOutputIntent.sameAsVisibility },
-            isOverride: false,
-            isReadOnly: false,
-        },
+        outputProperties: { outputIntent: LayerOutputIntent.sameAsVisibility },
     },
     {
         layerId: 'layer-2',
@@ -45,11 +41,7 @@ const layerProperties: LayerProperties[] = [
             isOverride: true,
             isReadOnly: false,
         },
-        outputProperties: {
-            value: null,
-            isOverride: false,
-            isReadOnly: false,
-        },
+        outputProperties: { outputIntent: LayerOutputIntent.notIncluded },
     },
 ];
 
