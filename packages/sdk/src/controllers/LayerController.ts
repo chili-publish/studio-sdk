@@ -54,7 +54,8 @@ export class LayerController {
 
     /**
      * This method returns the properties of every layer on the selected layout, in document order.
-     * Each layer's `visibilityProperties.isOverride` says whether the selected layout overrides that layer.
+     * Each layer's `visibilityProperties.isOverride` and `outputProperties.isOverride` say whether
+     * the selected layout overrides that group.
      * @returns list of the layer properties on the selected layout
      */
     getPropertiesOnSelectedLayout = async () => {
@@ -199,7 +200,7 @@ export class LayerController {
 
     /**
      * This method resets the properties of a layer on a child layout, so the layer gets them from the parent layout again
-     * and its `visibilityProperties.isOverride` becomes `false`. The overrides of other layers stay unchanged.
+     * and its `visibilityProperties.isOverride` and `outputProperties.isOverride` become `false`. The overrides of other layers stay unchanged.
      * Nothing happens when the layout doesn't override the layer.
      * A top layout has no parent to inherit from, so it throws an error, also when it is used because it is selected.
      * An unknown layer id or layout id also throws an error.

@@ -450,12 +450,14 @@ export enum VisibilityMode {
 
 /**
  * The visibility settings of a layer on a layout.
+ * Omitted fields use their defaults on read.
  */
 export type VisibilityProperties = {
+    /** Default: `visible`. */
     visibilityMode: VisibilityMode;
-    isPrintable: boolean;
     /**
      * The conditions that make the layer visible when `visibilityMode` is `conditional`.
+     * Default: `[]`.
      */
     visibilityConditions: VariableWithValue[];
 };

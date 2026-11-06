@@ -1,6 +1,6 @@
 import { LayerController } from '../../controllers/LayerController';
 import { EditorAPI, VisibilityMode } from '../../types/CommonTypes';
-import { Layer, LayerProperties, LayerPropertiesUpdate } from '../../types/LayerTypes';
+import { Layer, LayerOutputIntent, LayerProperties, LayerPropertiesUpdate } from '../../types/LayerTypes';
 import { UpdateZIndexMethod } from '../../types/FrameTypes';
 import { VariableVisibilityOperator, VariableVisibilityTargetType } from '../../types/VariableTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -16,7 +16,12 @@ const layerProperties: LayerProperties[] = [
     {
         layerId: 'layer-1',
         visibilityProperties: {
-            value: { visibilityMode: VisibilityMode.visible, isPrintable: true, visibilityConditions: [] },
+            value: { visibilityMode: VisibilityMode.visible, visibilityConditions: [] },
+            isOverride: false,
+            isReadOnly: false,
+        },
+        outputProperties: {
+            value: { outputIntent: LayerOutputIntent.sameAsVisibility },
             isOverride: false,
             isReadOnly: false,
         },
@@ -26,7 +31,6 @@ const layerProperties: LayerProperties[] = [
         visibilityProperties: {
             value: {
                 visibilityMode: VisibilityMode.conditional,
-                isPrintable: false,
                 visibilityConditions: [
                     {
                         id: 'variable-1',
@@ -39,6 +43,11 @@ const layerProperties: LayerProperties[] = [
                 ],
             },
             isOverride: true,
+            isReadOnly: false,
+        },
+        outputProperties: {
+            value: null,
+            isOverride: false,
             isReadOnly: false,
         },
     },
@@ -192,12 +201,12 @@ describe('LayerController', () => {
     });
 
     it('Should call the setProperties method without a layout id', async () => {
-        const update: LayerPropertiesUpdate = { isPrintable: false };
+        const update: LayerPropertiesUpdate = { outputIntent: LayerOutputIntent.notIncluded };
         await mockedLayerController.setProperties('layer-1', update);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledWith(
             'layer-1',
-            JSON.stringify({ isPrintable: false }),
+            JSON.stringify({ outputIntent: LayerOutputIntent.notIncluded }),
             undefined,
         );
     });

@@ -24,7 +24,12 @@ const layoutWithLayerProperties = {
         {
             layerId: '0',
             visibilityProperties: {
-                value: { visibilityMode: 'visible', isPrintable: true, visibilityConditions: [] },
+                value: { visibilityMode: 'visible', visibilityConditions: [] },
+                isOverride: false,
+                isReadOnly: false,
+            },
+            outputProperties: {
+                value: { outputIntent: 'alwaysIncluded' },
                 isOverride: false,
                 isReadOnly: false,
             },
@@ -34,13 +39,17 @@ const layoutWithLayerProperties = {
             visibilityProperties: {
                 value: {
                     visibilityMode: 'conditional',
-                    isPrintable: false,
                     visibilityConditions: [
                         { id: 'var-1', value: { type: 'boolean', value: true } },
                         { id: 'var-2', value: { type: 'text', value: 'premium', operator: 'contains' } },
                     ],
                 },
                 isOverride: true,
+                isReadOnly: false,
+            },
+            outputProperties: {
+                value: null,
+                isOverride: false,
                 isReadOnly: false,
             },
         },
