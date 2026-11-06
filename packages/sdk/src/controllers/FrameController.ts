@@ -627,9 +627,12 @@ export class FrameController {
      * This method replaces the content of a text frame, or of a range of it, as a single undoable step.
      * The frame does not have to be in text editing mode, an active text selection is not taken into account.
      *
-     * Without a range the content is replaced as is. With a range only that part is replaced: the first paragraph of
-     * `content` continues the paragraph in which the range starts and keeps its paragraph formatting. When `content`
-     * has more paragraphs, the text after the range continues its last paragraph.
+     * Without a range the content is replaced as is. With a range only that part is replaced and the text around it
+     * is kept as it is: the first paragraph of `content` continues the paragraph in which the range starts and keeps
+     * its paragraph formatting. When `content` has more paragraphs, the text after the range continues its last
+     * paragraph.
+     *
+     * Paragraphs only come from {@link TextContent.paragraphs}: text can not contain `\u2029`, `\u0002` or `\u0003`.
      *
      * Every reference (styles, colors, fonts and variables) is validated, invalid content is rejected with the path
      * of the offending value, e.g. `paragraphs[1].content[0].characterStyle.name`.
@@ -661,8 +664,10 @@ export class FrameController {
 
     /**
      * This method replaces the content of a text frame, or of a range of it, with plain text as a single undoable
-     * step. A new line (`\n`) starts a new paragraph and `\u2028` is a line break. The text gets the formatting at the start of
-     * the range, or at the start of the frame without a range.
+     * step. A new line (`\n`) or `\u2029` starts a new paragraph and `\u2028` is a line break, `\u0002` and `\u0003` are
+     * rejected. The text gets the formatting of the text in front of the range, or of the text behind it at the start
+     * of a paragraph, and new paragraphs copy the paragraph in which the range starts. The text around the range is
+     * kept as it is.
      * The frame does not have to be in text editing mode, an active text selection is not taken into account.
      * @param id the id of the text frame
      * @param text the new text

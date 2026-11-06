@@ -61,7 +61,10 @@ export const TextContentBuilder = {
     }),
 
     /**
-     * Creates a line break.
+     * Creates a line break, without formatting it takes the formatting of the text before it.
      */
-    lineBreak: (): TextContentLineBreak => ({ type: 'lineBreak' }),
+    lineBreak: (options: Omit<TextContentLineBreak, 'type'> = {}): TextContentLineBreak => ({
+        type: 'lineBreak',
+        ...options,
+    }),
 };

@@ -448,8 +448,25 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to get the text content of a frame, optionally for a range', async () => {
-        await mockedFrameController.getTextContent(id);
+        const content: TextContent = {
+            paragraphs: [
+                {
+                    content: [
+                        { type: 'text', text: 'Hi' },
+                        { type: 'lineBreak', format: { fontSize: 40 } },
+                    ],
+                },
+            ],
+        };
+        (mockedEditorApi.getTextContent as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            status: 200,
+            data: JSON.stringify(content),
+        });
+
+        const result = await mockedFrameController.getTextContent(id);
         expect(mockedEditorApi.getTextContent).toHaveBeenCalledWith(id, null);
+        expect(result.parsedData).toEqual(content);
 
         await mockedFrameController.getTextContent(id, { start: 2, length: 3 });
         expect(mockedEditorApi.getTextContent).toHaveBeenCalledWith(id, JSON.stringify({ start: 2, length: 3 }));
@@ -482,8 +499,15 @@ describe('FrameController', () => {
     });
 
     it('Should be possible to get and set the plain text of a frame', async () => {
-        await mockedFrameController.getPlainText(id, { start: 1, length: 1 });
+        (mockedEditorApi.getPlainText as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            status: 200,
+            data: JSON.stringify('e'),
+        });
+
+        const result = await mockedFrameController.getPlainText(id, { start: 1, length: 1 });
         expect(mockedEditorApi.getPlainText).toHaveBeenCalledWith(id, JSON.stringify({ start: 1, length: 1 }));
+        expect(result.parsedData).toBe('e');
 
         const text = ['Hello', 'world'].join(String.fromCharCode(10));
         await mockedFrameController.setPlainText(id, text);

@@ -96,10 +96,13 @@ export type TextContentVariable = {
 };
 
 /**
- * A line break inside a paragraph, it takes the formatting of the text before it.
+ * A line break inside a paragraph. Without formatting of its own, it takes the formatting of the text before it.
+ * The formatting of a line break sets the height of the line it ends.
  */
 export type TextContentLineBreak = {
     type: 'lineBreak';
+    characterStyle?: TextStyleReference;
+    format?: TextContentCharacterFormat;
 };
 
 /**
