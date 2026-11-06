@@ -73,8 +73,9 @@ export class ExperimentController {
      * @param frameId The ID of a text frame
      * @param textType The type of the text
      * @returns the text content
-     * @deprecated Use {@link FrameController.getTextContent} or {@link FrameController.getPlainText} instead, they
-     * work outside of text editing mode and return a stable format.
+     * @deprecated Use {@link FrameController.getPlainText} instead of `TextType.text` and
+     * {@link FrameController.getTextContent} instead of `TextType.formatted`. They work outside of text editing mode
+     * and return a stable format.
      */
     getText = async (frameId: string, textType: TextType) => {
         const res = await this.#editorAPI;
