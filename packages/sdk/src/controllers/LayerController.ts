@@ -54,7 +54,7 @@ export class LayerController {
 
     /**
      * This method returns the properties of every layer on the selected layout, in document order.
-     * Each layer's `visibilityProperties.isOverride` says whether the selected layout overrides that layer.
+     * Each layer's `visibilityProperties.isOverride` says whether the selected layout overrides that layer's visibility.
      * @returns list of the layer properties on the selected layout
      */
     getPropertiesOnSelectedLayout = async () => {
