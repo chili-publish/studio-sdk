@@ -1,6 +1,7 @@
 import { MeasurementUnit } from '@chili-studio/connector-types';
 import { ColorUsage } from './ColorStyleTypes';
 import { Id, PrivateData, PropertyState } from './CommonTypes';
+import type { LayerProperties } from './LayerTypes';
 
 export { MeasurementUnit } from '@chili-studio/connector-types';
 export type LayoutPropertiesType = {
@@ -19,6 +20,7 @@ export type LayoutPropertiesType = {
     selectedByUser: boolean;
     timelineLengthMs: PropertyState<number | undefined>;
     resizableByUser: ResizableLayoutProperties;
+    layerProperties: LayerProperties[];
 } | null;
 
 export type FrameProperties = {
@@ -69,6 +71,7 @@ export type Layout = {
     availableForUser: boolean;
     selectedByUser: boolean;
     resizableByUser: ResizableLayoutProperties;
+    layerProperties: LayerProperties[];
 };
 
 // used by onLayoutsChanged
