@@ -7,12 +7,12 @@ This README includes guides about SDK development.
 SDK consist of controllers which are individual Javascript classes and methods of these classes.
 Currently there are 6 different controllers:
 
--   AnimationController
--   FrameController
--   LayoutsController
--   UtilsController
--   SubscriberController
--   DocumentController
+- AnimationController
+- FrameController
+- LayoutsController
+- UtilsController
+- SubscriberController
+- DocumentController
 
 These controllers have their own methods within them.SubscriberController's methods are methods of children(Flutter-Editor).These methods required by flutter and without these methods you can't initialize SDK.
 

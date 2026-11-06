@@ -5,6 +5,7 @@ export enum WellKnownConfigurationKeys {
     GraFxStudioTemplateId = 'TEMPLATE_ID',
     GraFxStudioAuthToken = 'GRAFX_AUTH_TOKEN',
     QueryCallCacheEnabled = 'ENABLE_QUERY_CALL_CACHE',
+    GraFxStudioIsIntegration = 'IS_INTEGRATION',
 }
 
 export enum FrameEditingMode {
@@ -80,6 +81,9 @@ export type ShortcutOptionsDeltaUpdate = {
 
     /** The component grid shortcut. */
     componentGrid?: ShortcutOption;
+
+    /** The pen tool shortcut. */
+    pen?: ShortcutOption;
 };
 
 /**
@@ -108,6 +112,7 @@ export const defaultStudioOptions: StudioOptionsDeltaUpdate = {
         copyPaste: { enabled: false },
         viewMode: { enabled: false },
         componentGrid: { enabled: false },
+        pen: { enabled: false },
     },
     frameEditingMode: FrameEditingMode.full,
 };
