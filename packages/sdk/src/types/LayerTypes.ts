@@ -19,7 +19,7 @@ export type Layer = {
  * `visibilityProperties.value` always holds the resolved visibility settings, including inherited ones.
  * `visibilityProperties.isOverride` is `true` only when this layout sets the visibility of this layer itself.
  * It is `false` on the top layout, and `false` when a child layout inherits visibility from its parent.
- * `outputProperties` is not inherited. `outputIntent` defaults to `sameAsVisibility`.
+ * `outputProperties` is not inherited. `outputMode` defaults to `sameAsVisibility`.
  */
 export type LayerProperties = {
     layerId: Id;
@@ -31,7 +31,7 @@ export type LayerProperties = {
  * The layer properties to change. Omitted fields stay unchanged.
  */
 export type LayerPropertiesUpdate = {
-    outputIntent?: LayerOutputIntent;
+    outputMode?: LayerOutputMode;
     visibilityMode?: VisibilityMode;
     visibilityConditions?: VariableWithValue[];
 };
@@ -40,7 +40,7 @@ export type LayerPropertiesUpdate = {
  * Whether a layer is included in output.
  * Omitted on read means `sameAsVisibility`.
  */
-export enum LayerOutputIntent {
+export enum LayerOutputMode {
     sameAsVisibility = 'sameAsVisibility',
     notIncluded = 'notIncluded',
     alwaysIncluded = 'alwaysIncluded',
@@ -51,5 +51,5 @@ export enum LayerOutputIntent {
  */
 export type OutputProperties = {
     /** Default: `sameAsVisibility`. */
-    outputIntent: LayerOutputIntent;
+    outputMode: LayerOutputMode;
 };
