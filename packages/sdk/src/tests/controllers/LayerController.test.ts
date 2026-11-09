@@ -1,6 +1,6 @@
 import { LayerController } from '../../controllers/LayerController';
 import { EditorAPI, VisibilityMode } from '../../types/CommonTypes';
-import { Layer, LayerOutputIntent, LayerProperties, LayerPropertiesUpdate } from '../../types/LayerTypes';
+import { Layer, LayerOutputMode, LayerProperties, LayerPropertiesUpdate } from '../../types/LayerTypes';
 import { UpdateZIndexMethod } from '../../types/FrameTypes';
 import { VariableVisibilityOperator, VariableVisibilityTargetType } from '../../types/VariableTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
@@ -20,7 +20,7 @@ const layerProperties: LayerProperties[] = [
             isOverride: false,
             isReadOnly: false,
         },
-        outputProperties: { outputIntent: LayerOutputIntent.sameAsVisibility },
+        outputProperties: { outputMode: LayerOutputMode.sameAsVisibility },
     },
     {
         layerId: 'layer-2',
@@ -41,7 +41,7 @@ const layerProperties: LayerProperties[] = [
             isOverride: true,
             isReadOnly: false,
         },
-        outputProperties: { outputIntent: LayerOutputIntent.notIncluded },
+        outputProperties: { outputMode: LayerOutputMode.notIncluded },
     },
 ];
 
@@ -193,12 +193,12 @@ describe('LayerController', () => {
     });
 
     it('Should call the setProperties method without a layout id', async () => {
-        const update: LayerPropertiesUpdate = { outputIntent: LayerOutputIntent.notIncluded };
+        const update: LayerPropertiesUpdate = { outputMode: LayerOutputMode.notIncluded };
         await mockedLayerController.setProperties('layer-1', update);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayerProperties).toHaveBeenCalledWith(
             'layer-1',
-            JSON.stringify({ outputIntent: LayerOutputIntent.notIncluded }),
+            JSON.stringify({ outputMode: LayerOutputMode.notIncluded }),
             undefined,
         );
     });
