@@ -5,6 +5,7 @@ import { VariableController } from './controllers/VariableController';
 import { ConnectorController } from './controllers/ConnectorController';
 import { PageController } from './controllers/PageController';
 import { CanvasController } from '../controllers/CanvasController';
+import { FrameController } from './controllers/FrameController';
 
 /**
  * The next initiator is a split off on SDK level to tag next features.
@@ -29,6 +30,7 @@ export class NextInitiator {
     connector: ConnectorController;
     page: PageController;
     canvas: CanvasController;
+    frame: FrameController;
 
     /**
      * The next initiator is a split off on SDK level to tag next features
@@ -45,5 +47,6 @@ export class NextInitiator {
         this.connector = new ConnectorController(this.editorAPI);
         this.page = new PageController(this.editorAPI);
         this.canvas = new CanvasController(this.editorAPI);
+        this.frame = new FrameController(this.editorAPI);
     }
 }
