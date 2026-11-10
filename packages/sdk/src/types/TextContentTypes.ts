@@ -175,6 +175,10 @@ export type TextContentCharacterFormat = {
     trackingLeft?: number;
     trackingRight?: number;
     textIndent?: string;
+    /**
+     * Baseline shift in points, as a plain number without a unit (e.g. `2` or `-1.5`).
+     * `SelectedTextStyle` and the brand kit styles hold the same value as a numeric string.
+     */
     baselineShiftValue?: number;
     /**
      * Line height in percent.
@@ -186,6 +190,10 @@ export type TextContentCharacterFormat = {
     fillColorApplied?: boolean;
     strokeColor?: TextContentColor;
     strokeColorApplied?: boolean;
+    /**
+     * Stroke width as a length with a unit, e.g. `'1pt'`, like the other lengths of the format.
+     * `SelectedTextStyle` and the brand kit styles hold the same value as a number of points.
+     */
     strokeWidth?: string;
     backgroundColor?: TextContentColor;
     backgroundColorApplied?: boolean;
@@ -212,7 +220,9 @@ export type TextContentParagraphFormat = TextContentCharacterFormat & {
  *
  * Positions count characters (UTF-16 code units, like JavaScript string indexes) of the plain text: paragraphs are
  * separated by `\n`, a line break is `\u2028` and a variable counts as its current value. A range can not start or end
- * inside a variable, it has to include or exclude a variable completely.
+ * inside a variable, it has to include or exclude a variable completely. A range can also not start or end between the
+ * two halves of a surrogate pair (a character that takes two UTF-16 code units, e.g. most emoji). Such a range is
+ * rejected with an `InvalidTextRangeException`.
  *
  * @example
  * ```ts

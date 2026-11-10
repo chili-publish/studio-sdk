@@ -509,7 +509,7 @@ describe('FrameController', () => {
         expect(mockedEditorApi.getPlainText).toHaveBeenCalledWith(id, JSON.stringify({ start: 1, length: 1 }));
         expect(result.parsedData).toBe('e');
 
-        const text = ['Hello', 'world'].join(String.fromCharCode(10));
+        const text = 'Hello\nworld';
         await mockedFrameController.setPlainText(id, text);
         expect(mockedEditorApi.setPlainText).toHaveBeenCalledWith(id, text, null);
 
