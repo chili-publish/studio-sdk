@@ -85,15 +85,19 @@ const mockedEditorApi: EditorAPI = {
     enterCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    exitCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     enterSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applySubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    exitSubjectMode: async () => getEditorResponseData(castToEditorResponse(null)),
     enterGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    exitGradientMode: async () => getEditorResponseData(castToEditorResponse(null)),
     enterPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
     applyPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
     cancelPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
+    exitPathEditMode: async () => getEditorResponseData(castToEditorResponse(null)),
     resetCropMode: async () => getEditorResponseData(castToEditorResponse(null)),
     updateAutoGrowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
     updateFrameShadowSettings: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -161,15 +165,19 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'enterCropMode');
     jest.spyOn(mockedEditorApi, 'applyCropMode');
     jest.spyOn(mockedEditorApi, 'cancelCropMode');
+    jest.spyOn(mockedEditorApi, 'exitCropMode');
     jest.spyOn(mockedEditorApi, 'enterSubjectMode');
     jest.spyOn(mockedEditorApi, 'applySubjectMode');
     jest.spyOn(mockedEditorApi, 'cancelSubjectMode');
+    jest.spyOn(mockedEditorApi, 'exitSubjectMode');
     jest.spyOn(mockedEditorApi, 'enterGradientMode');
     jest.spyOn(mockedEditorApi, 'applyGradientMode');
     jest.spyOn(mockedEditorApi, 'cancelGradientMode');
+    jest.spyOn(mockedEditorApi, 'exitGradientMode');
     jest.spyOn(mockedEditorApi, 'enterPathEditMode');
     jest.spyOn(mockedEditorApi, 'applyPathEditMode');
     jest.spyOn(mockedEditorApi, 'cancelPathEditMode');
+    jest.spyOn(mockedEditorApi, 'exitPathEditMode');
     jest.spyOn(mockedEditorApi, 'resetCropMode');
     jest.spyOn(mockedEditorApi, 'updateAutoGrowSettings');
     jest.spyOn(mockedEditorApi, 'updateFrameShadowSettings');
@@ -560,11 +568,6 @@ describe('FrameController', () => {
         expect(mockedEditorApi.applyCropMode).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to cancel the current image crop', async () => {
-        await mockedFrameController.exitCropMode();
-        expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
-    });
-
     it('Should be possible to enter subject mode on a specific frame', async () => {
         await mockedFrameController.enterSubjectMode(id);
         expect(mockedEditorApi.enterSubjectMode).toHaveBeenCalledTimes(1);
@@ -574,11 +577,6 @@ describe('FrameController', () => {
     it('Should be possible to apply the current subject area to the frame', async () => {
         await mockedFrameController.applySubjectMode();
         expect(mockedEditorApi.applySubjectMode).toHaveBeenCalledTimes(1);
-    });
-
-    it('Should be possible to exit subject mode without saving the applied subject area', async () => {
-        await mockedFrameController.exitSubjectMode();
-        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to enter gradient mode on a specific frame', async () => {
@@ -592,16 +590,6 @@ describe('FrameController', () => {
         expect(mockedEditorApi.applyGradientMode).toHaveBeenCalledTimes(1);
     });
 
-    it('Should be possible to cancel gradient mode without saving the applied gradient', async () => {
-        await mockedFrameController.cancelGradientMode();
-        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
-    });
-
-    it('Should be possible to exit gradient mode without saving the applied gradient', async () => {
-        await mockedFrameController.exitGradientMode();
-        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(2);
-    });
-
     it('Should be possible to enter path edit mode on a specific frame', async () => {
         await mockedFrameController.enterPathEditMode(id);
         expect(mockedEditorApi.enterPathEditMode).toHaveBeenCalledTimes(1);
@@ -611,11 +599,6 @@ describe('FrameController', () => {
     it('Should be possible to apply the current path to the frame', async () => {
         await mockedFrameController.applyPathEditMode();
         expect(mockedEditorApi.applyPathEditMode).toHaveBeenCalledTimes(1);
-    });
-
-    it('Should be possible to exit path edit mode without saving the applied path', async () => {
-        await mockedFrameController.exitPathEditMode();
-        expect(mockedEditorApi.cancelPathEditMode).toHaveBeenCalledTimes(1);
     });
 
     it('Should be possible to reset asset crop override', async () => {
@@ -657,6 +640,60 @@ describe('FrameController', () => {
             a.localeCompare(b, undefined, { numeric: true }) >= 0 ? a : b,
         );
         expect(latest).toBe(LATEST_SMART_CROP_VERSION);
+    });
+});
+
+describe('Cancelling and exiting editing modes', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('Should be possible to cancel cropping mode without saving the applied crop', async () => {
+        await mockedFrameController.cancelCropMode();
+        expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitCropMode).not.toHaveBeenCalled();
+    });
+
+    it('Should still exit cropping mode without saving the applied crop', async () => {
+        await mockedFrameController.exitCropMode();
+        expect(mockedEditorApi.cancelCropMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitCropMode).not.toHaveBeenCalled();
+    });
+
+    it('Should be possible to cancel subject mode without saving the applied subject area', async () => {
+        await mockedFrameController.cancelSubjectMode();
+        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitSubjectMode).not.toHaveBeenCalled();
+    });
+
+    it('Should still exit subject mode without saving the applied subject area', async () => {
+        await mockedFrameController.exitSubjectMode();
+        expect(mockedEditorApi.cancelSubjectMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitSubjectMode).not.toHaveBeenCalled();
+    });
+
+    it('Should be possible to cancel gradient mode without saving the applied gradient', async () => {
+        await mockedFrameController.cancelGradientMode();
+        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitGradientMode).not.toHaveBeenCalled();
+    });
+
+    it('Should still exit gradient mode without saving the applied gradient', async () => {
+        await mockedFrameController.exitGradientMode();
+        expect(mockedEditorApi.cancelGradientMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitGradientMode).not.toHaveBeenCalled();
+    });
+
+    it('Should be possible to cancel path edit mode without saving the applied path', async () => {
+        await mockedFrameController.cancelPathEditMode();
+        expect(mockedEditorApi.cancelPathEditMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.exitPathEditMode).not.toHaveBeenCalled();
+    });
+
+    it('Should be possible to exit path edit mode and save the applied path', async () => {
+        await mockedFrameController.exitPathEditMode();
+        expect(mockedEditorApi.exitPathEditMode).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.cancelPathEditMode).not.toHaveBeenCalled();
     });
 });
 
