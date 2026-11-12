@@ -25,6 +25,8 @@ import {
 } from '../../types/FrameTypes';
 import { GradientType } from '../../types/GradientStyleTypes';
 import { ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
+import { TextContent } from '../../types/TextContentTypes';
+import { MarkedListType } from '../../types/TextStyleTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { mockImageConnectorSource, mockImageUrlSource } from '../__mocks__/MockImageFrameSource';
@@ -66,6 +68,10 @@ const mockedEditorApi: EditorAPI = {
     setImageFrameFitMode: async () => getEditorResponseData(castToEditorResponse(null)),
     setImageFrameFitModePosition: async () => getEditorResponseData(castToEditorResponse(null)),
     setVerticalAlignment: async () => getEditorResponseData(castToEditorResponse(null)),
+    getTextContent: async () => getEditorResponseData(castToEditorResponse(null)),
+    setTextContent: async () => getEditorResponseData(castToEditorResponse(null)),
+    getPlainText: async () => getEditorResponseData(castToEditorResponse(null)),
+    setPlainText: async () => getEditorResponseData(castToEditorResponse(null)),
     setNumberOfColumns: async () => getEditorResponseData(castToEditorResponse(null)),
     setColumnGap: async () => getEditorResponseData(castToEditorResponse(null)),
     setMinCopyfitting: async () => getEditorResponseData(castToEditorResponse(null)),
@@ -142,6 +148,10 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'setImageFrameFitMode');
     jest.spyOn(mockedEditorApi, 'setImageFrameFitModePosition');
     jest.spyOn(mockedEditorApi, 'setVerticalAlignment');
+    jest.spyOn(mockedEditorApi, 'getTextContent');
+    jest.spyOn(mockedEditorApi, 'setTextContent');
+    jest.spyOn(mockedEditorApi, 'getPlainText');
+    jest.spyOn(mockedEditorApi, 'setPlainText');
     jest.spyOn(mockedEditorApi, 'setNumberOfColumns');
     jest.spyOn(mockedEditorApi, 'setColumnGap');
     jest.spyOn(mockedEditorApi, 'setMinCopyfitting');
@@ -435,6 +445,80 @@ describe('FrameController', () => {
 
     it('Should throw when trying to set the frame to constrain proportions - deprecated', async () => {
         await expect(mockedFrameController.setFrameConstrainProportions(id, true)).rejects.toThrow();
+    });
+
+    it('Should be possible to get the text content of a frame, optionally for a range', async () => {
+        const content: TextContent = {
+            paragraphs: [
+                {
+                    content: [
+                        { type: 'text', text: 'Hi' },
+                        { type: 'lineBreak', format: { fontSize: 40 } },
+                    ],
+                },
+            ],
+        };
+        (mockedEditorApi.getTextContent as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            status: 200,
+            data: JSON.stringify(content),
+        });
+
+        const result = await mockedFrameController.getTextContent(id);
+        expect(mockedEditorApi.getTextContent).toHaveBeenCalledWith(id, null);
+        expect(result.parsedData).toEqual(content);
+
+        await mockedFrameController.getTextContent(id, { start: 2, length: 3 });
+        expect(mockedEditorApi.getTextContent).toHaveBeenCalledWith(id, JSON.stringify({ start: 2, length: 3 }));
+    });
+
+    it('Should be possible to set the text content of a frame, optionally for a range', async () => {
+        const content: TextContent = {
+            paragraphs: [
+                {
+                    paragraphStyle: { name: 'Heading' },
+                    content: [
+                        { type: 'text', text: 'Hi ', format: { color: { type: 'brandKit', name: 'Red' } } },
+                        { type: 'variable', id: 'first-name' },
+                        { type: 'lineBreak' },
+                    ],
+                },
+                { list: { type: MarkedListType.bullet, level: 1 }, content: [] },
+            ],
+        };
+
+        await mockedFrameController.setTextContent(id, content);
+        expect(mockedEditorApi.setTextContent).toHaveBeenCalledWith(id, JSON.stringify(content), null);
+
+        await mockedFrameController.setTextContent(id, content, { start: 0, length: 4 });
+        expect(mockedEditorApi.setTextContent).toHaveBeenCalledWith(
+            id,
+            JSON.stringify(content),
+            JSON.stringify({ start: 0, length: 4 }),
+        );
+    });
+
+    it('Should be possible to get and set the plain text of a frame', async () => {
+        (mockedEditorApi.getPlainText as jest.Mock).mockResolvedValueOnce({
+            success: true,
+            status: 200,
+            data: JSON.stringify('e'),
+        });
+
+        const result = await mockedFrameController.getPlainText(id, { start: 1, length: 1 });
+        expect(mockedEditorApi.getPlainText).toHaveBeenCalledWith(id, JSON.stringify({ start: 1, length: 1 }));
+        expect(result.parsedData).toBe('e');
+
+        const text = 'Hello\nworld';
+        await mockedFrameController.setPlainText(id, text);
+        expect(mockedEditorApi.setPlainText).toHaveBeenCalledWith(id, text, null);
+
+        await mockedFrameController.setPlainText(id, 'colour', { start: 6, length: 5 });
+        expect(mockedEditorApi.setPlainText).toHaveBeenCalledWith(
+            id,
+            'colour',
+            JSON.stringify({ start: 6, length: 5 }),
+        );
     });
 
     it('Should be possible to set the vertical alignment of a frame', async () => {
