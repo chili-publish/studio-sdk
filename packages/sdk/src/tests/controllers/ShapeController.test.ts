@@ -3,7 +3,7 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { ShapeController } from '../../controllers/ShapeController';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
-import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
+import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeType, StrokeLineStyleType } from '../../types/ShapeTypes';
 
 let id: Id;
 
@@ -64,6 +64,15 @@ describe('ShapeController', () => {
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
                 id,
                 JSON.stringify({ allCornersSame: true }),
+            );
+        });
+
+        it('Should be possible to set the stroke line style', async () => {
+            await mockedShapeController.setStrokeLineStyle(id, StrokeLineStyleType.dashed);
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(7);
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ strokeLineStyle: { type: 'dashed' } }),
             );
         });
     });

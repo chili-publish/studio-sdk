@@ -1,6 +1,6 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
 import { ColorUsage } from '../types/ColorStyleTypes';
-import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeProperties } from '../types/ShapeTypes';
+import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeProperties, StrokeLineStyleType } from '../types/ShapeTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
 /**
@@ -85,6 +85,16 @@ export class ShapeController {
      */
     setStrokeWeight = async (id: Id, strokeWeight: number) => {
         const properties: ShapeProperties = { strokeWeight: strokeWeight };
+        return this.setShapeProperties(id, properties);
+    };
+
+    /**
+     * This method will set the shape stroke line style of a specified shape frame.
+     * @param id the id of the shapeFrame that needs to get updated.
+     * @param strokeLineStyle the new shape stroke line style that you want to set to the shapeFrame.
+     */
+    setStrokeLineStyle = async (id: Id, strokeLineStyle: StrokeLineStyleType) => {
+        const properties: ShapeProperties = { strokeLineStyle: { type: strokeLineStyle } };
         return this.setShapeProperties(id, properties);
     };
 
