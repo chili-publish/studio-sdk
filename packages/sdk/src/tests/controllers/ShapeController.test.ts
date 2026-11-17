@@ -3,7 +3,7 @@ import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorR
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { ShapeController } from '../../controllers/ShapeController';
 import { ColorType, ColorUsageType } from '../../types/ColorStyleTypes';
-import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeType } from '../../types/ShapeTypes';
+import { CornerRadiusUpdateModel, ShapeFrameSource, ShapeType, StrokeLineStyleType } from '../../types/ShapeTypes';
 
 let id: Id;
 
@@ -64,6 +64,16 @@ describe('ShapeController', () => {
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
                 id,
                 JSON.stringify({ allCornersSame: true }),
+            );
+        });
+
+        it('Should be possible to set the stroke line style', async () => {
+            const callsBefore = (mockedEditorApi.setShapeProperties as jest.Mock).mock.calls.length;
+            await mockedShapeController.setStrokeLineStyle(id, StrokeLineStyleType.dashed);
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(callsBefore + 1);
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
+                id,
+                JSON.stringify({ strokeLineStyle: { type: 'dashed' } }),
             );
         });
     });
