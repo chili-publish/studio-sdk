@@ -68,8 +68,9 @@ describe('ShapeController', () => {
         });
 
         it('Should be possible to set the stroke line style', async () => {
+            const callsBefore = (mockedEditorApi.setShapeProperties as jest.Mock).mock.calls.length;
             await mockedShapeController.setStrokeLineStyle(id, StrokeLineStyleType.dashed);
-            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(7);
+            expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledTimes(callsBefore + 1);
             expect(mockedEditorApi.setShapeProperties).toHaveBeenCalledWith(
                 id,
                 JSON.stringify({ strokeLineStyle: { type: 'dashed' } }),

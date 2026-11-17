@@ -100,7 +100,4 @@ export type ShapeFrameCustomSource = {
 };
 
 export type ShapeFrameSource =
-    | ShapeFrameRectSource
-    | ShapeFrameEllipseSource
-    | ShapeFramePolygonSource
-    | ShapeFrameCustomSource;
+    ShapeFrameRectSource | ShapeFrameEllipseSource | ShapeFramePolygonSource | ShapeFrameCustomSource;
