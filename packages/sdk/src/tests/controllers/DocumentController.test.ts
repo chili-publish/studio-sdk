@@ -11,6 +11,7 @@ const mockedEditorApi: EditorAPI = {
     getCurrentDocumentState: async () => getEditorResponseData(castToEditorResponse(null)),
     loadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
     createAndLoadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
+    loadAndCreateProject: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -18,6 +19,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getCurrentDocumentState');
     jest.spyOn(mockedEditorApi, 'loadDocument');
     jest.spyOn(mockedEditorApi, 'createAndLoadDocument');
+    jest.spyOn(mockedEditorApi, 'loadAndCreateProject');
     global.fetch = mockFetch;
 });
 
@@ -47,6 +49,24 @@ describe('Document controller', () => {
             await mockedDocumentController.load(mockDocument, { keepConnectors: true });
             expect(mockedEditorApi.loadDocument).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.loadDocument).toHaveBeenCalledWith(
+                mockDocument,
+                JSON.stringify({ keepConnectors: true }),
+            );
+        });
+
+        it('loads a template as a new project, without keeping connectors by default', async () => {
+            await mockedDocumentController.loadAndCreateProject(JSON.parse(mockDocument));
+            expect(mockedEditorApi.loadAndCreateProject).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.loadAndCreateProject).toHaveBeenCalledWith(
+                mockDocument,
+                JSON.stringify({ keepConnectors: false }),
+            );
+        });
+
+        it('loads a template json as a new project with load options', async () => {
+            await mockedDocumentController.loadAndCreateProject(mockDocument, { keepConnectors: true });
+            expect(mockedEditorApi.loadAndCreateProject).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.loadAndCreateProject).toHaveBeenCalledWith(
                 mockDocument,
                 JSON.stringify({ keepConnectors: true }),
             );
