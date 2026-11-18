@@ -11,6 +11,7 @@ const mockedEditorApi: EditorAPI = {
     componentConnectorPreview: async () => new Uint8Array() as unknown as EditorResponse<any>,
     componentConnectorGetCapabilities: async () => getEditorResponseData(castToEditorResponse(null)),
     componentConnectorGetConfigurationOptions: async () => getEditorResponseData(castToEditorResponse(null)),
+    componentsConnectorQueryVersions: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -19,6 +20,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'componentConnectorPreview');
     jest.spyOn(mockedEditorApi, 'componentConnectorGetCapabilities');
     jest.spyOn(mockedEditorApi, 'componentConnectorGetConfigurationOptions');
+    jest.spyOn(mockedEditorApi, 'componentsConnectorQueryVersions');
 });
 
 afterEach(() => {
@@ -82,6 +84,29 @@ describe('ComponentConnectorController', () => {
         await mockedComponentConnectorController.getCapabilities(connectorId);
         expect(mockedEditorApi.componentConnectorGetCapabilities).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.componentConnectorGetCapabilities).toHaveBeenLastCalledWith(connectorId);
+    });
+
+    it('Should call the getVersions method', async () => {
+        const options = { pageSize: 5, pageToken: 'token' };
+
+        await mockedComponentConnectorController.getVersions(connectorId, componentId, options, context);
+        expect(mockedEditorApi.componentsConnectorQueryVersions).toHaveBeenCalledTimes(1);
+        expect(mockedEditorApi.componentsConnectorQueryVersions).toHaveBeenCalledWith(
+            connectorId,
+            componentId,
+            JSON.stringify(options),
+            JSON.stringify(context),
+        );
+    });
+
+    it('Should call the getVersions method with default options and context', async () => {
+        await mockedComponentConnectorController.getVersions(connectorId, componentId);
+        expect(mockedEditorApi.componentsConnectorQueryVersions).toHaveBeenCalledWith(
+            connectorId,
+            componentId,
+            '{}',
+            '{}',
+        );
     });
 
     it('Should call the getConfigurationOptions method', async () => {

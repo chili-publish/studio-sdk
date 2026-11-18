@@ -1,5 +1,5 @@
 import { EditorAPI, Id } from '../../types/CommonTypes';
-import { ComponentFitEnum } from '../../types/FrameTypes';
+import { ComponentFitEnum, ComponentVersion, ComponentVersionTypeEnum } from '../../types/FrameTypes';
 import { castToEditorResponse, getEditorResponseData } from '../../utils/EditorResponseData';
 import { mockSelectFrame } from '../__mocks__/FrameProperties';
 import { ComponentController } from '../../controllers/ComponentController';
@@ -13,6 +13,7 @@ const mockedEditorApi: EditorAPI = {
     getComponentVariables: async () => getEditorResponseData(castToEditorResponse(null)),
     setComponentLayoutFit: async () => getEditorResponseData(castToEditorResponse(null)),
     resetComponentLayoutFit: async () => getEditorResponseData(castToEditorResponse(null)),
+    setComponentVersion: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -22,6 +23,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getComponentVariables');
     jest.spyOn(mockedEditorApi, 'setComponentLayoutFit');
     jest.spyOn(mockedEditorApi, 'resetComponentLayoutFit');
+    jest.spyOn(mockedEditorApi, 'setComponentVersion');
 
     id = mockSelectFrame.id;
 });
@@ -75,6 +77,23 @@ describe('ComponentController', () => {
             await mockedComponentController.resetFitMode(id);
             expect(mockedEditorApi.resetComponentLayoutFit).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.resetComponentLayoutFit).toHaveBeenCalledWith(id);
+        });
+    });
+    describe('setVersion', () => {
+        const versions: [string, ComponentVersion, string][] = [
+            ['live', { type: ComponentVersionTypeEnum.live }, '{"type":"live"}'],
+            ['latest', { type: ComponentVersionTypeEnum.latestVersion }, '{"type":"latestVersion"}'],
+            [
+                'specific',
+                { type: ComponentVersionTypeEnum.versioned, id: 'version-1' },
+                '{"type":"versioned","id":"version-1"}',
+            ],
+        ];
+
+        it.each(versions)('Should be possible to set the %s version of a component frame', async (_, version, json) => {
+            await mockedComponentController.setVersion(id, version);
+            expect(mockedEditorApi.setComponentVersion).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.setComponentVersion).toHaveBeenCalledWith(id, json);
         });
     });
 });

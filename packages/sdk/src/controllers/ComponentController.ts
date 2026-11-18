@@ -1,5 +1,5 @@
 import { EditorAPI, Id } from '../types/CommonTypes';
-import { ComponentFitEnum } from '../types/FrameTypes';
+import { ComponentFitEnum, ComponentVersion } from '../types/FrameTypes';
 import { Variable } from '../types/VariableTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 
@@ -65,5 +65,22 @@ export class ComponentController {
     resetFitMode = async (frameId: Id) => {
         const res = await this.#editorAPI;
         return res.resetComponentLayoutFit(frameId).then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * @experimental This method sets which version of its component a component frame or component grid uses.
+     * The component of the frame is reloaded with that version.
+     *
+     * The version is checked with the component connector first. Setting the latest version of a component without
+     * saved versions, or a version the component doesn't have, fails and leaves the frame unchanged.
+     * @param frameId the id of the component frame or component grid.
+     * @param version the version to use: live, the latest saved version or a specific saved version.
+     * @returns
+     */
+    setVersion = async (frameId: Id, version: ComponentVersion) => {
+        const res = await this.#editorAPI;
+        return res
+            .setComponentVersion(frameId, JSON.stringify(version))
+            .then((result) => getEditorResponseData<null>(result));
     };
 }
