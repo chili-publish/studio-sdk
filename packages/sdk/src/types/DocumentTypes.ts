@@ -18,6 +18,7 @@ export enum DocumentIssueTypeEnum {
     actionRegister = 'actionRegister',
     actionExecution = 'actionExecution',
     actionCircular = 'actionCircular',
+    missingComponentVariable = 'missingComponentVariable',
 }
 
 export type OverflowDocumentIssue = {
@@ -46,12 +47,29 @@ export type ActionCircularDocumentIssue = {
     type: DocumentIssueTypeEnum.actionCircular;
 };
 
+/**
+ * A variable mapping targets a component variable that the selected version of the component doesn't have.
+ * The mapping is kept but not applied until a version with the variable is selected.
+ */
+export type MissingComponentVariableDocumentIssue = {
+    /**
+     * The component frame, or the component grid for the frames of a grid.
+     */
+    frameId: Id;
+    /**
+     * The mapped component variable.
+     */
+    variableId: Id;
+    type: DocumentIssueTypeEnum.missingComponentVariable;
+};
+
 export type DocumentIssue =
     | OverflowDocumentIssue
     | FontLoadingDocumentIssue
     | ActionExecutionDocumentIssue
     | ActionRegisterDocumentIssue
-    | ActionCircularDocumentIssue;
+    | ActionCircularDocumentIssue
+    | MissingComponentVariableDocumentIssue;
 
 export type UndoState = {
     canUndo: boolean;

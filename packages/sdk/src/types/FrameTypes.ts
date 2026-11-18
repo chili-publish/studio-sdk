@@ -224,7 +224,40 @@ export type ConnectorComponentSource = {
     type: ComponentSourceTypeEnum.connector;
     id: Id;
     assetId: Id | null;
+    /**
+     * The version of the component the frame uses.
+     * Always set when read from the engine. When omitted as input, the live version is used.
+     */
+    version?: ComponentVersion;
 };
+
+/**
+ * Always uses the current, live state of the component.
+ */
+export type LiveComponentVersion = {
+    type: ComponentVersionTypeEnum.live;
+};
+
+/**
+ * Always uses the newest saved version of the component.
+ * Only available when the component has saved versions.
+ */
+export type LatestComponentVersion = {
+    type: ComponentVersionTypeEnum.latestVersion;
+};
+
+/**
+ * Uses one saved version of the component.
+ */
+export type SpecificComponentVersion = {
+    type: ComponentVersionTypeEnum.versioned;
+    /**
+     * The id of the saved version, see `SDK.componentConnector.getVersions`.
+     */
+    id: Id;
+};
+
+export type ComponentVersion = LiveComponentVersion | LatestComponentVersion | SpecificComponentVersion;
 
 export type VariableMapping = {
     source: Id;
@@ -335,6 +368,12 @@ export enum ImageSourceTypeEnum {
 
 export enum ComponentSourceTypeEnum {
     connector = 'connector',
+}
+
+export enum ComponentVersionTypeEnum {
+    live = 'live',
+    latestVersion = 'latestVersion',
+    versioned = 'versioned',
 }
 
 export enum FrameTypeEnum {
