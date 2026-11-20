@@ -11,6 +11,7 @@ const mockedEditorApi: EditorAPI = {
     getCurrentDocumentState: async () => getEditorResponseData(castToEditorResponse(null)),
     loadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
     createAndLoadDocument: async () => getEditorResponseData(castToEditorResponse(null)),
+    createComponentFromFrames: async () => getEditorResponseData(castToEditorResponse(null)),
 };
 
 beforeEach(() => {
@@ -18,6 +19,7 @@ beforeEach(() => {
     jest.spyOn(mockedEditorApi, 'getCurrentDocumentState');
     jest.spyOn(mockedEditorApi, 'loadDocument');
     jest.spyOn(mockedEditorApi, 'createAndLoadDocument');
+    jest.spyOn(mockedEditorApi, 'createComponentFromFrames');
     global.fetch = mockFetch;
 });
 
@@ -63,6 +65,25 @@ describe('Document controller', () => {
             await mockedDocumentController.createAndLoad(preset);
             expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledTimes(1);
             expect(mockedEditorApi.createAndLoadDocument).toHaveBeenCalledWith(JSON.stringify(preset));
+        });
+    });
+
+    describe('createComponentFromFrames', () => {
+        it('creates a component from the provided frames', async () => {
+            await mockedDocumentController.createComponentFromFrames(['frame-1', 'frame-2']);
+            expect(mockedEditorApi.createComponentFromFrames).toHaveBeenCalledTimes(1);
+            expect(mockedEditorApi.createComponentFromFrames).toHaveBeenCalledWith(['frame-1', 'frame-2']);
+        });
+
+        it('returns the component document', async () => {
+            const component = JSON.parse(mockDocument);
+            jest.spyOn(mockedEditorApi, 'createComponentFromFrames').mockResolvedValueOnce(
+                castToEditorResponse(component),
+            );
+
+            const result = await mockedDocumentController.createComponentFromFrames(['frame-1']);
+
+            expect(result.parsedData).toEqual(component);
         });
     });
 });
