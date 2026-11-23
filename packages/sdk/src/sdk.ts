@@ -48,6 +48,7 @@ import { GradientStyleController } from './controllers/GradientStyleController';
 import { ComponentConnectorController } from './controllers/ComponentConnectorController';
 import { ComponentController } from './controllers/ComponentController';
 import { ComponentGridController } from './controllers/ComponentGridController';
+import { DragAndDropController } from './controllers/DragAndDropController';
 import { MethodListenerRegistry, wrapWithInvocationObserver } from './utils/MethodInstrumentation';
 import { SdkEvents } from './utils/SdkEvents';
 
@@ -133,6 +134,13 @@ export class SDK {
     brandKit: Instrumented<BrandKitController>;
     componentGrid: Instrumented<ComponentGridController>;
 
+    /**
+     * @experimental Drag content from the host's UI onto the engine canvas
+     * (a ghost frame; a drop replaces a matching frame's content or adds a
+     * new frame).
+     */
+    dragAndDrop: Instrumented<DragAndDropController>;
+
     next: NextInitiator;
 
     private subscriber: SubscriberController;
@@ -198,6 +206,7 @@ export class SDK {
         this.enabledNextSubscribers = this.config.enableNextSubscribers;
         this.brandKit = this.toInstrumented(new BrandKitController(this.editorAPI, this));
         this.componentGrid = this.toInstrumented(new ComponentGridController(this.editorAPI));
+        this.dragAndDrop = this.toInstrumented(new DragAndDropController(this.editorAPI));
 
         this.applyMethodInstrumentation();
     }
@@ -326,6 +335,7 @@ export class SDK {
         this.clipboard = this.toInstrumented(new ClipboardController(this.editorAPI));
         this.brandKit = this.toInstrumented(new BrandKitController(this.editorAPI, this));
         this.componentGrid = this.toInstrumented(new ComponentGridController(this.editorAPI));
+        this.dragAndDrop = this.toInstrumented(new DragAndDropController(this.editorAPI));
         this.next = new NextInitiator(this.config, this.connection, this.editorAPI);
 
         this.applyMethodInstrumentation();

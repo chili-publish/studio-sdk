@@ -254,6 +254,18 @@ export * from './types/EngineEditModeTypes';
 export * from './exceptions/Exceptions';
 export * from './exceptions/AsyncExceptions';
 
+export type { ComponentSource, ConnectorComponentSource } from './types/FrameTypes';
+export type {
+    BarcodeDragAndDropContent,
+    ComponentDragAndDropContent,
+    DragAndDropContent,
+    DragAndDropReplaceOverrideKey,
+    DragAndDropResult,
+    DragAndDropSize,
+    DragAndDropUpdate,
+    ImageDragAndDropContent,
+} from './types/DragAndDropTypes';
+
 export default SDK;
 
 export * as Next from './next';
