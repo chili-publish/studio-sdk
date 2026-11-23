@@ -8,6 +8,7 @@ let mockedPageController: PageController;
 const mockEditorApi: EditorAPI = {
     getPages: async () => getEditorResponseData(castToEditorResponse(null)),
     getPageById: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
+    getSelectedPage: async () => getEditorResponseData(castToEditorResponse(null)),
     setPageWidth: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageHeight: async (id: unknown) => getEditorResponseData(castToEditorResponse(id)),
     setPageSize: async (width: unknown, height: unknown) =>
@@ -26,6 +27,7 @@ beforeEach(() => {
     mockedPageController = new PageController(mockEditorApi);
     jest.spyOn(mockEditorApi, 'getPages');
     jest.spyOn(mockEditorApi, 'getPageById');
+    jest.spyOn(mockEditorApi, 'getSelectedPage');
     jest.spyOn(mockEditorApi, 'setPageWidth');
     jest.spyOn(mockEditorApi, 'setPageHeight');
     jest.spyOn(mockEditorApi, 'setPageSize');
@@ -74,6 +76,11 @@ describe('PageController', () => {
         await mockedPageController.getById('4');
         expect(mockEditorApi.getPageById).toHaveBeenCalledTimes(1);
         expect(mockEditorApi.getPageById).toHaveBeenCalledWith('4');
+    });
+    it('Should call the getSelectedPage method', async () => {
+        await mockedPageController.getSelected();
+        expect(mockEditorApi.getSelectedPage).toHaveBeenCalledTimes(1);
+        expect(mockEditorApi.getSelectedPage).toHaveBeenCalledWith();
     });
     it('Should call the setWidth method', async () => {
         await mockedPageController.setWidth('id', '4');
