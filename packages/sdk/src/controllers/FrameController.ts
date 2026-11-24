@@ -903,8 +903,20 @@ export class FrameController {
     /**
      * This method will exit cropping mode without saving the applied crop.
      * @returns
+     * @deprecated This method currently discards the applied crop. In the next major version it will exit cropping mode
+     * and save the applied crop, which is already available as `SDK.next.frame.exitCropMode`.
+     * Use `cancelCropMode` to exit cropping mode without saving.
      */
     exitCropMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit cropping mode without saving the applied crop.
+     * @returns
+     */
+    cancelCropMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelCropMode().then((result) => getEditorResponseData<null>(result));
     };
@@ -931,8 +943,20 @@ export class FrameController {
     /**
      * This method will exit subject mode without saving the applied subject area.
      * @returns
+     * @deprecated This method currently discards the applied subject area. In the next major version it will exit
+     * subject mode and save the applied subject area, which is already available as `SDK.next.frame.exitSubjectMode`.
+     * Use `cancelSubjectMode` to exit subject mode without saving.
      */
     exitSubjectMode = async () => {
+        const res = await this.#editorAPI;
+        return res.cancelSubjectMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit subject mode without saving the applied subject area.
+     * @returns
+     */
+    cancelSubjectMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelSubjectMode().then((result) => getEditorResponseData<null>(result));
     };
@@ -959,7 +983,6 @@ export class FrameController {
     /**
      * This method will exit gradient mode without saving the applied gradient.
      * @returns
-     * @deprecated Use exitGradientMode instead
      */
     cancelGradientMode = async () => {
         const res = await this.#editorAPI;
@@ -969,6 +992,9 @@ export class FrameController {
     /**
      * This method will exit gradient mode without saving the applied gradient.
      * @returns
+     * @deprecated This method currently discards the applied gradient. In the next major version it will exit gradient
+     * mode and save the applied gradient, which is already available as `SDK.next.frame.exitGradientMode`.
+     * Use `cancelGradientMode` to exit gradient mode without saving.
      */
     exitGradientMode = async () => {
         const res = await this.#editorAPI;
@@ -1016,6 +1042,15 @@ export class FrameController {
      * @returns
      */
     exitPathEditMode = async () => {
+        const res = await this.#editorAPI;
+        return res.exitPathEditMode().then((result) => getEditorResponseData<null>(result));
+    };
+
+    /**
+     * This method will exit path edit mode without saving the applied path. The shape is restored as it was.
+     * @returns
+     */
+    cancelPathEditMode = async () => {
         const res = await this.#editorAPI;
         return res.cancelPathEditMode().then((result) => getEditorResponseData<null>(result));
     };
