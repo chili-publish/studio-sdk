@@ -15,6 +15,7 @@ export interface ShapeProperties {
     strokeColor?: ColorUsage;
     strokeOverprint?: boolean;
     strokeWeight?: number;
+    strokeLineStyle?: StrokeLineStyle;
     allCornersSame?: boolean;
 }
 
@@ -22,7 +23,21 @@ export interface ShapeContainerProperties {
     enableStroke: boolean;
     strokeColor: ColorUsage;
     strokeWeight: number;
+    strokeLineStyle?: StrokeLineStyle;
     allCornersSame: boolean;
+}
+
+export enum StrokeLineStyleType {
+    solid = 'solid',
+    dashed = 'dashed',
+    dotted = 'dotted',
+}
+
+/**
+ * The line style of a stroke.
+ */
+export interface StrokeLineStyle {
+    type: StrokeLineStyleType;
 }
 
 export interface CornerRadiusUpdateModel {

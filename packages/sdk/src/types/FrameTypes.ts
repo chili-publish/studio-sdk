@@ -11,6 +11,7 @@ import {
     ShapeFrameSource,
     ShapeType,
     ShapeContainerProperties,
+    StrokeLineStyle,
 } from './ShapeTypes';
 
 export type FrameLayoutType = {
@@ -106,6 +107,7 @@ export type ShapeFrame = {
         enableStroke: boolean;
         strokeWeight: number;
         strokeColor: ColorUsage;
+        strokeLineStyle?: StrokeLineStyle;
         allCornersSame: boolean;
         fillOverprint: boolean;
         strokeOverprint: boolean;
