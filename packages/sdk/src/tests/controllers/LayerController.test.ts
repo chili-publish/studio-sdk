@@ -165,8 +165,8 @@ describe('LayerController', () => {
         expect(mockedEditorApi.reorderLayers).toHaveBeenCalledWith(1, ['layer-1']);
     });
 
-    it('Should call the setLayerZIndex method with the id and the method', async () => {
-        await mockedLayerController.setLayerZIndex('layer-1', UpdateZIndexMethod.sendBackward);
+    it('Should call the setZIndex method with the id and the method', async () => {
+        await mockedLayerController.setZIndex('layer-1', UpdateZIndexMethod.sendBackward);
         expect(mockedEditorApi.setLayerZIndex).toHaveBeenCalledTimes(1);
         expect(mockedEditorApi.setLayerZIndex).toHaveBeenCalledWith('layer-1', UpdateZIndexMethod.sendBackward);
     });

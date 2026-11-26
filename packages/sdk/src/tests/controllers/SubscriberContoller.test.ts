@@ -657,6 +657,7 @@ describe('SubscriberController', () => {
         await mockedSubscriberController.onSelectedLayerIdsChanged(JSON.stringify(['layer-2', 'layer-1']));
         expect(callback).toHaveBeenCalledTimes(1);
         expect(callback).toHaveBeenCalledWith(['layer-2', 'layer-1']);
+        expect(mockEditorApi.onSelectedLayerIdsChanged).toHaveBeenCalledWith(['layer-2', 'layer-1']);
     });
 
     it('Should call onCanvasFramesManipulated subscriber with parsed frame ids when triggered', async () => {

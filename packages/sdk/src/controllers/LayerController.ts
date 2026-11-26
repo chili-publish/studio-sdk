@@ -35,7 +35,7 @@ export class LayerController {
     /**
      * This method returns a layer by its id
      * @param layerId the id of a specific layer
-     * @returns layer properties
+     * @returns the layer
      */
     getById = async (layerId: Id) => {
         const res = await this.#editorAPI;
@@ -165,7 +165,7 @@ export class LayerController {
      * @param method how to move the layer: to the top or the bottom, or one layer up or down
      * @returns
      */
-    setLayerZIndex = async (id: Id, method: UpdateZIndexMethod) => {
+    setZIndex = async (id: Id, method: UpdateZIndexMethod) => {
         const res = await this.#editorAPI;
         return res.setLayerZIndex(id, method).then((result) => getEditorResponseData<null>(result));
     };
