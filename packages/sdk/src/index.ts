@@ -26,6 +26,7 @@ export {
     UpdateZIndexMethod,
     VerticalAlign,
     ComponentSourceTypeEnum,
+    ComponentVersionTypeEnum,
     ComponentFitEnum,
     SmartCropVersion,
     SmartCropAxisBias,
@@ -69,6 +70,10 @@ export type {
     SmartCropSettingsV2,
     ComponentFrame,
     ComponentGridFrame,
+    ComponentVersion,
+    LiveComponentVersion,
+    LatestComponentVersion,
+    SpecificComponentVersion,
     ImageFrameBrandkitMediaSource,
     ImageFrameConnectorSource,
     ImageFrameVariableSource,
@@ -155,6 +160,7 @@ export type {
     DocumentError,
     DocumentIssue,
     FontLoadingDocumentIssue,
+    MissingComponentVariableDocumentIssue,
     OverflowDocumentIssue,
 } from './types/DocumentTypes';
 

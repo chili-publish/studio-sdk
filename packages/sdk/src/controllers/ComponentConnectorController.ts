@@ -1,7 +1,14 @@
 import { CallSender } from 'penpal';
 import { EditorAPI, EditorRawAPI, EditorResponse } from '../types/CommonTypes';
 import { Component, ComponentConnectorCapabilities, ComponentPreviewType } from '../types/ComponentConnectorTypes';
-import { ConnectorConfigOptions, MetaData, QueryOptions, QueryPage } from '../types/ConnectorTypes';
+import {
+    ConnectorConfigOptions,
+    MetaData,
+    QueryOptions,
+    QueryPage,
+    ResourceVersionPage,
+    ResourceVersionQueryOptions,
+} from '../types/ConnectorTypes';
 import { getEditorResponseData } from '../utils/EditorResponseData';
 import { throwEditorResponseError } from '../exceptions';
 
@@ -49,6 +56,33 @@ export class ComponentConnectorController {
         return res
             .componentConnectorQuery(connectorId, JSON.stringify(queryOptions), JSON.stringify(context))
             .then((result) => getEditorResponseData<QueryPage<Component>>(result));
+    };
+
+    /**
+     * @experimental This method is still experimental and might change in future releases.
+     * Lists the saved versions of a component, newest first, one page at a time.
+     * Use the `nextPageToken` of a page as `pageToken` to get the next page.
+     * @param connectorId unique id of the Component connector
+     * @param componentId unique id of the Component
+     * @param options page size and page token
+     * @param context context that will be available in the connector script.
+     * @returns a page of versions
+     */
+    getVersions = async (
+        connectorId: string,
+        componentId: string,
+        options: ResourceVersionQueryOptions = {},
+        context: MetaData = {},
+    ) => {
+        const res = await this.#editorAPI;
+        return res
+            .componentsConnectorQueryVersions(
+                connectorId,
+                componentId,
+                JSON.stringify(options),
+                JSON.stringify(context),
+            )
+            .then((result) => getEditorResponseData<ResourceVersionPage>(result));
     };
 
     /**

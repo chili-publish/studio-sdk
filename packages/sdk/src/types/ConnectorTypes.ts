@@ -197,6 +197,43 @@ export type QueryPage<T> = Omit<QueryResult<T>, 'links'> & {
     nextPageToken?: string;
 };
 
+/**
+ * @experimental This is still experimental and might change in future releases.
+ */
+export type ResourceVersionQueryOptions = {
+    /**
+     * The number of versions per page, 10 when omitted.
+     */
+    pageSize?: number;
+    /**
+     * The `nextPageToken` of the previous page, to get the next page.
+     */
+    pageToken?: string | null;
+};
+
+/**
+ * @experimental This is still experimental and might change in future releases.
+ * A saved version of a resource, such as a component.
+ */
+export type ResourceVersion = {
+    id: Id;
+    resourceType: string;
+    resourceId: Id;
+    description: string | null;
+};
+
+/**
+ * @experimental This is still experimental and might change in future releases.
+ */
+export type ResourceVersionPage = {
+    pageSize: number;
+    /**
+     * The versions, newest first.
+     */
+    data: ResourceVersion[];
+    nextPageToken?: string | null;
+};
+
 export enum ConnectorMappingSource {
     variable = 'var',
     value = 'value',
