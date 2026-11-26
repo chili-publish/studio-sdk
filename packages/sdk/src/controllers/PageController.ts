@@ -115,6 +115,18 @@ export class PageController {
     };
 
     /**
+     * This method returns the selected page, with the same properties as `getById`.
+     * A loaded document always has a selected page. After loading a document, or selecting a static or animated
+     * layout, it is the first visible page. The selected page can be hidden.
+     * Its id is the one the `onSelectedPageIdChanged` event reports.
+     * @returns page properties
+     */
+    getSelected = async () => {
+        const res = await this.#editorAPI;
+        return res.getSelectedPage().then((result) => getEditorResponseData<Page>(result));
+    };
+
+    /**
      * This method returns a UInt8Array containing a PNG encoded image of the page.
      * @param pageId The id of a specific page.
      * If not specified, selected page snapshot will be provided
